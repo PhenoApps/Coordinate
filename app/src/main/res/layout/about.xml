@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:text="@string/versiontitle"
+        android:textColor="@color/main_colorAccent"
+        android:textSize="@dimen/text_size_small"
+        android:clickable="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/devTrevor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dev_trevor"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devTrevorUni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:text="@string/ksu"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devTrevorEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:autoLink="email"
+        android:text="@string/dev_trevor_email"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devJesse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/dev_jesse"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devJesseUni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:text="@string/ksu"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devJesseEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:autoLink="email"
+        android:text="@string/dev_jesse_email"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/devWgSite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:autoLink="web"
+        android:text="@string/wg_site"
+        android:textSize="@dimen/text_size_small" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/main_colorAccent" />
+
+    <TextView
+        android:id="@+id/gridMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:text="@string/grid_description"
+        android:textSize="@dimen/text_size_small" />
+
+</LinearLayout>

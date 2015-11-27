@@ -1,0 +1,7 @@
+2
+Fixed import
+Renamed to Coordinate
+Excluded cells saved to database
+
+1
+Initial release

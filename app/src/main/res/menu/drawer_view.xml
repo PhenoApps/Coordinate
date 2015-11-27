@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_grid"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_new_grid"
+            android:icon="@drawable/ic_new_grid"
+            android:title="@string/new_grid" />
+
+        <item
+            android:id="@+id/menu_delete_grid"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/delete_grid" />
+    </group>
+
+    <group
+        android:id="@+id/menu_template"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_new_template"
+            android:icon="@drawable/ic_new_template"
+            android:title="@string/new_template" />
+
+        <item
+            android:id="@+id/menu_load_template"
+            android:icon="@drawable/ic_load_template"
+            android:title="@string/load_template" />
+
+        <item
+            android:id="@+id/menu_delete_template"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/delete_template_menu" />
+    </group>
+
+    <group
+        android:id="@+id/menu_misc_options"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_import"
+            android:icon="@drawable/ic_import"
+            android:title="@string/import_menu" />
+
+        <item
+            android:id="@+id/menu_export"
+            android:icon="@drawable/ic_save"
+            android:title="@string/export" />
+
+
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about_title" />
+    </group>
+
+</menu>
