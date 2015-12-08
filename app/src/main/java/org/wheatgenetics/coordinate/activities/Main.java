@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,11 +42,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -258,12 +265,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         LayoutInflater inflater = this.getLayoutInflater();
         final View personView = inflater.inflate(R.layout.about, new LinearLayout(this), false);
         TextView version = (TextView) personView.findViewById(R.id.tvVersion);
+        TextView otherApps = (TextView) personView.findViewById(R.id.tvOtherApps);
 
 
         final PackageManager packageManager = this.getPackageManager();
         try {
             PackageInfo packageInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
-            version.setText(getResources().getString(R.string.versiontitle) + packageInfo.versionName);
+            version.setText(getResources().getString(R.string.versiontitle) + " " + packageInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
         }
@@ -274,6 +282,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 changelog();
             }
         });
+
+        otherApps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOtherAppsDialog();
+            }
+        });
+
 
         alert.setCancelable(true);
         alert.setTitle(getResources().getString(R.string.about));
@@ -351,6 +367,86 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void showOtherAppsDialog() {
+        final AlertDialog.Builder otherAppsAlert = new AlertDialog.Builder(this);
+
+        ListView myList = new ListView(this);
+        myList.setDivider(null);
+        myList.setDividerHeight(0);
+        String[] appsArray = new String[3];
+
+        appsArray[0] = "Field Book";
+        appsArray[1] = "Inventory";
+        appsArray[2] = "1KK";
+        //appsArray[3] = "Intercross";
+        //appsArray[4] = "Rangle";
+
+        Integer app_images[] = {R.drawable.other_ic_field_book, R.drawable.other_ic_inventory, R.drawable.other_ic_1kk};
+        final String[] links = {"https://play.google.com/store/apps/details?id=com.fieldbook.tracker",
+                "https://play.google.com/store/apps/details?id=org.wheatgenetics.inventory",
+                "http://wheatgenetics.org/apps"}; //TODO update these links
+
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> av, View arg1, int which, long arg3) {
+                Uri uri = Uri.parse(links[which]);
+                Intent intent;
+
+                switch (which) {
+                    case 0:
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+
+        CustomListAdapter adapterImg = new CustomListAdapter(this, app_images, appsArray);
+        myList.setAdapter(adapterImg);
+
+        otherAppsAlert.setCancelable(true);
+        otherAppsAlert.setTitle(getResources().getString(R.string.otherapps));
+        otherAppsAlert.setView(myList);
+        otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        });
+        otherAppsAlert.show();
+    }
+
+    public class CustomListAdapter extends ArrayAdapter<String> {
+        String[] color_names;
+        Integer[] image_id;
+        Context context;
+
+        public CustomListAdapter(Activity context, Integer[] image_id, String[] text) {
+            super(context, R.layout.appline, text);
+            this.color_names = text;
+            this.image_id = image_id;
+            this.context = context;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View single_row = inflater.inflate(R.layout.appline, null, true);
+            TextView textView = (TextView) single_row.findViewById(R.id.txt);
+            ImageView imageView = (ImageView) single_row.findViewById(R.id.img);
+            textView.setText(color_names[position]);
+            imageView.setImageResource(image_id[position]);
+            return single_row;
         }
     }
 
@@ -1751,6 +1847,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             SharedPreferences.Editor ed = ep.edit();
             ed.putLong("CurrentGrid", grid);
             ed.apply();
+
+            mLayoutOptional.setVisibility(View.VISIBLE);
+            mLayoutGrid.setVisibility(View.VISIBLE);
 
             populateTemplate();
             showTemplateUI();

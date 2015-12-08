@@ -97,7 +97,7 @@
     <string name="reset_database_message">Are you sure you want to reset the database? This will delete all collected or created data and the app will close.</string>
 
     <string name="updatemsg">Changelog</string>
-    <string name="versiontitle">Version:\u0020</string>
+    <string name="versiontitle">Version</string>
 
     <!-- Export strings -->
     <string name="export_success">File successfully exported</string>
@@ -117,6 +117,7 @@
     <string name="dev_jesse">Jesse Poland</string>
     <string name="dev_jesse_email">jpoland@ksu.edu</string>
     <string name="wg_site">http://wheatgenetics.org\n</string>
+    <string name="otherapps">Other Apps</string>
 
     <!-- Person  strings -->
     <string name="first_name">First Name</string>
