@@ -290,7 +290,6 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             }
         });
 
-
         alert.setCancelable(true);
         alert.setTitle(getResources().getString(R.string.about));
         alert.setView(personView);
