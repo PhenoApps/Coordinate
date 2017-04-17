@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import org.wheatgenetics.coordinate.objects.Optional;
+import org.wheatgenetics.coordinate.objects.OptionalField;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -243,13 +243,13 @@ public class Utils {
         return str;
     }
 
-    public static String optionsToJson(List<Optional> options) {
+    public static String optionsToJson(List<OptionalField> options) {
         String data = "";
         try {
             JSONArray jarr = new JSONArray();
 
             for (int i = 0; i < options.size(); i++) {
-                Optional opt = options.get(i);
+                OptionalField opt = options.get(i);
                 if (opt == null) continue;
 
                 JSONObject jobj = new JSONObject();
@@ -314,8 +314,8 @@ public class Utils {
         return points;
     }
 
-    public static List<Optional> jsonToOptions(String json) {
-        List<Optional> options = new ArrayList<Optional>();
+    public static List<OptionalField> jsonToOptions(String json) {
+        List<OptionalField> options = new ArrayList<OptionalField>();
 
         try {
             JSONTokener tokener = new JSONTokener(json);
@@ -332,7 +332,7 @@ public class Utils {
 
                     if (field == null || field.length() == 0) continue;
 
-                    options.add(new Optional(field, value, hint, checked));
+                    options.add(new OptionalField(field, value, hint, checked));
                 } catch (JSONException e) {
 
                 }
