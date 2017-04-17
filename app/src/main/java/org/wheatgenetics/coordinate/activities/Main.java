@@ -146,8 +146,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         super.onCreate(savedInstanceState);
 
         mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Plate Id", "", "", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
+        mOptions.add(new Optional("Plate Id"                       ));
+        mOptions.add(new Optional("Date", /* hint => */ DATE_FORMAT));
 
         menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
 
@@ -762,9 +762,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mColNumbering = true;
 
         mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Tray", "", "Tray ID", true));
-        mOptions.add(new Optional("Person", "", "Person name", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
+        mOptions.add(new Optional("Tray"  , /* hint => */ "Tray ID"    ));
+        mOptions.add(new Optional("Person", /* hint => */ "Person name"));
+        mOptions.add(new Optional("Date"  , /* hint => */ DATE_FORMAT  ));
 
         mExcludeRows = new ArrayList<>();
         mExcludeRows.add(2);
@@ -783,13 +783,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mColNumbering = false;
 
         mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Plate", "", "Plate ID", true)); // TODO dna
-        mOptions.add(new Optional("Plate Name", "", "", true));
-        mOptions.add(new Optional("Notes", "", "", true));
-        mOptions.add(new Optional("tissue_type", "Leaf", "", true));
-        mOptions.add(new Optional("extraction", "CTAB", "", true));
-        mOptions.add(new Optional("person", "", "", true));
-        mOptions.add(new Optional("date", "", DATE_FORMAT, true));
+        mOptions.add(new Optional("Plate", /* hint => */ "Plate ID"                     )); // TODO dna
+        mOptions.add(new Optional("Plate Name"                                          ));
+        mOptions.add(new Optional("Notes"                                               ));
+        mOptions.add(new Optional("tissue_type", /* value => */ "Leaf", /* hint => */ ""));
+        mOptions.add(new Optional("extraction" , /* value => */ "CTAB", /* hint => */ ""));
+        mOptions.add(new Optional("person"                                              ));
+        mOptions.add(new Optional("date", /* hint => */ DATE_FORMAT                     ));
 
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
@@ -973,9 +973,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = new ArrayList<>();
 
         mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Identification", "", "", true));
-        mOptions.add(new Optional("Person", "", "", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
+        mOptions.add(new Optional("Identification"                 ));
+        mOptions.add(new Optional("Person"                         ));
+        mOptions.add(new Optional("Date", /* hint => */ DATE_FORMAT));
 
         LayoutInflater inflater = Main.this.getLayoutInflater();
         View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
@@ -1318,7 +1318,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
                 dialog.cancel();
 
-                mOptions.add(new Optional(sfield, svalue, "", true));
+                mOptions.add(new Optional(sfield, /* value => */ svalue, /* hint => */ ""));
 
                 inputOptional();
             }

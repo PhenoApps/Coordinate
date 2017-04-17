@@ -1,20 +1,32 @@
 package org.wheatgenetics.coordinate.objects;
 
 public class Optional {
-    public String field;
-    public String value;
-    public boolean checked;
-    public String hint;
+    public String  field, value, hint;
+    public boolean checked = true;
 
-    public Optional(String field, String value, String hint, boolean checked) {
+    public Optional(final String field) {
+        super();
         this.field = field;
-        this.value = value;
+        this.value = ""   ;
+        this.hint  = ""   ;
+    }
+
+    public Optional(final String field, final String hint) {
+        this(field);
         this.hint = hint;
+    }
+
+    public Optional(final String field, final String value, final String hint) {
+        this(field, hint);
+        this.value = value;
+    }
+
+    public Optional(final String field, final String value,
+    final String hint, final boolean checked) {
+        this(field, hint, value);
         this.checked = checked;
     }
 
     @Override
-    public String toString() {
-        return field;
-    }
+    public String toString() { return this.field; }
 }
