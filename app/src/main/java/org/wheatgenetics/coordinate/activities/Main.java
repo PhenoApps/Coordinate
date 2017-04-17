@@ -66,6 +66,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import org.json.JSONException;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Coordinate;
 import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
@@ -194,11 +195,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mLayoutMain.setVisibility(View.INVISIBLE);
 
-        initDb();
+        try { initDb(); } catch (JSONException e) {}
         createDirs();
 
         if (ep.getLong("CurrentGrid", -1) != -1) {
-            loadGrid(ep.getLong("CurrentGrid", -1));
+            try { loadGrid(ep.getLong("CurrentGrid", -1)); } catch (JSONException e) {}
         } else {
             menuList();
         }
@@ -505,7 +506,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         switch (menuItem.getItemId()) {
 
             case R.id.menu_new_grid:
-                menuNewGrid();
+                try { menuNewGrid(); } catch (JSONException e) {}
                 break;
 
             case R.id.menu_import:
@@ -611,12 +612,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void menuNewGrid() {
+    private void menuNewGrid() throws JSONException {
         if (mGrid == 0) {
             menuList();
         } else {
             if (mGrid >= 0 && mLastExportGridId == mGrid) {
-                newGridNow();
+                newGridNow();                                                // throws JSONException
             } else {
 
                 Utils.confirm(this, Coordinate.mAppName, getString(R.string.new_grid_warning), new Runnable() {
@@ -627,14 +628,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }, new Runnable() {
                     @Override
                     public void run() {
-                        newGridNow();
+                        try { newGridNow(); } catch(JSONException e) {}
                     }
                 });
             }
         }
     }
 
-    private void newGridNow() {
+    private void newGridNow() throws JSONException {
         deleteGrid(mGrid);
 
         if (mType == TYPE_SEED) {
@@ -653,10 +654,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             mExcludeCells.clear();
             mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
 
-            inputTemplateInput(MODE_DNA);
+            inputTemplateInput(MODE_DNA);                                    // throws JSONException
         } else {
             // reset options?
-            inputTemplateInput(MODE_SAVED);
+            inputTemplateInput(MODE_SAVED);                                  // throws JSONException
         }
 
     }
@@ -752,7 +753,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     // Adds default templates to database
-    private void initDb() {
+    private void initDb() throws JSONException {
         mTemplate = "Seed Tray";
         mType = TYPE_SEED;
         mRows = 6;
@@ -795,12 +796,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mExcludeCells = new ArrayList<>();
 
-        createDb(mType);
+        createDb(mType);                                                     // throws JSONException
 
         mTemplate = "";
     }
 
-    private boolean createDb(int type) {
+    private boolean createDb(int type) throws JSONException {
         Template temp = new Template();
         boolean found = temp.getByType(type);
 
@@ -813,7 +814,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionsToJson(mOptions);
+        temp.options = Utils.optionalFieldsToJson(mOptions);                 // throws JSONException
 
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
@@ -879,7 +880,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
 
                 Template tmp = templates.get(which);
-                copyTemplate(tmp);
+                try { copyTemplate(tmp); } catch (JSONException e) {}
 
                 if (which == 0) {
                     inputSeed();
@@ -887,9 +888,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     mExcludeCells.clear();
                     mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
 
-                    inputTemplateInput(MODE_DNA);
+                    try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
                 } else {
-                    inputTemplateInput(MODE_SAVED);
+                        try { inputTemplateInput(MODE_SAVED); } catch (JSONException e) {}
                 }
             }
 
@@ -948,7 +949,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dialog.show();
     }
 
-    private void copyTemplate(Template tmp) {
+    private void copyTemplate(Template tmp) throws JSONException {
         mId = tmp.id;
         mTemplate = tmp.title;
         mType = tmp.type;
@@ -960,7 +961,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = Utils.jsonToList(tmp.ecols);
         mExcludeRows = Utils.jsonToList(tmp.erows);
 
-        mOptions = Utils.jsonToOptions(tmp.options);
+        mOptions = Utils.jsonToOptionalFields(tmp.options);                  // throws JSONException
 
         mRowNumbering = tmp.rnumbering == 1;
         mColNumbering = tmp.cnumbering == 1;
@@ -1069,7 +1070,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
 
-                inputTemplateInput(MODE_DEFAULT);
+                try { inputTemplateInput(MODE_DEFAULT); } catch (JSONException e) {}
             }
         });
 
@@ -1156,20 +1157,20 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dlg.show();
     }
 
-    private void tempLoad(int mode) {
+    private void tempLoad(int mode) throws JSONException {
         if (mode == MODE_DNA) {
             loadTemplate(TYPE_DNA);
         } else if (mode == MODE_SAVED) {
             loadTemplate(TYPE_DEFAULT);
         } else {
-            newTemplate(TYPE_DEFAULT);
+            newTemplate(TYPE_DEFAULT);                                       // throws JSONException
         }
     }
 
     //TODO merge this method with the one above
-    private void inputTemplateInput(final int mode) {
+    private void inputTemplateInput(final int mode) throws JSONException {
         if (mOptions.size() == 0) {
-            tempLoad(mode);
+            tempLoad(mode);                                                  // throws JSONException
             return;
         }
 
@@ -1218,7 +1219,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         String value = edit.getText().toString().trim();
                         if (i == 0 && value.length() == 0) {
                             Utils.toast(Main.this, mOptions.get(i).hint + getString(R.string.not_empty));
-                            inputTemplateInput(MODE_DNA);
+                            try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
                             return;
                         }
                     }
@@ -1233,7 +1234,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
 
                 dialog.cancel();
-                tempLoad(mode);
+                try { tempLoad(mode); } catch (JSONException e) {}
             }
         });
 
@@ -1537,7 +1538,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         Template tmp = new Template();
 
                         if (tmp.get(grd.templateId)) {
-                            mOptions = Utils.jsonToOptions(tmp.options);
+                            try { mOptions = Utils.jsonToOptionalFields(tmp.options); }
+                            catch (JSONException e) {}
 
                             mRowNumbering = tmp.rnumbering == 1;
                             mColNumbering = tmp.cnumbering == 1;
@@ -1560,7 +1562,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dialog.show();
     }
 
-    private void loadGrid(long id) {
+    private void loadGrid(long id) throws JSONException {
         Grid grd = new Grid();
         if (grd.get(id)) {
             mTemplate = grd.templateTitle;
@@ -1577,7 +1579,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             Template tmp = new Template();
 
             if (tmp.get(grd.templateId)) {
-                mOptions = Utils.jsonToOptions(tmp.options);
+                mOptions = Utils.jsonToOptionalFields(tmp.options);          // throws JSONException
 
                 mRowNumbering = tmp.rnumbering == 1;
                 mColNumbering = tmp.cnumbering == 1;
@@ -1792,7 +1794,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return grid.insert();
     }
 
-    private void newTemplate(int type) {
+    private void newTemplate(int type) throws JSONException {
         mType = type;
         Template temp = new Template();
         temp.title = mTemplate;
@@ -1804,7 +1806,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionsToJson(mOptions);
+        temp.options = Utils.optionalFieldsToJson(mOptions);                 // throws JSONException
 
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;

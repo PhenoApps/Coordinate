@@ -243,29 +243,21 @@ public class Utils {
         return str;
     }
 
-    public static String optionsToJson(List<OptionalField> options) {
-        String data = "";
-        try {
-            JSONArray jarr = new JSONArray();
+    public static String optionalFieldsToJson(
+    final List<OptionalField> optionalFields) throws JSONException {
+        final JSONArray jsonArray = new JSONArray();
 
-            for (int i = 0; i < options.size(); i++) {
-                OptionalField opt = options.get(i);
-                if (opt == null) continue;
+        for (OptionalField optionalField: optionalFields) if (optionalField != null) {
+            final JSONObject jsonObject = new JSONObject();
+            jsonObject.put("field"  , optionalField.field  );                // throws JSONException
+            jsonObject.put("value"  , optionalField.value  );                // throws JSONException
+            jsonObject.put("hint"   , optionalField.hint   );                // throws JSONException
+            jsonObject.put("checked", optionalField.checked);                // throws JSONException
 
-                JSONObject jobj = new JSONObject();
-                jobj.put("field", opt.field);
-                jobj.put("value", opt.value);
-                jobj.put("hint", opt.hint);
-                jobj.put("checked", opt.checked);
-
-                jarr.put(jobj);
-            }
-
-            data = jarr.toString();
-        } catch (JSONException e) {
+            jsonArray.put(jsonObject);
         }
 
-        return data;
+        return jsonArray.toString();
     }
 
     public static List<Integer> jsonToList(String json) {
@@ -314,32 +306,26 @@ public class Utils {
         return points;
     }
 
-    public static List<OptionalField> jsonToOptions(String json) {
-        List<OptionalField> options = new ArrayList<OptionalField>();
+    public static List<OptionalField> jsonToOptionalFields(final String json) throws JSONException {
+        final List<OptionalField> optionalFields = new ArrayList<OptionalField>();
 
-        try {
-            JSONTokener tokener = new JSONTokener(json);
-            JSONArray jarr = (JSONArray) tokener.nextValue();
+        final JSONTokener jsonTokener = new JSONTokener(json)              ;
+        final JSONArray   jsonArray   = (JSONArray) jsonTokener.nextValue(); // throws JSONException
 
-            for (int i = 0; i < jarr.length(); i++) {
-                JSONObject jobj = (JSONObject) jarr.get(i);
+        assert jsonArray != null;
+        for (int i = 0; i < jsonArray.length(); i++) {
+            final JSONObject jsonObject = (JSONObject) jsonArray.get(i);     // throws JSONException
 
-                try {
-                    String field = jobj.optString("field", "");
-                    String value = jobj.optString("value", "");
-                    String hint = jobj.optString("hint", "");
-                    boolean checked = jobj.getBoolean("checked");
+            assert jsonObject != null;
+            final String field = jsonObject.optString("field", "");
 
-                    if (field == null || field.length() == 0) continue;
-
-                    options.add(new OptionalField(field, value, hint, checked));
-                } catch (JSONException e) {
-
-                }
-            }
-        } catch (JSONException e) {
+            if (field != null && field.length() > 0) optionalFields.add(new OptionalField(
+                /* field   => */ field                            ,
+                /* value   => */ jsonObject.optString("value", ""),
+                /* hint    => */ jsonObject.optString("hint" , ""),
+                /* checked => */ jsonObject.getBoolean("checked") ));        // throws JSONException
         }
 
-        return options;
+        return optionalFields;
     }
 }
