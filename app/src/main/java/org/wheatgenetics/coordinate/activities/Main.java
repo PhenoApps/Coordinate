@@ -130,7 +130,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private List<Integer> mExcludeCols = new ArrayList<>();
     private String[] menuMain;
 
-    private List<OptionalField> mOptions;
+    private List<OptionalField> optionalFields;
 
     private DataExporter mTask;
     public long mLastExportGridId = -1;
@@ -145,9 +145,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mOptions = new ArrayList<>();
-        mOptions.add(new OptionalField("Plate Id"                       ));
-        mOptions.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
+        this.optionalFields = new ArrayList<>();
+        this.optionalFields.add(new OptionalField("Plate Id"                       ));
+        this.optionalFields.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
 
         menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
 
@@ -761,10 +761,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = true;
 
-        mOptions = new ArrayList<>();
-        mOptions.add(new OptionalField("Tray"  , /* hint => */ "Tray ID"    ));
-        mOptions.add(new OptionalField("Person", /* hint => */ "Person name"));
-        mOptions.add(new OptionalField("Date"  , /* hint => */ DATE_FORMAT  ));
+        this.optionalFields = new ArrayList<>();
+        this.optionalFields.add(new OptionalField("Tray"  , /* hint => */ "Tray ID"    ));
+        this.optionalFields.add(new OptionalField("Person", /* hint => */ "Person name"));
+        this.optionalFields.add(new OptionalField("Date"  , /* hint => */ DATE_FORMAT  ));
 
         mExcludeRows = new ArrayList<>();
         mExcludeRows.add(2);
@@ -782,14 +782,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = false;
 
-        mOptions = new ArrayList<>();
-        mOptions.add(new OptionalField("Plate", /* hint => */ "Plate ID"                     )); // TODO dna
-        mOptions.add(new OptionalField("Plate Name"                                          ));
-        mOptions.add(new OptionalField("Notes"                                               ));
-        mOptions.add(new OptionalField("tissue_type", /* value => */ "Leaf", /* hint => */ ""));
-        mOptions.add(new OptionalField("extraction" , /* value => */ "CTAB", /* hint => */ ""));
-        mOptions.add(new OptionalField("person"                                              ));
-        mOptions.add(new OptionalField("date", /* hint => */ DATE_FORMAT                     ));
+        this.optionalFields = new ArrayList<>();
+        this.optionalFields.add(new OptionalField("Plate", /* hint => */ "Plate ID")); // TODO dna
+        this.optionalFields.add(new OptionalField("Plate Name"                     ));
+        this.optionalFields.add(new OptionalField("Notes"                          ));
+        this.optionalFields.add(new OptionalField(
+            "tissue_type", /* value => */ "Leaf", /* hint => */ ""));
+        this.optionalFields.add(new OptionalField(
+            "extraction" , /* value => */ "CTAB", /* hint => */ ""));
+        this.optionalFields.add(new OptionalField("person"                         ));
+        this.optionalFields.add(new OptionalField("date", /* hint => */ DATE_FORMAT));
 
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
@@ -814,7 +816,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(mOptions);                 // throws JSONException
+        temp.options = Utils.optionalFieldsToJson(this.optionalFields);      // throws JSONException
 
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
@@ -961,7 +963,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = Utils.jsonToList(tmp.ecols);
         mExcludeRows = Utils.jsonToList(tmp.erows);
 
-        mOptions = Utils.jsonToOptionalFields(tmp.options);                  // throws JSONException
+        this.optionalFields = Utils.jsonToOptionalFields(tmp.options);       // throws JSONException
 
         mRowNumbering = tmp.rnumbering == 1;
         mColNumbering = tmp.cnumbering == 1;
@@ -972,10 +974,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
 
-        mOptions = new ArrayList<>();
-        mOptions.add(new OptionalField("Identification"                 ));
-        mOptions.add(new OptionalField("Person"                         ));
-        mOptions.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
+        this.optionalFields = new ArrayList<>();
+        this.optionalFields.add(new OptionalField("Identification"                 ));
+        this.optionalFields.add(new OptionalField("Person"                         ));
+        this.optionalFields.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
 
         LayoutInflater inflater = Main.this.getLayoutInflater();
         View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
@@ -1089,17 +1091,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
 
-        final EditText[] edits = new EditText[mOptions.size()];
+        final EditText[] edits = new EditText[this.optionalFields.size()];
 
         // load options
-        for (int i = 0; i < mOptions.size(); i++) {
+        for (int i = 0; i < this.optionalFields.size(); i++) {
             View item = inflater.inflate(R.layout.optional_edit, layout, false);
             TextView optionText = (TextView) item.findViewById(R.id.optionText);
             EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
 
-            OptionalField opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
+            OptionalField opt = this.optionalFields.get(i);
+            if (opt == null || !opt.checked) continue;
 
             optionText.setText(opt.field);
             optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
@@ -1116,26 +1117,27 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dialog.setCancelable(false);
         dialog.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < mOptions.size(); i++) {
+                for (int i = 0; i < optionalFields.size(); i++) {
                     EditText edit = edits[i];
                     if (edit == null)
                         continue;
 
-                    if (mOptions.get(i) == null)
-                        continue;
+                    if (optionalFields.get(i) == null) continue;
 
                     String value = edit.getText().toString().trim();
                     if (i == 0 && value.length() == 0) {
-                        Utils.toast(Main.this, mOptions.get(i).hint + getString(R.string.not_empty));
+                        Utils.toast(Main.this,
+                            optionalFields.get(i).hint + getString(R.string.not_empty));
                         inputSeed();
                         return;
                     }
 
-                    mOptions.get(i).value = value;
+                    optionalFields.get(i).value = value;
 
-                    if (mOptions.get(i).field.equalsIgnoreCase("Person") || mOptions.get(i).field.equalsIgnoreCase("Name")) {
+                    if (optionalFields.get(i).field.equalsIgnoreCase("Person")
+                    || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
                         SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", mOptions.get(i).value);
+                        ed.putString("Person", optionalFields.get(i).value);
                         ed.apply();
                     }
                 }
@@ -1169,7 +1171,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     //TODO merge this method with the one above
     private void inputTemplateInput(final int mode) throws JSONException {
-        if (mOptions.size() == 0) {
+        if (this.optionalFields.size() == 0) {
             tempLoad(mode);                                                  // throws JSONException
             return;
         }
@@ -1179,17 +1181,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
 
-        final EditText[] edits = new EditText[mOptions.size()];
+        final EditText[] edits = new EditText[this.optionalFields.size()];
 
         // load options
-        for (int i = 0; i < mOptions.size(); i++) {
+        for (int i = 0; i < this.optionalFields.size(); i++) {
             View item = inflater.inflate(R.layout.optional_edit, layout, false);
             TextView optionText = (TextView) item.findViewById(R.id.optionText);
             EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
 
-            OptionalField opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
+            OptionalField opt = this.optionalFields.get(i);
+            if (opt == null || !opt.checked) continue;
 
             optionText.setText(opt.field);
             optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
@@ -1207,28 +1208,28 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dialog.setCancelable(false);
         dialog.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < mOptions.size(); i++) {
+                for (int i = 0; i < optionalFields.size(); i++) {
                     EditText edit = edits[i];
-                    if (edit == null)
-                        continue;
+                    if (edit == null) continue;
 
-                    if (mOptions.get(i) == null)
-                        continue;
+                    if (optionalFields.get(i) == null) continue;
 
                     if (mode == MODE_DNA) {
                         String value = edit.getText().toString().trim();
                         if (i == 0 && value.length() == 0) {
-                            Utils.toast(Main.this, mOptions.get(i).hint + getString(R.string.not_empty));
+                            Utils.toast(Main.this,
+                                optionalFields.get(i).hint + getString(R.string.not_empty));
                             try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
                             return;
                         }
                     }
 
-                    mOptions.get(i).value = edit.getText().toString().trim();
+                    optionalFields.get(i).value = edit.getText().toString().trim();
 
-                    if (mOptions.get(i).field.equalsIgnoreCase("Person") || mOptions.get(i).field.equalsIgnoreCase("Name")) {
+                    if (optionalFields.get(i).field.equalsIgnoreCase("Person")
+                    || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
                         SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", mOptions.get(i).value);
+                        ed.putString("Person", optionalFields.get(i).value);
                         ed.apply();
                     }
                 }
@@ -1251,13 +1252,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void inputOptional() {
-        final String[] items = new String[mOptions.size()];
-        final boolean[] selections = new boolean[mOptions.size()];
+        final String[] items = new String[this.optionalFields.size()];
+        final boolean[] selections = new boolean[this.optionalFields.size()];
 
-        for (int i = 0; i < mOptions.size(); i++) {
-            OptionalField opt = mOptions.get(i);
-            if (opt == null)
-                continue;
+        for (int i = 0; i < this.optionalFields.size(); i++) {
+            OptionalField opt = this.optionalFields.get(i);
+            if (opt == null) continue;
 
             items[i] = opt.field;
             selections[i] = opt.checked;
@@ -1268,7 +1268,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                mOptions.get(which).checked = isChecked;
+                optionalFields.get(which).checked = isChecked;
             }
         });
 
@@ -1279,14 +1279,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             }
         });
         dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
         });
         dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
         });
 
         dialog.show();
@@ -1318,7 +1314,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
                 dialog.cancel();
 
-                mOptions.add(new OptionalField(sfield, /* value => */ svalue, /* hint => */ ""));
+                optionalFields.add(new OptionalField(
+                    sfield, /* value => */ svalue, /* hint => */ ""));
 
                 inputOptional();
             }
@@ -1538,7 +1535,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         Template tmp = new Template();
 
                         if (tmp.get(grd.templateId)) {
-                            try { mOptions = Utils.jsonToOptionalFields(tmp.options); }
+                            try { optionalFields = Utils.jsonToOptionalFields(tmp.options); }
                             catch (JSONException e) {}
 
                             mRowNumbering = tmp.rnumbering == 1;
@@ -1579,8 +1576,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             Template tmp = new Template();
 
             if (tmp.get(grd.templateId)) {
-                mOptions = Utils.jsonToOptionalFields(tmp.options);          // throws JSONException
-
+                this.optionalFields = Utils.jsonToOptionalFields(tmp.options);     // throws
+                                                                                   //  JSONException
                 mRowNumbering = tmp.rnumbering == 1;
                 mColNumbering = tmp.cnumbering == 1;
             }
@@ -1595,20 +1592,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private boolean isExcludedCell(int r, int c) {
         for (int i = 0; i < mExcludeCells.size(); i++) {
             Point point = mExcludeCells.get(i);
-            if (point.equals(c, r))
-                return true;
+            if (point.equals(c, r)) return true;
         }
 
         return false;
     }
 
-    private boolean isExcludedRow(int r) {
-        return mExcludeRows.contains(Integer.valueOf(r));
-    }
+    private boolean isExcludedRow(int r) { return mExcludeRows.contains(Integer.valueOf(r)); }
 
-    private boolean isExcludedCol(int c) {
-        return mExcludeCols.contains(Integer.valueOf(c));
-    }
+    private boolean isExcludedCol(int c) { return mExcludeCols.contains(Integer.valueOf(c)); }
 
     public int randomBox(int size) {
         Random rand = new Random();
@@ -1790,7 +1782,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         Grid grid = new Grid();
         grid.template = template;
         grid.stamp = System.currentTimeMillis();
-        grid.title = mOptions.get(0).value;
+        grid.title = this.optionalFields.get(0).value;
         return grid.insert();
     }
 
@@ -1806,7 +1798,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(mOptions);                 // throws JSONException
+        temp.options = Utils.optionalFieldsToJson(this.optionalFields);      // throws JSONException
 
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
@@ -1905,14 +1897,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mLayoutOptional.removeAllViews();
 
-        for (int i = 0; i < mOptions.size(); i++) {
+        for (int i = 0; i < this.optionalFields.size(); i++) {
             View view = inflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
             TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
             TextView valueText = (TextView) view.findViewById(R.id.valueText);
 
-            OptionalField opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
+            OptionalField opt = this.optionalFields.get(i);
+            if (opt == null || !opt.checked) continue;
 
             if (i == 0) {
                 fieldText.setText(opt.field);
@@ -2053,7 +2044,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void exportData() {
-        String name = mOptions.get(0).value + "_" + Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
+        final String name = this.optionalFields.get(0).value + "_" +
+            Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
 
         LayoutInflater inflater = getLayoutInflater();
         @SuppressLint("InflateParams")
@@ -2253,8 +2245,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 csvOutput.write("Column");
                 csvOutput.write("Row");
 
-                for (int i = 0; i < mOptions.size(); i++) {
-                    OptionalField opt = mOptions.get(i);
+                for (int i = 0; i < optionalFields.size(); i++) {
+                    OptionalField opt = optionalFields.get(i);
                     csvOutput.write(opt.field);
                 }
 
@@ -2281,8 +2273,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         csvOutput.write(String.valueOf(col));
                         csvOutput.write(String.valueOf(row));
 
-                        for (int i = 0; i < mOptions.size(); i++) {
-                            OptionalField opt = mOptions.get(i);
+                        for (int i = 0; i < optionalFields.size(); i++) {
+                            OptionalField opt = optionalFields.get(i);
                             csvOutput.write(opt.value);
                         }
 
@@ -2326,10 +2318,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String tissue_type = "";
             String extraction = "";
 
-            for (int i = 0; i < mOptions.size(); i++) {
-                OptionalField opt = mOptions.get(i);
-                if (opt == null)
-                    continue;
+            for (int i = 0; i < optionalFields.size(); i++) {
+                OptionalField opt = optionalFields.get(i);
+                if (opt == null) continue;
 
                 if (opt.field.equalsIgnoreCase("date")) {
                     date = opt.value;
@@ -2437,10 +2428,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String date = "";
             String trayid = "";
 
-            for (int i = 0; i < mOptions.size(); i++) {
-                OptionalField opt = mOptions.get(i);
-                if (opt == null)
-                    continue;
+            for (int i = 0; i < optionalFields.size(); i++) {
+                OptionalField opt = optionalFields.get(i);
+                if (opt == null) continue;
 
                 if (opt.field.equalsIgnoreCase("Tray")) {
                     trayid = opt.value;
