@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +23,6 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -32,6 +30,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+/**
+ * Uses:
+ * android.text.format.DateFormat
+ */
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -99,10 +102,17 @@ public class Utils {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
-    public static String getDateFormat(long date) {
-        return (String) DateFormat.format("yyyy-MM-dd", new Date(date));
+    public static java.lang.String formatDate(final long date)
+    {
+        return (java.lang.String) android.text.format.DateFormat.format(
+            "yyyy-MM-dd", new java.util.Date(date));
     }
 
+    public static java.lang.String getCurrentDate()
+    {
+        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
+            java.lang.System.currentTimeMillis());
+    }
 
     public static void hideKeys(Context ctx, View vw) {
         if (vw == null)

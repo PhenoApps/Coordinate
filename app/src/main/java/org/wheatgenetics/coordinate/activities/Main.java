@@ -76,6 +76,7 @@ import org.wheatgenetics.coordinate.database.DatabaseHelper;
 import org.wheatgenetics.coordinate.database.Entry;
 import org.wheatgenetics.coordinate.database.Grid;
 import org.wheatgenetics.coordinate.database.Template;
+import org.wheatgenetics.coordinate.objects.DateOptionalField;
 import org.wheatgenetics.coordinate.objects.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
@@ -95,7 +96,6 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private static final int MODE_DEFAULT = 2;
 
     private static final String TAG = "Coordinate";
-    private static final String DATE_FORMAT = "yyyy-mm-dd";
 
     private LinearLayout mLayoutMain;
     private LinearLayout mLayoutGrid;
@@ -146,8 +146,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         super.onCreate(savedInstanceState);
 
         this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new OptionalField("Plate Id"                       ));
-        this.optionalFields.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
+        this.optionalFields.add(new     OptionalField("Plate Id"));
+        this.optionalFields.add(new DateOptionalField("Date"    ));
 
         menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
 
@@ -763,9 +763,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mColNumbering = true;
 
         this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new OptionalField("Tray"  , /* hint => */ "Tray ID"    ));
-        this.optionalFields.add(new OptionalField("Person", /* hint => */ "Person name"));
-        this.optionalFields.add(new OptionalField("Date"  , /* hint => */ DATE_FORMAT  ));
+        this.optionalFields.add(new     OptionalField("Tray"  , /* hint => */ "Tray ID"    ));
+        this.optionalFields.add(new     OptionalField("Person", /* hint => */ "Person name"));
+        this.optionalFields.add(new DateOptionalField("Date"                               ));
 
         mExcludeRows = new ArrayList<>();
         mExcludeRows.add(2);
@@ -791,8 +791,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             "tissue_type", /* value => */ "Leaf", /* hint => */ ""));
         this.optionalFields.add(new OptionalField(
             "extraction" , /* value => */ "CTAB", /* hint => */ ""));
-        this.optionalFields.add(new OptionalField("person"                         ));
-        this.optionalFields.add(new OptionalField("date", /* hint => */ DATE_FORMAT));
+        this.optionalFields.add(new     OptionalField("person"));
+        this.optionalFields.add(new DateOptionalField("date"  ));
 
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
@@ -964,9 +964,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols  = new ArrayList<>();
 
         this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new OptionalField("Identification"                 ));
-        this.optionalFields.add(new OptionalField("Person"                         ));
-        this.optionalFields.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
+        this.optionalFields.add(new     OptionalField("Identification"));
+        this.optionalFields.add(new     OptionalField("Person"        ));
+        this.optionalFields.add(new DateOptionalField("Date"          ));
 
         final LayoutInflater inflater = Main.this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
@@ -1089,9 +1089,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 optionalFieldTextView.setText(optionalField.getName());
 
                 assert optionalFieldEditText != null;
-                optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
-                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.hint);
+                optionalFieldEditText.setText(optionalField.getValue());
+                optionalFieldEditText.setHint(optionalField.hint      );
 
                 editTexts[i] = optionalFieldEditText;
 
@@ -1190,9 +1189,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 optionalFieldTextView.setText(optionalField.getName());
 
                 assert optionalFieldEditText != null;
-                optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
-                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.hint);
+                optionalFieldEditText.setText(optionalField.getValue());
+                optionalFieldEditText.setHint(optionalField.hint      );
 
                 editTexts[i] = optionalFieldEditText;
 
@@ -1469,7 +1467,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             while (gridCursor.moveToNext()) {
                 final Grid tmpG = new Grid();
                 if (tmpG.copyAll(gridCursor)) {
-                    names[pos] = String.format("Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title, tmpG.templateTitle, tmpG.cols, tmpG.rows, Utils.getDateFormat(tmpG.stamp));
+                    names[pos] = String.format(
+                        "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title,
+                        tmpG.templateTitle, tmpG.cols, tmpG.rows, Utils.formatDate(tmpG.stamp));
                     indexes[pos] = tmpG.id;
                     pos++;
                 }
@@ -2018,8 +2018,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void exportData() {
-        final String name = this.optionalFields.get(0).getValue() + "_" +
-            Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
+        final String name =
+            this.optionalFields.get(0).getValue() + "_" + Utils.getCurrentDate().replace(".", "_");
 
         final LayoutInflater layoutInflater = getLayoutInflater();
         @SuppressLint("InflateParams")

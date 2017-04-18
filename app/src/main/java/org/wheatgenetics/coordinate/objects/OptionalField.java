@@ -18,7 +18,7 @@ public class OptionalField {
     // endregion
 
 
-    // region Public Fields
+    // region Public Field
     public String hint = "";
     // endregion
 
