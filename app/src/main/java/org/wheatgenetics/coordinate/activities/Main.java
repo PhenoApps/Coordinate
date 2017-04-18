@@ -1095,20 +1095,21 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // load options
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
+            final View item = inflater.inflate(R.layout.optional_edit, layout, false);
+            final TextView optionText = (TextView) item.findViewById(R.id.optionText);
+            final EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
 
-            OptionalField opt = this.optionalFields.get(i);
-            if (opt == null || !opt.checked) continue;
+            final OptionalField optionalField = this.optionalFields.get(i);
+            if (optionalField != null && optionalField.checked) {
+                optionText.setText(optionalField.field);
+                optionEdit.setText(optionalField.hint.equals(DATE_FORMAT) ?
+                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
+                optionEdit.setHint(optionalField.hint);
 
-            optionText.setText(opt.field);
-            optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
-            optionEdit.setHint(opt.hint);
+                edits[i] = optionEdit;
 
-            edits[i] = optionEdit;
-
-            layout.addView(item);
+                layout.addView(item);
+            }
         }
 
         Builder dialog = new AlertDialog.Builder(this);
@@ -1185,20 +1186,21 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // load options
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
+            final View item = inflater.inflate(R.layout.optional_edit, layout, false);
+            final TextView optionText = (TextView) item.findViewById(R.id.optionText);
+            final EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
 
-            OptionalField opt = this.optionalFields.get(i);
-            if (opt == null || !opt.checked) continue;
+            final OptionalField optionalField = this.optionalFields.get(i);
+            if (optionalField != null && optionalField.checked) {
+                optionText.setText(optionalField.field);
+                optionEdit.setText(optionalField.hint.equals(DATE_FORMAT) ?
+                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
+                optionEdit.setHint(optionalField.hint);
 
-            optionText.setText(opt.field);
-            optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
-            optionEdit.setHint(opt.hint);
+                edits[i] = optionEdit;
 
-            edits[i] = optionEdit;
-
-            layout.addView(item);
+                layout.addView(item);
+            }
         }
 
         Builder dialog = new AlertDialog.Builder(this);
@@ -1256,14 +1258,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         final boolean[] selections = new boolean[this.optionalFields.size()];
 
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            OptionalField opt = this.optionalFields.get(i);
-            if (opt == null) continue;
-
-            items[i] = opt.field;
-            selections[i] = opt.checked;
+            final OptionalField optionalField = this.optionalFields.get(i);
+            if (optionalField != null) {
+                items[i] = optionalField.field;
+                selections[i] = optionalField.checked;
+            }
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
+        final Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.optional_fields));
         dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
@@ -1898,22 +1900,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mLayoutOptional.removeAllViews();
 
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            View view = inflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
-            TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
-            TextView valueText = (TextView) view.findViewById(R.id.valueText);
+            final View view = inflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
+            final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
+            final TextView valueText = (TextView) view.findViewById(R.id.valueText);
 
-            OptionalField opt = this.optionalFields.get(i);
-            if (opt == null || !opt.checked) continue;
+            final OptionalField optionalField = this.optionalFields.get(i);
+            if (optionalField != null && optionalField.checked) {
+                if (i == 0) {
+                    fieldText.setText(optionalField.field);
+                    valueText.setText(mGridTitle);
+                } else {
+                    fieldText.setText(optionalField.field);
+                    valueText.setText(optionalField.value);
+                }
 
-            if (i == 0) {
-                fieldText.setText(opt.field);
-                valueText.setText(mGridTitle);
-            } else {
-                fieldText.setText(opt.field);
-                valueText.setText(opt.value);
+                mLayoutOptional.addView(view);
             }
-
-            mLayoutOptional.addView(view);
         }
 
         mTableData.removeAllViews();
@@ -2224,30 +2226,27 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         private boolean exportDefault() {
             boolean ret = false;
 
-            String outputFile = mTempName + ".csv";
+            final String outputFile = mTempName + ".csv";
 
             mFile = new File(mTempPath, outputFile);
 
-            if (mFile.exists()) {
-                mFile.delete();
-            }
+            if (mFile.exists()) mFile.delete();
 
             CsvWriter csvOutput;
             FileWriter writer;
 
             try {
-
                 writer = new FileWriter(mFile, false);
                 csvOutput = new CsvWriter(writer, ',');
 
                 //Titles
-                csvOutput.write("Value");
+                csvOutput.write("Value" );
                 csvOutput.write("Column");
-                csvOutput.write("Row");
+                csvOutput.write("Row"   );
 
                 for (int i = 0; i < optionalFields.size(); i++) {
-                    OptionalField opt = optionalFields.get(i);
-                    csvOutput.write(opt.field);
+                    final OptionalField optionalField = optionalFields.get(i);
+                    csvOutput.write(optionalField.field);
                 }
 
                 csvOutput.endRecord();
@@ -2264,18 +2263,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             data = "exclude";
                         } else {
                             data = getDataEntry(mGrid, row, col);
-                            if (data == null) {
-                                data = "";
-                            }
+                            if (data == null) data = "";
                         }
 
-                        csvOutput.write(data);
+                        csvOutput.write(data               );
                         csvOutput.write(String.valueOf(col));
                         csvOutput.write(String.valueOf(row));
 
                         for (int i = 0; i < optionalFields.size(); i++) {
-                            OptionalField opt = optionalFields.get(i);
-                            csvOutput.write(opt.value);
+                            final OptionalField optionalField = optionalFields.get(i);
+                            csvOutput.write(optionalField.value);
                         }
 
                         csvOutput.endRecord();
@@ -2298,13 +2295,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         private boolean exportDna() {
             boolean ret = false;
-            String outputFile = mTempName + ".csv";
+            final String outputFile = mTempName + ".csv";
 
             mFile = new File(mTempPath, outputFile);
 
-            if (mFile.exists()) {
-                mFile.delete();
-            }
+            if (mFile.exists()) mFile.delete();
 
             CsvWriter csvOutput;
             FileWriter writer;
@@ -2319,26 +2314,24 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String extraction = "";
 
             for (int i = 0; i < optionalFields.size(); i++) {
-                OptionalField opt = optionalFields.get(i);
-                if (opt == null) continue;
-
-                if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Plate")) {
-                    plate_id = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Plate Name")) {
-                    plate_name = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Notes")) {
-                    notes = opt.value;
-                } else if (opt.field.equalsIgnoreCase("tissue_type")) {
-                    tissue_type = opt.value;
-                } else if (opt.field.equalsIgnoreCase("extraction")) {
-                    extraction = opt.value;
-                } else if (opt.field.equalsIgnoreCase("person")) {
-                    dna_person = opt.value;
-                } else if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                }
+                final OptionalField optionalField = optionalFields.get(i);
+                if (optionalField != null)
+                    if (optionalField.field.equalsIgnoreCase("date"))
+                        date = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("Plate"))
+                        plate_id = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("Plate Name"))
+                        plate_name = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("Notes"))
+                        notes = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("tissue_type"))
+                        tissue_type = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("extraction"))
+                        extraction = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("person"))
+                        dna_person = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("date"))
+                        date = optionalField.value;
             }
 
             try {
@@ -2346,17 +2339,17 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 csvOutput = new CsvWriter(writer, ',');
 
-                csvOutput.write("date");
-                csvOutput.write("plate_id");
-                csvOutput.write("plate_name");
-                csvOutput.write("sample_id");
-                csvOutput.write("well_A01");
-                csvOutput.write("well_01A");
-                csvOutput.write("tissue_id");
-                csvOutput.write("dna_person");
-                csvOutput.write("notes");
+                csvOutput.write("date"       );
+                csvOutput.write("plate_id"   );
+                csvOutput.write("plate_name" );
+                csvOutput.write("sample_id"  );
+                csvOutput.write("well_A01"   );
+                csvOutput.write("well_01A"   );
+                csvOutput.write("tissue_id"  );
+                csvOutput.write("dna_person" );
+                csvOutput.write("notes"      );
                 csvOutput.write("tissue_type");
-                csvOutput.write("extraction");
+                csvOutput.write("extraction" );
 
                 csvOutput.endRecord();
 
@@ -2366,34 +2359,32 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     for (int r = 0; r < mTemplate.rows; r++) {
                         row = r + 1;
 
-                        String rowName = Character.toString((char) ('A' + r));
-                        String colName = String.format("%02d", col);
-                        String sample_id = String.format("%s_%s%s", plate_id, rowName, colName);
+                        final String rowName = Character.toString((char) ('A' + r));
+                        final String colName = String.format("%02d", col);
+                        final String sample_id = String.format("%s_%s%s", plate_id, rowName, colName);
 
                         String tissue_id;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col)) {
+                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
                             tissue_id = "BLANK_" + sample_id;
-                        } else {
+                        else {
                             tissue_id = getDataEntry(mGrid, row, col);
-                            if (tissue_id == null || tissue_id.trim().length() == 0) {
+                            if (tissue_id == null || tissue_id.trim().length() == 0)
                                 tissue_id = "BLANK_" + sample_id;
-                            }
                         }
 
-                        csvOutput.write(date);
-                        csvOutput.write(plate_id);
-                        csvOutput.write(plate_name);
-                        csvOutput.write(sample_id); // sample_id
+                        csvOutput.write(date                                   );
+                        csvOutput.write(plate_id                               );
+                        csvOutput.write(plate_name                             );
+                        csvOutput.write(sample_id                              ); // sample_id
                         csvOutput.write(String.format("%s%s", rowName, colName)); // well_A01
                         csvOutput.write(String.format("%s%s", colName, rowName)); // well_01A
-                        csvOutput.write(tissue_id);
-                        csvOutput.write(dna_person.replace(" ", "_"));
-                        csvOutput.write(notes);
-                        csvOutput.write(tissue_type);
-                        csvOutput.write(extraction);
+                        csvOutput.write(tissue_id                              );
+                        csvOutput.write(dna_person.replace(" ", "_")           );
+                        csvOutput.write(notes                                  );
+                        csvOutput.write(tissue_type                            );
+                        csvOutput.write(extraction                             );
 
                         csvOutput.endRecord();
-
                     }
                     publishProgress(getString(R.string.exporting_column_title) + col);
                 }
@@ -2413,13 +2404,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         private boolean exportSeed() {
             boolean ret = false;
 
-            String outputFile = mTempName + ".csv";
+            final String outputFile = mTempName + ".csv";
 
             mFile = new File(mTempPath, outputFile);
 
-            if (mFile.exists()) {
-                mFile.delete();
-            }
+            if (mFile.exists()) mFile.delete();
 
             CsvWriter csvOutput;
             FileWriter writer;
@@ -2429,16 +2418,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String trayid = "";
 
             for (int i = 0; i < optionalFields.size(); i++) {
-                OptionalField opt = optionalFields.get(i);
-                if (opt == null) continue;
-
-                if (opt.field.equalsIgnoreCase("Tray")) {
-                    trayid = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Person")) {
-                    person = opt.value;
-                } else if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                }
+                final OptionalField optionalField = optionalFields.get(i);
+                if (optionalField != null)
+                    if (optionalField.field.equalsIgnoreCase("Tray"))
+                        trayid = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("Person"))
+                        person = optionalField.value;
+                    else if (optionalField.field.equalsIgnoreCase("date"))
+                        date = optionalField.value;
             }
 
             try {
@@ -2446,14 +2433,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 csvOutput = new CsvWriter(writer, ',');
 
-                csvOutput.write("tray_id");
-                csvOutput.write("cell_id");
-                csvOutput.write("tray_num");
+                csvOutput.write("tray_id"    );
+                csvOutput.write("cell_id"    );
+                csvOutput.write("tray_num"   );
                 csvOutput.write("tray_column");
-                csvOutput.write("tray_row");
-                csvOutput.write("seed_id");
-                csvOutput.write("person");
-                csvOutput.write("date");
+                csvOutput.write("tray_row"   );
+                csvOutput.write("seed_id"    );
+                csvOutput.write("person"     );
+                csvOutput.write("date"       );
                 csvOutput.endRecord();
 
                 int row;
@@ -2464,27 +2451,25 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         row = r + 1;
 
                         String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col)) {
+                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
                             data = "exclude";
-                        } else {
+                        else {
                             data = getDataEntry(mGrid, row, col);
-                            if (data == null)
-                                data = "BLANK_";
+                            if (data == null) data = "BLANK_";
                         }
 
-                        csvOutput.write(trayid); // tray id
+                        csvOutput.write(trayid                                            ); // tray id
                         csvOutput.write(String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
-                        csvOutput.write(""); // "tray_num"
-                        csvOutput.write(String.valueOf(col)); // "tray_column"
-                        csvOutput.write(String.valueOf(row)); // "tray_row"
-                        csvOutput.write(data); // "seed_id"
-                        csvOutput.write(person.replace(" ", "_")); // "person"
-                        csvOutput.write(date); // "date"
+                        csvOutput.write(""                                                ); // "tray_num"
+                        csvOutput.write(String.valueOf(col)                               ); // "tray_column"
+                        csvOutput.write(String.valueOf(row)                               ); // "tray_row"
+                        csvOutput.write(data                                              ); // "seed_id"
+                        csvOutput.write(person.replace(" ", "_")                          ); // "person"
+                        csvOutput.write(date                                              ); // "date"
                         csvOutput.endRecord();
                     }
 
                     publishProgress(getString(R.string.exporting_column_title) + col);
-
                 }
 
                 csvOutput.close();
