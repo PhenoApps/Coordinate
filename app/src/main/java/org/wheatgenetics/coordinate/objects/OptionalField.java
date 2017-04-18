@@ -93,5 +93,11 @@ public class OptionalField {
 
         return jsonObject;
     }
+
+    public boolean nameEqualsIgnoreCase(final String string) {
+        final String name = this.getName();
+        assert name != null;
+        return name.equalsIgnoreCase(string);
+    }
     // endregion
 }

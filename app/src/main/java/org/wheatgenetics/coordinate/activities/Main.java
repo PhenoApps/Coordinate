@@ -2205,16 +2205,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             FileWriter writer;
 
             try {
-                writer = new FileWriter(mFile, false);
-                csvOutput = new CsvWriter(writer, ',');
+                writer    = new FileWriter(mFile, false);
+                csvOutput = new CsvWriter (writer, ',' );
 
                 //Titles
                 csvOutput.write("Value" );
                 csvOutput.write("Column");
                 csvOutput.write("Row"   );
 
-                for (int i = 0; i < optionalFields.size(); i++) {
-                    final OptionalField optionalField = optionalFields.get(i);
+                for (final OptionalField optionalField: optionalFields) {
+                    assert optionalField != null;
                     csvOutput.write(optionalField.getName());
                 }
 
@@ -2239,8 +2239,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         csvOutput.write(String.valueOf(col));
                         csvOutput.write(String.valueOf(row));
 
-                        for (int i = 0; i < optionalFields.size(); i++) {
-                            final OptionalField optionalField = optionalFields.get(i);
+                        for (final OptionalField optionalField: optionalFields) {
+                            assert optionalField != null;
                             csvOutput.write(optionalField.getValue());
                         }
 
@@ -2282,26 +2282,23 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String tissue_type = "";
             String extraction = "";
 
-            for (int i = 0; i < optionalFields.size(); i++) {
-                final OptionalField optionalField = optionalFields.get(i);
-                if (optionalField != null)
-                    if (optionalField.getName().equalsIgnoreCase("date"))
-                        date = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("Plate"))
-                        plate_id = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("Plate Name"))
-                        plate_name = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("Notes"))
-                        notes = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("tissue_type"))
-                        tissue_type = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("extraction"))
-                        extraction = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("person"))
-                        dna_person = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("date"))
-                        date = optionalField.getValue();
-            }
+            for (final OptionalField optionalField: optionalFields) if (optionalField != null)
+                if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Plate"))
+                    plate_id = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Plate Name"))
+                    plate_name = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Notes"))
+                    notes = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("tissue_type"))
+                    tissue_type = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("extraction"))
+                    extraction = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("person"))
+                    dna_person = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
 
             try {
                 writer = new FileWriter(mFile, false);
@@ -2386,16 +2383,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String date = "";
             String trayid = "";
 
-            for (int i = 0; i < optionalFields.size(); i++) {
-                final OptionalField optionalField = optionalFields.get(i);
-                if (optionalField != null)
-                    if (optionalField.getName().equalsIgnoreCase("Tray"))
-                        trayid = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("Person"))
-                        person = optionalField.getValue();
-                    else if (optionalField.getName().equalsIgnoreCase("date"))
-                        date = optionalField.getValue();
-            }
+            for (final OptionalField optionalField: optionalFields) if (optionalField != null)
+                if (optionalField.nameEqualsIgnoreCase("Tray"))
+                    trayid = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Person"))
+                    person = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
 
             try {
                 writer = new FileWriter(mFile, false);
