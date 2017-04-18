@@ -1073,7 +1073,6 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // load options
         assert linearLayout != null;
-        assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.getChecked()) {
@@ -1108,25 +1107,26 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int id) {
                 for (int i = 0; i < optionalFields.size(); i++) {
                     final EditText editText = editTexts[i];
-                    if (editText == null) continue;
+                    if (editText != null) {
+                        final OptionalField optionalField = optionalFields.get(i);
+                        if (optionalField != null) {
+                            final String value = editText.getText().toString().trim();
+                            if (i == 0 && value.length() == 0) {
+                                Utils.toast(Main.this,
+                                    optionalField.hint + getString(R.string.not_empty));
+                                inputSeed();
+                                return;
+                            }
 
-                    if (optionalFields.get(i) == null) continue;
+                            optionalField.setValue(value);
 
-                    final String value = editText.getText().toString().trim();
-                    if (i == 0 && value.length() == 0) {
-                        Utils.toast(Main.this,
-                            optionalFields.get(i).hint + getString(R.string.not_empty));
-                        inputSeed();
-                        return;
-                    }
-
-                    optionalFields.get(i).setValue(value);
-
-                    if (optionalFields.get(i).getName().equalsIgnoreCase("Person")
-                    || optionalFields.get(i).getName().equalsIgnoreCase("Name")) {
-                        final SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", optionalFields.get(i).getValue());
-                        ed.apply();
+                            if (optionalField.getName().equalsIgnoreCase("Person")
+                            || optionalField.getName().equalsIgnoreCase("Name")) {
+                                final SharedPreferences.Editor ed = ep.edit();
+                                ed.putString("Person", optionalField.getValue());
+                                ed.apply();
+                            }
+                        }
                     }
                 }
 
@@ -1174,7 +1174,6 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // load options
         assert linearLayout != null;
-        assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.getChecked()) {
@@ -1210,27 +1209,29 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 public void onClick(DialogInterface dialog, int id) {
                     for (int i = 0; i < optionalFields.size(); i++) {
                         final EditText editText = editTexts[i];
-                        if (editText == null) continue;
+                        if (editText != null) {
+                            final OptionalField optionalField = optionalFields.get(i);
+                            if (optionalField != null) {
+                                if (mode == MODE_DNA) {
+                                    final String value = editText.getText().toString().trim();
+                                    if (i == 0 && value.length() == 0) {
+                                        Utils.toast(Main.this,
+                                            optionalField.hint + getString(R.string.not_empty));
+                                        try { inputTemplateInput(MODE_DNA); }
+                                        catch (JSONException e) {}
+                                        return;
+                                    }
+                                }
 
-                        if (optionalFields.get(i) == null) continue;
+                                optionalField.setValue(editText.getText().toString().trim());
 
-                        if (mode == MODE_DNA) {
-                            final String value = editText.getText().toString().trim();
-                            if (i == 0 && value.length() == 0) {
-                                Utils.toast(Main.this,
-                                    optionalFields.get(i).hint + getString(R.string.not_empty));
-                                try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
-                                return;
+                                if (optionalField.getName().equalsIgnoreCase("Person")
+                                || optionalField.getName().equalsIgnoreCase("Name")) {
+                                    final SharedPreferences.Editor ed = ep.edit();
+                                    ed.putString("Person", optionalField.getValue());
+                                    ed.apply();
+                                }
                             }
-                        }
-
-                        optionalFields.get(i).setValue(editText.getText().toString().trim());
-
-                        if (optionalFields.get(i).getName().equalsIgnoreCase("Person")
-                        || optionalFields.get(i).getName().equalsIgnoreCase("Name")) {
-                            final SharedPreferences.Editor ed = ep.edit();
-                            ed.putString("Person", optionalFields.get(i).getValue());
-                            ed.apply();
                         }
                     }
 
@@ -1249,13 +1250,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void inputOptional() {
-        final String[] items = new String[this.optionalFields.size()];
-        final boolean[] selections = new boolean[this.optionalFields.size()];
+        assert this.optionalFields != null;
+        final int optionalFieldsSize = this.optionalFields.size();
+        final String  items     [] = new String [optionalFieldsSize];
+        final boolean selections[] = new boolean[optionalFieldsSize];
 
-        for (int i = 0; i < this.optionalFields.size(); i++) {
+        for (int i = 0; i < optionalFieldsSize; i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null) {
-                items[i] = optionalField.getName();
+                items     [i] = optionalField.getName   ();
                 selections[i] = optionalField.getChecked();
             }
         }
@@ -1860,23 +1863,30 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         getNextFreeCell();
 
-        LayoutInflater layoutInflater = getLayoutInflater();
+        final LayoutInflater layoutInflater = getLayoutInflater();
 
         mLayoutOptional.removeAllViews();
 
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            final View view = layoutInflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
-            final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
-            final TextView valueText = (TextView) view.findViewById(R.id.valueText);
-
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.getChecked()) {
-                if (i == 0) {
+                final View view =
+                    layoutInflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
+                assert view != null;
+
+                {
+                    final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
+                    assert fieldText != null;
                     fieldText.setText(optionalField.getName());
-                    valueText.setText(mGridTitle);
-                } else {
-                    fieldText.setText(optionalField.getName ());
-                    valueText.setText(optionalField.getValue());
+                }
+
+                {
+                    final TextView valueText = (TextView) view.findViewById(R.id.valueText);
+                    assert valueText != null;
+                    if (i == 0)
+                        valueText.setText(mGridTitle);
+                    else
+                        valueText.setText(optionalField.getValue());
                 }
 
                 mLayoutOptional.addView(view);
@@ -1887,20 +1897,19 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // header
         @SuppressLint("InflateParams")
-        TableRow hrow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
+        final TableRow hrow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
         int chcol = 0;
         for (int c = 0; c < (mCols + 1); c++) {
             @SuppressLint("InflateParams")
-            LinearLayout cell_top = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_top, null);
-            TextView cell_txt = (TextView) cell_top.findViewById(R.id.dataCell);
+            final LinearLayout cell_top = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_top, null);
+            final TextView cell_txt = (TextView) cell_top.findViewById(R.id.dataCell);
 
-            if (c == 0) {
+            if (c == 0)
                 cell_txt.setText("");
-            } else {
+            else {
                 cell_txt.setText("" + (mColNumbering ? c : Character.toString((char) ('A' + chcol)))); // Row
                 chcol++;
-                if (chcol >= 26)
-                    chcol = 0;
+                if (chcol >= 26) chcol = 0;
             }
             hrow.addView(cell_top);
         }
@@ -1910,35 +1919,33 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         int chrow = 0;
         for (int r = 1; r < (mRows + 1); r++) {
             @SuppressLint("InflateParams")
-            TableRow brow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
+            final TableRow brow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
 
-            boolean excludedRow = isExcludedRow(r);
+            final boolean excludedRow = isExcludedRow(r);
 
             for (int c = 0; c < (mCols + 1); c++) {
-                boolean excludedCol = isExcludedCol(c);
+                final boolean excludedCol = isExcludedCol(c);
 
                 @SuppressLint("InflateParams")
-                LinearLayout cell_box = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_box, null);
-                TextView cell_cnt = (TextView) cell_box.findViewById(R.id.dataCell);
+                final LinearLayout cell_box = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_box, null);
+                final TextView cell_cnt = (TextView) cell_box.findViewById(R.id.dataCell);
 
                 @SuppressLint("InflateParams")
-                LinearLayout cell_left = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_left, null);
-                TextView cell_num = (TextView) cell_left.findViewById(R.id.dataCell);
+                final LinearLayout cell_left = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_left, null);
+                final TextView cell_num = (TextView) cell_left.findViewById(R.id.dataCell);
 
                 if (c == 0) {
                     cell_num.setText("" + (mRowNumbering ? r : Character.toString((char) ('A' + chrow)))); // Row
                     chrow++;
-                    if (chrow >= 26)
-                        chrow = 0;
+                    if (chrow >= 26) chrow = 0;
 
                     brow.addView(cell_left);
                 } else {
-                    String data = getDataEntry(mGrid, r, c);
+                    final String data = getDataEntry(mGrid, r, c);
                     setCellState(cell_cnt, STATE_NORMAL);
 
-                    if (data != null && data.trim().length() != 0) {
+                    if (data != null && data.trim().length() != 0)
                         setCellState(cell_cnt, STATE_DONE);
-                    }
 
                     if (r == mCurRow && c == mCurCol) {
                         setCellState(cell_cnt, STATE_ACTIVE);
