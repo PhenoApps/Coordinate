@@ -262,15 +262,21 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private void aboutDialog() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        LayoutInflater inflater = this.getLayoutInflater();
+        final LayoutInflater inflater = this.getLayoutInflater();
+
+        assert inflater != null;
         final View personView = inflater.inflate(R.layout.about, new LinearLayout(this), false);
-        TextView version = (TextView) personView.findViewById(R.id.tvVersion);
-        TextView otherApps = (TextView) personView.findViewById(R.id.tvOtherApps);
+
+        assert personView != null;
+        final TextView version   = (TextView) personView.findViewById(R.id.tvVersion  );
+        final TextView otherApps = (TextView) personView.findViewById(R.id.tvOtherApps);
 
 
         final PackageManager packageManager = this.getPackageManager();
+        assert packageManager != null;
         try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
+            final PackageInfo packageInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
+            assert packageInfo != null;
             version.setText(getResources().getString(R.string.versiontitle) + " " + packageInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, e.getMessage());
@@ -293,11 +299,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         alert.setCancelable(true);
         alert.setTitle(getResources().getString(R.string.about));
         alert.setView(personView);
-        alert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-            }
-        });
+        alert.setNegativeButton(getResources().getString(R.string.ok),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.dismiss(); }});
         alert.show();
     }
 
@@ -305,17 +310,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         parent.setOrientation(LinearLayout.VERTICAL);
         parseLog(R.raw.changelog_releases);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
         builder.setTitle(getResources().getString(R.string.updatemsg));
         builder.setView(changeContainer)
-                .setCancelable(true)
-                .setPositiveButton(getResources().getString(R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-        AlertDialog alert = builder.create();
+            .setCancelable(true)
+            .setPositiveButton(getResources().getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { dialog.dismiss(); }});
+        final AlertDialog alert = builder.create();
         alert.show();
     }
 
@@ -372,10 +374,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private void showOtherAppsDialog() {
         final AlertDialog.Builder otherAppsAlert = new AlertDialog.Builder(this);
 
-        ListView myList = new ListView(this);
+        final ListView myList = new ListView(this);
         myList.setDivider(null);
         myList.setDividerHeight(0);
-        String[] appsArray = new String[3];
+        final String[] appsArray = new String[3];
 
         appsArray[0] = "Field Book";
         appsArray[1] = "Inventory";
@@ -383,14 +385,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         //appsArray[3] = "Intercross";
         //appsArray[4] = "Rangle";
 
-        Integer app_images[] = {R.drawable.other_ic_field_book, R.drawable.other_ic_inventory, R.drawable.other_ic_1kk};
+        final Integer app_images[] = {R.drawable.other_ic_field_book, R.drawable.other_ic_inventory, R.drawable.other_ic_1kk};
         final String[] links = {"https://play.google.com/store/apps/details?id=com.fieldbook.tracker",
                 "https://play.google.com/store/apps/details?id=org.wheatgenetics.inventory",
                 "http://wheatgenetics.org/apps"}; //TODO update these links
 
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> av, View arg1, int which, long arg3) {
-                Uri uri = Uri.parse(links[which]);
+                final Uri uri = Uri.parse(links[which]);
                 Intent intent;
 
                 switch (which) {
@@ -407,20 +409,19 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         startActivity(intent);
                         break;
                 }
-            }
-        });
+            }});
 
-        CustomListAdapter adapterImg = new CustomListAdapter(this, app_images, appsArray);
+        final CustomListAdapter adapterImg = new CustomListAdapter(this, app_images, appsArray);
         myList.setAdapter(adapterImg);
 
         otherAppsAlert.setCancelable(true);
         otherAppsAlert.setTitle(getResources().getString(R.string.otherapps));
         otherAppsAlert.setView(myList);
-        otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-            }
-        });
+        otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.dismiss();
+                }});
         otherAppsAlert.show();
     }
 
@@ -833,122 +834,110 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     public void menuList() {
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.template_options));
-        dialog.setItems(menuMain, new OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.template_options));
+        builder.setItems(menuMain, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
+                if (which == 0)
                     menuTemplateLoad();
-                } else {
+                else
                     inputTemplateNew();
-                }
-            }
-        });
-        dialog.show();
+            }});
+        builder.show();
     }
 
     private void menuTemplateLoad() {
         final List<Template> templates = new ArrayList<>();
 
-        Template tmp = new Template();
-        Cursor cursor = tmp.load();
+        final Template tmp = new Template();
+        final Cursor cursor = tmp.load();
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                Template temp = new Template();
-                if (temp.copy(cursor)) {
-                    templates.add(temp);
-                }
+                final Template temp = new Template();
+                if (temp.copy(cursor)) templates.add(temp);
             }
             cursor.close();
         }
 
-        int size = templates.size();
+        final int size = templates.size();
 
-        String[] items = new String[size];
+        final String[] items = new String[size];
 
         for (int i = 0; i < size; i++) {
-            Template item = templates.get(i);
+            final Template item = templates.get(i);
             items[i] = item.title;
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(menuMain[0]);
-        dialog.setItems(items, new OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(menuMain[0]);
+        builder.setItems(items, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which < 0 || which > templates.size()) {
-                    return;
-                }
+                if (which < 0 || which > templates.size()) return;
 
-                Template tmp = templates.get(which);
+                final Template tmp = templates.get(which);
                 try { copyTemplate(tmp); } catch (JSONException e) {}
 
-                if (which == 0) {
+                if (which == 0)
                     inputSeed();
-                } else if (which == 1) {
+                else if (which == 1) {
                     mExcludeCells.clear();
                     mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
 
                     try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
-                } else {
-                        try { inputTemplateInput(MODE_SAVED); } catch (JSONException e) {}
-                }
-            }
-
-        });
-        dialog.show();
+                } else try { inputTemplateInput(MODE_SAVED); } catch (JSONException e) {}
+            }});
+        builder.show();
     }
 
     private void menuDeleteTemplate() {
         final List<Template> templates = new ArrayList<>();
 
-        Template tmp = new Template();
-        Cursor cursor = tmp.load();
+        final Template tmp = new Template();
+        final Cursor cursor = tmp.load();
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                Template temp = new Template();
-                if (temp.copy(cursor)) {
-                    templates.add(temp);
-                }
+                final Template temp = new Template();
+                if (temp.copy(cursor)) templates.add(temp);
             }
             cursor.close();
         }
 
-        int size = templates.size();
+        final int size = templates.size();
 
-        String[] items = new String[size];
+        final String[] items = new String[size];
 
         for (int i = 0; i < size; i++) {
-            Template item = templates.get(i);
+            final Template item = templates.get(i);
             items[i] = item.title;
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.delete_template));
-        dialog.setItems(items, new OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.delete_template));
+        builder.setItems(items, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which < 0 || which > templates.size()) {
-                    return;
-                }
+                if (which < 0 || which > templates.size()) return;
 
                 final Template tmp = templates.get(which);
 
-                Utils.confirm(Main.this, getString(R.string.delete_template), getString(R.string.delete_template_warning), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (deleteTemplate(tmp.id)) {
-                            Toast.makeText(Main.this, getString(R.string.template_deleted), Toast.LENGTH_LONG).show();
-                            menuList();
-                        } else
-                            Toast.makeText(Main.this, getString(R.string.template_not_deleted), Toast.LENGTH_LONG).show();
-                    }
-                }, null);
+                Utils.confirm(Main.this, getString(R.string.delete_template),
+                    getString(R.string.delete_template_warning), new Runnable() {
+                        @Override
+                        public void run() {
+                            if (deleteTemplate(tmp.id)) {
+                                Toast.makeText(Main.this, getString(R.string.template_deleted),
+                                    Toast.LENGTH_LONG).show();
+                                menuList();
+                            } else
+                                Toast.makeText(Main.this, getString(R.string.template_not_deleted),
+                                    Toast.LENGTH_LONG).show();
+                        }}, null);
             }
 
         });
-        dialog.show();
+        builder.show();
     }
 
     private void copyTemplate(Template tmp) throws JSONException {
@@ -971,16 +960,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     private void inputTemplateNew() {
         mExcludeCells = new ArrayList<>();
-        mExcludeRows = new ArrayList<>();
-        mExcludeCols = new ArrayList<>();
+        mExcludeRows  = new ArrayList<>();
+        mExcludeCols  = new ArrayList<>();
 
         this.optionalFields = new ArrayList<>();
         this.optionalFields.add(new OptionalField("Identification"                 ));
         this.optionalFields.add(new OptionalField("Person"                         ));
         this.optionalFields.add(new OptionalField("Date", /* hint => */ DATE_FORMAT));
 
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
+        final LayoutInflater inflater = Main.this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
 
         final EditText nameEdit = (EditText) view.findViewById(R.id.nameEdit);
         final EditText rowsEdit = (EditText) view.findViewById(R.id.rowsEdit);
@@ -990,55 +979,54 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         rowsEdit.setText(mRows <= 0 ? "" : String.valueOf(mRows));
         colsEdit.setText(mCols <= 0 ? "" : String.valueOf(mCols));
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(menuMain[1]);
-        dialog.setView(view);
-        dialog.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(menuMain[1]);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
 
-                String sname = nameEdit.getText().toString().trim();
-                String scols = colsEdit.getText().toString().trim();
-                String srows = rowsEdit.getText().toString().trim();
+                final String sname = nameEdit.getText().toString().trim();
+                final String scols = colsEdit.getText().toString().trim();
+                final String srows = rowsEdit.getText().toString().trim();
 
                 mTemplate = sname;
-                mRows = Utils.getInteger(srows);
-                mCols = Utils.getInteger(scols);
+                mRows     = Utils.getInteger(srows);
+                mCols     = Utils.getInteger(scols);
 
                 if (sname.length() == 0) {
-                    Toast.makeText(Main.this, getString(R.string.template_no_name), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Main.this, getString(R.string.template_no_name),
+                        Toast.LENGTH_LONG).show();
                     inputTemplateNew();
                     return;
                 }
 
                 if (srows.length() == 0 || mRows == -1) {
-                    Toast.makeText(Main.this, getString(R.string.no_rows), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Main.this, getString(R.string.no_rows),
+                        Toast.LENGTH_LONG).show();
                     inputTemplateNew();
                     return;
                 }
 
                 if (scols.length() == 0 || mCols == -1) {
-                    Toast.makeText(Main.this, getString(R.string.no_cols), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Main.this, getString(R.string.no_cols),
+                        Toast.LENGTH_LONG).show();
                     inputTemplateNew();
                     return;
                 }
 
                 inputTemplateNewExtra();
-            }
-        });
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.show();
+        builder.show();
     }
 
     private void inputTemplateNewExtra() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.template_new_extra, new LinearLayout(this), false);
+        final LayoutInflater inflater = Main.this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.template_new_extra, new LinearLayout(this), false);
 
         final Button optionalButton = (Button) view.findViewById(R.id.optionalButton);
         final Button excludeButton = (Button) view.findViewById(R.id.excludeButton);
@@ -1046,86 +1034,85 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         optionalButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                inputOptional();
-            }
-        });
+            public void onClick(View v) { inputOptional(); }});
 
         excludeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                inputExclude();
-            }
-        });
+            public void onClick(View v) { inputExclude(); }});
 
         namingButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                inputNaming();
-            }
-        });
+            public void onClick(View v) {inputNaming(); }});
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.template_new);
-        dialog.setView(view);
-        dialog.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.template_new);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
-
                 try { inputTemplateInput(MODE_DEFAULT); } catch (JSONException e) {}
-            }
-        });
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.show();
+        builder.show();
     }
 
     private void inputSeed() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
+        final LayoutInflater layoutInflater = Main.this.getLayoutInflater();
 
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
+        assert layoutInflater != null;
+        final View gridView =
+            layoutInflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
 
-        final EditText[] edits = new EditText[this.optionalFields.size()];
+        assert gridView != null;
+        final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
+
+        final EditText[] editTexts = new EditText[this.optionalFields.size()];
 
         // load options
+        assert linearLayout != null;
+        assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            final View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            final TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            final EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
-
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.checked) {
-                optionText.setText(optionalField.field);
-                optionEdit.setText(optionalField.hint.equals(DATE_FORMAT) ?
+                final View optionalFieldView =
+                    layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
+
+                assert optionalFieldView != null;
+                final TextView optionalFieldTextView =
+                    (TextView) optionalFieldView.findViewById(R.id.optionText);
+                final EditText optionalFieldEditText =
+                    (EditText) optionalFieldView.findViewById(R.id.optionEdit);
+
+                assert optionalFieldTextView != null;
+                optionalFieldTextView.setText(optionalField.field);
+
+                assert optionalFieldEditText != null;
+                optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
                     Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
-                optionEdit.setHint(optionalField.hint);
+                optionalFieldEditText.setHint(optionalField.hint);
 
-                edits[i] = optionEdit;
+                editTexts[i] = optionalFieldEditText;
 
-                layout.addView(item);
+                linearLayout.addView(optionalFieldView);
             }
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(mTemplate);
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(mTemplate);
+        builder.setView(gridView);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 for (int i = 0; i < optionalFields.size(); i++) {
-                    EditText edit = edits[i];
-                    if (edit == null)
-                        continue;
+                    final EditText edit = editTexts[i];
+                    if (edit == null) continue;
 
                     if (optionalFields.get(i) == null) continue;
 
-                    String value = edit.getText().toString().trim();
+                    final String value = edit.getText().toString().trim();
                     if (i == 0 && value.length() == 0) {
                         Utils.toast(Main.this,
                             optionalFields.get(i).hint + getString(R.string.not_empty));
@@ -1137,7 +1124,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                     if (optionalFields.get(i).field.equalsIgnoreCase("Person")
                     || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
-                        SharedPreferences.Editor ed = ep.edit();
+                        final SharedPreferences.Editor ed = ep.edit();
                         ed.putString("Person", optionalFields.get(i).value);
                         ed.apply();
                     }
@@ -1145,16 +1132,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 dialog.cancel();
                 loadTemplate(TYPE_SEED);
-            }
-        });
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        AlertDialog dlg = dialog.create();
+        final AlertDialog dlg = builder.create();
+        assert dlg != null;
         dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dlg.setCancelable(false);
         dlg.show();
@@ -1177,77 +1161,74 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             return;
         }
 
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
+        final LayoutInflater inflater = Main.this.getLayoutInflater();
+        final View gridView = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
 
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
+        final LinearLayout layout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
         final EditText[] edits = new EditText[this.optionalFields.size()];
 
         // load options
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            final View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            final TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            final EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
+            final View optionalFieldView = inflater.inflate(R.layout.optional_edit, layout, false);
+            final TextView optionalFieldTextView = (TextView) optionalFieldView.findViewById(R.id.optionText);
+            final EditText optionalFieldEditText = (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.checked) {
-                optionText.setText(optionalField.field);
-                optionEdit.setText(optionalField.hint.equals(DATE_FORMAT) ?
+                optionalFieldTextView.setText(optionalField.field);
+                optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
                     Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
-                optionEdit.setHint(optionalField.hint);
+                optionalFieldEditText.setHint(optionalField.hint);
 
-                edits[i] = optionEdit;
+                edits[i] = optionalFieldEditText;
 
-                layout.addView(item);
+                layout.addView(optionalFieldView);
             }
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
+        final Builder builder = new AlertDialog.Builder(this);
 
-        dialog.setTitle(mTemplate);
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < optionalFields.size(); i++) {
-                    EditText edit = edits[i];
-                    if (edit == null) continue;
+        builder.setTitle(mTemplate);
+        builder.setView(gridView);
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(R.string.create),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    for (int i = 0; i < optionalFields.size(); i++) {
+                        final EditText edit = edits[i];
+                        if (edit == null) continue;
 
-                    if (optionalFields.get(i) == null) continue;
+                        if (optionalFields.get(i) == null) continue;
 
-                    if (mode == MODE_DNA) {
-                        String value = edit.getText().toString().trim();
-                        if (i == 0 && value.length() == 0) {
-                            Utils.toast(Main.this,
-                                optionalFields.get(i).hint + getString(R.string.not_empty));
-                            try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
-                            return;
+                        if (mode == MODE_DNA) {
+                            final String value = edit.getText().toString().trim();
+                            if (i == 0 && value.length() == 0) {
+                                Utils.toast(Main.this,
+                                    optionalFields.get(i).hint + getString(R.string.not_empty));
+                                try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
+                                return;
+                            }
+                        }
+
+                        optionalFields.get(i).value = edit.getText().toString().trim();
+
+                        if (optionalFields.get(i).field.equalsIgnoreCase("Person")
+                        || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
+                            final SharedPreferences.Editor ed = ep.edit();
+                            ed.putString("Person", optionalFields.get(i).value);
+                            ed.apply();
                         }
                     }
 
-                    optionalFields.get(i).value = edit.getText().toString().trim();
-
-                    if (optionalFields.get(i).field.equalsIgnoreCase("Person")
-                    || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
-                        SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", optionalFields.get(i).value);
-                        ed.apply();
-                    }
-                }
-
                 dialog.cancel();
                 try { tempLoad(mode); } catch (JSONException e) {}
-            }
-        });
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        AlertDialog dlg = dialog.create();
+        final AlertDialog dlg = builder.create();
         dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dlg.setCancelable(false);
         dlg.show();
@@ -1265,34 +1246,33 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             }
         }
 
-        final Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.optional_fields));
-        dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.optional_fields));
+        builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 optionalFields.get(which).checked = isChecked;
-            }
-        });
+            }});
 
-        dialog.setNeutralButton(getString(R.string.add_new), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                inputOptionalNew("", "");
-            }
-        });
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
-        });
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
-        });
+        builder.setNeutralButton(getString(R.string.add_new),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    inputOptionalNew("", "");
+                }});
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.show();
+        builder.show();
     }
 
     private void inputOptionalNew(final String field, final String value) {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.optional_new, null);
+        final LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+
+        assert layoutInflater != null;
+        final View view = layoutInflater.inflate(R.layout.optional_new, null);
 
         final EditText fieldEdit = (EditText) view.findViewById(R.id.fieldEdit);
         final EditText valueEdit = (EditText) view.findViewById(R.id.valueEdit);
@@ -1300,17 +1280,18 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         fieldEdit.setText(field);
         valueEdit.setText(value);
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.new_optional_field));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.new_optional_field));
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                String sfield = fieldEdit.getText().toString().trim();
-                String svalue = valueEdit.getText().toString().trim();
+                final String sfield = fieldEdit.getText().toString().trim();
+                final String svalue = valueEdit.getText().toString().trim();
 
                 if (sfield.length() == 0) {
-                    Toast.makeText(Main.this, getString(R.string.new_optional_field_no_name), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Main.this, getString(R.string.new_optional_field_no_name),
+                        Toast.LENGTH_LONG).show();
                     inputOptionalNew(field, value);
                     return;
                 }
@@ -1320,16 +1301,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     sfield, /* value => */ svalue, /* hint => */ ""));
 
                 inputOptional();
-            }
-        });
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        AlertDialog dlg = dialog.create();
+        final AlertDialog dlg = builder.create();
         dlg.setCancelable(false);
         dlg.show();
     }
@@ -1337,27 +1314,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private void inputExclude() {
         String[] items = {getString(R.string.rows), getString(R.string.cols), getString(R.string.random)};
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.exclude_title));
-        dialog.setItems(items, new OnClickListener() {
+        Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.exclude_title));
+        builder.setItems(items, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
+                if (which == 0)
                     inputExcludeBoxes(0);
-                } else if (which == 1) {
+                else if (which == 1)
                     inputExcludeBoxes(1);
-                } else if (which == 2) {
+                else if (which == 2)
                     inputExcludeInput();
-                }
-            }
-        });
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+            }});
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.show();
+        builder.show();
     }
 
     private void inputExcludeBoxes(final int type) {
@@ -1365,91 +1337,77 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         final boolean[] selections = new boolean[total];
 
-        String[] items = new String[total];
+        final String[] items = new String[total];
 
         for (int i = 0; i < total; i++) {
             items[i] = String.format("%s %d", (type == 0 ? getString(R.string.row) : getString(R.string.col)), i + 1);
             selections[i] = (type == 0 ? mExcludeRows.contains(Integer.valueOf(i + 1)) : mExcludeCols.contains(Integer.valueOf(i + 1)));
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.exclude_title) + " - " + (type == 0 ? getString(R.string.rows) : getString(R.string.cols)));
-        dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.exclude_title) + " - " + (type == 0 ? getString(R.string.rows) : getString(R.string.cols)));
+        builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 selections[which] = isChecked;
-            }
-        });
+            }});
 
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // get choices
-                for (int i = 0; i < total; i++) {
-                    if (selections[i]) {
-                        if (type == 0)
-                            mExcludeRows.add(i + 1);
-                        else
-                            mExcludeCols.add(i + 1);
-                    }
-                }
-            }
-        });
+                for (int i = 0; i < total; i++) if (selections[i])
+                    if (type == 0)
+                        mExcludeRows.add(i + 1);
+                    else
+                        mExcludeCols.add(i + 1);
+            }});
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.show();
+        builder.show();
     }
 
     private void inputExcludeInput() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.random, null);
+        final LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.random, null);
 
         final EditText cellsEdit = (EditText) view.findViewById(R.id.cellsEdit);
 
         cellsEdit.setText("1");
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.random));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.random));
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                String str = cellsEdit.getText().toString();
+                final String str = cellsEdit.getText().toString();
 
                 mExcludeCells = new ArrayList<>();
 
-                int cells = Utils.getInteger(str);
-                if (cells > 0) {
+                final int cells = Utils.getInteger(str);
+                if (cells > 0)
                     for (int i = 0; i < cells; i++) {
-                        Point point = new Point(randomBox(mCols), randomBox(mRows));
+                        final Point point = new Point(randomBox(mCols), randomBox(mRows));
                         mExcludeCells.add(point); // FIXME check exclusivity
                     }
-                } else {
-                    inputExcludeInput();
-                }
+                else inputExcludeInput();
 
                 dialog.cancel();
-            }
-        });
+            }});
 
-        AlertDialog dlg = dialog.create();
+        final AlertDialog dlg = builder.create();
         dlg.setCancelable(false);
         dlg.show();
     }
 
     private void inputNaming() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.naming, null);
+        LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.naming, null);
 
         final Spinner rowSpinner = (Spinner) view.findViewById(R.id.rowSpinner);
         final Spinner colSpinner = (Spinner) view.findViewById(R.id.colSpinner);
@@ -1457,26 +1415,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         rowSpinner.setSelection(mRowNumbering ? 0 : 1);
         colSpinner.setSelection(mColNumbering ? 0 : 1);
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.naming));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.naming));
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mRowNumbering = (rowSpinner.getSelectedItemPosition() == 0);
                 mColNumbering = (colSpinner.getSelectedItemPosition() == 0);
 
                 dialog.cancel();
-            }
-        });
+            }});
 
-        AlertDialog dlg = dialog.create();
+        final AlertDialog dlg = builder.create();
         dlg.setCancelable(false);
         dlg.show();
     }
@@ -1487,16 +1441,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         int pos = 0;
 
-        Grid grid = new Grid();
-        Cursor gridCursor = grid.getAllGrids();
+        final Grid   grid       = new Grid()        ;
+        final Cursor gridCursor = grid.getAllGrids();
         if (gridCursor != null) {
-            int size = gridCursor.getCount();
+            final int size = gridCursor.getCount();
 
-            names = new String[size];
-            indexes = new long[size];
+            names   = new String[size];
+            indexes = new long  [size];
 
             while (gridCursor.moveToNext()) {
-                Grid tmpG = new Grid();
+                final Grid tmpG = new Grid();
                 if (tmpG.copyAll(gridCursor)) {
                     names[pos] = String.format("Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title, tmpG.templateTitle, tmpG.cols, tmpG.rows, Utils.getDateFormat(tmpG.stamp));
                     indexes[pos] = tmpG.id;
@@ -1513,28 +1467,28 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         final long[] gridIds = indexes;
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.import_grid));
-        dialog.setItems(names, new OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.import_grid));
+        builder.setItems(names, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which < gridIds.length) {
-                    long id = gridIds[which];
+                    final long id = gridIds[which];
 
-                    SharedPreferences.Editor ed = ep.edit();
+                    final SharedPreferences.Editor ed = ep.edit();
                     ed.putLong("CurrentGrid", id);
                     ed.apply();
 
-                    Grid grd = new Grid();
+                    final Grid grd = new Grid();
                     if (grd.get(id)) {
-                        mTemplate = grd.templateTitle;
-                        mGrid = grd.id;
+                        mTemplate  = grd.templateTitle;
+                        mGrid      = grd.id;
                         mGridTitle = grd.title;
-                        mType = grd.templateType;
-                        mRows = grd.rows;
-                        mCols = grd.cols;
+                        mType      = grd.templateType;
+                        mRows      = grd.rows;
+                        mCols      = grd.cols;
 
-                        Template tmp = new Template();
+                        final Template tmp = new Template();
 
                         if (tmp.get(grd.templateId)) {
                             try { optionalFields = Utils.jsonToOptionalFields(tmp.options); }
@@ -1550,15 +1504,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                         populateTemplate();
                         showTemplateUI();
-                    } else {
-                        Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
-                    }
+                    } else Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
 
                     dialog.cancel();
                 }
-            }
-        });
-        dialog.show();
+            }});
+        builder.show();
     }
 
     private void loadGrid(long id) throws JSONException {
@@ -1895,12 +1846,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         getNextFreeCell();
 
-        LayoutInflater inflater = getLayoutInflater();
+        LayoutInflater layoutInflater = getLayoutInflater();
 
         mLayoutOptional.removeAllViews();
 
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            final View view = inflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
+            final View view = layoutInflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
             final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
             final TextView valueText = (TextView) view.findViewById(R.id.valueText);
 
@@ -1922,11 +1873,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         // header
         @SuppressLint("InflateParams")
-        TableRow hrow = (TableRow) inflater.inflate(R.layout.table_row, null);
+        TableRow hrow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
         int chcol = 0;
         for (int c = 0; c < (mCols + 1); c++) {
             @SuppressLint("InflateParams")
-            LinearLayout cell_top = (LinearLayout) inflater.inflate(R.layout.table_cell_top, null);
+            LinearLayout cell_top = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_top, null);
             TextView cell_txt = (TextView) cell_top.findViewById(R.id.dataCell);
 
             if (c == 0) {
@@ -1945,7 +1896,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         int chrow = 0;
         for (int r = 1; r < (mRows + 1); r++) {
             @SuppressLint("InflateParams")
-            TableRow brow = (TableRow) inflater.inflate(R.layout.table_row, null);
+            TableRow brow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
 
             boolean excludedRow = isExcludedRow(r);
 
@@ -1953,11 +1904,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 boolean excludedCol = isExcludedCol(c);
 
                 @SuppressLint("InflateParams")
-                LinearLayout cell_box = (LinearLayout) inflater.inflate(R.layout.table_cell_box, null);
+                LinearLayout cell_box = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_box, null);
                 TextView cell_cnt = (TextView) cell_box.findViewById(R.id.dataCell);
 
                 @SuppressLint("InflateParams")
-                LinearLayout cell_left = (LinearLayout) inflater.inflate(R.layout.table_cell_left, null);
+                LinearLayout cell_left = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_left, null);
                 TextView cell_num = (TextView) cell_left.findViewById(R.id.dataCell);
 
                 if (c == 0) {
@@ -2049,40 +2000,37 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         final String name = this.optionalFields.get(0).value + "_" +
             Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
 
-        LayoutInflater inflater = getLayoutInflater();
+        final LayoutInflater layoutInflater = getLayoutInflater();
         @SuppressLint("InflateParams")
-        View view = inflater.inflate(R.layout.file_input, null);
+        final View view = layoutInflater.inflate(R.layout.file_input, null);
 
         final EditText nameEdit = (EditText) view.findViewById(R.id.nameEdit);
         nameEdit.setText(name);
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.filename_set));
-        dialog.setView(view);
-        dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.filename_set));
+        builder.setView(view);
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
 
-                String filename = nameEdit.getText().toString().trim();
+                final String filename = nameEdit.getText().toString().trim();
                 if (filename.length() == 0) {
                     Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.filename_empty));
                     return;
                 }
 
-                File path = new File(Constants.EXPORT_PATH, mTemplate);
+                final File path = new File(Constants.EXPORT_PATH, mTemplate);
                 createDir(path);
 
                 mTask = new DataExporter(Main.this, mId, filename, path.getAbsolutePath());
                 mTask.execute();
-            }
-        });
-        dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        dialog.show();
+            }});
+        builder.setNegativeButton(getString(R.string.cancel),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }});
+        builder.show();
     }
 
     private void cancelTask() {
