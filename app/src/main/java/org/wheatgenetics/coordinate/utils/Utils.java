@@ -247,15 +247,8 @@ public class Utils {
     final List<OptionalField> optionalFields) throws JSONException {
         final JSONArray jsonArray = new JSONArray();
 
-        for (OptionalField optionalField: optionalFields) if (optionalField != null) {
-            final JSONObject jsonObject = new JSONObject();
-            jsonObject.put("field"  , optionalField.field  );                // throws JSONException
-            jsonObject.put("value"  , optionalField.value  );                // throws JSONException
-            jsonObject.put("hint"   , optionalField.hint   );                // throws JSONException
-            jsonObject.put("checked", optionalField.checked);                // throws JSONException
-
-            jsonArray.put(jsonObject);
-        }
+        for (OptionalField optionalField: optionalFields) if (optionalField != null)
+            jsonArray.put(optionalField.makeJSONObject());                   // throws JSONException
 
         return jsonArray.toString();
     }
@@ -315,15 +308,7 @@ public class Utils {
         assert jsonArray != null;
         for (int i = 0; i < jsonArray.length(); i++) {
             final JSONObject jsonObject = (JSONObject) jsonArray.get(i);     // throws JSONException
-
-            assert jsonObject != null;
-            final String field = jsonObject.optString("field", "");
-
-            if (field != null && field.length() > 0) optionalFields.add(new OptionalField(
-                /* field   => */ field                            ,
-                /* value   => */ jsonObject.optString("value", ""),
-                /* hint    => */ jsonObject.optString("hint" , ""),
-                /* checked => */ jsonObject.getBoolean("checked") ));        // throws JSONException
+            optionalFields.add(new OptionalField(jsonObject));               // throws JSONException
         }
 
         return optionalFields;
