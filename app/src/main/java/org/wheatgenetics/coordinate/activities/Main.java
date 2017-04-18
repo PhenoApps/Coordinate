@@ -94,8 +94,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private static final int MODE_SAVED = 1;
     private static final int MODE_DEFAULT = 2;
 
-    public final String TAG = "Coordinate";
-    public final String DATE_FORMAT = "yyyy-mm-dd";
+    private static final String TAG = "Coordinate";
+    private static final String DATE_FORMAT = "yyyy-mm-dd";
 
     private LinearLayout mLayoutMain;
     private LinearLayout mLayoutGrid;
@@ -1107,12 +1107,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 for (int i = 0; i < optionalFields.size(); i++) {
-                    final EditText edit = editTexts[i];
-                    if (edit == null) continue;
+                    final EditText editText = editTexts[i];
+                    if (editText == null) continue;
 
                     if (optionalFields.get(i) == null) continue;
 
-                    final String value = edit.getText().toString().trim();
+                    final String value = editText.getText().toString().trim();
                     if (i == 0 && value.length() == 0) {
                         Utils.toast(Main.this,
                             optionalFields.get(i).hint + getString(R.string.not_empty));
@@ -1161,34 +1161,47 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             return;
         }
 
-        final LayoutInflater inflater = Main.this.getLayoutInflater();
-        final View gridView = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
+        final LayoutInflater layoutInflater = Main.this.getLayoutInflater();
 
-        final LinearLayout layout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
+        assert layoutInflater != null;
+        final View gridView =
+            layoutInflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
 
-        final EditText[] edits = new EditText[this.optionalFields.size()];
+        assert gridView != null;
+        final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
+
+        final EditText[] editTexts = new EditText[this.optionalFields.size()];
 
         // load options
+        assert linearLayout != null;
+        assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
-            final View optionalFieldView = inflater.inflate(R.layout.optional_edit, layout, false);
-            final TextView optionalFieldTextView = (TextView) optionalFieldView.findViewById(R.id.optionText);
-            final EditText optionalFieldEditText = (EditText) optionalFieldView.findViewById(R.id.optionEdit);
-
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null && optionalField.checked) {
+                final View optionalFieldView =
+                    layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
+
+                assert optionalFieldView != null;
+                final TextView optionalFieldTextView =
+                    (TextView) optionalFieldView.findViewById(R.id.optionText);
+                final EditText optionalFieldEditText =
+                    (EditText) optionalFieldView.findViewById(R.id.optionEdit);
+
+                assert optionalFieldTextView != null;
                 optionalFieldTextView.setText(optionalField.field);
+
+                assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
                     Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
                 optionalFieldEditText.setHint(optionalField.hint);
 
-                edits[i] = optionalFieldEditText;
+                editTexts[i] = optionalFieldEditText;
 
-                layout.addView(optionalFieldView);
+                linearLayout.addView(optionalFieldView);
             }
         }
 
         final Builder builder = new AlertDialog.Builder(this);
-
         builder.setTitle(mTemplate);
         builder.setView(gridView);
         builder.setCancelable(false);
@@ -1196,13 +1209,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     for (int i = 0; i < optionalFields.size(); i++) {
-                        final EditText edit = edits[i];
-                        if (edit == null) continue;
+                        final EditText editText = editTexts[i];
+                        if (editText == null) continue;
 
                         if (optionalFields.get(i) == null) continue;
 
                         if (mode == MODE_DNA) {
-                            final String value = edit.getText().toString().trim();
+                            final String value = editText.getText().toString().trim();
                             if (i == 0 && value.length() == 0) {
                                 Utils.toast(Main.this,
                                     optionalFields.get(i).hint + getString(R.string.not_empty));
@@ -1211,7 +1224,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             }
                         }
 
-                        optionalFields.get(i).value = edit.getText().toString().trim();
+                        optionalFields.get(i).value = editText.getText().toString().trim();
 
                         if (optionalFields.get(i).field.equalsIgnoreCase("Person")
                         || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
@@ -1229,6 +1242,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
         final AlertDialog dlg = builder.create();
+        assert dlg != null;
         dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dlg.setCancelable(false);
         dlg.show();
