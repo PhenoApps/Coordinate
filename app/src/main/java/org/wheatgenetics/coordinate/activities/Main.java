@@ -1076,7 +1076,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.checked) {
+            if (optionalField != null && optionalField.getChecked()) {
                 final View optionalFieldView =
                     layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
 
@@ -1087,11 +1087,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
                 assert optionalFieldTextView != null;
-                optionalFieldTextView.setText(optionalField.field);
+                optionalFieldTextView.setText(optionalField.getName());
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
-                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
+                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.getValue());
                 optionalFieldEditText.setHint(optionalField.hint);
 
                 editTexts[i] = optionalFieldEditText;
@@ -1120,12 +1120,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         return;
                     }
 
-                    optionalFields.get(i).value = value;
+                    optionalFields.get(i).setValue(value);
 
-                    if (optionalFields.get(i).field.equalsIgnoreCase("Person")
-                    || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
+                    if (optionalFields.get(i).getName().equalsIgnoreCase("Person")
+                    || optionalFields.get(i).getName().equalsIgnoreCase("Name")) {
                         final SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", optionalFields.get(i).value);
+                        ed.putString("Person", optionalFields.get(i).getValue());
                         ed.apply();
                     }
                 }
@@ -1177,7 +1177,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert editTexts    != null;
         for (int i = 0; i < this.optionalFields.size(); i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.checked) {
+            if (optionalField != null && optionalField.getChecked()) {
                 final View optionalFieldView =
                     layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
 
@@ -1188,11 +1188,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
                 assert optionalFieldTextView != null;
-                optionalFieldTextView.setText(optionalField.field);
+                optionalFieldTextView.setText(optionalField.getName());
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.hint.equals(DATE_FORMAT) ?
-                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.value);
+                    Utils.getDateFormat(System.currentTimeMillis()) : optionalField.getValue());
                 optionalFieldEditText.setHint(optionalField.hint);
 
                 editTexts[i] = optionalFieldEditText;
@@ -1224,12 +1224,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             }
                         }
 
-                        optionalFields.get(i).value = editText.getText().toString().trim();
+                        optionalFields.get(i).setValue(editText.getText().toString().trim());
 
-                        if (optionalFields.get(i).field.equalsIgnoreCase("Person")
-                        || optionalFields.get(i).field.equalsIgnoreCase("Name")) {
+                        if (optionalFields.get(i).getName().equalsIgnoreCase("Person")
+                        || optionalFields.get(i).getName().equalsIgnoreCase("Name")) {
                             final SharedPreferences.Editor ed = ep.edit();
-                            ed.putString("Person", optionalFields.get(i).value);
+                            ed.putString("Person", optionalFields.get(i).getValue());
                             ed.apply();
                         }
                     }
@@ -1255,8 +1255,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         for (int i = 0; i < this.optionalFields.size(); i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
             if (optionalField != null) {
-                items[i] = optionalField.field;
-                selections[i] = optionalField.checked;
+                items[i] = optionalField.getName();
+                selections[i] = optionalField.getChecked();
             }
         }
 
@@ -1265,7 +1265,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                optionalFields.get(which).checked = isChecked;
+                optionalFields.get(which).setChecked(isChecked);
             }});
 
         builder.setNeutralButton(getString(R.string.add_new),
@@ -1749,7 +1749,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         Grid grid = new Grid();
         grid.template = template;
         grid.stamp = System.currentTimeMillis();
-        grid.title = this.optionalFields.get(0).value;
+        grid.title = this.optionalFields.get(0).getValue();
         return grid.insert();
     }
 
@@ -1870,13 +1870,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             final TextView valueText = (TextView) view.findViewById(R.id.valueText);
 
             final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.checked) {
+            if (optionalField != null && optionalField.getChecked()) {
                 if (i == 0) {
-                    fieldText.setText(optionalField.field);
+                    fieldText.setText(optionalField.getName());
                     valueText.setText(mGridTitle);
                 } else {
-                    fieldText.setText(optionalField.field);
-                    valueText.setText(optionalField.value);
+                    fieldText.setText(optionalField.getName ());
+                    valueText.setText(optionalField.getValue());
                 }
 
                 mLayoutOptional.addView(view);
@@ -2011,7 +2011,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void exportData() {
-        final String name = this.optionalFields.get(0).value + "_" +
+        final String name = this.optionalFields.get(0).getValue() + "_" +
             Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
 
         final LayoutInflater layoutInflater = getLayoutInflater();
@@ -2208,7 +2208,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 for (int i = 0; i < optionalFields.size(); i++) {
                     final OptionalField optionalField = optionalFields.get(i);
-                    csvOutput.write(optionalField.field);
+                    csvOutput.write(optionalField.getName());
                 }
 
                 csvOutput.endRecord();
@@ -2234,7 +2234,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                         for (int i = 0; i < optionalFields.size(); i++) {
                             final OptionalField optionalField = optionalFields.get(i);
-                            csvOutput.write(optionalField.value);
+                            csvOutput.write(optionalField.getValue());
                         }
 
                         csvOutput.endRecord();
@@ -2278,22 +2278,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             for (int i = 0; i < optionalFields.size(); i++) {
                 final OptionalField optionalField = optionalFields.get(i);
                 if (optionalField != null)
-                    if (optionalField.field.equalsIgnoreCase("date"))
-                        date = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("Plate"))
-                        plate_id = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("Plate Name"))
-                        plate_name = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("Notes"))
-                        notes = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("tissue_type"))
-                        tissue_type = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("extraction"))
-                        extraction = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("person"))
-                        dna_person = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("date"))
-                        date = optionalField.value;
+                    if (optionalField.getName().equalsIgnoreCase("date"))
+                        date = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("Plate"))
+                        plate_id = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("Plate Name"))
+                        plate_name = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("Notes"))
+                        notes = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("tissue_type"))
+                        tissue_type = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("extraction"))
+                        extraction = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("person"))
+                        dna_person = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("date"))
+                        date = optionalField.getValue();
             }
 
             try {
@@ -2382,12 +2382,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             for (int i = 0; i < optionalFields.size(); i++) {
                 final OptionalField optionalField = optionalFields.get(i);
                 if (optionalField != null)
-                    if (optionalField.field.equalsIgnoreCase("Tray"))
-                        trayid = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("Person"))
-                        person = optionalField.value;
-                    else if (optionalField.field.equalsIgnoreCase("date"))
-                        date = optionalField.value;
+                    if (optionalField.getName().equalsIgnoreCase("Tray"))
+                        trayid = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("Person"))
+                        person = optionalField.getValue();
+                    else if (optionalField.getName().equalsIgnoreCase("date"))
+                        date = optionalField.getValue();
             }
 
             try {

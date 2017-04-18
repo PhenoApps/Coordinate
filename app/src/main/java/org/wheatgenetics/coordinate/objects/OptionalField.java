@@ -5,29 +5,29 @@ import org.json.JSONObject;
 
 public class OptionalField {
     // region Private Constants
-    private static final String FIELD_JSON_NAME   = "field"  ;
+    private static final String NAME_JSON_NAME    = "field"  ;
     private static final String VALUE_JSON_NAME   = "value"  ;
     private static final String HINT_JSON_NAME    = "hint"   ;
     private static final String CHECKED_JSON_NAME = "checked";
     // endregion
 
 
+    // region Protected Fields
+    protected String  name, value = "";
+    protected boolean checked = true;
+    // endregion
+
+
     // region Public Fields
-    public String  field, value = "", hint = "";
-    public boolean checked = true;
+    public String hint = "";
     // endregion
 
 
     // region Protected Methods
-    protected void setField(final String field) {
-        assert field          != null;
-        assert field.length()  > 0   ;
-        this.field = field;
-    }
-
-    protected void setValue(final String value) {
-        assert value != null;
-        this.value = value;
+    protected void setName(final String name) {
+        assert name          != null;
+        assert name.length()  > 0   ;
+        this.name = name;
     }
 
     protected void setHint(final String hint) {
@@ -39,18 +39,18 @@ public class OptionalField {
 
     // region Public Methods
     // region Public Constructor Methods
-    public OptionalField(final String field) {
+    public OptionalField(final String name) {
         super();
-        this.setField(field);
+        this.setName(name);
     }
 
-    public OptionalField(final String field, final String hint) {
-        this(field);
+    public OptionalField(final String name, final String hint) {
+        this(name);
         this.setHint(hint);
     }
 
-    public OptionalField(final String field, final String value, final String hint) {
-        this(field, hint);
+    public OptionalField(final String name, final String value, final String hint) {
+        this(name, hint);
         this.setValue(value);
     }
 
@@ -58,27 +58,42 @@ public class OptionalField {
         super();
 
         assert jsonObject != null;
-        this.setField(jsonObject.optString(FIELD_JSON_NAME));
-        this.setValue(jsonObject.optString(VALUE_JSON_NAME));
-        this.setHint (jsonObject.optString(HINT_JSON_NAME ));
-        this.checked = jsonObject.getBoolean(CHECKED_JSON_NAME);             // throws JSONException
+        this.setName   (jsonObject.optString(NAME_JSON_NAME )   );
+        this.setValue  (jsonObject.optString(VALUE_JSON_NAME)   );
+        this.setHint   (jsonObject.optString(HINT_JSON_NAME )   );
+        this.setChecked(jsonObject.getBoolean(CHECKED_JSON_NAME));           // throws JSONException
     }
     // endregion
 
 
-    // region Public Overridden Methods
+    // region Public Overridden Method
     @Override
-    public String toString() { return this.field; }
+    public String toString() { return this.getName(); }
+    // endregion
+
+
+    // region Public Getter and Setter Methods
+    public String getName() { return this.name; }
+
+    public String getValue() { return this.value; }
+    public void setValue(final String value) {
+        assert value != null;
+        this.value = value;
+    }
+
+
+    public boolean getChecked()                      { return this.checked   ; }
+    public void    setChecked(final boolean checked) { this.checked = checked; }
     // endregion
 
 
     public JSONObject makeJSONObject() throws JSONException {
         final JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(FIELD_JSON_NAME  , this.field  );                     // throws JSONException
-        jsonObject.put(VALUE_JSON_NAME  , this.value  );                     // throws JSONException
-        jsonObject.put(HINT_JSON_NAME   , this.hint   );                     // throws JSONException
-        jsonObject.put(CHECKED_JSON_NAME, this.checked);                     // throws JSONException
+        jsonObject.put(NAME_JSON_NAME   , this.getName()   );                // throws JSONException
+        jsonObject.put(VALUE_JSON_NAME  , this.getValue()  );                // throws JSONException
+        jsonObject.put(HINT_JSON_NAME   , this.hint        );                // throws JSONException
+        jsonObject.put(CHECKED_JSON_NAME, this.getChecked());                // throws JSONException
 
         return jsonObject;
     }
