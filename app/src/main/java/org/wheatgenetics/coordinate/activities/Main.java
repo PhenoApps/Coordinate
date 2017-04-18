@@ -1090,7 +1090,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.hint      );
+                optionalFieldEditText.setHint(optionalField.getHint() );
 
                 editTexts[i] = optionalFieldEditText;
 
@@ -1112,7 +1112,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             final String value = editText.getText().toString().trim();
                             if (i == 0 && value.length() == 0) {
                                 Utils.toast(Main.this,
-                                    optionalField.hint + getString(R.string.not_empty));
+                                    optionalField.getHint() + getString(R.string.not_empty));
                                 inputSeed();
                                 return;
                             }
@@ -1190,7 +1190,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.hint      );
+                optionalFieldEditText.setHint(optionalField.getHint() );
 
                 editTexts[i] = optionalFieldEditText;
 
@@ -1213,8 +1213,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                                 if (mode == MODE_DNA) {
                                     final String value = editText.getText().toString().trim();
                                     if (i == 0 && value.length() == 0) {
-                                        Utils.toast(Main.this,
-                                            optionalField.hint + getString(R.string.not_empty));
+                                        Utils.toast(Main.this, optionalField.getHint() +
+                                            getString(R.string.not_empty));
                                         try { inputTemplateInput(MODE_DNA); }
                                         catch (JSONException e) {}
                                         return;

@@ -11,8 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import org.wheatgenetics.coordinate.objects.OptionalField;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -253,14 +251,17 @@ public class Utils {
         return str;
     }
 
-    public static String optionalFieldsToJson(
-    final List<OptionalField> optionalFields) throws JSONException {
-        final JSONArray jsonArray = new JSONArray();
+    public static java.lang.String optionalFieldsToJson(
+    final java.util.List<org.wheatgenetics.coordinate.objects.OptionalField> optionalFields)
+    throws org.json.JSONException
+    {
+        final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-        for (OptionalField optionalField: optionalFields) if (optionalField != null)
-            jsonArray.put(optionalField.makeJSONObject());                   // throws JSONException
-
-        return jsonArray.toString();
+        assert optionalFields != null;
+        for (final org.wheatgenetics.coordinate.objects.OptionalField optionalField: optionalFields)
+            if (optionalField != null) jsonArray.put(optionalField.makeJSONObject());   // throws
+                                                                                        //  JSONEx-
+        return jsonArray.toString();                                                    //  ception
     }
 
     public static List<Integer> jsonToList(String json) {
@@ -309,17 +310,20 @@ public class Utils {
         return points;
     }
 
-    public static List<OptionalField> jsonToOptionalFields(final String json) throws JSONException {
-        final List<OptionalField> optionalFields = new ArrayList<OptionalField>();
+    public static java.util.List<org.wheatgenetics.coordinate.objects.OptionalField>
+    jsonToOptionalFields(final java.lang.String json) throws org.json.JSONException
+    {
+        final java.util.List<org.wheatgenetics.coordinate.objects.OptionalField> optionalFields =
+            new java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField>();
 
-        final JSONTokener jsonTokener = new JSONTokener(json)              ;
-        final JSONArray   jsonArray   = (JSONArray) jsonTokener.nextValue(); // throws JSONException
+        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+        final org.json.JSONArray   jsonArray   =
+            (org.json.JSONArray) jsonTokener.nextValue();                    // throws JSONException
 
         assert jsonArray != null;
-        for (int i = 0; i < jsonArray.length(); i++) {
-            final JSONObject jsonObject = (JSONObject) jsonArray.get(i);     // throws JSONException
-            optionalFields.add(new OptionalField(jsonObject));               // throws JSONException
-        }
+        for (int i = 0; i < jsonArray.length(); i++)
+            optionalFields.add(new org.wheatgenetics.coordinate.objects.OptionalField(
+                (org.json.JSONObject) jsonArray.get(i)));                    // throws JSONException
 
         return optionalFields;
     }

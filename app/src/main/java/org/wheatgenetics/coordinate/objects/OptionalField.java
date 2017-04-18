@@ -13,13 +13,8 @@ public class OptionalField {
 
 
     // region Protected Fields
-    protected String  name, value = "";
+    protected String  name, value = "", hint = "";
     protected boolean checked = true;
-    // endregion
-
-
-    // region Public Field
-    public String hint = "";
     // endregion
 
 
@@ -76,11 +71,12 @@ public class OptionalField {
     public String getName() { return this.name; }
 
     public String getValue() { return this.value; }
-    public void setValue(final String value) {
+    public void   setValue(final String value) {
         assert value != null;
         this.value = value;
     }
 
+    public String getHint() { return this.hint; }
 
     public boolean getChecked()                      { return this.checked   ; }
     public void    setChecked(final boolean checked) { this.checked = checked; }
@@ -92,7 +88,7 @@ public class OptionalField {
 
         jsonObject.put(NAME_JSON_NAME   , this.getName()   );                // throws JSONException
         jsonObject.put(VALUE_JSON_NAME  , this.getValue()  );                // throws JSONException
-        jsonObject.put(HINT_JSON_NAME   , this.hint        );                // throws JSONException
+        jsonObject.put(HINT_JSON_NAME   , this.getHint()   );                // throws JSONException
         jsonObject.put(CHECKED_JSON_NAME, this.getChecked());                // throws JSONException
 
         return jsonObject;

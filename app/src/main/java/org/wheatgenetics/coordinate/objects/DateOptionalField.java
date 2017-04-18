@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.objects;
 
-public class DateOptionalField extends org.wheatgenetics.coordinate.objects.OptionalField {
+public class DateOptionalField extends org.wheatgenetics.coordinate.objects.OptionalField
+{
     public DateOptionalField(final java.lang.String name)
     {
         super(name, /* hint => */ "yyyy-mm-dd");
