@@ -82,25 +82,25 @@ import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
 
 public class Main extends AppCompatActivity implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListener {
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_DONE = 1;
-    private static final int STATE_ACTIVE = 2;
+    private static final int STATE_NORMAL   = 0;
+    private static final int STATE_DONE     = 1;
+    private static final int STATE_ACTIVE   = 2;
     private static final int STATE_INACTIVE = 3;
 
-    private static final int TYPE_SEED = 0;
-    private static final int TYPE_DNA = 1;
+    private static final int TYPE_SEED    = 0;
+    private static final int TYPE_DNA     = 1;
     private static final int TYPE_DEFAULT = 2;
 
-    private static final int MODE_DNA = 0;
-    private static final int MODE_SAVED = 1;
+    private static final int MODE_DNA     = 0;
+    private static final int MODE_SAVED   = 1;
     private static final int MODE_DEFAULT = 2;
 
     private static final String TAG = "Coordinate";
 
-    private LinearLayout mLayoutMain;
-    private LinearLayout mLayoutGrid;
+    private LinearLayout mLayoutMain    ;
+    private LinearLayout mLayoutGrid    ;
     private LinearLayout mLayoutOptional;
-    private TableLayout mTableData;
+    private TableLayout  mTableData     ;
 
     private TextView mTextTemplate;
 
@@ -108,38 +108,38 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     public View curCell = null;
 
-    private long mId = 0;
-    private long mGrid = 0;
+    private long   mId        = 0 ;
+    private long   mGrid      = 0 ;
     private String mGridTitle = "";
-    private int mCurRow = 1;
-    private int mCurCol = 1;
+    private int    mCurRow    = 1 ;
+    private int    mCurCol    = 1 ;
 
-    private int mType = 0;
+    private int    mType     = 0 ;
     private String mTemplate = "";
 
     private SharedPreferences ep;
 
-    private int mRows = 20;
-    private int mCols = 10;
+    private int     mRows         =    20;
+    private int     mCols         =    10;
     private boolean mRowNumbering = false;
-    private boolean mColNumbering = true;
+    private boolean mColNumbering = true ;
 
     private List<Point> mExcludeCells = new ArrayList<>();
 
     private List<Integer> mExcludeRows = new ArrayList<>();
     private List<Integer> mExcludeCols = new ArrayList<>();
-    private String[] menuMain;
+    private String        menuMain[];
 
     private List<OptionalField> optionalFields;
 
     private DataExporter mTask;
-    public long mLastExportGridId = -1;
+    public long          mLastExportGridId = -1;
 
     private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout          mDrawerLayout;
 
-    private LinearLayout parent;
-    private ScrollView changeContainer;
+    private LinearLayout parent         ;
+    private ScrollView   changeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,33 +216,29 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     public int getVersion() {
         int v = 0;
-        try {
-            v = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "" + e.getMessage());
-        }
+        try { v = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode; }
+        catch (PackageManager.NameNotFoundException e) { Log.e(TAG, "" + e.getMessage()); }
         return v;
     }
 
     private void createDirs() {
-        createDir(Constants.MAIN_PATH);
-        createDir(Constants.EXPORT_PATH);
-        createDir(Constants.TEMPLATE_PATH);
+        this.createDir(Constants.MAIN_PATH    );
+        this.createDir(Constants.EXPORT_PATH  );
+        this.createDir(Constants.TEMPLATE_PATH);
     }
 
-    private void createDir(File path) {
-        File blankFile = new File(path, ".coordinate");
+    private void createDir(final File path) {
+        final File blankFile = new File(path, ".coordinate");
 
+        assert path != null;
         if (!path.exists()) {
             path.mkdirs();
 
             try {
                 blankFile.getParentFile().mkdirs();
                 blankFile.createNewFile();
-                makeFileDiscoverable(blankFile, this);
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
-            }
+                this.makeFileDiscoverable(blankFile, this);
+            } catch (IOException e) { Log.e(TAG, e.getMessage()); }
         }
     }
 
@@ -250,22 +246,17 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        cancelTask();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        this.cancelTask();
     }
 
     private void aboutDialog() {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final LayoutInflater inflater = this.getLayoutInflater();
+        final LayoutInflater layoutInflater = this.getLayoutInflater();
 
-        assert inflater != null;
-        final View personView = inflater.inflate(R.layout.about, new LinearLayout(this), false);
+        assert layoutInflater != null;
+        final View personView =
+            layoutInflater.inflate(R.layout.about, new LinearLayout(this), false);
 
         assert personView != null;
         final TextView version   = (TextView) personView.findViewById(R.id.tvVersion  );
@@ -278,9 +269,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             final PackageInfo packageInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
             assert packageInfo != null;
             version.setText(getResources().getString(R.string.versiontitle) + " " + packageInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        } catch (PackageManager.NameNotFoundException e) { Log.e(TAG, e.getMessage()); }
 
         version.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,19 +285,19 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             }
         });
 
-        alert.setCancelable(true);
-        alert.setTitle(getResources().getString(R.string.about));
-        alert.setView(personView);
-        alert.setNegativeButton(getResources().getString(R.string.ok),
+        builder.setCancelable(true);
+        builder.setTitle(getResources().getString(R.string.about));
+        builder.setView(personView);
+        builder.setNegativeButton(getResources().getString(R.string.ok),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dialog.dismiss(); }});
-        alert.show();
+        builder.show();
     }
 
     private void changelog() {
-        parent.setOrientation(LinearLayout.VERTICAL);
-        parseLog(R.raw.changelog_releases);
+        this.parent.setOrientation(LinearLayout.VERTICAL);
+        this.parseLog(R.raw.changelog_releases);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
         builder.setTitle(getResources().getString(R.string.updatemsg));
@@ -317,17 +306,16 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             .setPositiveButton(getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) { dialog.dismiss(); }});
-        final AlertDialog alert = builder.create();
-        alert.show();
+        builder.create().show();
     }
 
     public void parseLog(int resId) {
         try {
-            InputStream is = getResources().openRawResource(resId);
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr, 8192);
+            final InputStream is = getResources().openRawResource(resId);
+            final InputStreamReader isr = new InputStreamReader(is);
+            final BufferedReader br = new BufferedReader(isr, 8192);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             lp.setMargins(20, 5, 20, 0);
 
             String curVersionName = null;
@@ -366,9 +354,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (IOException e) { throw new RuntimeException(e); }
     }
 
     private void showOtherAppsDialog() {
@@ -1119,8 +1105,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                             optionalField.setValue(value);
 
-                            if (optionalField.getName().equalsIgnoreCase("Person")
-                            || optionalField.getName().equalsIgnoreCase("Name")) {
+                            if (optionalField.nameEqualsIgnoreCase("Person")
+                            ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
                                 final SharedPreferences.Editor ed = ep.edit();
                                 ed.putString("Person", optionalField.getValue());
                                 ed.apply();
@@ -1223,8 +1209,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                                 optionalField.setValue(editText.getText().toString().trim());
 
-                                if (optionalField.getName().equalsIgnoreCase("Person")
-                                || optionalField.getName().equalsIgnoreCase("Name")) {
+                                if (optionalField.nameEqualsIgnoreCase("Person")
+                                ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
                                     final SharedPreferences.Editor ed = ep.edit();
                                     ed.putString("Person", optionalField.getValue());
                                     ed.apply();

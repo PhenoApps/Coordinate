@@ -4,11 +4,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class OptionalField {
+    // region Public Type
+    public static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
+    // endregion
+
+
     // region Private Constants
     private static final String NAME_JSON_NAME    = "field"  ;
     private static final String VALUE_JSON_NAME   = "value"  ;
     private static final String HINT_JSON_NAME    = "hint"   ;
     private static final String CHECKED_JSON_NAME = "checked";
+    // endregion
+
+
+    // region Protected Constant
+    protected static final String DATE_HINT = "yyyy-mm-dd";
     // endregion
 
 
@@ -19,6 +29,16 @@ public class OptionalField {
 
 
     // region Protected Methods
+    protected OptionalField() { super(); }
+
+    protected void set(final JSONObject jsonObject) throws JSONException {
+        assert jsonObject != null;
+        this.setName   (jsonObject.optString(NAME_JSON_NAME )   );
+        this.setValue  (jsonObject.optString(VALUE_JSON_NAME)   );
+        this.setHint   (jsonObject.optString(HINT_JSON_NAME )   );
+        this.setChecked(jsonObject.getBoolean(CHECKED_JSON_NAME));           // throws JSONException
+    }
+
     protected void setName(final String name) {
         assert name          != null;
         assert name.length()  > 0   ;
@@ -35,7 +55,7 @@ public class OptionalField {
     // region Public Methods
     // region Public Constructor Methods
     public OptionalField(final String name) {
-        super();
+        this();
         this.setName(name);
     }
 
@@ -49,14 +69,10 @@ public class OptionalField {
         this.setValue(value);
     }
 
-    public OptionalField(final JSONObject jsonObject) throws JSONException {
-        super();
-
-        assert jsonObject != null;
-        this.setName   (jsonObject.optString(NAME_JSON_NAME )   );
-        this.setValue  (jsonObject.optString(VALUE_JSON_NAME)   );
-        this.setHint   (jsonObject.optString(HINT_JSON_NAME )   );
-        this.setChecked(jsonObject.getBoolean(CHECKED_JSON_NAME));           // throws JSONException
+    public OptionalField(final JSONObject jsonObject) throws JSONException, WrongClass {
+        this();
+        this.set(jsonObject);
+        if (this.getHint().equals(DATE_HINT)) throw new WrongClass();
     }
     // endregion
 
