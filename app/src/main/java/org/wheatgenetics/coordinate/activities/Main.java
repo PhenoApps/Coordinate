@@ -140,6 +140,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private LinearLayout parent         ;
     private ScrollView   changeContainer;
 
+    protected org.wheatgenetics.coordinate.objects.CheckedOptionalFields makeCheckedOptionalFields()
+    {
+        return new 
+            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1056,8 +1062,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
-            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            this.makeCheckedOptionalFields();
 
         final ArrayList<EditText> editTextArrayList = new ArrayList<EditText>();
 
@@ -1167,8 +1173,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
-            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            this.makeCheckedOptionalFields();
 
         final ArrayList<EditText> editTextArrayList = new ArrayList<EditText>();
 
@@ -1887,8 +1893,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         this.mLayoutOptional.removeAllViews();
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
-            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            this.makeCheckedOptionalFields();
         boolean first = true;
         for (final OptionalField optionalField: checkedOptionalFields) {
             final View view =
