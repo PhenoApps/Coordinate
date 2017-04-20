@@ -77,7 +77,6 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
         return iterator.hasNext();
     }
 
-
     public org.wheatgenetics.coordinate.objects.OptionalField get(final int index)
     {
         if (index < 0)
@@ -100,6 +99,15 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
             }
             return optionalField;
         }
+    }
+
+    public java.lang.String toJson() throws org.json.JSONException
+    {
+        final org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+        for (final org.wheatgenetics.coordinate.objects.OptionalField optionalField: this)
+            jsonArray.put(optionalField.makeJSONObject());          // throws org.json.JSONException
+        return jsonArray.toString();
     }
     // endregion
 }

@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.wheatgenetics.coordinate.objects.OptionalField;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -250,19 +249,6 @@ public class Utils {
 
         String str = json.toString();
         return str;
-    }
-
-    public static java.lang.String optionalFieldsToJson(
-    final org.wheatgenetics.coordinate.objects.OptionalFields optionalFields)
-    throws org.json.JSONException
-    {
-        final org.json.JSONArray jsonArray = new org.json.JSONArray();
-
-        assert optionalFields != null;
-        for (final org.wheatgenetics.coordinate.objects.OptionalField optionalField: optionalFields)
-            jsonArray.put(optionalField.makeJSONObject());          // throws org.json.JSONException
-
-        return jsonArray.toString();
     }
 
     public static List<Integer> jsonToList(String json) {

@@ -809,8 +809,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(this.nonNullOptionalFields);    // throws
-                                                                                  //   JSONException
+        temp.options = this.nonNullOptionalFields.toJson();                  // throws JSONException
+
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
 
@@ -1794,8 +1794,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(this.nonNullOptionalFields);    // throws
-                                                                                  //   JSONException
+        temp.options = this.nonNullOptionalFields.toJson();                  // throws JSONException
+
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
 
