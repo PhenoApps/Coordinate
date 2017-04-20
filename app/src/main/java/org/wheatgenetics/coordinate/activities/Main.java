@@ -76,7 +76,6 @@ import org.wheatgenetics.coordinate.database.DatabaseHelper;
 import org.wheatgenetics.coordinate.database.Entry;
 import org.wheatgenetics.coordinate.database.Grid;
 import org.wheatgenetics.coordinate.database.Template;
-import org.wheatgenetics.coordinate.objects.DateOptionalField;
 import org.wheatgenetics.coordinate.objects.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
@@ -130,7 +129,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private List<Integer> mExcludeCols = new ArrayList<>();
     private String        menuMain[];
 
-    private List<OptionalField> optionalFields;
+    private org.wheatgenetics.coordinate.objects.OptionalFields optionalFields;
 
     private DataExporter mTask;
     public long          mLastExportGridId = -1;
@@ -145,9 +144,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new     OptionalField("Plate Id"));
-        this.optionalFields.add(new DateOptionalField("Date"    ));
+        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
+        this.optionalFields.add    ("Plate Id");
+        this.optionalFields.addDate("Date"    );
 
         menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
 
@@ -748,10 +747,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = true;
 
-        this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new     OptionalField("Tray"  , /* hint => */ "Tray ID"    ));
-        this.optionalFields.add(new     OptionalField("Person", /* hint => */ "Person name"));
-        this.optionalFields.add(new DateOptionalField("Date"                               ));
+        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
+        this.optionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
+        this.optionalFields.add    ("Person", /* hint => */ "Person name");
+        this.optionalFields.addDate("Date"                               );
 
         mExcludeRows = new ArrayList<>();
         mExcludeRows.add(2);
@@ -769,16 +768,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = false;
 
-        this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new OptionalField("Plate", /* hint => */ "Plate ID")); // TODO dna
-        this.optionalFields.add(new OptionalField("Plate Name"                     ));
-        this.optionalFields.add(new OptionalField("Notes"                          ));
-        this.optionalFields.add(new OptionalField(
-            "tissue_type", /* value => */ "Leaf", /* hint => */ ""));
-        this.optionalFields.add(new OptionalField(
-            "extraction" , /* value => */ "CTAB", /* hint => */ ""));
-        this.optionalFields.add(new     OptionalField("person"));
-        this.optionalFields.add(new DateOptionalField("date"  ));
+        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
+        this.optionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
+        this.optionalFields.add("Plate Name"                                          );
+        this.optionalFields.add("Notes"                                               );
+        this.optionalFields.add("tissue_type", /* value => */ "Leaf", /* hint => */ "");
+        this.optionalFields.add("extraction" , /* value => */ "CTAB", /* hint => */ "");
+        this.optionalFields.add("person"                                              );
+        this.optionalFields.add("date"                                                );
 
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
@@ -814,7 +811,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         if (found)
             ret = temp.update();
         else
-            ret = (temp.insert() > 0);
+            ret = temp.insert() > 0;
 
         return ret;
     }
@@ -949,10 +946,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeRows  = new ArrayList<>();
         mExcludeCols  = new ArrayList<>();
 
-        this.optionalFields = new ArrayList<>();
-        this.optionalFields.add(new     OptionalField("Identification"));
-        this.optionalFields.add(new     OptionalField("Person"        ));
-        this.optionalFields.add(new DateOptionalField("Date"          ));
+        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
+        this.optionalFields.add    ("Identification");
+        this.optionalFields.add    ("Person"        );
+        this.optionalFields.addDate("Date"          );
 
         final LayoutInflater inflater = Main.this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
@@ -1055,33 +1052,39 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final EditText[] editTexts = new EditText[this.optionalFields.size()];
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+
+        final EditText[] editTexts = new EditText[checkedOptionalFields.size()];
 
         // load options
         assert linearLayout != null;
-        for (int i = 0; i < this.optionalFields.size(); i++) {
-            final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.getChecked()) {
-                final View optionalFieldView =
-                    layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
+        for (int i = 0; i < checkedOptionalFields.size(); i++) {
+            final OptionalField optionalField     = checkedOptionalFields.get(i);
+            final View          optionalFieldView =
+                layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
 
+            {
                 assert optionalFieldView != null;
                 final TextView optionalFieldTextView =
                     (TextView) optionalFieldView.findViewById(R.id.optionText);
-                final EditText optionalFieldEditText =
-                    (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
                 assert optionalFieldTextView != null;
                 optionalFieldTextView.setText(optionalField.getName());
+            }
+
+            {
+                final EditText optionalFieldEditText =
+                    (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.getHint() );
+                optionalFieldEditText.setHint(optionalField.getHint ());
 
                 editTexts[i] = optionalFieldEditText;
-
-                linearLayout.addView(optionalFieldView);
             }
+
+            linearLayout.addView(optionalFieldView);
         }
 
         final Builder builder = new AlertDialog.Builder(this);
@@ -1094,23 +1097,21 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     final EditText editText = editTexts[i];
                     if (editText != null) {
                         final OptionalField optionalField = optionalFields.get(i);
-                        if (optionalField != null) {
-                            final String value = editText.getText().toString().trim();
-                            if (i == 0 && value.length() == 0) {
-                                Utils.toast(Main.this,
-                                    optionalField.getHint() + getString(R.string.not_empty));
-                                inputSeed();
-                                return;
-                            }
+                        final String value = editText.getText().toString().trim();
+                        if (i == 0 && value.length() == 0) {
+                            Utils.toast(Main.this,
+                                optionalField.getHint() + getString(R.string.not_empty));
+                            inputSeed();
+                            return;
+                        }
 
                             optionalField.setValue(value);
 
-                            if (optionalField.nameEqualsIgnoreCase("Person")
-                            ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
-                                final SharedPreferences.Editor ed = ep.edit();
-                                ed.putString("Person", optionalField.getValue());
-                                ed.apply();
-                            }
+                        if (optionalField.nameEqualsIgnoreCase("Person")
+                        ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
+                            final SharedPreferences.Editor ed = ep.edit();
+                            ed.putString("Person", optionalField.getValue());
+                            ed.apply();
                         }
                     }
                 }
@@ -1155,33 +1156,39 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final EditText[] editTexts = new EditText[this.optionalFields.size()];
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+
+        final EditText[] editTexts = new EditText[checkedOptionalFields.size()];
 
         // load options
         assert linearLayout != null;
-        for (int i = 0; i < this.optionalFields.size(); i++) {
-            final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.getChecked()) {
-                final View optionalFieldView =
-                    layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
+        for (int i = 0; i < checkedOptionalFields.size(); i++) {
+            final OptionalField optionalField     = checkedOptionalFields.get(i);
+            final View          optionalFieldView =
+                layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
 
+            {
                 assert optionalFieldView != null;
                 final TextView optionalFieldTextView =
-                    (TextView) optionalFieldView.findViewById(R.id.optionText);
-                final EditText optionalFieldEditText =
-                    (EditText) optionalFieldView.findViewById(R.id.optionEdit);
+                        (TextView) optionalFieldView.findViewById(R.id.optionText);
 
                 assert optionalFieldTextView != null;
                 optionalFieldTextView.setText(optionalField.getName());
+            }
+
+            {
+                final EditText optionalFieldEditText =
+                        (EditText) optionalFieldView.findViewById(R.id.optionEdit);
 
                 assert optionalFieldEditText != null;
                 optionalFieldEditText.setText(optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.getHint() );
+                optionalFieldEditText.setHint(optionalField.getHint());
 
                 editTexts[i] = optionalFieldEditText;
-
-                linearLayout.addView(optionalFieldView);
             }
+
+            linearLayout.addView(optionalFieldView);
         }
 
         final Builder builder = new AlertDialog.Builder(this);
@@ -1195,33 +1202,31 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         final EditText editText = editTexts[i];
                         if (editText != null) {
                             final OptionalField optionalField = optionalFields.get(i);
-                            if (optionalField != null) {
-                                if (mode == MODE_DNA) {
-                                    final String value = editText.getText().toString().trim();
-                                    if (i == 0 && value.length() == 0) {
-                                        Utils.toast(Main.this, optionalField.getHint() +
-                                            getString(R.string.not_empty));
-                                        try { inputTemplateInput(MODE_DNA); }
-                                        catch (JSONException e) {}
-                                        return;
-                                    }
+                            if (mode == MODE_DNA) {
+                                final String value = editText.getText().toString().trim();
+                                if (i == 0 && value.length() == 0) {
+                                    Utils.toast(Main.this,
+                                        optionalField.getHint() + getString(R.string.not_empty));
+                                    try { inputTemplateInput(MODE_DNA); }
+                                    catch (JSONException e) {}
+                                    return;
                                 }
+                            }
 
-                                optionalField.setValue(editText.getText().toString().trim());
+                            optionalField.setValue(editText.getText().toString().trim());
 
-                                if (optionalField.nameEqualsIgnoreCase("Person")
-                                ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
-                                    final SharedPreferences.Editor ed = ep.edit();
-                                    ed.putString("Person", optionalField.getValue());
-                                    ed.apply();
-                                }
+                            if (optionalField.nameEqualsIgnoreCase("Person")
+                            ||  optionalField.nameEqualsIgnoreCase("Name"  )) {
+                                final SharedPreferences.Editor ed = ep.edit();
+                                ed.putString("Person", optionalField.getValue());
+                                ed.apply();
                             }
                         }
                     }
 
-                dialog.cancel();
-                try { tempLoad(mode); } catch (JSONException e) {}
-            }});
+                    dialog.cancel();
+                    try { tempLoad(mode); } catch (JSONException e) {}
+                }});
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
@@ -1241,10 +1246,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         for (int i = 0; i < optionalFieldsSize; i++) {
             final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null) {
-                items     [i] = optionalField.getName   ();
-                selections[i] = optionalField.getChecked();
-            }
+            items     [i] = optionalField.getName   ();
+            selections[i] = optionalField.getChecked();
         }
 
         final Builder builder = new AlertDialog.Builder(this);
@@ -1298,8 +1301,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
                 dialog.cancel();
 
-                optionalFields.add(new OptionalField(
-                    sfield, /* value => */ svalue, /* hint => */ ""));
+                optionalFields.add(sfield, /* value => */ svalue, /* hint => */ "");
 
                 inputOptional();
             }});
@@ -1853,30 +1855,30 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mLayoutOptional.removeAllViews();
 
-        for (int i = 0; i < this.optionalFields.size(); i++) {
-            final OptionalField optionalField = this.optionalFields.get(i);
-            if (optionalField != null && optionalField.getChecked()) {
-                final View view =
-                    layoutInflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+        for (int i = 0; i < checkedOptionalFields.size(); i++) {
+            final OptionalField optionalField = checkedOptionalFields.get(i);
+            final View          view          =
+                layoutInflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
+
+            {
                 assert view != null;
-
-                {
-                    final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
-                    assert fieldText != null;
-                    fieldText.setText(optionalField.getName());
-                }
-
-                {
-                    final TextView valueText = (TextView) view.findViewById(R.id.valueText);
-                    assert valueText != null;
-                    if (i == 0)
-                        valueText.setText(mGridTitle);
-                    else
-                        valueText.setText(optionalField.getValue());
-                }
-
-                mLayoutOptional.addView(view);
+                final TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
+                assert fieldText != null;
+                fieldText.setText(optionalField.getName());
             }
+
+            {
+                final TextView valueText = (TextView) view.findViewById(R.id.valueText);
+                assert valueText != null;
+                if (i == 0)
+                    valueText.setText(mGridTitle);
+                else
+                    valueText.setText(optionalField.getValue());
+            }
+
+            mLayoutOptional.addView(view);
         }
 
         mTableData.removeAllViews();
@@ -2199,10 +2201,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 csvOutput.write("Column");
                 csvOutput.write("Row"   );
 
-                for (final OptionalField optionalField: optionalFields) {
-                    assert optionalField != null;
+                for (final OptionalField optionalField: optionalFields)
                     csvOutput.write(optionalField.getName());
-                }
 
                 csvOutput.endRecord();
 
@@ -2225,10 +2225,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         csvOutput.write(String.valueOf(col));
                         csvOutput.write(String.valueOf(row));
 
-                        for (final OptionalField optionalField: optionalFields) {
-                            assert optionalField != null;
+                        for (final OptionalField optionalField: optionalFields)
                             csvOutput.write(optionalField.getValue());
-                        }
 
                         csvOutput.endRecord();
                     }
@@ -2268,7 +2266,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String tissue_type = "";
             String extraction = "";
 
-            for (final OptionalField optionalField: optionalFields) if (optionalField != null)
+            for (final OptionalField optionalField: optionalFields)
                 if (optionalField.nameEqualsIgnoreCase("date"))
                     date = optionalField.getValue();
                 else if (optionalField.nameEqualsIgnoreCase("Plate"))
@@ -2369,7 +2367,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String date = "";
             String trayid = "";
 
-            for (final OptionalField optionalField: optionalFields) if (optionalField != null)
+            for (final OptionalField optionalField: optionalFields)
                 if (optionalField.nameEqualsIgnoreCase("Tray"))
                     trayid = optionalField.getValue();
                 else if (optionalField.nameEqualsIgnoreCase("Person"))

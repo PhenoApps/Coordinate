@@ -253,16 +253,16 @@ public class Utils {
     }
 
     public static java.lang.String optionalFieldsToJson(
-    final java.util.List<org.wheatgenetics.coordinate.objects.OptionalField> optionalFields)
+    final org.wheatgenetics.coordinate.objects.OptionalFields optionalFields)
     throws org.json.JSONException
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
         assert optionalFields != null;
         for (final org.wheatgenetics.coordinate.objects.OptionalField optionalField: optionalFields)
-            if (optionalField != null) jsonArray.put(optionalField.makeJSONObject());   // throws
-                                                                                        //  JSONEx-
-        return jsonArray.toString();                                                    //  ception
+            jsonArray.put(optionalField.makeJSONObject());          // throws org.json.JSONException
+
+        return jsonArray.toString();
     }
 
     public static List<Integer> jsonToList(String json) {
@@ -311,37 +311,19 @@ public class Utils {
         return points;
     }
 
-    public static java.util.List<org.wheatgenetics.coordinate.objects.OptionalField>
+    public static org.wheatgenetics.coordinate.objects.OptionalFields
     jsonToOptionalFields(final java.lang.String json) throws org.json.JSONException
     {
-        final java.util.List<org.wheatgenetics.coordinate.objects.OptionalField> optionalFields =
-            new java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField>();
+        final org.wheatgenetics.coordinate.objects.OptionalFields optionalFields =
+            new org.wheatgenetics.coordinate.objects.OptionalFields();
 
         final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
         final org.json.JSONArray   jsonArray   =
-            (org.json.JSONArray) jsonTokener.nextValue();                    // throws JSONException
+            (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
 
         assert jsonArray != null;
-        for (int i = 0; i < jsonArray.length(); i++)
-        {
-            final org.json.JSONObject jsonObject =
-                (org.json.JSONObject) jsonArray.get(i);                      // throws JSONException
-            org.wheatgenetics.coordinate.objects.OptionalField optionalField = null;
-
-            try
-            {
-                optionalField = new org.wheatgenetics.coordinate.objects.OptionalField(  // throws
-                    jsonObject);                                                         //  JSONEx-
-            }                                                                            //  ception
-            catch (org.wheatgenetics.coordinate.objects.OptionalField.WrongClass wrongClass)
-            {
-                optionalField =
-                    new org.wheatgenetics.coordinate.objects.DateOptionalField(    // throws
-                        jsonObject);                                               //  JSONException
-            }
-
-            optionalFields.add(optionalField);
-        }
+        for (int i = 0; i < jsonArray.length(); i++) optionalFields.add(
+            (org.json.JSONObject) jsonArray.get(i));                // throws org.json.JSONException
 
         return optionalFields;
     }
