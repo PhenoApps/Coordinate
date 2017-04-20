@@ -296,21 +296,4 @@ public class Utils {
 
         return points;
     }
-
-    public static org.wheatgenetics.coordinate.objects.NonNullOptionalFields
-    jsonToNonNullOptionalFields(final java.lang.String json) throws org.json.JSONException
-    {
-        final org.wheatgenetics.coordinate.objects.NonNullOptionalFields nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
-
-        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-        final org.json.JSONArray   jsonArray   =
-            (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
-
-        assert jsonArray != null;
-        for (int i = 0; i < jsonArray.length(); i++) nonNullOptionalFields.add(
-            (org.json.JSONObject) jsonArray.get(i));                // throws org.json.JSONException
-
-        return nonNullOptionalFields;
-    }
 }

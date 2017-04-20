@@ -76,6 +76,7 @@ import org.wheatgenetics.coordinate.database.DatabaseHelper;
 import org.wheatgenetics.coordinate.database.Entry;
 import org.wheatgenetics.coordinate.database.Grid;
 import org.wheatgenetics.coordinate.database.Template;
+import org.wheatgenetics.coordinate.objects.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.objects.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
@@ -944,9 +945,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = Utils.jsonToList(tmp.ecols);
         mExcludeRows = Utils.jsonToList(tmp.erows);
 
-        this.nonNullOptionalFields = Utils.jsonToNonNullOptionalFields(tmp.options);     // throws
-                                                                                         //  JSONEx-
-        mRowNumbering = tmp.rnumbering == 1;                                             //  ception
+        this.nonNullOptionalFields = NonNullOptionalFields.fromJson(tmp.options);  // throws JSON-
+                                                                                   //  Exception
+        mRowNumbering = tmp.rnumbering == 1;
         mColNumbering = tmp.cnumbering == 1;
     }
 
@@ -1531,8 +1532,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             try
                             {
                                 nonNullOptionalFields =
-                                    Utils.jsonToNonNullOptionalFields(tmp.options);
-                            }
+                                    NonNullOptionalFields.fromJson(tmp.options);     // throws JSON-
+                            }                                                        //  Exception
                             catch (JSONException e) {}
 
                             mRowNumbering = tmp.rnumbering == 1;
@@ -1570,11 +1571,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             Template tmp = new Template();
 
             if (tmp.get(grd.templateId)) {
-                this.nonNullOptionalFields =
-                    Utils.jsonToNonNullOptionalFields(tmp.options);          // throws JSONException
-
-                mRowNumbering = tmp.rnumbering == 1;
-                mColNumbering = tmp.cnumbering == 1;
+                this.nonNullOptionalFields = NonNullOptionalFields.fromJson(tmp.options); // throws
+                                                                                          //  JSON-
+                mRowNumbering = tmp.rnumbering == 1;                                      //  Excep-
+                mColNumbering = tmp.cnumbering == 1;                                      //  tion
             }
 
             populateTemplate();
