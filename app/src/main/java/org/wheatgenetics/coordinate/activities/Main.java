@@ -129,7 +129,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private List<Integer> mExcludeCols = new ArrayList<>();
     private String        menuMain[];
 
-    private org.wheatgenetics.coordinate.objects.OptionalFields optionalFields;
+    private org.wheatgenetics.coordinate.objects.NonNullOptionalFields nonNullOptionalFields;
 
     private DataExporter mTask;
     public long          mLastExportGridId = -1;
@@ -144,9 +144,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
-        this.optionalFields.add    ("Plate Id");
-        this.optionalFields.addDate("Date"    );
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Plate Id");
+        this.nonNullOptionalFields.addDate("Date"    );
 
         menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
 
@@ -747,10 +748,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = true;
 
-        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
-        this.optionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
-        this.optionalFields.add    ("Person", /* hint => */ "Person name");
-        this.optionalFields.addDate("Date"                               );
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
+        this.nonNullOptionalFields.add    ("Person", /* hint => */ "Person name");
+        this.nonNullOptionalFields.addDate("Date"                               );
 
         mExcludeRows = new ArrayList<>();
         mExcludeRows.add(2);
@@ -768,14 +770,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mRowNumbering = true;
         mColNumbering = false;
 
-        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
-        this.optionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
-        this.optionalFields.add("Plate Name"                                          );
-        this.optionalFields.add("Notes"                                               );
-        this.optionalFields.add("tissue_type", /* value => */ "Leaf", /* hint => */ "");
-        this.optionalFields.add("extraction" , /* value => */ "CTAB", /* hint => */ "");
-        this.optionalFields.add("person"                                              );
-        this.optionalFields.add("date"                                                );
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+        this.nonNullOptionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
+        this.nonNullOptionalFields.add("Plate Name"                                          );
+        this.nonNullOptionalFields.add("Notes"                                               );
+        this.nonNullOptionalFields.add("tissue_type", /* value => */ "Leaf", /* hint => */ "");
+        this.nonNullOptionalFields.add("extraction" , /* value => */ "CTAB", /* hint => */ "");
+        this.nonNullOptionalFields.add("person"                                              );
+        this.nonNullOptionalFields.add("date"                                                );
 
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
@@ -800,8 +803,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(this.optionalFields);      // throws JSONException
-
+        temp.options = Utils.optionalFieldsToJson(this.nonNullOptionalFields);    // throws
+                                                                                  //   JSONException
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
 
@@ -935,9 +938,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = Utils.jsonToList(tmp.ecols);
         mExcludeRows = Utils.jsonToList(tmp.erows);
 
-        this.optionalFields = Utils.jsonToOptionalFields(tmp.options);       // throws JSONException
-
-        mRowNumbering = tmp.rnumbering == 1;
+        this.nonNullOptionalFields = Utils.jsonToNonNullOptionalFields(tmp.options);     // throws
+                                                                                         //  JSONEx-
+        mRowNumbering = tmp.rnumbering == 1;                                             //  ception
         mColNumbering = tmp.cnumbering == 1;
     }
 
@@ -946,10 +949,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeRows  = new ArrayList<>();
         mExcludeCols  = new ArrayList<>();
 
-        this.optionalFields = new org.wheatgenetics.coordinate.objects.OptionalFields();
-        this.optionalFields.add    ("Identification");
-        this.optionalFields.add    ("Person"        );
-        this.optionalFields.addDate("Date"          );
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Identification");
+        this.nonNullOptionalFields.add    ("Person"        );
+        this.nonNullOptionalFields.addDate("Date"          );
 
         final LayoutInflater inflater = Main.this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
@@ -1052,8 +1056,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
-            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
+            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
 
         final EditText[] editTexts = new EditText[checkedOptionalFields.size()];
 
@@ -1093,10 +1097,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < optionalFields.size(); i++) {
+                assert nonNullOptionalFields != null;
+                for (int i = 0; i < nonNullOptionalFields.size(); i++) {
                     final EditText editText = editTexts[i];
                     if (editText != null) {
-                        final OptionalField optionalField = optionalFields.get(i);
+                        final OptionalField optionalField = nonNullOptionalFields.get(i);
                         final String value = editText.getText().toString().trim();
                         if (i == 0 && value.length() == 0) {
                             Utils.toast(Main.this,
@@ -1142,7 +1147,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     //TODO merge this method with the one above
     private void inputTemplateInput(final int mode) throws JSONException {
-        if (this.optionalFields.size() == 0) {
+        assert this.nonNullOptionalFields != null;
+        if (this.nonNullOptionalFields.size() == 0) {
             tempLoad(mode);                                                  // throws JSONException
             return;
         }
@@ -1156,8 +1162,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
-            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
+            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
 
         final EditText[] editTexts = new EditText[checkedOptionalFields.size()];
 
@@ -1198,10 +1204,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setPositiveButton(getString(R.string.create),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    for (int i = 0; i < optionalFields.size(); i++) {
+                    assert nonNullOptionalFields != null;
+                    for (int i = 0; i < nonNullOptionalFields.size(); i++) {
                         final EditText editText = editTexts[i];
                         if (editText != null) {
-                            final OptionalField optionalField = optionalFields.get(i);
+                            final OptionalField optionalField = nonNullOptionalFields.get(i);
                             if (mode == MODE_DNA) {
                                 final String value = editText.getText().toString().trim();
                                 if (i == 0 && value.length() == 0) {
@@ -1239,13 +1246,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void inputOptional() {
-        assert this.optionalFields != null;
-        final int optionalFieldsSize = this.optionalFields.size();
-        final String  items     [] = new String [optionalFieldsSize];
-        final boolean selections[] = new boolean[optionalFieldsSize];
+        assert this.nonNullOptionalFields != null;
+        final int     optionalFieldsSize = this.nonNullOptionalFields.size();
+        final String  items     []       = new String [optionalFieldsSize];
+        final boolean selections[]       = new boolean[optionalFieldsSize];
 
         for (int i = 0; i < optionalFieldsSize; i++) {
-            final OptionalField optionalField = this.optionalFields.get(i);
+            final OptionalField optionalField = this.nonNullOptionalFields.get(i);
             items     [i] = optionalField.getName   ();
             selections[i] = optionalField.getChecked();
         }
@@ -1255,7 +1262,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                optionalFields.get(which).setChecked(isChecked);
+                assert nonNullOptionalFields != null;
+                nonNullOptionalFields.get(which).setChecked(isChecked);
             }});
 
         builder.setNeutralButton(getString(R.string.add_new),
@@ -1301,7 +1309,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 }
                 dialog.cancel();
 
-                optionalFields.add(sfield, /* value => */ svalue, /* hint => */ "");
+                assert nonNullOptionalFields != null;
+                nonNullOptionalFields.add(sfield, /* value => */ svalue, /* hint => */ "");
 
                 inputOptional();
             }});
@@ -1496,7 +1505,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         final Template tmp = new Template();
 
                         if (tmp.get(grd.templateId)) {
-                            try { optionalFields = Utils.jsonToOptionalFields(tmp.options); }
+                            try
+                            {
+                                nonNullOptionalFields =
+                                    Utils.jsonToNonNullOptionalFields(tmp.options);
+                            }
                             catch (JSONException e) {}
 
                             mRowNumbering = tmp.rnumbering == 1;
@@ -1534,8 +1547,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             Template tmp = new Template();
 
             if (tmp.get(grd.templateId)) {
-                this.optionalFields = Utils.jsonToOptionalFields(tmp.options);     // throws
-                                                                                   //  JSONException
+                this.nonNullOptionalFields =
+                    Utils.jsonToNonNullOptionalFields(tmp.options);          // throws JSONException
+
                 mRowNumbering = tmp.rnumbering == 1;
                 mColNumbering = tmp.cnumbering == 1;
             }
@@ -1740,7 +1754,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         Grid grid = new Grid();
         grid.template = template;
         grid.stamp = System.currentTimeMillis();
-        grid.title = this.optionalFields.get(0).getValue();
+        assert this.nonNullOptionalFields != null;
+        grid.title = this.nonNullOptionalFields.get(0).getValue();
         return grid.insert();
     }
 
@@ -1756,8 +1771,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         temp.ecols = Utils.listToJson(mExcludeCols);
         temp.erows = Utils.listToJson(mExcludeRows);
 
-        temp.options = Utils.optionalFieldsToJson(this.optionalFields);      // throws JSONException
-
+        temp.options = Utils.optionalFieldsToJson(this.nonNullOptionalFields);    // throws
+                                                                                  //   JSONException
         temp.cnumbering = mColNumbering ? 1 : 0;
         temp.rnumbering = mRowNumbering ? 1 : 0;
 
@@ -1855,8 +1870,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mLayoutOptional.removeAllViews();
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
-            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.optionalFields);
+        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields = new
+            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
         for (int i = 0; i < checkedOptionalFields.size(); i++) {
             final OptionalField optionalField = checkedOptionalFields.get(i);
             final View          view          =
@@ -2006,8 +2021,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void exportData() {
-        final String name =
-            this.optionalFields.get(0).getValue() + "_" + Utils.getCurrentDate().replace(".", "_");
+        assert this.nonNullOptionalFields != null;
+        final String name = this.nonNullOptionalFields.get(0).getValue() +
+            "_" + Utils.getCurrentDate().replace(".", "_");
 
         final LayoutInflater layoutInflater = getLayoutInflater();
         @SuppressLint("InflateParams")
@@ -2201,7 +2217,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 csvOutput.write("Column");
                 csvOutput.write("Row"   );
 
-                for (final OptionalField optionalField: optionalFields)
+                assert nonNullOptionalFields != null;
+                for (final OptionalField optionalField: nonNullOptionalFields)
                     csvOutput.write(optionalField.getName());
 
                 csvOutput.endRecord();
@@ -2225,7 +2242,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         csvOutput.write(String.valueOf(col));
                         csvOutput.write(String.valueOf(row));
 
-                        for (final OptionalField optionalField: optionalFields)
+                        for (final OptionalField optionalField: nonNullOptionalFields)
                             csvOutput.write(optionalField.getValue());
 
                         csvOutput.endRecord();
@@ -2266,7 +2283,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String tissue_type = "";
             String extraction = "";
 
-            for (final OptionalField optionalField: optionalFields)
+            assert nonNullOptionalFields != null;
+            for (final OptionalField optionalField: nonNullOptionalFields)
                 if (optionalField.nameEqualsIgnoreCase("date"))
                     date = optionalField.getValue();
                 else if (optionalField.nameEqualsIgnoreCase("Plate"))
@@ -2367,7 +2385,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             String date = "";
             String trayid = "";
 
-            for (final OptionalField optionalField: optionalFields)
+            assert nonNullOptionalFields != null;
+            for (final OptionalField optionalField: nonNullOptionalFields)
                 if (optionalField.nameEqualsIgnoreCase("Tray"))
                     trayid = optionalField.getValue();
                 else if (optionalField.nameEqualsIgnoreCase("Person"))
