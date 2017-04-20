@@ -2,6 +2,26 @@ package org.wheatgenetics.coordinate.objects;
 
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
+    // region Protected Method
+    protected int size()
+    {
+        final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
+            this.iterator();
+        int size = 0;
+
+        assert iterator != null;
+        while (iterator.hasNext())
+        {
+            size++;
+            iterator.next();
+        }
+        return size;
+    }
+    // endregion
+
+
+    // region Public Methods
+    // region Public Add Methods
     public boolean add(final java.lang.String name)
     {
         assert this.arrayList != null;
@@ -45,4 +65,41 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
         assert this.arrayList != null;
         return this.arrayList.add(new org.wheatgenetics.coordinate.objects.DateOptionalField(name));
     }
+    // endregion
+
+
+    public boolean isEmpty()
+    {
+        final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
+            this.iterator();
+
+        assert iterator != null;
+        return iterator.hasNext();
+    }
+
+
+    public org.wheatgenetics.coordinate.objects.OptionalField get(final int index)
+    {
+        if (index < 0)
+            throw new java.lang.IndexOutOfBoundsException();
+        else
+        if (index >= this.size())
+            throw new java.lang.IndexOutOfBoundsException();
+        else
+        {
+            org.wheatgenetics.coordinate.objects.OptionalField optionalField;
+            {
+                final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
+                    this.iterator();
+                int i = 0;
+
+                assert iterator != null;
+                do
+                    optionalField = iterator.next();
+                while (i++ < index);
+            }
+            return optionalField;
+        }
+    }
+    // endregion
 }

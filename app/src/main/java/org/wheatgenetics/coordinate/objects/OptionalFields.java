@@ -68,54 +68,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
     // endregion
 
 
-    // region Public Methods
     // region Public java.lang.Iterable<> Method
     @Override
     public org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator()
     {
         return new org.wheatgenetics.coordinate.objects.OptionalFields.Iterator(this.arrayList);
-    }
-    // endregion
-
-
-    public int size()
-    {
-        final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
-            this.iterator();                                                         // polymorphism
-        int size = 0;
-
-        assert iterator != null;
-        while (iterator.hasNext())
-        {
-            size++;
-            iterator.next();
-        }
-        return size;
-    }
-
-
-    public org.wheatgenetics.coordinate.objects.OptionalField get(final int index)
-    {
-        if (index < 0)
-            throw new java.lang.IndexOutOfBoundsException();
-        else
-            if (index >= this.size())
-                throw new java.lang.IndexOutOfBoundsException();
-            else
-            {
-                org.wheatgenetics.coordinate.objects.OptionalField optionalField;
-                {
-                    final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
-                        this.iterator();                                             // polymorphism
-                    int i = 0;
-
-                    assert iterator != null;
-                    do
-                        optionalField = iterator.next();
-                    while (i++ < index);
-                }
-                return optionalField;
-            }
     }
     // endregion
 }
