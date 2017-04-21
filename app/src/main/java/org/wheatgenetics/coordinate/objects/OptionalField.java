@@ -1,117 +1,139 @@
 package org.wheatgenetics.coordinate.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class OptionalField {
-    // region Public Type
-    public static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
+public class OptionalField extends java.lang.Object
+{
+    // region Package Type
+    static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
     // endregion
 
 
     // region Private Constants
-    private static final String NAME_JSON_NAME    = "field"  ;
-    private static final String VALUE_JSON_NAME   = "value"  ;
-    private static final String HINT_JSON_NAME    = "hint"   ;
-    private static final String CHECKED_JSON_NAME = "checked";
+    private static final java.lang.String
+        NAME_JSON_NAME = "field", VALUE_JSON_NAME   = "value"  ,
+        HINT_JSON_NAME = "hint" , CHECKED_JSON_NAME = "checked";
     // endregion
 
 
     // region Protected Constant
-    protected static final String DATE_HINT = "yyyy-mm-dd";
+    protected static final java.lang.String DATE_HINT = "yyyy-mm-dd";
     // endregion
 
 
     // region Protected Fields
-    protected String  name, value = "", hint = "";
-    protected boolean checked = true;
+    protected java.lang.String  name, value = "", hint = "";
+    protected boolean           checked = true             ;
     // endregion
 
 
     // region Protected Methods
     protected OptionalField() { super(); }
 
-    protected void set(final JSONObject jsonObject) throws JSONException {
+    protected void set(final org.json.JSONObject jsonObject) throws org.json.JSONException
+    {
         assert jsonObject != null;
-        this.setName   (jsonObject.optString(NAME_JSON_NAME )   );
-        this.setValue  (jsonObject.optString(VALUE_JSON_NAME)   );
-        this.setHint   (jsonObject.optString(HINT_JSON_NAME )   );
-        this.setChecked(jsonObject.getBoolean(CHECKED_JSON_NAME));           // throws JSONException
-    }
+        this.setName(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME));
+        this.setValue(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME));
+        this.setHint(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME));
+        this.setChecked(jsonObject.getBoolean(                                        // throws org.
+            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME));   //  json.JSON-
+    }                                                                                  //  Exception
 
-    protected void setName(final String name) {
+    protected void setName(final java.lang.String name)
+    {
         assert name          != null;
         assert name.length()  > 0   ;
         this.name = name;
     }
 
-    protected void setHint(final String hint) {
+    protected void setHint(final java.lang.String hint)
+    {
         assert hint != null;
         this.hint = hint;
     }
     // endregion
 
 
-    // region Public Methods
-    // region Public Constructor Methods
-    public OptionalField(final String name) {
+    // region Package Methods
+    // region Constructor Package Methods
+    OptionalField(final java.lang.String name)
+    {
         this();
         this.setName(name);
     }
 
-    public OptionalField(final String name, final String hint) {
+    OptionalField(final java.lang.String name, final java.lang.String hint)
+    {
         this(name);
         this.setHint(hint);
     }
 
-    public OptionalField(final String name, final String value, final String hint) {
+    OptionalField(final java.lang.String name,
+    final java.lang.String value, final java.lang.String hint)
+    {
         this(name, hint);
         this.setValue(value);
     }
 
-    public OptionalField(final JSONObject jsonObject) throws JSONException, WrongClass {
+    OptionalField(final org.json.JSONObject jsonObject)
+    throws org.json.JSONException, org.wheatgenetics.coordinate.objects.OptionalField.WrongClass
+    {
         this();
         this.set(jsonObject);
-        if (this.getHint().equals(DATE_HINT)) throw new WrongClass();
+        if (this.getHint().equals(org.wheatgenetics.coordinate.objects.OptionalField.DATE_HINT))
+            throw new org.wheatgenetics.coordinate.objects.OptionalField.WrongClass();
     }
     // endregion
 
 
-    // region Public Overridden Method
-    @Override
-    public String toString() { return this.getName(); }
+    org.json.JSONObject makeJSONObject() throws org.json.JSONException
+    {
+        final org.json.JSONObject jsonObject = new org.json.JSONObject();
+
+        jsonObject.put(                                             // throws org.json.JSONException
+            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME, this.getName());
+        jsonObject.put(                                             // throws org.json.JSONException
+            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME, this.getValue());
+        jsonObject.put(                                             // throws org.json.JSONException
+            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME, this.getHint());
+        jsonObject.put(                                             // throws org.json.JSONException
+            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME,
+            this.getChecked());
+
+        return jsonObject;
+    }
     // endregion
 
 
-    // region Public Getter and Setter Methods
-    public String getName() { return this.name; }
+    // region Public Methods
+    // region Overridden Public Method
+    @Override
+    public java.lang.String toString() { return this.getName(); }
+    // endregion
 
-    public String getValue() { return this.value; }
-    public void   setValue(final String value) {
+
+    // region Getter and Setter Public Methods
+    public java.lang.String getName() { return this.name; }
+
+    public java.lang.String getValue() { return this.value; }
+    public void             setValue(final java.lang.String value)
+    {
         assert value != null;
         this.value = value;
     }
 
-    public String getHint() { return this.hint; }
+    public java.lang.String getHint() { return this.hint; }
 
     public boolean getChecked()                      { return this.checked   ; }
     public void    setChecked(final boolean checked) { this.checked = checked; }
     // endregion
 
 
-    public JSONObject makeJSONObject() throws JSONException {
-        final JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put(NAME_JSON_NAME   , this.getName()   );                // throws JSONException
-        jsonObject.put(VALUE_JSON_NAME  , this.getValue()  );                // throws JSONException
-        jsonObject.put(HINT_JSON_NAME   , this.getHint()   );                // throws JSONException
-        jsonObject.put(CHECKED_JSON_NAME, this.getChecked());                // throws JSONException
-
-        return jsonObject;
-    }
-
-    public boolean nameEqualsIgnoreCase(final String string) {
-        final String name = this.getName();
+    public boolean nameEqualsIgnoreCase(final java.lang.String string)
+    {
+        final java.lang.String name = this.getName();
         assert name != null;
         return name.equalsIgnoreCase(string);
     }

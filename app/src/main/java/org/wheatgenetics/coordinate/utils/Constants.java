@@ -1,13 +1,17 @@
 package org.wheatgenetics.coordinate.utils;
 
-import android.os.Environment;
+/**
+ * Uses:
+ * android.os.Environment
+ */
 
-import java.io.File;
-
-public class Constants {
-    public static final File MAIN_PATH = new File(Environment.getExternalStorageDirectory(), "Coordinate");
-
-    public static final File EXPORT_PATH = new File(Environment.getExternalStorageDirectory(), "Coordinate/Export");
-
-    public static final File TEMPLATE_PATH = new File(Environment.getExternalStorageDirectory(), "Coordinate/Templates");
+public class Constants extends java.lang.Object
+{
+    public static final java.io.File
+        MAIN_PATH     = new java.io.File(android.os.Environment.getExternalStorageDirectory(),
+            "Coordinate"          ),
+        EXPORT_PATH   = new java.io.File(android.os.Environment.getExternalStorageDirectory(),
+            "Coordinate/Export"   ),
+        TEMPLATE_PATH = new java.io.File(android.os.Environment.getExternalStorageDirectory(),
+            "Coordinate/Templates");
 }
