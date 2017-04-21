@@ -38,6 +38,24 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
 
 
     // region Public Methods
+    // region Constructor Public Methods
+    public NonNullOptionalFields() { super(); }
+
+    public NonNullOptionalFields(final java.lang.String json) throws org.json.JSONException
+    {
+        this();
+
+        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+        final org.json.JSONArray   jsonArray   =
+            (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
+
+        assert jsonArray != null;
+        for (int i = 0; i < jsonArray.length(); i++)
+            this.add((org.json.JSONObject) jsonArray.get(i));       // throws org.json.JSONException
+    }
+    // endregion
+
+
     // region Add Public Methods
     public boolean add(final java.lang.String name)
     {
@@ -98,8 +116,6 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
         }
     }
 
-
-    // region JSON Public Methods
     public java.lang.String toJson() throws org.json.JSONException
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
@@ -108,23 +124,5 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
             jsonArray.put(optionalField.makeJSONObject());          // throws org.json.JSONException
         return jsonArray.toString();
     }
-
-    public static org.wheatgenetics.coordinate.objects.NonNullOptionalFields fromJson(
-    final java.lang.String json) throws org.json.JSONException
-    {
-        final org.wheatgenetics.coordinate.objects.NonNullOptionalFields nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
-
-        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-        final org.json.JSONArray   jsonArray   =
-            (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
-
-        assert jsonArray != null;
-        for (int i = 0; i < jsonArray.length(); i++) nonNullOptionalFields.add(
-            (org.json.JSONObject) jsonArray.get(i));                // throws org.json.JSONException
-
-        return nonNullOptionalFields;
-    }
-    // endregion
     // endregion
 }

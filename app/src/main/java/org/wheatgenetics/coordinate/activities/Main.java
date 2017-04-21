@@ -945,8 +945,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols = Utils.jsonToList(tmp.ecols);
         mExcludeRows = Utils.jsonToList(tmp.erows);
 
-        this.nonNullOptionalFields = NonNullOptionalFields.fromJson(tmp.options);  // throws JSON-
-                                                                                   //  Exception
+        this.nonNullOptionalFields = new NonNullOptionalFields(tmp.options); // throws JSONException
+
         mRowNumbering = tmp.rnumbering == 1;
         mColNumbering = tmp.cnumbering == 1;
     }
@@ -1532,8 +1532,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             try
                             {
                                 nonNullOptionalFields =
-                                    NonNullOptionalFields.fromJson(tmp.options);     // throws JSON-
-                            }                                                        //  Exception
+                                    new NonNullOptionalFields(tmp.options);  // throws JSONException
+                            }
                             catch (JSONException e) {}
 
                             mRowNumbering = tmp.rnumbering == 1;
@@ -1571,10 +1571,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             Template tmp = new Template();
 
             if (tmp.get(grd.templateId)) {
-                this.nonNullOptionalFields = NonNullOptionalFields.fromJson(tmp.options); // throws
-                                                                                          //  JSON-
-                mRowNumbering = tmp.rnumbering == 1;                                      //  Excep-
-                mColNumbering = tmp.cnumbering == 1;                                      //  tion
+                this.nonNullOptionalFields = new NonNullOptionalFields(tmp.options); // throws JSON-
+                                                                                     //  Exception
+                mRowNumbering = tmp.rnumbering == 1;
+                mColNumbering = tmp.cnumbering == 1;
             }
 
             populateTemplate();
