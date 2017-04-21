@@ -7,12 +7,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
     static class Iterator extends java.lang.Object
     implements java.util.Iterator<org.wheatgenetics.coordinate.objects.OptionalField>
     {
-        protected java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField> arrayList;
-        protected java.util.ListIterator<
-            org.wheatgenetics.coordinate.objects.OptionalField> listIterator;
+        java.util.ArrayList   <org.wheatgenetics.coordinate.objects.OptionalField> arrayList   ;
+        java.util.ListIterator<org.wheatgenetics.coordinate.objects.OptionalField> listIterator;
 
 
-        protected Iterator(final java.util.ArrayList<
+        Iterator(final java.util.ArrayList<
         org.wheatgenetics.coordinate.objects.OptionalField> arrayList)
         {
             super();
@@ -62,8 +61,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
     // endregion
 
 
-    // region Protected Field
-    protected java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField> arrayList =
+    // region Package Field
+    java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField> arrayList =
         new java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField>();
     // endregion
 

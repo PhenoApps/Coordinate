@@ -1,12 +1,7 @@
 package org.wheatgenetics.coordinate.objects;
 
-public class OptionalField extends java.lang.Object
+public abstract class OptionalField extends java.lang.Object
 {
-    // region Package Type
-    static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
-    // endregion
-
-
     // region Private Constants
     private static final java.lang.String
         NAME_JSON_NAME = "field", VALUE_JSON_NAME   = "value"  ,
@@ -14,41 +9,26 @@ public class OptionalField extends java.lang.Object
     // endregion
 
 
-    // region Protected Constant
-    protected static final java.lang.String DATE_HINT = "yyyy-mm-dd";
+    // region Package Constant
+    static final java.lang.String DATE_HINT = "yyyy-mm-dd";
     // endregion
 
 
-    // region Protected Fields
-    protected java.lang.String  name, value = "", hint = "";
-    protected boolean           checked = true             ;
+    // region Private Fields
+    private java.lang.String  name, value = "", hint = "";
+    private boolean           checked = true             ;
     // endregion
 
 
-    // region Protected Methods
-    protected OptionalField() { super(); }
-
-    protected void set(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    {
-        assert jsonObject != null;
-        this.setName(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME));
-        this.setValue(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME));
-        this.setHint(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME));
-        this.setChecked(jsonObject.getBoolean(                                        // throws org.
-            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME));   //  json.JSON-
-    }                                                                                  //  Exception
-
-    protected void setName(final java.lang.String name)
+    // region Setter Private Methods
+    private void setName(final java.lang.String name)
     {
         assert name          != null;
         assert name.length()  > 0   ;
         this.name = name;
     }
 
-    protected void setHint(final java.lang.String hint)
+    private void setHint(final java.lang.String hint)
     {
         assert hint != null;
         this.hint = hint;
@@ -60,7 +40,7 @@ public class OptionalField extends java.lang.Object
     // region Constructor Package Methods
     OptionalField(final java.lang.String name)
     {
-        this();
+        super();
         this.setName(name);
     }
 
@@ -70,21 +50,20 @@ public class OptionalField extends java.lang.Object
         this.setHint(hint);
     }
 
-    OptionalField(final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint)
+    OptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
-        this(name, hint);
-        this.setValue(value);
-    }
+        super();
 
-    OptionalField(final org.json.JSONObject jsonObject)
-    throws org.json.JSONException, org.wheatgenetics.coordinate.objects.OptionalField.WrongClass
-    {
-        this();
-        this.set(jsonObject);
-        if (this.getHint().equals(org.wheatgenetics.coordinate.objects.OptionalField.DATE_HINT))
-            throw new org.wheatgenetics.coordinate.objects.OptionalField.WrongClass();
-    }
+        assert jsonObject != null;
+        this.setName(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME));
+        this.setValue(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME));
+        this.setHint(jsonObject.optString(
+            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME));
+        this.setChecked(jsonObject.getBoolean(                                        // throws org.
+            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME));   //  json.JSON-
+    }                                                                                 //  Exception
     // endregion
 
 

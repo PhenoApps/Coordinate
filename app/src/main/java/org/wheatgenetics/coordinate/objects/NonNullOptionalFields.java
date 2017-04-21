@@ -2,41 +2,6 @@ package org.wheatgenetics.coordinate.objects;
 
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
-    // region Protected Methods
-    protected boolean add(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    {
-        org.wheatgenetics.coordinate.objects.OptionalField optionalField;
-
-        try
-        {
-            optionalField = new org.wheatgenetics.coordinate.objects.OptionalField(jsonObject);
-        }
-        catch (org.wheatgenetics.coordinate.objects.OptionalField.WrongClass wrongClass)
-        {
-            optionalField = new org.wheatgenetics.coordinate.objects.DateOptionalField(jsonObject);
-        }
-
-        assert this.arrayList != null;
-        return this.arrayList.add(optionalField);
-    }
-
-    protected int size()
-    {
-        final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
-            this.iterator();
-        int size = 0;
-
-        assert iterator != null;
-        while (iterator.hasNext())
-        {
-            size++;
-            iterator.next();
-        }
-        return size;
-    }
-    // endregion
-
-
     // region Public Methods
     // region Constructor Public Methods
     public NonNullOptionalFields() { super(); }
@@ -49,9 +14,29 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
         final org.json.JSONArray   jsonArray   =
             (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
 
-        assert jsonArray != null;
+        assert jsonArray      != null;
+        assert this.arrayList != null;
         for (int i = 0; i < jsonArray.length(); i++)
-            this.add((org.json.JSONObject) jsonArray.get(i));       // throws org.json.JSONException
+        {
+            org.wheatgenetics.coordinate.objects.OptionalField optionalField;
+            {
+                final org.json.JSONObject jsonObject =
+                    (org.json.JSONObject) jsonArray.get(i);         // throws org.json.JSONException
+
+                try
+                {
+                    optionalField =
+                        new org.wheatgenetics.coordinate.objects.OtherOptionalField(jsonObject);
+                }
+                catch (
+                final org.wheatgenetics.coordinate.objects.OtherOptionalField.WrongClass wrongClass)
+                {
+                    optionalField =
+                        new org.wheatgenetics.coordinate.objects.DateOptionalField(jsonObject);
+                }
+            }
+            this.arrayList.add(optionalField);
+        }
     }
     // endregion
 
@@ -60,14 +45,14 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
     public boolean add(final java.lang.String name)
     {
         assert this.arrayList != null;
-        return this.arrayList.add(new org.wheatgenetics.coordinate.objects.OptionalField(name));
+        return this.arrayList.add(new org.wheatgenetics.coordinate.objects.OtherOptionalField(name));
     }
 
     public boolean add(final java.lang.String name, final java.lang.String hint)
     {
         assert this.arrayList != null;
         return this.arrayList.add(
-            new org.wheatgenetics.coordinate.objects.OptionalField(name, hint));
+            new org.wheatgenetics.coordinate.objects.OtherOptionalField(name, hint));
     }
 
     public boolean add(final java.lang.String name,
@@ -75,7 +60,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
     {
         assert this.arrayList != null;
         return this.arrayList.add(
-            new org.wheatgenetics.coordinate.objects.OptionalField(name, value, hint));
+            new org.wheatgenetics.coordinate.objects.OtherOptionalField(name, value, hint));
     }
 
     public boolean addDate(final java.lang.String name)
@@ -97,7 +82,20 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
 
     public org.wheatgenetics.coordinate.objects.OptionalField get(final int index)
     {
-        if (index < 0 || index >= this.size())
+        int size = 0;
+        {
+            final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
+                this.iterator();
+
+            assert iterator != null;
+            while (iterator.hasNext())
+            {
+                size++;
+                iterator.next();
+            }
+        }
+
+        if (index < 0 || index >= size)
             throw new java.lang.IndexOutOfBoundsException();
         else
         {
