@@ -1,10 +1,10 @@
 package org.wheatgenetics.coordinate.objects;
 
-public abstract class OptionalFields extends java.lang.Object
+abstract class OptionalFields extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField>
 {
-    // region Public Type
-    static public class Iterator extends java.lang.Object
+    // region Package Type
+    static class Iterator extends java.lang.Object
     implements java.util.Iterator<org.wheatgenetics.coordinate.objects.OptionalField>
     {
         protected java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField> arrayList;

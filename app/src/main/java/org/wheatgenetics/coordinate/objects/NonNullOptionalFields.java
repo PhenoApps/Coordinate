@@ -2,7 +2,24 @@ package org.wheatgenetics.coordinate.objects;
 
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
-    // region Protected Method
+    // region Protected Methods
+    protected boolean add(final org.json.JSONObject jsonObject) throws org.json.JSONException
+    {
+        org.wheatgenetics.coordinate.objects.OptionalField optionalField;
+
+        try
+        {
+            optionalField = new org.wheatgenetics.coordinate.objects.OptionalField(jsonObject);
+        }
+        catch (org.wheatgenetics.coordinate.objects.OptionalField.WrongClass wrongClass)
+        {
+            optionalField = new org.wheatgenetics.coordinate.objects.DateOptionalField(jsonObject);
+        }
+
+        assert this.arrayList != null;
+        return this.arrayList.add(optionalField);
+    }
+
     protected int size()
     {
         final org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator =
@@ -43,23 +60,6 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
             new org.wheatgenetics.coordinate.objects.OptionalField(name, value, hint));
     }
 
-    public boolean add(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    {
-        org.wheatgenetics.coordinate.objects.OptionalField optionalField;
-
-        try
-        {
-            optionalField = new org.wheatgenetics.coordinate.objects.OptionalField(jsonObject);
-        }
-        catch (org.wheatgenetics.coordinate.objects.OptionalField.WrongClass wrongClass)
-        {
-            optionalField = new org.wheatgenetics.coordinate.objects.DateOptionalField(jsonObject);
-        }
-
-        assert this.arrayList != null;
-        return this.arrayList.add(optionalField);
-    }
-
     public boolean addDate(final java.lang.String name)
     {
         assert this.arrayList != null;
@@ -79,10 +79,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
 
     public org.wheatgenetics.coordinate.objects.OptionalField get(final int index)
     {
-        if (index < 0)
-            throw new java.lang.IndexOutOfBoundsException();
-        else
-        if (index >= this.size())
+        if (index < 0 || index >= this.size())
             throw new java.lang.IndexOutOfBoundsException();
         else
         {

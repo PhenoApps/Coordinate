@@ -3,8 +3,7 @@ package org.wheatgenetics.coordinate.objects;
 public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
     // region Public Type
-    static public class Iterator
-    extends org.wheatgenetics.coordinate.objects.OptionalFields.Iterator
+    static class Iterator extends org.wheatgenetics.coordinate.objects.OptionalFields.Iterator
     {
         Iterator(final java.util.ArrayList<
         org.wheatgenetics.coordinate.objects.OptionalField> arrayList) { super(arrayList); }
