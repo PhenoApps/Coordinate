@@ -1,63 +1,92 @@
 package org.wheatgenetics.coordinate.database;
 
-import java.io.InputStream;
+/**
+ * Uses:
+ * android.content.Context
+ * android.database.sqlite.SQLiteDatabase
+ * android.database.sqlite.SQLiteOpenHelper
+ * android.util.Log
+ * android.widget.Toast
+ *
+ * org.w3c.dom.Document
+ * org.w3c.dom.NodeList
+ */
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper
+{
+    private static final java.lang.String TAG = "DatabaseHelper";
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+    private android.content.Context context;
+    private boolean                 created = false;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
 
-import org.wheatgenetics.coordinate.R;
-
-public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG              = "DatabaseHelper";
-    private static final String DATABASE_NAME    = "seedtray1.db"  ;
-    private static final int    DATABASE_VERSION = 1               ;
-
-    protected Context context;
-
-    public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public DatabaseHelper(final android.content.Context context)
+    {
+        super(context, /* name => */ "seedtray1.db", null, /* version => */ 1);
         this.context = context;
     }
 
+
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        String s;
-
-        Toast.makeText(context, "Loading Database... Please wait...", Toast.LENGTH_SHORT).show();
-
-        try {
-            InputStream in = context.getResources().openRawResource(R.raw.sql);
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(in, null);
-
-            NodeList statements = doc.getElementsByTagName("statement");
-            for (int i = 0; i < statements.getLength(); i++) {
-                s = statements.item(i).getChildNodes().item(0).getNodeValue();
-                Log.i(TAG, "SQL: " + s);
-
-                db.execSQL(s);
+    public void onCreate(final android.database.sqlite.SQLiteDatabase db)
+    {
+        android.widget.Toast.makeText(this.context,
+            "Loading Database... Please wait...", android.widget.Toast.LENGTH_SHORT).show();
+        {
+            org.w3c.dom.NodeList statementNodeList;
+            {
+                org.w3c.dom.Document document;
+                {
+                    final java.io.InputStream inputStream = this.context.getResources()
+                        .openRawResource(org.wheatgenetics.coordinate.R.raw.sql);
+                    try
+                    {
+                        final javax.xml.parsers.DocumentBuilder documentBuilder =
+                            javax.xml.parsers.DocumentBuilderFactory.newInstance()
+                                .newDocumentBuilder();        // throws ParserConfigurationException
+                        assert documentBuilder != null;
+                        try
+                        {
+                            document = documentBuilder.parse(inputStream, null);      // throws SAX-
+                        }                                                             //  Exception,
+                        catch (final org.xml.sax.SAXException | java.io.IOException e)//  IOExcep-
+                        {                                                             //  tion
+                            return;       // created will not be set true at the end of this method.
+                        }
+                    }
+                    catch (final javax.xml.parsers.ParserConfigurationException e)
+                    {
+                        return;           // created will not be set true at the end of this method.
+                    }
+                }
+                assert document != null;
+                statementNodeList = document.getElementsByTagName("statement");
             }
-        } catch (Throwable t) {
-//			Toast.makeText(context, t.toString(), 50000).show();
-            Log.e(TAG, "Database Error: " + t.toString());
+            assert statementNodeList != null;
+            assert db != null;
+            {
+                java.lang.String statement;
+                for (int i = 0; i < statementNodeList.getLength(); i++) {
+                    statement = statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
+                    android.util.Log.i(org.wheatgenetics.coordinate.database.DatabaseHelper.TAG,
+                        "SQL: " + statement);
+                    db.execSQL(statement);
+                }
+            }
         }
+        this.created = true;
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(TAG, "Upgrading database from version " + oldVersion
-                + " to "
-                + newVersion + ", which will destroy all old data");
+    public void onUpgrade(final android.database.sqlite.SQLiteDatabase db,
+    final int oldVersion, final int newVersion)
+    {
+        android.util.Log.w(org.wheatgenetics.coordinate.database.DatabaseHelper.TAG,
+            "Upgrading database from version " + oldVersion + " to " + newVersion +
+            ", which will destroy all old data");
+        assert db != null;
         db.execSQL("DROP TABLE IF EXISTS entries");
-        onCreate(db);
+        this.created = false;
+        this.onCreate(db);
     }
 }

@@ -1,37 +1,44 @@
 package org.wheatgenetics.coordinate;
 
-import android.app.Application;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+/**
+ * Uses:
+ * android.app.Application
+ * android.database.sqlite.SQLiteDatabase
+ * android.util.Log
+ */
 
-import org.wheatgenetics.coordinate.database.DatabaseHelper;
+public class Coordinate extends android.app.Application
+{
+    public static java.lang.String                       appName;
+    public static android.database.sqlite.SQLiteDatabase db     ;
 
-public class Coordinate extends Application {
-    public static final String TAG = "SeedTray";
 
-    public static SQLiteDatabase db;
-
-    public static String mAppName;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "Starting...");
-
-        mAppName = getResources().getString(R.string.app_name);
-
-        DatabaseHelper dbh = new DatabaseHelper(this);
-        Coordinate.db = dbh.getWritableDatabase();
+    private static int sendDebugLogMsg(final java.lang.String msg)
+    {
+        return android.util.Log.d("SeedTray", msg);
     }
 
 
     @Override
-    public void onTerminate() {
-        super.onTerminate();
-        Log.d(TAG, "Terminating...");
+    public void onCreate()
+    {
+        super.onCreate();
+        org.wheatgenetics.coordinate.Coordinate.sendDebugLogMsg("Starting...");
 
-        if (Coordinate.db != null) {
-            Coordinate.db.close();
-        }
+        org.wheatgenetics.coordinate.Coordinate.appName =
+            this.getResources().getString(org.wheatgenetics.coordinate.R.string.app_name);
+
+        final org.wheatgenetics.coordinate.database.DatabaseHelper databaseHelper =
+            new org.wheatgenetics.coordinate.database.DatabaseHelper(this);
+        org.wheatgenetics.coordinate.Coordinate.db = databaseHelper.getWritableDatabase();
+    }
+
+    @Override
+    public void onTerminate()
+    {
+        org.wheatgenetics.coordinate.Coordinate.sendDebugLogMsg("Terminating...");
+        if (org.wheatgenetics.coordinate.Coordinate.db != null)
+            org.wheatgenetics.coordinate.Coordinate.db.close();
+        super.onTerminate();
     }
 }

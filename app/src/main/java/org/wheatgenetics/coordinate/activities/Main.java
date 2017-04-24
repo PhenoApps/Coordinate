@@ -614,7 +614,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 newGridNow();                                                // throws JSONException
             } else {
 
-                Utils.confirm(this, Coordinate.mAppName, getString(R.string.new_grid_warning), new Runnable() {
+                Utils.confirm(this, Coordinate.appName, getString(R.string.new_grid_warning), new Runnable() {
                     @Override
                     public void run() {
                         exportData();
@@ -660,7 +660,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         if (mGrid == 0)
             return;
 
-        Utils.confirm(this, Coordinate.mAppName, getString(R.string.delete_grid_warning), new Runnable() {
+        Utils.confirm(this, Coordinate.appName, getString(R.string.delete_grid_warning), new Runnable() {
             @Override
             public void run() {
                 if (deleteGrid(mGrid)) {
@@ -1499,7 +1499,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
 
         if (pos == 0) {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.no_templates));
+            Utils.alert(this, Coordinate.appName, getString(R.string.no_templates));
             return;
         }
 
@@ -1546,7 +1546,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                         populateTemplate();
                         showTemplateUI();
-                    } else Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
+                    } else Utils.alert(Main.this, Coordinate.appName, getString(R.string.import_grid_failed));
 
                     dialog.cancel();
                 }
@@ -1580,7 +1580,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             populateTemplate();
             showTemplateUI();
         } else {
-            Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
+            Utils.alert(Main.this, Coordinate.appName, getString(R.string.import_grid_failed));
         }
     }
 
@@ -1682,7 +1682,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         curCell = view;
 
         if (endOfCell) {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.grid_filled));
+            Utils.alert(this, Coordinate.appName, getString(R.string.grid_filled));
             completeSound();
         }
     }
@@ -1818,10 +1818,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 populateTemplate();
                 showTemplateUI();
             } else {
-                Utils.alert(this, Coordinate.mAppName, getString(R.string.create_grid_fail));
+                Utils.alert(this, Coordinate.appName, getString(R.string.create_grid_fail));
             }
         } else {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.create_template_fail));
+            Utils.alert(this, Coordinate.appName, getString(R.string.create_template_fail));
         }
     }
 
@@ -1842,7 +1842,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             populateTemplate();
             showTemplateUI();
         } else {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.create_grid_fail));
+            Utils.alert(this, Coordinate.appName, getString(R.string.create_grid_fail));
         }
 
     }
@@ -2067,7 +2067,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 final String filename = nameEdit.getText().toString().trim();
                 if (filename.length() == 0) {
-                    Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.filename_empty));
+                    Utils.alert(Main.this, Coordinate.appName, getString(R.string.filename_empty));
                     return;
                 }
 
@@ -2155,10 +2155,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             //TODO when grid is reset, make a new one
             if (result != null && result) {
                 mLastExportGridId = mGrid;
-                Utils.alert(mContext, Coordinate.mAppName, getString(R.string.export_success), new Runnable() {
+                Utils.alert(mContext, Coordinate.appName, getString(R.string.export_success), new Runnable() {
                     @Override
                     public void run() {
-                        Utils.confirm(mContext, Coordinate.mAppName, getString(R.string.clear_grid),
+                        Utils.confirm(mContext, Coordinate.appName, getString(R.string.clear_grid),
                                 new Runnable() {
                                     @Override
                                     public void run() {
