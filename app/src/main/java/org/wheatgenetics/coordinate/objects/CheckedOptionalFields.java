@@ -1,8 +1,14 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.wheatgenetics.coordinate.objects.OptionalField
+ * org.wheatgenetics.coordinate.objects.OptionalFields
+ */
+
 public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
-    // region Public Type
+    // region Package Type
     static class Iterator extends org.wheatgenetics.coordinate.objects.OptionalFields.Iterator
     {
         Iterator(final java.util.ArrayList<

@@ -22,7 +22,11 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper
 
     public DatabaseHelper(final android.content.Context context)
     {
-        super(context, /* name => */ "seedtray1.db", null, /* version => */ 1);
+        super(
+            /* context => */ context       ,
+            /* name    => */ "seedtray1.db",
+            /* factory => */ null          ,
+            /* version => */ 1             );
         this.context = context;
     }
 
@@ -47,10 +51,12 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper
                         assert documentBuilder != null;
                         try
                         {
-                            document = documentBuilder.parse(inputStream, null);      // throws SAX-
-                        }                                                             //  Exception,
-                        catch (final org.xml.sax.SAXException | java.io.IOException e)//  IOExcep-
-                        {                                                             //  tion
+                            document = documentBuilder.parse(    // throws SAXException, IOException
+                                /* is       => */ inputStream,
+                                /* systemId => */ null      );
+                        }
+                        catch (final org.xml.sax.SAXException | java.io.IOException e)
+                        {
                             return;       // created will not be set true at the end of this method.
                         }
                     }
@@ -66,7 +72,8 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper
             assert db != null;
             {
                 java.lang.String statement;
-                for (int i = 0; i < statementNodeList.getLength(); i++) {
+                for (int i = 0; i < statementNodeList.getLength(); i++)
+                {
                     statement = statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
                     android.util.Log.i(org.wheatgenetics.coordinate.database.DatabaseHelper.TAG,
                         "SQL: " + statement);
@@ -85,7 +92,7 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper
             "Upgrading database from version " + oldVersion + " to " + newVersion +
             ", which will destroy all old data");
         assert db != null;
-        db.execSQL("DROP TABLE IF EXISTS entries");
+        db.execSQL("DROP TABLE IF EXISTS entries");  // TODO: What about templates and grids tables?
         this.created = false;
         this.onCreate(db);
     }

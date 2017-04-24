@@ -1,5 +1,18 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.json.JSONArray
+ * org.json.JSONException
+ * org.json.JSONTokener
+ * org.json.JSONObject
+ *
+ * org.wheatgenetics.coordinate.objects.DateOptionalField
+ * org.wheatgenetics.coordinate.objects.OptionalField
+ * org.wheatgenetics.coordinate.objects.OtherOptionalField
+ * org.wheatgenetics.coordinate.objects.OptionalFields
+ */
+
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
 {
     // region Public Methods
@@ -45,7 +58,8 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.objects.
     public boolean add(final java.lang.String name)
     {
         assert this.arrayList != null;
-        return this.arrayList.add(new org.wheatgenetics.coordinate.objects.OtherOptionalField(name));
+        return this.arrayList.add(
+            new org.wheatgenetics.coordinate.objects.OtherOptionalField(name));
     }
 
     public boolean add(final java.lang.String name, final java.lang.String hint)

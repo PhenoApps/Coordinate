@@ -1,5 +1,13 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.json.JSONException
+ * org.json.JSONObject
+ *
+ * org.wheatgenetics.coordinate.objects.OptionalField
+ */
+
 class OtherOptionalField extends org.wheatgenetics.coordinate.objects.OptionalField
 {
     static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }

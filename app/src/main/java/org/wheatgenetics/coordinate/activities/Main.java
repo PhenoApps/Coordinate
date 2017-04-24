@@ -72,7 +72,6 @@ import org.wheatgenetics.coordinate.Coordinate;
 import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
 import org.wheatgenetics.coordinate.barcodes.IntentResult;
 import org.wheatgenetics.coordinate.csv.CsvWriter;
-import org.wheatgenetics.coordinate.database.DatabaseHelper;
 import org.wheatgenetics.coordinate.database.Entry;
 import org.wheatgenetics.coordinate.database.Grid;
 import org.wheatgenetics.coordinate.database.Template;
@@ -80,6 +79,11 @@ import org.wheatgenetics.coordinate.objects.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.objects.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
+
+/**
+ * Uses:
+ * org.wheatgenetics.coordinate.utils.Utils
+ */
 
 public class Main extends AppCompatActivity implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListener {
     private static final int STATE_NORMAL   = 0;
@@ -443,16 +447,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    public void resetDatabase() {
-        Utils.confirm(this, getString(R.string.reset_database), getString(R.string.reset_database_message), new Runnable() {
-            @Override
-            public void run() {
-                Main.this.deleteDatabase("seedtray1.db");
-                DatabaseHelper dbh = new DatabaseHelper(Main.this);
-                Coordinate.db = dbh.getWritableDatabase();
-                finish();
-            }
-        }, null);
+    public void resetDatabase()
+    {
+        org.wheatgenetics.coordinate.utils.Utils.confirm(this,
+            this.getString(org.wheatgenetics.coordinate.R.string.reset_database        ),
+            this.getString(org.wheatgenetics.coordinate.R.string.reset_database_message),
+            new java.lang.Runnable() {
+                @Override
+                public void run()
+                {
+                    org.wheatgenetics.coordinate.activities.Main.this.deleteDatabase(
+                        "seedtray1.db");
+                    org.wheatgenetics.coordinate.Coordinate.initializeDb(
+                        org.wheatgenetics.coordinate.activities.Main.this);
+                    org.wheatgenetics.coordinate.activities.Main.this.finish();
+                }},
+            null);
     }
 
     @Override

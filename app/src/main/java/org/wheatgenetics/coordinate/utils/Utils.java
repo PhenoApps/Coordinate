@@ -34,15 +34,14 @@ import android.widget.Toast;
  * android.text.format.DateFormat
  */
 
-public class Utils {
+public class Utils extends java.lang.Object
+{
     private static final String TAG = "Utils";
 
     public static boolean isOnline(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) return true;
         return false;
     }
 
@@ -51,10 +50,7 @@ public class Utils {
         dialog.setTitle(title);
         dialog.setMessage(msg);
         dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
         dialog.show();
     }
 
@@ -112,37 +108,29 @@ public class Utils {
             java.lang.System.currentTimeMillis());
     }
 
-    public static void hideKeys(Context ctx, View vw) {
-        if (vw == null)
-            return;
+    public static void hideKeys(final Context ctx, final View vw)
+    {
+        if (vw == null) return;
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(vw.getWindowToken(), 0);
     }
 
-    public static void sleeper(int i) {
-        try {
-            Thread.sleep(i);
-        } catch (InterruptedException e) {
-        }
-
+    public static void sleeper(final int i)
+    {
+        try { Thread.sleep(i); } catch (InterruptedException e) {}
     }
 
-    public static Bitmap loadBitmap(Context context, String path) {
+    public static Bitmap loadBitmap(final Context context, final String path)
+    {
         Bitmap bmp = null;
         FileInputStream is = null;
-        try {
+        try
+        {
             is = new FileInputStream(path);
-            if (is != null) {
-                bmp = BitmapFactory.decodeStream(is);
-            }
-        } catch (Exception e) {
-
-        } finally {
-            try {
-                if (is != null) is.close();
-            } catch (Exception e) {
-            }
+            if (is != null) bmp = BitmapFactory.decodeStream(is);
         }
+        catch (Exception e) {}
+        finally { try { if (is != null) is.close(); } catch (Exception e) {} }
         return bmp;
     }
 
@@ -163,15 +151,14 @@ public class Utils {
 
         source = BitmapFactory.decodeByteArray(array, 0, array.length);
 
-        source = Bitmap.createScaledBitmap(source, (int) dwidth, (int) dheight,
-                true);
-        Log.i(TAG,
-                String.format("output iw: %d ih: %d", source.getWidth(),
-                        source.getHeight()));
+        source = Bitmap.createScaledBitmap(source, (int) dwidth, (int) dheight, true);
+        assert source != null;
+        Log.i(TAG, String.format("output iw: %d ih: %d", source.getWidth(), source.getHeight()));
         return source;
     }
 
-    public static Bitmap resizeBitmap(Bitmap bm, int newHeight, int newWidth) {
+    public static Bitmap resizeBitmap(Bitmap bm, int newHeight, int newWidth)
+    {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
@@ -188,7 +175,8 @@ public class Utils {
         return resizedBitmap;
     }
 
-    public static int getScreenSize(Context context) {
+    public static int getScreenSize(final Context context)
+    {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
@@ -198,101 +186,100 @@ public class Utils {
         return Math.min(metrics.widthPixels, metrics.heightPixels);
     }
 
-    public static int getInteger(String input) {
+    public static int getInteger(final String input)
+    {
         int value = -1;
-        try {
-            value = Integer.parseInt(input);
-        } catch (Exception e) {
-
-        }
+        try { value = Integer.parseInt(input); } catch (Exception e) {}
         return value;
     }
 
-    public static String getTag(int r, int c) {
-        String tag = String.format(Locale.US, "tag_%d_%d", r, c);
-        return tag;
+    public static String getTag(final int r, final int c)
+    {
+        return String.format(Locale.US, "tag_%d_%d", r, c);
     }
 
-    public static String listToJson(List<Integer> list) {
-        JSONArray json = new JSONArray();
-        for (int i = 0; i < list.size(); i++) {
-            Integer intr = list.get(i);
+    public static String listToJson(List<Integer> list)
+    {
+        final JSONArray json = new JSONArray();
+        for (int i = 0; i < list.size(); i++)
+        {
+            final Integer intr = list.get(i);
             if (intr == null) continue;
 
-            try {
-                json.put(intr.intValue());
-            } catch (Exception e) {
-
-            }
+            try { json.put(intr.intValue()); } catch (Exception e) {}
         }
 
-        String str = json.toString();
-        return str;
+        return json.toString();
     }
 
-    public static String pointToJson(List<Point> list) {
-        JSONArray json = new JSONArray();
-        for (int i = 0; i < list.size(); i++) {
-            Point point = list.get(i);
+    public static String pointToJson(final List<Point> list)
+    {
+        final JSONArray json = new JSONArray();
+        for (int i = 0; i < list.size(); i++)
+        {
+            final Point point = list.get(i);
             if (point == null) continue;
 
-            try {
-                JSONObject data = new JSONObject();
+            try
+            {
+                final JSONObject data = new JSONObject();
                 data.put("row", point.y);
                 data.put("col", point.x);
 
                 json.put(data);
-            } catch (Exception e) {
-
             }
+            catch (Exception e) {}
         }
 
-        String str = json.toString();
-        return str;
+        return json.toString();
     }
 
-    public static List<Integer> jsonToList(String json) {
-        List<Integer> list = new ArrayList<Integer>();
+    public static List<Integer> jsonToList(final String json)
+    {
+        final List<Integer> list = new ArrayList<Integer>();
 
-        try {
-            JSONTokener tokener = new JSONTokener(json);
-            JSONArray jarr = (JSONArray) tokener.nextValue();
+        try
+        {
+            final JSONTokener tokener = new JSONTokener(json);
+            final JSONArray   jarr    = (JSONArray) tokener.nextValue();
 
-            for (int i = 0; i < jarr.length(); i++) {
-                try {
-                    int value = jarr.getInt(i);
+            for (int i = 0; i < jarr.length(); i++)
+            {
+                try
+                {
+                    final int value = jarr.getInt(i);
                     list.add(Integer.valueOf(value));
-                } catch (JSONException e) {
-
                 }
+                catch (JSONException e) {}
             }
-        } catch (JSONException e) {
-        }
+        } catch (JSONException e) {}
 
         return list;
     }
 
-    public static List<Point> jsonToPoints(String json) {
-        List<Point> points = new ArrayList<Point>();
+    public static List<Point> jsonToPoints(final String json)
+    {
+        final List<Point> points = new ArrayList<Point>();
 
-        try {
-            JSONTokener tokener = new JSONTokener(json);
-            JSONArray jarr = (JSONArray) tokener.nextValue();
+        try
+        {
+            final JSONTokener tokener = new JSONTokener(json);
+            final JSONArray   jarr    = (JSONArray) tokener.nextValue();
 
-            for (int i = 0; i < jarr.length(); i++) {
-                JSONObject jobj = (JSONObject) jarr.get(i);
+            for (int i = 0; i < jarr.length(); i++)
+            {
+                final JSONObject jobj = (JSONObject) jarr.get(i);
 
-                try {
-                    int x = jobj.getInt("col");
-                    int y = jobj.getInt("row");
+                try
+                {
+                    final int x = jobj.getInt("col");
+                    final int y = jobj.getInt("row");
 
                     points.add(new Point(x, y));
-                } catch (JSONException e) {
-
                 }
+                catch (JSONException e) {}
             }
-        } catch (JSONException e) {
-        }
+        } catch (JSONException e) {}
 
         return points;
     }

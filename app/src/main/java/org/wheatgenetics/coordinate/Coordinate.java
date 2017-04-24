@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.app.Application
+ * android.content.Context
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
  */
@@ -18,6 +19,13 @@ public class Coordinate extends android.app.Application
         return android.util.Log.d("SeedTray", msg);
     }
 
+    public static void initializeDb(final android.content.Context context)
+    {
+        final org.wheatgenetics.coordinate.database.DatabaseHelper databaseHelper =
+            new org.wheatgenetics.coordinate.database.DatabaseHelper(context);
+        org.wheatgenetics.coordinate.Coordinate.db = databaseHelper.getWritableDatabase();
+    }
+
 
     @Override
     public void onCreate()
@@ -28,9 +36,7 @@ public class Coordinate extends android.app.Application
         org.wheatgenetics.coordinate.Coordinate.appName =
             this.getResources().getString(org.wheatgenetics.coordinate.R.string.app_name);
 
-        final org.wheatgenetics.coordinate.database.DatabaseHelper databaseHelper =
-            new org.wheatgenetics.coordinate.database.DatabaseHelper(this);
-        org.wheatgenetics.coordinate.Coordinate.db = databaseHelper.getWritableDatabase();
+        org.wheatgenetics.coordinate.Coordinate.initializeDb(this);
     }
 
     @Override

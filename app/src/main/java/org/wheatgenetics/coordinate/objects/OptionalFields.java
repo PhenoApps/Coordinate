@@ -1,5 +1,10 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.wheatgenetics.coordinate.objects.OptionalField
+ */
+
 abstract class OptionalFields extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField>
 {

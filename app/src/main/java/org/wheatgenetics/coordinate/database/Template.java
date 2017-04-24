@@ -1,205 +1,226 @@
 package org.wheatgenetics.coordinate.database;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.util.Log;
+/**
+ * Uses:
+ * android.content.ContentValues
+ * android.database.Cursor
+ * android.util.Log
+ * org.wheatgenetics.coordinate.Coordinate
+ */
 
-import org.wheatgenetics.coordinate.Coordinate;
+public class Template extends java.lang.Object
+{
+    // region Private Constants
+    private static final java.lang.String TABLE_NAME = "templates";
 
+    private static final java.lang.String
+        ID_FIELD_NAME = "_id", TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
 
-public class Template {
-    public static final String TAG = "Template";
+    private static final java.lang.String COLS_FIELD_NAME = "cols", ROWS_FIELD_NAME = "rows";
 
-    public static final String DB_TABLE = "templates";
-    public static final String KEY_ID = "_id";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_TYPE = "type";
+    private static final java.lang.String
+        ECELLS_FIELD_NAME = "ecells", ECOLS_FIELD_NAME = "ecols", EROWS_FIELD_NAME = "erows";
 
-    public static final String KEY_COLS = "cols";
-    public static final String KEY_ROWS = "rows";
+    private static final java.lang.String CNUMB_FIELD_NAME = "cnumb", RNUMB_FIELD_NAME = "rnumb";
 
-    public static final String KEY_ECELLS = "ecells";
-    public static final String KEY_ECOLS = "ecols";
-    public static final String KEY_EROWS = "erows";
+    private static final java.lang.String OPTIONS_FIELD_NAME = "options";
 
-    public static final String KEY_CNUMB = "cnumb";
-    public static final String KEY_RNUMB = "rnumb";
+    private static final java.lang.String STAMP_FIELD_NAME = "stamp";
+    // endregion
 
-    public static final String KEY_OPTIONS = "options";
-
-    public static final String KEY_STAMP = "stamp";
 
     public long id;
-    public String title;
+    public java.lang.String title;
     public int type;
     public int rows;
     public int cols;
 
-    public String ecells;
+    public java.lang.String ecells;
 
-    public String erows;
-    public String ecols;
+    public java.lang.String erows;
+    public java.lang.String ecols;
 
-    public String options;
+    public java.lang.String options;
 
     public int cnumbering;
     public int rnumbering;
 
     public long stamp;
 
-    public Template() {
-        id = 0;
-
-        title = "";
-        type = 0;
-
-        rows = 0;
-        cols = 0;
-
-        ecells = "";
-        ecols = "";
-        erows = "";
-
-        options = "";
-
-        cnumbering = 1;
-        rnumbering = 1;
-
-        stamp = 0;
-
+    private static int sendInfoLogMsg(final java.lang.String msg)
+    {
+        return android.util.Log.i("Template", msg);
     }
 
-    public Template(int id, String title, int type, int cols, int rows, long stamp) {
-        this.id = id;
+    public Template()
+    {
+        super();
+
+        this.id = 0;
+
+        this.title = "";
+        this.type  = 0 ;
+
+        this.rows = 0;
+        this.cols = 0;
+
+        this.ecells = "";
+        this.ecols  = "";
+        this.erows  = "";
+
+        this.options = "";
+
+        this.cnumbering = 1;
+        this.rnumbering = 1;
+
+        this.stamp = 0;
+    }
+
+    public Template(final int id, final java.lang.String title, final int type,
+    final int cols, final int rows, final long stamp)
+    {
+        super();
+
+        this.id    = id   ;
         this.title = title;
-        this.type = type;
-        this.cols = cols;
-        this.rows = rows;
+        this.type  = type ;
+        this.cols  = cols ;
+        this.rows  = rows ;
         this.stamp = stamp;
     }
 
-    public boolean copy(Cursor cursor) {
-        try {
-            id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
-            title = cursor.getString(cursor.getColumnIndex(KEY_TITLE));
-            type = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
-            cols = cursor.getInt(cursor.getColumnIndex(KEY_COLS));
-            rows = cursor.getInt(cursor.getColumnIndex(KEY_ROWS));
+    public boolean copy(final android.database.Cursor cursor)
+    {
+        assert cursor != null;
+        try
+        {
+            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME));
+            this.title = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.TITLE_FIELD_NAME));
+            this.type = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME));
+            this.cols = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.COLS_FIELD_NAME));
+            this.rows = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.ROWS_FIELD_NAME));
 
-            ecells = cursor.getString(cursor.getColumnIndex(KEY_ECELLS));
-            ecols = cursor.getString(cursor.getColumnIndex(KEY_ECOLS));
-            erows = cursor.getString(cursor.getColumnIndex(KEY_EROWS));
+            this.ecells = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.ECELLS_FIELD_NAME));
+            this.ecols = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.ECOLS_FIELD_NAME));
+            this.erows = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.EROWS_FIELD_NAME));
 
-            options = cursor.getString(cursor.getColumnIndex(KEY_OPTIONS));
+            this.options = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.OPTIONS_FIELD_NAME));
 
-            cnumbering = cursor.getInt(cursor.getColumnIndex(KEY_RNUMB));
-            rnumbering = cursor.getInt(cursor.getColumnIndex(KEY_CNUMB));
+            this.cnumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.RNUMB_FIELD_NAME));
+            this.rnumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.CNUMB_FIELD_NAME));
 
-            stamp = cursor.getLong(cursor.getColumnIndex(KEY_STAMP));
+            this.stamp = cursor.getLong(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.STAMP_FIELD_NAME));
 
             return true;
-        } catch (Exception e) {
-
         }
+        catch (java.lang.Exception e) {}                                            // TODO: Really?
         return false;
     }
 
-    protected ContentValues getValues() {
-        ContentValues values = new ContentValues();
+    protected android.content.ContentValues getValues()
+    {
+        final android.content.ContentValues contentValues = new android.content.ContentValues();
 
-        values.put(KEY_TITLE, title);
-        values.put(KEY_TYPE, type);
-        values.put(KEY_COLS, cols);
-        values.put(KEY_ROWS, rows);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.TITLE_FIELD_NAME, this.title);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME, this.type);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.COLS_FIELD_NAME, this.cols);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.ROWS_FIELD_NAME, this.rows);
 
-        values.put(KEY_ECELLS, ecells);
-        values.put(KEY_ECOLS, ecols);
-        values.put(KEY_EROWS, erows);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.ECELLS_FIELD_NAME, this.ecells);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.ECOLS_FIELD_NAME, this.ecols);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.EROWS_FIELD_NAME, this.erows);
 
-        values.put(KEY_CNUMB, cnumbering);
-        values.put(KEY_RNUMB, rnumbering);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.CNUMB_FIELD_NAME, this.cnumbering);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.RNUMB_FIELD_NAME, this.rnumbering);
 
-        values.put(KEY_OPTIONS, options);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.OPTIONS_FIELD_NAME, this.options);
 
-        values.put(KEY_STAMP, stamp);
+        contentValues.put(org.wheatgenetics.coordinate.database.Template.STAMP_FIELD_NAME, this.stamp);
 
-        return values;
+        return contentValues;
     }
 
-    public boolean get(long id) {
-        boolean ret = false;
-        Cursor mCursor = null;
-        try {
-            mCursor = Coordinate.db.query(true, DB_TABLE, null, KEY_ID + "=" + id, null, null, null, null, null);
-            if (mCursor != null) {
-                if (mCursor.moveToFirst()) {
-                    ret = copy(mCursor);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (mCursor != null) {
-                mCursor.close();
-            }
+    public boolean get(final long id)
+    {
+        boolean                 ret    = false;
+        android.database.Cursor cursor = null ;
+        try
+        {
+            cursor = org.wheatgenetics.coordinate.Coordinate.db.query(true,
+                org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null,
+                org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id,
+                null, null, null, null, null);
+            if (cursor != null) if (cursor.moveToFirst()) ret = this.copy(cursor);
         }
+        catch (java.lang.Exception e) {}                                            // TODO: Really?
+        finally { if (cursor != null) cursor.close(); }
         return ret;
     }
 
 
-    public boolean getByType(int typ) {
-        boolean ret = false;
-        Cursor mCursor = null;
-        try {
-            mCursor = Coordinate.db.query(true, DB_TABLE, null, KEY_TYPE + "=" + typ, null, null, null, null, null);
-            if (mCursor != null) {
-                if (mCursor.moveToFirst()) {
-                    ret = copy(mCursor);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (mCursor != null) {
-                mCursor.close();
-            }
+    public boolean getByType(final int typ)
+    {
+        boolean                 ret    = false;
+        android.database.Cursor cursor = null ;
+        try
+        {
+            cursor = org.wheatgenetics.coordinate.Coordinate.db.query(true,
+                org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null,
+                org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME + "=" + typ,
+                null, null, null, null, null);
+            if (cursor != null) if (cursor.moveToFirst()) ret = this.copy(cursor);
         }
+        catch (java.lang.Exception e) {}                                            // TODO: Really?
+        finally { if (cursor != null) cursor.close(); }
         return ret;
     }
 
-    public Cursor load() {
-        Log.i(TAG, "Loading table " + DB_TABLE);
-        return Coordinate.db.query(DB_TABLE, null, null, null, null, null, "type ASC");
+    public android.database.Cursor load()
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Loading table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
+        return org.wheatgenetics.coordinate.Coordinate.db.query(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null, null, null, null, null, "type ASC");
     }
 
-    public Cursor loadByOrder() {
-        Log.i(TAG, "Loading table " + DB_TABLE);
-        return Coordinate.db.query(DB_TABLE, null, null, null, null, null, "_id DESC");
+    public android.database.Cursor loadByOrder()
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Loading table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
+        return org.wheatgenetics.coordinate.Coordinate.db.query(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null, null, null, null, null, "_id DESC");
     }
 
-    public long insert() {
-        Log.i(TAG, "Inserting into table " + DB_TABLE);
-        return Coordinate.db.insert(DB_TABLE, null, getValues());
+    public long insert()
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Inserting into table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
+        return org.wheatgenetics.coordinate.Coordinate.db.insert(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null, getValues());
     }
 
-    public boolean update() {
-        Log.i(TAG, "Updating table " + DB_TABLE + " on id = " + id);
-        return Coordinate.db.update(DB_TABLE, getValues(), KEY_ID + "=" + id, null) > 0;
+    public boolean update()
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Updating table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME + " on id = " + id);
+        return org.wheatgenetics.coordinate.Coordinate.db.update(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, getValues(), org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id, null) > 0;
     }
 
 
-    public boolean delete(long id) {
-        Log.i(TAG, "Deleting from table " + DB_TABLE + " on id = " + id);
-        return Coordinate.db.delete(DB_TABLE, KEY_ID + "=" + id, null) > 0;
+    public boolean delete(final long id)
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Deleting from table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME + " on id = " + id);
+        return org.wheatgenetics.coordinate.Coordinate.db.delete(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id, null) > 0;
     }
 
-    public boolean delete() {
-        Log.i(TAG, "Clearing table " + DB_TABLE);
-        return Coordinate.db.delete(DB_TABLE, null, null) > 0;
+    public boolean delete()
+    {
+        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Clearing table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
+        return org.wheatgenetics.coordinate.Coordinate.db.delete(org.wheatgenetics.coordinate.database.Template.TABLE_NAME, null, null) > 0;
     }
 
     @Override
-    public String toString() {
-        return "Template [id=" + id + ", title=" + title + ", type=" + type + ", rows=" + rows + ", cols=" + cols + ", ecells=" + ecells + ", erows=" + erows + ", ecols=" + ecols + ", options=" + options + ", cnumbering=" + cnumbering + ", rnumbering=" + rnumbering + ", stamp=" + stamp + "]";
+    public java.lang.String toString()
+    {
+        return "Template" +
+            " [id="         + this.id         + ", title="      + this.title      +
+            ", type="       + this.type       + ", rows="       + this.rows       +
+            ", cols="       + this.cols       + ", ecells="     + this.ecells     +
+            ", erows="      + this.erows      + ", ecols="      + this.ecols      +
+            ", options="    + this.options    + ", cnumbering=" + this.cnumbering +
+            ", rnumbering=" + this.rnumbering + ", stamp="      + this.stamp      + "]";
     }
-
-
 }

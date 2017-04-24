@@ -1,11 +1,11 @@
 package org.wheatgenetics.coordinate.database;
 
-import android.content.ContentValues;
-
 /**
  * Uses:
+ * android.content.ContentValues
  * android.database.Cursor
  * android.util.Log
+ * org.wheatgenetics.coordinate.Coordinate
  */
 
 public class Entry extends java.lang.Object

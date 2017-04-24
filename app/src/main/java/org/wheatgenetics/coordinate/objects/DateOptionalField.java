@@ -1,5 +1,14 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.json.JSONException
+ * org.json.JSONObject
+ *
+ * org.wheatgenetics.coordinate.objects.OptionalField
+ * org.wheatgenetics.coordinate.utils.Utils
+ */
+
 class DateOptionalField extends org.wheatgenetics.coordinate.objects.OptionalField
 {
     // region Constructors

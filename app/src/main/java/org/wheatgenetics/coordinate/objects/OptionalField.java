@@ -1,5 +1,11 @@
 package org.wheatgenetics.coordinate.objects;
 
+/**
+ * Uses:
+ * org.json.JSONException
+ * org.json.JSONObject
+ */
+
 public abstract class OptionalField extends java.lang.Object
 {
     // region Private Constants
