@@ -105,10 +105,9 @@ public class Entry extends java.lang.Object
         android.database.Cursor cursor = null;
         try
         {
-            cursor = org.wheatgenetics.coordinate.Coordinate.db.query(true,
-                org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, null,
-                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id, null, null,
-                null, null, null);
+            cursor = org.wheatgenetics.coordinate.Coordinate.queryDistinct(
+                org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
             if (cursor != null)
             {
                 cursor.moveToFirst();
@@ -130,53 +129,55 @@ public class Entry extends java.lang.Object
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.db.query(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
-            null, null, null, null, null, null);
+        return org.wheatgenetics.coordinate.Coordinate.queryAll(
+            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
     }
 
     public long insert()
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg(
             "Inserting into table " + org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.db.insert(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, null, getValues());
+        return org.wheatgenetics.coordinate.Coordinate.insert(
+            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, this.getValues());
     }
 
     public boolean update()
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
-        return org.wheatgenetics.coordinate.Coordinate.db.update(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, this.getValues(),
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id, null) > 0;
+        return org.wheatgenetics.coordinate.Coordinate.update(
+            /* tableName     => */ org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+            /* contentValues => */ this.getValues()                                      ,
+            /* whereClause   => */
+                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long id)                                      // TODO: Remove later.
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
-        return org.wheatgenetics.coordinate.Coordinate.db.delete(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id, null) > 0;
+        return org.wheatgenetics.coordinate.Coordinate.delete(
+            /* tableName   => */ org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+            /* whereClause => */
+                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete()                                                   // TODO: Remove later.
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Clearing table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.db.delete(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, null, null) > 0;
+        return org.wheatgenetics.coordinate.Coordinate.delete(
+            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
     }
 
     public android.database.Cursor loadByEntry(final int entry)               // TODO: Remove later.
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " by entry = " + entry);
-        return org.wheatgenetics.coordinate.Coordinate.db.query(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, null,
-            org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + " = " + entry,
-            null, null, null, null);
+        return org.wheatgenetics.coordinate.Coordinate.queryAllSelection(
+            /* tableName => */ org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+            /* selection => */
+                org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + " = " + entry);
     }
 
     public boolean getByGrid(final long grid, final int row, final int col)
@@ -192,9 +193,10 @@ public class Entry extends java.lang.Object
             final java.lang.String[] arg = new java.lang.String[]{java.lang.String.valueOf(grid),
                 java.lang.String.valueOf(col), java.lang.String.valueOf(row)};
 
-            cursor = org.wheatgenetics.coordinate.Coordinate.db.query(true,
-                org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, null, sel, arg, null, null,
-                null, null);
+            cursor = org.wheatgenetics.coordinate.Coordinate.queryDistinct(
+                /* tableName     => */ org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+                /* selection     => */ sel                                                   ,
+                /* selectionArgs => */ arg                                                   );
             if (cursor != null)
             {
                 boolean ret = false;
@@ -215,9 +217,10 @@ public class Entry extends java.lang.Object
     {
         org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + grid);
-        return org.wheatgenetics.coordinate.Coordinate.db.delete(
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
-            org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "=" + grid, null) > 0;
+        return org.wheatgenetics.coordinate.Coordinate.delete(
+            /* tableName   => */ org.wheatgenetics.coordinate.database.Entry.TABLE_NAME,
+            /* whereClause => */
+                org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "=" + grid);
     }
     // endregion
 }

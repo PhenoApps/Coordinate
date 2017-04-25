@@ -2,14 +2,7 @@ package org.wheatgenetics.coordinate.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -18,7 +11,6 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
@@ -31,7 +23,13 @@ import android.widget.Toast;
 
 /**
  * Uses:
+ * android.graphics.Point
  * android.text.format.DateFormat
+ *
+ * org.json.JSONArray
+ * org.json.JSONException
+ * org.json.JSONObject
+ * org.json.JSONTokener
  */
 
 public class Utils extends java.lang.Object
@@ -243,30 +241,27 @@ public class Utils extends java.lang.Object
         return integerList;
     }
 
-    public static List<Point> jsonToPoints(final String json)
+    public static java.util.List<android.graphics.Point> jsonToPointList(
+    final java.lang.String json) throws org.json.JSONException
     {
-        final List<Point> points = new ArrayList<Point>();
-
-        try
+        final java.util.List<android.graphics.Point> pointList =
+            new java.util.ArrayList<android.graphics.Point>();
         {
-            final JSONTokener tokener = new JSONTokener(json);
-            final JSONArray   jarr    = (JSONArray) tokener.nextValue();
+            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+            final org.json.JSONArray   jsonArray   =
+                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
 
-            for (int i = 0; i < jarr.length(); i++)
+            assert jsonArray != null;
+            for (int i = 0; i < jsonArray.length(); i++)
             {
-                final JSONObject jobj = (JSONObject) jarr.get(i);
+                final org.json.JSONObject jsonObject = (org.json.JSONObject) jsonArray.get(i);
 
-                try
-                {
-                    final int x = jobj.getInt("col");
-                    final int y = jobj.getInt("row");
-
-                    points.add(new Point(x, y));
-                }
-                catch (JSONException e) {}
+                assert jsonObject != null;
+                pointList.add(new android.graphics.Point(
+                    jsonObject.getInt("col"),                       // throws org.json.JSONException
+                    jsonObject.getInt("row")));                     // throws org.json.JSONException
             }
-        } catch (JSONException e) {}
-
-        return points;
+        }
+        return pointList;
     }
 }
