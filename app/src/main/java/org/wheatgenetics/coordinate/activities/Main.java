@@ -118,8 +118,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private int    mCurRow    = 1 ;
     private int    mCurCol    = 1 ;
 
-    private int    mType     = 0 ;
-    private String mTemplate = "";
+    private int    type     = 0 ;
+    private String template = "";
 
     private SharedPreferences ep;
 
@@ -128,7 +128,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private boolean mRowNumbering = false;
     private boolean mColNumbering = true ;
 
-    private List<Point> mExcludeCells = new ArrayList<>();
+    private List<Point> excludeCells = new ArrayList<>();
 
     private List<Integer> mExcludeRows = new ArrayList<>();
     private List<Integer> mExcludeCols = new ArrayList<>();
@@ -202,7 +202,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         //mEditData.setOnKeyListener(this);
 
-        mTextTemplate.setText(mTemplate);
+        mTextTemplate.setText(this.template);
 
         mLayoutMain.setVisibility(View.INVISIBLE);
 
@@ -483,8 +483,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 TextView person = (TextView) findViewById(R.id.nameLabel);
                 person.setText(ep.getString("Person", ""));
 
-                TextView template = (TextView) findViewById(R.id.templateLabel);
-                template.setText(mTemplate);
+                final TextView templateTextView = (TextView) findViewById(R.id.templateLabel);
+                templateTextView.setText(org.wheatgenetics.coordinate.activities.Main.this.template);
             }
 
             public void onDrawerClosed(View view) {
@@ -518,7 +518,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 break;
 
             case R.id.menu_export:
-                if (mTemplate.equals("")) {
+                if (this.template.equals("")) {
                     makeToast(getString(R.string.grid_empty));
                 } else {
                     exportData();
@@ -558,34 +558,41 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mDrawerLayout.closeDrawers();
     }
 
-    private void copydb() {
-        File f = new File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
+    private void copydb()
+    {
+        final File f = new File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
         FileInputStream fis = null;
         FileOutputStream fos = null;
 
-        try {
+        try
+        {
             fis = new FileInputStream(f);
             fos = new FileOutputStream("/mnt/sdcard/db_dump.db");
-            while (true) {
-                int i = fis.read();
-                if (i != -1) {
+            while (true)
+            {
+                final int i = fis.read();
+                if (i != -1)
                     fos.write(i);
-                } else {
+                else
                     break;
-                }
             }
             fos.flush();
             makeFileDiscoverable(new File("/mnt/sdcard/db_dump.db"), this);
             Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
-        } finally {
-            try {
+        }
+        finally
+        {
+            try
+            {
                 fos.close();
                 fis.close();
-            } catch (IOException ioe) {
             }
+            catch (IOException ioe) {}
         }
     }
 
@@ -642,21 +649,21 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private void newGridNow() throws JSONException {
         deleteGrid(mGrid);
 
-        if (mType == TYPE_SEED) {
-            Template temp = new Template();
-            if (temp.getByType(mType)) {
+        if (this.type == TYPE_SEED) {
+            org.wheatgenetics.coordinate.database.Template temp = new org.wheatgenetics.coordinate.database.Template();
+            if (temp.getByType(this.type)) {
                 copyTemplate(temp);
             }
 
             inputSeed();
-        } else if (mType == TYPE_DNA) {
-            Template temp = new Template();
-            if (temp.getByType(mType)) {
+        } else if (this.type == TYPE_DNA) {
+            org.wheatgenetics.coordinate.database.Template temp = new org.wheatgenetics.coordinate.database.Template();
+            if (temp.getByType(this.type)) {
                 copyTemplate(temp);
             }
 
-            mExcludeCells.clear();
-            mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
+            this.excludeCells.clear();
+            this.excludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
 
             inputTemplateInput(MODE_DNA);                                    // throws JSONException
         } else {
@@ -757,9 +764,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     // Adds default templates to database
-    private void initDb() throws JSONException {
-        mTemplate = "Seed Tray";
-        mType = TYPE_SEED;
+    private void initDb() throws org.json.JSONException
+    {
+        this.template = "Seed Tray";
+        this.type = TYPE_SEED;
         mRows = 6;
         mCols = 20;
         mRowNumbering = true;
@@ -776,14 +784,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeRows.add(5);
 
         mExcludeCols = new ArrayList<>();
-        mExcludeCells = new ArrayList<>();
+        this.excludeCells = new ArrayList<>();
 
-        createDb(mType);
+        this.createDb(this.type);                                   // throws org.json.JSONException
 
-        mTemplate = "DNA Plate";
+        this.template = "DNA Plate";
         mRows = 8;
         mCols = 12;
-        mType = TYPE_DNA;
+        this.type = TYPE_DNA;
         mRowNumbering = true;
         mColNumbering = false;
 
@@ -800,38 +808,40 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeRows = new ArrayList<>();
         mExcludeCols = new ArrayList<>();
 
-        mExcludeCells = new ArrayList<>();
+        this.excludeCells = new ArrayList<>();
 
-        createDb(mType);                                                     // throws JSONException
+        this.createDb(this.type);                                   // throws org.json.JSONException
 
-        mTemplate = "";
+        this.template = "";
     }
 
-    private boolean createDb(int type) throws JSONException {
-        Template temp = new Template();
-        boolean found = temp.getByType(type);
+    private boolean createDb(final int type) throws org.json.JSONException
+    {
+        final org.wheatgenetics.coordinate.database.Template template =
+            new org.wheatgenetics.coordinate.database.Template();
 
-        temp.title = mTemplate;
-        temp.type = mType;
-        temp.rows = mRows;
-        temp.cols = mCols;
+        template.title = this.template;
+        template.type  = this.type;
+        template.rows  = this.mRows;
+        template.cols  = this.mCols;
 
-        temp.ecells = Utils.pointToJson(mExcludeCells);
-        temp.ecols = Utils.listToJson(mExcludeCols);
-        temp.erows = Utils.listToJson(mExcludeRows);
+        template.ecells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
+        template.ecols  = Utils.integerListToJson(this.mExcludeCols);
+        template.erows  = Utils.integerListToJson(this.mExcludeRows);
 
-        temp.options = this.nonNullOptionalFields.toJson();                  // throws JSONException
+        template.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException
 
-        temp.cnumbering = mColNumbering ? 1 : 0;
-        temp.rnumbering = mRowNumbering ? 1 : 0;
+        template.cnumbering = this.mColNumbering ? 1 : 0;
+        template.rnumbering = this.mRowNumbering ? 1 : 0;
 
-        temp.stamp = System.currentTimeMillis();
+        template.stamp = System.currentTimeMillis();
 
-        boolean ret;
+        final boolean found = template.getByType(type);
+              boolean ret;
         if (found)
-            ret = temp.update();
+            ret = template.update();
         else
-            ret = temp.insert() > 0;
+            ret = template.insert() > 0;
 
         return ret;
     }
@@ -851,14 +861,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void menuTemplateLoad() {
-        final List<Template> templates = new ArrayList<>();
+        final List<org.wheatgenetics.coordinate.database.Template> templates = new ArrayList<>();
 
-        final Template tmp = new Template();
+        final org.wheatgenetics.coordinate.database.Template tmp = new org.wheatgenetics.coordinate.database.Template();
         final Cursor cursor = tmp.load();
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                final Template temp = new Template();
-                if (temp.copy(cursor)) templates.add(temp);
+                final org.wheatgenetics.coordinate.database.Template template =
+                    new org.wheatgenetics.coordinate.database.Template();
+                if (template.copy(cursor)) templates.add(template);
             }
             cursor.close();
         }
@@ -868,7 +879,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         final String[] items = new String[size];
 
         for (int i = 0; i < size; i++) {
-            final Template item = templates.get(i);
+            final org.wheatgenetics.coordinate.database.Template item = templates.get(i);
             items[i] = item.title;
         }
 
@@ -879,14 +890,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 if (which < 0 || which > templates.size()) return;
 
-                final Template tmp = templates.get(which);
+                final org.wheatgenetics.coordinate.database.Template tmp = templates.get(which);
                 try { copyTemplate(tmp); } catch (JSONException e) {}
 
                 if (which == 0)
                     inputSeed();
                 else if (which == 1) {
-                    mExcludeCells.clear();
-                    mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
+                    org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
+                    org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(
+                        new Point(randomBox(mCols), randomBox(mRows)));
 
                     try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
                 } else try { inputTemplateInput(MODE_SAVED); } catch (JSONException e) {}
@@ -895,14 +907,17 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void menuDeleteTemplate() {
-        final List<Template> templates = new ArrayList<>();
+        final List<org.wheatgenetics.coordinate.database.Template> templates = new ArrayList<>();
 
-        final Template tmp = new Template();
+        final org.wheatgenetics.coordinate.database.Template tmp = new org.wheatgenetics.coordinate.database.Template();
         final Cursor cursor = tmp.load();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                final Template temp = new Template();
-                if (temp.copy(cursor)) templates.add(temp);
+        if (cursor != null)
+        {
+            while (cursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.Template template =
+                    new org.wheatgenetics.coordinate.database.Template();
+                if (template.copy(cursor)) templates.add(template);
             }
             cursor.close();
         }
@@ -912,7 +927,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         final String[] items = new String[size];
 
         for (int i = 0; i < size; i++) {
-            final Template item = templates.get(i);
+            final org.wheatgenetics.coordinate.database.Template item = templates.get(i);
             items[i] = item.title;
         }
 
@@ -923,7 +938,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 if (which < 0 || which > templates.size()) return;
 
-                final Template tmp = templates.get(which);
+                final org.wheatgenetics.coordinate.database.Template tmp = templates.get(which);
 
                 Utils.confirm(Main.this, getString(R.string.delete_template),
                     getString(R.string.delete_template_warning), new Runnable() {
@@ -943,26 +958,28 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.show();
     }
 
-    private void copyTemplate(Template tmp) throws JSONException {
-        mId = tmp.id;
-        mTemplate = tmp.title;
-        mType = tmp.type;
-        mRows = tmp.rows;
-        mCols = tmp.cols;
+    private void copyTemplate(final org.wheatgenetics.coordinate.database.Template template)
+    throws org.json.JSONException
+    {
+        mId = template.id;
+        this.template = template.title;
+        this.type = template.type;
+        mRows = template.rows;
+        mCols = template.cols;
 
-        mExcludeCells = Utils.jsonToPoints(tmp.ecells);
+        this.excludeCells = Utils.jsonToPoints(template.ecells);
 
-        mExcludeCols = Utils.jsonToList(tmp.ecols);
-        mExcludeRows = Utils.jsonToList(tmp.erows);
+        mExcludeCols = Utils.jsonToIntegerList(template.ecols);     // throws org.json.JSONException
+        mExcludeRows = Utils.jsonToIntegerList(template.erows);     // throws org.json.JSONException
 
-        this.nonNullOptionalFields = new NonNullOptionalFields(tmp.options); // throws JSONException
+        this.nonNullOptionalFields = new NonNullOptionalFields(template.options); // throws org.json.JSONException
 
-        mRowNumbering = tmp.rnumbering == 1;
-        mColNumbering = tmp.cnumbering == 1;
+        mRowNumbering = template.rnumbering == 1;
+        mColNumbering = template.cnumbering == 1;
     }
 
     private void inputTemplateNew() {
-        mExcludeCells = new ArrayList<>();
+        this.excludeCells = new ArrayList<>();
         mExcludeRows  = new ArrayList<>();
         mExcludeCols  = new ArrayList<>();
 
@@ -994,7 +1011,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 final String scols = colsEdit.getText().toString().trim();
                 final String srows = rowsEdit.getText().toString().trim();
 
-                mTemplate = sname;
+                org.wheatgenetics.coordinate.activities.Main.this.template = sname;
                 mRows     = Utils.getInteger(srows);
                 mCols     = Utils.getInteger(scols);
 
@@ -1108,7 +1125,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
 
         final Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(mTemplate);
+        builder.setTitle(this.template);
         builder.setView(gridView);
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
@@ -1219,7 +1236,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
 
         final Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(mTemplate);
+        builder.setTitle(this.template);
         builder.setView(gridView);
         builder.setCancelable(false);
         builder.setPositiveButton(getString(R.string.create),
@@ -1433,13 +1450,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             public void onClick(DialogInterface dialog, int id) {
                 final String str = cellsEdit.getText().toString();
 
-                mExcludeCells = new ArrayList<>();
+                org.wheatgenetics.coordinate.activities.Main.this.excludeCells = new ArrayList<>();
 
                 final int cells = Utils.getInteger(str);
                 if (cells > 0)
                     for (int i = 0; i < cells; i++) {
                         final Point point = new Point(randomBox(mCols), randomBox(mRows));
-                        mExcludeCells.add(point); // FIXME check exclusivity
+                        org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(point); // FIXME check exclusivity
                     }
                 else inputExcludeInput();
 
@@ -1529,28 +1546,28 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                     final Grid grd = new Grid();
                     if (grd.get(id)) {
-                        mTemplate  = grd.templateTitle;
+                        org.wheatgenetics.coordinate.activities.Main.this.template = grd.templateTitle;
                         mGrid      = grd.id;
                         mGridTitle = grd.title;
-                        mType      = grd.templateType;
+                        org.wheatgenetics.coordinate.activities.Main.this.type     = grd.templateType;
                         mRows      = grd.rows;
                         mCols      = grd.cols;
 
-                        final Template tmp = new Template();
+                        final org.wheatgenetics.coordinate.database.Template template = new org.wheatgenetics.coordinate.database.Template();
 
-                        if (tmp.get(grd.templateId)) {
+                        if (template.get(grd.templateId)) {
                             try
                             {
                                 nonNullOptionalFields =
-                                    new NonNullOptionalFields(tmp.options);  // throws JSONException
+                                    new NonNullOptionalFields(template.options);  // throws JSONException
                             }
                             catch (JSONException e) {}
 
-                            mRowNumbering = tmp.rnumbering == 1;
-                            mColNumbering = tmp.cnumbering == 1;
+                            mRowNumbering = template.rnumbering == 1;
+                            mColNumbering = template.cnumbering == 1;
                         }
 
-                        mExcludeCells.clear();
+                        org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
                         mExcludeRows.clear();
                         mExcludeCols.clear();
 
@@ -1567,24 +1584,24 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private void loadGrid(long id) throws JSONException {
         Grid grd = new Grid();
         if (grd.get(id)) {
-            mTemplate = grd.templateTitle;
+            this.template = grd.templateTitle;
             mGrid = grd.id;
             mGridTitle = grd.title;
-            mType = grd.templateType;
+            this.type = grd.templateType;
             mRows = grd.rows;
             mCols = grd.cols;
 
-            mExcludeCells.clear();
+            this.excludeCells.clear();
             mExcludeRows.clear();
             mExcludeCols.clear();
 
-            Template tmp = new Template();
+            org.wheatgenetics.coordinate.database.Template template = new org.wheatgenetics.coordinate.database.Template();
 
-            if (tmp.get(grd.templateId)) {
-                this.nonNullOptionalFields = new NonNullOptionalFields(tmp.options); // throws JSON-
+            if (template.get(grd.templateId)) {
+                this.nonNullOptionalFields = new NonNullOptionalFields(template.options); // throws JSON-
                                                                                      //  Exception
-                mRowNumbering = tmp.rnumbering == 1;
-                mColNumbering = tmp.cnumbering == 1;
+                mRowNumbering = template.rnumbering == 1;
+                mColNumbering = template.cnumbering == 1;
             }
 
             populateTemplate();
@@ -1595,8 +1612,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private boolean isExcludedCell(int r, int c) {
-        for (int i = 0; i < mExcludeCells.size(); i++) {
-            Point point = mExcludeCells.get(i);
+        for (int i = 0; i < this.excludeCells.size(); i++) {
+            Point point = this.excludeCells.get(i);
             if (point.equals(c, r)) return true;
         }
 
@@ -1743,31 +1760,31 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    private boolean deleteTemplate(long id) {
+    private boolean deleteTemplate(final long id)
+    {
         boolean ret;
-        Template tmp = new Template();
-        if (!tmp.get(id)) {
-            return false;
-        }
+        org.wheatgenetics.coordinate.database.Template template = new org.wheatgenetics.coordinate.database.Template();
+        if (!template.get(id)) return false;
 
-        if (tmp.type == TYPE_SEED || tmp.type == TYPE_DNA) {
+        if (template.type == TYPE_SEED || template.type == TYPE_DNA)
+        {
             makeToast(getString(R.string.template_not_deleted_default));
             return false;
         }
 
         Grid grid = new Grid();
         Cursor cursor = grid.loadByTemplate(id);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
+        if (cursor != null)
+        {
+            while (cursor.moveToNext())
+            {
                 Grid g = new Grid();
-                if (g.copy(cursor)) {
-                    deleteGrid(g.id);
-                }
+                if (g.copy(cursor)) deleteGrid(g.id);
             }
             cursor.close();
         }
 
-        ret = tmp.delete(id);
+        ret = template.delete(id);
         return ret;
     }
 
@@ -1792,33 +1809,36 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return grid.insert();
     }
 
-    private void newTemplate(int type) throws JSONException {
-        mType = type;
-        Template temp = new Template();
-        temp.title = mTemplate;
-        temp.type = type;
-        temp.cols = mCols;
-        temp.rows = mRows;
+    private void newTemplate(final int type) throws org.json.JSONException
+    {
+        this.type = type;
+        final org.wheatgenetics.coordinate.database.Template template = new org.wheatgenetics.coordinate.database.Template();
+        template.title = this.template;
+        template.type = type;
+        template.cols = mCols;
+        template.rows = mRows;
 
-        temp.ecells = Utils.pointToJson(mExcludeCells);
-        temp.ecols = Utils.listToJson(mExcludeCols);
-        temp.erows = Utils.listToJson(mExcludeRows);
+        template.ecells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException
+        template.ecols = Utils.integerListToJson(mExcludeCols);
+        template.erows = Utils.integerListToJson(mExcludeRows);
 
-        temp.options = this.nonNullOptionalFields.toJson();                  // throws JSONException
+        template.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException
 
-        temp.cnumbering = mColNumbering ? 1 : 0;
-        temp.rnumbering = mRowNumbering ? 1 : 0;
+        template.cnumbering = mColNumbering ? 1 : 0;
+        template.rnumbering = mRowNumbering ? 1 : 0;
 
-        temp.stamp = System.currentTimeMillis();
+        template.stamp = System.currentTimeMillis();
 
-        long id = temp.insert();
-        if (id > 0) {
+        long id = template.insert();
+        if (id > 0)
+        {
             // deleteTemplate(mId); //TODO
 
             mId = id;
 
             long grid = createGrid(mId);
-            if (grid > 0) {
+            if (grid > 0)
+            {
                 mGrid = grid;
 
                 SharedPreferences.Editor ed = ep.edit();
@@ -1827,16 +1847,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 populateTemplate();
                 showTemplateUI();
-            } else {
-                Utils.alert(this, Coordinate.appName, getString(R.string.create_grid_fail));
             }
-        } else {
-            Utils.alert(this, Coordinate.appName, getString(R.string.create_template_fail));
+            else Utils.alert(this, Coordinate.appName, getString(R.string.create_grid_fail));
         }
+        else Utils.alert(this, Coordinate.appName, getString(R.string.create_template_fail));
     }
 
     private void loadTemplate(int type) {
-        mType = type;
+        this.type = type;
 
         long grid = createGrid(mId);
         if (grid > 0) {
@@ -1858,7 +1876,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     private void showTemplateUI() {
-        mTextTemplate.setText(mTemplate);
+        mTextTemplate.setText(this.template);
 
         mLayoutMain.setVisibility(View.VISIBLE);
 
@@ -1998,7 +2016,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                     if (data != null && data.equals("exclude")) {
                         setCellState(cell_cnt, STATE_INACTIVE);
-                        mExcludeCells.add(new Point(c, r));
+                        this.excludeCells.add(new Point(c, r));
                     }
 
                     cell_cnt.setOnClickListener(this);
@@ -2081,7 +2099,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                     return;
                 }
 
-                final File path = new File(Constants.EXPORT_PATH, mTemplate);
+                final File path = new File(Constants.EXPORT_PATH, org.wheatgenetics.coordinate.activities.Main.this.template);
                 createDir(path);
 
                 mTask = new DataExporter(Main.this, mId, filename, path.getAbsolutePath());
@@ -2115,7 +2133,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         private String mTempPath;
         private String mTempName;
 
-        private Template mTemplate;
+        private org.wheatgenetics.coordinate.database.Template template;
 
         private String mMsg = null;
 
@@ -2215,15 +2233,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         protected Boolean doInBackground(Void... bparams) {
             boolean ret;
 
-            mTemplate = new Template();
-            if (!mTemplate.get(mTempId)) {
+            template = new org.wheatgenetics.coordinate.database.Template();
+            if (!template.get(mTempId)) {
                 mMsg = getString(R.string.import_template_failed);
                 return false;
             }
 
-            if (mTemplate.type == TYPE_SEED) {
+            if (template.type == TYPE_SEED) {
                 ret = exportSeed();
-            } else if (mTemplate.type == TYPE_DNA) {
+            } else if (template.type == TYPE_DNA) {
                 ret = exportDna();
             } else {
                 ret = exportDefault();
@@ -2261,9 +2279,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 int row;
                 int col;
-                for (int c = 0; c < mTemplate.cols; c++) {
+                for (int c = 0; c < template.cols; c++) {
                     col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
+                    for (int r = 0; r < template.rows; r++) {
                         row = r + 1;
 
                         String data;
@@ -2358,9 +2376,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 csvOutput.endRecord();
 
                 int row, col;
-                for (int c = 0; c < mTemplate.cols; c++) {
+                for (int c = 0; c < template.cols; c++) {
                     col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
+                    for (int r = 0; r < template.rows; r++) {
                         row = r + 1;
 
                         final String rowName = Character.toString((char) ('A' + r));
@@ -2447,9 +2465,9 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 int row;
                 int col;
-                for (int c = 0; c < mTemplate.cols; c++) {
+                for (int c = 0; c < template.cols; c++) {
                     col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
+                    for (int r = 0; r < template.rows; r++) {
                         row = r + 1;
 
                         String data;

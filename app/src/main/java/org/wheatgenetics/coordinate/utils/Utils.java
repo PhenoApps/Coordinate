@@ -198,63 +198,49 @@ public class Utils extends java.lang.Object
         return String.format(Locale.US, "tag_%d_%d", r, c);
     }
 
-    public static String listToJson(List<Integer> list)
+    public static java.lang.String integerListToJson(
+    final java.util.List<java.lang.Integer> integerList)
     {
-        final JSONArray json = new JSONArray();
-        for (int i = 0; i < list.size(); i++)
-        {
-            final Integer intr = list.get(i);
-            if (intr == null) continue;
+        final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-            try { json.put(intr.intValue()); } catch (Exception e) {}
-        }
-
-        return json.toString();
+        assert integerList != null;
+        for (final java.lang.Integer integer: integerList)
+            if (integer != null) jsonArray.put(integer.intValue());
+        return jsonArray.toString();
     }
 
-    public static String pointToJson(final List<Point> list)
+    public static java.lang.String pointListToJson(
+    final java.util.List<android.graphics.Point> pointList) throws org.json.JSONException
     {
-        final JSONArray json = new JSONArray();
-        for (int i = 0; i < list.size(); i++)
+        final org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+        assert pointList != null;
+        for (final android.graphics.Point point: pointList) if (point != null)
         {
-            final Point point = list.get(i);
-            if (point == null) continue;
+            final org.json.JSONObject jsonObject = new org.json.JSONObject();
+            jsonObject.put("row", point.y);                         // throws org.json.JSONException
+            jsonObject.put("col", point.x);                         // throws org.json.JSONException
 
-            try
-            {
-                final JSONObject data = new JSONObject();
-                data.put("row", point.y);
-                data.put("col", point.x);
-
-                json.put(data);
-            }
-            catch (Exception e) {}
+            jsonArray.put(jsonObject);
         }
-
-        return json.toString();
+        return jsonArray.toString();
     }
 
-    public static List<Integer> jsonToList(final String json)
+    public static java.util.List<java.lang.Integer> jsonToIntegerList(final java.lang.String json)
+    throws org.json.JSONException
     {
-        final List<Integer> list = new ArrayList<Integer>();
-
-        try
+        final java.util.List<java.lang.Integer> integerList =
+            new java.util.ArrayList<java.lang.Integer>();
         {
-            final JSONTokener tokener = new JSONTokener(json);
-            final JSONArray   jarr    = (JSONArray) tokener.nextValue();
+            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+            final org.json.JSONArray   jsonArray   =
+                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
 
-            for (int i = 0; i < jarr.length(); i++)
-            {
-                try
-                {
-                    final int value = jarr.getInt(i);
-                    list.add(Integer.valueOf(value));
-                }
-                catch (JSONException e) {}
-            }
-        } catch (JSONException e) {}
-
-        return list;
+            assert jsonArray != null;
+            for (int i = 0; i < jsonArray.length(); i++)
+                integerList.add(jsonArray.getInt(i));               // throws org.json.JSONException
+        }
+        return integerList;
     }
 
     public static List<Point> jsonToPoints(final String json)
