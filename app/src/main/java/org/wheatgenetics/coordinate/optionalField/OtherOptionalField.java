@@ -1,14 +1,14 @@
-package org.wheatgenetics.coordinate.objects;
+package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
  * org.json.JSONException
  * org.json.JSONObject
  *
- * org.wheatgenetics.coordinate.objects.OptionalField
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 
-class OtherOptionalField extends org.wheatgenetics.coordinate.objects.OptionalField
+class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
 
@@ -29,11 +29,14 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.objects.OptionalFi
     }
 
     OtherOptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException,
-    org.wheatgenetics.coordinate.objects.OtherOptionalField.WrongClass
+    org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
         super(jsonObject);
-        if (this.getHint().equals(org.wheatgenetics.coordinate.objects.OptionalField.DATE_HINT))
-            throw new org.wheatgenetics.coordinate.objects.OtherOptionalField.WrongClass();
+
+        final java.lang.String hint = this.getHint();
+        assert hint != null;
+        if (hint.equals(org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT))
+            throw new org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass();
     }
     // endregion
 }

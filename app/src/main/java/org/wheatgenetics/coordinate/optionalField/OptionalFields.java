@@ -1,30 +1,31 @@
-package org.wheatgenetics.coordinate.objects;
+package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * org.wheatgenetics.coordinate.objects.OptionalField
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 
 abstract class OptionalFields extends java.lang.Object
-implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField>
+implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.OptionalField>
 {
     // region Package Type
     static class Iterator extends java.lang.Object
-    implements java.util.Iterator<org.wheatgenetics.coordinate.objects.OptionalField>
+    implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
     {
-        java.util.ArrayList   <org.wheatgenetics.coordinate.objects.OptionalField> arrayList   ;
-        java.util.ListIterator<org.wheatgenetics.coordinate.objects.OptionalField> listIterator;
+        java.util.ArrayList   <org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList;
+        java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
+            listIterator;
 
 
         Iterator(final java.util.ArrayList<
-        org.wheatgenetics.coordinate.objects.OptionalField> arrayList)
+        org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList)
         {
             super();
 
             assert arrayList != null;
             this.arrayList = arrayList;
 
-            final java.util.ListIterator<org.wheatgenetics.coordinate.objects.OptionalField>
+            final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
                 listIterator = this.arrayList.listIterator();
             assert listIterator != null;
             this.listIterator = listIterator;
@@ -38,7 +39,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
             assert this.arrayList    != null;
             while (this.listIterator.hasNext())
             {
-                final org.wheatgenetics.coordinate.objects.OptionalField optionalField =
+                final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField =
                     this.arrayList.get(this.listIterator.nextIndex());
                 if (optionalField != null)
                     return true;
@@ -49,9 +50,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
         }
 
         @Override
-        public org.wheatgenetics.coordinate.objects.OptionalField next()
+        public org.wheatgenetics.coordinate.optionalField.OptionalField next()
         {
-            org.wheatgenetics.coordinate.objects.OptionalField optionalField;
+            org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
 
             assert this.listIterator != null;
             do
@@ -67,16 +68,17 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.objects.OptionalField
 
 
     // region Package Field
-    java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField> arrayList =
-        new java.util.ArrayList<org.wheatgenetics.coordinate.objects.OptionalField>();
+    java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
+        new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>();
     // endregion
 
 
     // region Public java.lang.Iterable<> Method
     @Override
-    public org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator()
+    public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
-        return new org.wheatgenetics.coordinate.objects.OptionalFields.Iterator(this.arrayList);
+        return
+            new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(this.arrayList);
     }
     // endregion
 }

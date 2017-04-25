@@ -74,9 +74,8 @@ import org.wheatgenetics.coordinate.barcodes.IntentResult;
 import org.wheatgenetics.coordinate.csv.CsvWriter;
 import org.wheatgenetics.coordinate.database.Entry;
 import org.wheatgenetics.coordinate.database.Grid;
-import org.wheatgenetics.coordinate.database.Template;
-import org.wheatgenetics.coordinate.objects.NonNullOptionalFields;
-import org.wheatgenetics.coordinate.objects.OptionalField;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.optionalField.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
 import org.wheatgenetics.coordinate.utils.Utils;
 
@@ -134,7 +133,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private List<Integer> mExcludeCols = new ArrayList<>();
     private String        menuMain[];
 
-    private org.wheatgenetics.coordinate.objects.NonNullOptionalFields nonNullOptionalFields;
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
 
     private DataExporter mTask;
     public long          mLastExportGridId = -1;
@@ -145,10 +144,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private LinearLayout parent         ;
     private ScrollView   changeContainer;
 
-    protected org.wheatgenetics.coordinate.objects.CheckedOptionalFields makeCheckedOptionalFields()
+    protected org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields makeCheckedOptionalFields()
     {
-        return new 
-            org.wheatgenetics.coordinate.objects.CheckedOptionalFields(this.nonNullOptionalFields);
+        return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+            this.nonNullOptionalFields);
     }
     
     @Override
@@ -156,7 +155,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         super.onCreate(savedInstanceState);
 
         this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add    ("Plate Id");
         this.nonNullOptionalFields.addDate("Date"    );
 
@@ -774,7 +773,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mColNumbering = true;
 
         this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
         this.nonNullOptionalFields.add    ("Person", /* hint => */ "Person name");
         this.nonNullOptionalFields.addDate("Date"                               );
@@ -796,7 +795,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mColNumbering = false;
 
         this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
         this.nonNullOptionalFields.add("Plate Name"                                          );
         this.nonNullOptionalFields.add("Notes"                                               );
@@ -984,7 +983,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mExcludeCols  = new ArrayList<>();
 
         this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.objects.NonNullOptionalFields();
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add    ("Identification");
         this.nonNullOptionalFields.add    ("Person"        );
         this.nonNullOptionalFields.addDate("Date"          );
@@ -1090,14 +1089,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
-            this.makeCheckedOptionalFields();
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
 
         final ArrayList<EditText> editTextArrayList = new ArrayList<EditText>();
 
         // load options
         assert linearLayout != null;
-        for (final OptionalField optionalField: checkedOptionalFields) {
+        for (final OptionalField optionalField: checkedOptionalFields)
+        {
             final View optionalFieldView =
                 layoutInflater.inflate(R.layout.optional_edit, linearLayout, false);
 
@@ -1201,7 +1201,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         assert gridView != null;
         final LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.optionalLayout);
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields =
             this.makeCheckedOptionalFields();
 
         final ArrayList<EditText> editTextArrayList = new ArrayList<EditText>();
@@ -1921,8 +1921,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         this.mLayoutOptional.removeAllViews();
 
-        final org.wheatgenetics.coordinate.objects.CheckedOptionalFields checkedOptionalFields =
-            this.makeCheckedOptionalFields();
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
         boolean first = true;
         for (final OptionalField optionalField: checkedOptionalFields) {
             final View view =

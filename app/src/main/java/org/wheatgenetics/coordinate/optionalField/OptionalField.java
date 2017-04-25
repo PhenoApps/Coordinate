@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.objects;
+package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
@@ -62,14 +62,14 @@ public abstract class OptionalField extends java.lang.Object
 
         assert jsonObject != null;
         this.setName(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME));
+            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
         this.setValue(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME));
+            org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME));
         this.setHint(jsonObject.optString(
-            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME));
-        this.setChecked(jsonObject.getBoolean(                                        // throws org.
-            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME));   //  json.JSON-
-    }                                                                                 //  Exception
+            org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME));
+        this.setChecked(jsonObject.getBoolean(                      // throws org.json.JSONException
+            org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME));
+    }
     // endregion
 
 
@@ -78,14 +78,17 @@ public abstract class OptionalField extends java.lang.Object
         final org.json.JSONObject jsonObject = new org.json.JSONObject();
 
         jsonObject.put(                                             // throws org.json.JSONException
-            org.wheatgenetics.coordinate.objects.OptionalField.NAME_JSON_NAME, this.getName());
+            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME,
+            this.getName()                                                         );
         jsonObject.put(                                             // throws org.json.JSONException
-            org.wheatgenetics.coordinate.objects.OptionalField.VALUE_JSON_NAME, this.getValue());
+            org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME,
+            this.getValue()                                                         );
         jsonObject.put(                                             // throws org.json.JSONException
-            org.wheatgenetics.coordinate.objects.OptionalField.HINT_JSON_NAME, this.getHint());
+            org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME,
+            this.getHint()                                                         );
         jsonObject.put(                                             // throws org.json.JSONException
-            org.wheatgenetics.coordinate.objects.OptionalField.CHECKED_JSON_NAME,
-            this.getChecked());
+            org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME,
+            this.getChecked()                                                         );
 
         return jsonObject;
     }

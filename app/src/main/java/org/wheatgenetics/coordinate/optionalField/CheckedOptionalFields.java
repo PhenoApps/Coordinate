@@ -1,18 +1,18 @@
-package org.wheatgenetics.coordinate.objects;
+package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * org.wheatgenetics.coordinate.objects.OptionalField
- * org.wheatgenetics.coordinate.objects.OptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
+ * org.wheatgenetics.coordinate.optionalField.OptionalFields
  */
 
-public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.OptionalFields
+public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 {
     // region Package Type
-    static class Iterator extends org.wheatgenetics.coordinate.objects.OptionalFields.Iterator
+    static class Iterator extends org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
     {
         Iterator(final java.util.ArrayList<
-        org.wheatgenetics.coordinate.objects.OptionalField> arrayList) { super(arrayList); }
+        org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList) { super(arrayList); }
 
 
         @Override
@@ -22,7 +22,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.
             assert this.arrayList    != null;
             while (super.hasNext())
             {
-                final org.wheatgenetics.coordinate.objects.OptionalField optionalField =
+                final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField =
                     this.arrayList.get(this.listIterator.nextIndex());
                 assert optionalField != null;
                 if (optionalField.getChecked())
@@ -34,9 +34,9 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.
         }
 
         @Override
-        public org.wheatgenetics.coordinate.objects.OptionalField next()
+        public org.wheatgenetics.coordinate.optionalField.OptionalField next()
         {
-            org.wheatgenetics.coordinate.objects.OptionalField optionalField;
+            org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
 
             do
                 optionalField = super.next();
@@ -50,7 +50,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.
     // region Public Methods
     // region Public Constructor Method
     public CheckedOptionalFields(
-    final org.wheatgenetics.coordinate.objects.OptionalFields optionalFields)
+    final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields)
     {
         super();
 
@@ -62,10 +62,10 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.objects.
 
     // region Public Overridden Method
     @Override
-    public org.wheatgenetics.coordinate.objects.OptionalFields.Iterator iterator()
+    public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
-        return
-            new org.wheatgenetics.coordinate.objects.CheckedOptionalFields.Iterator(this.arrayList);
+        return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields.Iterator(
+            this.arrayList);
     }
     // endregion
     // endregion
