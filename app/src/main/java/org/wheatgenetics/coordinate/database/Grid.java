@@ -3,12 +3,14 @@ package org.wheatgenetics.coordinate.database;
 /**
  * Uses:
  * android.content.ContentValues
+ * android.content.Context
  * android.database.Cursor
  * android.util.Log
- * org.wheatgenetics.coordinate.Coordinate
+ *
+ * org.wheatgenetics.coordinate.database.Table
  */
 
-public class Grid extends java.lang.Object
+public class Grid extends org.wheatgenetics.coordinate.database.Table
 {
     public long             id, template, templateId;
     public java.lang.String templateTitle           ;
@@ -16,9 +18,9 @@ public class Grid extends java.lang.Object
     public java.lang.String title                   ;
     public long             stamp                   ;
 
-    public Grid()
+    public Grid(final android.content.Context context) throws java.lang.Exception
     {
-        super();
+        super(context, org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
 
         this.id       = 0;
         this.template = 0;
@@ -33,9 +35,10 @@ public class Grid extends java.lang.Object
         this.stamp = 0;
     }
 
-    public Grid(final long template, final long stamp)                        // TODO: Remove later.
+    public Grid(final android.content.Context context, final long template, final long stamp)  // TODO: Remove later.
+    throws java.lang.Exception
     {
-        super();
+        super(context, org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
 
         this.id       = 0       ;
         this.template = template;
@@ -47,7 +50,7 @@ public class Grid extends java.lang.Object
     public java.lang.String toString()
     {
         return java.lang.String.format(
-                "id: %02d template: %02d stamp: %02d", this.id, this.template, this.stamp);
+            "id: %02d template: %02d stamp: %02d", this.id, this.template, this.stamp);
     }
 
 
@@ -55,8 +58,8 @@ public class Grid extends java.lang.Object
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "grids";
     private static final java.lang.String
-            ID_FIELD_NAME    = "_id"  , TEMPLATE_FIELD_NAME = "temp" ,
-            TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME    = "stamp";
+        ID_FIELD_NAME    = "_id"  , TEMPLATE_FIELD_NAME = "temp" ,
+        TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME    = "stamp";
     // endregion
 
 
@@ -65,7 +68,7 @@ public class Grid extends java.lang.Object
         final android.content.ContentValues contentValues = new android.content.ContentValues();
 
         contentValues.put(
-                org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME, this.template);
+            org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME, this.template);
         contentValues.put(org.wheatgenetics.coordinate.database.Grid.TITLE_FIELD_NAME, this.title);
         contentValues.put(org.wheatgenetics.coordinate.database.Grid.STAMP_FIELD_NAME, this.stamp);
 
@@ -78,13 +81,13 @@ public class Grid extends java.lang.Object
         try
         {
             this.id = cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME));
+                org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME));
             this.template = cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME));
+                org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Grid.TITLE_FIELD_NAME));
+                org.wheatgenetics.coordinate.database.Grid.TITLE_FIELD_NAME));
             this.stamp = cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Grid.STAMP_FIELD_NAME));
+                org.wheatgenetics.coordinate.database.Grid.STAMP_FIELD_NAME));
 
             return true;
         }
@@ -97,7 +100,7 @@ public class Grid extends java.lang.Object
         android.database.Cursor cursor = null;
         try
         {
-            cursor = org.wheatgenetics.coordinate.Coordinate.rawQuery(
+            cursor = this.rawQuery(
                 "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, " +
                     "templates.title as templateTitle, templates._id as templateId, templates.rows, templates.cols from grids, templates where templates._id = grids.temp and grids." +
                     org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME + "=" + id);
@@ -122,25 +125,22 @@ public class Grid extends java.lang.Object
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.queryAll(
-            org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
+        return this.queryAll();
     }
 
     public long insert()
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg(
             "Inserting into table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.insert(
-            org.wheatgenetics.coordinate.database.Grid.TABLE_NAME, this.getValues());
+        return this.insert(this.getValues());
     }
 
     public boolean update()                                                   // TODO: Remove later.
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.Grid.TABLE_NAME + " on id = " + id);
-        return org.wheatgenetics.coordinate.Coordinate.update(
-            /* tableName     => */ org.wheatgenetics.coordinate.database.Grid.TABLE_NAME,
-            /* contentValues => */ this.getValues()                                     ,
+        return this.update(
+            /* contentValues => */ this.getValues(),
             /* whereClause   => */
                 org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME + "=" + id);
     }
@@ -149,33 +149,30 @@ public class Grid extends java.lang.Object
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Grid.TABLE_NAME + " on id = " + id);
-        return org.wheatgenetics.coordinate.Coordinate.delete(
-            /* tableName   => */ org.wheatgenetics.coordinate.database.Grid.TABLE_NAME,
-            /* whereClause => */
-                org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME + "=" + id);
+        return this.delete(/* whereClause => */
+            org.wheatgenetics.coordinate.database.Grid.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete()                                                   // TODO: Remove later.
     {
-        org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Clearing table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.delete(
-            org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
+        org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg(
+            "Clearing table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
+        return super.delete();
     }
 
     public android.database.Cursor loadByTemplate(final long tmp)
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.Grid.TABLE_NAME + " by entry = " + tmp);
-        return org.wheatgenetics.coordinate.Coordinate.queryAllSelection(
-            /* tableName => */ org.wheatgenetics.coordinate.database.Grid.TABLE_NAME,
-            /* selection => */
-                org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME + " = " + tmp);
+        return this.queryAllSelection(/* selection => */
+            org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME + " = " + tmp);
     }
 
     public android.database.Cursor getAllGrids()
     {
-        org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Loading table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
-        return org.wheatgenetics.coordinate.Coordinate.rawQuery(
+        org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg(
+            "Loading table " + org.wheatgenetics.coordinate.database.Grid.TABLE_NAME);
+        return this.rawQuery(
             "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, templates._id as templateId, templates.rows, templates.cols from grids, templates where templates._id = grids.temp");
     }
 
@@ -210,10 +207,7 @@ public class Grid extends java.lang.Object
 
             final java.lang.String[] arg = new java.lang.String[]{java.lang.String.valueOf(entry)};
 
-            cursor = org.wheatgenetics.coordinate.Coordinate.queryDistinct(
-                /* tableName     => */ org.wheatgenetics.coordinate.database.Grid.TABLE_NAME,
-                /* selection     => */ sel,
-                /* selectionArgs => */ arg);
+            cursor = this.queryDistinct(/* selection => */ sel, /* selectionArgs => */ arg);
             if (cursor != null)
             {
                 boolean ret = false;
@@ -234,10 +228,8 @@ public class Grid extends java.lang.Object
     {
         org.wheatgenetics.coordinate.database.Grid.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Grid.TABLE_NAME + " on id = " + entryId);
-        return org.wheatgenetics.coordinate.Coordinate.delete(
-            /* tableName   => */ org.wheatgenetics.coordinate.database.Grid.TABLE_NAME,
-            /* whereClause => */
-                org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME + "=" + entryId);
+        return this.delete(/* whereClause => */
+            org.wheatgenetics.coordinate.database.Grid.TEMPLATE_FIELD_NAME + "=" + entryId);
     }
     // endregion
 }

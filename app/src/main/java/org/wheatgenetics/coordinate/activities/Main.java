@@ -213,11 +213,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         mLayoutMain.setVisibility(View.INVISIBLE);
 
-        try { this.initDb(); } catch (JSONException e) {}
+        try { this.initDb(); } catch (java.lang.Exception e) {}
         this.createDirs();
 
         if (ep.getLong("CurrentGrid", -1) != -1)
-            try { this.loadGrid(ep.getLong("CurrentGrid", -1)); } catch (JSONException e) {}
+            try { this.loadGrid(ep.getLong("CurrentGrid", -1)); } catch (java.lang.Exception e) {}
         else
             this.menuList();
 
@@ -459,17 +459,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         org.wheatgenetics.coordinate.utils.Utils.confirm(this,
             this.getString(org.wheatgenetics.coordinate.R.string.reset_database        ),
             this.getString(org.wheatgenetics.coordinate.R.string.reset_database_message),
-            new java.lang.Runnable() {
+            new java.lang.Runnable()
+            {
                 @Override
                 public void run()
                 {
                     org.wheatgenetics.coordinate.activities.Main.this.deleteDatabase(
-                        "seedtray1.db");
-                    org.wheatgenetics.coordinate.Coordinate.initializeDb(
-                        org.wheatgenetics.coordinate.activities.Main.this);
-                    org.wheatgenetics.coordinate.activities.Main.this.finish();
+                        "seedtray1.db");                                       // TODO: Encapsulate!
+                    try
+                    {
+                        org.wheatgenetics.coordinate.database.Database.initialize(   // throws java.
+                            org.wheatgenetics.coordinate.activities.Main.this);      //  lang.Excep-
+                        org.wheatgenetics.coordinate.activities.Main.this.finish();  //  tion
+                    }
+                    catch (java.lang.Exception e) {}
                 }},
-            null);
+            null  );
     }
 
     @Override
@@ -502,18 +507,23 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupDrawerContent(final NavigationView navigationView)
+    {
+        assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
+            new NavigationView.OnNavigationItemSelectedListener()
+            {
+                @Override
+                public boolean onNavigationItemSelected(final MenuItem menuItem)
+                {
+                    try { selectDrawerItem(menuItem); }  // throws java.lang.Exception
+                    catch (final java.lang.Exception e) { return false; }
+                    return true;
+                }
+            });
     }
 
-    public void selectDrawerItem(final MenuItem menuItem)
+    public void selectDrawerItem(final MenuItem menuItem) throws java.lang.Exception
     {
         switch (menuItem.getItemId())
         {
@@ -522,7 +532,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 break;
 
             case R.id.menu_import:
-                importGrid();
+                importGrid();  // throws java.lang.Exception
                 break;
 
             case R.id.menu_export:
@@ -630,37 +640,40 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void menuNewGrid() throws JSONException {
-        if (this.grid == 0) {
+    private void menuNewGrid() throws java.lang.Exception
+    {
+        if (this.grid == 0)
             menuList();
-        } else {
-            if (this.grid >= 0 && mLastExportGridId == this.grid) {
-                newGridNow();                                                // throws JSONException
-            } else {
-
-                Utils.confirm(this, Coordinate.appName, getString(R.string.new_grid_warning), new Runnable() {
-                    @Override
-                    public void run() {
-                        exportData();
-                    }
-                }, new Runnable() {
-                    @Override
-                    public void run() {
-                        try { newGridNow(); } catch(JSONException e) {}
-                    }
-                });
+        else
+            if (this.grid >= 0 && mLastExportGridId == this.grid)
+                this.newGridNow();                                     // throws java.lang.Exception
+            else
+            {
+                Utils.confirm(this, Coordinate.appName, getString(R.string.new_grid_warning),
+                    new Runnable()
+                    {
+                        @Override
+                        public void run() { exportData(); }
+                    },
+                    new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try { newGridNow(); } catch (java.lang.Exception e) {}
+                        }
+                    });
             }
-        }
     }
 
-    private void newGridNow() throws org.json.JSONException
+    private void newGridNow() throws org.json.JSONException, java.lang.Exception
     {
         this.deleteGrid(this.grid);
 
         if (this.templateType == TYPE_SEED)
         {
             org.wheatgenetics.coordinate.database.Template template =
-                new org.wheatgenetics.coordinate.database.Template();
+                new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
             if (template.getByType(this.templateType)) this.copyTemplate(template);
 
             this.inputSeed();
@@ -668,7 +681,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         else if (this.templateType == TYPE_DNA)
         {
             org.wheatgenetics.coordinate.database.Template template =
-                new org.wheatgenetics.coordinate.database.Template();
+                new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
             if (template.getByType(this.templateType)) this.copyTemplate(template);
 
             this.excludeCells.clear();
@@ -683,31 +696,41 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    private void menuDeleteGrid() {
-        if (this.grid == 0)
-            return;
+    private void menuDeleteGrid()
+    {
+        if (this.grid == 0) return;
 
-        Utils.confirm(this, Coordinate.appName, getString(R.string.delete_grid_warning), new Runnable() {
-            @Override
-            public void run() {
-                if (deleteGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
+        Utils.confirm(this, Coordinate.appName, getString(R.string.delete_grid_warning),
+            new Runnable()
+            {
+                @Override
+                public void run()
                 {
-                    Toast.makeText(Main.this, getString(R.string.grid_deleted), Toast.LENGTH_LONG).show();
-                    org.wheatgenetics.coordinate.activities.Main.this.grid = 0;
-                    mLayoutOptional.setVisibility(View.INVISIBLE);
-                    mLayoutGrid.setVisibility(View.INVISIBLE);
-                    menuList();
+                    try
+                    {
+                        if (Main.this.deleteGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))  // throw java.lang.Exception
+                        {
+                            Toast.makeText(Main.this, getString(R.string.grid_deleted), Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.grid = 0;
+                            mLayoutOptional.setVisibility(View.INVISIBLE);
+                            mLayoutGrid.setVisibility(View.INVISIBLE);
+                            menuList();
+                        }
+                        else
+                            Toast.makeText(Main.this, getString(R.string.grid_not_deleted), Toast.LENGTH_LONG).show();
+                    }
+                    catch (java.lang.Exception e) {}
                 }
-                else
-                    Toast.makeText(Main.this, getString(R.string.grid_not_deleted), Toast.LENGTH_LONG).show();
-            }
-        }, null);
+            }, null);
     }
 
     @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-            saveData();
+    public boolean onKey(View v, int keyCode, KeyEvent event)
+    {
+        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
+        {
+            try { saveData(); } // throws java.lang.Exception
+            catch (final java.lang.Exception e) {}
             return true;
         }
         return false;
@@ -715,13 +738,17 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            saveData();
+        if (actionId == EditorInfo.IME_ACTION_DONE)
+        {
+            try { saveData(); }  // throws java.lang.Exception
+            catch (final java.lang.Exception e) {}
             return true;
         } else {
             if (event != null) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    saveData();
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                {
+                    try { saveData(); } // throws java.lang.Exception
+                    catch (final java.lang.Exception e) {}
                     return true;
                 }
             }
@@ -774,7 +801,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     }
 
     // Adds default templates to database
-    private void initDb() throws org.json.JSONException
+    private void initDb() throws org.json.JSONException, java.lang.Exception
     {
         this.templateTitle = "Seed Tray";
         this.templateType  = TYPE_SEED;
@@ -825,10 +852,10 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         this.templateTitle = "";
     }
 
-    private boolean createDb(final int type) throws org.json.JSONException
+    private boolean createDb(final int type) throws org.json.JSONException, java.lang.Exception
     {
         final org.wheatgenetics.coordinate.database.Template template =
-            new org.wheatgenetics.coordinate.database.Template();
+            new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
 
         template.title = this.templateTitle;
         template.type  = this.templateType ;
@@ -856,32 +883,38 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return ret;
     }
 
-    public void menuList() {
+    public void menuList()
+    {
         final Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.template_options));
-        builder.setItems(menuMain, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0)
-                    menuTemplateLoad();
-                else
-                    inputTemplateNew();
-            }});
+        builder.setItems(menuMain, new OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (which == 0)
+                        try { menuTemplateLoad(); }  // throws java.lang.Exception
+                        catch (java.lang.Exception e) {}
+                    else
+                        inputTemplateNew();
+                }
+            });
         builder.show();
     }
 
-    private void menuTemplateLoad() {
+    private void menuTemplateLoad() throws java.lang.Exception
+    {
         final List<org.wheatgenetics.coordinate.database.Template> templates = new ArrayList<>();
 
         final org.wheatgenetics.coordinate.database.Template tmp =
-            new org.wheatgenetics.coordinate.database.Template();
+            new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
         final Cursor cursor = tmp.load();
         if (cursor != null)
         {
             while (cursor.moveToNext())
             {
                 final org.wheatgenetics.coordinate.database.Template template =
-                    new org.wheatgenetics.coordinate.database.Template();
+                    new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
                 if (template.copy(cursor)) templates.add(template);
             }
             cursor.close();
@@ -917,24 +950,26 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                             randomBox(org.wheatgenetics.coordinate.activities.Main.this.cols),
                             randomBox(org.wheatgenetics.coordinate.activities.Main.this.rows)));
 
-                    try { inputTemplateInput(MODE_DNA); } catch (JSONException e) {}
+                    try { inputTemplateInput(MODE_DNA); } catch (final java.lang.Exception e) {}
                 }
-                else try { inputTemplateInput(MODE_SAVED); } catch (JSONException e) {}
+                else try { inputTemplateInput(MODE_SAVED); } catch (final java.lang.Exception e) {}
             }});
         builder.show();
     }
 
-    private void menuDeleteTemplate() {
+    private void menuDeleteTemplate() throws java.lang.Exception
+    {
         final List<org.wheatgenetics.coordinate.database.Template> templates = new ArrayList<>();
 
-        final org.wheatgenetics.coordinate.database.Template tmp = new org.wheatgenetics.coordinate.database.Template();
+        final org.wheatgenetics.coordinate.database.Template tmp =
+            new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
         final Cursor cursor = tmp.load();
         if (cursor != null)
         {
             while (cursor.moveToNext())
             {
                 final org.wheatgenetics.coordinate.database.Template template =
-                    new org.wheatgenetics.coordinate.database.Template();
+                    new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
                 if (template.copy(cursor)) templates.add(template);
             }
             cursor.close();
@@ -951,25 +986,38 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         final Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.delete_template));
-        builder.setItems(items, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which < 0 || which > templates.size()) return;
+        builder.setItems(items, new OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (which < 0 || which > templates.size()) return;
 
-                final org.wheatgenetics.coordinate.database.Template tmp = templates.get(which);
+                    final org.wheatgenetics.coordinate.database.Template tmp = templates.get(which);
 
-                Utils.confirm(Main.this, getString(R.string.delete_template),
-                    getString(R.string.delete_template_warning), new Runnable() {
-                        @Override
-                        public void run() {
-                            if (deleteTemplate(tmp.id)) {
-                                Toast.makeText(Main.this, getString(R.string.template_deleted),
-                                    Toast.LENGTH_LONG).show();
-                                menuList();
-                            } else
-                                Toast.makeText(Main.this, getString(R.string.template_not_deleted),
-                                    Toast.LENGTH_LONG).show();
-                        }}, null);
+                    Utils.confirm(Main.this, getString(R.string.delete_template),
+                        getString(R.string.delete_template_warning), new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                try
+                                {
+                                    if (deleteTemplate(tmp.id))
+                                    {
+                                        Toast.makeText(Main.this,
+                                            getString(R.string.template_deleted),
+                                            Toast.LENGTH_LONG).show();
+                                        menuList();
+                                    }
+                                    else
+                                        Toast.makeText(Main.this,
+                                            getString(R.string.template_not_deleted),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                                catch (final java.lang.Exception e) {}
+                            }
+                        }, null);
             }
 
         });
@@ -1091,7 +1139,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         builder.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
-                try { inputTemplateInput(MODE_DEFAULT); } catch (JSONException e) {}
+                try { inputTemplateInput(MODE_DEFAULT); } catch (final java.lang.Exception e) {}
             }});
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -1182,7 +1230,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                 assert dialog != null;
                 dialog.cancel();
-                loadTemplate(TYPE_SEED);
+                try { loadTemplate(TYPE_SEED); } // throws java.lang.Exception
+                catch (final java.lang.Exception e) {}
             }});
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -1195,21 +1244,23 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dlg.show();
     }
 
-    private void tempLoad(final int mode) throws org.json.JSONException
+    private void tempLoad(final int mode) throws org.json.JSONException, java.lang.Exception
     {
         if (mode == MODE_DNA)
             this.loadTemplate(TYPE_DNA);
         else if (mode == MODE_SAVED)
             this.loadTemplate(TYPE_DEFAULT);
         else
-            this.newTemplate(TYPE_DEFAULT);                         // throws org.json.JSONException
+            this.newTemplate(TYPE_DEFAULT);                         // throws org.json.JSONException, java.lang.Exception
     }
 
     //TODO merge this method with the one above
-    private void inputTemplateInput(final int mode) throws JSONException {
+    private void inputTemplateInput(final int mode) throws JSONException, java.lang.Exception
+    {
         assert this.nonNullOptionalFields != null;
-        if (this.nonNullOptionalFields.isEmpty()) {
-            tempLoad(mode);                                                  // throws JSONException
+        if (this.nonNullOptionalFields.isEmpty())
+        {
+            this.tempLoad(mode);                                             // throws JSONException, java.lang.Exception
             return;
         }
 
@@ -1278,7 +1329,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                                     Utils.toast(Main.this,
                                         optionalField.getHint() + getString(R.string.not_empty));
                                     try { inputTemplateInput(MODE_DNA); }
-                                    catch (JSONException e) {}
+                                    catch (final java.lang.Exception e) {}
                                     return;
                                 }
                             }
@@ -1297,7 +1348,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                     assert dialog != null;
                     dialog.cancel();
-                    try { tempLoad(mode); } catch (JSONException e) {}
+                    try { tempLoad(mode); } catch (final java.lang.Exception e) {}
                 }});
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -1522,14 +1573,14 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         dlg.show();
     }
 
-    private void importGrid()
+    private void importGrid() throws java.lang.Exception
     {
         String names[]   = new String[1];
         long   indexes[] = new long  [1];
 
         int pos = 0;
 
-        final Grid   grid       = new Grid()        ;
+        final Grid   grid       = new Grid(this)    ;  // throws java.lang.Exception
         final Cursor gridCursor = grid.getAllGrids();
         if (gridCursor != null)
         {
@@ -1540,7 +1591,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
             while (gridCursor.moveToNext())
             {
-                final Grid tmpG = new Grid();
+                final Grid tmpG = new Grid(this);  // throws java.lang.Exception
                 if (tmpG.copyAll(gridCursor))
                 {
                     names[pos] = String.format(
@@ -1562,61 +1613,70 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         final Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.import_grid));
-        builder.setItems(names, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which < gridIds.length) {
-                    final long id = gridIds[which];
-
-                    final SharedPreferences.Editor ed = ep.edit();
-                    ed.putLong("CurrentGrid", id);
-                    ed.apply();
-
-                    final Grid grd = new Grid();
-                    if (grd.get(id))
+        builder.setItems(names, new OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (which < gridIds.length)
                     {
-                        org.wheatgenetics.coordinate.activities.Main.this.templateTitle =
-                            grd.templateTitle;
-                        org.wheatgenetics.coordinate.activities.Main.this.grid = grd.id;
-                        mGridTitle = grd.title;
-                        org.wheatgenetics.coordinate.activities.Main.this.templateType =
-                            grd.templateType;
-                        org.wheatgenetics.coordinate.activities.Main.this.rows = grd.rows;
-                        org.wheatgenetics.coordinate.activities.Main.this.cols = grd.cols;
+                        final long id = gridIds[which];
 
-                        final org.wheatgenetics.coordinate.database.Template template =
-                            new org.wheatgenetics.coordinate.database.Template();
+                        final SharedPreferences.Editor ed = ep.edit();
+                        ed.putLong("CurrentGrid", id);
+                        ed.apply();
 
-                        if (template.get(grd.templateId))
+                        try
                         {
-                            try
+                            final Grid grd = new Grid(Main.this);          // throws java.lang.Exception
+                            if (grd.get(id))
                             {
-                                nonNullOptionalFields =
-                                    new NonNullOptionalFields(template.options);  // throws org.json.JSONException
+                                org.wheatgenetics.coordinate.activities.Main.this.templateTitle =
+                                    grd.templateTitle;
+                                org.wheatgenetics.coordinate.activities.Main.this.grid = grd.id;
+                                mGridTitle = grd.title;
+                                org.wheatgenetics.coordinate.activities.Main.this.templateType =
+                                    grd.templateType;
+                                org.wheatgenetics.coordinate.activities.Main.this.rows = grd.rows;
+                                org.wheatgenetics.coordinate.activities.Main.this.cols = grd.cols;
+
+                                final org.wheatgenetics.coordinate.database.Template template =
+                                    new org.wheatgenetics.coordinate.database.Template(Main.this);  // throws java.lang.Exception
+
+                                if (template.get(grd.templateId))
+                                {
+                                    try
+                                    {
+                                        nonNullOptionalFields =
+                                            new NonNullOptionalFields(template.options);  // throws org.json.JSONException
+                                    }
+                                    catch (JSONException e) {}
+
+                                    org.wheatgenetics.coordinate.activities.Main.this.rowNumbering = template.rnumbering == 1;
+                                    org.wheatgenetics.coordinate.activities.Main.this.colNumbering = template.cnumbering == 1;
+                                }
+
+                                org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
+                                org.wheatgenetics.coordinate.activities.Main.this.excludeRows.clear();
+                                org.wheatgenetics.coordinate.activities.Main.this.excludeCols.clear();
+
+                                populateTemplate();
+                                showTemplateUI();
                             }
-                            catch (JSONException e) {}
-
-                            org.wheatgenetics.coordinate.activities.Main.this.rowNumbering = template.rnumbering == 1;
-                            org.wheatgenetics.coordinate.activities.Main.this.colNumbering = template.cnumbering == 1;
+                            else
+                                Utils.alert(Main.this, Coordinate.appName, getString(R.string.import_grid_failed));
                         }
-
-                        org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
-                        org.wheatgenetics.coordinate.activities.Main.this.excludeRows.clear();
-                        org.wheatgenetics.coordinate.activities.Main.this.excludeCols.clear();
-
-                        populateTemplate();
-                        showTemplateUI();
-                    } else Utils.alert(Main.this, Coordinate.appName, getString(R.string.import_grid_failed));
-
-                    dialog.cancel();
+                        catch (final java.lang.Exception e) {}
+                        dialog.cancel();
+                    }
                 }
-            }});
+            });
         builder.show();
     }
 
-    private void loadGrid(final long id) throws org.json.JSONException
+    private void loadGrid(final long id) throws org.json.JSONException, java.lang.Exception
     {
-        final Grid grd = new Grid();
+        final Grid grd = new Grid(this);  // throws java.lang.Exception
         if (grd.get(id))
         {
             this.templateTitle = grd.templateTitle;
@@ -1631,7 +1691,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             this.excludeCols.clear();
 
             org.wheatgenetics.coordinate.database.Template template =
-                new org.wheatgenetics.coordinate.database.Template();
+                new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
 
             if (template.get(grd.templateId))
             {
@@ -1667,14 +1727,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return rand.nextInt(size - 1) + 1;
     }
 
-    private void saveData() {
+    private void saveData() throws java.lang.Exception
+    {
         View view;
 
         String data = mEditData.getText().toString().trim();
 
         boolean ret;
 
-        Entry entry = new Entry();
+        final Entry entry = new Entry(this);  // throws java.lang.Exception
         if (entry.getByGrid(this.grid, mCurRow, mCurCol))
         {
             entry.value = data;
@@ -1715,18 +1776,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                 mCurCol = this.rows;
 
                 endOfCell = true;
-            } else {
-                mCurRow = 1;
             }
+            else mCurRow = 1;
         }
 
-        if (!endOfCell) {
-            if (isExcludedRow(mCurRow) || isExcludedCol(mCurCol) || isExcludedCell(mCurRow, mCurCol)) {
-                if (!getNextFreeCell()) {
-                    endOfCell = true;
-                }
-            }
-        }
+        if (!endOfCell)
+            if (isExcludedRow(mCurRow) || isExcludedCol(mCurCol) || isExcludedCell(mCurRow, mCurCol))
+                if (!getNextFreeCell()) endOfCell = true;
 
         data = getDataEntry(this.grid, mCurRow, mCurCol);
 
@@ -1738,16 +1794,15 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         mEditData.requestFocus();
 
         view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
-        if (view != null) {
-            if (!isExcludedRow(mCurRow) && !isExcludedCol(mCurCol) && !isExcludedCell(mCurRow, mCurCol)) {
+        if (view != null)
+            if (!isExcludedRow(mCurRow) && !isExcludedCol(mCurCol) && !isExcludedCell(mCurRow, mCurCol))
                 setCellState(view, STATE_ACTIVE);
-            }
-        }
 
         resetCurrentCell();
         curCell = view;
 
-        if (endOfCell) {
+        if (endOfCell)
+        {
             Utils.alert(this, Coordinate.appName, getString(R.string.grid_filled));
             completeSound();
         }
@@ -1798,11 +1853,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    private boolean deleteTemplate(final long id)
+    private boolean deleteTemplate(final long id) throws java.lang.Exception
     {
         boolean ret;
         org.wheatgenetics.coordinate.database.Template template =
-            new org.wheatgenetics.coordinate.database.Template();
+            new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
         if (!template.get(id)) return false;
 
         if (template.type == TYPE_SEED || template.type == TYPE_DNA)
@@ -1811,13 +1866,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             return false;
         }
 
-        Grid grid = new Grid();
-        Cursor cursor = grid.loadByTemplate(id);
+        final Grid grid = new Grid(this);  // throws java.lang.Exception
+        final Cursor cursor = grid.loadByTemplate(id);
         if (cursor != null)
         {
             while (cursor.moveToNext())
             {
-                Grid g = new Grid();
+                final Grid g = new Grid(this);  // throws java.lang.Exception
                 if (g.copy(cursor)) deleteGrid(g.id);
             }
             cursor.close();
@@ -1827,20 +1882,22 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return ret;
     }
 
-    private boolean deleteGrid(long id) {
+    private boolean deleteGrid(long id) throws java.lang.Exception
+    {
         boolean ret;
 
-        Grid grid = new Grid();
+        final Grid grid = new Grid(this);  // throws java.lang.Exception
         ret = grid.delete(id);
 
-        Entry entry = new Entry();
+        final Entry entry = new Entry(this);  // throws java.lang.Exception
         entry.deleteByGrid(id);
 
         return ret;
     }
 
-    private long createGrid(long template) {
-        Grid grid = new Grid();
+    private long createGrid(long template) throws java.lang.Exception
+    {
+        final Grid grid = new Grid(this);  // throws java.lang.Exception
         grid.template = template;
         grid.stamp = System.currentTimeMillis();
         assert this.nonNullOptionalFields != null;
@@ -1848,11 +1905,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         return grid.insert();
     }
 
-    private void newTemplate(final int templateType) throws org.json.JSONException
+    private void newTemplate(final int templateType) throws org.json.JSONException, java.lang.Exception
     {
         this.templateType = templateType;
         final org.wheatgenetics.coordinate.database.Template template =
-            new org.wheatgenetics.coordinate.database.Template();
+            new org.wheatgenetics.coordinate.database.Template(this);  // throws java.lang.Exception
         template.title = this.templateTitle;
         template.type  = templateType;
         template.cols  = this.cols;
@@ -1893,10 +1950,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         else Utils.alert(this, Coordinate.appName, getString(R.string.create_template_fail));
     }
 
-    private void loadTemplate(final int templateType) {
+    private void loadTemplate(final int templateType) throws java.lang.Exception
+    {
         this.templateType = templateType;
 
-        long grid = createGrid(this.id);
+        long grid = createGrid(this.id);  // throws java.lang.Exception
         if (grid > 0)
         {
             this.grid = grid;
@@ -2047,9 +2105,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                         curCell = cell_cnt;
                     }
 
-                    if (excludedRow || excludedCol || isExcludedCell(r, c)) {
+                    if (excludedRow || excludedCol || isExcludedCell(r, c))
+                    {
                         setCellState(cell_cnt, STATE_INACTIVE);
-                        saveExcludedCell(r, c);
+                        try { saveExcludedCell(r, c); }  // throws java.lang.Exception
+                        catch (final java.lang.Exception e) {}
                     }
 
                     if (data != null && data.equals("exclude")) {
@@ -2068,11 +2128,11 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    private void saveExcludedCell(int r, int c) {
-
+    private void saveExcludedCell(int r, int c) throws java.lang.Exception
+    {
         boolean ret;
 
-        Entry entry = new Entry();
+        final Entry entry = new Entry(this);  // throws java.lang.Exception
         if (entry.getByGrid(this.grid, r, c))
         {
             entry.value = "exclude";
@@ -2097,10 +2157,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     private String getDataEntry(long grid, int r, int c) {
         String data = null;
 
-        Entry entry = new Entry();
-        if (entry.getByGrid(grid, r, c)) {
-            data = entry.value;
+        try
+        {
+            final Entry entry = new Entry(this);  // throws java.lang.Exception
+            if (entry.getByGrid(grid, r, c)) data = entry.value;
         }
+        catch (final java.lang.Exception e) {}
 
         return data;
     }
@@ -2218,47 +2280,59 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            if (mDlg != null && mDlg.isShowing()) {
+        protected void onPostExecute(final Boolean result)
+        {
+            if (mDlg != null && mDlg.isShowing())
+            {
                 mDlg.dismiss();
                 mDlg = null;
             }
 
-            //TODO when grid is reset, make a new one
-            if (result != null && result) {
+            // TODO when grid is reset, make a new one
+            if (result != null && result)
+            {
                 mLastExportGridId = org.wheatgenetics.coordinate.activities.Main.this.grid;
-                Utils.alert(mContext, Coordinate.appName, getString(R.string.export_success), new Runnable() {
-                    @Override
-                    public void run() {
-                        Utils.confirm(mContext, Coordinate.appName, getString(R.string.clear_grid),
-                                new Runnable() {
+                Utils.alert(mContext, Coordinate.appName, getString(R.string.export_success),
+                    new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Utils.confirm(mContext, Coordinate.appName,
+                                getString(R.string.clear_grid), new Runnable()
+                                {
                                     @Override
-                                    public void run() {
-                                        Entry entry = new Entry();
-                                        if (entry.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
+                                    public void run()
+                                    {
+                                        try
                                         {
-                                            populateTemplate();
-                                            showTemplateUI();
+                                            final Entry entry = new Entry(Main.this);  // throws java.lang.Exception
+                                            if (entry.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
+                                            {
+                                                populateTemplate();
+                                                showTemplateUI();
+                                            }
+                                            else Utils.toast(mContext, getString(R.string.clear_fail));
                                         }
-                                        else Utils.toast(mContext, getString(R.string.clear_fail));
-
+                                        catch (java.lang.Exception e)
+                                        {
+                                            Utils.toast(mContext, getString(R.string.clear_fail));
+                                            return;
+                                        }
                                         share();
                                     }
                                 },
-                                new Runnable() {
-
+                                new Runnable()
+                                {
                                     @Override
-                                    public void run() {
-                                        share();
-                                    }
-
+                                    public void run() { share(); }
                                 });
                     }
                 });
-            } else {
-                if (mMsg == null)
-                    mMsg = getString(R.string.export_no_data);
-
+            }
+            else
+            {
+                if (mMsg == null) mMsg = getString(R.string.export_no_data);
                 Utils.alert(mContext, getString(R.string.export), mMsg);
             }
         }
@@ -2274,22 +2348,31 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
 
         @Override
-        protected Boolean doInBackground(Void... bparams) {
+        protected Boolean doInBackground(Void... bparams)
+        {
             boolean ret;
 
-            template = new org.wheatgenetics.coordinate.database.Template();
-            if (!template.get(mTempId)) {
+            try
+            {
+                template = new org.wheatgenetics.coordinate.database.Template(Main.this);  // throws java.lang.Exception
+            }
+            catch (java.lang.Exception e)
+            {
+                mMsg = getString(R.string.import_template_failed);
+                return false;
+            }
+            if (!template.get(mTempId))
+            {
                 mMsg = getString(R.string.import_template_failed);
                 return false;
             }
 
-            if (template.type == TYPE_SEED) {
+            if (template.type == TYPE_SEED)
                 ret = exportSeed();
-            } else if (template.type == TYPE_DNA) {
+            else if (template.type == TYPE_DNA)
                 ret = exportDna();
-            } else {
+            else
                 ret = exportDefault();
-            }
 
             return ret;
         }
@@ -2555,13 +2638,17 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if (scanResult != null) {
-            String barcodeText = scanResult.getContents();
+        assert scanResult != null;
+        if (scanResult != null)
+        {
+            final String barcodeText = scanResult.getContents();
             mEditData.setText(barcodeText);
-            saveData();
+            try { this.saveData(); }  // throws java.lang.Exception
+            catch (final java.lang.Exception e) {}
         }
     }
 
