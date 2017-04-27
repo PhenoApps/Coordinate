@@ -72,7 +72,7 @@ import org.wheatgenetics.coordinate.Coordinate;
 import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
 import org.wheatgenetics.coordinate.barcodes.IntentResult;
 import org.wheatgenetics.coordinate.csv.CsvWriter;
-import org.wheatgenetics.coordinate.database.Entry;
+import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.Grid;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.optionalField.OptionalField;
@@ -1721,19 +1721,19 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         boolean ret;
 
-        final Entry entry = new Entry(this);
-        if (entry.getByGrid(this.grid, mCurRow, mCurCol))
+        final EntriesTable entriesTable = new EntriesTable(this);
+        if (entriesTable.getByGrid(this.grid, mCurRow, mCurCol))
         {
-            entry.value = data;
-            ret = entry.update();
+            entriesTable.value = data;
+            ret = entriesTable.update();
         }
         else
         {
-            entry.grid = this.grid;
-            entry.row = mCurRow;
-            entry.col = mCurCol;
-            entry.value = data;
-            ret = entry.insert() > 0;
+            entriesTable.grid = this.grid;
+            entriesTable.row = mCurRow;
+            entriesTable.col = mCurCol;
+            entriesTable.value = data;
+            ret = entriesTable.insert() > 0;
         }
 
         if (!ret)
@@ -1878,8 +1878,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
         final Grid grid = new Grid(this);
         ret = grid.delete(id);
 
-        final Entry entry = new Entry(this);
-        entry.deleteByGrid(id);
+        final EntriesTable entriesTable = new EntriesTable(this);
+        entriesTable.deleteByGrid(id);
 
         return ret;
     }
@@ -2125,19 +2125,19 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     {
         boolean ret;
 
-        final Entry entry = new Entry(this);
-        if (entry.getByGrid(this.grid, r, c))
+        final EntriesTable entriesTable = new EntriesTable(this);
+        if (entriesTable.getByGrid(this.grid, r, c))
         {
-            entry.value = "exclude";
-            ret = entry.update();
+            entriesTable.value = "exclude";
+            ret = entriesTable.update();
         }
         else
         {
-            entry.grid = this.grid;
-            entry.row = r;
-            entry.col = c;
-            entry.value = "exclude";
-            ret = entry.insert() > 0;
+            entriesTable.grid = this.grid;
+            entriesTable.row = r;
+            entriesTable.col = c;
+            entriesTable.value = "exclude";
+            ret = entriesTable.insert() > 0;
         }
 
         if (!ret)
@@ -2151,8 +2151,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     {
         String data = null;
 
-        final Entry entry = new Entry(this);
-        if (entry.getByGrid(grid, r, c)) data = entry.value;
+        final EntriesTable entriesTable = new EntriesTable(this);
+        if (entriesTable.getByGrid(grid, r, c)) data = entriesTable.value;
 
         return data;
     }
@@ -2297,8 +2297,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
                                     {
                                         try
                                         {
-                                            final Entry entry = new Entry(Main.this);
-                                            if (entry.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
+                                            final EntriesTable entriesTable = new EntriesTable(Main.this);
+                                            if (entriesTable.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
                                             {
                                                 populateTemplate();
                                                 showTemplateUI();

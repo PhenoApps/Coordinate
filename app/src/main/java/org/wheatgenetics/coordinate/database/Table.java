@@ -14,16 +14,16 @@ package org.wheatgenetics.coordinate.database;
 abstract class Table extends java.lang.Object
 {
     private android.database.sqlite.SQLiteDatabase db            ;
-    private java.lang.String                       tableName, TAG;
+    private java.lang.String                       tableName, tag;
 
     Table(final android.content.Context context, final java.lang.String tableName,
-    final java.lang.String TAG)
+    final java.lang.String tag)
     {
         super();
 
         this.db        = org.wheatgenetics.coordinate.database.Database.getDb(context);
         this.tableName = tableName                                                    ;
-        this.TAG       = TAG                                                          ;
+        this.tag       = tag                                                          ;
     }
 
     private android.database.Cursor queryAll(final java.lang.String selection,
@@ -42,7 +42,7 @@ abstract class Table extends java.lang.Object
 
     abstract android.content.ContentValues getContentValues();
 
-    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.TAG, msg); }
+    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }
 
 
     // region Package Methods

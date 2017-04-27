@@ -9,7 +9,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.Table
  */
 
-public class Entry extends org.wheatgenetics.coordinate.database.Table       // TODO: Stop catching.
+public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {
     public  long             id , grid;
     public  int              col, row ;
@@ -17,9 +17,12 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     private long             stamp    ;
 
 
-    public Entry(final android.content.Context context)
+    public EntriesTable(final android.content.Context context)
     {
-        super(context, org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, "Entry");
+        super(
+            /* context   => */ context                                                      ,
+            /* tableName => */ org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME,
+            /* tag       => */ "EntriesTable"                                               );
 
         this.id   = 0;
         this.grid = 0;
@@ -54,11 +57,16 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     {
         final android.content.ContentValues contentValues = new android.content.ContentValues();
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME , this.grid );
-        contentValues.put(org.wheatgenetics.coordinate.database.Entry.COL_FIELD_NAME  , this.col  );
-        contentValues.put(org.wheatgenetics.coordinate.database.Entry.ROW_FIELD_NAME  , this.row  );
-        contentValues.put(org.wheatgenetics.coordinate.database.Entry.EDATA_FIELD_NAME, this.value);
-        contentValues.put(org.wheatgenetics.coordinate.database.Entry.STAMP_FIELD_NAME, this.stamp);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME , this.grid );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  , this.col  );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  , this.row  );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME, this.value);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME, this.stamp);
 
         return contentValues;
     }
@@ -67,26 +75,26 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     {
         assert cursor != null;
         this.id = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME   ));
         this.grid = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME ));
 
         this.col = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.COL_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  ));
         this.row = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.ROW_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  ));
 
         this.value = cursor.getString(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.EDATA_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME));
 
         this.stamp = cursor.getLong(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Entry.STAMP_FIELD_NAME));
+            org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
     }
 
     public boolean get(final long id)                                         // TODO: Remove later.
     {
         final android.database.Cursor cursor = this.queryDistinct(
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
         if (cursor == null)
             return false;
         else
@@ -105,32 +113,32 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     public android.database.Cursor load()                                     // TODO: Remove later.
     {
         this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
+            "Loading table " + org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME);
         return this.queryAll();
     }
 
     public boolean update()
     {
         this.sendInfoLogMsg("Updating table " +
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
+            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
         return this.update(/* whereClause   => */
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long id)                                      // TODO: Remove later.
     {
         this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
+            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
         return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
     }
 
     public android.database.Cursor loadByEntry(final int entry)               // TODO: Remove later.
     {
         this.sendInfoLogMsg("Loading table " +
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " by entry = " + entry);
+            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " by entry = " + entry);
         return this.queryAllSelection(/* selection => */
-            org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + " = " + entry);
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = " + entry);
     }
 
     public boolean getByGrid(final long grid, final int row, final int col)
@@ -138,9 +146,9 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
         android.database.Cursor cursor;
         {
             final java.lang.String selection =
-                org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "= ? AND " +
-                org.wheatgenetics.coordinate.database.Entry.COL_FIELD_NAME  + "= ? AND " +
-                org.wheatgenetics.coordinate.database.Entry.ROW_FIELD_NAME  + "= ?"      ;
+                org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "= ? AND " +
+                org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + "= ? AND " +
+                org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + "= ?"      ;
             final java.lang.String[] selectionArgs = new java.lang.String[]{
                 java.lang.String.valueOf(grid),
                 java.lang.String.valueOf(col ),
@@ -166,9 +174,9 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     public boolean deleteByGrid(final long grid)
     {
         this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + grid);
+            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + grid);
         return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "=" + grid);
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "=" + grid);
     }
     // endregion
 }
