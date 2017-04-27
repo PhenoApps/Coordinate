@@ -73,7 +73,7 @@ import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
 import org.wheatgenetics.coordinate.barcodes.IntentResult;
 import org.wheatgenetics.coordinate.csv.CsvWriter;
 import org.wheatgenetics.coordinate.database.EntriesTable;
-import org.wheatgenetics.coordinate.database.Grid;
+import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.optionalField.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
@@ -1566,8 +1566,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
         int pos = 0;
 
-        final Grid   grid       = new Grid(this)    ;
-        final Cursor gridCursor = grid.getAllGrids();
+        final GridsTable gridsTable = new GridsTable(this);
+        final Cursor gridCursor = gridsTable.getAllGrids();
         if (gridCursor != null)
         {
             final int size = gridCursor.getCount();
@@ -1577,7 +1577,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
             while (gridCursor.moveToNext())
             {
-                final Grid tmpG = new Grid(this);
+                final GridsTable tmpG = new GridsTable(this);
                 if (tmpG.copyAll(gridCursor))
                 {
                     names[pos] = String.format(
@@ -1614,7 +1614,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
                         try
                         {
-                            final Grid grd = new Grid(Main.this);
+                            final GridsTable grd = new GridsTable(Main.this);
                             if (grd.get(id))
                             {
                                 org.wheatgenetics.coordinate.activities.Main.this.templateTitle =
@@ -1662,7 +1662,7 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     private void loadGrid(final long id) throws org.json.JSONException
     {
-        final Grid grd = new Grid(this);
+        final GridsTable grd = new GridsTable(this);
         if (grd.get(id))
         {
             this.templateTitle = grd.templateTitle;
@@ -1854,13 +1854,13 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
             return false;
         }
 
-        final Grid grid = new Grid(this);
-        final Cursor cursor = grid.loadByTemplate(id);
+        final GridsTable gridsTable = new GridsTable(this);
+        final Cursor cursor = gridsTable.loadByTemplate(id);
         if (cursor != null)
         {
             while (cursor.moveToNext())
             {
-                final Grid g = new Grid(this);
+                final GridsTable g = new GridsTable(this);
                 g.copy(cursor);
                 this.deleteGrid(g.id);
             }
@@ -1875,8 +1875,8 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
     {
         boolean ret;
 
-        final Grid grid = new Grid(this);
-        ret = grid.delete(id);
+        final GridsTable gridsTable = new GridsTable(this);
+        ret = gridsTable.delete(id);
 
         final EntriesTable entriesTable = new EntriesTable(this);
         entriesTable.deleteByGrid(id);
@@ -1886,12 +1886,12 @@ public class Main extends AppCompatActivity implements android.view.View.OnClick
 
     private long createGrid(long template)
     {
-        final Grid grid = new Grid(this);
-        grid.template = template;
-        grid.stamp = System.currentTimeMillis();
+        final GridsTable gridsTable = new GridsTable(this);
+        gridsTable.template = template;
+        gridsTable.stamp = System.currentTimeMillis();
         assert this.nonNullOptionalFields != null;
-        grid.title = this.nonNullOptionalFields.get(0).getValue();
-        return grid.insert();
+        gridsTable.title = this.nonNullOptionalFields.get(0).getValue();
+        return gridsTable.insert();
     }
 
     private void newTemplate(final int templateType) throws org.json.JSONException
