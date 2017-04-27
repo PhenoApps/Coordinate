@@ -5,7 +5,6 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
- * android.util.Log
  *
  * org.wheatgenetics.coordinate.database.Table
  */
@@ -30,9 +29,9 @@ public class Template extends org.wheatgenetics.coordinate.database.Table
 
     public long stamp;
 
-    public Template(final android.content.Context context) throws java.lang.Exception
+    public Template(final android.content.Context context)
     {
-        super(context, org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
+        super(context, org.wheatgenetics.coordinate.database.Template.TABLE_NAME, "Template");
 
         this.id = 0;
 
@@ -52,20 +51,6 @@ public class Template extends org.wheatgenetics.coordinate.database.Table
         this.rnumbering = 1;
 
         this.stamp = 0;
-    }
-
-    public Template(final android.content.Context context, final int id,
-    final java.lang.String title, final int type, final int cols, final int rows,
-    final long stamp) throws java.lang.Exception
-    {
-        super(context, org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
-
-        this.id    = id   ;
-        this.title = title;
-        this.type  = type ;
-        this.cols  = cols ;
-        this.rows  = rows ;
-        this.stamp = stamp;
     }
 
     @Override
@@ -96,33 +81,46 @@ public class Template extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
 
-    private android.content.ContentValues getValues()
+    @Override
+    android.content.ContentValues getContentValues()
     {
         final android.content.ContentValues contentValues = new android.content.ContentValues();
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.TITLE_FIELD_NAME, this.title);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME, this.type);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.COLS_FIELD_NAME, this.cols);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.ROWS_FIELD_NAME, this.rows);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.TITLE_FIELD_NAME  , this.title     );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME   , this.type      );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.COLS_FIELD_NAME   , this.cols      );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.ROWS_FIELD_NAME   , this.rows      );
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.ECELLS_FIELD_NAME, this.ecells);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.ECOLS_FIELD_NAME, this.ecols);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.EROWS_FIELD_NAME, this.erows);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.ECELLS_FIELD_NAME , this.ecells    );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.ECOLS_FIELD_NAME  , this.ecols     );
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.EROWS_FIELD_NAME  , this.erows     );
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.CNUMB_FIELD_NAME, this.cnumbering);
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.RNUMB_FIELD_NAME, this.rnumbering);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.CNUMB_FIELD_NAME  , this.cnumbering);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.RNUMB_FIELD_NAME  , this.rnumbering);
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.OPTIONS_FIELD_NAME, this.options);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.OPTIONS_FIELD_NAME, this.options   );
 
-        contentValues.put(org.wheatgenetics.coordinate.database.Template.STAMP_FIELD_NAME, this.stamp);
+        contentValues.put(
+            org.wheatgenetics.coordinate.database.Template.STAMP_FIELD_NAME  , this.stamp     );
 
         return contentValues;
     }
 
     public boolean copy(final android.database.Cursor cursor)
     {
-        assert cursor != null;
-        try
+        if (cursor == null)
+            return false;
+        else
         {
             this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Template.TITLE_FIELD_NAME));
@@ -143,90 +141,60 @@ public class Template extends org.wheatgenetics.coordinate.database.Table
 
             return true;
         }
-        catch (java.lang.Exception e) {}                                            // TODO: Really?
-        return false;
     }
 
     public boolean get(final long id)
     {
-        boolean                 ret    = false;
-        android.database.Cursor cursor = null ;
-        try
-        {
-            cursor = this.queryDistinct(/* selection => */
-                org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id);
-            if (cursor != null) if (cursor.moveToFirst()) ret = this.copy(cursor);
-        }
-        catch (java.lang.Exception e) {}                                            // TODO: Really?
-        finally { if (cursor != null) cursor.close(); }
-        return ret;
+        final android.database.Cursor cursor = this.queryDistinct(/* selection => */
+            org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id);
+        if (cursor == null)
+            return false;
+        else
+            try     { if (cursor.moveToFirst()) return this.copy(cursor); else return false; }
+            finally { cursor.close();                                                        }
     }
 
 
     public boolean getByType(final int typ)
     {
-        boolean                 ret    = false;
-        android.database.Cursor cursor = null ;
-        try
-        {
-            cursor = this.queryDistinct(/* selection => */
-                org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME + "=" + typ);
-            if (cursor != null) if (cursor.moveToFirst()) ret = this.copy(cursor);
-        }
-        finally { if (cursor != null) cursor.close(); }
-        return ret;
-    }
-
-    private static int sendInfoLogMsg(final java.lang.String msg)
-    {
-        return android.util.Log.i("Template", msg);
+        final android.database.Cursor cursor = this.queryDistinct(/* selection => */
+            org.wheatgenetics.coordinate.database.Template.TYPE_FIELD_NAME + "=" + typ);
+        if (cursor == null)
+            return false;
+        else
+            try     { if (cursor.moveToFirst()) return this.copy(cursor); else return false; }
+            finally { cursor.close();                                                        }
     }
 
     public android.database.Cursor load()
     {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg(
+        this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
         return this.queryAllOrderBy(/* orderBy => */ "type ASC");
     }
 
     public android.database.Cursor loadByOrder()
     {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg(
+        this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
         return this.queryAllOrderBy(/* orderBy => */ "_id DESC");
     }
 
-    public long insert()
-    {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg(
-            "Inserting into table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
-        return this.insert(this.getValues());
-    }
-
     public boolean update()
     {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg( "Updating table " +
+        this.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.Template.TABLE_NAME + " on id = " + id);
-        return this.update(
-            /* contentValues => */ this.getValues(),
-            /* whereClause   => */
-                org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id);
+        return this.update(/* whereClause   => */
+            org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id);
     }
 
 
     public boolean delete(final long id)
     {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg("Deleting from table " +
+        this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Template.TABLE_NAME + " on id = " + id);
         return this.delete(/* whereClause => */
             org.wheatgenetics.coordinate.database.Template.ID_FIELD_NAME + "=" + id);
-    }
-
-    public boolean delete()
-    {
-        org.wheatgenetics.coordinate.database.Template.sendInfoLogMsg(
-            "Clearing table " + org.wheatgenetics.coordinate.database.Template.TABLE_NAME);
-        return super.delete();
     }
     // endregion
 }

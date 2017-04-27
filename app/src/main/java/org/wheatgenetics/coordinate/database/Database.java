@@ -21,8 +21,8 @@ public class Database extends java.lang.Object
     {
         private static final java.lang.String TAG = "SQLiteOpenHelper";
 
-        private android.content.Context context  ;
-        private java.lang.Exception     exception;
+        private android.content.Context context        ;
+        private boolean                 created = false;
 
         SQLiteOpenHelper(final android.content.Context context)
         {
@@ -42,6 +42,7 @@ public class Database extends java.lang.Object
                 {
                     org.w3c.dom.Document document;
                     {
+                        assert this.context != null;
                         final java.io.InputStream inputStream =
                             this.context.getResources().openRawResource(
                                 org.wheatgenetics.coordinate.R.raw.sql);
@@ -55,19 +56,13 @@ public class Database extends java.lang.Object
                             {
                                 document = documentBuilder.parse(    // throws org.xml.sax.SAXExcep-
                                     /* is       => */ inputStream,   //  tion, java.io.IOException
-                                    /* systemId => */ null      );
+                                    /* systemId => */ null       );
                             }
                             catch (final org.xml.sax.SAXException | java.io.IOException e)
-                            {
-                                this.exception = e;
-                                return;
-                            }
+                            { return; }                       // this.created will not be made true.
                         }
                         catch (final javax.xml.parsers.ParserConfigurationException e)
-                        {
-                            this.exception = e;
-                            return;
-                        }
+                        { return; }                           // this.created will not be made true.
                     }
                     assert document != null;
                     statementNodeList = document.getElementsByTagName("statement");
@@ -87,7 +82,7 @@ public class Database extends java.lang.Object
                     }
                 }
             }
-            this.exception = null;
+            this.created = true;
         }
 
         @Override
@@ -98,40 +93,33 @@ public class Database extends java.lang.Object
                 "Upgrading database from version " + oldVersion + " to " + newVersion +
                     ", which will destroy all old data");
             assert db != null;
-            db.execSQL("DROP TABLE IF EXISTS entries");                 // TODO: What about tem-
-            this.onCreate(db);                                          //  plates and grids tables?
+            db.execSQL("DROP TABLE IF EXISTS entries");                // TODO: What about templates
+            this.created = false;                                      // TODO:  and grids tables?
+            this.onCreate(db);
         }
 
-        java.lang.Exception getException() { return this.exception; }
+        @Override
+        public android.database.sqlite.SQLiteDatabase getReadableDatabase()
+        { if (this.created) return super.getReadableDatabase(); else return null; }
+
+        @Override
+        public android.database.sqlite.SQLiteDatabase getWritableDatabase()
+        { if (this.created) return super.getWritableDatabase(); else return null; }
     }
 
     private static android.database.sqlite.SQLiteDatabase db = null;
 
-    public static void initialize(final android.content.Context context) throws java.lang.Exception
+    public static void initialize(final android.content.Context context)
     {
         if (org.wheatgenetics.coordinate.database.Database.db != null)
             org.wheatgenetics.coordinate.database.Database.db.close();
 
-        android.database.sqlite.SQLiteDatabase db       ;
-        java.lang.Exception                    exception;
-        {
-            final org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper helper =
-                new org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper(context);
-            db        = helper.getWritableDatabase();
-            exception = helper.getException();
-        }
-
-        if (exception == null)
-            org.wheatgenetics.coordinate.database.Database.db = db;
-        else
-        {
-            org.wheatgenetics.coordinate.database.Database.db = null;
-            throw exception;
-        }
+        final org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper helper =
+            new org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper(context);
+        org.wheatgenetics.coordinate.database.Database.db = helper.getWritableDatabase();
     }
 
     static android.database.sqlite.SQLiteDatabase getDb(final android.content.Context context)
-    throws java.lang.Exception
     {
         if (org.wheatgenetics.coordinate.database.Database.db == null)
         {

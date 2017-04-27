@@ -5,7 +5,6 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
- * android.util.Log
  *
  * org.wheatgenetics.coordinate.database.Table
  */
@@ -18,10 +17,9 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     private long             stamp    ;
 
 
-    // region ? Constructors
-    public Entry(final android.content.Context context) throws java.lang.Exception
+    public Entry(final android.content.Context context)
     {
-        super(context, org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
+        super(context, org.wheatgenetics.coordinate.database.Entry.TABLE_NAME, "Entry");
 
         this.id   = 0;
         this.grid = 0;
@@ -33,24 +31,6 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
 
         this.stamp = 0;
     }
-
-    public Entry(final android.content.Context context, final long entry, final int col,  // TODO: Remove later.
-    final int row, final java.lang.String value, final long stamp) throws java.lang.Exception
-    {
-        super(context, org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-
-        this.id   = 0    ;
-        this.grid = entry;
-
-        this.col = col;
-        this.row = row;
-
-        this.value = value;
-
-        this.stamp = stamp;
-    }
-    // endregion
-
 
     @Override
     public java.lang.String toString()
@@ -69,7 +49,8 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
     // endregion
 
 
-    private android.content.ContentValues getValues()
+    @Override
+    android.content.ContentValues getContentValues()
     {
         final android.content.ContentValues contentValues = new android.content.ContentValues();
 
@@ -82,7 +63,7 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
         return contentValues;
     }
 
-    public void copy(final android.database.Cursor cursor)
+    private void copy(final android.database.Cursor cursor)
     {
         assert cursor != null;
         this.id = cursor.getInt(cursor.getColumnIndex(
@@ -104,70 +85,49 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
 
     public boolean get(final long id)                                         // TODO: Remove later.
     {
-        android.database.Cursor cursor = null;
-        try
-        {
-            cursor = this.queryDistinct(
-                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
-            if (cursor != null)
+        final android.database.Cursor cursor = this.queryDistinct(
+            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
+        if (cursor == null)
+            return false;
+        else
+            try
             {
-                cursor.moveToFirst();
-                this.copy(cursor);
-                cursor.close();
-                return true;
+                if (cursor.moveToFirst())
+                {
+                    this.copy(cursor);
+                    return true;
+                }
+                else return false;
             }
-        }
-        catch (java.lang.Exception e) { if (cursor != null) cursor.close(); }
-        return false;
-    }
-
-    private static int sendInfoLogMsg(final java.lang.String msg)
-    {
-        return android.util.Log.i("Entry", msg);
+            finally { cursor.close(); }
     }
 
     public android.database.Cursor load()                                     // TODO: Remove later.
     {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg(
+        this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
         return this.queryAll();
     }
 
-    public long insert()
-    {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg(
-            "Inserting into table " + org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-        return this.insert(this.getValues());
-    }
-
     public boolean update()
     {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Updating table " +
+        this.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
-        return this.update(
-            /* contentValues => */ this.getValues(),
-            /* whereClause   => */
-                org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
+        return this.update(/* whereClause   => */
+            org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long id)                                      // TODO: Remove later.
     {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Deleting from table " +
+        this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + id);
         return this.delete(/* whereClause => */
             org.wheatgenetics.coordinate.database.Entry.ID_FIELD_NAME + "=" + id);
     }
 
-    public boolean delete()                                                   // TODO: Remove later.
-    {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Clearing table " +
-            org.wheatgenetics.coordinate.database.Entry.TABLE_NAME);
-        return super.delete();
-    }
-
     public android.database.Cursor loadByEntry(final int entry)               // TODO: Remove later.
     {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Loading table " +
+        this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " by entry = " + entry);
         return this.queryAllSelection(/* selection => */
             org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + " = " + entry);
@@ -175,37 +135,37 @@ public class Entry extends org.wheatgenetics.coordinate.database.Table       // 
 
     public boolean getByGrid(final long grid, final int row, final int col)
     {
-        android.database.Cursor cursor = null;
-        try
+        android.database.Cursor cursor;
         {
-            final java.lang.String sel =
+            final java.lang.String selection =
                 org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "= ? AND " +
                 org.wheatgenetics.coordinate.database.Entry.COL_FIELD_NAME  + "= ? AND " +
                 org.wheatgenetics.coordinate.database.Entry.ROW_FIELD_NAME  + "= ?"      ;
-
-            final java.lang.String[] arg = new java.lang.String[]{java.lang.String.valueOf(grid),
-                java.lang.String.valueOf(col), java.lang.String.valueOf(row)};
-
-            cursor = this.queryDistinct(/* selection => */ sel, /* selectionArgs => */ arg);
-            if (cursor != null)
+            final java.lang.String[] selectionArgs = new java.lang.String[]{
+                java.lang.String.valueOf(grid),
+                java.lang.String.valueOf(col ),
+                java.lang.String.valueOf(row )};
+            cursor = this.queryDistinct(
+                /* selection => */ selection, /* selectionArgs => */ selectionArgs);
+        }
+        if (cursor == null)                                                             // TODO: DRY
+            return false;
+        else
+            try
             {
-                boolean ret = false;
                 if (cursor.moveToFirst())
                 {
                     this.copy(cursor);
-                    ret = true;
+                    return true;
                 }
-                cursor.close();
-                return ret;
+                else return false;
             }
-        }
-        catch (java.lang.Exception e) { if (cursor != null) cursor.close(); }
-        return false;
+            finally { cursor.close(); }
     }
 
     public boolean deleteByGrid(final long grid)
     {
-        org.wheatgenetics.coordinate.database.Entry.sendInfoLogMsg("Deleting from table " +
+        this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.Entry.TABLE_NAME + " on id = " + grid);
         return this.delete(/* whereClause => */
             org.wheatgenetics.coordinate.database.Entry.GRID_FIELD_NAME + "=" + grid);

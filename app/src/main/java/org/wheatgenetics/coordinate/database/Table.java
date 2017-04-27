@@ -6,21 +6,24 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
+ * android.util.Log
  *
  * org.wheatgenetics.coordinate.database.Database
  */
 
 abstract class Table extends java.lang.Object
 {
-    private android.database.sqlite.SQLiteDatabase db       ;
-    private java.lang.String                       tableName;
+    private android.database.sqlite.SQLiteDatabase db            ;
+    private java.lang.String                       tableName, TAG;
 
-    Table(final android.content.Context context, final java.lang.String tableName)
-    throws java.lang.Exception
+    Table(final android.content.Context context, final java.lang.String tableName,
+    final java.lang.String TAG)
     {
         super();
+
         this.db        = org.wheatgenetics.coordinate.database.Database.getDb(context);
         this.tableName = tableName                                                    ;
+        this.TAG       = TAG                                                          ;
     }
 
     private android.database.Cursor queryAll(final java.lang.String selection,
@@ -37,17 +40,17 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy       );
     }
 
+    abstract android.content.ContentValues getContentValues();
+
+    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.TAG, msg); }
+
 
     // region Package Methods
     android.database.Cursor queryAllSelection(final java.lang.String selection)
-    {
-        return this.queryAll(/* selection => */ selection, /* orderBy => */ null);
-    }
+    { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
 
     android.database.Cursor queryAllOrderBy(final java.lang.String orderBy)
-    {
-        return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy);
-    }
+    { return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy); }
 
     android.database.Cursor queryAll() { return this.queryAllSelection(/* selection => */ null); }
 
@@ -68,9 +71,7 @@ abstract class Table extends java.lang.Object
     }
 
     android.database.Cursor queryDistinct(final java.lang.String selection)
-    {
-        return this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ null);
-    }
+    { return this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ null); }
 
     android.database.Cursor rawQuery(final java.lang.String sql)
     {
@@ -78,24 +79,24 @@ abstract class Table extends java.lang.Object
         return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ null);
     }
 
-    long insert(final android.content.ContentValues contentValues)
+    public long insert()
     {
+        this.sendInfoLogMsg("Inserting into table " + this.tableName);
         assert this.db != null;
         return this.db.insert(
-            /* table          => */ this.tableName,
-            /* nullColumnHack => */ null          ,
-            /* values         => */ contentValues );
+            /* table          => */ this.tableName         ,
+            /* nullColumnHack => */ null                   ,
+            /* values         => */ this.getContentValues());
     }
 
-    boolean update(final android.content.ContentValues contentValues,
-    final java.lang.String whereClause)
+    boolean update(final java.lang.String whereClause)
     {
         assert this.db != null;
         return this.db.update(
-            /* table       => */ this.tableName,
-            /* values      => */ contentValues ,
-            /* whereClause => */ whereClause   ,
-            /* whereArgs   => */ null          ) > 0;
+            /* table       => */ this.tableName         ,
+            /* values      => */ this.getContentValues(),
+            /* whereClause => */ whereClause            ,
+            /* whereArgs   => */ null                   ) > 0;
     }
 
     boolean delete(final java.lang.String whereClause)
@@ -107,6 +108,10 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null          ) > 0;
     }
 
-    boolean delete() { return this.delete(/* whereClause => */ null); }
+    boolean delete()                                                          // TODO: Remove later.
+    {
+        this.sendInfoLogMsg("Clearing table " + this.tableName);
+        return this.delete(/* whereClause => */ null);
+    }
     // endregion
 }
