@@ -13,6 +13,8 @@ package org.wheatgenetics.coordinate.database;
 
 abstract class Table extends java.lang.Object
 {
+//    private static final java.lang.String ID_FIELD_NAME  = "_id";
+
     private android.database.sqlite.SQLiteDatabase db            ;
     private java.lang.String                       tableName, tag;
 

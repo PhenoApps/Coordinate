@@ -157,7 +157,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                                        }
     }
 
-
     public boolean getByType(final int typ)
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
@@ -190,7 +189,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return this.update(/* whereClause   => */
             org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME + "=" + id);
     }
-
 
     public boolean delete(final long id)
     {
