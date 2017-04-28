@@ -520,11 +520,16 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             @Override
             public void onDrawerOpened(final View drawerView)
             {
-                final TextView person = (TextView) findViewById(R.id.nameLabel);
-                person.setText(ep.getString("Person", ""));
+                {
+                    final TextView personTextView = (TextView) findViewById(R.id.nameLabel);
+                    personTextView.setText(ep.getString("Person", ""));
+                }
 
-                final TextView templateTextView = (TextView) findViewById(R.id.templateLabel);
-                templateTextView.setText(org.wheatgenetics.coordinate.activities.Main.this.templateTitle);
+                {
+                    final TextView templateTextView = (TextView) findViewById(R.id.templateLabel);
+                    templateTextView.setText(
+                        org.wheatgenetics.coordinate.activities.Main.this.templateTitle);
+                }
             }
 
             @Override
@@ -832,11 +837,11 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private void initDb() throws org.json.JSONException
     {
         this.templateTitle = "Seed Tray";
-        this.templateType  = TYPE_SEED;
-        this.rows = 6;
-        this.cols = 20;
-        this.rowNumbering = true;
-        this.colNumbering = true;
+        this.templateType  = TYPE_SEED ;
+        this.rows          = 6         ;
+        this.cols          = 20        ;
+        this.rowNumbering  = true      ;
+        this.colNumbering  = true      ;
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -854,11 +859,11 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.createDb(this.templateType);                           // throws org.json.JSONException
 
         this.templateTitle = "DNA Plate";
-        this.rows = 8;
-        this.cols = 12;
-        this.templateType = TYPE_DNA;
-        this.rowNumbering = true;
-        this.colNumbering = false;
+        this.rows          = 8          ;
+        this.cols          = 12         ;
+        this.templateType  = TYPE_DNA   ;
+        this.rowNumbering  = true       ;
+        this.colNumbering  = false      ;
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -890,14 +895,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         templatesTable.rows  = this.rows         ;
         templatesTable.cols  = this.cols         ;
 
-        templatesTable.ecells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
-        templatesTable.ecols  = Utils.integerListToJson(this.excludeCols);
-        templatesTable.erows  = Utils.integerListToJson(this.excludeRows);
+        templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
+        templatesTable.excludeCols  = Utils.integerListToJson(this.excludeCols);
+        templatesTable.excludeRows  = Utils.integerListToJson(this.excludeRows);
 
         templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException
 
-        templatesTable.cnumbering = this.colNumbering ? 1 : 0;
-        templatesTable.rnumbering = this.rowNumbering ? 1 : 0;
+        templatesTable.colNumbering = this.colNumbering ? 1 : 0;
+        templatesTable.rowNumbering = this.rowNumbering ? 1 : 0;
 
         templatesTable.stamp = System.currentTimeMillis();
 
@@ -915,12 +920,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             {
                 @Override
                 public void onClick(final DialogInterface dialog, final int which)
-                {
-                    if (which == 0)
-                        menuTemplateLoad();
-                    else
-                        inputTemplateNew();
-                }
+                { if (which == 0) menuTemplateLoad(); else inputTemplateNew(); }
             });
         builder.show();
     }
@@ -1062,15 +1062,15 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.rows          = templatesTable.rows ;
         this.cols          = templatesTable.cols ;
 
-        this.excludeCells = Utils.jsonToPointList(templatesTable.ecells);  // throws org.json.JSONException
+        this.excludeCells = Utils.jsonToPointList(templatesTable.excludeCells);  // throws org.json.JSONException
 
-        this.excludeCols = Utils.jsonToIntegerList(templatesTable.ecols);     // throws org.json.JSONException
-        this.excludeRows = Utils.jsonToIntegerList(templatesTable.erows);     // throws org.json.JSONException
+        this.excludeCols = Utils.jsonToIntegerList(templatesTable.excludeCols);  // throws org.json.JSONException
+        this.excludeRows = Utils.jsonToIntegerList(templatesTable.excludeRows);  // throws org.json.JSONException
 
         this.nonNullOptionalFields = new NonNullOptionalFields(templatesTable.options); // throws org.json.JSONException
 
-        this.rowNumbering = templatesTable.rnumbering == 1;
-        this.colNumbering = templatesTable.cnumbering == 1;
+        this.rowNumbering = templatesTable.rowNumbering == 1;
+        this.colNumbering = templatesTable.colNumbering == 1;
     }
 
     private void inputTemplateNew()
@@ -1796,8 +1796,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                                     }
                                     catch (final JSONException e) {}
 
-                                    org.wheatgenetics.coordinate.activities.Main.this.rowNumbering = templatesTable.rnumbering == 1;
-                                    org.wheatgenetics.coordinate.activities.Main.this.colNumbering = templatesTable.cnumbering == 1;
+                                    org.wheatgenetics.coordinate.activities.Main.this.rowNumbering = templatesTable.rowNumbering == 1;
+                                    org.wheatgenetics.coordinate.activities.Main.this.colNumbering = templatesTable.colNumbering == 1;
                                 }
 
                                 org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
@@ -1841,8 +1841,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             {
                 this.nonNullOptionalFields = new NonNullOptionalFields(templatesTable.options); // throws org.json.JSONException
 
-                this.rowNumbering = templatesTable.rnumbering == 1;
-                this.colNumbering = templatesTable.cnumbering == 1;
+                this.rowNumbering = templatesTable.rowNumbering == 1;
+                this.colNumbering = templatesTable.colNumbering == 1;
             }
 
             populateTemplate();
@@ -2066,14 +2066,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         templatesTable.cols  = this.cols;
         templatesTable.rows  = this.rows;
 
-        templatesTable.ecells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException
-        templatesTable.ecols = Utils.integerListToJson(this.excludeCols);
-        templatesTable.erows = Utils.integerListToJson(this.excludeRows);
+        templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException
+        templatesTable.excludeCols = Utils.integerListToJson(this.excludeCols);
+        templatesTable.excludeRows = Utils.integerListToJson(this.excludeRows);
 
         templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException
 
-        templatesTable.cnumbering = this.colNumbering ? 1 : 0;
-        templatesTable.rnumbering = this.rowNumbering ? 1 : 0;
+        templatesTable.colNumbering = this.colNumbering ? 1 : 0;
+        templatesTable.rowNumbering = this.rowNumbering ? 1 : 0;
 
         templatesTable.stamp = System.currentTimeMillis();
 
@@ -2130,9 +2130,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         mLayoutMain.setVisibility(View.VISIBLE);
 
-        String data = getDataEntry(this.grid, 1, 1);
-        if (data == null) data = "";
-        mEditData.setText(data);
+        final java.lang.String data = this.getDataEntry(this.grid, 1, 1);
+        mEditData.setText(data == null ? "" : data);
     }
 
     // first non excluded cell

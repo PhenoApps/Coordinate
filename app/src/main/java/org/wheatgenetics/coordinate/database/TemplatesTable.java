@@ -17,15 +17,15 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public int              rows ;
     public int              cols ;
 
-    public java.lang.String ecells;
+    public java.lang.String excludeCells;
 
-    public java.lang.String erows;
-    public java.lang.String ecols;
+    public java.lang.String excludeRows;
+    public java.lang.String excludeCols;
 
     public java.lang.String options;
 
-    public int cnumbering;
-    public int rnumbering;
+    public int colNumbering;
+    public int rowNumbering;
 
     public long stamp;
 
@@ -44,14 +44,14 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         this.rows = 0;
         this.cols = 0;
 
-        this.ecells = "";
-        this.ecols  = "";
-        this.erows  = "";
+        this.excludeCells = "";
+        this.excludeCols  = "";
+        this.excludeRows  = "";
 
         this.options = "";
 
-        this.cnumbering = 1;
-        this.rnumbering = 1;
+        this.colNumbering = 1;
+        this.rowNumbering = 1;
 
         this.stamp = 0;
     }
@@ -60,12 +60,12 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public java.lang.String toString()
     {
         return "TemplatesTable" +
-                " [id="         + this.id         + ", title="      + this.title      +
-                ", type="       + this.type       + ", rows="       + this.rows       +
-                ", cols="       + this.cols       + ", ecells="     + this.ecells     +
-                ", erows="      + this.erows      + ", ecols="      + this.ecols      +
-                ", options="    + this.options    + ", cnumbering=" + this.cnumbering +
-                ", rnumbering=" + this.rnumbering + ", stamp="      + this.stamp      + "]";
+            " [id="           + this.id           + ", title="        + this.title        +
+            ", type="         + this.type         + ", rows="         + this.rows         +
+            ", cols="         + this.cols         + ", excludeCells="       + this.excludeCells       +
+            ", excludeRows="        + this.excludeRows        + ", excludeCols="        + this.excludeCols        +
+            ", options="      + this.options      + ", colNumbering=" + this.colNumbering +
+            ", rowNumbering=" + this.rowNumbering + ", stamp="        + this.stamp        + "]";
     }
 
 
@@ -89,32 +89,32 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     {
         final android.content.ContentValues contentValues = new android.content.ContentValues();
 
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME, this.title);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME, this.type);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME, this.cols);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME, this.rows);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
+            this.title);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
+            this.type);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+            this.cols);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
+            this.rows);
 
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME, this.ecells);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME, this.ecols);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME, this.erows);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
+            this.excludeCells);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
+            this.excludeCols);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
+            this.excludeRows);
 
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME, this.cnumbering);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME, this.rnumbering);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
+            this.colNumbering);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
+            this.rowNumbering);
 
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME, this.options);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
+            this.options);
 
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME, this.stamp);
+        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
+            this.stamp);
 
         return contentValues;
     }
@@ -131,14 +131,14 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             this.cols = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
             this.rows = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME));
 
-            this.ecells = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME));
-            this.ecols = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME));
-            this.erows = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME));
+            this.excludeCells = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME));
+            this.excludeCols = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME));
+            this.excludeRows = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME));
 
             this.options = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME));
 
-            this.cnumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME));
-            this.rnumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME));
+            this.colNumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME));  // TODO: Bug?
+            this.rowNumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME));  // TODO: Bug?
 
             this.stamp = cursor.getLong(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME));
 
