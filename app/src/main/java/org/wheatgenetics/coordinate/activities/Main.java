@@ -2024,8 +2024,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             while (cursor.moveToNext())
             {
                 final GridsTable g = new GridsTable(this);
-                g.copy(cursor);
-                this.deleteGrid(g.id);
+                if (g.copy(cursor)) this.deleteGrid(g.id);
             }
             cursor.close();
         }

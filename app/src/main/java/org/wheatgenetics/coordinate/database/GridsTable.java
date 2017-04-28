@@ -69,17 +69,23 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return contentValues;
     }
 
-    public void copy(final android.database.Cursor cursor)
+    public boolean copy(final android.database.Cursor cursor)
     {
-        assert cursor != null;
-        this.id = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.GridsTable.ID_FIELD_NAME));
-        this.template = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.GridsTable.TEMPLATE_FIELD_NAME));
-        this.title = cursor.getString(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME));
-        this.stamp = cursor.getLong(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME));
+        if (cursor == null)
+            return false;
+        else
+        {
+            this.id = cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.ID_FIELD_NAME));
+            this.template = cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATE_FIELD_NAME));
+            this.title = cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME));
+            this.stamp = cursor.getLong(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME));
+
+            return true;
+        }
     }
 
     public boolean copyAll(final android.database.Cursor cursor)     // TODO: Change name to copy().

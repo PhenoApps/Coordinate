@@ -21,8 +21,8 @@ public class Database extends java.lang.Object
     {
         private static final java.lang.String TAG = "SQLiteOpenHelper";
 
-        private android.content.Context context        ;
-        private boolean                 created = false;
+        private android.content.Context context                                      ;
+        private boolean                 createNeeded = false, createSucceeded = false;
 
         SQLiteOpenHelper(final android.content.Context context)
         {
@@ -37,6 +37,7 @@ public class Database extends java.lang.Object
         @Override
         public void onCreate(final android.database.sqlite.SQLiteDatabase db)
         {
+            this.createNeeded = true;
             {
                 org.w3c.dom.NodeList statementNodeList;
                 {
@@ -59,10 +60,10 @@ public class Database extends java.lang.Object
                                     /* systemId => */ null       );
                             }
                             catch (final org.xml.sax.SAXException | java.io.IOException e)
-                            { return; }                       // this.created will not be made true.
+                            { return; }               // this.createSucceeded will not be made true.
                         }
                         catch (final javax.xml.parsers.ParserConfigurationException e)
-                        { return; }                           // this.created will not be made true.
+                        { return; }                   // this.createSucceeded will not be made true.
                     }
                     assert document != null;
                     statementNodeList = document.getElementsByTagName("statement");
@@ -82,7 +83,7 @@ public class Database extends java.lang.Object
                     }
                 }
             }
-            this.created = true;
+            this.createSucceeded = true;
         }
 
         @Override
@@ -94,17 +95,26 @@ public class Database extends java.lang.Object
                     ", which will destroy all old data");
             assert db != null;
             db.execSQL("DROP TABLE IF EXISTS entries");                // TODO: What about templates
-            this.created = false;                                      // TODO:  and grids tables?
-            this.onCreate(db);
+            this.onCreate(db);                                         // TODO:  and grids tables?
         }
 
         @Override
         public android.database.sqlite.SQLiteDatabase getReadableDatabase()
-        { if (this.created) return super.getReadableDatabase(); else return null; }
+        {
+            if (this.createNeeded)
+                if (this.createSucceeded) return super.getReadableDatabase(); else return null;
+            else
+                return super.getReadableDatabase();
+        }
 
         @Override
         public android.database.sqlite.SQLiteDatabase getWritableDatabase()
-        { if (this.created) return super.getWritableDatabase(); else return null; }
+        {
+            if (this.createNeeded)
+                if (this.createSucceeded) return super.getWritableDatabase(); else return null;
+            else
+                return super.getWritableDatabase();
+        }
     }
 
     private static android.database.sqlite.SQLiteDatabase db = null;

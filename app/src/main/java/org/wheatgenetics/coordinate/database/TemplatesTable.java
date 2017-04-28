@@ -157,10 +157,10 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                                        }
     }
 
-    public boolean getByType(final int typ)
+    public boolean getByType(final int type)
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" + typ);
+            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" + type);
         if (cursor == null)
             return false;
         else
