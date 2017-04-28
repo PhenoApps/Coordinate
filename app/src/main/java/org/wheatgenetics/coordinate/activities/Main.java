@@ -115,7 +115,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private EditText mEditData;
 
-    public View curCell = null;
+    private View curCell = null;
 
     private long   id         = 0 ;
     private long   grid       = 0 ;
@@ -146,7 +146,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
 
     private DataExporter mTask;
-    public long          mLastExportGridId = -1;
+    private long         mLastExportGridId = -1;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout          mDrawerLayout;
@@ -154,7 +154,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private LinearLayout parent         ;
     private ScrollView   changeContainer;
 
-    protected org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     {
         return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
@@ -219,7 +219,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         mLayoutMain.setVisibility(View.INVISIBLE);
 
-        try { this.initDb(); } catch (final java.lang.Exception e) {}
+        try { this.initDb(); } catch (final org.json.JSONException e) {}
         this.createDirs();
 
         if (ep.getLong("CurrentGrid", -1) != -1)
@@ -239,7 +239,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    public int getVersion()
+    private int getVersion()
     {
         int v = 0;
         try { v = this.getPackageManager().getPackageInfo(getPackageName(), 0).versionCode; }
@@ -349,7 +349,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         builder.create().show();
     }
 
-    public void parseLog(final int resId)
+    private void parseLog(final int resId)
     {
         try
         {
@@ -408,11 +408,26 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private void showOtherAppsDialog()
     {
-        final AlertDialog.Builder otherAppsAlert = new AlertDialog.Builder(this);
+        final ListView listView = new ListView(this);
+        listView.setDivider(null);
+        listView.setDividerHeight(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(final AdapterView<?> parent, final View view,
+                final int position, final long id)
+                {
+                    if (position >= 0 && position <= 2)
+                    {
+                        final String[] links = {
+                            "https://play.google.com/store/apps/details?id=com.fieldbook.tracker",
+                            "https://play.google.com/store/apps/details?id=org.wheatgenetics.inventory",
+                            "http://wheatgenetics.org/apps"};  // TODO: update these links
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(links[position])));
+                    }
+                }
+            });
 
-        final ListView myList = new ListView(this);
-        myList.setDivider(null);
-        myList.setDividerHeight(0);
         final String[] appsArray = new String[3];
 
         appsArray[0] = "Field Book";
@@ -422,47 +437,17 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         //appsArray[4] = "Rangle";
 
         final Integer app_images[] = {R.drawable.other_ic_field_book, R.drawable.other_ic_inventory, R.drawable.other_ic_1kk};
-        final String[] links = {
-            "https://play.google.com/store/apps/details?id=com.fieldbook.tracker",
-            "https://play.google.com/store/apps/details?id=org.wheatgenetics.inventory",
-            "http://wheatgenetics.org/apps"}; //TODO update these links
-
-        myList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(final AdapterView<?> parent, final View view,
-                final int position, final long id)
-                {
-                    final Uri    uri = Uri.parse(links[position]);
-                          Intent intent;
-
-                    switch (position)
-                    {
-                        case 0:
-                            intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                            break;
-                        case 1:
-                            intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                            break;
-                        case 2:
-                            intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                            break;
-                    }
-                }
-            });
-
         final CustomListAdapter adapterImg = new CustomListAdapter(this, app_images, appsArray);
-        myList.setAdapter(adapterImg);
+        listView.setAdapter(adapterImg);
 
+        final AlertDialog.Builder otherAppsAlert = new AlertDialog.Builder(this);
         otherAppsAlert.setCancelable(true);
         otherAppsAlert.setTitle(getResources().getString(R.string.otherapps));
-        otherAppsAlert.setView(myList);
+        otherAppsAlert.setView(listView);
         otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok),
             new DialogInterface.OnClickListener()
             {
+                @Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.dismiss(); }
             });
@@ -500,7 +485,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    public void resetDatabase()
+    private void resetDatabase()
     {
         org.wheatgenetics.coordinate.utils.Utils.confirm(this,
             this.getString(org.wheatgenetics.coordinate.R.string.reset_database        ),
@@ -559,20 +544,23 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 @Override
                 public boolean onNavigationItemSelected(final MenuItem item)
                 {
-                    try { selectDrawerItem(item); }  // throws java.lang.Exception
-                    catch (final java.lang.Exception e) { return false; }
-                    return true;
+                    try
+                    {
+                        selectDrawerItem(item);                     // throws org.json.JSONException
+                        return true;
+                    }
+                    catch (final org.json.JSONException e) { return false; }
                 }
             });
     }
 
-    public void selectDrawerItem(final MenuItem menuItem)
+    private void selectDrawerItem(final MenuItem menuItem) throws org.json.JSONException
     {
         assert menuItem != null;
         switch (menuItem.getItemId())
         {
             case R.id.menu_new_grid:
-                try { this.menuNewGrid(); } catch (final java.lang.Exception e) {}
+                this.menuNewGrid();                                 // throws org.json.JSONException
                 break;
 
             case R.id.menu_import:
@@ -626,13 +614,13 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         try
         {
-            fis = new FileInputStream(f);
-            fos = new FileOutputStream("/mnt/sdcard/db_dump.db");
+            fis = new FileInputStream(f);                    // throws java.io.FileNotFoundException
+            fos = new FileOutputStream("/mnt/sdcard/db_dump.db");  // throws java.io.FileNotFoundException
             while (true)
             {
-                final int i = fis.read();
+                final int i = fis.read();                              // throws java.io.IOException
                 if (i != -1)
-                    fos.write(i);
+                    fos.write(i);                                      // throws java.io.IOException
                 else
                     break;
             }
@@ -640,7 +628,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             this.makeFileDiscoverable(new File("/mnt/sdcard/db_dump.db"), this);
             Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
         }
-        catch (final java.lang.Exception e)
+        catch (final java.io.IOException e)
         {
             e.printStackTrace();
             Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
@@ -681,7 +669,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         integrator.initiateScan();
     }
 
-    public void makeToast(final String message)
+    private void makeToast(final String message)
     { Toast.makeText(this, message, Toast.LENGTH_SHORT).show(); }
 
     private void menuNewGrid() throws org.json.JSONException
@@ -919,7 +907,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             return templatesTable.insert() > 0;
     }
 
-    public void menuList()
+    private void menuList()
     {
         final Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.template_options));
@@ -1863,7 +1851,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         else Utils.alert(Main.this, Coordinate.appName, getString(R.string.import_grid_failed));
     }
 
-    private boolean isExcludedCell(int r, int c)
+    private boolean isExcludedCell(final int r, final int c)
     {
         for (int i = 0; i < this.excludeCells.size(); i++)
         {
@@ -1879,7 +1867,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private boolean isExcludedCol(final int c)
     { return this.excludeCols.contains(Integer.valueOf(c)); }
 
-    public int randomBox(final int size)
+    private int randomBox(final int size)
     {
         final Random rand = new Random();
         rand.setSeed(System.currentTimeMillis());
@@ -1969,7 +1957,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    public void completeSound()
+    private void completeSound()
     {
         try
         {
@@ -2518,7 +2506,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             }
         }
 
-        public void share()
+        private void share()
         {
             final String path = mFile.getAbsolutePath();
 
@@ -2837,6 +2825,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
+    @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
     {
         final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -2850,7 +2839,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    public void makeFileDiscoverable(final File file, final Context context)
+    private void makeFileDiscoverable(final File file, final Context context)
     {
         MediaScannerConnection.scanFile(context, new String[]{file.getPath()}, null, null);
         context.sendBroadcast(new Intent(
