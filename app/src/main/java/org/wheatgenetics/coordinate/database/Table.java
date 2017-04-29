@@ -13,7 +13,7 @@ package org.wheatgenetics.coordinate.database;
 
 abstract class Table extends java.lang.Object
 {
-//    private static final java.lang.String ID_FIELD_NAME  = "_id";
+    static final java.lang.String ID_FIELD_NAME  = "_id";  // TODO: Make private later.
 
     private android.database.sqlite.SQLiteDatabase db            ;
     private java.lang.String                       tableName, tag;
@@ -44,7 +44,7 @@ abstract class Table extends java.lang.Object
 
     abstract android.content.ContentValues getContentValues();
 
-    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }
+    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
 
 
     // region Package Methods
@@ -109,6 +109,15 @@ abstract class Table extends java.lang.Object
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
     }
+
+//    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
+//    {
+//        assert model != null;
+//        final java.lang.String whereClause =
+//            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
+//        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
+//        return this.deleteUsingWhereClause(/* whereClause => */ whereClause);
+//    }
 
     boolean delete()                                                          // TODO: Remove later.
     {

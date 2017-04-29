@@ -73,9 +73,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "templates";
 
-    private static final java.lang.String
-        ID_FIELD_NAME = "_id", TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
-    private static final java.lang.String COLS_FIELD_NAME = "cols", ROWS_FIELD_NAME = "rows";
+    private static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
+    private static final java.lang.String COLS_FIELD_NAME  = "cols" , ROWS_FIELD_NAME = "rows";
     private static final java.lang.String
         ECELLS_FIELD_NAME = "ecells", ECOLS_FIELD_NAME = "ecols", EROWS_FIELD_NAME = "erows";
     private static final java.lang.String CNUMB_FIELD_NAME = "cnumb", RNUMB_FIELD_NAME = "rnumb";
@@ -125,7 +124,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             return false;
         else
         {
-            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME));
+            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME));
             this.type = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME));
             this.cols = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
@@ -149,7 +148,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public boolean get(final long id)
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
         if (cursor == null)
             return false;
         else
@@ -187,7 +186,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME + " on id = " + id);
         return this.update(/* whereClause   => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long id)
@@ -195,7 +194,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME + " on id = " + id);
         return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
     // endregion
 }

@@ -47,8 +47,8 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "entries";
     private static final java.lang.String
-        ID_FIELD_NAME  = "_id", GRID_FIELD_NAME  = "grid" , COL_FIELD_NAME   = "col"  ,
-        ROW_FIELD_NAME = "row", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
+        GRID_FIELD_NAME  = "grid" , COL_FIELD_NAME   = "col"  , ROW_FIELD_NAME = "row",
+        EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
 
 
@@ -75,7 +75,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     {
         assert cursor != null;
         this.id = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME   ));
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME          ));
         this.grid = cursor.getInt(cursor.getColumnIndex(
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME ));
 
@@ -94,7 +94,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     public boolean get(final long id)                                         // TODO: Remove later.
     {
         final android.database.Cursor cursor = this.queryDistinct(
-            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
         if (cursor == null)
             return false;
         else
@@ -160,7 +160,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
         return this.update(/* whereClause   => */
-            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long id)                                      // TODO: Remove later.
@@ -168,7 +168,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
         return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean deleteByGrid(final long grid)
