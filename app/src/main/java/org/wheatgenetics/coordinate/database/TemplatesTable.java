@@ -188,13 +188,5 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return this.update(/* whereClause   => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
-
-    public boolean delete(final long id)
-    {
-        this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME + " on id = " + id);
-        return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-    }
     // endregion
 }

@@ -42,6 +42,15 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy       );
     }
 
+    boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make privtate later.
+    {
+        assert this.db != null;
+        return this.db.delete(
+            /* table       => */ this.tableName,
+            /* whereClause => */ whereClause   ,
+            /* whereArgs   => */ null          ) > 0;
+    }
+
     abstract android.content.ContentValues getContentValues();
 
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
@@ -101,28 +110,19 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null                   ) > 0;
     }
 
-    boolean delete(final java.lang.String whereClause)
+    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
     {
-        assert this.db != null;
-        return this.db.delete(
-            /* table       => */ this.tableName,
-            /* whereClause => */ whereClause   ,
-            /* whereArgs   => */ null          ) > 0;
+        assert model != null;
+        final java.lang.String whereClause =
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
+        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
+        return this.deleteUsingWhereClause(/* whereClause => */ whereClause);
     }
-
-//    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
-//    {
-//        assert model != null;
-//        final java.lang.String whereClause =
-//            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
-//        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
-//        return this.deleteUsingWhereClause(/* whereClause => */ whereClause);
-//    }
 
     boolean delete()                                                          // TODO: Remove later.
     {
         this.sendInfoLogMsg("Clearing table " + this.tableName);
-        return this.delete(/* whereClause => */ null);
+        return this.deleteUsingWhereClause(/* whereClause => */ null);
     }
     // endregion
 }

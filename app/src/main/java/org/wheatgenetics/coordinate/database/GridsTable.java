@@ -183,19 +183,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
-    public boolean delete(final long id)
-    {
-        this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " on id = " + id);
-        return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-    }
-
     public boolean deleteByTemplate(long entryId)                             // TODO: Remove later.
     {
         this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " on id = " + entryId);
-        return this.delete(/* whereClause => */
+        return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.GridsTable.TEMPLATE_FIELD_NAME + "=" + entryId);
     }
     // endregion

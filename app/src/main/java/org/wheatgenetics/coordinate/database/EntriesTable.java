@@ -163,19 +163,11 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
-    public boolean delete(final long id)                                      // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
-        return this.delete(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-    }
-
     public boolean deleteByGrid(final long grid)
     {
         this.sendInfoLogMsg("Deleting from table " +
             org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + grid);
-        return this.delete(/* whereClause => */
+        return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "=" + grid);
     }
     // endregion
