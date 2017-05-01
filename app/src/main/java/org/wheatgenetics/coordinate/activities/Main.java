@@ -1878,33 +1878,30 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private void saveData()
     {
-        View view;
-
         String data = mEditData.getText().toString().trim();
-
-        boolean ret;
-
-        final EntriesTable entriesTable = new EntriesTable(this);
-        if (entriesTable.getByGrid(this.grid, mCurRow, mCurCol))
         {
-            entriesTable.value = data;
-            ret = entriesTable.update();
-        }
-        else
-        {
-            entriesTable.grid = this.grid;
-            entriesTable.row = mCurRow;
-            entriesTable.col = mCurCol;
-            entriesTable.value = data;
-            ret = entriesTable.insert() > 0;
-        }
-
-        if (!ret)
-        {
-            Toast.makeText(Main.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
-            return;
+            boolean ret;
+            {
+                final EntriesTable entriesTable = new EntriesTable(this);
+                entriesTable.value = data;
+                if (entriesTable.getByGrid(this.grid, mCurRow, mCurCol))
+                    ret = entriesTable.update();
+                else
+                {
+                    entriesTable.grid = this.grid;
+                    entriesTable.row = mCurRow;
+                    entriesTable.col = mCurCol;
+                    ret = entriesTable.insert() > 0;
+                }
+            }
+            if (!ret)
+            {
+                Toast.makeText(Main.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
+        View view;
         view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
 
         if (view != null)
@@ -2039,11 +2036,15 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     {
         boolean ret;
 
-        final GridsTable gridsTable = new GridsTable(this);
-        ret = gridsTable.delete(new GridModel(id));
+        {
+            final GridsTable gridsTable = new GridsTable(this);
+            ret = gridsTable.delete(new GridModel(id));
+        }
 
-        final EntriesTable entriesTable = new EntriesTable(this);
-        entriesTable.deleteByGrid(id);
+        {
+            final EntriesTable entriesTable = new EntriesTable(this);
+            entriesTable.deleteByGrid(id);
+        }
 
         return ret;
     }
@@ -2288,22 +2289,19 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private void saveExcludedCell(final int r, final int c)
     {
         boolean ret;
-
-        final EntriesTable entriesTable = new EntriesTable(this);
-        if (entriesTable.getByGrid(this.grid, r, c))
         {
+            final EntriesTable entriesTable = new EntriesTable(this);
             entriesTable.value = "exclude";
-            ret = entriesTable.update();
+            if (entriesTable.getByGrid(this.grid, r, c))
+                ret = entriesTable.update();
+            else
+            {
+                entriesTable.grid = this.grid;
+                entriesTable.row  = r;
+                entriesTable.col  = c;
+                ret = entriesTable.insert() > 0;
+            }
         }
-        else
-        {
-            entriesTable.grid = this.grid;
-            entriesTable.row = r;
-            entriesTable.col = c;
-            entriesTable.value = "exclude";
-            ret = entriesTable.insert() > 0;
-        }
-
         if (!ret)
         {
             Toast.makeText(Main.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
@@ -2314,10 +2312,10 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private String getDataEntry(final long grid, final int r, final int c)
     {
         String data = null;
-
-        final EntriesTable entriesTable = new EntriesTable(this);
-        if (entriesTable.getByGrid(grid, r, c)) data = entriesTable.value;
-
+        {
+            final EntriesTable entriesTable = new EntriesTable(this);
+            if (entriesTable.getByGrid(grid, r, c)) data = entriesTable.value;
+        }
         return data;
     }
 
