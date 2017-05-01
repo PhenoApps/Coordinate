@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
 
 abstract public class Model extends java.lang.Object
 {
-    long id;  // TODO: Make private later.
+    private long id;
 
     public long getId() { return this.id; }
     public void setId(final long id) { this.id = id; }                 // TODO: Replace with copy().

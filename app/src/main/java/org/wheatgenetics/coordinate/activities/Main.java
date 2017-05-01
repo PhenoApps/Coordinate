@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -82,6 +80,7 @@ import org.wheatgenetics.coordinate.utils.Utils;
 
 /**
  * Uses:
+ * android.os.Bundle
  * android.support.v7.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
