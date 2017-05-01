@@ -2051,7 +2051,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private long createGrid(final long templateId)
     {
         final GridsTable gridsTable = new GridsTable(this);
-        gridsTable.template = templateId;
+        gridsTable.templateId = templateId;
         gridsTable.timestamp = System.currentTimeMillis();
         assert this.nonNullOptionalFields != null;
         gridsTable.title = this.nonNullOptionalFields.get(0).getValue();

@@ -11,9 +11,11 @@ package org.wheatgenetics.coordinate.database;
 
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public long             template, templateId                ;  // TODO: What is template?
-    public java.lang.String title                               ;
-    public long             timestamp                           ;
+    // region grids Table
+    public long             templateId;
+    public java.lang.String title     ;
+    public long             timestamp ;
+    // endregion
 
     // region templates Table
     public java.lang.String templateTitle                           ;
@@ -27,10 +29,10 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ "GridsTable"                                               );
 
-        this.id        =  0;
-        this.template  =  0;
-        this.title     = "";
-        this.timestamp =  0;
+        this.id         =  0;
+        this.templateId =  0;
+        this.title      = "";
+        this.timestamp  =  0;
 
         this.templateTitle = "";
         this.templateRows  =  0;
@@ -41,7 +43,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     public java.lang.String toString()
     {
         return java.lang.String.format(
-            "id: %02d template: %02d timestamp: %02d", this.id, this.template, this.timestamp);
+            "id: %02d templateId: %02d timestamp: %02d", this.id, this.templateId, this.timestamp);
     }
 
 
@@ -59,11 +61,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         final android.content.ContentValues contentValues = super.getContentValues();
 
         contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME , this.template );
+            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME , this.templateId);
         contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME, this.title    );
+            org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME, this.title     );
         contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME, this.timestamp);
+            org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME, this.timestamp );
 
         return contentValues;
     }
@@ -75,8 +77,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         else
         {
             this.id = cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
-            this.template = cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));  // TODO: Move to superclass.
+            this.templateId = cursor.getInt(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME));
@@ -87,13 +89,13 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
-    public boolean copyAll(final android.database.Cursor cursor)     // TODO: Change name to copy().
+    public boolean copyAll(final android.database.Cursor cursor)
     {
         if (cursor ==  null)
             return false;
         else
         {
-            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
+            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));  // TODO: Move to superclass.
             this.title = cursor.getString(cursor.getColumnIndex("gridTitle"));
 
             this.templateType = cursor.getInt(cursor.getColumnIndex("templateType"));
