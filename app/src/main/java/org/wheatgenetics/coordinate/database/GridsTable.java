@@ -76,7 +76,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         else
         {
             this.id = cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));  // TODO: Move to superclass.
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
             this.templateId = cursor.getInt(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex(
@@ -94,7 +94,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             return false;
         else
         {
-            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));  // TODO: Move to superclass.
+            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
             this.title = cursor.getString(cursor.getColumnIndex("gridTitle"));
 
             this.templateType = cursor.getInt(cursor.getColumnIndex("templateType"));

@@ -4,18 +4,13 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.graphics.Point
  *
- * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.TemplateType
+ * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.utils.Utils
  */
 
-public class TemplateModel extends org.wheatgenetics.coordinate.model.Model
+public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
 {
-    private java.lang.String                                title     ;
-    private org.wheatgenetics.coordinate.model.TemplateType type      ;
-    private int                                             rows, cols;
-
     private java.util.List<android.graphics.Point> excludeCells            ;
     private java.util.List<java.lang.Integer     > excludeRows, excludeCols;
 
@@ -28,24 +23,14 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.Model
 
     public TemplateModel() { super(); }  // TODO: Remove?
 
-    public TemplateModel(final long id)  // TODO: Remove?
-    {
-        this();
-        this.setId(id);
-    }
+    public TemplateModel(final long id) { super(id); }  // TODO: Remove?
 
     public TemplateModel(final long id, final java.lang.String title, final int type,
     final int rows, final int cols, final java.lang.String excludeCells,
     final java.lang.String excludeRows, final java.lang.String excludeCols, final int colNumbering,
     final int rowNumbering, final java.lang.String optionalFields, final long timestamp)
     {
-        this(id);
-
-        this.title = title;
-        this.type  = org.wheatgenetics.coordinate.model.TemplateType.get(type);
-
-        if (rows <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.rows = rows;
-        if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
+        super(id, title, type, rows, cols);
 
         try
         {
