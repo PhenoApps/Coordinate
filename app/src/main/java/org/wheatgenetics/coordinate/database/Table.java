@@ -13,10 +13,10 @@ package org.wheatgenetics.coordinate.database;
 
 abstract class Table extends java.lang.Object
 {
-    static final java.lang.String ID_FIELD_NAME  = "_id";  // TODO: Make private later.
+    static final java.lang.String ID_FIELD_NAME = "_id";  // TODO: Make private later.
 
-    private android.database.sqlite.SQLiteDatabase db            ;
-    private java.lang.String                       tableName, tag;
+    private final android.database.sqlite.SQLiteDatabase db            ;
+    private final java.lang.String                       tableName, tag;
 
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
@@ -27,6 +27,8 @@ abstract class Table extends java.lang.Object
         this.tableName = tableName                                                    ;
         this.tag       = tag                                                          ;
     }
+
+    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
 
     private android.database.Cursor queryAll(final java.lang.String selection,
     final java.lang.String orderBy)
@@ -42,7 +44,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy       );
     }
 
-    boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make privtate later.
+    boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
         assert this.db != null;
         return this.db.delete(
@@ -51,12 +53,8 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null          ) > 0;
     }
 
-    abstract android.content.ContentValues getContentValues();
+    abstract android.content.ContentValues            getContentValues()                        ;
 
-    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
-
-
-    // region Package Methods
     android.database.Cursor queryAllSelection(final java.lang.String selection)
     { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
 
@@ -113,7 +111,7 @@ abstract class Table extends java.lang.Object
     public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
     {
         assert model != null;
-        final java.lang.String whereClause =
+        final java.lang.String whereClause =                              // TODO: Make into method.
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
         this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
         return this.deleteUsingWhereClause(/* whereClause => */ whereClause);
@@ -124,5 +122,4 @@ abstract class Table extends java.lang.Object
         this.sendInfoLogMsg("Clearing table " + this.tableName);
         return this.deleteUsingWhereClause(/* whereClause => */ null);
     }
-    // endregion
 }

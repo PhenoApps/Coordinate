@@ -156,7 +156,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                                        }
     }
 
-    public boolean getByType(final int type)
+    public boolean getByType(final int type)  // TODO: Change from int to TemplateType.
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" + type);

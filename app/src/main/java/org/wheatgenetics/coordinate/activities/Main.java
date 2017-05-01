@@ -1742,7 +1742,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 {
                     names[pos] = String.format(
                         "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title,
-                        tmpG.templateTitle, tmpG.cols, tmpG.rows, Utils.formatDate(tmpG.stamp));
+                        tmpG.templateTitle, tmpG.templateCols, tmpG.templateRows, Utils.formatDate(tmpG.timestamp));
                     indexes[pos++] = tmpG.id;
                 }
             }
@@ -1783,8 +1783,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                                 mGridTitle = grd.title;
                                 org.wheatgenetics.coordinate.activities.Main.this.templateType =  // model
                                     grd.templateType;
-                                org.wheatgenetics.coordinate.activities.Main.this.rows = grd.rows;  // model
-                                org.wheatgenetics.coordinate.activities.Main.this.cols = grd.cols;  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.rows = grd.templateRows;  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.cols = grd.templateCols;  // model
 
                                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                                     new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
@@ -1829,8 +1829,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             this.grid          = grd.id           ;
             mGridTitle = grd.title;
             this.templateType = grd.templateType;  // model
-            this.rows         = grd.rows        ;  // model
-            this.cols         = grd.cols        ;  // model
+            this.rows         = grd.templateRows;  // model
+            this.cols         = grd.templateCols;  // model
 
             this.excludeCells.clear();  // model
             this.excludeRows.clear();   // model
@@ -2048,11 +2048,11 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         return ret;
     }
 
-    private long createGrid(final long template)
+    private long createGrid(final long templateId)
     {
         final GridsTable gridsTable = new GridsTable(this);
-        gridsTable.template = template;
-        gridsTable.stamp = System.currentTimeMillis();
+        gridsTable.template = templateId;
+        gridsTable.timestamp = System.currentTimeMillis();
         assert this.nonNullOptionalFields != null;
         gridsTable.title = this.nonNullOptionalFields.get(0).getValue();
         return gridsTable.insert();
@@ -2107,7 +2107,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     {
         this.templateType = templateType;  // model
 
-        final long grid = createGrid(this.templateModel.getId());
+        final long grid = this.createGrid(this.templateModel.getId());
         if (grid > 0)
         {
             this.grid = grid;
