@@ -35,10 +35,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
             /* tag       => */ "TemplatesTable"                                               );
 
-        this.id = 0;
-
         this.title = "";
-        this.type  = 0 ;
+        this.type  =  0;
 
         this.rows = 0;
         this.cols = 0;
@@ -59,10 +57,10 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public java.lang.String toString()
     {
         return "TemplatesTable" +
-            " [id="           + this.id           + ", title="        + this.title        +
+            " [" + super.toString()               + ", title="        + this.title        +
             ", type="         + this.type         + ", rows="         + this.rows         +
-            ", cols="         + this.cols         + ", excludeCells="       + this.excludeCells       +
-            ", excludeRows="        + this.excludeRows        + ", excludeCols="        + this.excludeCols        +
+            ", cols="         + this.cols         + ", excludeCells=" + this.excludeCells +
+            ", excludeRows="  + this.excludeRows  + ", excludeCols="  + this.excludeCols  +
             ", options="      + this.options      + ", colNumbering=" + this.colNumbering +
             ", rowNumbering=" + this.rowNumbering + ", stamp="        + this.stamp        + "]";
     }

@@ -13,7 +13,7 @@ package org.wheatgenetics.coordinate.database;
 
 abstract class Table extends java.lang.Object
 {
-    static final java.lang.String ID_FIELD_NAME = "_id";  // TODO: Make private later.
+    static final java.lang.String ID_FIELD_NAME = "_id";                // TODO: Make private later.
 
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
@@ -27,7 +27,12 @@ abstract class Table extends java.lang.Object
         this.db        = org.wheatgenetics.coordinate.database.Database.getDb(context);
         this.tableName = tableName                                                    ;
         this.tag       = tag                                                          ;
+
+        this.id = 0;
     }
+
+    @Override
+    public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
 

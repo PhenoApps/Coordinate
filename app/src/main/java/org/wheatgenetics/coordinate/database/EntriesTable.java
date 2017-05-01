@@ -24,7 +24,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME,
             /* tag       => */ "EntriesTable"                                               );
 
-        this.id   = 0;
         this.grid = 0;
 
         this.col = 0;
@@ -38,8 +37,9 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     @Override
     public java.lang.String toString()
     {
-        return java.lang.String.format("id: %02d entry: %02d col: %02d row: %02d value: %.2f",
-            this.id, this.grid, this.col, this.row, this.value);
+        return super.toString() + java.lang.String.format(
+            " entry: %02d col: %02d row: %02d value: %.2f",
+            this.grid, this.col, this.row, this.value);
     }
 
 

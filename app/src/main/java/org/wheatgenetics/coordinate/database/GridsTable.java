@@ -29,7 +29,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ "GridsTable"                                               );
 
-        this.id         =  0;
         this.templateId =  0;
         this.title      = "";
         this.timestamp  =  0;
@@ -42,8 +41,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @Override
     public java.lang.String toString()
     {
-        return java.lang.String.format(
-            "id: %02d templateId: %02d timestamp: %02d", this.id, this.templateId, this.timestamp);
+        return super.toString() + java.lang.String.format(
+            " templateId: %02d timestamp: %02d", this.templateId, this.timestamp);
     }
 
 
