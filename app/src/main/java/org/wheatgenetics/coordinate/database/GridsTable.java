@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  *
  * org.wheatgenetics.coordinate.database.Table
+ * org.wheatgenetics.coordinate.model.GridModel
  */
 
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
@@ -55,6 +56,27 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
 
     @Override
+    org.wheatgenetics.coordinate.model.GridModel make(final android.database.Cursor cursor)
+    {
+        if (cursor == null)
+            return null;
+        else
+            return new org.wheatgenetics.coordinate.model.GridModel(
+                /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others?
+                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+                /* title => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
+                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
+                /* templateId => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
+                /* templateTitle => */ cursor.getString(cursor.getColumnIndex("templateTitle")),
+                /* templateType  => */ cursor.getInt   (cursor.getColumnIndex("templateType" )),
+                /* templateRows  => */ cursor.getInt   (cursor.getColumnIndex("rows"         )),
+                /* templateCols  => */ cursor.getInt   (cursor.getColumnIndex("cols"         )));
+    }
+
+    @Override
     android.content.ContentValues getContentValues()
     {
         final android.content.ContentValues contentValues = super.getContentValues();
@@ -100,8 +122,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             this.templateType = cursor.getInt(cursor.getColumnIndex("templateType"));
             this.templateTitle = cursor.getString(cursor.getColumnIndex("templateTitle"));
             this.templateId = cursor.getLong(cursor.getColumnIndex("templateId"));
-            this.templateCols = cursor.getInt(cursor.getColumnIndex("cols"));
-            this.templateRows = cursor.getInt(cursor.getColumnIndex("rows"));
+            this.templateCols = cursor.getInt(cursor.getColumnIndex("cols"));  // TODO: Bug?
+            this.templateRows = cursor.getInt(cursor.getColumnIndex("rows"));  // TODO: Bug?
 
             this.timestamp =
                 cursor.getLong(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME));

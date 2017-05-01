@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  *
  * org.wheatgenetics.coordinate.database.Table
+ * org.wheatgenetics.coordinate.model.EntryModel
  */
 
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
@@ -51,6 +52,27 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
 
+
+    @Override
+    org.wheatgenetics.coordinate.model.EntryModel make(final android.database.Cursor cursor)
+    {
+        if (cursor == null)
+            return null;
+        else
+            return new org.wheatgenetics.coordinate.model.EntryModel(
+                /* id => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+                /* gridId => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME)),
+                /* row => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME)),
+                /* col => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME)),
+                /* value => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME)),
+                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME)));
+    }
 
     @Override
     android.content.ContentValues getContentValues()

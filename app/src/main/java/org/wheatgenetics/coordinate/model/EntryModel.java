@@ -12,7 +12,7 @@ public class EntryModel extends org.wheatgenetics.coordinate.model.Model
     private java.lang.String value    ;
     private long             timestamp;
 
-    EntryModel(final long id, final long gridId, final int row, final int col,
+    public EntryModel(final long id, final long gridId, final int row, final int col,
     final java.lang.String value, final long timestamp)
     {
         super(id);

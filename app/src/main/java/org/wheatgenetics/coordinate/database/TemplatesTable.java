@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  *
  * org.wheatgenetics.coordinate.database.Table
+ * org.wheatgenetics.coordinate.model.TemplateModel
  */
 
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
@@ -79,6 +80,39 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String STAMP_FIELD_NAME = "stamp";
     // endregion
 
+
+    @Override
+    org.wheatgenetics.coordinate.model.TemplateModel make(final android.database.Cursor cursor)  // TODO: Make private.
+    {
+        if (cursor == null)
+            return null;
+        else
+            return new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* id => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+                /* title => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME)),
+                /* type => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME)),
+                /* rows => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME)),
+                /* cols => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
+                /* excludeCells => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME)),
+                /* excludeRows => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME)),
+                /* excludeCols => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME)),
+                /* colNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
+                /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
+                /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
+                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME)));
+    }
 
     @Override
     android.content.ContentValues getContentValues()

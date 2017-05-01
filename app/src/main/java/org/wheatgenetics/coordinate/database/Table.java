@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.database;
  * android.util.Log
  *
  * org.wheatgenetics.coordinate.database.Database
+ * org.wheatgenetics.coordinate.model.Model
  */
 
 abstract class Table extends java.lang.Object
@@ -58,6 +59,8 @@ abstract class Table extends java.lang.Object
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
     }
+
+    abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
 
     android.content.ContentValues getContentValues()
     {
