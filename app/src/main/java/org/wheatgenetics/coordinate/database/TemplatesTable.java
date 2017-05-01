@@ -11,7 +11,6 @@ package org.wheatgenetics.coordinate.database;
 
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public long             id   ;
     public java.lang.String title;
     public int              type ;
     public int              rows ;
@@ -86,7 +85,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     @Override
     android.content.ContentValues getContentValues()
     {
-        final android.content.ContentValues contentValues = new android.content.ContentValues();
+        final android.content.ContentValues contentValues = super.getContentValues();
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
             this.title);

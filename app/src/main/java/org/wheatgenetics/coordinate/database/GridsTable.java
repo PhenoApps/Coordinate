@@ -11,11 +11,14 @@ package org.wheatgenetics.coordinate.database;
 
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public long             id, template, templateId                ;  // TODO: What is template?
+    public long             template, templateId                ;  // TODO: What is template?
+    public java.lang.String title                               ;
+    public long             timestamp                           ;
+
+    // region templates Table
     public java.lang.String templateTitle                           ;
     public int              templateType, templateRows, templateCols;
-    public java.lang.String title                                   ;
-    public long             timestamp                               ;
+    // endregion
 
     public GridsTable(final android.content.Context context)
     {
@@ -24,17 +27,14 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ "GridsTable"                                               );
 
-        this.id       = 0;
-        this.template = 0;
+        this.id        =  0;
+        this.template  =  0;
+        this.title     = "";
+        this.timestamp =  0;
 
         this.templateTitle = "";
-
-        this.templateRows = 0;
-        this.templateCols = 0;
-
-        this.title = "";
-
-        this.timestamp = 0;
+        this.templateRows  =  0;
+        this.templateCols  =  0;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @Override
     android.content.ContentValues getContentValues()
     {
-        final android.content.ContentValues contentValues = new android.content.ContentValues();
+        final android.content.ContentValues contentValues = super.getContentValues();
 
         contentValues.put(
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME , this.template );

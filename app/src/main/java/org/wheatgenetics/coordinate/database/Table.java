@@ -17,6 +17,7 @@ abstract class Table extends java.lang.Object
 
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
+    public        long                                   id            ;
 
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
@@ -53,7 +54,12 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null          ) > 0;
     }
 
-    abstract android.content.ContentValues            getContentValues()                        ;
+    android.content.ContentValues getContentValues()
+    {
+        final android.content.ContentValues contentValues = new android.content.ContentValues();
+        contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, this.id);
+        return contentValues;
+    }
 
     android.database.Cursor queryAllSelection(final java.lang.String selection)
     { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }

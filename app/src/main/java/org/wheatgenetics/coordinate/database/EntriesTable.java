@@ -11,10 +11,10 @@ package org.wheatgenetics.coordinate.database;
 
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public  long             id , grid;
-    public  int              col, row ;
-    public  java.lang.String value    ;
-    private long             stamp    ;
+    public  long             grid    ;
+    public  int              col, row;
+    public  java.lang.String value   ;
+    private long             stamp   ;
 
 
     public EntriesTable(final android.content.Context context)
@@ -55,7 +55,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     @Override
     android.content.ContentValues getContentValues()
     {
-        final android.content.ContentValues contentValues = new android.content.ContentValues();
+        final android.content.ContentValues contentValues = super.getContentValues();
 
         contentValues.put(
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME , this.grid );
