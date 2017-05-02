@@ -64,6 +64,4 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         this.timestamp = timestamp;
     }
-
-//    public java.lang.String getTitle() { return this.title; }
 }

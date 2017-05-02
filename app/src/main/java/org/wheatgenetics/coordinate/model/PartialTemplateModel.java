@@ -35,6 +35,9 @@ public class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Mod
         if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
     }
 
+    public java.lang.String getTitle() { return this.title; }
+    public void setTitle(final java.lang.String title) { this.title = title; }
+
     public org.wheatgenetics.coordinate.model.TemplateType getType() { return this.type; }
 
     public void setType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
