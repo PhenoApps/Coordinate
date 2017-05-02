@@ -126,8 +126,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         new org.wheatgenetics.coordinate.model.TemplateModel(
             "", org.wheatgenetics.coordinate.model.TemplateType.SEED, 20, 10, true, false);
 
-    private List<Point> excludeCells = new ArrayList<>();
-
     private List<Integer> excludeRows = new ArrayList<>();
     private List<Integer> excludeCols = new ArrayList<>();
 //    private org.wheatgenetics.coordinate.model.TemplatesTable templatesTable;
@@ -717,8 +715,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 if (templatesTable.getByType(templateType))         // database, model
                     this.copyTemplate(templatesTable);              // throws org.json.JSONException
             }
-            this.excludeCells.clear();
-            this.excludeCells.add(new Point(this.randomBox(this.templateModel.getCols()), this.randomBox(this.templateModel.getRows())));
+            this.templateModel.getExcludeCells().clear();
+            this.templateModel.getExcludeCells().add(new Point(this.randomBox(this.templateModel.getCols()), this.randomBox(this.templateModel.getRows())));
 
             this.inputTemplateInput(MODE_DNA);                      // throws org.json.JSONException
         }
@@ -851,7 +849,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.excludeRows.add(5);
 
         this.excludeCols  = new ArrayList<>();
-        this.excludeCells = new ArrayList<>();
+        this.templateModel.getExcludeCells().clear();
 
         this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
@@ -875,7 +873,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.excludeRows = new ArrayList<>();
         this.excludeCols = new ArrayList<>();
 
-        this.excludeCells = new ArrayList<>();
+        this.templateModel.getExcludeCells().clear();
 
         this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
@@ -894,7 +892,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         templatesTable.rows  = this.templateModel.getRows()          ;
         templatesTable.cols  = this.templateModel.getCols()          ;
 
-        templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
+        templatesTable.excludeCells = Utils.pointListToJson(this.templateModel.getExcludeCells()); // throws org.json.JSONException
         templatesTable.excludeCols  = Utils.integerListToJson(this.excludeCols);
         templatesTable.excludeRows  = Utils.integerListToJson(this.excludeRows);
 
@@ -967,8 +965,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         inputSeed();
                     else if (which == 1)
                     {
-                        org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
-                        org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().add(
                             new Point(
                                 randomBox(Main.this.templateModel.getCols()),
                                 randomBox(Main.this.templateModel.getRows())));
@@ -1063,7 +1061,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.templateModel.setRows(templatesTable.rows);
         this.templateModel.setCols(templatesTable.cols);
 
-        this.excludeCells = Utils.jsonToPointList(templatesTable.excludeCells);  // throws org.json.JSONException
+        this.templateModel.setExcludeCells(Utils.jsonToPointList(templatesTable.excludeCells));  // throws org.json.JSONException
 
         this.excludeCols = Utils.jsonToIntegerList(templatesTable.excludeCols);  // throws org.json.JSONException
         this.excludeRows = Utils.jsonToIntegerList(templatesTable.excludeRows);  // throws org.json.JSONException
@@ -1076,7 +1074,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private void inputTemplateNew()
     {
-        this.excludeCells = new ArrayList<>();
+        this.templateModel.getExcludeCells().clear();
         this.excludeRows  = new ArrayList<>();
         this.excludeCols  = new ArrayList<>();
 
@@ -1586,6 +1584,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private void inputExcludeBoxes(final int type)
     {
+        assert this.templateModel != null;
         final int     total        = type == 0 ? this.templateModel.getRows() : this.templateModel.getCols();
         final boolean selections[] = new boolean[total];
         final String  items[]      = new String[total];
@@ -1656,8 +1655,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 {
                     final String str = cellsEdit.getText().toString();
 
-                    org.wheatgenetics.coordinate.activities.Main.this.excludeCells =
-                        new ArrayList<>();
+                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();
 
                     final int cells = Utils.getInteger(str);
                     if (cells > 0)
@@ -1666,7 +1664,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                             final Point point = new Point(
                                 randomBox(Main.this.templateModel.getCols()),
                                 randomBox(Main.this.templateModel.getRows()));
-                            org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(point); // FIXME check exclusivity
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().add(point); // FIXME check exclusivity
                         }
                     else inputExcludeInput();
 
@@ -1803,7 +1801,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                                     org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering == 1);  // model
                                 }
 
-                                org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();  // model
                                 org.wheatgenetics.coordinate.activities.Main.this.excludeRows.clear();   // model
                                 org.wheatgenetics.coordinate.activities.Main.this.excludeCols.clear();   // model
 
@@ -1828,13 +1826,13 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         {
             assert this.templateModel != null;
             this.templateModel.setTitle(grd.templateTitle);
-            this.grid          = grd.id           ;
-            mGridTitle         = grd.title        ;
+            this.grid  = grd.id   ;
+            mGridTitle = grd.title;
             this.templateModel.setType(grd.templateType);
             this.templateModel.setRows(grd.templateRows);
             this.templateModel.setCols(grd.templateCols);
 
-            this.excludeCells.clear();  // model
+            this.templateModel.getExcludeCells().clear();  // model
             this.excludeRows.clear();   // model
             this.excludeCols.clear();   // model
 
@@ -1857,9 +1855,9 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private boolean isExcludedCell(final int r, final int c)
     {
-        for (int i = 0; i < this.excludeCells.size(); i++)
+        for (int i = 0; i < this.templateModel.getExcludeCells().size(); i++)
         {
-            final Point point = this.excludeCells.get(i);
+            final Point point = this.templateModel.getExcludeCells().get(i);
             if (point.equals(c, r)) return true;
         }
         return false;
@@ -1914,6 +1912,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         boolean endOfCell = false;
 
+        assert this.templateModel != null;
         mCurRow++;
         if (mCurRow > this.templateModel.getRows() || (mCurRow == this.templateModel.getRows() && (isExcludedRow(this.templateModel.getRows()) || isExcludedCell(this.templateModel.getRows(), mCurCol))))
         {
@@ -2066,22 +2065,23 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private void newTemplate(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     throws org.json.JSONException
     {
+        assert this.templateModel != null;
         this.templateModel.setType(templateType);
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         templatesTable.title = this.templateModel.getTitle();
         templatesTable.type  = templateType.getCode()       ;
-        templatesTable.cols  = this.templateModel.getCols()                    ;  // model
-        templatesTable.rows  = this.templateModel.getRows()                    ;  // model
+        templatesTable.cols  = this.templateModel.getCols() ;
+        templatesTable.rows  = this.templateModel.getRows() ;
 
-        templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException, model
+        templatesTable.excludeCells = Utils.pointListToJson(this.templateModel.getExcludeCells());  // throws org.json.JSONException, model
         templatesTable.excludeCols = Utils.integerListToJson(this.excludeCols);  // model
         templatesTable.excludeRows = Utils.integerListToJson(this.excludeRows);  // model
 
         templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException, model
 
-        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;  // model
-        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;  // model
+        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
+        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
 
         templatesTable.stamp = System.currentTimeMillis();  // model
 
@@ -2090,7 +2090,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         {
             // deleteTemplate(this.templateModel); //TODO
 
-            assert this.templateModel != null;
             this.templateModel.setId(templateId);
 
             final long grid = this.createGrid(this.templateModel.getId());
@@ -2151,6 +2150,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         int c;
         int r = 1;
 
+        assert this.templateModel != null;
         for (c = mCurCol; c <= this.templateModel.getCols(); c++)
         {
             if (isExcludedCol(c)) continue;
@@ -2210,6 +2210,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         @SuppressLint("InflateParams")
         final TableRow hrow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
         int chcol = 0;
+        assert this.templateModel != null;
         for (int c = 0; c < (this.templateModel.getCols() + 1); c++)
         {
             @SuppressLint("InflateParams")
@@ -2280,7 +2281,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                     if (data != null && data.equals("exclude"))
                     {
                         this.setCellState(cell_cnt, STATE_INACTIVE);
-                        this.excludeCells.add(new Point(c, r));
+                        this.templateModel.getExcludeCells().add(new Point(c, r));
                     }
 
                     cell_cnt.setOnClickListener(this);

@@ -33,6 +33,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         this.colNumbering = colNumbering;
         this.rowNumbering = rowNumbering;
+
+        this.excludeCells = new java.util.ArrayList<android.graphics.Point>();
     }
 
     public TemplateModel(final long id, final java.lang.String title, final int code,
@@ -80,4 +82,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+
+    public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
+    public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
+    { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
 }
