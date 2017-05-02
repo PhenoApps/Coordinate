@@ -26,8 +26,14 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public TemplateModel(final long id) { super(id); }  // TODO: Remove?
 
     public TemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
-    { super(title, type, rows, cols); }
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
+    {
+        super(title, type, rows, cols);
+
+        this.colNumbering = colNumbering;
+        this.rowNumbering = rowNumbering;
+    }
 
     public TemplateModel(final long id, final java.lang.String title, final int code,
     final int rows, final int cols, final java.lang.String excludeCells,
@@ -68,4 +74,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         this.timestamp = timestamp;
     }
+
+    public boolean getColNumbering()                           { return this.colNumbering        ; }
+    public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
+
+    public boolean getRowNumbering()                           { return this.rowNumbering        ; }
+    public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
 }
