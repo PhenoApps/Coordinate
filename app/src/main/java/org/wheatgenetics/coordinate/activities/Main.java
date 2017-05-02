@@ -123,10 +123,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-        new org.wheatgenetics.coordinate.model.TemplateModel();
-
-    private int     rows         =    20;
-    private int     cols         =    10;
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            "", org.wheatgenetics.coordinate.model.TemplateType.SEED, 20, 10);
     private boolean rowNumbering = false;
     private boolean colNumbering = true ;
 
@@ -722,7 +720,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                     this.copyTemplate(templatesTable);              // throws org.json.JSONException
             }
             this.excludeCells.clear();
-            this.excludeCells.add(new Point(this.randomBox(this.cols), this.randomBox(this.rows)));
+            this.excludeCells.add(new Point(this.randomBox(this.templateModel.getCols()), this.randomBox(this.templateModel.getRows())));
 
             this.inputTemplateInput(MODE_DNA);                      // throws org.json.JSONException
         }
@@ -839,8 +837,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         assert this.templateModel != null;
         this.templateModel.setTitle("Seed Tray");
         this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
-        this.rows         =    6;
-        this.cols         =   20;
+        this.templateModel.setRows( 6);
+        this.templateModel.setCols(20);
         this.rowNumbering = true;
         this.colNumbering = true;
 
@@ -860,8 +858,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
         this.templateModel.setTitle("DNA Plate");
-        this.rows          =           8;
-        this.cols          =          12;
+        this.templateModel.setRows( 8);
+        this.templateModel.setCols(12);
         this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         this.rowNumbering = true ;
         this.colNumbering = false;
@@ -895,8 +893,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         assert this.templateModel != null;
         templatesTable.title = this.templateModel.getTitle()         ;
         templatesTable.type  = this.templateModel.getType().getCode();
-        templatesTable.rows  = this.rows                             ;
-        templatesTable.cols  = this.cols                             ;
+        templatesTable.rows  = this.templateModel.getRows()          ;
+        templatesTable.cols  = this.templateModel.getCols()          ;
 
         templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
         templatesTable.excludeCols  = Utils.integerListToJson(this.excludeCols);
@@ -974,8 +972,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         org.wheatgenetics.coordinate.activities.Main.this.excludeCells.clear();
                         org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(
                             new Point(
-                                randomBox(org.wheatgenetics.coordinate.activities.Main.this.cols),
-                                randomBox(org.wheatgenetics.coordinate.activities.Main.this.rows)));
+                                randomBox(Main.this.templateModel.getCols()),
+                                randomBox(Main.this.templateModel.getRows())));
 
                         try { inputTemplateInput(MODE_DNA); } catch (final java.lang.Exception e) {}
                     }
@@ -1064,8 +1062,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.templateModel.setId(templatesTable.id);
         this.templateModel.setTitle(templatesTable.title);
         this.templateModel.setType(templatesTable.type);
-        this.rows = templatesTable.rows;
-        this.cols = templatesTable.cols;
+        this.templateModel.setRows(templatesTable.rows);
+        this.templateModel.setCols(templatesTable.cols);
 
         this.excludeCells = Utils.jsonToPointList(templatesTable.excludeCells);  // throws org.json.JSONException
 
@@ -1098,8 +1096,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         final EditText colsEdit = (EditText) view.findViewById(R.id.colsEdit);
 
         nameEdit.setText("");
-        rowsEdit.setText(this.rows <= 0 ? "" : String.valueOf(this.rows));
-        colsEdit.setText(this.cols <= 0 ? "" : String.valueOf(this.cols));
+        rowsEdit.setText(this.templateModel.getRows() <= 0 ? "" : String.valueOf(this.templateModel.getRows()));
+        colsEdit.setText(this.templateModel.getCols() <= 0 ? "" : String.valueOf(this.templateModel.getCols()));
 
         final Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(menuMain[1]);
@@ -1116,8 +1114,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                     final String srows = rowsEdit.getText().toString().trim();
 
                     org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(sname);
-                    org.wheatgenetics.coordinate.activities.Main.this.rows = Utils.getInteger(srows);  // model
-                    org.wheatgenetics.coordinate.activities.Main.this.cols = Utils.getInteger(scols);  // model
+                    Main.this.templateModel.setRows(Utils.getInteger(srows));
+                    Main.this.templateModel.setCols(Utils.getInteger(scols));
 
                     if (sname.length() == 0)
                     {
@@ -1127,7 +1125,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         return;
                     }
 
-                    if (srows.length() == 0 || org.wheatgenetics.coordinate.activities.Main.this.rows == -1)
+                    if (srows.length() == 0 || Main.this.templateModel.getRows() == -1)
                     {
                         Toast.makeText(Main.this, getString(R.string.no_rows),
                             Toast.LENGTH_LONG).show();
@@ -1135,7 +1133,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         return;
                     }
 
-                    if (scols.length() == 0 || org.wheatgenetics.coordinate.activities.Main.this.cols == -1)
+                    if (scols.length() == 0 || Main.this.templateModel.getCols() == -1)
                     {
                         Toast.makeText(Main.this, getString(R.string.no_cols),
                             Toast.LENGTH_LONG).show();
@@ -1590,7 +1588,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private void inputExcludeBoxes(final int type)
     {
-        final int     total        = type == 0 ? this.rows : this.cols;
+        final int     total        = type == 0 ? this.templateModel.getRows() : this.templateModel.getCols();
         final boolean selections[] = new boolean[total];
         final String  items[]      = new String[total];
 
@@ -1668,8 +1666,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         for (int i = 0; i < cells; i++)
                         {
                             final Point point = new Point(
-                                randomBox(org.wheatgenetics.coordinate.activities.Main.this.cols),
-                                randomBox(org.wheatgenetics.coordinate.activities.Main.this.rows));
+                                randomBox(Main.this.templateModel.getCols()),
+                                randomBox(Main.this.templateModel.getRows()));
                             org.wheatgenetics.coordinate.activities.Main.this.excludeCells.add(point); // FIXME check exclusivity
                         }
                     else inputExcludeInput();
@@ -1787,8 +1785,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                                 org.wheatgenetics.coordinate.activities.Main.this.grid = grd.id;
                                 mGridTitle = grd.title;
                                 org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(grd.templateType);
-                                org.wheatgenetics.coordinate.activities.Main.this.rows = grd.templateRows;  // model
-                                org.wheatgenetics.coordinate.activities.Main.this.cols = grd.templateCols;  // model
+                                Main.this.templateModel.setRows(grd.templateRows);
+                                Main.this.templateModel.setCols(grd.templateCols);
 
                                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                                     new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
@@ -1834,8 +1832,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             this.grid          = grd.id           ;
             mGridTitle         = grd.title        ;
             this.templateModel.setType(grd.templateType);
-            this.rows = grd.templateRows;  // model
-            this.cols = grd.templateCols;  // model
+            this.templateModel.setRows(grd.templateRows);
+            this.templateModel.setCols(grd.templateCols);
 
             this.excludeCells.clear();  // model
             this.excludeRows.clear();   // model
@@ -1918,15 +1916,15 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         boolean endOfCell = false;
 
         mCurRow++;
-        if (mCurRow > this.rows || (mCurRow == this.rows && (isExcludedRow(this.rows) || isExcludedCell(this.rows, mCurCol))))
+        if (mCurRow > this.templateModel.getRows() || (mCurRow == this.templateModel.getRows() && (isExcludedRow(this.templateModel.getRows()) || isExcludedCell(this.templateModel.getRows(), mCurCol))))
         {
-            mCurRow = this.rows;
+            mCurRow = this.templateModel.getRows();
 
             mCurCol++;
-            if (mCurCol > this.cols || (mCurCol == this.cols && (isExcludedCol(this.cols) || isExcludedCell(mCurRow, this.cols))))
+            if (mCurCol > this.templateModel.getCols() || (mCurCol == this.templateModel.getCols() && (isExcludedCol(this.templateModel.getCols()) || isExcludedCell(mCurRow, this.templateModel.getCols()))))
             {
-                mCurCol = this.cols;
-                mCurCol = this.rows;
+                mCurCol = this.templateModel.getCols();
+                mCurCol = this.templateModel.getRows();
 
                 endOfCell = true;
             }
@@ -2074,8 +2072,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         templatesTable.title = this.templateModel.getTitle();
         templatesTable.type  = templateType.getCode()       ;
-        templatesTable.cols  = this.cols                    ;  // model
-        templatesTable.rows  = this.rows                    ;  // model
+        templatesTable.cols  = this.templateModel.getCols()                    ;  // model
+        templatesTable.rows  = this.templateModel.getRows()                    ;  // model
 
         templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException, model
         templatesTable.excludeCols = Utils.integerListToJson(this.excludeCols);  // model
@@ -2154,11 +2152,11 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         int c;
         int r = 1;
 
-        for (c = mCurCol; c <= this.cols; c++)
+        for (c = mCurCol; c <= this.templateModel.getCols(); c++)
         {
             if (isExcludedCol(c)) continue;
 
-            for (r = mCurRow; r <= this.rows; r++)
+            for (r = mCurRow; r <= this.templateModel.getRows(); r++)
             {
                 if (isExcludedRow(r)) continue;
                 if (!isExcludedCell(r, c)) break;
@@ -2213,7 +2211,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         @SuppressLint("InflateParams")
         final TableRow hrow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
         int chcol = 0;
-        for (int c = 0; c < (this.cols + 1); c++)
+        for (int c = 0; c < (this.templateModel.getCols() + 1); c++)
         {
             @SuppressLint("InflateParams")
             final LinearLayout cell_top = (LinearLayout) layoutInflater.inflate(R.layout.table_cell_top, null);
@@ -2233,14 +2231,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         // body
         int chrow = 0;
-        for (int r = 1; r < (this.rows + 1); r++)
+        for (int r = 1; r < (this.templateModel.getRows() + 1); r++)
         {
             @SuppressLint("InflateParams")
             final TableRow brow = (TableRow) layoutInflater.inflate(R.layout.table_row, null);
 
             final boolean excludedRow = isExcludedRow(r);
 
-            for (int c = 0; c < (this.cols + 1); c++)
+            for (int c = 0; c < (this.templateModel.getCols() + 1); c++)
             {
                 final boolean excludedCol = isExcludedCol(c);
 

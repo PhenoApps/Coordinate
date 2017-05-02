@@ -25,12 +25,16 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     public TemplateModel(final long id) { super(id); }  // TODO: Remove?
 
-    public TemplateModel(final long id, final java.lang.String title, final int type,
+    public TemplateModel(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
+    { super(title, type, rows, cols); }
+
+    public TemplateModel(final long id, final java.lang.String title, final int code,
     final int rows, final int cols, final java.lang.String excludeCells,
     final java.lang.String excludeRows, final java.lang.String excludeCols, final int colNumbering,
     final int rowNumbering, final java.lang.String optionalFields, final long timestamp)
     {
-        super(id, title, type, rows, cols);
+        super(id, title, code, rows, cols);
 
         try
         {
