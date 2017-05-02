@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
  */
 
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
@@ -187,10 +188,12 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                                        }
     }
 
-    public boolean getByType(final int type)  // TODO: Change from int to TemplateType.
+    public boolean getByType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
+        assert templateType != null;
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" + type);
+            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
+            templateType.getCode());
         if (cursor == null)
             return false;
         else

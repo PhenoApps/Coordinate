@@ -72,7 +72,7 @@ import org.wheatgenetics.coordinate.csv.CsvWriter;
 import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.GridModel;
-import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateType;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.optionalField.OptionalField;
 import org.wheatgenetics.coordinate.utils.Constants;
@@ -84,6 +84,8 @@ import org.wheatgenetics.coordinate.utils.Utils;
  * android.support.v7.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.utils.Utils
  */
 
@@ -94,12 +96,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private static final int STATE_DONE     = 1;
     private static final int STATE_ACTIVE   = 2;
     private static final int STATE_INACTIVE = 3;
-
-    // region Template
-    private static final int TYPE_SEED    = 0;
-    private static final int TYPE_DNA     = 1;
-    private static final int TYPE_DEFAULT = 2;
-    // endregion
 
     private static final int MODE_DNA     = 0;
     private static final int MODE_SAVED   = 1;
@@ -128,8 +124,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         new org.wheatgenetics.coordinate.model.TemplateModel();
-    private int    templateType  = TYPE_SEED;
-    private String templateTitle = ""       ;
+    private String templateTitle = "";
 
     private int     rows         =    20;
     private int     cols         =    10;
@@ -705,22 +700,25 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     {
         this.deleteGrid(this.grid);
 
-        if (this.templateType == TYPE_SEED)  // model
+        assert this.templateModel != null;
+        final org.wheatgenetics.coordinate.model.TemplateType templateType =
+            this.templateModel.getType();
+        if (templateType == org.wheatgenetics.coordinate.model.TemplateType.SEED)
         {
             {
                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                     new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-                if (templatesTable.getByType(this.templateType))  // database, model
+                if (templatesTable.getByType(templateType))         // database, model
                     this.copyTemplate(templatesTable);              // throws org.json.JSONException
             }
             this.inputSeed();
         }
-        else if (this.templateType == TYPE_DNA)  // model
+        else if (templateType == org.wheatgenetics.coordinate.model.TemplateType.DNA)
         {
             {
                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                     new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-                if (templatesTable.getByType(this.templateType))  // database, model
+                if (templatesTable.getByType(templateType))         // database, model
                     this.copyTemplate(templatesTable);              // throws org.json.JSONException
             }
             this.excludeCells.clear();
@@ -838,12 +836,13 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     // Adds default templates to database
     private void initDb() throws org.json.JSONException  // model
     {
+        assert this.templateModel != null;
         this.templateTitle = "Seed Tray";
-        this.templateType  = TYPE_SEED ;
-        this.rows          = 6         ;
-        this.cols          = 20        ;
-        this.rowNumbering  = true      ;
-        this.colNumbering  = true      ;
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
+        this.rows         =    6;
+        this.cols         =   20;
+        this.rowNumbering = true;
+        this.colNumbering = true;
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -858,14 +857,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         this.excludeCols  = new ArrayList<>();
         this.excludeCells = new ArrayList<>();
 
-        this.createDb(this.templateType);                           // throws org.json.JSONException
+        this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
         this.templateTitle = "DNA Plate";
-        this.rows          = 8          ;
-        this.cols          = 12         ;
-        this.templateType  = TYPE_DNA   ;
-        this.rowNumbering  = true       ;
-        this.colNumbering  = false      ;
+        this.rows          =           8;
+        this.cols          =          12;
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
+        this.rowNumbering = true ;
+        this.colNumbering = false;
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -882,20 +881,22 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         this.excludeCells = new ArrayList<>();
 
-        this.createDb(this.templateType);                           // throws org.json.JSONException
+        this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
         this.templateTitle = "";
     }
 
-    private boolean createDb(final int type) throws org.json.JSONException  // database, model
+    private boolean createDb(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    throws org.json.JSONException  // database, model
     {
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
 
-        templatesTable.title = this.templateTitle;
-        templatesTable.type  = this.templateType ;
-        templatesTable.rows  = this.rows         ;
-        templatesTable.cols  = this.cols         ;
+        assert this.templateModel != null;
+        templatesTable.title = this.templateTitle                    ;
+        templatesTable.type  = this.templateModel.getType().getCode();
+        templatesTable.rows  = this.rows                             ;
+        templatesTable.cols  = this.cols                             ;
 
         templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells); // throws org.json.JSONException
         templatesTable.excludeCols  = Utils.integerListToJson(this.excludeCols);
@@ -908,7 +909,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
         templatesTable.stamp = System.currentTimeMillis();
 
-        if (templatesTable.getByType(type))
+        if (templatesTable.getByType(templateType))
             return templatesTable.update();
         else
             return templatesTable.insert() > 0;
@@ -1034,7 +1035,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                             {
                                 try
                                 {
-                                    if (deleteTemplate(new TemplateModel(tmp.id)))  // throws java.lang.Exception
+                                    if (deleteTemplate(
+                                    new org.wheatgenetics.coordinate.model.TemplateModel(tmp.id)))  // throws java.lang.Exception
                                     {
                                         Toast.makeText(Main.this,
                                             getString(R.string.template_deleted),
@@ -1058,11 +1060,12 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable)  // model
     throws org.json.JSONException
     {
+        assert this.templateModel != null;
         this.templateModel.setId(templatesTable.id);
         this.templateTitle = templatesTable.title;
-        this.templateType  = templatesTable.type ;
-        this.rows          = templatesTable.rows ;
-        this.cols          = templatesTable.cols ;
+        this.templateModel.setType(templatesTable.type);
+        this.rows = templatesTable.rows;
+        this.cols = templatesTable.cols;
 
         this.excludeCells = Utils.jsonToPointList(templatesTable.excludeCells);  // throws org.json.JSONException
 
@@ -1294,7 +1297,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
                     assert dialog != null;
                     dialog.cancel();
-                    loadTemplate(TYPE_SEED);
+                    loadTemplate(org.wheatgenetics.coordinate.model.TemplateType.SEED);
                 }
             });
 
@@ -1315,11 +1318,11 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     private void tempLoad(final int mode) throws org.json.JSONException
     {
         if (mode == MODE_DNA)
-            this.loadTemplate(TYPE_DNA);
+            this.loadTemplate(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         else if (mode == MODE_SAVED)
-            this.loadTemplate(TYPE_DEFAULT);
+            this.loadTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
         else
-            this.newTemplate(TYPE_DEFAULT);                         // throws org.json.JSONException
+            this.newTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);  // throws org.json.JSONException
     }
 
     //TODO merge this method with the one above
@@ -1781,8 +1784,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                                     grd.templateTitle;
                                 org.wheatgenetics.coordinate.activities.Main.this.grid = grd.id;
                                 mGridTitle = grd.title;
-                                org.wheatgenetics.coordinate.activities.Main.this.templateType =  // model
-                                    grd.templateType;
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(grd.templateType);
                                 org.wheatgenetics.coordinate.activities.Main.this.rows = grd.templateRows;  // model
                                 org.wheatgenetics.coordinate.activities.Main.this.cols = grd.templateCols;  // model
 
@@ -1825,12 +1827,13 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         final GridsTable grd = new GridsTable(this);
         if (grd.get(id))
         {
+            assert this.templateModel != null;
             this.templateTitle = grd.templateTitle;  // model
             this.grid          = grd.id           ;
-            mGridTitle = grd.title;
-            this.templateType = grd.templateType;  // model
-            this.rows         = grd.templateRows;  // model
-            this.cols         = grd.templateCols;  // model
+            mGridTitle         = grd.title        ;
+            this.templateModel.setType(grd.templateType);
+            this.rows = grd.templateRows;  // model
+            this.cols = grd.templateCols;  // model
 
             this.excludeCells.clear();  // model
             this.excludeRows.clear();   // model
@@ -2005,12 +2008,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private boolean deleteTemplate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
+        assert templateModel != null;
         boolean ret;
         org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         if (!templatesTable.get(templateModel.getId())) return false;  // database
 
-        if (templatesTable.type == TYPE_SEED || templatesTable.type == TYPE_DNA)  // model
+        if (templatesTable.type == TemplateType.SEED.getCode()
+        ||  templatesTable.type == TemplateType.DNA.getCode ())
         {
             makeToast(getString(R.string.template_not_deleted_default));
             return false;
@@ -2059,15 +2064,16 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         return gridsTable.insert();
     }
 
-    private void newTemplate(final int templateType) throws org.json.JSONException
+    private void newTemplate(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    throws org.json.JSONException
     {
-        this.templateType = templateType;  // model
+        this.templateModel.setType(templateType);
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        templatesTable.title = this.templateTitle;  // model
-        templatesTable.type  = templateType;        // model
-        templatesTable.cols  = this.cols;           // model
-        templatesTable.rows  = this.rows;           // model
+        templatesTable.title = this.templateTitle    ;  // model
+        templatesTable.type  = templateType.getCode();
+        templatesTable.cols  = this.cols             ;  // model
+        templatesTable.rows  = this.rows             ;  // model
 
         templatesTable.excludeCells = Utils.pointListToJson(this.excludeCells);  // throws org.json.JSONException, model
         templatesTable.excludeCols = Utils.integerListToJson(this.excludeCols);  // model
@@ -2085,6 +2091,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         {
             // deleteTemplate(this.templateModel); //TODO
 
+            assert this.templateModel != null;
             this.templateModel.setId(templateId);
 
             final long grid = this.createGrid(this.templateModel.getId());
@@ -2104,9 +2111,10 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         else Utils.alert(this, Coordinate.appName, getString(R.string.create_template_fail));
     }
 
-    private void loadTemplate(final int templateType)
+    private void loadTemplate(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
-        this.templateType = templateType;  // model
+        assert this.templateModel != null;
+        this.templateModel.setType(templateType);
 
         final long grid = this.createGrid(this.templateModel.getId());
         if (grid > 0)
@@ -2365,6 +2373,7 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                         org.wheatgenetics.coordinate.activities.Main.this.templateTitle);  // model
                     createDir(path);
 
+                    assert Main.this.templateModel != null;
                     mTask = new DataExporter(Main.this,
                         Main.this.templateModel.getId(),
                         filename, path.getAbsolutePath());
@@ -2536,9 +2545,9 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 return false;
             }
 
-            if (templatesTable.type == TYPE_SEED)  // model
+            if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
                 ret = exportSeed();
-            else if (templatesTable.type == TYPE_DNA)  // model
+            else if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
                 ret = exportDna();
             else ret = exportDefault();
 

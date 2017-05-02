@@ -60,6 +60,15 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null          ) > 0;
     }
 
+    org.wheatgenetics.coordinate.model.Model makeFromFirst(final android.database.Cursor cursor)
+    {
+        if (cursor == null)
+            return null;
+        else
+            try     { if (cursor.moveToFirst()) return this.make(cursor); else return null; }
+            finally { cursor.close(); }
+    }
+
     abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
 
     android.content.ContentValues getContentValues()

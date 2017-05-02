@@ -14,9 +14,10 @@ package org.wheatgenetics.coordinate.model;
 
 public class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
-    private java.lang.String                                title     ;
-    private org.wheatgenetics.coordinate.model.TemplateType type      ;
-    private int                                             rows, cols;
+    private java.lang.String                                title;
+    private org.wheatgenetics.coordinate.model.TemplateType type =
+        org.wheatgenetics.coordinate.model.TemplateType.SEED;
+    private int rows, cols;
 
     PartialTemplateModel() { super(); }
 
@@ -33,4 +34,12 @@ public class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Mod
         if (rows <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.rows = rows;
         if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
     }
+
+    public org.wheatgenetics.coordinate.model.TemplateType getType() { return this.type; }
+
+    public void setType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    { this.type = templateType; }
+
+    public void setType(final int code)
+    { this.type = org.wheatgenetics.coordinate.model.TemplateType.get(code); }
 }
