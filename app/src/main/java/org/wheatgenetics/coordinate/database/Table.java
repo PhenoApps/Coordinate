@@ -32,7 +32,7 @@ abstract class Table extends java.lang.Object
         this.id = 0;
     }
 
-    @Override
+    @java.lang.Override
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.

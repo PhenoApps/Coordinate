@@ -34,7 +34,7 @@ public class Database extends java.lang.Object
             this.context = context;
         }
 
-        @Override
+        @java.lang.Override
         public void onCreate(final android.database.sqlite.SQLiteDatabase db)
         {
             this.createNeeded = true;
@@ -86,7 +86,7 @@ public class Database extends java.lang.Object
             this.createSucceeded = true;
         }
 
-        @Override
+        @java.lang.Override
         public void onUpgrade(final android.database.sqlite.SQLiteDatabase db,
         final int oldVersion, final int newVersion)
         {
@@ -98,7 +98,7 @@ public class Database extends java.lang.Object
             this.onCreate(db);                                         // TODO:  and grids tables?
         }
 
-        @Override
+        @java.lang.Override
         public android.database.sqlite.SQLiteDatabase getReadableDatabase()
         {
             if (this.createNeeded)
@@ -107,7 +107,7 @@ public class Database extends java.lang.Object
                 return super.getReadableDatabase();
         }
 
-        @Override
+        @java.lang.Override
         public android.database.sqlite.SQLiteDatabase getWritableDatabase()
         {
             if (this.createNeeded)

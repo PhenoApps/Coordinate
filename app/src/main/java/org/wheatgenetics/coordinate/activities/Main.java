@@ -99,10 +99,19 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Fields
-    private android.widget.LinearLayout mLayoutMain, mLayoutGrid, mLayoutOptional, mTableData;
-    private android.widget.TextView     templateTextView                                     ;
-    private android.widget.EditText     mEditData                                            ;
-    private android.view.View           curCell = null                                       ;
+    // region Widget Fields
+    private android.support.v4.widget.DrawerLayout       drawerLayout         ;
+    private android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
+
+    private android.widget.LinearLayout parent         ;
+    private android.widget.ScrollView   changeContainer;
+
+    private android.widget.LinearLayout mainLayout,
+        gridAreaLayout, gridTableLayout, optionalFieldLayout;
+    private android.widget.EditText cellIDEditText        ;
+    private android.widget.TextView templateTitleTextView ;
+    private android.view.View       currentCellView = null;
+    // endregion
 
     private long             grid       =  0             ;
     private java.lang.String mGridTitle = ""             ;
@@ -126,12 +135,6 @@ android.view.View.OnKeyListener
 
     private Main.DataExporter mTask;
     private long              mLastExportGridId = -1;
-
-    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
-    private android.support.v4.widget.DrawerLayout       mDrawerLayout;
-
-    private android.widget.LinearLayout parent         ;
-    private android.widget.ScrollView   changeContainer;
     // endregion
 
     // region Class Method
@@ -150,7 +153,7 @@ android.view.View.OnKeyListener
     }
 
     // region Overridden Methods
-    @Override
+    @java.lang.Override
     protected void onCreate(final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -180,7 +183,8 @@ android.view.View.OnKeyListener
 
         ep = this.getSharedPreferences("Settings", 0);
 
-        mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+        this.drawerLayout =
+            (android.support.v4.widget.DrawerLayout) this.findViewById(R.id.drawer_layout);
         final NavigationView nvDrawer = (NavigationView) this.findViewById(R.id.nvView);
         this.setupDrawerContent(nvDrawer);
         this.setupDrawer();
@@ -190,24 +194,25 @@ android.view.View.OnKeyListener
         changeContainer.removeAllViews();
         changeContainer.addView(parent);
 
-        mLayoutMain = (LinearLayout) this.findViewById(R.id.mainLayout);
-        mLayoutGrid = (LinearLayout) this.findViewById(R.id.gridArea);
-        mLayoutOptional = (LinearLayout) this.findViewById(R.id.optionalLayout);
+        this.mainLayout = (LinearLayout) this.findViewById(R.id.mainLayout);
+        this.gridAreaLayout = (LinearLayout) this.findViewById(R.id.gridArea);
+        this.optionalFieldLayout = (LinearLayout) this.findViewById(R.id.optionalLayout);
 
-        mTableData = (TableLayout) this.findViewById(R.id.dataTable);
+        this.gridTableLayout = (TableLayout) this.findViewById(R.id.dataTable);
 
-        this.templateTextView = (TextView) this.findViewById(R.id.templateText);
+        this.templateTitleTextView = (TextView) this.findViewById(R.id.templateText);
 
-        mEditData = (EditText) this.findViewById(R.id.dataEdit);
-        mEditData.setImeActionLabel(getString(R.string.keyboard_save), KeyEvent.KEYCODE_ENTER);
-        mEditData.setOnEditorActionListener(this);
+        this.cellIDEditText = (EditText) this.findViewById(R.id.dataEdit);
+        assert this.cellIDEditText != null;
+        this.cellIDEditText.setImeActionLabel(getString(R.string.keyboard_save), KeyEvent.KEYCODE_ENTER);
+        this.cellIDEditText.setOnEditorActionListener(this);
 
-        //mEditData.setOnKeyListener(this);
+        //this.cellIDEditText.setOnKeyListener(this);
 
         assert this.templateModel != null;
-        this.templateTextView.setText(this.templateModel.getTitle());
+        this.templateTitleTextView.setText(this.templateModel.getTitle());
 
-        mLayoutMain.setVisibility(View.INVISIBLE);
+        this.mainLayout.setVisibility(View.INVISIBLE);
 
         try { this.initDb(); } catch (final org.json.JSONException e) {}
         this.createDirs();
@@ -229,21 +234,22 @@ android.view.View.OnKeyListener
         }
     }
 
-    @Override
+    @java.lang.Override
     protected void onPostCreate(final android.os.Bundle savedInstanceState)
     {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        assert this.actionBarDrawerToggle != null;
+        this.actionBarDrawerToggle.syncState();
     }
 
-    @Override
+    @java.lang.Override
     protected void onDestroy()
     {
         super.onDestroy();
         this.cancelTask();
     }
 
-    @Override
+    @java.lang.Override
     public boolean onCreateOptionsMenu(final Menu menu)
     {
         new MenuInflater(Main.this).inflate(R.menu.mainmenu, menu);
@@ -251,16 +257,18 @@ android.view.View.OnKeyListener
         return true;
     }
 
-    @Override
+    @java.lang.Override
     public boolean onOptionsItemSelected(final MenuItem item)
     {
-        if (mDrawerToggle.onOptionsItemSelected(item)) return true;
+        assert this.actionBarDrawerToggle != null;
+        if (this.actionBarDrawerToggle.onOptionsItemSelected(item)) return true;
 
         assert item != null;
         switch (item.getItemId())
         {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                assert this.drawerLayout != null;
+                this.drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.barcode_camera:
                 this.barcodeScan();
@@ -270,7 +278,7 @@ android.view.View.OnKeyListener
         return true;
     }
 
-    @Override
+    @java.lang.Override
     public boolean onKey(final View v, final int keyCode, final KeyEvent event)
     {
         if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
@@ -281,7 +289,7 @@ android.view.View.OnKeyListener
         return false;
     }
 
-    @Override
+    @java.lang.Override
     public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event)
     {
         if (actionId == EditorInfo.IME_ACTION_DONE)
@@ -300,7 +308,7 @@ android.view.View.OnKeyListener
     }
 
     //TODO don't toggle already selected cell
-    @Override
+    @java.lang.Override
     public void onClick(final View v)  // v is a cell
     {
         int    c = -1;
@@ -315,7 +323,8 @@ android.view.View.OnKeyListener
 
         if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c))
         {
-            mEditData.setText("");
+            assert this.cellIDEditText != null;
+            this.cellIDEditText.setText("");
             return;
         }
 
@@ -332,17 +341,18 @@ android.view.View.OnKeyListener
 
             if (data == null) data = "";
 
-            mEditData.setSelectAllOnFocus(true);
-            mEditData.setText(data);
-            mEditData.selectAll();
-            mEditData.requestFocus();
+            assert this.cellIDEditText != null;
+            this.cellIDEditText.setSelectAllOnFocus(true);
+            this.cellIDEditText.setText(data);
+            this.cellIDEditText.selectAll();
+            this.cellIDEditText.requestFocus();
         }
 
         resetCurrentCell();
-        curCell = v;
+        this.currentCellView = v;
     }
 
-    @Override
+    @java.lang.Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
     {
         final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -351,7 +361,8 @@ android.view.View.OnKeyListener
         if (scanResult != null)
         {
             final String barcodeText = scanResult.getContents();
-            mEditData.setText(barcodeText);
+            assert this.cellIDEditText != null;
+            this.cellIDEditText.setText(barcodeText);
             this.saveData();
         }
     }
@@ -421,13 +432,13 @@ android.view.View.OnKeyListener
 
         version.setOnClickListener(new View.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final View v) { changelog(); }
             });
 
         otherApps.setOnClickListener(new View.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final View v) { showOtherAppsDialog(); }
             });
 
@@ -437,7 +448,7 @@ android.view.View.OnKeyListener
         builder.setNegativeButton(this.getResources().getString(R.string.ok),
             new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.dismiss(); }
             });
@@ -456,7 +467,7 @@ android.view.View.OnKeyListener
             .setPositiveButton(this.getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener()
                 {
-                    @Override
+                    @java.lang.Override
                     public void onClick(final DialogInterface dialog, final int which)
                     { dialog.dismiss(); }
                 });
@@ -527,7 +538,7 @@ android.view.View.OnKeyListener
         listView.setDividerHeight(0);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onItemClick(final AdapterView<?> parent, final View view,
                 final int position, final long id)
                 {
@@ -561,7 +572,7 @@ android.view.View.OnKeyListener
         otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok),
             new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.dismiss(); }
             });
@@ -585,7 +596,7 @@ android.view.View.OnKeyListener
             this.context     = context ;
         }
 
-        @Override
+        @java.lang.Override
         public View getView(final int position, final View convertView, final ViewGroup parent)
         {
             final LayoutInflater inflater =
@@ -606,7 +617,7 @@ android.view.View.OnKeyListener
             this.getString(org.wheatgenetics.coordinate.R.string.reset_database_message),
             new java.lang.Runnable()
             {
-                @Override
+                @java.lang.Override
                 public void run()
                 {
                     org.wheatgenetics.coordinate.activities.Main.this.deleteDatabase(
@@ -620,10 +631,10 @@ android.view.View.OnKeyListener
 
     private void setupDrawer()
     {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+        this.actionBarDrawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout,
         R.string.drawer_open, R.string.drawer_close)
         {
-            @Override
+            @java.lang.Override
             public void onDrawerOpened(final View drawerView)
             {
                 {
@@ -632,17 +643,19 @@ android.view.View.OnKeyListener
                 }
 
                 {
-                    final TextView templateTextView = (TextView) findViewById(R.id.templateLabel);
-                    templateTextView.setText(Main.this.templateModel.getTitle());
+                    final TextView templateTitleTextView = (TextView) findViewById(R.id.templateLabel);
+                    assert templateTitleTextView != null;
+                    templateTitleTextView.setText(Main.this.templateModel.getTitle());
                 }
             }
 
-            @Override
+            @java.lang.Override
             public void onDrawerClosed(final View drawerView) {}
         };
 
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        this.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        assert this.drawerLayout != null;
+        this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
     }
 
     private void setupDrawerContent(final NavigationView navigationView)
@@ -651,7 +664,7 @@ android.view.View.OnKeyListener
         navigationView.setNavigationItemSelectedListener(
             new NavigationView.OnNavigationItemSelectedListener()
             {
-                @Override
+                @java.lang.Override
                 public boolean onNavigationItemSelected(final MenuItem item)
                 {
                     try
@@ -714,7 +727,8 @@ android.view.View.OnKeyListener
                 this.copydb();
                 break;*/
         }
-        mDrawerLayout.closeDrawers();
+        assert this.drawerLayout != null;
+        this.drawerLayout.closeDrawers();
     }
 
     private void copydb()
@@ -775,12 +789,12 @@ android.view.View.OnKeyListener
                 Utils.confirm(this, Coordinate.appName, this.getString(R.string.new_grid_warning),
                     new Runnable()
                     {
-                        @Override
+                        @java.lang.Override
                         public void run() { exportData(); }
                     },
                     new Runnable()
                     {
-                        @Override
+                        @java.lang.Override
                         public void run()
                         { try { newGridNow(); } catch (final org.json.JSONException e) {} }
                     });
@@ -830,7 +844,7 @@ android.view.View.OnKeyListener
         Utils.confirm(this, Coordinate.appName, getString(R.string.delete_grid_warning),
             new Runnable()
             {
-                @Override
+                @java.lang.Override
                 public void run()
                 {
                     try
@@ -839,8 +853,8 @@ android.view.View.OnKeyListener
                         {
                             Toast.makeText(Main.this, getString(R.string.grid_deleted), Toast.LENGTH_LONG).show();
                             org.wheatgenetics.coordinate.activities.Main.this.grid = 0;
-                            mLayoutOptional.setVisibility(View.INVISIBLE);
-                            mLayoutGrid.setVisibility(View.INVISIBLE);
+                            Main.this.optionalFieldLayout.setVisibility(View.INVISIBLE);
+                            Main.this.gridAreaLayout.setVisibility(View.INVISIBLE);
                             menuList();
                         }
                         else
@@ -939,7 +953,7 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.template_options));
         builder.setItems(menuMain, new OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { if (which == 0) menuTemplateLoad(); else inputTemplateNew(); }
             });
@@ -976,7 +990,7 @@ android.view.View.OnKeyListener
         builder.setTitle(menuMain[0]);
         builder.setItems(items, new OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     if (which < 0 || which > templates.size()) return;
@@ -1037,7 +1051,7 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.delete_template));
         builder.setItems(items, new OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     if (which < 0 || which > templates.size()) return;
@@ -1048,7 +1062,7 @@ android.view.View.OnKeyListener
                     Utils.confirm(Main.this, getString(R.string.delete_template),
                         getString(R.string.delete_template_warning), new Runnable()
                         {
-                            @Override
+                            @java.lang.Override
                             public void run()
                             {
                                 try
@@ -1124,7 +1138,7 @@ android.view.View.OnKeyListener
         builder.setView(view);
         builder.setPositiveButton(R.string.next, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     dialog.cancel();
@@ -1167,7 +1181,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
         {
-            @Override
+            @java.lang.Override
             public void onClick(final DialogInterface dialog, final int which)
             { dialog.cancel(); }
         });
@@ -1187,19 +1201,19 @@ android.view.View.OnKeyListener
 
         optionalButton.setOnClickListener(new View.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final View v) { inputOptional(); }
             });
 
         excludeButton.setOnClickListener(new View.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final View v) { inputExclude(); }
             });
 
         namingButton.setOnClickListener(new View.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final View v) { inputNaming(); }
             });
 
@@ -1208,7 +1222,7 @@ android.view.View.OnKeyListener
         builder.setView(view);
         builder.setPositiveButton(R.string.next, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     dialog.cancel();
@@ -1218,7 +1232,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1279,7 +1293,7 @@ android.view.View.OnKeyListener
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                           int      i               = 0;
@@ -1322,7 +1336,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1405,7 +1419,7 @@ android.view.View.OnKeyListener
         builder.setCancelable(false);
         builder.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                           int      i               = 0;
@@ -1452,7 +1466,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1489,7 +1503,7 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.optional_fields));
         builder.setMultiChoiceItems(itemArray, selectionArray, new OnMultiChoiceClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which,
                 final boolean isChecked)
                 {
@@ -1500,7 +1514,7 @@ android.view.View.OnKeyListener
 
         builder.setNeutralButton(getString(R.string.add_new), new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     dialog.cancel();
@@ -1509,13 +1523,13 @@ android.view.View.OnKeyListener
             });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1542,7 +1556,7 @@ android.view.View.OnKeyListener
         builder.setCancelable(false);
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     final String sfield = fieldEdit.getText().toString().trim();
@@ -1566,7 +1580,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1585,7 +1599,7 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.exclude_title));
         builder.setItems(items, new OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     if (which == 0)
@@ -1598,7 +1612,7 @@ android.view.View.OnKeyListener
             });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1623,14 +1637,14 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.exclude_title) + " - " + (type == 0 ? getString(R.string.rows) : getString(R.string.cols)));
         builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which,
                 final boolean isChecked) { selections[which] = isChecked; }
             });
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     // get choices
@@ -1644,7 +1658,7 @@ android.view.View.OnKeyListener
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -1667,14 +1681,14 @@ android.view.View.OnKeyListener
         builder.setCancelable(false);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     final String str = cellsEdit.getText().toString();
@@ -1720,14 +1734,14 @@ android.view.View.OnKeyListener
         builder.setCancelable(false);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering((rowSpinner.getSelectedItemPosition() == 0));
@@ -1785,7 +1799,7 @@ android.view.View.OnKeyListener
         builder.setTitle(getString(R.string.import_grid));
         builder.setItems(names, new OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     if (which < gridIds.length)
@@ -1902,7 +1916,8 @@ android.view.View.OnKeyListener
 
     private void saveData()
     {
-        String data = mEditData.getText().toString().trim();
+        assert this.cellIDEditText != null;
+        String data = this.cellIDEditText.getText().toString().trim();
         {
             boolean ret;
             {
@@ -1926,7 +1941,7 @@ android.view.View.OnKeyListener
         }
 
         View view;
-        view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
+        view = this.gridTableLayout.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
 
         if (view != null)
             if (data.length() != 0)
@@ -1961,18 +1976,18 @@ android.view.View.OnKeyListener
 
         if (data == null) data = "";
 
-        mEditData.setSelectAllOnFocus(true);
-        mEditData.setText(data);
-        mEditData.selectAll();
-        mEditData.requestFocus();
+        this.cellIDEditText.setSelectAllOnFocus(true);
+        this.cellIDEditText.setText(data);
+        this.cellIDEditText.selectAll();
+        this.cellIDEditText.requestFocus();
 
-        view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
+        view = this.gridTableLayout.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
         if (view != null)
             if (!isExcludedRow(mCurRow) && !isExcludedCol(mCurCol) && !isExcludedCell(mCurRow, mCurCol))
                 setCellState(view, STATE_ACTIVE);
 
         resetCurrentCell();
-        curCell = view;
+        this.currentCellView = view;
 
         if (endOfCell)
         {
@@ -1991,7 +2006,7 @@ android.view.View.OnKeyListener
 
             chimePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
                 {
-                    @Override
+                    @java.lang.Override
                     public void onCompletion(final MediaPlayer mp) { mp.release(); }
                 });
         }
@@ -2001,30 +2016,30 @@ android.view.View.OnKeyListener
 
     private void resetCurrentCell()
     {
-        if (curCell != null)
+        if (this.currentCellView != null)
         {
             int r = -1;
             int c = -1;
 
             Object obj;
 
-            obj = curCell.getTag(R.string.cell_col);
+            obj = this.currentCellView.getTag(R.string.cell_col);
             if (obj instanceof Integer) c = (Integer) obj;
 
-            obj = curCell.getTag(R.string.cell_row);
+            obj = this.currentCellView.getTag(R.string.cell_row);
             if (obj instanceof Integer) r = (Integer) obj;
 
             if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c))
-                setCellState(curCell, STATE_INACTIVE);
+                setCellState(this.currentCellView, STATE_INACTIVE);
             else
             {
                 String data = getDataEntry(this.grid, r, c);
                 if (data == null) data = "";
 
                 if (data.length() == 0)
-                    setCellState(curCell, STATE_NORMAL);
+                    setCellState(this.currentCellView, STATE_NORMAL);
                 else
-                    setCellState(curCell, STATE_DONE);
+                    setCellState(this.currentCellView, STATE_DONE);
             }
         }
     }
@@ -2148,8 +2163,8 @@ android.view.View.OnKeyListener
             ed.putLong("CurrentGrid", grid);
             ed.apply();
 
-            mLayoutOptional.setVisibility(View.VISIBLE);
-            mLayoutGrid.setVisibility(View.VISIBLE);
+            this.optionalFieldLayout.setVisibility(View.VISIBLE);
+            this.gridAreaLayout.setVisibility(View.VISIBLE);
 
             populateTemplate();
             showTemplateUI();
@@ -2160,13 +2175,16 @@ android.view.View.OnKeyListener
 
     private void showTemplateUI()
     {
-        assert this.templateModel != null;
-        this.templateTextView.setText(this.templateModel.getTitle());
+        assert this.templateModel         != null;
+        assert this.templateTitleTextView != null;
+        this.templateTitleTextView.setText(this.templateModel.getTitle());
 
-        mLayoutMain.setVisibility(View.VISIBLE);
+        assert this.mainLayout != null;
+        this.mainLayout.setVisibility(View.VISIBLE);
 
         final java.lang.String data = this.getDataEntry(this.grid, 1, 1);
-        mEditData.setText(data == null ? "" : data);
+        assert this.cellIDEditText != null;
+        this.cellIDEditText.setText(data == null ? "" : data);
     }
 
     // first non excluded cell
@@ -2202,7 +2220,7 @@ android.view.View.OnKeyListener
 
         final LayoutInflater layoutInflater = this.getLayoutInflater();
 
-        this.mLayoutOptional.removeAllViews();
+        this.optionalFieldLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
             checkedOptionalFields = this.makeCheckedOptionalFields();
@@ -2227,9 +2245,9 @@ android.view.View.OnKeyListener
                 }
                 else valueText.setText(optionalField.getValue());
             }
-            this.mLayoutOptional.addView(view);
+            this.optionalFieldLayout.addView(view);
         }
-        this.mTableData.removeAllViews();
+        this.gridTableLayout.removeAllViews();
 
         // header
         @SuppressLint("InflateParams")
@@ -2252,7 +2270,7 @@ android.view.View.OnKeyListener
             }
             hrow.addView(cell_top);
         }
-        this.mTableData.addView(hrow);
+        this.gridTableLayout.addView(hrow);
 
         // body
         int chrow = 0;
@@ -2294,7 +2312,7 @@ android.view.View.OnKeyListener
                     if (r == mCurRow && c == mCurCol)
                     {
                         this.setCellState(cell_cnt, STATE_ACTIVE);
-                        curCell = cell_cnt;
+                        this.currentCellView = cell_cnt;
                     }
 
                     if (excludedRow || excludedCol || isExcludedCell(r, c))
@@ -2316,7 +2334,7 @@ android.view.View.OnKeyListener
                     brow.addView(cell_box);
                 }
             }
-            mTableData.addView(brow);
+            this.gridTableLayout.addView(brow);
         }
     }
 
@@ -2384,7 +2402,7 @@ android.view.View.OnKeyListener
         builder.setView(view);
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
                     dialog.cancel();
@@ -2409,7 +2427,7 @@ android.view.View.OnKeyListener
             });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
             {
-                @Override
+                @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { dialog.cancel(); }
             });
@@ -2448,7 +2466,7 @@ android.view.View.OnKeyListener
             mTempPath = path   ;
         }
 
-        @Override
+        @java.lang.Override
         protected void onProgressUpdate(String... msg)
         {
             if (msg == null) return;
@@ -2459,7 +2477,7 @@ android.view.View.OnKeyListener
             mDlg.setMessage(text);
         }
 
-        @Override
+        @java.lang.Override
         protected void onPreExecute()
         {
             super.onPreExecute();
@@ -2470,13 +2488,13 @@ android.view.View.OnKeyListener
             mDlg.setCancelable(true);
             mDlg.setOnCancelListener(new OnCancelListener()
                 {
-                    @Override
+                    @java.lang.Override
                     public void onCancel(final DialogInterface dialog) { cancelTask(); }
                 });
             mDlg.show();
         }
 
-        @Override
+        @java.lang.Override
         protected void onPostExecute(final Boolean result)
         {
             if (mDlg != null && mDlg.isShowing())
@@ -2492,13 +2510,13 @@ android.view.View.OnKeyListener
                 Utils.alert(mContext, Coordinate.appName, getString(R.string.export_success),
                     new Runnable()
                     {
-                        @Override
+                        @java.lang.Override
                         public void run()
                         {
                             Utils.confirm(mContext, Coordinate.appName,
                                 getString(R.string.clear_grid), new Runnable()
                                 {
-                                    @Override
+                                    @java.lang.Override
                                     public void run()
                                     {
                                         try
@@ -2521,7 +2539,7 @@ android.view.View.OnKeyListener
                                 },
                                 new Runnable()
                                 {
-                                    @Override
+                                    @java.lang.Override
                                     public void run() { share(); }
                                 });
                         }
@@ -2545,7 +2563,7 @@ android.view.View.OnKeyListener
             startActivity(Intent.createChooser(intent, getString(R.string.share_file)));
         }
 
-        @Override
+        @java.lang.Override
         protected Boolean doInBackground(final Void... bparams)
         {
             boolean ret;

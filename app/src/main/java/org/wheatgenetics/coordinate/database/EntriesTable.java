@@ -35,7 +35,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         this.stamp = 0;
     }
 
-    @Override
+    @java.lang.Override
     public java.lang.String toString()
     {
         return super.toString() + java.lang.String.format(
@@ -53,7 +53,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
 
-    @Override
+    @java.lang.Override
     org.wheatgenetics.coordinate.model.EntryModel make(final android.database.Cursor cursor)
     {
         if (cursor == null)
@@ -74,7 +74,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
                     org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME)));
     }
 
-    @Override
+    @java.lang.Override
     android.content.ContentValues getContentValues()
     {
         final android.content.ContentValues contentValues = super.getContentValues();

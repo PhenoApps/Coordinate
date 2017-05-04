@@ -12,7 +12,7 @@ public class Coordinate extends android.app.Application
 {
     public static java.lang.String appName;
 
-    @Override
+    @java.lang.Override
     public void onCreate()
     {
         super.onCreate();
