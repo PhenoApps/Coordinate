@@ -92,32 +92,21 @@ import org.wheatgenetics.coordinate.utils.Utils;
 public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListener
 {
-    private static final int STATE_NORMAL   = 0;
-    private static final int STATE_DONE     = 1;
-    private static final int STATE_ACTIVE   = 2;
-    private static final int STATE_INACTIVE = 3;
+    // region Constants
+    private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
+    private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
+    private static final java.lang.String TAG = "Coordinate";
+    // endregion
 
-    private static final int MODE_DNA     = 0;
-    private static final int MODE_SAVED   = 1;
-    private static final int MODE_DEFAULT = 2;
+    // region Fields
+    private android.widget.LinearLayout mLayoutMain, mLayoutGrid, mLayoutOptional, mTableData;
+    private android.widget.TextView     templateTextView                                     ;
+    private android.widget.EditText     mEditData                                            ;
+    private android.view.View           curCell = null                                       ;
 
-    private static final String TAG = "Coordinate";
-
-    private LinearLayout mLayoutMain    ;
-    private LinearLayout mLayoutGrid    ;
-    private LinearLayout mLayoutOptional;
-    private TableLayout  mTableData     ;
-
-    private TextView templateTextView;
-
-    private EditText mEditData;
-
-    private View curCell = null;
-
-    private long   grid       = 0 ;
-    private String mGridTitle = "";
-    private int    mCurRow    = 1 ;
-    private int    mCurCol    = 1 ;
+    private long             grid       =  0             ;
+    private java.lang.String mGridTitle = ""             ;
+    private int              mCurRow    =  1, mCurCol = 1;
 
     private SharedPreferences ep;
 
@@ -128,21 +117,22 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private List<Integer> excludeRows = new ArrayList<>();
     private List<Integer> excludeCols = new ArrayList<>();
-//    private org.wheatgenetics.coordinate.model.TemplatesTable templatesTable;
+    // private org.wheatgenetics.coordinate.model.TemplatesTable templatesTable;
     // endregion
 
-    private String menuMain[];
+    private java.lang.String menuMain[];
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
 
-    private DataExporter mTask;
-    private long         mLastExportGridId = -1;
+    private Main.DataExporter mTask;
+    private long              mLastExportGridId = -1;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout          mDrawerLayout;
+    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+    private android.support.v4.widget.DrawerLayout       mDrawerLayout;
 
-    private LinearLayout parent         ;
-    private ScrollView   changeContainer;
+    private android.widget.LinearLayout parent         ;
+    private android.widget.ScrollView   changeContainer;
+    // endregion
 
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
@@ -150,7 +140,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
             this.nonNullOptionalFields);
     }
-    
+
+    // region Overridden Methods
     @Override
     protected void onCreate(final android.os.Bundle savedInstanceState)
     {
@@ -230,6 +221,134 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
+    @Override
+    protected void onPostCreate(final android.os.Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        this.cancelTask();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu)
+    {
+        new MenuInflater(Main.this).inflate(R.menu.mainmenu, menu);
+        menu.findItem(R.id.barcode_camera).setVisible(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        if (mDrawerToggle.onOptionsItemSelected(item)) return true;
+
+        assert item != null;
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.barcode_camera:
+                this.barcodeScan();
+                break;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onKey(final View v, final int keyCode, final KeyEvent event)
+    {
+        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
+        {
+            this.saveData();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event)
+    {
+        if (actionId == EditorInfo.IME_ACTION_DONE)
+        {
+            this.saveData();
+            return true;
+        }
+        else
+        if (event != null)
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+            {
+                this.saveData();
+                return true;
+            }
+        return false;
+    }
+
+    //TODO don't toggle already selected cell
+    @Override
+    public void onClick(final View v)  // v is a cell
+    {
+        int    c = -1;
+        int    r = -1;
+        Object obj;
+
+        obj = v.getTag(R.string.cell_col);
+        if (obj instanceof Integer) c = (Integer) obj;
+
+        obj = v.getTag(R.string.cell_row);
+        if (obj instanceof Integer) r = (Integer) obj;
+
+        if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c))
+        {
+            mEditData.setText("");
+            return;
+        }
+
+        if (c != -1 && r != -1)
+        {
+            mCurRow = r;
+            mCurCol = c;
+
+            String data = getDataEntry(this.grid, mCurRow, mCurCol);
+
+            if (data != null && data.contains("exclude")) return;
+
+            setCellState(v, STATE_ACTIVE);
+
+            if (data == null) data = "";
+
+            mEditData.setSelectAllOnFocus(true);
+            mEditData.setText(data);
+            mEditData.selectAll();
+            mEditData.requestFocus();
+        }
+
+        resetCurrentCell();
+        curCell = v;
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        assert scanResult != null;
+        if (scanResult != null)
+        {
+            final String barcodeText = scanResult.getContents();
+            mEditData.setText(barcodeText);
+            this.saveData();
+        }
+    }
+    // endregion
+
     private int getVersion()
     {
         int v = 0;
@@ -262,13 +381,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             }
             catch (final java.io.IOException e) { Log.e(TAG, e.getMessage()); }
         }
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        this.cancelTask();
     }
 
     private void aboutDialog()
@@ -495,14 +607,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             }, null);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu)
-    {
-        new MenuInflater(Main.this).inflate(R.menu.mainmenu, menu);
-        menu.findItem(R.id.barcode_camera).setVisible(true);
-        return true;
-    }
-
     private void setupDrawer()
     {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -640,25 +744,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
-    {
-        if (mDrawerToggle.onOptionsItemSelected(item)) return true;
-
-        assert item != null;
-        switch (item.getItemId())
-        {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.barcode_camera:
-                this.barcodeScan();
-                break;
-        }
-
-        return true;
-    }
-
     private void barcodeScan()
     {
         final IntentIntegrator integrator = new IntentIntegrator(this);
@@ -753,78 +838,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                     catch (final java.lang.Exception e) {}
                 }
             }, null);
-    }
-
-    @Override
-    public boolean onKey(final View v, final int keyCode, final KeyEvent event)
-    {
-        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
-        {
-            this.saveData();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event)
-    {
-        if (actionId == EditorInfo.IME_ACTION_DONE)
-        {
-            this.saveData();
-            return true;
-        }
-        else
-            if (event != null)
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                {
-                    this.saveData();
-                    return true;
-                }
-        return false;
-    }
-
-    //TODO don't toggle already selected cell
-    @Override
-    public void onClick(final View v)  // v is a cell
-    {
-        int    c = -1;
-        int    r = -1;
-        Object obj;
-
-        obj = v.getTag(R.string.cell_col);
-        if (obj instanceof Integer) c = (Integer) obj;
-
-        obj = v.getTag(R.string.cell_row);
-        if (obj instanceof Integer) r = (Integer) obj;
-
-        if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c))
-        {
-            mEditData.setText("");
-            return;
-        }
-
-        if (c != -1 && r != -1)
-        {
-            mCurRow = r;
-            mCurCol = c;
-
-            String data = getDataEntry(this.grid, mCurRow, mCurCol);
-
-            if (data != null && data.contains("exclude")) return;
-
-            setCellState(v, STATE_ACTIVE);
-
-            if (data == null) data = "";
-
-            mEditData.setSelectAllOnFocus(true);
-            mEditData.setText(data);
-            mEditData.selectAll();
-            mEditData.requestFocus();
-        }
-
-        resetCurrentCell();
-        curCell = v;
     }
 
     // Adds default templates to database
@@ -2400,13 +2413,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
         }
     }
 
-    @Override
-    protected void onPostCreate(final android.os.Bundle savedInstanceState)
-    {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
     private class DataExporter extends AsyncTask<Void, String, Boolean>
     {
         private Context        mContext;
@@ -2832,20 +2838,6 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             }
 
             return ret;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
-        final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        assert scanResult != null;
-        if (scanResult != null)
-        {
-            final String barcodeText = scanResult.getContents();
-            mEditData.setText(barcodeText);
-            this.saveData();
         }
     }
 
