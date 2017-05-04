@@ -90,12 +90,12 @@ import org.wheatgenetics.coordinate.utils.Utils;
  */
 
 public class Main extends android.support.v7.app.AppCompatActivity
-implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListener
+implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
+android.view.View.OnKeyListener
 {
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
     private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
-    private static final java.lang.String TAG = "Coordinate";
     // endregion
 
     // region Fields
@@ -132,6 +132,14 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
 
     private android.widget.LinearLayout parent         ;
     private android.widget.ScrollView   changeContainer;
+    // endregion
+
+    // region Class Method
+    private static int sendErrorLogMsg(final java.lang.Exception e)
+    {
+        assert e != null;
+        return android.util.Log.e("Coordinate", e.getMessage());
+    }
     // endregion
 
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
@@ -353,7 +361,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
     {
         int v = 0;
         try { v = this.getPackageManager().getPackageInfo(getPackageName(), 0).versionCode; }
-        catch (final PackageManager.NameNotFoundException e) { Log.e(TAG, "" + e.getMessage()); }
+        catch (final PackageManager.NameNotFoundException e)
+        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
         return v;
     }
 
@@ -379,7 +388,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                 blankFile.createNewFile();
                 this.makeFileDiscoverable(blankFile, this);
             }
-            catch (final java.io.IOException e) { Log.e(TAG, e.getMessage()); }
+            catch (final java.io.IOException e)
+            { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
         }
     }
 
@@ -406,7 +416,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
             assert packageInfo != null;
             version.setText(getResources().getString(R.string.versiontitle) + " " + packageInfo.versionName);
         }
-        catch (final PackageManager.NameNotFoundException e) { Log.e(TAG, e.getMessage()); }
+        catch (final PackageManager.NameNotFoundException e)
+        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
 
         version.setOnClickListener(new View.OnClickListener()
             {
@@ -1984,7 +1995,8 @@ implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListe
                     public void onCompletion(final MediaPlayer mp) { mp.release(); }
                 });
         }
-        catch (final java.lang.Exception e) { Log.e(TAG, "" + e.getMessage()); }
+        catch (final java.lang.Exception e)
+        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
     }
 
     private void resetCurrentCell()
