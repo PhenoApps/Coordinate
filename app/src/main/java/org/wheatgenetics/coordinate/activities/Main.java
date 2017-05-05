@@ -91,6 +91,465 @@ public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
 android.view.View.OnKeyListener
 {
+    private class DataExporter extends AsyncTask<Void, String, Boolean>
+    {
+        private Context        mContext;
+        private ProgressDialog mDlg;
+        private long           mTempId;
+
+        private String mTempPath;
+        private String mTempName;
+
+        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
+
+        private String mMsg = null;
+
+        private File mFile;
+
+        DataExporter(final Context context, final long id, final String name, final String path)
+        {
+            mContext  = context;
+            mTempId   = id     ;
+            mTempName = name   ;
+            mTempPath = path   ;
+        }
+
+        @java.lang.Override
+        protected void onProgressUpdate(String... msg)
+        {
+            if (msg == null) return;
+
+            final String text = msg[0];
+            if (text == null) return;
+
+            mDlg.setMessage(text);
+        }
+
+        @java.lang.Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+
+            mDlg = new ProgressDialog(mContext);
+            mDlg.setTitle(getString(org.wheatgenetics.coordinate.R.string.exporting_title));
+            mDlg.setMessage(getString(org.wheatgenetics.coordinate.R.string.exporting_body));
+            mDlg.setCancelable(true);
+            mDlg.setOnCancelListener(new OnCancelListener()
+            {
+                @java.lang.Override
+                public void onCancel(final DialogInterface dialog) { cancelTask(); }
+            });
+            mDlg.show();
+        }
+
+        @java.lang.Override
+        protected void onPostExecute(final Boolean result)
+        {
+            if (mDlg != null && mDlg.isShowing())
+            {
+                mDlg.dismiss();
+                mDlg = null;
+            }
+
+            // TODO when grid is reset, make a new one
+            if (result != null && result)
+            {
+                mLastExportGridId = org.wheatgenetics.coordinate.activities.Main.this.grid;
+                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, Coordinate.appName, getString(org.wheatgenetics.coordinate.R.string.export_success),
+                        new Runnable()
+                        {
+                            @java.lang.Override
+                            public void run()
+                            {
+                                org.wheatgenetics.coordinate.utils.Utils.confirm(mContext, Coordinate.appName,
+                                        getString(org.wheatgenetics.coordinate.R.string.clear_grid), new Runnable()
+                                        {
+                                            @java.lang.Override
+                                            public void run()
+                                            {
+                                                try
+                                                {
+                                                    final EntriesTable entriesTable = new EntriesTable(Main.this);
+                                                    if (entriesTable.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
+                                                    {
+                                                        populateTemplate();
+                                                        showTemplateUI();
+                                                    }
+                                                    else org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
+                                                }
+                                                catch (final java.lang.Exception e)
+                                                {
+                                                    org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
+                                                    return;
+                                                }
+                                                share();
+                                            }
+                                        },
+                                        new Runnable()
+                                        {
+                                            @java.lang.Override
+                                            public void run() { share(); }
+                                        });
+                            }
+                        });
+            }
+            else
+            {
+                if (mMsg == null) mMsg = getString(org.wheatgenetics.coordinate.R.string.export_no_data);
+                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, getString(org.wheatgenetics.coordinate.R.string.export), mMsg);
+            }
+        }
+
+        private void share()
+        {
+            final String path = mFile.getAbsolutePath();
+
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+            intent.setType("text/plain");
+            startActivity(Intent.createChooser(intent, getString(org.wheatgenetics.coordinate.R.string.share_file)));
+        }
+
+        @java.lang.Override
+        protected Boolean doInBackground(final Void... bparams)
+        {
+            boolean ret;
+
+            try
+            {
+                templatesTable = new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
+            }
+            catch (final java.lang.Exception e)
+            {
+                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+            if (!templatesTable.get(mTempId))
+            {
+                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+
+            if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
+                ret = exportSeed();
+            else if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
+                ret = exportDna();
+            else ret = exportDefault();
+
+            return ret;
+        }
+
+        private boolean exportDefault()
+        {
+            boolean ret = false;
+
+            final String outputFile = mTempName + ".csv";
+
+            mFile = new File(mTempPath, outputFile);
+
+            if (mFile.exists()) mFile.delete();
+
+            CsvWriter csvOutput;
+            FileWriter writer;
+
+            try
+            {
+                writer    = new FileWriter(mFile, false);
+                csvOutput = new CsvWriter (writer, ',' );
+
+                //Titles
+                csvOutput.write("Value" );
+                csvOutput.write("Column");
+                csvOutput.write("Row"   );
+
+                assert nonNullOptionalFields != null;
+                for (final OptionalField optionalField: nonNullOptionalFields)
+                    csvOutput.write(optionalField.getName());
+
+                csvOutput.endRecord();
+
+                int row;
+                int col;
+                for (int c = 0; c < templatesTable.cols; c++)  // model
+                {
+                    col = c + 1;
+                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    {
+                        row = r + 1;
+
+                        String data;
+                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                            data = "exclude";
+                        else
+                        {
+                            data = getDataEntry(
+                                    org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
+                            if (data == null) data = "";
+                        }
+
+                        csvOutput.write(data               );
+                        csvOutput.write(String.valueOf(col));
+                        csvOutput.write(String.valueOf(row));
+
+                        for (final OptionalField optionalField: nonNullOptionalFields)
+                            csvOutput.write(optionalField.getValue());
+
+                        csvOutput.endRecord();
+                    }
+
+                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+
+                csvOutput.close();
+                makeFileDiscoverable(mFile, Main.this);
+
+                ret = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+            }
+
+            return ret;
+        }
+
+        private boolean exportDna()
+        {
+            boolean ret = false;
+            final String outputFile = mTempName + ".csv";
+
+            mFile = new File(mTempPath, outputFile);
+
+            if (mFile.exists()) mFile.delete();
+
+            CsvWriter  csvOutput;
+            FileWriter writer;
+
+            String date = "";
+            String plate_id = "";
+            String plate_name = "";
+
+            String dna_person = "";
+            String notes = "";
+            String tissue_type = "";
+            String extraction = "";
+
+            assert nonNullOptionalFields != null;
+            for (final OptionalField optionalField: nonNullOptionalFields)
+                if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Plate"))
+                    plate_id = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Plate Name"))
+                    plate_name = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Notes"))
+                    notes = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("tissue_type"))
+                    tissue_type = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("extraction"))
+                    extraction = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("person"))
+                    dna_person = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
+
+            try
+            {
+                writer = new FileWriter(mFile, false);
+
+                csvOutput = new CsvWriter(writer, ',');
+
+                csvOutput.write("date"       );
+                csvOutput.write("plate_id"   );
+                csvOutput.write("plate_name" );
+                csvOutput.write("sample_id"  );
+                csvOutput.write("well_A01"   );
+                csvOutput.write("well_01A"   );
+                csvOutput.write("tissue_id"  );
+                csvOutput.write("dna_person" );
+                csvOutput.write("notes"      );
+                csvOutput.write("tissue_type");
+                csvOutput.write("extraction" );
+
+                csvOutput.endRecord();
+
+                int row, col;
+                for (int c = 0; c < templatesTable.cols; c++)  // model
+                {
+                    col = c + 1;
+                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    {
+                        row = r + 1;
+
+                        final String rowName = Character.toString((char) ('A' + r));
+                        final String colName = String.format("%02d", col);
+                        final String sample_id = String.format("%s_%s%s", plate_id, rowName, colName);
+
+                        String tissue_id;
+                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                            tissue_id = "BLANK_" + sample_id;
+                        else
+                        {
+                            tissue_id = getDataEntry(
+                                    org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
+                            if (tissue_id == null || tissue_id.trim().length() == 0)
+                                tissue_id = "BLANK_" + sample_id;
+                        }
+
+                        csvOutput.write(date                                   );
+                        csvOutput.write(plate_id                               );
+                        csvOutput.write(plate_name                             );
+                        csvOutput.write(sample_id                              ); // sample_id
+                        csvOutput.write(String.format("%s%s", rowName, colName)); // well_A01
+                        csvOutput.write(String.format("%s%s", colName, rowName)); // well_01A
+                        csvOutput.write(tissue_id                              );
+                        csvOutput.write(dna_person.replace(" ", "_")           );
+                        csvOutput.write(notes                                  );
+                        csvOutput.write(tissue_type                            );
+                        csvOutput.write(extraction                             );
+
+                        csvOutput.endRecord();
+                    }
+                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+
+                csvOutput.close();
+                makeFileDiscoverable(mFile, Main.this);
+
+                ret = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+            }
+
+            return ret;
+        }
+
+        private boolean exportSeed()
+        {
+            boolean ret = false;
+
+            final String outputFile = mTempName + ".csv";
+
+            mFile = new File(mTempPath, outputFile);
+
+            if (mFile.exists()) mFile.delete();
+
+            CsvWriter  csvOutput;
+            FileWriter writer;
+
+            String person = "";
+            String date = "";
+            String trayid = "";
+
+            assert nonNullOptionalFields != null;
+            for (final OptionalField optionalField: nonNullOptionalFields)
+                if (optionalField.nameEqualsIgnoreCase("Tray"))
+                    trayid = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Person"))
+                    person = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
+
+            try
+            {
+                writer = new FileWriter(mFile, false);
+
+                csvOutput = new CsvWriter(writer, ',');
+
+                csvOutput.write("tray_id"    );
+                csvOutput.write("cell_id"    );
+                csvOutput.write("tray_num"   );
+                csvOutput.write("tray_column");
+                csvOutput.write("tray_row"   );
+                csvOutput.write("seed_id"    );
+                csvOutput.write("person"     );
+                csvOutput.write("date"       );
+                csvOutput.endRecord();
+
+                int row;
+                int col;
+                for (int c = 0; c < templatesTable.cols; c++)  // model
+                {
+                    col = c + 1;
+                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    {
+                        row = r + 1;
+
+                        String data;
+                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                            data = "exclude";
+                        else
+                        {
+                            data = getDataEntry(
+                                    org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
+                            if (data == null) data = "BLANK_";
+                        }
+
+                        csvOutput.write(trayid                                            ); // tray id
+                        csvOutput.write(String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
+                        csvOutput.write(""                                                ); // "tray_num"
+                        csvOutput.write(String.valueOf(col)                               ); // "tray_column"
+                        csvOutput.write(String.valueOf(row)                               ); // "tray_row"
+                        csvOutput.write(data                                              ); // "seed_id"
+                        csvOutput.write(person.replace(" ", "_")                          ); // "person"
+                        csvOutput.write(date                                              ); // "date"
+                        csvOutput.endRecord();
+                    }
+
+                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+
+                csvOutput.close();
+                makeFileDiscoverable(mFile, Main.this);
+
+                ret = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+            }
+
+            return ret;
+        }
+    }
+
+    private class CustomListAdapter extends ArrayAdapter<String>
+    {
+        String  color_names[];
+        Integer image_id[]   ;
+        Context context      ;
+
+        CustomListAdapter(final Activity context, final Integer image_id[], final String text[])
+        {
+            super(
+                /* context  => */ context         ,
+                /* resource => */ org.wheatgenetics.coordinate.R.layout.appline,
+                /* objects  => */ text            );
+            this.color_names = text    ;
+            this.image_id    = image_id;
+            this.context     = context ;
+        }
+
+        @java.lang.Override
+        public android.view.View getView(final int position, final android.view.View convertView, final ViewGroup parent)
+        {
+            final android.view.LayoutInflater inflater =
+                    (android.view.LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final android.view.View single_row = inflater.inflate(org.wheatgenetics.coordinate.R.layout.appline, null, true);
+            final android.widget.TextView textView = (android.widget.TextView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.txt);
+            final ImageView imageView = (ImageView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.img);
+            textView.setText(this.color_names[position]);
+            imageView.setImageResource(this.image_id[position]);
+            return single_row;
+        }
+    }
+
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
     private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
@@ -575,37 +1034,6 @@ android.view.View.OnKeyListener
                 { dialog.dismiss(); }
             });
         otherAppsAlert.show();
-    }
-
-    private class CustomListAdapter extends ArrayAdapter<String>
-    {
-        String  color_names[];
-        Integer image_id[]   ;
-        Context context      ;
-
-        CustomListAdapter(final Activity context, final Integer image_id[], final String text[])
-        {
-            super(
-                /* context  => */ context         ,
-                /* resource => */ org.wheatgenetics.coordinate.R.layout.appline,
-                /* objects  => */ text            );
-            this.color_names = text    ;
-            this.image_id    = image_id;
-            this.context     = context ;
-        }
-
-        @java.lang.Override
-        public android.view.View getView(final int position, final android.view.View convertView, final ViewGroup parent)
-        {
-            final android.view.LayoutInflater inflater =
-                (android.view.LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final android.view.View single_row = inflater.inflate(org.wheatgenetics.coordinate.R.layout.appline, null, true);
-            final android.widget.TextView textView = (android.widget.TextView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.txt);
-            final ImageView imageView = (ImageView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.img);
-            textView.setText(this.color_names[position]);
-            imageView.setImageResource(this.image_id[position]);
-            return single_row;
-        }
     }
 
     private void resetDatabase()
@@ -2496,434 +2924,6 @@ android.view.View.OnKeyListener
         {
             mTask.cancel(true);
             mTask = null;
-        }
-    }
-
-    private class DataExporter extends AsyncTask<Void, String, Boolean>
-    {
-        private Context        mContext;
-        private ProgressDialog mDlg;
-        private long           mTempId;
-
-        private String mTempPath;
-        private String mTempName;
-
-        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
-
-        private String mMsg = null;
-
-        private File mFile;
-
-        DataExporter(final Context context, final long id, final String name, final String path)
-        {
-            mContext  = context;
-            mTempId   = id     ;
-            mTempName = name   ;
-            mTempPath = path   ;
-        }
-
-        @java.lang.Override
-        protected void onProgressUpdate(String... msg)
-        {
-            if (msg == null) return;
-
-            final String text = msg[0];
-            if (text == null) return;
-
-            mDlg.setMessage(text);
-        }
-
-        @java.lang.Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-
-            mDlg = new ProgressDialog(mContext);
-            mDlg.setTitle(getString(org.wheatgenetics.coordinate.R.string.exporting_title));
-            mDlg.setMessage(getString(org.wheatgenetics.coordinate.R.string.exporting_body));
-            mDlg.setCancelable(true);
-            mDlg.setOnCancelListener(new OnCancelListener()
-                {
-                    @java.lang.Override
-                    public void onCancel(final DialogInterface dialog) { cancelTask(); }
-                });
-            mDlg.show();
-        }
-
-        @java.lang.Override
-        protected void onPostExecute(final Boolean result)
-        {
-            if (mDlg != null && mDlg.isShowing())
-            {
-                mDlg.dismiss();
-                mDlg = null;
-            }
-
-            // TODO when grid is reset, make a new one
-            if (result != null && result)
-            {
-                mLastExportGridId = org.wheatgenetics.coordinate.activities.Main.this.grid;
-                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, Coordinate.appName, getString(org.wheatgenetics.coordinate.R.string.export_success),
-                    new Runnable()
-                    {
-                        @java.lang.Override
-                        public void run()
-                        {
-                            org.wheatgenetics.coordinate.utils.Utils.confirm(mContext, Coordinate.appName,
-                                getString(org.wheatgenetics.coordinate.R.string.clear_grid), new Runnable()
-                                {
-                                    @java.lang.Override
-                                    public void run()
-                                    {
-                                        try
-                                        {
-                                            final EntriesTable entriesTable = new EntriesTable(Main.this);
-                                            if (entriesTable.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
-                                            {
-                                                populateTemplate();
-                                                showTemplateUI();
-                                            }
-                                            else org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
-                                        }
-                                        catch (final java.lang.Exception e)
-                                        {
-                                            org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
-                                            return;
-                                        }
-                                        share();
-                                    }
-                                },
-                                new Runnable()
-                                {
-                                    @java.lang.Override
-                                    public void run() { share(); }
-                                });
-                        }
-                    });
-            }
-            else
-            {
-                if (mMsg == null) mMsg = getString(org.wheatgenetics.coordinate.R.string.export_no_data);
-                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, getString(org.wheatgenetics.coordinate.R.string.export), mMsg);
-            }
-        }
-
-        private void share()
-        {
-            final String path = mFile.getAbsolutePath();
-
-            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-            intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, getString(org.wheatgenetics.coordinate.R.string.share_file)));
-        }
-
-        @java.lang.Override
-        protected Boolean doInBackground(final Void... bparams)
-        {
-            boolean ret;
-
-            try
-            {
-                templatesTable = new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
-            }
-            catch (final java.lang.Exception e)
-            {
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-            if (!templatesTable.get(mTempId))
-            {
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-
-            if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
-                ret = exportSeed();
-            else if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
-                ret = exportDna();
-            else ret = exportDefault();
-
-            return ret;
-        }
-
-        private boolean exportDefault()
-        {
-            boolean ret = false;
-
-            final String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) mFile.delete();
-
-            CsvWriter csvOutput;
-            FileWriter writer;
-
-            try
-            {
-                writer    = new FileWriter(mFile, false);
-                csvOutput = new CsvWriter (writer, ',' );
-
-                //Titles
-                csvOutput.write("Value" );
-                csvOutput.write("Column");
-                csvOutput.write("Row"   );
-
-                assert nonNullOptionalFields != null;
-                for (final OptionalField optionalField: nonNullOptionalFields)
-                    csvOutput.write(optionalField.getName());
-
-                csvOutput.endRecord();
-
-                int row;
-                int col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
-                {
-                    col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
-                    {
-                        row = r + 1;
-
-                        String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
-                            data = "exclude";
-                        else
-                        {
-                            data = getDataEntry(
-                                org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (data == null) data = "";
-                        }
-
-                        csvOutput.write(data               );
-                        csvOutput.write(String.valueOf(col));
-                        csvOutput.write(String.valueOf(row));
-
-                        for (final OptionalField optionalField: nonNullOptionalFields)
-                            csvOutput.write(optionalField.getValue());
-
-                        csvOutput.endRecord();
-                    }
-
-                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            }
-            catch (final java.io.IOException e)
-            {
-                e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
-            }
-
-            return ret;
-        }
-
-        private boolean exportDna()
-        {
-            boolean ret = false;
-            final String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) mFile.delete();
-
-            CsvWriter  csvOutput;
-            FileWriter writer;
-
-            String date = "";
-            String plate_id = "";
-            String plate_name = "";
-
-            String dna_person = "";
-            String notes = "";
-            String tissue_type = "";
-            String extraction = "";
-
-            assert nonNullOptionalFields != null;
-            for (final OptionalField optionalField: nonNullOptionalFields)
-                if (optionalField.nameEqualsIgnoreCase("date"))
-                    date = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("Plate"))
-                    plate_id = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("Plate Name"))
-                    plate_name = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("Notes"))
-                    notes = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("tissue_type"))
-                    tissue_type = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("extraction"))
-                    extraction = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("person"))
-                    dna_person = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("date"))
-                    date = optionalField.getValue();
-
-            try
-            {
-                writer = new FileWriter(mFile, false);
-
-                csvOutput = new CsvWriter(writer, ',');
-
-                csvOutput.write("date"       );
-                csvOutput.write("plate_id"   );
-                csvOutput.write("plate_name" );
-                csvOutput.write("sample_id"  );
-                csvOutput.write("well_A01"   );
-                csvOutput.write("well_01A"   );
-                csvOutput.write("tissue_id"  );
-                csvOutput.write("dna_person" );
-                csvOutput.write("notes"      );
-                csvOutput.write("tissue_type");
-                csvOutput.write("extraction" );
-
-                csvOutput.endRecord();
-
-                int row, col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
-                {
-                    col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
-                    {
-                        row = r + 1;
-
-                        final String rowName = Character.toString((char) ('A' + r));
-                        final String colName = String.format("%02d", col);
-                        final String sample_id = String.format("%s_%s%s", plate_id, rowName, colName);
-
-                        String tissue_id;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
-                            tissue_id = "BLANK_" + sample_id;
-                        else
-                        {
-                            tissue_id = getDataEntry(
-                                org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (tissue_id == null || tissue_id.trim().length() == 0)
-                                tissue_id = "BLANK_" + sample_id;
-                        }
-
-                        csvOutput.write(date                                   );
-                        csvOutput.write(plate_id                               );
-                        csvOutput.write(plate_name                             );
-                        csvOutput.write(sample_id                              ); // sample_id
-                        csvOutput.write(String.format("%s%s", rowName, colName)); // well_A01
-                        csvOutput.write(String.format("%s%s", colName, rowName)); // well_01A
-                        csvOutput.write(tissue_id                              );
-                        csvOutput.write(dna_person.replace(" ", "_")           );
-                        csvOutput.write(notes                                  );
-                        csvOutput.write(tissue_type                            );
-                        csvOutput.write(extraction                             );
-
-                        csvOutput.endRecord();
-                    }
-                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            }
-            catch (final java.io.IOException e)
-            {
-                e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
-            }
-
-            return ret;
-        }
-
-        private boolean exportSeed()
-        {
-            boolean ret = false;
-
-            final String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) mFile.delete();
-
-            CsvWriter  csvOutput;
-            FileWriter writer;
-
-            String person = "";
-            String date = "";
-            String trayid = "";
-
-            assert nonNullOptionalFields != null;
-            for (final OptionalField optionalField: nonNullOptionalFields)
-                if (optionalField.nameEqualsIgnoreCase("Tray"))
-                    trayid = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("Person"))
-                    person = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("date"))
-                    date = optionalField.getValue();
-
-            try
-            {
-                writer = new FileWriter(mFile, false);
-
-                csvOutput = new CsvWriter(writer, ',');
-
-                csvOutput.write("tray_id"    );
-                csvOutput.write("cell_id"    );
-                csvOutput.write("tray_num"   );
-                csvOutput.write("tray_column");
-                csvOutput.write("tray_row"   );
-                csvOutput.write("seed_id"    );
-                csvOutput.write("person"     );
-                csvOutput.write("date"       );
-                csvOutput.endRecord();
-
-                int row;
-                int col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
-                {
-                    col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
-                    {
-                        row = r + 1;
-
-                        String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
-                            data = "exclude";
-                        else
-                        {
-                            data = getDataEntry(
-                                org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (data == null) data = "BLANK_";
-                        }
-
-                        csvOutput.write(trayid                                            ); // tray id
-                        csvOutput.write(String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
-                        csvOutput.write(""                                                ); // "tray_num"
-                        csvOutput.write(String.valueOf(col)                               ); // "tray_column"
-                        csvOutput.write(String.valueOf(row)                               ); // "tray_row"
-                        csvOutput.write(data                                              ); // "seed_id"
-                        csvOutput.write(person.replace(" ", "_")                          ); // "person"
-                        csvOutput.write(date                                              ); // "date"
-                        csvOutput.endRecord();
-                    }
-
-                    publishProgress(getString(org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            }
-            catch (final java.io.IOException e)
-            {
-                e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
-            }
-
-            return ret;
         }
     }
 
