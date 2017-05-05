@@ -832,6 +832,65 @@ android.view.View.OnKeyListener
 
         builder.show();
     }
+
+    private void loadTemplate()
+    {
+        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates = new ArrayList<>();
+
+        final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        final Cursor cursor = tmp.load();  // database
+        if (cursor != null)
+        {
+            while (cursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+                if (templatesTable.copy(cursor)) templates.add(templatesTable);  // database, model
+            }
+            cursor.close();
+        }
+
+        final int    size    = templates.size();
+        final String items[] = new String[size];
+        for (int i = 0; i < size; i++)
+        {
+            final org.wheatgenetics.coordinate.database.TemplatesTable item = templates.get(i);
+            items[i] = item.title;  // model
+        }
+
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(menuMain[0]);
+        builder.setItems(items, new OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    if (which < 0 || which > templates.size()) return;
+
+                    final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
+                        templates.get(which);
+                    try { copyTemplate(tmp); } catch (final org.json.JSONException e) {}
+
+                    if (which == 0)
+                        inputSeed();
+                    else if (which == 1)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().add(
+                            new Point(
+                                randomBox(Main.this.templateModel.getCols()),
+                                randomBox(Main.this.templateModel.getRows())));
+
+                        try { inputTemplateInput(MODE_DNA); } catch (final java.lang.Exception e) {}
+                    }
+                    else
+                        try { inputTemplateInput(MODE_SAVED); }
+                        catch (final java.lang.Exception e) {}
+                }
+            });
+        builder.show();
+    }
     // endregion
 
     // region Selector Drawer Method
@@ -851,7 +910,7 @@ android.view.View.OnKeyListener
                 this.newTemplate();
                 break;
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
-                this.menuTemplateLoad();
+                this.loadTemplate();
                 break;
             case org.wheatgenetics.coordinate.R.id.menu_delete_template:
                 this.menuDeleteTemplate();
@@ -1063,66 +1122,7 @@ android.view.View.OnKeyListener
             {
                 @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
-                { if (which == 0) menuTemplateLoad(); else newTemplate(); }
-            });
-        builder.show();
-    }
-
-    private void menuTemplateLoad()
-    {
-        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates = new ArrayList<>();
-
-        final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        final Cursor cursor = tmp.load();  // database
-        if (cursor != null)
-        {
-            while (cursor.moveToNext())
-            {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-                if (templatesTable.copy(cursor)) templates.add(templatesTable);  // database, model
-            }
-            cursor.close();
-        }
-
-        final int    size    = templates.size();
-        final String items[] = new String[size];
-        for (int i = 0; i < size; i++)
-        {
-            final org.wheatgenetics.coordinate.database.TemplatesTable item = templates.get(i);
-            items[i] = item.title;  // model
-        }
-
-        final Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(menuMain[0]);
-        builder.setItems(items, new OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final DialogInterface dialog, final int which)
-                {
-                    if (which < 0 || which > templates.size()) return;
-
-                    final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
-                        templates.get(which);
-                    try { copyTemplate(tmp); } catch (org.json.JSONException e) {}
-
-                    if (which == 0)
-                        inputSeed();
-                    else if (which == 1)
-                    {
-                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();
-                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().add(
-                            new Point(
-                                randomBox(Main.this.templateModel.getCols()),
-                                randomBox(Main.this.templateModel.getRows())));
-
-                        try { inputTemplateInput(MODE_DNA); } catch (final java.lang.Exception e) {}
-                    }
-                    else
-                        try { inputTemplateInput(MODE_SAVED); }
-                        catch (final java.lang.Exception e) {}
-                }
+                { if (which == 0) loadTemplate(); else newTemplate(); }
             });
         builder.show();
     }
