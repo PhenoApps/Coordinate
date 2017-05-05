@@ -184,8 +184,23 @@ android.view.View.OnKeyListener
 
         this.drawerLayout = (android.support.v4.widget.DrawerLayout)
             this.findViewById(org.wheatgenetics.coordinate.R.id.drawer_layout);
-        final android.support.design.widget.NavigationView nvDrawer = (android.support.design.widget.NavigationView) this.findViewById(org.wheatgenetics.coordinate.R.id.nvView);
-        this.setupDrawerContent(nvDrawer);
+        {
+            final android.support.design.widget.NavigationView navigationView =
+                (android.support.design.widget.NavigationView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.nvView);
+            assert navigationView != null;
+            navigationView.setNavigationItemSelectedListener(
+                new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @java.lang.Override
+                    public boolean onNavigationItemSelected(final android.view.MenuItem item)
+                    {
+                        return
+                            org.wheatgenetics.coordinate.activities.Main.this.selectNavigationItem(
+                                item);
+                    }
+                });
+        }
         this.setupDrawer();
 
         parent = new LinearLayout(this);
@@ -655,21 +670,6 @@ android.view.View.OnKeyListener
         this.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         assert this.drawerLayout != null;
         this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
-    }
-
-    private void setupDrawerContent(final android.support.design.widget.NavigationView navigationView)
-    {
-        assert navigationView != null;
-        navigationView.setNavigationItemSelectedListener(
-            new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener()
-            {
-                @java.lang.Override
-                public boolean onNavigationItemSelected(final android.view.MenuItem item)
-                {
-                     return org.wheatgenetics.coordinate.activities.Main.this.selectNavigationItem(
-                        item);
-                }
-            });
     }
 
     // region Drawer Selector Method
