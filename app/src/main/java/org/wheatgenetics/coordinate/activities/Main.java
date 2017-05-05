@@ -891,6 +891,74 @@ android.view.View.OnKeyListener
             });
         builder.show();
     }
+
+    private void deleteTemplate()
+    {
+        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates =
+            new ArrayList<>();
+
+        final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        final Cursor cursor = tmp.load();  // database
+        if (cursor != null)
+        {
+            while (cursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+                if (templatesTable.copy(cursor)) templates.add(templatesTable);  // database, model
+            }
+            cursor.close();
+        }
+
+        final int    size    = templates.size();
+        final String items[] = new String[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            final org.wheatgenetics.coordinate.database.TemplatesTable item = templates.get(i);
+            assert item != null;
+            items[i] = item.title;  // model
+        }
+
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.delete_template));
+        builder.setItems(items, new OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    if (which < 0 || which > templates.size()) return;
+
+                    final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
+                        templates.get(which);
+
+                    org.wheatgenetics.coordinate.utils.Utils.confirm(Main.this,
+                        getString(org.wheatgenetics.coordinate.R.string.delete_template        ),
+                        getString(org.wheatgenetics.coordinate.R.string.delete_template_warning),
+                        new Runnable()
+                        {
+                            @java.lang.Override
+                            public void run()
+                            {
+                                if (deleteTemplate(
+                                new org.wheatgenetics.coordinate.model.TemplateModel(tmp.id)))
+                                {
+                                    Toast.makeText(Main.this,
+                                        getString(org.wheatgenetics.coordinate.R.string.template_deleted),
+                                        Toast.LENGTH_LONG).show();
+                                    menuList();
+                                }
+                                else
+                                    Toast.makeText(Main.this, getString(org.wheatgenetics.
+                                            coordinate.R.string.template_not_deleted),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }, null);
+                }
+            });
+        builder.show();
+    }
     // endregion
 
     // region Selector Drawer Method
@@ -902,18 +970,12 @@ android.view.View.OnKeyListener
             case org.wheatgenetics.coordinate.R.id.menu_new_grid:
                 try { this.newGrid(); } catch (final org.json.JSONException e) { return false; }
                 break;
-            case org.wheatgenetics.coordinate.R.id.menu_delete_grid:
-                this.deleteGrid();
-                break;
+            case org.wheatgenetics.coordinate.R.id.menu_delete_grid: this.deleteGrid(); break;
 
-            case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.newTemplate();
-                break;
-            case org.wheatgenetics.coordinate.R.id.menu_load_template:
-                this.loadTemplate();
-                break;
+            case org.wheatgenetics.coordinate.R.id.menu_new_template : this.newTemplate (); break;
+            case org.wheatgenetics.coordinate.R.id.menu_load_template: this.loadTemplate(); break;
             case org.wheatgenetics.coordinate.R.id.menu_delete_template:
-                this.menuDeleteTemplate();
+                this.deleteTemplate();
                 break;
 
             case org.wheatgenetics.coordinate.R.id.menu_import:
@@ -1123,75 +1185,6 @@ android.view.View.OnKeyListener
                 @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
                 { if (which == 0) loadTemplate(); else newTemplate(); }
-            });
-        builder.show();
-    }
-
-    private void menuDeleteTemplate()
-    {
-        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates =
-            new ArrayList<>();
-
-        final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        final Cursor cursor = tmp.load();  // database
-        if (cursor != null)
-        {
-            while (cursor.moveToNext())
-            {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-                if (templatesTable.copy(cursor)) templates.add(templatesTable);  // database, model
-            }
-            cursor.close();
-        }
-
-        final int    size    = templates.size();
-        final String items[] = new String[size];
-
-        for (int i = 0; i < size; i++)
-        {
-            final org.wheatgenetics.coordinate.database.TemplatesTable item = templates.get(i);
-            items[i] = item.title;  // model
-        }
-
-        final Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.delete_template));
-        builder.setItems(items, new OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final DialogInterface dialog, final int which)
-                {
-                    if (which < 0 || which > templates.size()) return;
-
-                    final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
-                        templates.get(which);
-
-                    org.wheatgenetics.coordinate.utils.Utils.confirm(Main.this, getString(org.wheatgenetics.coordinate.R.string.delete_template),
-                        getString(org.wheatgenetics.coordinate.R.string.delete_template_warning), new Runnable()
-                        {
-                            @java.lang.Override
-                            public void run()
-                            {
-                                try
-                                {
-                                    if (deleteTemplate(
-                                    new org.wheatgenetics.coordinate.model.TemplateModel(tmp.id)))  // throws java.lang.Exception
-                                    {
-                                        Toast.makeText(Main.this,
-                                            getString(org.wheatgenetics.coordinate.R.string.template_deleted),
-                                            Toast.LENGTH_LONG).show();
-                                        menuList();
-                                    }
-                                    else
-                                        Toast.makeText(Main.this,
-                                            getString(org.wheatgenetics.coordinate.R.string.template_not_deleted),
-                                            Toast.LENGTH_LONG).show();
-                                }
-                                catch (final java.lang.Exception e) {}
-                            }
-                        }, null);
-                }
             });
         builder.show();
     }
