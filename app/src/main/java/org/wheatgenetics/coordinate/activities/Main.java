@@ -201,7 +201,42 @@ android.view.View.OnKeyListener
                     }
                 });
         }
-        this.setupDrawer();
+        this.actionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,
+            this.drawerLayout, org.wheatgenetics.coordinate.R.string.drawer_open,
+            org.wheatgenetics.coordinate.R.string.drawer_close)
+            {
+                @java.lang.Override
+                public void onDrawerOpened(final android.view.View drawerView)
+                {
+                    {
+                        final android.widget.TextView personTextView = (android.widget.TextView)
+                            org.wheatgenetics.coordinate.activities.Main.this.findViewById(
+                                org.wheatgenetics.coordinate.R.id.nameLabel);
+                        assert ep             != null;
+                        assert personTextView != null;
+                        personTextView.setText(ep.getString("Person", ""));
+                    }
+
+                    {
+                        final android.widget.TextView templateTitleTextView =
+                            (android.widget.TextView)
+                            org.wheatgenetics.coordinate.activities.Main.this.findViewById(
+                                org.wheatgenetics.coordinate.R.id.templateLabel);
+                        assert
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel != null;
+                        assert templateTitleTextView != null;
+                        templateTitleTextView.setText(org.wheatgenetics.coordinate.
+                            activities.Main.this.templateModel.getTitle());
+                    }
+                }
+
+                @java.lang.Override
+                public void onDrawerClosed(final android.view.View drawerView) {}
+            };
+
+        this.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        assert this.drawerLayout != null;
+        this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
 
         parent = new LinearLayout(this);
         changeContainer = new ScrollView(this);
@@ -214,7 +249,7 @@ android.view.View.OnKeyListener
 
         this.gridTableLayout = (TableLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.dataTable);
 
-        this.templateTitleTextView = (TextView) this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
+        this.templateTitleTextView = (android.widget.TextView) this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
 
         this.cellIDEditText = (EditText) this.findViewById(org.wheatgenetics.coordinate.R.id.dataEdit);
         assert this.cellIDEditText != null;
@@ -297,7 +332,7 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event)
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId, final KeyEvent event)
     {
         if (actionId == EditorInfo.IME_ACTION_DONE)
         {
@@ -429,8 +464,8 @@ android.view.View.OnKeyListener
             layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.about, new LinearLayout(this), false);
 
         assert personView != null;
-        final TextView version   = (TextView) personView.findViewById(org.wheatgenetics.coordinate.R.id.tvVersion  );
-        final TextView otherApps = (TextView) personView.findViewById(org.wheatgenetics.coordinate.R.id.tvOtherApps);
+        final android.widget.TextView version   = (android.widget.TextView) personView.findViewById(org.wheatgenetics.coordinate.R.id.tvVersion  );
+        final android.widget.TextView otherApps = (android.widget.TextView) personView.findViewById(org.wheatgenetics.coordinate.R.id.tvOtherApps);
 
 
         final PackageManager packageManager = this.getPackageManager();
@@ -505,9 +540,9 @@ android.view.View.OnKeyListener
 
             while ((line = br.readLine()) != null)
             {
-                final TextView header  = new TextView(this);
-                final TextView content = new TextView(this);
-                final TextView spacer  = new TextView(this);
+                final android.widget.TextView header  = new android.widget.TextView(this);
+                final android.widget.TextView content = new android.widget.TextView(this);
+                final android.widget.TextView spacer  = new android.widget.TextView(this);
                 final View     ruler   = new View(this);
 
                 header.setLayoutParams(lp);
@@ -616,7 +651,7 @@ android.view.View.OnKeyListener
             final LayoutInflater inflater =
                 (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View single_row = inflater.inflate(org.wheatgenetics.coordinate.R.layout.appline, null, true);
-            final TextView textView = (TextView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.txt);
+            final android.widget.TextView textView = (android.widget.TextView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.txt);
             final ImageView imageView = (ImageView) single_row.findViewById(org.wheatgenetics.coordinate.R.id.img);
             textView.setText(this.color_names[position]);
             imageView.setImageResource(this.image_id[position]);
@@ -641,35 +676,6 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.activities.Main.this.finish();
                 }
             }, null);
-    }
-
-    private void setupDrawer()
-    {
-        this.actionBarDrawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout,
-        org.wheatgenetics.coordinate.R.string.drawer_open, org.wheatgenetics.coordinate.R.string.drawer_close)
-        {
-            @java.lang.Override
-            public void onDrawerOpened(final View drawerView)
-            {
-                {
-                    final TextView personTextView = (TextView) findViewById(org.wheatgenetics.coordinate.R.id.nameLabel);
-                    personTextView.setText(ep.getString("Person", ""));
-                }
-
-                {
-                    final TextView templateTitleTextView = (TextView) findViewById(org.wheatgenetics.coordinate.R.id.templateLabel);
-                    assert templateTitleTextView != null;
-                    templateTitleTextView.setText(Main.this.templateModel.getTitle());
-                }
-            }
-
-            @java.lang.Override
-            public void onDrawerClosed(final View drawerView) {}
-        };
-
-        this.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
-        assert this.drawerLayout != null;
-        this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
     }
 
     // region Drawer Selector Method
@@ -1265,8 +1271,8 @@ android.view.View.OnKeyListener
 
             {
                 assert optionalFieldView != null;
-                final TextView optionalFieldTextView =
-                    (TextView) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
+                final android.widget.TextView optionalFieldTextView =
+                    (android.widget.TextView) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
 
                 assert optionalFieldTextView != null;
                 optionalFieldTextView.setText(optionalField.getName());
@@ -1391,8 +1397,8 @@ android.view.View.OnKeyListener
 
             {
                 assert optionalFieldView != null;
-                final TextView optionalFieldTextView =
-                        (TextView) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
+                final android.widget.TextView optionalFieldTextView =
+                        (android.widget.TextView) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
 
                 assert optionalFieldTextView != null;
                 optionalFieldTextView.setText(optionalField.getName());
@@ -2231,12 +2237,12 @@ android.view.View.OnKeyListener
                 layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.optional_line, new LinearLayout(this), false);
             {
                 assert view != null;
-                final TextView fieldText = (TextView) view.findViewById(org.wheatgenetics.coordinate.R.id.fieldText);
+                final android.widget.TextView fieldText = (android.widget.TextView) view.findViewById(org.wheatgenetics.coordinate.R.id.fieldText);
                 assert fieldText != null;
                 fieldText.setText(optionalField.getName());
             }
             {
-                final TextView valueText = (TextView) view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
+                final android.widget.TextView valueText = (android.widget.TextView) view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
                 assert valueText != null;
                 if (first)
                 {
@@ -2258,7 +2264,7 @@ android.view.View.OnKeyListener
         {
             @SuppressLint("InflateParams")
             final LinearLayout cell_top = (LinearLayout) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_top, null);
-            final TextView cell_txt = (TextView) cell_top.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+            final android.widget.TextView cell_txt = (android.widget.TextView) cell_top.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
             if (c == 0)
                 cell_txt.setText("");
@@ -2287,11 +2293,11 @@ android.view.View.OnKeyListener
 
                 @SuppressLint("InflateParams")
                 final LinearLayout cell_box = (LinearLayout) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_box, null);
-                final TextView cell_cnt = (TextView) cell_box.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+                final android.widget.TextView cell_cnt = (android.widget.TextView) cell_box.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
                 @SuppressLint("InflateParams")
                 final LinearLayout cell_left = (LinearLayout) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_left, null);
-                final TextView cell_num = (TextView) cell_left.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+                final android.widget.TextView cell_num = (android.widget.TextView) cell_left.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
                 if (c == 0)
                 {
