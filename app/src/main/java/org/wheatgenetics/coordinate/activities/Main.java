@@ -731,6 +731,107 @@ android.view.View.OnKeyListener
                 }
             }, null);
     }
+
+    private void newTemplate()
+    {
+        assert this.templateModel != null;
+        this.templateModel.getExcludeCells().clear();
+        this.excludeRows  = new ArrayList<>();
+        this.excludeCols  = new ArrayList<>();
+
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Identification");
+        this.nonNullOptionalFields.add    ("Person"        );
+        this.nonNullOptionalFields.addDate("Date"          );
+
+        View view;
+        {
+            final LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+            assert layoutInflater != null;
+            view = layoutInflater.inflate(
+                org.wheatgenetics.coordinate.R.layout.template_new, new LinearLayout(this), false);
+        }
+
+        final EditText nameEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
+        final EditText rowsEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
+        final EditText colsEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
+
+        assert nameEdit != null;
+        nameEdit.setText("");
+        assert rowsEdit != null;
+        rowsEdit.setText(this.templateModel.getRows() <= 0 ? "" : String.valueOf(this.templateModel.getRows()));
+        assert colsEdit != null;
+        colsEdit.setText(this.templateModel.getCols() <= 0 ? "" : String.valueOf(this.templateModel.getCols()));
+
+        final Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(menuMain[1]);
+        builder.setView(view);
+        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+            new DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    assert dialog != null;
+                    dialog.cancel();
+
+                    final String sname = nameEdit.getText().toString().trim();
+                    final String scols = colsEdit.getText().toString().trim();
+                    final String srows = rowsEdit.getText().toString().trim();
+
+                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(sname);
+                    Main.this.templateModel.setRows(org.wheatgenetics.coordinate.utils.Utils.getInteger(srows));
+                    Main.this.templateModel.setCols(org.wheatgenetics.coordinate.utils.Utils.getInteger(scols));
+
+                    assert sname != null;
+                    if (sname.length() == 0)
+                    {
+                        Toast.makeText(Main.this,
+                            getString(org.wheatgenetics.coordinate.R.string.template_no_name),
+                            Toast.LENGTH_LONG).show();
+                        newTemplate();
+                        return;
+                    }
+
+                    assert srows                   != null;
+                    assert Main.this.templateModel != null;
+                    if (srows.length() == 0 || Main.this.templateModel.getRows() == -1)
+                    {
+                        Toast.makeText(Main.this,
+                            getString(org.wheatgenetics.coordinate.R.string.no_rows),
+                            Toast.LENGTH_LONG).show();
+                        newTemplate();
+                        return;
+                    }
+
+                    assert scols != null;
+                    if (scols.length() == 0 || Main.this.templateModel.getCols() == -1)
+                    {
+                        Toast.makeText(Main.this,
+                            getString(org.wheatgenetics.coordinate.R.string.no_cols),
+                            Toast.LENGTH_LONG).show();
+                        newTemplate();
+                        return;
+                    }
+
+                    inputTemplateNewExtra();
+                }
+            });
+
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            new DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    assert dialog != null;
+                    dialog.cancel();
+                }
+            });
+
+        builder.show();
+    }
     // endregion
 
     // region Selector Drawer Method
@@ -747,7 +848,7 @@ android.view.View.OnKeyListener
                 break;
 
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.inputTemplateNew();
+                this.newTemplate();
                 break;
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
                 this.menuTemplateLoad();
@@ -962,7 +1063,7 @@ android.view.View.OnKeyListener
             {
                 @java.lang.Override
                 public void onClick(final DialogInterface dialog, final int which)
-                { if (which == 0) menuTemplateLoad(); else inputTemplateNew(); }
+                { if (which == 0) menuTemplateLoad(); else newTemplate(); }
             });
         builder.show();
     }
@@ -1115,85 +1216,6 @@ android.view.View.OnKeyListener
 
         this.templateModel.setRowNumbering(templatesTable.rowNumbering == 1);
         this.templateModel.setColNumbering(templatesTable.colNumbering == 1);
-    }
-
-    private void inputTemplateNew()
-    {
-        this.templateModel.getExcludeCells().clear();
-        this.excludeRows  = new ArrayList<>();
-        this.excludeCols  = new ArrayList<>();
-
-        this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        this.nonNullOptionalFields.add    ("Identification");
-        this.nonNullOptionalFields.add    ("Person"        );
-        this.nonNullOptionalFields.addDate("Date"          );
-
-        final LayoutInflater inflater = Main.this.getLayoutInflater();
-        final View view = inflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new, new LinearLayout(this), false);
-
-        final EditText nameEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
-        final EditText rowsEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
-        final EditText colsEdit = (EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
-
-        nameEdit.setText("");
-        rowsEdit.setText(this.templateModel.getRows() <= 0 ? "" : String.valueOf(this.templateModel.getRows()));
-        colsEdit.setText(this.templateModel.getCols() <= 0 ? "" : String.valueOf(this.templateModel.getCols()));
-
-        final Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(menuMain[1]);
-        builder.setView(view);
-        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next, new DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final DialogInterface dialog, final int which)
-                {
-                    dialog.cancel();
-
-                    final String sname = nameEdit.getText().toString().trim();
-                    final String scols = colsEdit.getText().toString().trim();
-                    final String srows = rowsEdit.getText().toString().trim();
-
-                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(sname);
-                    Main.this.templateModel.setRows(org.wheatgenetics.coordinate.utils.Utils.getInteger(srows));
-                    Main.this.templateModel.setCols(org.wheatgenetics.coordinate.utils.Utils.getInteger(scols));
-
-                    if (sname.length() == 0)
-                    {
-                        Toast.makeText(Main.this, getString(org.wheatgenetics.coordinate.R.string.template_no_name),
-                            Toast.LENGTH_LONG).show();
-                        inputTemplateNew();
-                        return;
-                    }
-
-                    if (srows.length() == 0 || Main.this.templateModel.getRows() == -1)
-                    {
-                        Toast.makeText(Main.this, getString(org.wheatgenetics.coordinate.R.string.no_rows),
-                            Toast.LENGTH_LONG).show();
-                        inputTemplateNew();
-                        return;
-                    }
-
-                    if (scols.length() == 0 || Main.this.templateModel.getCols() == -1)
-                    {
-                        Toast.makeText(Main.this, getString(org.wheatgenetics.coordinate.R.string.no_cols),
-                            Toast.LENGTH_LONG).show();
-                        inputTemplateNew();
-                        return;
-                    }
-
-                    inputTemplateNewExtra();
-                }
-            });
-
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel, new DialogInterface.OnClickListener()
-        {
-            @java.lang.Override
-            public void onClick(final DialogInterface dialog, final int which)
-            { dialog.cancel(); }
-        });
-
-        builder.show();
     }
 
     private void inputTemplateNewExtra()
