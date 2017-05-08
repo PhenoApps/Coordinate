@@ -91,38 +91,29 @@ public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
 android.view.View.OnKeyListener
 {
-    private class DataExporter extends AsyncTask<Void, java.lang.String, java.lang.Boolean>
+    private class Exporter extends android.os.AsyncTask<
+    java.lang.Void, java.lang.String, java.lang.Boolean>
     {
-        private android.content.Context        mContext;
-        private ProgressDialog mDlg;
-        private long           mTempId;
+        private android.content.Context context;
+        private long                    templateId;
+
+        private android.app.ProgressDialog                           progressDialog;
+        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
+        private java.lang.String                                     message = null;
 
         private java.lang.String mTempPath;
         private java.lang.String mTempName;
 
-        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
-
-        private java.lang.String mMsg = null;
-
         private File mFile;
 
-        DataExporter(final android.content.Context context, final long id, final java.lang.String name, final java.lang.String path)
+        Exporter(final android.content.Context context, final long templateId, final java.lang.String name, final java.lang.String path)
         {
-            mContext  = context;
-            mTempId   = id     ;
+            super();
+
+            this.context    = context   ;
+            this.templateId = templateId;
             mTempName = name   ;
             mTempPath = path   ;
-        }
-
-        @java.lang.Override
-        protected void onProgressUpdate(java.lang.String... msg)
-        {
-            if (msg == null) return;
-
-            final java.lang.String text = msg[0];
-            if (text == null) return;
-
-            mDlg.setMessage(text);
         }
 
         @java.lang.Override
@@ -130,117 +121,165 @@ android.view.View.OnKeyListener
         {
             super.onPreExecute();
 
-            mDlg = new ProgressDialog(mContext);
-            mDlg.setTitle(getString(org.wheatgenetics.coordinate.R.string.exporting_title));
-            mDlg.setMessage(getString(org.wheatgenetics.coordinate.R.string.exporting_body));
-            mDlg.setCancelable(true);
-            mDlg.setOnCancelListener(new OnCancelListener()
+            this.progressDialog = new android.app.ProgressDialog(this.context);
+            this.progressDialog.setTitle(
+                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.exporting_title));
+            this.progressDialog.setMessage(
+                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.exporting_body));
+            this.progressDialog.setCancelable(true);
+            this.progressDialog.setOnCancelListener(
+                new android.content.DialogInterface.OnCancelListener()
+                {
+                    @java.lang.Override
+                    public void onCancel(final DialogInterface dialog)
+                    { org.wheatgenetics.coordinate.activities.Main.this.cancelExporter(); }
+                });
+            this.progressDialog.show();
+        }
+
+        @java.lang.Override
+        protected java.lang.Boolean doInBackground(final java.lang.Void... bparams)
+        {
+            try
             {
-                @java.lang.Override
-                public void onCancel(final DialogInterface dialog) { cancelTask(); }
-            });
-            mDlg.show();
+                this.templatesTable = new org.wheatgenetics.coordinate.database.TemplatesTable(
+                    org.wheatgenetics.coordinate.activities.Main.this);
+            }
+            catch (final java.lang.Exception e)
+            {
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+
+            if (!this.templatesTable.get(this.templateId))
+            {
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+
+            if (this.templatesTable.type ==
+            org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
+                return this.exportSeed();
+            else
+                if (this.templatesTable.type ==
+                org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
+                    return this.exportDna();
+                else
+                    return this.exportDefault();
+        }
+
+        @java.lang.Override
+        protected void onProgressUpdate(final java.lang.String... msg)
+        {
+            if (msg != null)
+            {
+                final java.lang.String message = msg[0];
+                if (message != null)
+                {
+                    assert this.progressDialog != null;
+                    this.progressDialog.setMessage(message);
+                }
+            }
         }
 
         @java.lang.Override
         protected void onPostExecute(final java.lang.Boolean result)
         {
-            if (mDlg != null && mDlg.isShowing())
+            if (this.progressDialog != null && this.progressDialog.isShowing())
             {
-                mDlg.dismiss();
-                mDlg = null;
+                this.progressDialog.dismiss();
+                this.progressDialog = null;
             }
 
-            // TODO when grid is reset, make a new one
+            // TODO: When grid is reset, make a new one.
             if (result != null && result)
             {
-                mLastExportGridId = org.wheatgenetics.coordinate.activities.Main.this.grid;
-                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, Coordinate.appName, getString(org.wheatgenetics.coordinate.R.string.export_success),
-                        new Runnable()
+                org.wheatgenetics.coordinate.activities.Main.this.mLastExportGridId =  // TODO: Make into
+                    org.wheatgenetics.coordinate.activities.Main.this.grid;            // TODO:  Main method.
+                org.wheatgenetics.coordinate.utils.Utils.alert(this.context, Coordinate.appName,
+                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export_success),
+                    new java.lang.Runnable()
+                    {
+                        @java.lang.Override
+                        public void run()
                         {
-                            @java.lang.Override
-                            public void run()
-                            {
-                                org.wheatgenetics.coordinate.utils.Utils.confirm(mContext, Coordinate.appName,
-                                        getString(org.wheatgenetics.coordinate.R.string.clear_grid), new Runnable()
+                            org.wheatgenetics.coordinate.utils.Utils.confirm(
+                                org.wheatgenetics.coordinate.activities.Main.Exporter.this.context,
+                                Coordinate.appName,
+                                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                    org.wheatgenetics.coordinate.R.string.clear_grid),
+                                new java.lang.Runnable()
+                                {
+                                    @java.lang.Override
+                                    public void run()
+                                    {
+                                        try
                                         {
-                                            @java.lang.Override
-                                            public void run()
+                                            final org.wheatgenetics.coordinate.database.EntriesTable
+                                                entriesTable = new org.wheatgenetics.
+                                                    coordinate.database.EntriesTable(org.
+                                                        wheatgenetics.coordinate.
+                                                            activities.Main.this);
+                                            if (entriesTable.deleteByGrid(
+                                            org.wheatgenetics.coordinate.activities.Main.this.grid))
                                             {
-                                                try
-                                                {
-                                                    final EntriesTable entriesTable = new EntriesTable(Main.this);
-                                                    if (entriesTable.deleteByGrid(org.wheatgenetics.coordinate.activities.Main.this.grid))
-                                                    {
-                                                        populateTemplate();
-                                                        showTemplateUI();
-                                                    }
-                                                    else org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
-                                                }
-                                                catch (final java.lang.Exception e)
-                                                {
-                                                    org.wheatgenetics.coordinate.utils.Utils.toast(mContext, getString(org.wheatgenetics.coordinate.R.string.clear_fail));
-                                                    return;
-                                                }
-                                                share();
+                                                org.wheatgenetics.coordinate.activities.
+                                                    Main.this.populateTemplate();
+                                                org.wheatgenetics.coordinate.activities.
+                                                    Main.this.showTemplateUI();
                                             }
-                                        },
-                                        new Runnable()
+                                            else
+                                                org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                    org.wheatgenetics.coordinate.activities.Main.
+                                                        Exporter.this.context,
+                                                    org.wheatgenetics.coordinate.activities.Main.
+                                                        this.getString(org.wheatgenetics.coordinate.
+                                                            R.string.clear_fail));
+                                        }
+                                        catch (final java.lang.Exception e)
                                         {
-                                            @java.lang.Override
-                                            public void run() { share(); }
-                                        });
-                            }
-                        });
+                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                org.wheatgenetics.coordinate.activities.Main.
+                                                    Exporter.this.context,
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    getString(org.wheatgenetics.coordinate.
+                                                        R.string.clear_fail));
+                                            return;
+                                        }
+                                        org.wheatgenetics.coordinate.
+                                            activities.Main.Exporter.this.share();
+                                    }
+                                },
+                                new java.lang.Runnable()
+                                {
+                                    @java.lang.Override
+                                    public void run()
+                                    {
+                                        org.wheatgenetics.coordinate.
+                                            activities.Main.Exporter.this.share();
+                                    }
+                                });
+                        }
+                    });
             }
             else
             {
-                if (mMsg == null) mMsg = getString(org.wheatgenetics.coordinate.R.string.export_no_data);
-                org.wheatgenetics.coordinate.utils.Utils.alert(mContext, getString(org.wheatgenetics.coordinate.R.string.export), mMsg);
+                if (this.message == null)
+                    this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export_no_data);
+                org.wheatgenetics.coordinate.utils.Utils.alert(this.context,
+                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export),
+                    this.message);
             }
         }
 
-        private void share()
-        {
-            final java.lang.String path = mFile.getAbsolutePath();
-
-            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-            intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, getString(org.wheatgenetics.coordinate.R.string.share_file)));
-        }
-
-        @java.lang.Override
-        protected java.lang.Boolean doInBackground(final Void... bparams)
-        {
-            boolean ret;
-
-            try
-            {
-                templatesTable = new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
-            }
-            catch (final java.lang.Exception e)
-            {
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-            if (!templatesTable.get(mTempId))
-            {
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-
-            if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
-                ret = exportSeed();
-            else if (templatesTable.type == org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
-                ret = exportDna();
-            else ret = exportDefault();
-
-            return ret;
-        }
-
-        private boolean exportDefault()
+        private boolean exportSeed()
         {
             boolean ret = false;
 
@@ -250,31 +289,44 @@ android.view.View.OnKeyListener
 
             if (mFile.exists()) mFile.delete();
 
-            CsvWriter csvOutput;
+            CsvWriter  csvOutput;
             FileWriter writer;
+
+            java.lang.String person = "";
+            java.lang.String date = "";
+            java.lang.String trayid = "";
+
+            assert nonNullOptionalFields != null;
+            for (final OptionalField optionalField: nonNullOptionalFields)
+                if (optionalField.nameEqualsIgnoreCase("Tray"))
+                    trayid = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("Person"))
+                    person = optionalField.getValue();
+                else if (optionalField.nameEqualsIgnoreCase("date"))
+                    date = optionalField.getValue();
 
             try
             {
-                writer    = new FileWriter(mFile, false);
-                csvOutput = new CsvWriter (writer, ',' );
+                writer = new FileWriter(mFile, false);
 
-                //Titles
-                csvOutput.write("Value" );
-                csvOutput.write("Column");
-                csvOutput.write("Row"   );
+                csvOutput = new CsvWriter(writer, ',');
 
-                assert nonNullOptionalFields != null;
-                for (final OptionalField optionalField: nonNullOptionalFields)
-                    csvOutput.write(optionalField.getName());
-
+                csvOutput.write("tray_id"    );
+                csvOutput.write("cell_id"    );
+                csvOutput.write("tray_num"   );
+                csvOutput.write("tray_column");
+                csvOutput.write("tray_row"   );
+                csvOutput.write("seed_id"    );
+                csvOutput.write("person"     );
+                csvOutput.write("date"       );
                 csvOutput.endRecord();
 
                 int row;
                 int col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
+                for (int c = 0; c < this.templatesTable.cols; c++)  // model
                 {
                     col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    for (int r = 0; r < this.templatesTable.rows; r++)  // model
                     {
                         row = r + 1;
 
@@ -285,16 +337,17 @@ android.view.View.OnKeyListener
                         {
                             data = getDataEntry(
                                     org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (data == null) data = "";
+                            if (data == null) data = "BLANK_";
                         }
 
-                        csvOutput.write(data               );
-                        csvOutput.write(java.lang.String.valueOf(col));
-                        csvOutput.write(java.lang.String.valueOf(row));
-
-                        for (final OptionalField optionalField: nonNullOptionalFields)
-                            csvOutput.write(optionalField.getValue());
-
+                        csvOutput.write(trayid                                            ); // tray id
+                        csvOutput.write(java.lang.String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
+                        csvOutput.write(""                                                ); // "tray_num"
+                        csvOutput.write(java.lang.String.valueOf(col)                               ); // "tray_column"
+                        csvOutput.write(java.lang.String.valueOf(row)                               ); // "tray_row"
+                        csvOutput.write(data                                              ); // "seed_id"
+                        csvOutput.write(person.replace(" ", "_")                          ); // "person"
+                        csvOutput.write(date                                              ); // "date"
                         csvOutput.endRecord();
                     }
 
@@ -309,7 +362,7 @@ android.view.View.OnKeyListener
             catch (final java.io.IOException e)
             {
                 e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+                this.message = getString(org.wheatgenetics.coordinate.R.string.export_failed);
             }
 
             return ret;
@@ -376,10 +429,10 @@ android.view.View.OnKeyListener
                 csvOutput.endRecord();
 
                 int row, col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
+                for (int c = 0; c < this.templatesTable.cols; c++)  // model
                 {
                     col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    for (int r = 0; r < this.templatesTable.rows; r++)  // model
                     {
                         row = r + 1;
 
@@ -423,13 +476,13 @@ android.view.View.OnKeyListener
             catch (final java.io.IOException e)
             {
                 e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+                this.message = getString(org.wheatgenetics.coordinate.R.string.export_failed);
             }
 
             return ret;
         }
 
-        private boolean exportSeed()
+        private boolean exportDefault()
         {
             boolean ret = false;
 
@@ -439,44 +492,31 @@ android.view.View.OnKeyListener
 
             if (mFile.exists()) mFile.delete();
 
-            CsvWriter  csvOutput;
+            CsvWriter csvOutput;
             FileWriter writer;
-
-            java.lang.String person = "";
-            java.lang.String date = "";
-            java.lang.String trayid = "";
-
-            assert nonNullOptionalFields != null;
-            for (final OptionalField optionalField: nonNullOptionalFields)
-                if (optionalField.nameEqualsIgnoreCase("Tray"))
-                    trayid = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("Person"))
-                    person = optionalField.getValue();
-                else if (optionalField.nameEqualsIgnoreCase("date"))
-                    date = optionalField.getValue();
 
             try
             {
-                writer = new FileWriter(mFile, false);
+                writer    = new FileWriter(mFile, false);
+                csvOutput = new CsvWriter (writer, ',' );
 
-                csvOutput = new CsvWriter(writer, ',');
+                //Titles
+                csvOutput.write("Value" );
+                csvOutput.write("Column");
+                csvOutput.write("Row"   );
 
-                csvOutput.write("tray_id"    );
-                csvOutput.write("cell_id"    );
-                csvOutput.write("tray_num"   );
-                csvOutput.write("tray_column");
-                csvOutput.write("tray_row"   );
-                csvOutput.write("seed_id"    );
-                csvOutput.write("person"     );
-                csvOutput.write("date"       );
+                assert nonNullOptionalFields != null;
+                for (final OptionalField optionalField: nonNullOptionalFields)
+                    csvOutput.write(optionalField.getName());
+
                 csvOutput.endRecord();
 
                 int row;
                 int col;
-                for (int c = 0; c < templatesTable.cols; c++)  // model
+                for (int c = 0; c < this.templatesTable.cols; c++)  // model
                 {
                     col = c + 1;
-                    for (int r = 0; r < templatesTable.rows; r++)  // model
+                    for (int r = 0; r < this.templatesTable.rows; r++)  // model
                     {
                         row = r + 1;
 
@@ -487,17 +527,16 @@ android.view.View.OnKeyListener
                         {
                             data = getDataEntry(
                                     org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (data == null) data = "BLANK_";
+                            if (data == null) data = "";
                         }
 
-                        csvOutput.write(trayid                                            ); // tray id
-                        csvOutput.write(java.lang.String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
-                        csvOutput.write(""                                                ); // "tray_num"
-                        csvOutput.write(java.lang.String.valueOf(col)                               ); // "tray_column"
-                        csvOutput.write(java.lang.String.valueOf(row)                               ); // "tray_row"
-                        csvOutput.write(data                                              ); // "seed_id"
-                        csvOutput.write(person.replace(" ", "_")                          ); // "person"
-                        csvOutput.write(date                                              ); // "date"
+                        csvOutput.write(data               );
+                        csvOutput.write(java.lang.String.valueOf(col));
+                        csvOutput.write(java.lang.String.valueOf(row));
+
+                        for (final OptionalField optionalField: nonNullOptionalFields)
+                            csvOutput.write(optionalField.getValue());
+
                         csvOutput.endRecord();
                     }
 
@@ -512,10 +551,21 @@ android.view.View.OnKeyListener
             catch (final java.io.IOException e)
             {
                 e.printStackTrace();
-                mMsg = getString(org.wheatgenetics.coordinate.R.string.export_failed);
+                this.message = getString(org.wheatgenetics.coordinate.R.string.export_failed);
             }
 
             return ret;
+        }
+
+        private void share()
+        {
+            final java.lang.String path = mFile.getAbsolutePath();
+
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+            intent.setType("text/plain");
+            startActivity(Intent.createChooser(intent, getString(org.wheatgenetics.coordinate.R.string.share_file)));
         }
     }
 
@@ -607,8 +657,8 @@ android.view.View.OnKeyListener
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
 
-    private Main.DataExporter mTask;
-    private long              mLastExportGridId = -1;
+    private org.wheatgenetics.coordinate.activities.Main.Exporter exporter          = null;
+    private long                                                  mLastExportGridId =   -1;
     // endregion
 
     // region Class Method
@@ -889,8 +939,8 @@ android.view.View.OnKeyListener
     @java.lang.Override
     protected void onDestroy()
     {
+        this.cancelExporter();
         super.onDestroy();
-        this.cancelTask();
     }
     // endregion
 
@@ -1105,12 +1155,12 @@ android.view.View.OnKeyListener
             else
                 org.wheatgenetics.coordinate.utils.Utils.confirm(this, Coordinate.appName,
                     this.getString(org.wheatgenetics.coordinate.R.string.new_grid_warning),
-                    new Runnable()
+                    new java.lang.Runnable()
                     {
                         @java.lang.Override
                         public void run() { exportData(); }
                     },
-                    new Runnable()
+                    new java.lang.Runnable()
                     {
                         @java.lang.Override
                         public void run()
@@ -1123,7 +1173,7 @@ android.view.View.OnKeyListener
         if (this.grid != 0) org.wheatgenetics.coordinate.utils.Utils.confirm(this,
             Coordinate.appName,
             this.getString(org.wheatgenetics.coordinate.R.string.delete_grid_warning),
-            new Runnable()
+            new java.lang.Runnable()
             {
                 @java.lang.Override
                 public void run()
@@ -1351,7 +1401,7 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.utils.Utils.confirm(Main.this,
                         getString(org.wheatgenetics.coordinate.R.string.delete_template        ),
                         getString(org.wheatgenetics.coordinate.R.string.delete_template_warning),
-                        new Runnable()
+                        new java.lang.Runnable()
                         {
                             @java.lang.Override
                             public void run()
@@ -1522,9 +1572,12 @@ android.view.View.OnKeyListener
                         Main.this.templateModel.getTitle());
                     createDir(path);
 
-                    mTask = new DataExporter(Main.this, Main.this.templateModel.getId(),
-                        filename, path.getAbsolutePath());
-                    mTask.execute();
+                    org.wheatgenetics.coordinate.activities.Main.this.exporter =
+                        new org.wheatgenetics.coordinate.activities.Main.Exporter(
+                            org.wheatgenetics.coordinate.activities.Main.this                      ,
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getId(),
+                            filename, path.getAbsolutePath());
+                    exporter.execute();
                 }
             });
         builder.setNegativeButton(this.getString(org.wheatgenetics.coordinate.R.string.cancel),
@@ -2480,7 +2533,7 @@ android.view.View.OnKeyListener
         {
             boolean ret;
             {
-                final EntriesTable entriesTable = new EntriesTable(this);
+                final org.wheatgenetics.coordinate.database.EntriesTable entriesTable = new org.wheatgenetics.coordinate.database.EntriesTable(this);
                 entriesTable.value = data;
                 if (entriesTable.getByGrid(this.grid, mCurRow, mCurCol))
                     ret = entriesTable.update();
@@ -2644,7 +2697,7 @@ android.view.View.OnKeyListener
         }
 
         {
-            final EntriesTable entriesTable = new EntriesTable(this);
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable = new org.wheatgenetics.coordinate.database.EntriesTable(this);
             entriesTable.deleteByGrid(id);
         }
 
@@ -2901,7 +2954,7 @@ android.view.View.OnKeyListener
     {
         boolean ret;
         {
-            final EntriesTable entriesTable = new EntriesTable(this);
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable = new org.wheatgenetics.coordinate.database.EntriesTable(this);
             entriesTable.value = "exclude";
             if (entriesTable.getByGrid(this.grid, r, c))
                 ret = entriesTable.update();
@@ -2924,7 +2977,8 @@ android.view.View.OnKeyListener
     {
         java.lang.String data = null;
         {
-            final EntriesTable entriesTable = new EntriesTable(this);
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
             if (entriesTable.getByGrid(grid, r, c)) data = entriesTable.value;
         }
         return data;
@@ -2943,12 +2997,12 @@ android.view.View.OnKeyListener
             cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell);
     }
 
-    private void cancelTask()
+    private void cancelExporter()
     {
-        if (mTask != null)
+        if (this.exporter != null)
         {
-            mTask.cancel(true);
-            mTask = null;
+            this.exporter.cancel(true);
+            this.exporter = null;
         }
     }
 
