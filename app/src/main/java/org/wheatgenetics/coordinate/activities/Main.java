@@ -68,7 +68,6 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Coordinate;
 import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
 import org.wheatgenetics.coordinate.barcodes.IntentResult;
-import org.wheatgenetics.coordinate.csv.CsvWriter;
 import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.GridModel;
@@ -105,6 +104,8 @@ android.view.View.OnKeyListener
 
         private java.io.File makeExportFile()
         {
+            assert this.absolutePath   != null;
+            assert this.exportFileName != null;
             final java.io.File exportFile =
                 new java.io.File(this.absolutePath, this.exportFileName + ".csv");
             if (this.exportFile.exists()) this.exportFile.delete();
@@ -113,17 +114,17 @@ android.view.View.OnKeyListener
 
         private boolean exportSeed()
         {
-            java.lang.String trayid = "", person = "", date = "";
+            java.lang.String tray_id = "", person = "", date = "";
             assert org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields != null;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
             org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
             {
                 assert optionalField != null;
                 if (optionalField.nameEqualsIgnoreCase("Tray"))
-                    trayid = optionalField.getValue();
+                    tray_id = optionalField.getValue();
                 else
                     if (optionalField.nameEqualsIgnoreCase("Person"))
-                        person = optionalField.getValue();
+                        person = optionalField.getValue().replace(" ", "_");
                     else
                         if (optionalField.nameEqualsIgnoreCase("date"))
                             date = optionalField.getValue();
@@ -133,48 +134,42 @@ android.view.View.OnKeyListener
             boolean success = false;
             try
             {
-                final org.wheatgenetics.coordinate.csv.CsvWriter csvWriter =
-                    new org.wheatgenetics.coordinate.csv.CsvWriter(
-                        new java.io.FileWriter(this.exportFile, false), ',');
+                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
+                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(
+                        new java.io.FileWriter(this.exportFile, false));
 
-                csvWriter.write("tray_id"    );
-                csvWriter.write("cell_id"    );
-                csvWriter.write("tray_num"   );
-                csvWriter.write("tray_column");
-                csvWriter.write("tray_row"   );
-                csvWriter.write("seed_id"    );
-                csvWriter.write("person"     );
-                csvWriter.write("date"       );
-                csvWriter.endRecord();
+                {
+                    final java.lang.String header[] = {"tray_id", "cell_id", "tray_num",
+                        "tray_column", "tray_row", "seed_id", "person", "date"};
+                    csvWriter.writeRecord(header);
+                }
 
                 assert this.templatesTable != null;
-                int row, col;
-                for (int c = 0; c < this.templatesTable.cols; c++)  // model
+                for (int col = 1; col <= this.templatesTable.cols; col++)  // model
                 {
-                    col = c + 1;
-                    for (int r = 0; r < this.templatesTable.rows; r++)  // model
+                    for (int row = 1; row <= this.templatesTable.rows; row++)  // model
                     {
-                        row = r + 1;
-
-                        java.lang.String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
-                            data = "exclude";
-                        else
                         {
-                            data = getDataEntry(
-                                org.wheatgenetics.coordinate.activities.Main.this.grid, row, col);
-                            if (data == null) data = "BLANK_";
-                        }
+                            java.lang.String data;
+                            if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                                data = "exclude";
+                            else
+                            {
+                                data = getDataEntry(
+                                    org.wheatgenetics.coordinate.activities.Main.this.grid,
+                                    row, col);
+                                if (data == null) data = "BLANK_";
+                            }
 
-                        csvWriter.write(trayid);                              // tray id
-                        csvWriter.write(java.lang.String.format(
-                            "%s_C%02d_R%d", this.exportFileName, col, row));  // "cell_id"
-                        csvWriter.write(""                           );       // "tray_num"
-                        csvWriter.write(java.lang.String.valueOf(col));       // "tray_column"  TODO: Overload
-                        csvWriter.write(java.lang.String.valueOf(row));       // "tray_row"     TODO:  write().
-                        csvWriter.write(data                         );       // "seed_id"
-                        csvWriter.write(person.replace(" ", "_")     );       // "person"
-                        csvWriter.write(date                         );       // "date"
+                            csvWriter.write(tray_id                                      );  // tray id
+                            csvWriter.write("%s_C%02d_R%d", this.exportFileName, col, row);  // cell_id
+                            csvWriter.write(                                             );  // tray_num
+                            csvWriter.write(col                                          );  // tray_column
+                            csvWriter.write(row                                          );  // tray_row
+                            csvWriter.write(data                                         );  // seed_id
+                        }
+                        csvWriter.write(person);  // person
+                        csvWriter.write(date  );  // date
                         csvWriter.endRecord();
                     }
 
@@ -202,7 +197,7 @@ android.view.View.OnKeyListener
             boolean ret = false;
             this.exportFile = this.makeExportFile();
 
-            org.wheatgenetics.coordinate.csv.CsvWriter  csvWriter;
+            org.wheatgenetics.coordinate.csv.CoordinateCsvWriter  csvWriter;
             java.io.FileWriter fileWriter;
 
             java.lang.String date = "";
@@ -237,7 +232,7 @@ android.view.View.OnKeyListener
             {
                 fileWriter = new java.io.FileWriter(this.exportFile, false);
 
-                csvWriter = new org.wheatgenetics.coordinate.csv.CsvWriter(fileWriter, ',');
+                csvWriter = new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(fileWriter);
 
                 csvWriter.write("date"       );
                 csvWriter.write("plate_id"   );
@@ -313,13 +308,13 @@ android.view.View.OnKeyListener
 
             this.exportFile = this.makeExportFile();
 
-            org.wheatgenetics.coordinate.csv.CsvWriter csvWriter;
+            org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter;
             java.io.FileWriter fileWriter;
 
             try
             {
                 fileWriter    = new java.io.FileWriter(this.exportFile, false);
-                csvWriter = new org.wheatgenetics.coordinate.csv.CsvWriter(fileWriter, ',' );
+                csvWriter = new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(fileWriter );
 
                 //Titles
                 csvWriter.write("Value" );
