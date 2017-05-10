@@ -1,16 +1,5 @@
 package org.wheatgenetics.coordinate.activities;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -644,8 +633,8 @@ android.view.View.OnKeyListener
         new org.wheatgenetics.coordinate.model.TemplateModel(
             "", org.wheatgenetics.coordinate.model.TemplateType.SEED, 20, 10, true, false);
 
-    private List<java.lang.Integer> excludeRows = new java.util.ArrayList<>();
-    private List<java.lang.Integer> excludeCols = new java.util.ArrayList<>();
+    private java.util.List<java.lang.Integer> excludeRows = new java.util.ArrayList<>();
+    private java.util.List<java.lang.Integer> excludeCols = new java.util.ArrayList<>();
     // private org.wheatgenetics.coordinate.model.TemplatesTable templatesTable;
     // endregion
 
@@ -999,9 +988,9 @@ android.view.View.OnKeyListener
     {
         try
         {
-            final InputStream inputStream = getResources().openRawResource(resId);
-            final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            final BufferedReader br = new BufferedReader(inputStreamReader, 8192);
+            final java.io.InputStream inputStream = getResources().openRawResource(resId);
+            final java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader(inputStream);
+            final java.io.BufferedReader br = new java.io.BufferedReader(inputStreamReader, 8192);
 
             final android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
                 android.widget.LinearLayout.LayoutParams.MATCH_PARENT, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
@@ -1120,6 +1109,154 @@ android.view.View.OnKeyListener
     }
 
     // region Drawer Methods
+    // region Subsubaction Drawer Method
+    private void inputSeed()
+    {
+        android.app.AlertDialog alertDialog;
+        {
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            {
+                final java.util.ArrayList<android.widget.EditText> editTextArrayList =
+                    new java.util.ArrayList<android.widget.EditText>();
+                {
+                    android.view.View gridView;
+                    {
+                        final android.view.LayoutInflater layoutInflater =
+                            org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();
+
+                        gridView = layoutInflater.inflate(
+                            org.wheatgenetics.coordinate.R.layout.grid_new,
+                            new android.widget.LinearLayout(this), false);
+
+                        assert gridView != null;
+                        final android.widget.LinearLayout linearLayout =
+                            (android.widget.LinearLayout) gridView.findViewById(
+                                org.wheatgenetics.coordinate.R.id.optionalLayout);
+
+                        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+                            checkedOptionalFields = this.makeCheckedOptionalFields();
+
+                        // load options
+                        assert linearLayout != null;
+                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                        optionalField : checkedOptionalFields)
+                        {
+                            final android.view.View optionalFieldView = layoutInflater.inflate(
+                                org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout,
+                                false);
+
+                            assert optionalFieldView != null;
+                            {
+                                final android.widget.TextView optionalFieldTextView =
+                                    (android.widget.TextView) optionalFieldView.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.optionText);
+
+                                assert optionalFieldTextView != null;
+                                optionalFieldTextView.setText(optionalField.getName());
+                            }
+
+                            {
+                                final android.widget.EditText optionalFieldEditText =
+                                    (android.widget.EditText) optionalFieldView.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.optionEdit);
+
+                                assert optionalFieldEditText != null;
+                                optionalFieldEditText.setText(optionalField.getValue());
+                                optionalFieldEditText.setHint(optionalField.getHint());
+
+                                editTextArrayList.add(optionalFieldEditText);
+                            }
+
+                            linearLayout.addView(optionalFieldView);
+                        }
+                    }
+                    assert this.templateModel != null;
+                    builder.setTitle(this.templateModel.getTitle());
+                    builder.setView(gridView);
+                }
+                builder.setCancelable(false);
+                builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
+                    new android.content.DialogInterface.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.content.DialogInterface dialog,
+                        final int which)
+                        {
+                            {
+                                      int                     i               = 0;
+                                final android.widget.EditText editTextArray[] =
+                                    editTextArrayList.toArray(
+                                        new android.widget.EditText[editTextArrayList.size()]);
+
+                                assert org.wheatgenetics.coordinate.activities.
+                                    Main.this.nonNullOptionalFields != null;
+                                for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                                optionalField : org.wheatgenetics.coordinate.
+                                activities.Main.this.nonNullOptionalFields) // Danger: CheckedOptionalFields above but nonNullOptionalFields here.
+                                {
+                                    final android.widget.EditText editText = editTextArray[i];
+                                    if (editText != null)
+                                    {
+                                        final java.lang.String value =
+                                            editText.getText().toString().trim();
+                                        if (i == 0 && value.length() == 0)
+                                        {
+                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                org.wheatgenetics.coordinate.activities.Main.this,
+                                                optionalField.getHint() + org.wheatgenetics.
+                                                    coordinate.activities.Main.this.getString(
+                                                        org.wheatgenetics.coordinate.
+                                                            R.string.not_empty));
+                                            org.wheatgenetics.coordinate.
+                                                activities.Main.this.inputSeed();
+                                            return;
+                                        }
+
+                                        optionalField.setValue(value);
+                                        if (optionalField.nameEqualsIgnoreCase("Person")
+                                        ||  optionalField.nameEqualsIgnoreCase("Name"  ))
+                                        {
+                                            final android.content.SharedPreferences.Editor ed =
+                                                org.wheatgenetics.coordinate.
+                                                    activities.Main.this.ep.edit();
+                                            assert ed != null;
+                                            ed.putString("Person", optionalField.getValue());
+                                            ed.apply();
+                                        }
+
+                                        i++;
+                                    }
+                                }
+                            }
+                            assert dialog != null;
+                            dialog.cancel();
+                            org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(
+                                org.wheatgenetics.coordinate.model.TemplateType.SEED);
+                        }
+                    });
+            }
+            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert dialog != null;
+                        dialog.cancel();
+                    }
+                });
+            alertDialog = builder.create();
+        }
+        assert alertDialog != null;
+        alertDialog.getWindow().setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+    // endregion
+
     // region Subaction Drawer Methods
     private void loadExistingOrNewTemplate()
     {
@@ -1137,6 +1274,152 @@ android.view.View.OnKeyListener
                 }
             });
         builder.show();
+    }
+
+    //TODO merge this method with the one above
+    private void inputTemplateInput(final int mode) throws org.json.JSONException
+    {
+        assert this.nonNullOptionalFields != null;
+        if (this.nonNullOptionalFields.isEmpty())
+        {
+            this.tempLoad(mode);                                    // throws org.json.JSONException
+            return;
+        }
+
+        final android.view.LayoutInflater layoutInflater =
+            org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();
+
+        final android.view.View gridView = layoutInflater.inflate(
+            org.wheatgenetics.coordinate.R.layout.grid_new, new android.widget.LinearLayout(this),
+            false);
+
+        assert gridView != null;
+        final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)
+            gridView.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
+
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
+
+        final java.util.ArrayList<android.widget.EditText> editTextArrayList =
+            new java.util.ArrayList<android.widget.EditText>();
+
+        // load options
+        assert linearLayout != null;
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField :
+        checkedOptionalFields)
+        {
+            final android.view.View optionalFieldView = layoutInflater.inflate(
+                org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout, false);
+
+            assert optionalFieldView != null;
+            {
+                final android.widget.TextView optionalFieldTextView = (android.widget.TextView)
+                    optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
+
+                assert optionalFieldTextView != null;
+                optionalFieldTextView.setText(optionalField.getName());
+            }
+
+            {
+                final android.widget.EditText optionalFieldEditText = (android.widget.EditText)
+                    optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionEdit);
+
+                assert optionalFieldEditText != null;
+                optionalFieldEditText.setText(optionalField.getValue());
+                optionalFieldEditText.setHint(optionalField.getHint ());
+
+                editTextArrayList.add(optionalFieldEditText);
+            }
+
+            linearLayout.addView(optionalFieldView);
+        }
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        assert this.templateModel != null;
+        builder.setTitle(this.templateModel.getTitle());
+        builder.setView(gridView);
+        builder.setCancelable(false);
+        builder.setPositiveButton(this.getString(org.wheatgenetics.coordinate.R.string.create),
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    {
+                              int                     i               = 0;
+                        final android.widget.EditText editTextArray[] = editTextArrayList.toArray(
+                            new android.widget.EditText[editTextArrayList.size()]);
+
+                        assert
+                            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields
+                            != null;
+                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                        optionalField :
+                        org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+                        {
+                            final android.widget.EditText editText = editTextArray[i];
+                            if (editText != null)
+                            {
+                                if (mode == org.wheatgenetics.coordinate.activities.Main.MODE_DNA)
+                                {
+                                    final java.lang.String value =
+                                        editText.getText().toString().trim();
+                                    if (i == 0 && value.length() == 0)
+                                    {
+                                        org.wheatgenetics.coordinate.utils.Utils.toast(
+                                            org.wheatgenetics.coordinate.activities.Main.this,
+                                            optionalField.getHint() + org.wheatgenetics.coordinate.
+                                                activities.Main.this.getString(org.wheatgenetics.
+                                                coordinate.R.string.not_empty));
+                                        try
+                                        {
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                inputTemplateInput(org.wheatgenetics.coordinate.
+                                                    activities.Main.MODE_DNA);
+                                        }
+                                        catch (final java.lang.Exception e) {}
+                                        return;
+                                    }
+                                }
+
+                                optionalField.setValue(editText.getText().toString().trim());
+
+                                if (optionalField.nameEqualsIgnoreCase("Person")
+                                ||  optionalField.nameEqualsIgnoreCase("Name"))
+                                {
+                                    final android.content.SharedPreferences.Editor ed = ep.edit();
+                                    assert ed != null;
+                                    ed.putString("Person", optionalField.getValue());
+                                    ed.apply();
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                    assert dialog != null;
+                    dialog.cancel();
+                    try { org.wheatgenetics.coordinate.activities.Main.this.tempLoad(mode); }
+                    catch (final java.lang.Exception e) {}
+                }
+            });
+
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    assert dialog != null;
+                    dialog.cancel();
+                }
+            });
+
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert alertDialog != null;
+        alertDialog.getWindow().setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     private void newGridNow() throws org.json.JSONException
@@ -1338,7 +1621,7 @@ android.view.View.OnKeyListener
 
     private void loadTemplate()
     {
-        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates = new java.util.ArrayList<>();
+        final java.util.List<org.wheatgenetics.coordinate.database.TemplatesTable> templates = new java.util.ArrayList<>();
 
         final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
@@ -1397,7 +1680,7 @@ android.view.View.OnKeyListener
 
     private void deleteTemplate()
     {
-        final List<org.wheatgenetics.coordinate.database.TemplatesTable> templates =
+        final java.util.List<org.wheatgenetics.coordinate.database.TemplatesTable> templates =
             new java.util.ArrayList<>();
 
         final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
@@ -1768,13 +2051,13 @@ android.view.View.OnKeyListener
     private void copydb()
     {
         final java.io.File f = new java.io.File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
-        FileInputStream  fis = null;
-        FileOutputStream fos = null;
+        java.io.FileInputStream  fis = null;
+        java.io.FileOutputStream fos = null;
 
         try
         {
-            fis = new FileInputStream(f);                    // throws java.io.FileNotFoundException
-            fos = new FileOutputStream("/mnt/sdcard/db_dump.db");  // throws java.io.FileNotFoundException
+            fis = new java.io.FileInputStream(f);                    // throws java.io.FileNotFoundException
+            fos = new java.io.FileOutputStream("/mnt/sdcard/db_dump.db");  // throws java.io.FileNotFoundException
             while (true)
             {
                 final int i = fis.read();                              // throws java.io.IOException
@@ -1886,7 +2169,7 @@ android.view.View.OnKeyListener
         templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
         templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
 
-        templatesTable.stamp = System.currentTimeMillis();
+        templatesTable.stamp = java.lang.System.currentTimeMillis();
 
         if (templatesTable.getByType(templateType))
             return templatesTable.update();
@@ -1967,149 +2250,6 @@ android.view.View.OnKeyListener
         builder.show();
     }
 
-    private void inputSeed()
-    {
-        android.app.AlertDialog alertDialog;
-        {
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            {
-                final java.util.ArrayList<android.widget.EditText> editTextArrayList =
-                    new java.util.ArrayList<android.widget.EditText>();
-                {
-                    android.view.View gridView;
-                    {
-                        final android.view.LayoutInflater layoutInflater =
-                            org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();
-
-                        gridView = layoutInflater.inflate(
-                            org.wheatgenetics.coordinate.R.layout.grid_new,
-                            new android.widget.LinearLayout(this), false);
-
-                        assert gridView != null;
-                        final android.widget.LinearLayout linearLayout =
-                            (android.widget.LinearLayout) gridView.findViewById(
-                                org.wheatgenetics.coordinate.R.id.optionalLayout);
-
-                        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-                            checkedOptionalFields = this.makeCheckedOptionalFields();
-
-                        // load options
-                        assert linearLayout != null;
-                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                        optionalField : checkedOptionalFields)
-                        {
-                            final android.view.View optionalFieldView = layoutInflater.inflate(
-                                org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout,
-                                false);
-
-                            assert optionalFieldView != null;
-                            {
-                                final android.widget.TextView optionalFieldTextView =
-                                    (android.widget.TextView) optionalFieldView.findViewById(
-                                        org.wheatgenetics.coordinate.R.id.optionText);
-
-                                assert optionalFieldTextView != null;
-                                optionalFieldTextView.setText(optionalField.getName());
-                            }
-
-                            {
-                                final android.widget.EditText optionalFieldEditText =
-                                    (android.widget.EditText) optionalFieldView.findViewById(
-                                        org.wheatgenetics.coordinate.R.id.optionEdit);
-
-                                assert optionalFieldEditText != null;
-                                optionalFieldEditText.setText(optionalField.getValue());
-                                optionalFieldEditText.setHint(optionalField.getHint());
-
-                                editTextArrayList.add(optionalFieldEditText);
-                            }
-
-                            linearLayout.addView(optionalFieldView);
-                        }
-                    }
-                    assert this.templateModel != null;
-                    builder.setTitle(this.templateModel.getTitle());
-                    builder.setView(gridView);
-                }
-                builder.setCancelable(false);
-                builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            {
-                                      int                     i               = 0;
-                                final android.widget.EditText editTextArray[] =
-                                    editTextArrayList.toArray(
-                                        new android.widget.EditText[editTextArrayList.size()]);
-
-                                assert org.wheatgenetics.coordinate.activities.
-                                    Main.this.nonNullOptionalFields != null;
-                                for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                                optionalField : org.wheatgenetics.coordinate.
-                                activities.Main.this.nonNullOptionalFields) // Danger: CheckedOptionalFields above but nonNullOptionalFields here.
-                                {
-                                    final android.widget.EditText editText = editTextArray[i];
-                                    if (editText != null)
-                                    {
-                                        final java.lang.String value =
-                                            editText.getText().toString().trim();
-                                        if (i++ == 0 && value.length() == 0)
-                                        {
-                                            org.wheatgenetics.coordinate.utils.Utils.toast(
-                                                org.wheatgenetics.coordinate.activities.Main.this,
-                                                    optionalField.getHint() + org.wheatgenetics.coordinate.
-                                                        activities.Main.this.getString(org.wheatgenetics.
-                                                        coordinate.R.string.not_empty));
-                                            org.wheatgenetics.coordinate.
-                                                activities.Main.this.inputSeed();
-                                            return;
-                                        }
-
-                                        optionalField.setValue(value);
-                                        if (optionalField.nameEqualsIgnoreCase("Person")
-                                        ||  optionalField.nameEqualsIgnoreCase("Name"  ))
-                                        {
-                                            final android.content.SharedPreferences.Editor ed =
-                                                org.wheatgenetics.coordinate.
-                                                    activities.Main.this.ep.edit();
-                                            assert ed != null;
-                                            ed.putString("Person", optionalField.getValue());
-                                            ed.apply();
-                                        }
-                                    }
-                                }
-                            }
-                            assert dialog != null;
-                            dialog.cancel();
-                            org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(
-                                org.wheatgenetics.coordinate.model.TemplateType.SEED);
-                        }
-                    });
-            }
-            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert dialog != null;
-                        dialog.cancel();
-                    }
-                });
-            alertDialog = builder.create();
-        }
-        assert alertDialog != null;
-        alertDialog.getWindow().setSoftInputMode(
-            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        alertDialog.setCancelable(false);
-        alertDialog.show();
-    }
-
     private void tempLoad(final int mode) throws org.json.JSONException
     {
         if (mode == org.wheatgenetics.coordinate.activities.Main.MODE_DNA)
@@ -2118,126 +2258,6 @@ android.view.View.OnKeyListener
             this.loadTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
         else
             this.newTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);  // throws org.json.JSONException
-    }
-
-    //TODO merge this method with the one above
-    private void inputTemplateInput(final int mode) throws org.json.JSONException
-    {
-        assert this.nonNullOptionalFields != null;
-        if (this.nonNullOptionalFields.isEmpty())
-        {
-            this.tempLoad(mode);                                             // throws JSONException
-            return;
-        }
-
-        final android.view.LayoutInflater layoutInflater = Main.this.getLayoutInflater();
-
-        assert layoutInflater != null;
-        final android.view.View gridView =
-            layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.grid_new, new android.widget.LinearLayout(this), false);
-
-        assert gridView != null;
-        final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout) gridView.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
-
-        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields =
-            this.makeCheckedOptionalFields();
-
-        final java.util.ArrayList<android.widget.EditText> editTextArrayList = new java.util.ArrayList<android.widget.EditText>();
-
-        // load options
-        assert linearLayout != null;
-        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: checkedOptionalFields)
-        {
-            final android.view.View optionalFieldView =
-                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout, false);
-
-            {
-                assert optionalFieldView != null;
-                final android.widget.TextView optionalFieldTextView =
-                        (android.widget.TextView) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
-
-                assert optionalFieldTextView != null;
-                optionalFieldTextView.setText(optionalField.getName());
-            }
-
-            {
-                final android.widget.EditText optionalFieldEditText =
-                        (android.widget.EditText) optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionEdit);
-
-                assert optionalFieldEditText != null;
-                optionalFieldEditText.setText(optionalField.getValue());
-                optionalFieldEditText.setHint(optionalField.getHint());
-
-                editTextArrayList.add(optionalFieldEditText);
-            }
-
-            linearLayout.addView(optionalFieldView);
-        }
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        assert this.templateModel != null;
-        builder.setTitle(this.templateModel.getTitle());
-        builder.setView(gridView);
-        builder.setCancelable(false);
-        builder.setPositiveButton(getString(org.wheatgenetics.coordinate.R.string.create), new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                          int      i               = 0;
-                    final android.widget.EditText editTextArray[] =
-                        editTextArrayList.toArray(new android.widget.EditText[editTextArrayList.size()]);
-
-                    assert nonNullOptionalFields != null;
-                    for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: nonNullOptionalFields)
-                    {
-                        final android.widget.EditText editText = editTextArray[i];
-                        if (editText != null)
-                        {
-                            if (mode == org.wheatgenetics.coordinate.activities.Main.MODE_DNA)
-                            {
-                                final java.lang.String value = editText.getText().toString().trim();
-                                if (i == 0 && value.length() == 0)
-                                {
-                                    org.wheatgenetics.coordinate.utils.Utils.toast(Main.this,
-                                        optionalField.getHint() + getString(org.wheatgenetics.coordinate.R.string.not_empty));
-                                    try { inputTemplateInput(org.wheatgenetics.coordinate.activities.Main.MODE_DNA); }
-                                    catch (final java.lang.Exception e) {}
-                                    return;
-                                }
-                            }
-
-                            optionalField.setValue(editText.getText().toString().trim());
-
-                            if (optionalField.nameEqualsIgnoreCase("Person")
-                            ||  optionalField.nameEqualsIgnoreCase("Name"  ))
-                            {
-                                final android.content.SharedPreferences.Editor ed = ep.edit();
-                                ed.putString("Person", optionalField.getValue());
-                                ed.apply();
-                            }
-                        }
-                        i++;
-                    }
-
-                    assert dialog != null;
-                    dialog.cancel();
-                    try { tempLoad(mode); } catch (final java.lang.Exception e) {}
-                }
-            });
-
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel, new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                { dialog.cancel(); }
-            });
-
-        final android.app.AlertDialog alertDialog = builder.create();
-        assert alertDialog != null;
-        alertDialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        alertDialog.setCancelable(false);
-        alertDialog.show();
     }
 
     private void inputOptional()
@@ -2571,8 +2591,8 @@ android.view.View.OnKeyListener
 
     private int randomBox(final int size)
     {
-        final Random rand = new Random();
-        rand.setSeed(System.currentTimeMillis());
+        final java.util.Random rand = new java.util.Random();
+        rand.setSeed(java.lang.System.currentTimeMillis());
         return rand.nextInt(size - 1) + 1;
     }
 
@@ -2758,7 +2778,7 @@ android.view.View.OnKeyListener
     {
         final GridsTable gridsTable = new GridsTable(this);
         gridsTable.templateId = templateId;
-        gridsTable.timestamp = System.currentTimeMillis();
+        gridsTable.timestamp = java.lang.System.currentTimeMillis();
         assert this.nonNullOptionalFields != null;
         gridsTable.title = this.nonNullOptionalFields.get(0).getValue();
         return gridsTable.insert();
@@ -2785,7 +2805,7 @@ android.view.View.OnKeyListener
         templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
         templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
 
-        templatesTable.stamp = System.currentTimeMillis();  // model
+        templatesTable.stamp = java.lang.System.currentTimeMillis();  // model
 
         final long templateId = templatesTable.insert();  // database
         if (templateId > 0)
