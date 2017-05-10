@@ -154,7 +154,7 @@ android.view.View.OnKeyListener
                             else
                             {
                                 data = getDataEntry(
-                                    org.wheatgenetics.coordinate.activities.Main.this.grid,
+                                    org.wheatgenetics.coordinate.activities.Main.this.gridId,
                                     row, col);
                                 if (data == null) data = "BLANK_";
                             }
@@ -263,7 +263,8 @@ android.view.View.OnKeyListener
                                     else
                                     {
                                         tissue_id = getDataEntry(
-                                            org.wheatgenetics.coordinate.activities.Main.this.grid,
+                                            org.wheatgenetics.coordinate.
+                                                activities.Main.this.gridId,
                                             row, col);
                                         if (tissue_id == null || tissue_id.trim().length() == 0)
                                             tissue_id = "BLANK_" + sample_id;
@@ -333,7 +334,7 @@ android.view.View.OnKeyListener
                             else
                             {
                                 data = getDataEntry(
-                                    org.wheatgenetics.coordinate.activities.Main.this.grid,
+                                    org.wheatgenetics.coordinate.activities.Main.this.gridId,
                                     row, col);
                                 if (data == null) data = "";
                             }
@@ -483,7 +484,7 @@ android.view.View.OnKeyListener
             if (result != null && result)
             {
                 org.wheatgenetics.coordinate.activities.Main.this.mLastExportGridId =  // TODO: Make into
-                    org.wheatgenetics.coordinate.activities.Main.this.grid;            // TODO:  Main method.
+                    org.wheatgenetics.coordinate.activities.Main.this.gridId;          // TODO:  Main method.
                 org.wheatgenetics.coordinate.utils.Utils.alert(this.context, Coordinate.appName,
                     org.wheatgenetics.coordinate.activities.Main.this.getString(
                         org.wheatgenetics.coordinate.R.string.export_success),
@@ -509,8 +510,8 @@ android.view.View.OnKeyListener
                                                     coordinate.database.EntriesTable(org.
                                                         wheatgenetics.coordinate.
                                                             activities.Main.this);
-                                            if (entriesTable.deleteByGrid(
-                                            org.wheatgenetics.coordinate.activities.Main.this.grid))
+                                            if (entriesTable.deleteByGrid(org.wheatgenetics.
+                                            coordinate.activities.Main.this.gridId))
                                             {
                                                 org.wheatgenetics.coordinate.activities.
                                                     Main.this.populateTemplate();
@@ -632,7 +633,7 @@ android.view.View.OnKeyListener
     private android.view.View       currentCellView = null;
     // endregion
 
-    private long             grid       =  0             ;
+    private long             gridId     =  0             ;
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
@@ -897,7 +898,7 @@ android.view.View.OnKeyListener
             mCurRow = r;
             mCurCol = c;
 
-            java.lang.String data = getDataEntry(this.grid, mCurRow, mCurCol);
+            java.lang.String data = getDataEntry(this.gridId, mCurRow, mCurCol);
 
             if (data != null && data.contains("exclude")) return;
 
@@ -1142,10 +1143,10 @@ android.view.View.OnKeyListener
     // region Action Drawer Methods
     private void newGrid() throws org.json.JSONException
     {
-        if (this.grid == 0)
+        if (this.gridId == 0)
             this.loadExistingOrNewTemplate();
         else
-            if (this.grid >= 0 && mLastExportGridId == this.grid)
+            if (this.gridId >= 0 && mLastExportGridId == this.gridId)
                 this.newGridNow();                                  // throws org.json.JSONException
             else
                 org.wheatgenetics.coordinate.utils.Utils.confirm(this, Coordinate.appName,
@@ -1166,7 +1167,7 @@ android.view.View.OnKeyListener
 
     private void deleteGrid()
     {
-        if (this.grid != 0) org.wheatgenetics.coordinate.utils.Utils.confirm(this,
+        if (this.gridId != 0) org.wheatgenetics.coordinate.utils.Utils.confirm(this,
             Coordinate.appName,
             this.getString(org.wheatgenetics.coordinate.R.string.delete_grid_warning),
             new java.lang.Runnable()
@@ -1175,12 +1176,12 @@ android.view.View.OnKeyListener
                 public void run()
                 {
                     if (org.wheatgenetics.coordinate.activities.Main.this.deleteGrid(
-                    org.wheatgenetics.coordinate.activities.Main.this.grid))
+                    org.wheatgenetics.coordinate.activities.Main.this.gridId))
                     {
                         Toast.makeText(Main.this,
                             getString(org.wheatgenetics.coordinate.R.string.grid_deleted),
                             Toast.LENGTH_LONG).show();
-                        org.wheatgenetics.coordinate.activities.Main.this.grid = 0;
+                        org.wheatgenetics.coordinate.activities.Main.this.gridId = 0;
                         Main.this.optionalFieldLayout.setVisibility(android.view.View.INVISIBLE);
                         Main.this.gridAreaLayout.setVisibility     (android.view.View.INVISIBLE);
                         Main.this.loadExistingOrNewTemplate();
@@ -1481,7 +1482,7 @@ android.view.View.OnKeyListener
                         {
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(
                                 grd.templateTitle);
-                            org.wheatgenetics.coordinate.activities.Main.this.grid = grd.id;
+                            org.wheatgenetics.coordinate.activities.Main.this.gridId = grd.id;
                             mGridTitle = grd.title;
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(
                                 grd.templateType);
@@ -1772,7 +1773,7 @@ android.view.View.OnKeyListener
 
     private void newGridNow() throws org.json.JSONException
     {
-        this.deleteGrid(this.grid);
+        this.deleteGrid(this.gridId);
 
         assert this.templateModel != null;
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
@@ -2486,8 +2487,8 @@ android.view.View.OnKeyListener
         {
             assert this.templateModel != null;
             this.templateModel.setTitle(grd.templateTitle);
-            this.grid  = grd.id   ;
-            mGridTitle = grd.title;
+            this.gridId = grd.id   ;
+            mGridTitle  = grd.title;
             this.templateModel.setType(grd.templateType);
             this.templateModel.setRows(grd.templateRows);
             this.templateModel.setCols(grd.templateCols);
@@ -2545,13 +2546,13 @@ android.view.View.OnKeyListener
             {
                 final org.wheatgenetics.coordinate.database.EntriesTable entriesTable = new org.wheatgenetics.coordinate.database.EntriesTable(this);
                 entriesTable.value = data;
-                if (entriesTable.getByGrid(this.grid, mCurRow, mCurCol))
+                if (entriesTable.getByGrid(this.gridId, mCurRow, mCurCol))
                     success = entriesTable.update();
                 else
                 {
-                    entriesTable.grid = this.grid;
-                    entriesTable.row = mCurRow;
-                    entriesTable.col = mCurCol;
+                    entriesTable.grid = this.gridId;
+                    entriesTable.row  = mCurRow;
+                    entriesTable.col  = mCurCol;
                     success = entriesTable.insert() > 0;
                 }
             }
@@ -2594,7 +2595,7 @@ android.view.View.OnKeyListener
             if (isExcludedRow(mCurRow) || isExcludedCol(mCurCol) || isExcludedCell(mCurRow, mCurCol))
                 if (!getNextFreeCell()) endOfCell = true;
 
-        data = getDataEntry(this.grid, mCurRow, mCurCol);
+        data = getDataEntry(this.gridId, mCurRow, mCurCol);
 
         if (data == null) data = "";
 
@@ -2655,7 +2656,7 @@ android.view.View.OnKeyListener
                 setCellState(this.currentCellView, STATE_INACTIVE);
             else
             {
-                java.lang.String data = getDataEntry(this.grid, r, c);
+                java.lang.String data = getDataEntry(this.gridId, r, c);
                 if (data == null) data = "";
 
                 if (data.length() == 0)
@@ -2754,13 +2755,13 @@ android.view.View.OnKeyListener
 
             this.templateModel.setId(templateId);
 
-            final long grid = this.createGrid(this.templateModel.getId());
-            if (grid > 0)
+            final long gridId = this.createGrid(this.templateModel.getId());
+            if (gridId > 0)
             {
-                this.grid = grid;
+                this.gridId = gridId;
 
                 final SharedPreferences.Editor ed = this.ep.edit();
-                ed.putLong("CurrentGrid", grid);
+                ed.putLong("CurrentGrid", gridId);
                 ed.apply();
 
                 this.populateTemplate();
@@ -2776,13 +2777,13 @@ android.view.View.OnKeyListener
         assert this.templateModel != null;
         this.templateModel.setType(templateType);
 
-        final long grid = this.createGrid(this.templateModel.getId());
-        if (grid > 0)
+        final long gridId = this.createGrid(this.templateModel.getId());
+        if (gridId > 0)
         {
-            this.grid = grid;
+            this.gridId = gridId;
 
             final SharedPreferences.Editor ed = ep.edit();
-            ed.putLong("CurrentGrid", grid);
+            ed.putLong("CurrentGrid", gridId);
             ed.apply();
 
             this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
@@ -2804,7 +2805,7 @@ android.view.View.OnKeyListener
         assert this.mainLayout != null;
         this.mainLayout.setVisibility(android.view.View.VISIBLE);
 
-        final java.lang.String data = this.getDataEntry(this.grid, 1, 1);
+        final java.lang.String data = this.getDataEntry(this.gridId, 1, 1);
         assert this.cellIDEditText != null;
         this.cellIDEditText.setText(data == null ? "" : data);
     }
@@ -2925,7 +2926,7 @@ android.view.View.OnKeyListener
                 }
                 else
                 {
-                    final java.lang.String data = getDataEntry(this.grid, r, c);
+                    final java.lang.String data = getDataEntry(this.gridId, r, c);
                     this.setCellState(cell_cnt, STATE_NORMAL);
 
                     if (data != null && data.trim().length() != 0)
@@ -2966,11 +2967,11 @@ android.view.View.OnKeyListener
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable = new org.wheatgenetics.coordinate.database.EntriesTable(this);
             entriesTable.value = "exclude";
-            if (entriesTable.getByGrid(this.grid, r, c))
+            if (entriesTable.getByGrid(this.gridId, r, c))
                 success = entriesTable.update();
             else
             {
-                entriesTable.grid = this.grid;
+                entriesTable.grid = this.gridId;
                 entriesTable.row  = r;
                 entriesTable.col  = c;
                 success = entriesTable.insert() > 0;
