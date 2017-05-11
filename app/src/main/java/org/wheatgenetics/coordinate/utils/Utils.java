@@ -184,11 +184,12 @@ public class Utils extends java.lang.Object
         return Math.min(metrics.widthPixels, metrics.heightPixels);
     }
 
-    public static int getInteger(final String input)
+    public static int parseInt(final java.lang.String s)
     {
-        int value = -1;
-        try { value = Integer.parseInt(input); } catch (Exception e) {}
-        return value;
+        int i;
+        try                                             { i = java.lang.Integer.parseInt(s); }
+        catch (final java.lang.NumberFormatException e) { i =                            -1; }
+        return i;
     }
 
     public static String getTag(final int r, final int c)

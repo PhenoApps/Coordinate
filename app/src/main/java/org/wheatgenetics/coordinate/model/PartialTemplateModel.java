@@ -4,12 +4,13 @@ package org.wheatgenetics.coordinate.model;
  * PartialTemplateModel implements part of a template.  To get a full template implementation use
  * TemplateModel.  What purpose does PartialTemplateModel serve?  What criteria was used to
  * determine which parts of a template should go in PartialTemplateModel and which parts should go
- * in TemplateModel?  Answer: PartialTemplateModel contains those parts of a template need by
+ * in TemplateModel?  Answer: PartialTemplateModel contains those parts of a template needed by
  * GridModel.
  *
  * Uses:
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
+ * org.wheatgenetics.coordinate.utils.Utils
  */
 
 class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
@@ -57,7 +58,22 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
 
     public int  getRows()               { return this.rows; }
     public void setRows(final int rows) { this.rows = rows; }
+    public void setRows(final java.lang.String rows)
+    { this.setRows(org.wheatgenetics.coordinate.utils.Utils.parseInt(rows)); }
 
     public int  getCols()               { return this.cols; }
     public void setCols(final int cols) { this.cols = cols; }
+    public void setCols(final java.lang.String cols)
+    { this.setCols(org.wheatgenetics.coordinate.utils.Utils.parseInt(cols)); }
+
+    public java.lang.String getRowsAsString()
+    {
+        final int rows = this.getRows();
+        return rows <= 0 ? "" : java.lang.String.valueOf(rows);
+    }
+    public java.lang.String getColsAsString()
+    {
+        final int cols = this.getCols();
+        return cols <= 0 ? "" : java.lang.String.valueOf(cols);
+    }
 }
