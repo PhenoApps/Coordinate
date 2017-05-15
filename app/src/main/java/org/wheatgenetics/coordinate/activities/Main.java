@@ -1,58 +1,5 @@
 package org.wheatgenetics.coordinate.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Point;
-import android.media.MediaPlayer;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
-
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-
-import org.json.JSONException;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Coordinate;
 import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
@@ -67,7 +14,59 @@ import org.wheatgenetics.coordinate.utils.Constants;
 /**
  * Uses:
  * android.os.Bundle
+ * android.annotation.SuppressLint
+ * android.app.Activity
+ * android.app.AlertDialog
+ * android.app.AlertDialog.Builder
+ * android.app.ProgressDialog
+ * android.content.Context
+ * android.content.DialogInterface
+ * android.content.DialogInterface.OnCancelListener
+ * android.content.DialogInterface.OnClickListener
+ * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.content.Intent
+ * android.content.SharedPreferences
+ * android.content.pm.PackageInfo
+ * android.content.pm.PackageManager
+ * android.database.Cursor
+ * android.graphics.Point
+ * android.media.MediaPlayer
+ * android.media.MediaScannerConnection
+ * android.net.Uri
+ * android.os.AsyncTask
+ * android.support.design.widget.NavigationView
+ * android.support.v4.view.GravityCompat
+ * android.support.v4.widget.DrawerLayout
+ * android.support.v7.app.ActionBarDrawerToggle
  * android.support.v7.app.AppCompatActivity
+ * android.support.v7.widget.Toolbar
+ * android.util.Log
+ * android.view.KeyEvent
+ * android.view.LayoutInflater
+ * android.view.Menu
+ * android.view.MenuInflater
+ * android.view.MenuItem
+ * android.view.View
+ * android.view.View.OnKeyListener
+ * android.view.ViewGroup
+ * android.view.WindowManager
+ * android.view.inputmethod.EditorInfo
+ * android.widget.AdapterView
+ * android.widget.ArrayAdapter
+ * android.widget.Button
+ * android.widget.EditText
+ * android.widget.ImageView
+ * android.widget.LinearLayout
+ * android.widget.ListView
+ * android.widget.ScrollView
+ * android.widget.Spinner
+ * android.widget.TableLayout
+ * android.widget.TableRow
+ * android.widget.TextView
+ * android.widget.TextView.OnEditorActionListener
+ * android.widget.Toast
+ *
+ * org.json.JSONException
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -570,7 +569,7 @@ android.view.View.OnKeyListener
         @java.lang.Override
         public @android.support.annotation.NonNull android.view.View getView(final int position,
         final android.view.View convertView,
-        @android.support.annotation.NonNull final ViewGroup parent)
+        @android.support.annotation.NonNull final android.view.ViewGroup parent)
         {
             android.view.View appLineView;
             {
@@ -677,7 +676,8 @@ android.view.View.OnKeyListener
             this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_load),
             this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_new )};
 
-        final Toolbar toolbar = (Toolbar) this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);
+        final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
+            this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);
 
         this.setSupportActionBar(toolbar);
         toolbar.bringToFront();
@@ -748,7 +748,7 @@ android.view.View.OnKeyListener
         this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
 
         parent = new android.widget.LinearLayout(this);
-        changeContainer = new ScrollView(this);
+        changeContainer = new android.widget.ScrollView(this);
         changeContainer.removeAllViews();
         changeContainer.addView(parent);
 
@@ -756,13 +756,13 @@ android.view.View.OnKeyListener
         this.gridAreaLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.gridArea);
         this.optionalFieldLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
 
-        this.gridTableLayout = (TableLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.dataTable);
+        this.gridTableLayout = (android.widget.TableLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.dataTable);
 
         this.templateTitleTextView = (android.widget.TextView) this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
 
         this.cellIDEditText = (android.widget.EditText) this.findViewById(org.wheatgenetics.coordinate.R.id.dataEdit);
         assert this.cellIDEditText != null;
-        this.cellIDEditText.setImeActionLabel(getString(org.wheatgenetics.coordinate.R.string.keyboard_save), KeyEvent.KEYCODE_ENTER);
+        this.cellIDEditText.setImeActionLabel(getString(org.wheatgenetics.coordinate.R.string.keyboard_save), android.view.KeyEvent.KEYCODE_ENTER);
         this.cellIDEditText.setOnEditorActionListener(this);
 
         //this.cellIDEditText.setOnKeyListener(this);
@@ -825,7 +825,9 @@ android.view.View.OnKeyListener
                 return true;
 
             case org.wheatgenetics.coordinate.R.id.barcode_camera:
-                this.barcodeScan();
+                final org.wheatgenetics.coordinate.barcodes.IntentIntegrator intentIntegrator =
+                    new org.wheatgenetics.coordinate.barcodes.IntentIntegrator(this);
+                intentIntegrator.initiateScan();
                 break;
         }
 
@@ -833,9 +835,9 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onKey(final android.view.View v, final int keyCode, final KeyEvent event)
+    public boolean onKey(final android.view.View v, final int keyCode, final android.view.KeyEvent event)
     {
-        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
+        if ((event.getAction() == android.view.KeyEvent.ACTION_DOWN) && (keyCode == android.view.KeyEvent.KEYCODE_ENTER))
         {
             this.saveData();
             return true;
@@ -844,16 +846,16 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onEditorAction(final android.widget.TextView v, final int actionId, final KeyEvent event)
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId, final android.view.KeyEvent event)
     {
-        if (actionId == EditorInfo.IME_ACTION_DONE)
+        if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE)
         {
             this.saveData();
             return true;
         }
         else
         if (event != null)
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+            if ((event.getAction() == android.view.KeyEvent.ACTION_DOWN) && (event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER))
             {
                 this.saveData();
                 return true;
@@ -907,16 +909,17 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final android.content.Intent data)
+    protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
     {
-        final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        final org.wheatgenetics.coordinate.barcodes.IntentResult scanResult =
+            org.wheatgenetics.coordinate.barcodes.IntentIntegrator.parseActivityResult(
+                requestCode, resultCode, data);
 
-        assert scanResult != null;
         if (scanResult != null)
         {
-            final java.lang.String barcodeText = scanResult.getContents();
             assert this.cellIDEditText != null;
-            this.cellIDEditText.setText(barcodeText);
+            this.cellIDEditText.setText(scanResult.getContents());
             this.saveData();
         }
     }
@@ -1731,7 +1734,7 @@ android.view.View.OnKeyListener
 
         final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        final Cursor cursor = tmp.load();  // database
+        final android.database.Cursor cursor = tmp.load();  // database
         if (cursor != null)
         {
             while (cursor.moveToNext())
@@ -1753,7 +1756,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(this.templateOptions[0]);
-        builder.setItems(items, new OnClickListener()
+        builder.setItems(items, new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -1791,7 +1794,7 @@ android.view.View.OnKeyListener
 
         final org.wheatgenetics.coordinate.database.TemplatesTable tmp =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        final Cursor cursor = tmp.load();  // database
+        final android.database.Cursor cursor = tmp.load();  // database
         if (cursor != null)
         {
             while (cursor.moveToNext())
@@ -1815,7 +1818,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.delete_template));
-        builder.setItems(items, new OnClickListener()
+        builder.setItems(items, new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -1859,8 +1862,8 @@ android.view.View.OnKeyListener
 
         int pos = 0;
 
-        final GridsTable gridsTable = new GridsTable(this);
-        final Cursor     gridCursor = gridsTable.getAllGrids();
+        final GridsTable              gridsTable = new GridsTable(this);
+        final android.database.Cursor gridCursor = gridsTable.getAllGrids();
         if (gridCursor != null)
         {
             final int size = gridCursor.getCount();
@@ -1894,7 +1897,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.import_grid));
-        builder.setItems(names, new OnClickListener()
+        builder.setItems(names, new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -2114,12 +2117,6 @@ android.view.View.OnKeyListener
         }
     }
 
-    private void barcodeScan()
-    {
-        final IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.initiateScan();
-    }
-
     private void makeToast(final java.lang.String message)
     { android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show(); }
 
@@ -2233,9 +2230,9 @@ android.view.View.OnKeyListener
         final android.view.View view =
             inflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new_extra, new android.widget.LinearLayout(this), false);
 
-        final Button optionalButton = (Button) view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
-        final Button excludeButton  = (Button) view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton );
-        final Button namingButton   = (Button) view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton  );
+        final android.widget.Button optionalButton = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
+        final android.widget.Button excludeButton  = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton );
+        final android.widget.Button namingButton   = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton  );
 
         optionalButton.setOnClickListener(new android.view.View.OnClickListener()
             {
@@ -2301,7 +2298,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.optional_fields));
-        builder.setMultiChoiceItems(itemArray, selectionArray, new OnMultiChoiceClickListener()
+        builder.setMultiChoiceItems(itemArray, selectionArray, new android.content.DialogInterface.OnMultiChoiceClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which,
@@ -2397,7 +2394,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.exclude_title));
-        builder.setItems(items, new OnClickListener()
+        builder.setItems(items, new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -2435,7 +2432,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.exclude_title) + " - " + (type == 0 ? getString(org.wheatgenetics.coordinate.R.string.rows) : getString(org.wheatgenetics.coordinate.R.string.cols)));
-        builder.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener()
+        builder.setMultiChoiceItems(items, selections, new android.content.DialogInterface.OnMultiChoiceClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which,
@@ -2521,8 +2518,8 @@ android.view.View.OnKeyListener
         final android.view.LayoutInflater layoutInflater = Main.this.getLayoutInflater();
         final android.view.View           view           = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
 
-        final Spinner rowSpinner = (Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-        final Spinner colSpinner = (Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+        final android.widget.Spinner rowSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
+        final android.widget.Spinner colSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
 
         assert this.templateModel != null;
         rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
@@ -2701,13 +2698,13 @@ android.view.View.OnKeyListener
         try
         {
             final int resID = getResources().getIdentifier("plonk", "raw", getPackageName());
-            final MediaPlayer chimePlayer = MediaPlayer.create(Main.this, resID);
+            final android.media.MediaPlayer chimePlayer = android.media.MediaPlayer.create(Main.this, resID);
             chimePlayer.start();
 
-            chimePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+            chimePlayer.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
                 {
                     @java.lang.Override
-                    public void onCompletion(final MediaPlayer mp) { mp.release(); }
+                    public void onCompletion(final android.media.MediaPlayer mp) { mp.release(); }
                 });
         }
         catch (final java.lang.Exception e)
@@ -2759,8 +2756,8 @@ android.view.View.OnKeyListener
             return false;
         }
 
-        final GridsTable gridsTable = new GridsTable(this);
-        final Cursor     cursor     = gridsTable.loadByTemplate(templateModel.getId());
+        final GridsTable              gridsTable = new GridsTable(this);
+        final android.database.Cursor cursor     = gridsTable.loadByTemplate(templateModel.getId());
         if (cursor != null)
         {
             while (cursor.moveToNext())
@@ -2951,7 +2948,7 @@ android.view.View.OnKeyListener
 
         // header
         @android.annotation.SuppressLint("InflateParams")
-        final TableRow hrow = (TableRow) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
+        final android.widget.TableRow hrow = (android.widget.TableRow) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
         int chcol = 0;
         assert this.templateModel != null;
         for (int c = 0; c < (this.templateModel.getCols() + 1); c++)
@@ -2977,7 +2974,7 @@ android.view.View.OnKeyListener
         for (int r = 1; r < (this.templateModel.getRows() + 1); r++)
         {
             @android.annotation.SuppressLint("InflateParams")
-            final TableRow brow = (TableRow) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
+            final android.widget.TableRow brow = (android.widget.TableRow) layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
 
             final boolean excludedRow = isExcludedRow(r);
 
@@ -3096,7 +3093,7 @@ android.view.View.OnKeyListener
 
     private void makeFileDiscoverable(final java.io.File file, final android.content.Context context)
     {
-        MediaScannerConnection.scanFile(context, new java.lang.String[]{file.getPath()}, null, null);
+        android.media.MediaScannerConnection.scanFile(context, new java.lang.String[]{file.getPath()}, null, null);
         context.sendBroadcast(new android.content.Intent(
             android.content.Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, android.net.Uri.fromFile(file)));
     }
