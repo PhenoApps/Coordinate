@@ -14,21 +14,18 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         Iterator(final java.util.ArrayList<
         org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList) { super(arrayList); }
 
-
         @java.lang.Override
         public boolean hasNext()
         {
-            assert this.listIterator != null;
-            assert this.arrayList    != null;
+            assert null != this.listIterator;
+            assert null != this.arrayList   ;
             while (super.hasNext())
             {
                 final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField =
                     this.arrayList.get(this.listIterator.nextIndex());
-                assert optionalField != null;
-                if (optionalField.getChecked())
-                    return true;
-                else
-                    super.next();
+
+                assert null != optionalField;
+                if (optionalField.getChecked()) return true; else super.next();
             }
             return false;
         }
@@ -46,7 +43,6 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
     }
     // endregion
 
-
     // region Public Methods
     // region Public Constructor Method
     public CheckedOptionalFields(
@@ -54,11 +50,11 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
     {
         super();
 
-        assert optionalFields != null;
+        assert null != optionalFields;
+        assert null != this.arrayList;
         this.arrayList.addAll(optionalFields.arrayList);
     }
     // endregion
-
 
     // region Public Overridden Method
     @java.lang.Override

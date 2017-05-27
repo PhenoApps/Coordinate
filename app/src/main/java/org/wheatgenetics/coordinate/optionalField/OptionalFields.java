@@ -16,35 +16,30 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
             listIterator;
 
-
         Iterator(final java.util.ArrayList<
         org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList)
         {
             super();
 
-            assert arrayList != null;
+            assert null != arrayList;
             this.arrayList = arrayList;
 
             final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
                 listIterator = this.arrayList.listIterator();
-            assert listIterator != null;
+            assert null != listIterator;
             this.listIterator = listIterator;
         }
-
 
         @java.lang.Override
         public boolean hasNext()
         {
-            assert this.listIterator != null;
-            assert this.arrayList    != null;
+            assert null != this.listIterator;
+            assert null != this.arrayList   ;
             while (this.listIterator.hasNext())
             {
                 final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField =
                     this.arrayList.get(this.listIterator.nextIndex());
-                if (optionalField != null)
-                    return true;
-                else
-                    this.listIterator.next();
+                if (null != optionalField) return true; else this.listIterator.next();
             }
             return false;
         }
@@ -54,10 +49,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         {
             org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
 
-            assert this.listIterator != null;
+            assert null != this.listIterator;
             do
                 optionalField = this.listIterator.next();
-            while (optionalField == null);
+            while (null == optionalField);
             return optionalField;
         }
 
@@ -66,12 +61,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
     }
     // endregion
 
-
     // region Package Field
     java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
         new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>();
     // endregion
-
 
     // region Public java.lang.Iterable<> Method
     @java.lang.Override

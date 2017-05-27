@@ -4,43 +4,42 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * org.json.JSONException
  * org.json.JSONObject
+ *
+ * org.wheatgenetics.coordinate.BuildConfig
  */
 
 public abstract class OptionalField extends java.lang.Object
 {
-    // region Private Constants
+    // region Private Class Constants
     private static final java.lang.String
         NAME_JSON_NAME = "field", VALUE_JSON_NAME   = "value"  ,
         HINT_JSON_NAME = "hint" , CHECKED_JSON_NAME = "checked";
     // endregion
 
-
-    // region Package Constant
+    // region Package Class Constant
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
     // endregion
-
 
     // region Private Fields
     private java.lang.String  name, value = "", hint = "";
     private boolean           checked = true             ;
     // endregion
 
-
     // region Setter Private Methods
     private void setName(final java.lang.String name)
     {
-        assert name          != null;
-        assert name.length()  > 0   ;
+        assert null != name;
+        if (org.wheatgenetics.coordinate.BuildConfig.DEBUG && 0 >= name.length())
+            throw new java.lang.AssertionError();
         this.name = name;
     }
 
     private void setHint(final java.lang.String hint)
     {
-        assert hint != null;
+        assert null != hint;
         this.hint = hint;
     }
     // endregion
-
 
     // region Package Methods
     // region Constructor Package Methods
@@ -60,7 +59,7 @@ public abstract class OptionalField extends java.lang.Object
     {
         super();
 
-        assert jsonObject != null;
+        assert null != jsonObject;
         this.setName(jsonObject.optString(
             org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
         this.setValue(jsonObject.optString(
@@ -71,7 +70,6 @@ public abstract class OptionalField extends java.lang.Object
             org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME));
     }
     // endregion
-
 
     org.json.JSONObject makeJSONObject() throws org.json.JSONException
     {
@@ -94,13 +92,11 @@ public abstract class OptionalField extends java.lang.Object
     }
     // endregion
 
-
     // region Public Methods
     // region Overridden Public Method
     @java.lang.Override
     public java.lang.String toString() { return this.getName(); }
     // endregion
-
 
     // region Getter and Setter Public Methods
     public java.lang.String getName() { return this.name; }
@@ -108,7 +104,7 @@ public abstract class OptionalField extends java.lang.Object
     public java.lang.String getValue() { return this.value; }
     public void             setValue(final java.lang.String value)
     {
-        assert value != null;
+        assert null != value;
         this.value = value;
     }
 
@@ -118,11 +114,10 @@ public abstract class OptionalField extends java.lang.Object
     public void    setChecked(final boolean checked) { this.checked = checked; }
     // endregion
 
-
     public boolean nameEqualsIgnoreCase(final java.lang.String string)
     {
         final java.lang.String name = this.getName();
-        assert name != null;
+        assert null != name;
         return name.equalsIgnoreCase(string);
     }
     // endregion

@@ -21,8 +21,8 @@ public class Database extends java.lang.Object
     {
         private static final java.lang.String TAG = "SQLiteOpenHelper";
 
-        private android.content.Context context                                      ;
-        private boolean                 createNeeded = false, createSucceeded = false;
+        private final android.content.Context context                                      ;
+        private       boolean                 createNeeded = false, createSucceeded = false;
 
         SQLiteOpenHelper(final android.content.Context context)
         {
@@ -124,9 +124,9 @@ public class Database extends java.lang.Object
         if (org.wheatgenetics.coordinate.database.Database.db != null)
             org.wheatgenetics.coordinate.database.Database.db.close();
 
-        final org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper helper =
+        final org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper sqLiteOpenHelper =
             new org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper(context);
-        org.wheatgenetics.coordinate.database.Database.db = helper.getWritableDatabase();
+        org.wheatgenetics.coordinate.database.Database.db = sqLiteOpenHelper.getWritableDatabase();
     }
 
     static android.database.sqlite.SQLiteDatabase getDb(final android.content.Context context)

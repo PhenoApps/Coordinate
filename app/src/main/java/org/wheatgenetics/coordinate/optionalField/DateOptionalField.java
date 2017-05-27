@@ -20,15 +20,10 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     }
 
     DateOptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    {
-        super(jsonObject);
-    }
+    { super(jsonObject); }
     // endregion
-
 
     @java.lang.Override
     public java.lang.String getValue()
-    {
-        return org.wheatgenetics.coordinate.utils.Utils.getCurrentDate();
-    }
+    { return org.wheatgenetics.coordinate.utils.Utils.getCurrentDate(); }
 }

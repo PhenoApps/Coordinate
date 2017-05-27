@@ -202,9 +202,9 @@ public class Utils extends java.lang.Object
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-        assert integerList != null;
+        assert null != integerList;
         for (final java.lang.Integer integer: integerList)
-            if (integer != null) jsonArray.put(integer.intValue());
+            if (null != integer) jsonArray.put(integer.intValue());
         return jsonArray.toString();
     }
 
@@ -213,8 +213,8 @@ public class Utils extends java.lang.Object
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-        assert pointList != null;
-        for (final android.graphics.Point point: pointList) if (point != null)
+        assert null != pointList;
+        for (final android.graphics.Point point: pointList) if (null != point)
         {
             final org.json.JSONObject jsonObject = new org.json.JSONObject();
             jsonObject.put("row", point.y);                         // throws org.json.JSONException
@@ -235,7 +235,7 @@ public class Utils extends java.lang.Object
             final org.json.JSONArray   jsonArray   =
                 (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
 
-            assert jsonArray != null;
+            assert null != jsonArray;
             for (int i = 0; i < jsonArray.length(); i++)
                 integerList.add(jsonArray.getInt(i));               // throws org.json.JSONException
         }
@@ -252,12 +252,12 @@ public class Utils extends java.lang.Object
             final org.json.JSONArray   jsonArray   =
                 (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
 
-            assert jsonArray != null;
+            assert null != jsonArray;
             for (int i = 0; i < jsonArray.length(); i++)
             {
                 final org.json.JSONObject jsonObject = (org.json.JSONObject) jsonArray.get(i);
 
-                assert jsonObject != null;
+                assert null != jsonObject;
                 pointList.add(new android.graphics.Point(
                     jsonObject.getInt("col"),                       // throws org.json.JSONException
                     jsonObject.getInt("row")));                     // throws org.json.JSONException

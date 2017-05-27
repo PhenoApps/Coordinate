@@ -9,8 +9,8 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
- * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  */
 
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
@@ -27,15 +27,14 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
         final org.json.JSONArray   jsonArray   =
             (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
 
-        assert jsonArray      != null;
-        assert this.arrayList != null;
+        assert null != jsonArray     ;
+        assert null != this.arrayList;
         for (int i = 0; i < jsonArray.length(); i++)
         {
             org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
             {
                 final org.json.JSONObject jsonObject =
                     (org.json.JSONObject) jsonArray.get(i);         // throws org.json.JSONException
-
                 try
                 {
                     optionalField = new
@@ -53,18 +52,17 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
     }
     // endregion
 
-
     // region Add Public Methods
     public boolean add(final java.lang.String name)
     {
-        assert this.arrayList != null;
+        assert null != this.arrayList;
         return this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name));
     }
 
     public boolean add(final java.lang.String name, final java.lang.String hint)
     {
-        assert this.arrayList != null;
+        assert null != this.arrayList;
         return this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, hint));
     }
@@ -72,26 +70,25 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
     public boolean add(final java.lang.String name,
     final java.lang.String value, final java.lang.String hint)
     {
-        assert this.arrayList != null;
+        assert null != this.arrayList;
         return this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, value, hint));
     }
 
     public boolean addDate(final java.lang.String name)
     {
-        assert this.arrayList != null;
+        assert null != this.arrayList;
         return this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField(name));
     }
     // endregion
-
 
     public boolean isEmpty()
     {
         final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
             this.iterator();
 
-        assert iterator != null;
+        assert null != iterator;
         return iterator.hasNext();
     }
 
@@ -102,7 +99,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
             final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
                 this.iterator();
 
-            assert iterator != null;
+            assert null != iterator;
             while (iterator.hasNext())
             {
                 size++;
@@ -120,7 +117,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
                     this.iterator();
                 int i = 0;
 
-                assert iterator != null;
+                assert null != iterator;
                 do
                     optionalField = iterator.next();
                 while (i++ < index);

@@ -1019,7 +1019,7 @@ android.view.View.OnKeyListener
                 final android.widget.TextView header  = new android.widget.TextView(this);
                 final android.widget.TextView content = new android.widget.TextView(this);
                 final android.widget.TextView spacer  = new android.widget.TextView(this);
-                final android.view.View     ruler   = new android.view.View(this);
+                final android.view.View       ruler   = new android.view.View      (this);
 
                 header.setLayoutParams(lp);
                 content.setLayoutParams(lp);
@@ -1053,7 +1053,7 @@ android.view.View.OnKeyListener
                 }
             }
         }
-        catch (final java.io.IOException e) { throw new RuntimeException(e); }
+        catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
     }
 
     private void showOtherAppsDialog()
