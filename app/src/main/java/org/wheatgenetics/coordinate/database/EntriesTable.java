@@ -56,7 +56,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     @java.lang.Override
     org.wheatgenetics.coordinate.model.EntryModel make(final android.database.Cursor cursor)
     {
-        if (cursor == null)
+        if (null == cursor)
             return null;
         else
             return new org.wheatgenetics.coordinate.model.EntryModel(
@@ -95,7 +95,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     private void copy(final android.database.Cursor cursor)
     {
-        assert cursor != null;
+        assert null != cursor;
         this.id = cursor.getInt(cursor.getColumnIndex(
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME          ));
         this.grid = cursor.getInt(cursor.getColumnIndex(
@@ -117,7 +117,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     {
         final android.database.Cursor cursor = this.queryDistinct(
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-        if (cursor == null)
+        if (null == cursor)
             return false;
         else
             try
@@ -143,7 +143,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     {
         this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " by entry = " + entry);
-        return this.queryAllSelection(/* selection => */
+        return this.SelectionQueryAll(/* selection => */
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = " + entry);
     }
 
@@ -162,7 +162,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             cursor = this.queryDistinct(
                 /* selection => */ selection, /* selectionArgs => */ selectionArgs);
         }
-        if (cursor == null)                                                             // TODO: DRY
+        if (null == cursor)                                                             // TODO: DRY
             return false;
         else
             try

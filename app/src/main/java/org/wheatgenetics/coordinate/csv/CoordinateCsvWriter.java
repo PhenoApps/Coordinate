@@ -2,9 +2,6 @@ package org.wheatgenetics.coordinate.csv;
 
 /**
  * Uses:
- * java.io.IOException
- * java.io.Writer
- *
  * org.wheatgenetics.coordinate.csv.CsvWriter
  */
 
@@ -12,6 +9,7 @@ public class CoordinateCsvWriter extends org.wheatgenetics.coordinate.csv.CsvWri
 {
     public CoordinateCsvWriter(final java.io.Writer outputStream)
     { super(/* outputStream => */ outputStream, /* delimiter => */ ','); }
+
 
     public void write(                 ) throws java.io.IOException { super.write(""); }
 

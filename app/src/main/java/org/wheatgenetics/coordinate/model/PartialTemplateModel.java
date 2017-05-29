@@ -19,16 +19,18 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     private org.wheatgenetics.coordinate.model.TemplateType type      ;
     private int                                             rows, cols;
 
+    private static java.lang.String getIntegerAsString(final int integer)
+    { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
+
     private void assign(final java.lang.String title, final int rows, final int cols)
     {
-        this.title = title;
+        this.setTitle(title);
 
         if (rows <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.rows = rows;
         if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
     }
 
-    PartialTemplateModel() { super(); }
-
+    PartialTemplateModel()              { super(  ); }
     PartialTemplateModel(final long id) { super(id); }
 
     PartialTemplateModel(final java.lang.String title,
@@ -57,23 +59,23 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     { this.type = org.wheatgenetics.coordinate.model.TemplateType.get(code); }
 
     public int  getRows()               { return this.rows; }
-    public void setRows(final int rows) { this.rows = rows; }
+    public void setRows(final int              rows) { this.rows = rows; }
     public void setRows(final java.lang.String rows)
     { this.setRows(org.wheatgenetics.coordinate.utils.Utils.parseInt(rows)); }
 
-    public int  getCols()               { return this.cols; }
-    public void setCols(final int cols) { this.cols = cols; }
+    public int  getCols()                            { return this.cols; }
+    public void setCols(final int              cols) { this.cols = cols; }
     public void setCols(final java.lang.String cols)
     { this.setCols(org.wheatgenetics.coordinate.utils.Utils.parseInt(cols)); }
 
     public java.lang.String getRowsAsString()
     {
-        final int rows = this.getRows();
-        return rows <= 0 ? "" : java.lang.String.valueOf(rows);
+        return org.wheatgenetics.coordinate.model.PartialTemplateModel.getIntegerAsString(
+            this.getRows());
     }
     public java.lang.String getColsAsString()
     {
-        final int cols = this.getCols();
-        return cols <= 0 ? "" : java.lang.String.valueOf(cols);
+        return org.wheatgenetics.coordinate.model.PartialTemplateModel.getIntegerAsString(
+            this.getCols());
     }
 }

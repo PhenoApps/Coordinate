@@ -8,8 +8,8 @@ package org.wheatgenetics.coordinate.model;
 
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
-    private java.lang.String title     ;
-    private long             timestamp ;
+    private java.lang.String title    ;
+    private long             timestamp;
 
     private org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel;
 
@@ -27,8 +27,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     {
         this(id);
 
-        this.title      = title    ;
-        this.timestamp  = timestamp;
+        this.title     = title    ;
+        this.timestamp = timestamp;
 
         this.partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             templateId, templateTitle, templateType, templateRows, templateCols);

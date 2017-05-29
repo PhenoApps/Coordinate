@@ -40,7 +40,7 @@ abstract class Table extends java.lang.Object
     private android.database.Cursor queryAll(final java.lang.String selection,
     final java.lang.String orderBy)
     {
-        assert this.db != null;
+        assert null != this.db;
         return this.db.query(
             /* table         => */ this.tableName,
             /* columns       => */ null          ,
@@ -53,23 +53,23 @@ abstract class Table extends java.lang.Object
 
     boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
-        assert this.db != null;
+        assert null != this.db;
         return this.db.delete(
             /* table       => */ this.tableName,
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
     }
 
+    abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
+
     org.wheatgenetics.coordinate.model.Model makeFromFirst(final android.database.Cursor cursor)
     {
-        if (cursor == null)
+        if (null == cursor)
             return null;
         else
             try     { if (cursor.moveToFirst()) return this.make(cursor); else return null; }
             finally { cursor.close(); }
     }
-
-    abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
 
     android.content.ContentValues getContentValues()
     {
@@ -78,18 +78,18 @@ abstract class Table extends java.lang.Object
         return contentValues;
     }
 
-    android.database.Cursor queryAllSelection(final java.lang.String selection)
+    android.database.Cursor SelectionQueryAll(final java.lang.String selection)
     { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
 
-    android.database.Cursor queryAllOrderBy(final java.lang.String orderBy)
+    android.database.Cursor orderByQueryAll(final java.lang.String orderBy)
     { return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy); }
 
-    android.database.Cursor queryAll() { return this.queryAllSelection(/* selection => */ null); }
+    android.database.Cursor queryAll() { return this.SelectionQueryAll(/* selection => */ null); }
 
     android.database.Cursor queryDistinct(final java.lang.String selection,
     final java.lang.String selectionArgs[])
     {
-        assert this.db != null;
+        assert null != this.db;
         return this.db.query(
             /* distinct      => */ true          ,
             /* table         => */ this.tableName,
@@ -107,14 +107,14 @@ abstract class Table extends java.lang.Object
 
     android.database.Cursor rawQuery(final java.lang.String sql)
     {
-        assert this.db != null;
+        assert null != this.db;
         return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ null);
     }
 
     public long insert()
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
-        assert this.db != null;
+        assert null != this.db;
         return this.db.insert(
             /* table          => */ this.tableName         ,
             /* nullColumnHack => */ null                   ,
@@ -123,7 +123,7 @@ abstract class Table extends java.lang.Object
 
     boolean update(final java.lang.String whereClause)
     {
-        assert this.db != null;
+        assert null != this.db;
         return this.db.update(
             /* table       => */ this.tableName         ,
             /* values      => */ this.getContentValues(),
@@ -133,7 +133,7 @@ abstract class Table extends java.lang.Object
 
     public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
     {
-        assert model != null;
+        assert null != model;
         final java.lang.String whereClause =                              // TODO: Make into method.
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
         this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);

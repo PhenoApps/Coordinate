@@ -49,7 +49,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Storage
     // region Private Constants
-    private static final java.lang.String TABLE_NAME = "grids";
+    private static final java.lang.String TABLE_NAME      = "grids";
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
         TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
     // endregion
@@ -58,7 +58,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @java.lang.Override
     org.wheatgenetics.coordinate.model.GridModel make(final android.database.Cursor cursor)
     {
-        if (cursor == null)
+        if (null == cursor)
             return null;
         else
             return new org.wheatgenetics.coordinate.model.GridModel(
@@ -93,7 +93,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
     public boolean copy(final android.database.Cursor cursor)
     {
-        if (cursor == null)
+        if (null == cursor)
             return false;
         else
         {
@@ -112,7 +112,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
     public boolean copyAll(final android.database.Cursor cursor)
     {
-        if (cursor ==  null)
+        if (null == cursor)
             return false;
         else
         {
@@ -138,7 +138,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, " +
                 "templates._id as templateId, templates.rows, templates.cols from grids, templates " +
                     "where templates._id = grids.temp and grids." + org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-        if (cursor == null)
+        if (null == cursor)
              return false;
         else
             try
@@ -164,7 +164,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     {
         this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + tmp);
-        return this.queryAllSelection(/* selection => */
+        return this.SelectionQueryAll(/* selection => */
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + tmp);
     }
 
@@ -185,19 +185,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             final java.lang.String[] selectionArgs = new java.lang.String[]{java.lang.String.valueOf(entry)};
             cursor = this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs);
         }
-        if (cursor == null)
+        if (null == cursor)
             return false;
         else
-            try
-            {
-                if (cursor.moveToFirst())
-                {
-                    this.copy(cursor);
-                    return true;
-                }
-                else return false;
-            }
-            finally { cursor.close(); }
+            try     { return cursor.moveToFirst() ? this.copy(cursor) : false; }
+            finally { cursor.close();                                          }
     }
 
     public boolean update()                                                   // TODO: Remove later.

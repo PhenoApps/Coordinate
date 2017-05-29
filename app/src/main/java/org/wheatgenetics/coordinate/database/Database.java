@@ -43,7 +43,7 @@ public class Database extends java.lang.Object
                 {
                     org.w3c.dom.Document document;
                     {
-                        assert this.context != null;
+                        assert null != this.context;
                         final java.io.InputStream inputStream =
                             this.context.getResources().openRawResource(
                                 org.wheatgenetics.coordinate.R.raw.sql);
@@ -52,7 +52,7 @@ public class Database extends java.lang.Object
                             final javax.xml.parsers.DocumentBuilder documentBuilder =
                                 javax.xml.parsers.DocumentBuilderFactory.newInstance()
                                     .newDocumentBuilder();           // throws java.xml.parsers.Par-
-                            assert documentBuilder != null;          //  serConfigurationException
+                            assert null != documentBuilder;          //  serConfigurationException
                             try
                             {
                                 document = documentBuilder.parse(    // throws org.xml.sax.SAXExcep-
@@ -65,11 +65,11 @@ public class Database extends java.lang.Object
                         catch (final javax.xml.parsers.ParserConfigurationException e)
                         { return; }                   // this.createSucceeded will not be made true.
                     }
-                    assert document != null;
+                    assert null != document;
                     statementNodeList = document.getElementsByTagName("statement");
                 }
-                assert statementNodeList != null;
-                assert db                != null;
+                assert null != statementNodeList;
+                assert null != db               ;
                 {
                     java.lang.String statement;
                     for (int i = 0; i < statementNodeList.getLength(); i++)
@@ -93,7 +93,7 @@ public class Database extends java.lang.Object
             android.util.Log.w(org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper.TAG,
                 "Upgrading database from version " + oldVersion + " to " + newVersion +
                     ", which will destroy all old data");
-            assert db != null;
+            assert null != db;
             db.execSQL("DROP TABLE IF EXISTS entries");                // TODO: What about templates
             this.onCreate(db);                                         // TODO:  and grids tables?
         }
@@ -121,7 +121,7 @@ public class Database extends java.lang.Object
 
     public static void initialize(final android.content.Context context)
     {
-        if (org.wheatgenetics.coordinate.database.Database.db != null)
+        if (null != org.wheatgenetics.coordinate.database.Database.db)
             org.wheatgenetics.coordinate.database.Database.db.close();
 
         final org.wheatgenetics.coordinate.database.Database.SQLiteOpenHelper sqLiteOpenHelper =
@@ -131,10 +131,10 @@ public class Database extends java.lang.Object
 
     static android.database.sqlite.SQLiteDatabase getDb(final android.content.Context context)
     {
-        if (org.wheatgenetics.coordinate.database.Database.db == null)
+        if (null == org.wheatgenetics.coordinate.database.Database.db)
         {
             org.wheatgenetics.coordinate.database.Database.initialize(context);
-            assert org.wheatgenetics.coordinate.database.Database.db != null;
+            assert null != org.wheatgenetics.coordinate.database.Database.db;
         }
         return org.wheatgenetics.coordinate.database.Database.db;
     }

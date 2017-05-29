@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.graphics.Point
  *
+ * org.json.JSONException
+ *
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.utils.Utils

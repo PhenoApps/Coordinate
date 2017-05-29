@@ -10,13 +10,13 @@ public enum TemplateType
 
     static org.wheatgenetics.coordinate.model.TemplateType get(final int code)
     {
-        if (code == org.wheatgenetics.coordinate.model.TemplateType.SEED.code)
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.code == code)
             return org.wheatgenetics.coordinate.model.TemplateType.SEED;
         else
-            if (code == org.wheatgenetics.coordinate.model.TemplateType.DNA.code)
+            if (org.wheatgenetics.coordinate.model.TemplateType.DNA.code == code)
                 return org.wheatgenetics.coordinate.model.TemplateType.DNA;
             else
-                if (code == org.wheatgenetics.coordinate.model.TemplateType.DEFAULT.code)
+                if (org.wheatgenetics.coordinate.model.TemplateType.DEFAULT.code == code)
                     return org.wheatgenetics.coordinate.model.TemplateType.DEFAULT;
                 else
                     throw new java.lang.IndexOutOfBoundsException();
