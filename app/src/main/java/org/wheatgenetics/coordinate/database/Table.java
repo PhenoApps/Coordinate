@@ -16,9 +16,11 @@ abstract class Table extends java.lang.Object
 {
     static final java.lang.String ID_FIELD_NAME = "_id";                // TODO: Make private later.
 
+    // region Fields
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
     public        long                                   id = 0        ;
+    // endregion
 
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
@@ -33,23 +35,35 @@ abstract class Table extends java.lang.Object
     @java.lang.Override
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
+    // region Internal Operations
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
+
+    private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
+    final java.lang.String selectionArgs[], final java.lang.String orderBy)
+    {
+        assert null != this.db;
+        return this.db.query(
+            /* distinct      => */ distinct      ,
+            /* table         => */ this.tableName,
+            /* columns       => */ null          ,
+            /* selection     => */ selection     ,
+            /* selectionArgs => */ selectionArgs ,
+            /* groupBy       => */ null          ,
+            /* having        => */ null          ,
+            /* orderBy       => */ orderBy       ,
+            /* limit         => */ null          );
+    }
 
     private android.database.Cursor queryAll(final java.lang.String selection,
     final java.lang.String orderBy)
     {
-        assert null != this.db;
-        return this.db.query(
-            /* table         => */ this.tableName,
-            /* columns       => */ null          ,
-            /* selection     => */ selection     ,
-            /* selectionArgs => */ null          ,
-            /* groupBy       => */ null          ,
-            /* having        => */ null          ,
-            /* orderBy       => */ orderBy       );
+        return this.query(
+            /* distinct      => */ false    ,
+            /* selection     => */ selection,
+            /* selectionArgs => */ null     ,
+            /* orderBy       => */ orderBy  );
     }
 
-    // region Package Methods
     boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
         assert null != this.db;
@@ -76,7 +90,16 @@ abstract class Table extends java.lang.Object
         contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, this.id);
         return contentValues;
     }
+    // endregion
 
+    // query()
+    //   queryAll()
+    //     selectionQueryAll()
+    //       queryAll()
+    //     orderByQueryAll()
+    //   queryDistinct()
+
+    // region External Operations
     android.database.Cursor selectionQueryAll(final java.lang.String selection)
     { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
 
@@ -88,17 +111,11 @@ abstract class Table extends java.lang.Object
     android.database.Cursor queryDistinct(final java.lang.String selection,
     final java.lang.String selectionArgs[])
     {
-        assert null != this.db;
-        return this.db.query(
-            /* distinct      => */ true          ,
-            /* table         => */ this.tableName,
-            /* columns       => */ null          ,
-            /* selection     => */ selection     ,
-            /* selectionArgs => */ selectionArgs ,
-            /* groupBy       => */ null          ,
-            /* having        => */ null          ,
-            /* orderBy       => */ null          ,
-            /* limit         => */ null          );
+        return this.query(
+            /* distinct      => */ true         ,
+            /* selection     => */ selection    ,
+            /* selectionArgs => */ selectionArgs,
+            /* orderBy       => */ null         );
     }
 
     android.database.Cursor queryDistinct(final java.lang.String selection)
@@ -109,7 +126,6 @@ abstract class Table extends java.lang.Object
         assert null != this.db;
         return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ null);
     }
-    // endregion
 
     public long insert()
     {
@@ -145,4 +161,5 @@ abstract class Table extends java.lang.Object
         this.sendInfoLogMsg("Clearing table " + this.tableName);
         return this.deleteUsingWhereClause(/* whereClause => */ null);
     }
+    // endregion
 }
