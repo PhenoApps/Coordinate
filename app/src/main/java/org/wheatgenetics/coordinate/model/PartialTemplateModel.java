@@ -15,10 +15,13 @@ package org.wheatgenetics.coordinate.model;
 
 class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
+    // region Fields
     private java.lang.String                                title     ;
     private org.wheatgenetics.coordinate.model.TemplateType type      ;
     private int                                             rows, cols;
+    // endregion
 
+    // region Private Methods
     private static java.lang.String convert(final int integer)
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
@@ -29,6 +32,7 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
         if (rows <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.rows = rows;
         if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
     }
+    // endregion
 
     // region Constructors
     PartialTemplateModel()              { super(  ); }
@@ -50,6 +54,17 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
         this.setType(code);
     }
     // endregion
+
+    @android.annotation.SuppressLint("DefaultLocale")
+    java.lang.String formatString()
+    {
+        return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d",
+            super.toString(), this.title, this.type.getCode(), this.rows, this.cols);
+    }
+
+    @java.lang.Override
+    public java.lang.String toString()
+    { return java.lang.String.format(this.formatString(), "PartialTemplateModel") + "]"; }
 
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }

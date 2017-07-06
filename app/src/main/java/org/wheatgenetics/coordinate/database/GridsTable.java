@@ -12,15 +12,17 @@ package org.wheatgenetics.coordinate.database;
 
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
+    // region Fields
     // region grids Table
-    public long             templateId;
-    public java.lang.String title     ;
-    public long             timestamp ;
+    public long             templateId =  0;
+    public java.lang.String title      = "";
+    public long             timestamp  =  0;
     // endregion
 
     // region templates Table
-    public java.lang.String templateTitle                           ;
-    public int              templateType, templateRows, templateCols;
+    public java.lang.String templateTitle = ""                              ;
+    public int              templateType, templateRows = 0, templateCols = 0;
+    // endregion
     // endregion
 
     public GridsTable(final android.content.Context context)
@@ -29,14 +31,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* context   => */ context                                                    ,
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ "GridsTable"                                               );
-
-        this.templateId =  0;
-        this.title      = "";
-        this.timestamp  =  0;
-
-        this.templateTitle = "";
-        this.templateRows  =  0;
-        this.templateCols  =  0;
     }
 
     @java.lang.Override
@@ -46,14 +40,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             " templateId: %02d timestamp: %02d", this.templateId, this.timestamp);
     }
 
-
     // region Storage
     // region Private Constants
     private static final java.lang.String TABLE_NAME      = "grids";
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
         TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
     // endregion
-
 
     @java.lang.Override
     org.wheatgenetics.coordinate.model.GridModel make(final android.database.Cursor cursor)
@@ -132,6 +124,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
+    // region Operations
     public boolean get(final long id)
     {
         final android.database.Cursor cursor = this.rawQuery(
@@ -207,5 +200,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + "=" + entryId);
     }
+    // endregion
     // endregion
 }

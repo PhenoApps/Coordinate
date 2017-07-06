@@ -40,18 +40,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "TemplatesTable"                                               );
     }
 
-    @java.lang.Override
-    public java.lang.String toString()
-    {
-        return "TemplatesTable" +
-            " [" + super.toString()               + ", title="        + this.title        +
-            ", type="         + this.type         + ", rows="         + this.rows         +
-            ", cols="         + this.cols         + ", excludeCells=" + this.excludeCells +
-            ", excludeRows="  + this.excludeRows  + ", excludeCols="  + this.excludeCols  +
-            ", options="      + this.options      + ", colNumbering=" + this.colNumbering +
-            ", rowNumbering=" + this.rowNumbering + ", stamp="        + this.stamp        + "]";
-    }
-
     // region Storage
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "templates";
@@ -64,7 +52,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String OPTIONS_FIELD_NAME = "options";
     private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
     // endregion
-
 
     @java.lang.Override
     org.wheatgenetics.coordinate.model.TemplateModel make(final android.database.Cursor cursor)  // TODO: Make private.
@@ -161,6 +148,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
+    // region Operations
     public boolean get(final long id)                                   // TODO: Push to superclass?
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
@@ -206,5 +194,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return this.update(/* whereClause   => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
+    // endregion
     // endregion
 }

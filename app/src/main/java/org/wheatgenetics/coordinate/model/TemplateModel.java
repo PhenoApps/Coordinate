@@ -81,6 +81,21 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
+    @java.lang.Override
+    java.lang.String formatString()
+    {
+        return this.formatString() + ", excludeCells=%s, excludeRows=%s" +
+            ", excludeCols=%s, options=%s, colNumbering=%b, rowNumbering=%b, stamp=%d]";
+    }
+
+    @java.lang.Override
+    public java.lang.String toString()
+    {
+        return java.lang.String.format(this.formatString(),
+            "TemplateModel"    , this.excludeCells, this.excludeRows , this.excludeCols,
+            this.optionalFields, this.colNumbering, this.rowNumbering, this.timestamp  );
+    }
+
     // region Public Methods
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }

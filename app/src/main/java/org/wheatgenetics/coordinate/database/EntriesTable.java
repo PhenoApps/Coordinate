@@ -12,11 +12,12 @@ package org.wheatgenetics.coordinate.database;
 
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public  long             grid    ;
-    public  int              col, row;
-    public  java.lang.String value   ;
-    private long             stamp   ;
-
+    // region Fields
+    public  long             grid  =  0         ;
+    public  int              col   =  0, row = 0;
+    public  java.lang.String value = ""         ;
+    private long             stamp =  0         ;
+    // endregion
 
     public EntriesTable(final android.content.Context context)
     {
@@ -24,15 +25,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             /* context   => */ context                                                      ,
             /* tableName => */ org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME,
             /* tag       => */ "EntriesTable"                                               );
-
-        this.grid = 0;
-
-        this.col = 0;
-        this.row = 0;
-
-        this.value = "";
-
-        this.stamp = 0;
     }
 
     @java.lang.Override
@@ -43,7 +35,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             this.grid, this.col, this.row, this.value);
     }
 
-
     // region Storage
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "entries";
@@ -51,7 +42,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         GRID_FIELD_NAME  = "grid" , COL_FIELD_NAME   = "col"  , ROW_FIELD_NAME = "row",
         EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
-
 
     @java.lang.Override
     org.wheatgenetics.coordinate.model.EntryModel make(final android.database.Cursor cursor)
@@ -132,6 +122,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close(); }
     }
 
+    // region Operations
     public android.database.Cursor load()                                     // TODO: Remove later.
     {
         this.sendInfoLogMsg(
@@ -192,5 +183,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "=" + grid);
     }
+    // endregion
     // endregion
 }
