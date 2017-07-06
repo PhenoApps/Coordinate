@@ -13,22 +13,24 @@ package org.wheatgenetics.coordinate.database;
 
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    public java.lang.String title;
-    public int              type ;
-    public int              rows ;
-    public int              cols ;
+    // region Fields
+    public java.lang.String title = "";
+    public int              type  =  0;
+    public int              rows  =  0;
+    public int              cols  =  0;
 
-    public java.lang.String excludeCells;
+    public java.lang.String excludeCells = "";
 
-    public java.lang.String excludeRows;
-    public java.lang.String excludeCols;
+    public java.lang.String excludeRows = "";
+    public java.lang.String excludeCols = "";
 
-    public java.lang.String options;
+    public java.lang.String options = "";
 
-    public int colNumbering;
-    public int rowNumbering;
+    public int colNumbering = 1;
+    public int rowNumbering = 1;
 
-    public long stamp;
+    public long stamp = 0;
+    // endregion
 
     public TemplatesTable(final android.content.Context context)
     {
@@ -36,23 +38,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* context   => */ context                                                        ,
             /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
             /* tag       => */ "TemplatesTable"                                               );
-
-        this.title = "";
-        this.type  =  0;
-
-        this.rows = 0;
-        this.cols = 0;
-
-        this.excludeCells = "";
-        this.excludeCols  = "";
-        this.excludeRows  = "";
-
-        this.options = "";
-
-        this.colNumbering = 1;
-        this.rowNumbering = 1;
-
-        this.stamp = 0;
     }
 
     @java.lang.Override
@@ -66,7 +51,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             ", options="      + this.options      + ", colNumbering=" + this.colNumbering +
             ", rowNumbering=" + this.rowNumbering + ", stamp="        + this.stamp        + "]";
     }
-
 
     // region Storage
     // region Private Constants
@@ -177,7 +161,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
-    public boolean get(final long id)
+    public boolean get(final long id)                                   // TODO: Push to superclass?
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
@@ -201,21 +185,21 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                          }
     }
 
-    public android.database.Cursor load()
+    public android.database.Cursor load()                               // TODO: Push to superclass?
     {
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
         return this.orderByQueryAll(/* orderBy => */ "type ASC");
     }
 
-    public android.database.Cursor loadByOrder()
+    public android.database.Cursor loadByOrder()                        // TODO: Push to superclass?
     {
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
         return this.orderByQueryAll(/* orderBy => */ "_id DESC");
     }
 
-    public boolean update()
+    public boolean update()                                             // TODO: Push to superclass?
     {
         this.sendInfoLogMsg("Updating table " +
             org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME + " on id = " + id);

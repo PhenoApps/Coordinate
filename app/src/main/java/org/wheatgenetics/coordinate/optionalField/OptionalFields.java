@@ -12,8 +12,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
     static class Iterator extends java.lang.Object
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
     {
-        java.util.ArrayList   <org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList;
-        java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
+        final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>
+            arrayList;
+        final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
             listIterator;
 
         Iterator(final java.util.ArrayList<

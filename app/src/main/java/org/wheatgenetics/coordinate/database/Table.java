@@ -18,7 +18,7 @@ abstract class Table extends java.lang.Object
 
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
-    public        long                                   id            ;
+    public        long                                   id = 0        ;
 
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
@@ -28,8 +28,6 @@ abstract class Table extends java.lang.Object
         this.db        = org.wheatgenetics.coordinate.database.Database.getDb(context);
         this.tableName = tableName                                                    ;
         this.tag       = tag                                                          ;
-
-        this.id = 0;
     }
 
     @java.lang.Override
@@ -51,6 +49,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy       );
     }
 
+    // region Package Methods
     boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
         assert null != this.db;
@@ -78,13 +77,13 @@ abstract class Table extends java.lang.Object
         return contentValues;
     }
 
-    android.database.Cursor SelectionQueryAll(final java.lang.String selection)
+    android.database.Cursor selectionQueryAll(final java.lang.String selection)
     { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
 
     android.database.Cursor orderByQueryAll(final java.lang.String orderBy)
     { return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy); }
 
-    android.database.Cursor queryAll() { return this.SelectionQueryAll(/* selection => */ null); }
+    android.database.Cursor queryAll() { return this.selectionQueryAll(/* selection => */ null); }
 
     android.database.Cursor queryDistinct(final java.lang.String selection,
     final java.lang.String selectionArgs[])
@@ -110,6 +109,7 @@ abstract class Table extends java.lang.Object
         assert null != this.db;
         return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ null);
     }
+    // endregion
 
     public long insert()
     {

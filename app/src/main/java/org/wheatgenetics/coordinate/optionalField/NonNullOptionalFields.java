@@ -89,7 +89,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
             this.iterator();
 
         assert null != iterator;
-        return iterator.hasNext();
+        return !iterator.hasNext();
     }
 
     public org.wheatgenetics.coordinate.optionalField.OptionalField get(final int index)

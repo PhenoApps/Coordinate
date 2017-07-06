@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
 
 public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
 {
+    // region Fields
     private java.util.List<android.graphics.Point> excludeCells            ;
     private java.util.List<java.lang.Integer     > excludeRows, excludeCols;
 
@@ -21,10 +22,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields;
 
     private long timestamp;
+    // endregion
 
-
-    public TemplateModel() { super(); }  // TODO: Remove?
-
+    // region Constructors
+    public TemplateModel(             ) { super(  ); }  // TODO: Remove?
     public TemplateModel(final long id) { super(id); }  // TODO: Remove?
 
     public TemplateModel(final java.lang.String title,
@@ -78,7 +79,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         this.timestamp = timestamp;
     }
+    // endregion
 
+    // region Public Methods
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
 
@@ -88,4 +91,5 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
     public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
     { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
+    // endregion
 }

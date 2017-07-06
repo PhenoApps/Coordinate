@@ -164,7 +164,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     {
         this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + tmp);
-        return this.SelectionQueryAll(/* selection => */
+        return this.selectionQueryAll(/* selection => */
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + tmp);
     }
 

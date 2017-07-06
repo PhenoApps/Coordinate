@@ -143,7 +143,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     {
         this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " by entry = " + entry);
-        return this.SelectionQueryAll(/* selection => */
+        return this.selectionQueryAll(/* selection => */
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = " + entry);
     }
 

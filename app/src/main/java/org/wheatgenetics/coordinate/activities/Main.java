@@ -633,7 +633,12 @@ android.view.View.OnKeyListener
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         new org.wheatgenetics.coordinate.model.TemplateModel(
-            "", org.wheatgenetics.coordinate.model.TemplateType.SEED, 20, 10, true, false);
+            /* title        => */ ""                                                  ,
+            /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows         => */ 20                                                  ,
+            /* cols         => */ 10                                                  ,
+            /* colNumbering => */ true                                                ,
+            /* rowNumbering => */ false                                               );
 
     private java.util.List<java.lang.Integer> excludeRows = new java.util.ArrayList<java.lang.Integer>();
     private java.util.List<java.lang.Integer> excludeCols = new java.util.ArrayList<java.lang.Integer>();
@@ -1658,8 +1663,8 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel;
         this.templateModel.getExcludeCells().clear();
-        this.excludeRows = new java.util.ArrayList<>();
-        this.excludeCols = new java.util.ArrayList<>();
+        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();
+        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -2175,29 +2180,29 @@ android.view.View.OnKeyListener
         this.templateModel.setRowNumbering(true);
         this.templateModel.setColNumbering(true);
 
-        this.nonNullOptionalFields =
+        this.nonNullOptionalFields =                                                 // TODO: Again?
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
         this.nonNullOptionalFields.add    ("Person", /* hint => */ "Person name");
         this.nonNullOptionalFields.addDate("Date"                               );
 
-        this.excludeRows = new java.util.ArrayList<>();
+        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
         this.excludeRows.add(2);
         this.excludeRows.add(5);
 
-        this.excludeCols  = new java.util.ArrayList<>();
+        this.excludeCols  = new java.util.ArrayList<java.lang.Integer>();            // TODO: Again?
         this.templateModel.getExcludeCells().clear();
 
         this.createDb(this.templateModel.getType());                // throws org.json.JSONException
 
         this.templateModel.setTitle("DNA Plate");
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         this.templateModel.setRows( 8);
         this.templateModel.setCols(12);
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         this.templateModel.setRowNumbering(true );
         this.templateModel.setColNumbering(false);
 
-        this.nonNullOptionalFields =
+        this.nonNullOptionalFields =                                                 // TODO: Again?
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         this.nonNullOptionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
         this.nonNullOptionalFields.add("Plate Name"                                          );
@@ -2207,8 +2212,8 @@ android.view.View.OnKeyListener
         this.nonNullOptionalFields.add("person"                                              );
         this.nonNullOptionalFields.add("date"                                                );
 
-        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();
-        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();
+        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
+        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
 
         this.templateModel.getExcludeCells().clear();
 
