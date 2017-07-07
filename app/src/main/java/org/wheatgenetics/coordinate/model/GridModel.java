@@ -8,11 +8,14 @@ package org.wheatgenetics.coordinate.model;
 
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
+    // region Fields
     private java.lang.String title    ;
     private long             timestamp;
 
     private org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel;
+    // endregion
 
+    // region Constructors
     public GridModel() { super(); }  // TODO: Remove?
 
     public GridModel(final long id)  // TODO: Remove?
@@ -33,4 +36,5 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         this.partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             templateId, templateTitle, templateType, templateRows, templateCols);
     }
+    // endregion
 }

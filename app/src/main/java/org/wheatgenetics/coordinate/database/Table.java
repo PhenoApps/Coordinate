@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
@@ -32,7 +33,7 @@ abstract class Table extends java.lang.Object
         this.tag       = tag                                                          ;
     }
 
-    @java.lang.Override
+    @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
     // region Internal Operations

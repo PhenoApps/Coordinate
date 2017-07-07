@@ -81,6 +81,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
+    // region toString()
     @java.lang.Override
     java.lang.String formatString()
     {
@@ -95,6 +96,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             "TemplateModel"    , this.excludeCells, this.excludeRows , this.excludeCols,
             this.optionalFields, this.colNumbering, this.rowNumbering, this.timestamp  );
     }
+    // endregion
 
     // region Public Methods
     public boolean getColNumbering()                           { return this.colNumbering        ; }

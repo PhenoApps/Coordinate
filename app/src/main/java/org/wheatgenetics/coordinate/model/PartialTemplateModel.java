@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.model;
  * GridModel.
  *
  * Uses:
+ * android.annotation.SuppressLint
+ *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.utils.Utils
@@ -55,6 +57,7 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     }
     // endregion
 
+    // region toString()
     @android.annotation.SuppressLint("DefaultLocale")
     java.lang.String formatString()
     {
@@ -65,6 +68,7 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     @java.lang.Override
     public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "PartialTemplateModel") + "]"; }
+    // endregion
 
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }
