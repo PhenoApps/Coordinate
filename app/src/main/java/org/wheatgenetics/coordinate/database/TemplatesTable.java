@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 
@@ -173,11 +174,30 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                          }
     }
 
-    public android.database.Cursor load()                               // TODO: Push to superclass?
+    public org.wheatgenetics.coordinate.model.TemplateModels load()     // TODO: Push to superclass?
     {
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
-        return this.orderByQueryAll(/* orderBy => */ "type ASC");
+
+        org.wheatgenetics.coordinate.model.TemplateModels templateModels;
+        {
+            final android.database.Cursor cursor = this.orderByQueryAll(/* orderBy => */
+                org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC");
+            if (null == cursor)
+                templateModels = null;
+            else
+            {
+                if (cursor.getCount() <= 0)
+                    templateModels = null;
+                else
+                {
+                    templateModels = new org.wheatgenetics.coordinate.model.TemplateModels();
+                    while (cursor.moveToNext()) templateModels.add(this.make(cursor));
+                }
+                cursor.close();
+            }
+        }
+        return templateModels;
     }
 
     public android.database.Cursor loadByOrder()                        // TODO: Push to superclass?

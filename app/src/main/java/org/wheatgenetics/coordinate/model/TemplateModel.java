@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.graphics.Point
+ * android.support.annotation.NonNull
  *
  * org.json.JSONException
  *
@@ -22,6 +23,39 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields;
 
     private long timestamp;
+    // endregion
+
+    // region Cell Private Methods
+    static private int randomCoordinate(final int bound)
+    { return new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1; }
+
+    private android.graphics.Point randomCell()
+    {
+        return new android.graphics.Point(
+            org.wheatgenetics.coordinate.model.TemplateModel.randomCoordinate(this.getCols()),
+            org.wheatgenetics.coordinate.model.TemplateModel.randomCoordinate(this.getRows()));
+    }
+
+    private boolean isAlreadyExcluded(
+    @android.support.annotation.NonNull final android.graphics.Point candidateCell)
+    {
+        assert null != candidateCell    ;
+        assert null != this.excludeCells;
+
+        boolean result = false;
+
+        for (final android.graphics.Point excludedCell: this.excludeCells)
+        {
+            assert null != excludedCell;
+            if (excludedCell.equals(candidateCell.x, candidateCell.y))
+            {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
     // endregion
 
     // region Constructors
@@ -108,5 +142,37 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
     public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
     { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
+
+    // region Cell Public Methods
+    public void makeOneRandomCell()
+    {
+        assert null != this.excludeCells;
+        this.excludeCells.clear();
+        this.excludeCells.add(this.randomCell());
+    }
+
+    public void makeRandomCells(int amount)
+    {
+        if (1 == amount)
+            this.makeOneRandomCell();
+        else
+        {
+            assert null != this.excludeCells;
+            this.excludeCells.clear();
+            if (amount > 1)
+            {
+                android.graphics.Point cell;
+                do
+                {
+                    do
+                        cell = this.randomCell();
+                    while (this.isAlreadyExcluded(cell));
+                    this.excludeCells.add(cell);
+                }
+                while (--amount > 0);
+            }
+        }
+    }
+    // endregion
     // endregion
 }
