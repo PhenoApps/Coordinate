@@ -119,7 +119,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     @java.lang.Override
     java.lang.String formatString()
     {
-        return this.formatString() + ", excludeCells=%s, excludeRows=%s" +
+        return super.formatString() + ", excludeCells=%s, excludeRows=%s" +
             ", excludeCols=%s, options=%s, colNumbering=%b, rowNumbering=%b, stamp=%d]";
     }
 
