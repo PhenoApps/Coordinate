@@ -85,9 +85,12 @@ abstract class Table extends java.lang.Object
             finally { cursor.close(); }
     }
 
-    android.content.ContentValues getContentValues()
+    android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }
+
+    private android.content.ContentValues getContentValuesForUpdate()
     {
-        final android.content.ContentValues contentValues = new android.content.ContentValues();
+        final android.content.ContentValues contentValues = this.getContentValues();
+        assert null != contentValues;
         contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, this.id);
         return contentValues;
     }
@@ -146,10 +149,10 @@ abstract class Table extends java.lang.Object
     {
         assert null != this.db;
         return this.db.update(
-            /* table       => */ this.tableName         ,
-            /* values      => */ this.getContentValues(),
-            /* whereClause => */ whereClause            ,
-            /* whereArgs   => */ null                   ) > 0;
+            /* table       => */ this.tableName                  ,
+            /* values      => */ this.getContentValuesForUpdate(),
+            /* whereClause => */ whereClause                     ,
+            /* whereArgs   => */ null                            ) > 0;
     }
 
     public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
