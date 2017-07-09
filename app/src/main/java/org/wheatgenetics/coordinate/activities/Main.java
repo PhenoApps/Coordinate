@@ -642,7 +642,7 @@ android.view.View.OnKeyListener
 
     private java.util.List<java.lang.Integer> excludeRows = new java.util.ArrayList<java.lang.Integer>();
     private java.util.List<java.lang.Integer> excludeCols = new java.util.ArrayList<java.lang.Integer>();
-    // private org.wheatgenetics.coordinate.model.TemplatesTable templatesTable;
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
     private java.lang.String templateOptions[];
@@ -670,6 +670,13 @@ android.view.View.OnKeyListener
     {
         return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
             this.nonNullOptionalFields);
+    }
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance)this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
     }
 
     // region Overridden Methods
@@ -1337,9 +1344,9 @@ android.view.View.OnKeyListener
         {
             {
                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+                    this.templatesTable();
                 if (templatesTable.getByType(templateType))         // database, model
-                    this.copyTemplate(templatesTable);              // throws org.json.JSONException
+                    this.fillModelFromTable(templatesTable);        // throws org.json.JSONException
             }
             this.inputSeed(this.templateModel);
         }
@@ -1347,9 +1354,9 @@ android.view.View.OnKeyListener
         {
             {
                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+                    this.templatesTable();
                 if (templatesTable.getByType(templateType))         // database, model
-                    this.copyTemplate(templatesTable);              // throws org.json.JSONException
+                    this.fillModelFromTable(templatesTable);        // throws org.json.JSONException
             }
             this.templateModel.makeOneRandomCell();
             this.inputTemplateInput(                                // throws org.json.JSONException
@@ -1760,7 +1767,7 @@ android.view.View.OnKeyListener
     private void loadTemplate()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this).load();  // TODO: Make into field?
+            this.templatesTable().load();
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(this.templateOptions[0])
@@ -1809,7 +1816,7 @@ android.view.View.OnKeyListener
     private void deleteTemplate()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this).load();  // TODO: Make into field?
+            this.templatesTable().load();
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(org.wheatgenetics.coordinate.R.string.delete_template)
@@ -1930,8 +1937,9 @@ android.view.View.OnKeyListener
                             Main.this.templateModel.setRows(grd.templateRows);
                             Main.this.templateModel.setCols(grd.templateCols);
 
-                            final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                                new org.wheatgenetics.coordinate.database.TemplatesTable(Main.this);
+                            final org.wheatgenetics.coordinate.database.TemplatesTable
+                                templatesTable = org.wheatgenetics.coordinate.activities.
+                                    Main.this.templatesTable();
 
                             if (templatesTable.get(grd.templateId))  // database
                             {
@@ -2183,7 +2191,7 @@ android.view.View.OnKeyListener
     throws org.json.JSONException  // database, model
     {
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+            this.templatesTable();
 
         assert null != this.templateModel;
         templatesTable.title = this.templateModel.getTitle()         ;
@@ -2208,7 +2216,7 @@ android.view.View.OnKeyListener
             return templatesTable.insert() > 0;
     }
 
-    private void copyTemplate(
+    private void fillModelFromTable(
     final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable)  // model
     throws org.json.JSONException
     {
@@ -2664,8 +2672,8 @@ android.view.View.OnKeyListener
             this.excludeRows.clear();   // model
             this.excludeCols.clear();   // model
 
-            org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+            final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                this.templatesTable();
 
             if (templatesTable.get(grd.templateId))  // database
             {
@@ -2857,8 +2865,8 @@ android.view.View.OnKeyListener
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         assert null != templateModel;
-        org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
         if (!templatesTable.get(templateModel.getId())) return false;  // database
 
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
@@ -2921,7 +2929,7 @@ android.view.View.OnKeyListener
         assert null != this.templateModel;
         this.templateModel.setType(templateType);
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+            this.templatesTable();
         templatesTable.title = this.templateModel.getTitle();
         templatesTable.type  = templateType.getCode()       ;
         templatesTable.cols  = this.templateModel.getCols() ;
