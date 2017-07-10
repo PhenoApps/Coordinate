@@ -161,17 +161,30 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close();                                          }
     }
 
-    public boolean getByType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    private android.database.Cursor query(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         assert null != templateType;
-        final android.database.Cursor cursor = this.queryDistinct(/* selection => */
+        return this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
-            templateType.getCode());
+                templateType.getCode());
+    }
+
+    public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        final android.database.Cursor cursor = this.query(templateType);
         if (null == cursor)
             return false;
         else
-            try     { return cursor.moveToFirst() ? this.copy(cursor) : false; }
-            finally { cursor.close();                                          }
+            try     { return cursor.getCount() > 0; }
+            finally { cursor.close();               }
+    }
+
+    public org.wheatgenetics.coordinate.model.TemplateModel get(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        return (org.wheatgenetics.coordinate.model.TemplateModel)
+            this.makeFromFirst(this.query(templateType));
     }
 
     public org.wheatgenetics.coordinate.model.TemplateModels load()     // TODO: Push to superclass?

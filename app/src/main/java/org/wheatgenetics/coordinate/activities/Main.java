@@ -1341,33 +1341,20 @@ android.view.View.OnKeyListener
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
             this.templateModel.getType();
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-        {
-            {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    this.templatesTable();
-                if (templatesTable.getByType(templateType))         // database, model
-                    this.fillModelFromTable(templatesTable);        // throws org.json.JSONException
-            }
-            this.inputSeed(this.templateModel);
-        }
+            this.inputSeed(this.templatesTable().get(templateType));
         else if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
         {
-            {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    this.templatesTable();
-                if (templatesTable.getByType(templateType))         // database, model
-                    this.fillModelFromTable(templatesTable);        // throws org.json.JSONException
-            }
-            this.templateModel.makeOneRandomCell();
+            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                this.templatesTable().get(templateType);
+            assert null != templateModel;
+            templateModel.makeOneRandomCell();
             this.inputTemplateInput(                                // throws org.json.JSONException
-                org.wheatgenetics.coordinate.activities.Main.MODE_DNA, this.templateModel);
+                org.wheatgenetics.coordinate.activities.Main.MODE_DNA, templateModel);
         }
         else
-        {
             // reset options?
             this.inputTemplateInput(                                // throws org.json.JSONException
                 org.wheatgenetics.coordinate.activities.Main.MODE_SAVED, this.templateModel);
-        }
     }
 
     private void export()
@@ -1450,7 +1437,8 @@ android.view.View.OnKeyListener
 
     //TODO merge this method with the one above
     private void inputTemplateInput(final int mode,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    throws org.json.JSONException
     {
         assert null != this.nonNullOptionalFields;
         if (this.nonNullOptionalFields.isEmpty())
@@ -2170,7 +2158,7 @@ android.view.View.OnKeyListener
 
         templatesTable.stamp = java.lang.System.currentTimeMillis();
 
-        if (templatesTable.getByType(templateModel.getType()))
+        if (templatesTable.exists(templateModel.getType()))
             return templatesTable.update();
         else
             return templatesTable.insert() > 0;

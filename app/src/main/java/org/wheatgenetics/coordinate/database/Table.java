@@ -20,7 +20,7 @@ abstract class Table extends java.lang.Object
     // region Fields
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
-    public        long                                   id = 0        ;
+    public        long                                   id = 0        ;      // TODO: Remove later.
     // endregion
 
     Table(final android.content.Context context, final java.lang.String tableName,
@@ -39,6 +39,7 @@ abstract class Table extends java.lang.Object
     // region Internal Operations
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
 
+    // region Database Internal Operations
     private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
     final java.lang.String selectionArgs[], final java.lang.String orderBy)
     {
@@ -73,7 +74,9 @@ abstract class Table extends java.lang.Object
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
     }
+    // endregion
 
+    // region Model Internal Operations
     abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
 
     org.wheatgenetics.coordinate.model.Model makeFromFirst(final android.database.Cursor cursor)
@@ -82,7 +85,7 @@ abstract class Table extends java.lang.Object
             return null;
         else
             try     { if (cursor.moveToFirst()) return this.make(cursor); else return null; }
-            finally { cursor.close(); }
+            finally { cursor.close();                                                       }
     }
 
     android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }
@@ -94,6 +97,7 @@ abstract class Table extends java.lang.Object
         contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, this.id);
         return contentValues;
     }
+    // endregion
     // endregion
 
     // region Query Method Dependencies
