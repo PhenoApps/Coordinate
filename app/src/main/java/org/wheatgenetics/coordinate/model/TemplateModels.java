@@ -8,7 +8,41 @@ package org.wheatgenetics.coordinate.model;
  */
 
 public class TemplateModels extends java.lang.Object
+implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 {
+    static class Iterator extends java.lang.Object
+    implements java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel>
+    {
+        final private java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
+            listIterator;
+
+        Iterator(@android.support.annotation.NonNull
+        final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
+        {
+            super();
+
+            assert null != arrayList;
+            this.listIterator = arrayList.listIterator();
+        }
+
+        @java.lang.Override
+        public boolean hasNext()
+        {
+            assert null != this.listIterator;
+            return this.listIterator.hasNext();
+        }
+
+        @java.lang.Override
+        public org.wheatgenetics.coordinate.model.TemplateModel next()
+        {
+            assert null != this.listIterator;
+            return this.listIterator.next();
+        }
+
+        @java.lang.Override
+        public void remove() { throw new java.lang.UnsupportedOperationException(); }
+    }
+
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
@@ -23,6 +57,12 @@ public class TemplateModels extends java.lang.Object
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean isInRange(final int i)
     { return i < 0 ? false : null == this.arrayListInstance ? false : i < this.arrayList().size(); }
+    // endregion
+
+    // region Public java.lang.Iterable<> Method
+    @java.lang.Override
+    public java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel> iterator()
+    { return new org.wheatgenetics.coordinate.model.TemplateModels.Iterator(this.arrayList()); }
     // endregion
 
     // region Public Methods
@@ -61,6 +101,17 @@ public class TemplateModels extends java.lang.Object
             return null;
         else
             return this.isInRange(i) ? this.arrayList().get(i) : null;
+    }
+
+    public static org.wheatgenetics.coordinate.model.TemplateModels makeDefault()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels result =
+            new org.wheatgenetics.coordinate.model.TemplateModels();
+
+        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
+        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ());
+
+        return result;
     }
     // endregion
 }

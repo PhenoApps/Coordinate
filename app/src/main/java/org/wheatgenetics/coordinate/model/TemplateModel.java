@@ -194,7 +194,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
-    public static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
+    static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -213,7 +213,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         return result;
     }
 
-    public static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
+    static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
             /* title          => */ "DNA Plate"                                        ,

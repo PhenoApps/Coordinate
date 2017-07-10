@@ -2137,11 +2137,13 @@ android.view.View.OnKeyListener
     // Adds default templates to database
     private void initDb() throws org.json.JSONException  // model
     {
-        this.createDb(                                              // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
-        this.createDb(                                              // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault());
-
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
+                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+            for (final org.wheatgenetics.coordinate.model.TemplateModel
+            defaultTemplateModel: defaultTemplateModels)
+                this.createDb(defaultTemplateModel);                // throws org.json.JSONException
+        }
         this.templateModel.setTitle("");
     }
 
