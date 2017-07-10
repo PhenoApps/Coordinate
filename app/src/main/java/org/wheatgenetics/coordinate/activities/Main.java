@@ -1343,14 +1343,9 @@ android.view.View.OnKeyListener
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
             this.inputSeed(this.templatesTable().get(templateType));
         else if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-        {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                this.templatesTable().get(templateType);
-            assert null != templateModel;
-            templateModel.makeOneRandomCell();
             this.inputTemplateInput(                                // throws org.json.JSONException
-                org.wheatgenetics.coordinate.activities.Main.MODE_DNA, templateModel);
-        }
+                org.wheatgenetics.coordinate.activities.Main.MODE_DNA,
+                this.templatesTable().get(templateType)              );
         else
             // reset options?
             this.inputTemplateInput(                                // throws org.json.JSONException

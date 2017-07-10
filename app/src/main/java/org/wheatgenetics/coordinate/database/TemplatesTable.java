@@ -150,6 +150,15 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Operations
+    private android.database.Cursor query(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        assert null != templateType;
+        return this.queryDistinct(/* selection => */
+            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
+                templateType.getCode());
+    }
+
     public boolean get(final long id)                                   // TODO: Push to superclass?
     {
         final android.database.Cursor cursor = this.queryDistinct(/* selection => */
@@ -159,15 +168,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         else
             try     { return cursor.moveToFirst() ? this.copy(cursor) : false; }
             finally { cursor.close();                                          }
-    }
-
-    private android.database.Cursor query(
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        assert null != templateType;
-        return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
-                templateType.getCode());
     }
 
     public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
@@ -183,8 +183,15 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public org.wheatgenetics.coordinate.model.TemplateModel get(
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
-        return (org.wheatgenetics.coordinate.model.TemplateModel)
-            this.makeFromFirst(this.query(templateType));
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            (org.wheatgenetics.coordinate.model.TemplateModel)
+                this.makeFromFirst(this.query(templateType));
+
+        if (null != result)
+            if (result.getType() == org.wheatgenetics.coordinate.model.TemplateType.DNA)
+                result.makeOneRandomCell();
+
+        return result;
     }
 
     public org.wheatgenetics.coordinate.model.TemplateModels load()     // TODO: Push to superclass?
