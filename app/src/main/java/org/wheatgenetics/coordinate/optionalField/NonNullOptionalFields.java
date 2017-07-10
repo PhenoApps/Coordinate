@@ -134,5 +134,33 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
             jsonArray.put(optionalField.makeJSONObject());          // throws org.json.JSONException
         return jsonArray.toString();
     }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+
+        result.add    ("Tray"  , /* hint => */ "Tray ID"    );
+        result.add    ("Person", /* hint => */ "Person name");
+        result.addDate("Date"                               );
+
+        return result;
+    }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+
+        result.add("Plate"                             , /* hint => */ "Plate ID"); // TODO dna
+        result.add("Plate Name"                                                  );
+        result.add("Notes"                                                       );
+        result.add("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
+        result.add("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
+        result.add("person"                                                      );
+        result.add("date"                                                        );
+
+        return result;
+    }
     // endregion
 }

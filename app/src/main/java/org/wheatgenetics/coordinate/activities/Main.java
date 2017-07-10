@@ -2137,80 +2137,38 @@ android.view.View.OnKeyListener
     // Adds default templates to database
     private void initDb() throws org.json.JSONException  // model
     {
-        assert null != this.templateModel;
-        this.templateModel.setTitle("Seed Tray");
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
-        this.templateModel.setRows( 6);
-        this.templateModel.setCols(20);
-        this.templateModel.setRowNumbering(true);
-        this.templateModel.setColNumbering(true);
-
-        this.nonNullOptionalFields =                                                 // TODO: Again?
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        this.nonNullOptionalFields.add    ("Tray"  , /* hint => */ "Tray ID"    );
-        this.nonNullOptionalFields.add    ("Person", /* hint => */ "Person name");
-        this.nonNullOptionalFields.addDate("Date"                               );
-
-        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
-        this.excludeRows.add(2);
-        this.excludeRows.add(5);
-
-        this.excludeCols  = new java.util.ArrayList<java.lang.Integer>();            // TODO: Again?
-        this.templateModel.getExcludeCells().clear();
-
-        this.createDb(this.templateModel.getType());                // throws org.json.JSONException
-
-        this.templateModel.setTitle("DNA Plate");
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
-        this.templateModel.setRows( 8);
-        this.templateModel.setCols(12);
-        this.templateModel.setRowNumbering(true );
-        this.templateModel.setColNumbering(false);
-
-        this.nonNullOptionalFields =                                                 // TODO: Again?
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        this.nonNullOptionalFields.add("Plate", /* hint => */ "Plate ID"                     ); // TODO dna
-        this.nonNullOptionalFields.add("Plate Name"                                          );
-        this.nonNullOptionalFields.add("Notes"                                               );
-        this.nonNullOptionalFields.add("tissue_type", /* value => */ "Leaf", /* hint => */ "");
-        this.nonNullOptionalFields.add("extraction" , /* value => */ "CTAB", /* hint => */ "");
-        this.nonNullOptionalFields.add("person"                                              );
-        this.nonNullOptionalFields.add("date"                                                );
-
-        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
-        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();             // TODO: Again?
-
-        this.templateModel.getExcludeCells().clear();
-
-        this.createDb(this.templateModel.getType());                // throws org.json.JSONException
+        this.createDb(                                              // throws org.json.JSONException
+            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
+        this.createDb(                                              // throws org.json.JSONException
+            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault());
 
         this.templateModel.setTitle("");
     }
 
-    private boolean createDb(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    private boolean createDb(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     throws org.json.JSONException  // database, model
     {
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             this.templatesTable();
 
-        assert null != this.templateModel;
-        templatesTable.title = this.templateModel.getTitle()         ;
-        templatesTable.type  = this.templateModel.getType().getCode();
-        templatesTable.rows  = this.templateModel.getRows()          ;
-        templatesTable.cols  = this.templateModel.getCols()          ;
+        assert null != templateModel;
+        templatesTable.title = templateModel.getTitle()         ;
+        templatesTable.type  = templateModel.getType().getCode();
+        templatesTable.rows  = templateModel.getRows()          ;
+        templatesTable.cols  = templateModel.getCols()          ;
 
-        templatesTable.excludeCells = org.wheatgenetics.coordinate.utils.Utils.pointListToJson(this.templateModel.getExcludeCells()); // throws org.json.JSONException
-        templatesTable.excludeCols  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeCols);
-        templatesTable.excludeRows  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeRows);
+        templatesTable.excludeCells = org.wheatgenetics.coordinate.utils.Utils.pointListToJson(templateModel.getExcludeCells()); // throws org.json.JSONException
+        templatesTable.excludeCols  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(templateModel.getExcludeCols());
+        templatesTable.excludeRows  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(templateModel.getExcludeRows());
 
-        templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException
+        templatesTable.options = templateModel.getOptionalFields().toJson();     // throws org.json.JSONException
 
-        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
-        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
+        templatesTable.colNumbering = templateModel.getColNumbering() ? 1 : 0;
+        templatesTable.rowNumbering = templateModel.getRowNumbering() ? 1 : 0;
 
         templatesTable.stamp = java.lang.System.currentTimeMillis();
 
-        if (templatesTable.getByType(templateType))
+        if (templatesTable.getByType(templateModel.getType()))
             return templatesTable.update();
         else
             return templatesTable.insert() > 0;

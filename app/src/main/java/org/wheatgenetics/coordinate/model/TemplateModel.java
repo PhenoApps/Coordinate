@@ -74,6 +74,19 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         this.excludeCells = new java.util.ArrayList<android.graphics.Point>();
     }
 
+    private TemplateModel(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
+    {
+        this(title, type, rows, cols, colNumbering, rowNumbering);
+
+        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();
+        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();
+
+        this.optionalFields = nonNullOptionalFields;
+    }
+
     public TemplateModel(final long id, final java.lang.String title, final int code,
     final int rows, final int cols, final java.lang.String excludeCells,
     final java.lang.String excludeRows, final java.lang.String excludeCols, final int colNumbering,
@@ -143,6 +156,12 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
     { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
 
+    public java.util.List<java.lang.Integer> getExcludeRows() { return this.excludeRows; }
+    public java.util.List<java.lang.Integer> getExcludeCols() { return this.excludeCols; }
+
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
+    { return this.optionalFields; }
+
     // region Cell Public Methods
     public void makeOneRandomCell()
     {
@@ -174,5 +193,37 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         }
     }
     // endregion
+
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* title          => */ "Seed Tray"                                         ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                /* rows           => */  6                                                  ,
+                /* cols           => */ 20                                                  ,
+                /* colNumbering   => */ true                                                ,
+                /* rowNumbering   => */ true                                                ,
+                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                    NonNullOptionalFields.makeSeedDefault());
+
+        result.excludeRows.add(2);
+        result.excludeRows.add(5);
+
+        return result;
+    }
+
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
+    {
+        return new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title          => */ "DNA Plate"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */  8                                                 ,
+            /* cols           => */ 12                                                 ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                NonNullOptionalFields.makeDNADefault());
+    }
     // endregion
 }
