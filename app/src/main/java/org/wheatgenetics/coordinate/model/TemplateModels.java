@@ -71,6 +71,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { return null == templateModel ? false : this.arrayList().add(templateModel); }
 
+    public int size() { return null == this.arrayListInstance ? 0 : this.arrayList().size(); }
+
     public java.lang.String[] titles()
     {
         if (null == this.arrayListInstance)

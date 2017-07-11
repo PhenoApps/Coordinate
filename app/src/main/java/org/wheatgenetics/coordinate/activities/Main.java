@@ -807,7 +807,7 @@ android.view.View.OnKeyListener
 
         this.mainLayout.setVisibility(android.view.View.INVISIBLE);
 
-        try { this.initDb(); } catch (final org.json.JSONException e) {}
+        this.initializeTemplatesTable();
         this.createDirs();
 
         if (ep.getLong("CurrentGrid", -1) != -1)
@@ -2117,28 +2117,28 @@ android.view.View.OnKeyListener
     private void makeToast(final java.lang.String message)
     { android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show(); }
 
-    // Adds default templates to database
-    private void initDb() throws org.json.JSONException  // model
+    /**
+     * Adds default templates to database if they aren't there already.  If they are there then they
+     * are updated to their default values.
+      */
+    private void initializeTemplatesTable()
     {
         {
             final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
                 org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-            for (final org.wheatgenetics.coordinate.model.TemplateModel
-            defaultTemplateModel: defaultTemplateModels)
-                this.createDb(defaultTemplateModel);                // throws org.json.JSONException
+            if (defaultTemplateModels.size() > 0)
+            {
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    this.templatesTable();
+                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
+                defaultTemplateModels)
+                    if (templatesTable.exists(defaultTemplateModel.getType()))
+                        templatesTable.update(defaultTemplateModel);
+                    else
+                        templatesTable.insert(defaultTemplateModel);
+            }
         }
         this.templateModel.setTitle("");
-    }
-
-    private boolean createDb(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    throws org.json.JSONException  // database, model
-    {
-        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            this.templatesTable();
-        if (templatesTable.exists(templateModel.getType()))
-            return templatesTable.update(templateModel);
-        else
-            return templatesTable.insert(templateModel) > 0;
     }
 
     private void fillModelFromTable(
