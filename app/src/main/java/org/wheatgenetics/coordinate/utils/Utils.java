@@ -23,13 +23,9 @@ import android.widget.Toast;
 
 /**
  * Uses:
- * android.graphics.Point
  * android.text.format.DateFormat
  *
  * org.json.JSONArray
- * org.json.JSONException
- * org.json.JSONObject
- * org.json.JSONTokener
  */
 
 public class Utils extends java.lang.Object
@@ -206,63 +202,5 @@ public class Utils extends java.lang.Object
         for (final java.lang.Integer integer: integerList)
             if (null != integer) jsonArray.put(integer.intValue());
         return jsonArray.toString();
-    }
-
-    public static java.lang.String pointListToJson(
-    final java.util.List<android.graphics.Point> pointList) throws org.json.JSONException
-    {
-        final org.json.JSONArray jsonArray = new org.json.JSONArray();
-
-        assert null != pointList;
-        for (final android.graphics.Point point: pointList) if (null != point)
-        {
-            final org.json.JSONObject jsonObject = new org.json.JSONObject();
-            jsonObject.put("row", point.y);                         // throws org.json.JSONException
-            jsonObject.put("col", point.x);                         // throws org.json.JSONException
-
-            jsonArray.put(jsonObject);
-        }
-        return jsonArray.toString();
-    }
-
-    public static java.util.List<java.lang.Integer> jsonToIntegerList(final java.lang.String json)
-    throws org.json.JSONException
-    {
-        final java.util.List<java.lang.Integer> integerList =
-            new java.util.ArrayList<java.lang.Integer>();
-        {
-            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-            final org.json.JSONArray   jsonArray   =
-                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
-
-            assert null != jsonArray;
-            for (int i = 0; i < jsonArray.length(); i++)
-                integerList.add(jsonArray.getInt(i));               // throws org.json.JSONException
-        }
-        return integerList;
-    }
-
-    public static java.util.List<android.graphics.Point> jsonToPointList(
-    final java.lang.String json) throws org.json.JSONException
-    {
-        final java.util.List<android.graphics.Point> pointList =
-            new java.util.ArrayList<android.graphics.Point>();
-        {
-            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-            final org.json.JSONArray   jsonArray   =
-                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
-
-            assert null != jsonArray;
-            for (int i = 0; i < jsonArray.length(); i++)
-            {
-                final org.json.JSONObject jsonObject = (org.json.JSONObject) jsonArray.get(i);
-
-                assert null != jsonObject;
-                pointList.add(new android.graphics.Point(
-                    jsonObject.getInt("col"),                       // throws org.json.JSONException
-                    jsonObject.getInt("row")));                     // throws org.json.JSONException
-            }
-        }
-        return pointList;
     }
 }

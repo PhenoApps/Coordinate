@@ -2141,28 +2141,6 @@ android.view.View.OnKeyListener
         this.templateModel.setTitle("");
     }
 
-    private void fillModelFromTable(
-    final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable)  // model
-    throws org.json.JSONException
-    {
-        assert null != this.templateModel;
-        this.templateModel.setId(templatesTable.id);
-        this.templateModel.setTitle(templatesTable.title);
-        this.templateModel.setType(templatesTable.type);
-        this.templateModel.setRows(templatesTable.rows);
-        this.templateModel.setCols(templatesTable.cols);
-
-        this.templateModel.setExcludeCells(org.wheatgenetics.coordinate.utils.Utils.jsonToPointList(templatesTable.excludeCells));  // throws org.json.JSONException
-
-        this.excludeCols = org.wheatgenetics.coordinate.utils.Utils.jsonToIntegerList(templatesTable.excludeCols);  // throws org.json.JSONException
-        this.excludeRows = org.wheatgenetics.coordinate.utils.Utils.jsonToIntegerList(templatesTable.excludeRows);  // throws org.json.JSONException
-
-        this.nonNullOptionalFields = new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(templatesTable.options); // throws org.json.JSONException
-
-        this.templateModel.setRowNumbering(1 == templatesTable.rowNumbering);
-        this.templateModel.setColNumbering(1 == templatesTable.colNumbering);
-    }
-
     private void inputTemplateNewExtra()
     {
         android.view.View view;
@@ -2860,7 +2838,7 @@ android.view.View.OnKeyListener
         templatesTable.cols  = this.templateModel.getCols() ;
         templatesTable.rows  = this.templateModel.getRows() ;
 
-        templatesTable.excludeCells = org.wheatgenetics.coordinate.utils.Utils.pointListToJson(this.templateModel.getExcludeCells());  // throws org.json.JSONException, model
+        templatesTable.excludeCells = this.templateModel.getExcludeCellsAsJson();  // throws org.json.JSONException, model
         templatesTable.excludeCols = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeCols);  // model
         templatesTable.excludeRows = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeRows);  // model
 

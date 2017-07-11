@@ -5,7 +5,10 @@ package org.wheatgenetics.coordinate.model;
  * android.graphics.Point
  * android.support.annotation.NonNull
  *
+ * org.json.JSONArray
  * org.json.JSONException
+ * org.json.JSONObject
+ * org.json.JSONTokener
  *
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -24,6 +27,65 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     private long timestamp;
     // endregion
+
+    // region Private Methods
+    private static java.util.List<android.graphics.Point> jsonToPointList(
+    final java.lang.String json) throws org.json.JSONException
+    {
+        final java.util.List<android.graphics.Point> pointList =
+            new java.util.ArrayList<android.graphics.Point>();
+        {
+            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+            final org.json.JSONArray   jsonArray   =
+                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
+
+            assert null != jsonArray;
+            for (int i = 0; i < jsonArray.length(); i++)
+            {
+                final org.json.JSONObject jsonObject = (org.json.JSONObject) jsonArray.get(i);
+
+                assert null != jsonObject;
+                pointList.add(new android.graphics.Point(
+                    jsonObject.getInt("col"),                       // throws org.json.JSONException
+                    jsonObject.getInt("row")));                     // throws org.json.JSONException
+            }
+        }
+        return pointList;
+    }
+
+    private static java.util.List<java.lang.Integer> jsonToIntegerList(final java.lang.String json)
+    throws org.json.JSONException
+    {
+        final java.util.List<java.lang.Integer> integerList =
+            new java.util.ArrayList<java.lang.Integer>();
+        {
+            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+            final org.json.JSONArray   jsonArray   =
+                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
+
+            assert null != jsonArray;
+            for (int i = 0; i < jsonArray.length(); i++)
+                integerList.add(jsonArray.getInt(i));               // throws org.json.JSONException
+        }
+        return integerList;
+    }
+
+    private static java.lang.String pointListToJson(
+    final java.util.List<android.graphics.Point> pointList) throws org.json.JSONException
+    {
+        final org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+        assert null != pointList;
+        for (final android.graphics.Point point: pointList) if (null != point)
+        {
+            final org.json.JSONObject jsonObject = new org.json.JSONObject();
+            jsonObject.put("row", point.y);                         // throws org.json.JSONException
+            jsonObject.put("col", point.x);                         // throws org.json.JSONException
+
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
+    }
 
     // region Cell Private Methods
     static private int randomCoordinate(final int bound)
@@ -56,6 +118,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         return result;
     }
+    // endregion
     // endregion
 
     // region Constructors
@@ -97,20 +160,20 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         try
         {
             this.excludeCells =
-                org.wheatgenetics.coordinate.utils.Utils.jsonToPointList(excludeCells);
+                org.wheatgenetics.coordinate.model.TemplateModel.jsonToPointList(excludeCells);
         }
         catch (final org.json.JSONException e) { this.excludeCells = null; }
 
         try
         {
             this.excludeRows =
-                org.wheatgenetics.coordinate.utils.Utils.jsonToIntegerList(excludeRows);
+                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerList(excludeRows);
         }
         catch (final org.json.JSONException e) { this.excludeRows = null; }
         try
         {
             this.excludeCols =
-                org.wheatgenetics.coordinate.utils.Utils.jsonToIntegerList(excludeCols);
+                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerList(excludeCols);
         }
         catch (final org.json.JSONException e) { this.excludeCols = null; }
 
@@ -150,7 +213,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
 
     public java.lang.String getExcludeCellsAsJson() throws org.json.JSONException
-    { return org.wheatgenetics.coordinate.utils.Utils.pointListToJson(this.getExcludeCells()); }
+    {
+        return org.wheatgenetics.coordinate.model.TemplateModel.pointListToJson(
+            this.getExcludeCells());
+    }
 
     public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
     { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
