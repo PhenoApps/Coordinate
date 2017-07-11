@@ -639,9 +639,6 @@ android.view.View.OnKeyListener
             /* cols         => */ 10                                                  ,
             /* colNumbering => */ true                                                ,
             /* rowNumbering => */ false                                               );
-
-    private java.util.List<java.lang.Integer> excludeRows = new java.util.ArrayList<java.lang.Integer>();
-    private java.util.List<java.lang.Integer> excludeCols = new java.util.ArrayList<java.lang.Integer>();
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
@@ -1646,8 +1643,8 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel;
         this.templateModel.getExcludeCells().clear();
-        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();
-        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();
+        this.templateModel.getExcludeRows ().clear();
+        this.templateModel.getExcludeCols ().clear();
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -1938,8 +1935,8 @@ android.view.View.OnKeyListener
                             }
 
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();  // model
-                            org.wheatgenetics.coordinate.activities.Main.this.excludeRows.clear();   // model
-                            org.wheatgenetics.coordinate.activities.Main.this.excludeCols.clear();   // model
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeRows ().clear();   // model
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCols ().clear();   // model
 
                             populateTemplate();
                             showTemplateUI();
@@ -2398,8 +2395,8 @@ android.view.View.OnKeyListener
             }
             {
                 final java.lang.Integer rowOrCol = java.lang.Integer.valueOf(i + 1);
-                selections[i] = 0 == type ? this.excludeRows.contains(rowOrCol) :
-                    this.excludeCols.contains(rowOrCol);
+                selections[i] = 0 == type ? this.templateModel.getExcludeRows().contains(rowOrCol) :
+                    this.templateModel.getExcludeCols().contains(rowOrCol);
             }
         }
 
@@ -2427,9 +2424,9 @@ android.view.View.OnKeyListener
                     // get choices
                     for (int i = 0; i < total; i++) if (selections[i])
                         if (0 == type)
-                            org.wheatgenetics.coordinate.activities.Main.this.excludeRows.add(i + 1);
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeRows().add(i + 1);
                         else
-                            org.wheatgenetics.coordinate.activities.Main.this.excludeCols.add(i + 1);
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCols().add(i + 1);
                 }
             });
 
@@ -2572,8 +2569,8 @@ android.view.View.OnKeyListener
             this.templateModel.setCols(grd.templateCols);
 
             this.templateModel.getExcludeCells().clear();  // model
-            this.excludeRows.clear();   // model
-            this.excludeCols.clear();   // model
+            this.templateModel.getExcludeRows ().clear();  // model
+            this.templateModel.getExcludeCols ().clear();  // model
 
             final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                 this.templatesTable();
@@ -2612,14 +2609,14 @@ android.view.View.OnKeyListener
 
     private boolean isExcludedRow(final int r)
     {
-        assert null != this.excludeRows;
-        return this.excludeRows.contains(java.lang.Integer.valueOf(r));
+        assert null != this.templateModel.getExcludeRows();
+        return this.templateModel.getExcludeRows().contains(java.lang.Integer.valueOf(r));
     }
 
     private boolean isExcludedCol(final int c)
     {
-        assert null != this.excludeCols;
-        return this.excludeCols.contains(java.lang.Integer.valueOf(c));
+        assert null != this.templateModel.getExcludeCols();
+        return this.templateModel.getExcludeCols().contains(java.lang.Integer.valueOf(c));
     }
 
     private void saveData()
@@ -2839,8 +2836,8 @@ android.view.View.OnKeyListener
         templatesTable.rows  = this.templateModel.getRows() ;
 
         templatesTable.excludeCells = this.templateModel.getExcludeCellsAsJson();  // throws org.json.JSONException, model
-        templatesTable.excludeCols = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeCols);  // model
-        templatesTable.excludeRows = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.excludeRows);  // model
+        templatesTable.excludeCols = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.templateModel.getExcludeCols());  // model
+        templatesTable.excludeRows = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.templateModel.getExcludeRows());  // model
 
         templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException, model
 

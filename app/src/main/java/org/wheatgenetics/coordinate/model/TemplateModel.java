@@ -233,11 +233,13 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeCols()); }
     // endregion
 
+    // region colNumbering, rowNumbering Public Methods
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+    // endregion
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
     { return this.optionalFields; }
