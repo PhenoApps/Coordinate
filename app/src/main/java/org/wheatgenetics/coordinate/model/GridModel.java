@@ -37,4 +37,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             templateId, templateTitle, templateType, templateRows, templateCols);
     }
     // endregion
+
+    public java.lang.String getTitle    () { return this.title    ; }
+    public long             getTimestamp() { return this.timestamp; }
 }

@@ -2,12 +2,16 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
  *
+ *  org.json.JSONException
+ *
  * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.Model
  */
 
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
@@ -33,7 +37,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "GridsTable"                                               );
     }
 
-    @java.lang.Override
+    @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString()
     {
         return super.toString() + java.lang.String.format(
@@ -79,6 +83,26 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME, this.title     );
         contentValues.put(
             org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME, this.timestamp );
+
+        return contentValues;
+    }
+
+    @java.lang.Override
+    android.content.ContentValues getContentValues(  // TODO: U will need another getContentValues() to replace copyAll().
+    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    {
+        final android.content.ContentValues contentValues = super.getContentValues(model);
+
+        final org.wheatgenetics.coordinate.model.GridModel gridModel =
+            (org.wheatgenetics.coordinate.model.GridModel) model;
+
+        assert null != gridModel;
+        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+            gridModel.getId());
+        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+            gridModel.getTitle());
+        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
+            gridModel.getTimestamp());
 
         return contentValues;
     }

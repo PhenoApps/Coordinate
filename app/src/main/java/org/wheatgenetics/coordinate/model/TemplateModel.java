@@ -146,21 +146,37 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     // endregion
 
     // region Public Methods
+    // region excludeCells Public Methods
+    public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
+
+    public java.lang.String getExcludeCellsAsJson() throws org.json.JSONException
+    { return org.wheatgenetics.coordinate.utils.Utils.pointListToJson(this.getExcludeCells()); }
+
+    public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
+    { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
+    // endregion
+
+    // region excludeRows, excludeCols Public Methods
+    public java.util.List<java.lang.Integer> getExcludeRows() { return this.excludeRows; }
+    public java.util.List<java.lang.Integer> getExcludeCols() { return this.excludeCols; }
+
+    public java.lang.String getExcludeRowsAsJson()
+    { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeRows()); }
+
+    public java.lang.String getExcludeColsAsJson()
+    { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeCols()); }
+    // endregion
+
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
 
-    public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
-    public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
-    { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
-
-    public java.util.List<java.lang.Integer> getExcludeRows() { return this.excludeRows; }
-    public java.util.List<java.lang.Integer> getExcludeCols() { return this.excludeCols; }
-
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
     { return this.optionalFields; }
+
+    public long getTimestamp() { return this.timestamp; }
 
     // region Cell Public Methods
     public void makeOneRandomCell()
@@ -194,6 +210,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
+    // region Default Public Methods
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
@@ -225,5 +242,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                 NonNullOptionalFields.makeDNADefault());
     }
+    // endregion
     // endregion
 }

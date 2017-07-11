@@ -6,7 +6,10 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
+ * org.json.JSONException
+ *
  * org.wheatgenetics.coordinate.database.Table
+ * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -88,36 +91,41 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues()
+    android.content.ContentValues getContentValues(
+    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
-        final android.content.ContentValues contentValues = super.getContentValues();
+        final android.content.ContentValues contentValues = super.getContentValues(model);
 
+        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+            (org.wheatgenetics.coordinate.model.TemplateModel) model;
+
+        assert null != templateModel;
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
-            this.title);
+            templateModel.getTitle());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
-            this.type);
+            templateModel.getType().getCode());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
-            this.cols);
+            templateModel.getCols());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
-            this.rows);
+            templateModel.getRows());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
-            this.excludeCells);
+            templateModel.getExcludeCellsAsJson());                 // throws org.json.JSONException
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
-            this.excludeCols);
+            templateModel.getExcludeColsAsJson());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
-            this.excludeRows);
+            templateModel.getExcludeRowsAsJson());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
-            this.colNumbering);
+            templateModel.getColNumbering());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
-            this.rowNumbering);
+            templateModel.getRowNumbering());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
-            this.options);
+            templateModel.getOptionalFields().toJson());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
-            this.stamp);
+            templateModel.getTimestamp());
 
         return contentValues;
     }
@@ -225,14 +233,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
         return this.orderByQueryAll(/* orderBy => */ "_id DESC");
-    }
-
-    public boolean update()                                             // TODO: Push to superclass?
-    {
-        this.sendInfoLogMsg("Updating table " +
-            org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME + " on id = " + id);
-        return this.update(/* whereClause   => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
     // endregion
     // endregion

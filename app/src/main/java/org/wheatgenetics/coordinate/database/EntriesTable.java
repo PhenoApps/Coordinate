@@ -2,12 +2,16 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
  *
+ * org.json.JSONException
+ *
  * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.Model
  */
 
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
@@ -27,7 +31,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "EntriesTable"                                               );
     }
 
-    @java.lang.Override
+    @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString()
     {
         return super.toString() + java.lang.String.format(
@@ -79,6 +83,30 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME, this.value);
         contentValues.put(
             org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME, this.stamp);
+
+        return contentValues;
+    }
+
+    @java.lang.Override
+    android.content.ContentValues getContentValues(
+    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    {
+        final android.content.ContentValues contentValues = super.getContentValues(model);
+
+        final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+            (org.wheatgenetics.coordinate.model.EntryModel) model;
+
+        assert null != entryModel;
+        contentValues.put(org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME,
+            entryModel.getGridId());
+        contentValues.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
+            entryModel.getCol());
+        contentValues.put(org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME,
+            entryModel.getRow());
+        contentValues.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
+            entryModel.getValue());
+        contentValues.put(org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME,
+            entryModel.getTimestamp());
 
         return contentValues;
     }

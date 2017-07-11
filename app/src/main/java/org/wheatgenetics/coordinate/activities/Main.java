@@ -2135,28 +2135,10 @@ android.view.View.OnKeyListener
     {
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             this.templatesTable();
-
-        assert null != templateModel;
-        templatesTable.title = templateModel.getTitle()         ;
-        templatesTable.type  = templateModel.getType().getCode();
-        templatesTable.rows  = templateModel.getRows()          ;
-        templatesTable.cols  = templateModel.getCols()          ;
-
-        templatesTable.excludeCells = org.wheatgenetics.coordinate.utils.Utils.pointListToJson(templateModel.getExcludeCells()); // throws org.json.JSONException
-        templatesTable.excludeCols  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(templateModel.getExcludeCols());
-        templatesTable.excludeRows  = org.wheatgenetics.coordinate.utils.Utils.integerListToJson(templateModel.getExcludeRows());
-
-        templatesTable.options = templateModel.getOptionalFields().toJson();     // throws org.json.JSONException
-
-        templatesTable.colNumbering = templateModel.getColNumbering() ? 1 : 0;
-        templatesTable.rowNumbering = templateModel.getRowNumbering() ? 1 : 0;
-
-        templatesTable.stamp = java.lang.System.currentTimeMillis();
-
         if (templatesTable.exists(templateModel.getType()))
-            return templatesTable.update();
+            return templatesTable.update(templateModel);
         else
-            return templatesTable.insert() > 0;
+            return templatesTable.insert(templateModel) > 0;
     }
 
     private void fillModelFromTable(
