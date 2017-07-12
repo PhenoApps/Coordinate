@@ -250,7 +250,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     // region Fields
     private org.wheatgenetics.coordinate.model.TemplateModel.Cells excludeCellsInstance = null;
-    private java.util.List<java.lang.Integer>                      excludeRows, excludeCols   ;
+    private java.util.ArrayList<java.lang.Integer>
+        excludeRowsInstance = null, excludeColsInstance = null;
 
     private boolean colNumbering, rowNumbering;
 
@@ -267,28 +268,49 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         return this.excludeCellsInstance;
     }
 
-    private static java.util.List<java.lang.Integer> jsonToIntegerList(final java.lang.String json)
-    throws org.json.JSONException
+    private java.util.ArrayList<java.lang.Integer> excludeRows()
     {
-        final java.util.List<java.lang.Integer> integerList =
-            new java.util.ArrayList<java.lang.Integer>();
-        {
-            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-            final org.json.JSONArray   jsonArray   =
-                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
+        if (null == this.excludeRowsInstance)
+            this.excludeRowsInstance = new java.util.ArrayList<java.lang.Integer>();
+        return this.excludeRowsInstance;
+    }
 
-            assert null != jsonArray;
-            for (int i = 0; i < jsonArray.length(); i++)
-                integerList.add(jsonArray.getInt(i));               // throws org.json.JSONException
-        }
-        return integerList;
+    private java.util.ArrayList<java.lang.Integer> excludeCols()
+    {
+        if (null == this.excludeColsInstance)
+            this.excludeColsInstance = new java.util.ArrayList<java.lang.Integer>();
+        return this.excludeColsInstance;
+    }
+
+    private static java.util.ArrayList<java.lang.Integer>
+    jsonToIntegerArrayList(final java.lang.String json) throws org.json.JSONException
+    {
+        if (null == json)
+            return null;
+        else
+            if (json.length() <= 0)
+                return null;
+            else
+            {
+                final java.util.ArrayList<java.lang.Integer> integerArrayList =
+                    new java.util.ArrayList<java.lang.Integer>();
+                {
+                    org.json.JSONArray jsonArray;
+                    {
+                        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+                        jsonArray = (org.json.JSONArray)
+                            jsonTokener.nextValue();                // throws org.json.JSONException
+                    }
+                    assert null != jsonArray;
+                    for (int i = 0; i < jsonArray.length(); i++)
+                        integerArrayList.add(jsonArray.getInt(i));  // throws org.json.JSONException
+                }
+                return integerArrayList;
+            }
     }
     // endregion
 
     // region Constructors
-    public TemplateModel(             ) { super(  ); }  // TODO: Remove?
-    public TemplateModel(final long id) { super(id); }  // TODO: Remove?
-
     public TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
     final boolean colNumbering, final boolean rowNumbering)
@@ -305,10 +327,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         this(title, type, rows, cols, colNumbering, rowNumbering);
-
-        this.excludeRows = new java.util.ArrayList<java.lang.Integer>();
-        this.excludeCols = new java.util.ArrayList<java.lang.Integer>();
-
         this.optionalFields = nonNullOptionalFields;
     }
 
@@ -324,16 +342,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         try
         {
-            this.excludeRows =
-                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerList(excludeRows);
+            this.excludeRowsInstance =
+                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerArrayList(
+                    excludeRows);
         }
-        catch (final org.json.JSONException e) { this.excludeRows = null; }
+        catch (final org.json.JSONException e) { this.excludeRowsInstance = null; }
         try
         {
-            this.excludeCols =
-                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerList(excludeCols);
+            this.excludeColsInstance =
+                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerArrayList(
+                    excludeCols);
         }
-        catch (final org.json.JSONException e) { this.excludeCols = null; }
+        catch (final org.json.JSONException e) { this.excludeColsInstance = null; }
 
         this.colNumbering = colNumbering == 1;
         this.rowNumbering = rowNumbering == 1;
@@ -361,25 +381,35 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.lang.String toString()
     {
         return java.lang.String.format(this.formatString(),
-            "TemplateModel"    , this.excludeCellsInstance, this.excludeRows , this.excludeCols,
-            this.optionalFields, this.colNumbering        , this.rowNumbering, this.timestamp  );
+            "TemplateModel"         , this.excludeCellsInstance, this.excludeRowsInstance,
+            this.excludeColsInstance, this.optionalFields      , this.colNumbering       ,
+            this.rowNumbering       , this.timestamp                                     );
     }
     // endregion
 
     // region Public Methods
     // region excludeCells Public Methods
+    public void addExcludedCell(final int col, final int row) { this.excludeCells().add(col, row); }
+
+    public void makeOneRandomCell()
+    { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
+
+    public void makeRandomCells(final int amount)
+    { this.excludeCells().makeRandomCells(amount, this.getCols(), this.getRows()); }
+
     public java.lang.String getExcludeCellsAsJson()
     { return null == this.excludeCellsInstance ? null : this.excludeCells().json(); }
 
     public boolean isExcludedCell(final int col, final int row)
     { return null == this.excludeCellsInstance ? false : this.excludeCells().isPresent(col, row); }
-
-    public void addExcludedCell(final int col, final int row) { this.excludeCells().add(col, row); }
     // endregion
 
     // region excludeRows, excludeCols Public Methods
-    public java.util.List<java.lang.Integer> getExcludeRows() { return this.excludeRows; }
-    public java.util.List<java.lang.Integer> getExcludeCols() { return this.excludeCols; }
+    public java.util.ArrayList<java.lang.Integer> getExcludeRows()
+    { return this.excludeRowsInstance; }
+
+    public java.util.ArrayList<java.lang.Integer> getExcludeCols()
+    { return this.excludeColsInstance; }
 
     public java.lang.String getExcludeRowsAsJson()
     { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeRows()); }
@@ -401,19 +431,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     public long getTimestamp() { return this.timestamp; }
 
-    // region Cell Public Methods
-    public void makeOneRandomCell()
-    { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
-
-    public void makeRandomCells(int amount)
-    { this.excludeCells().makeRandomCells(amount, this.getCols(), this.getRows()); }
-    // endregion
-
     public void clearExcludes()
     {
         if (null != this.excludeCellsInstance) this.excludeCells().clear();
-        this.excludeRows.clear();
-        this.excludeCols.clear();
+        if (null != this.excludeRowsInstance ) this.excludeRows ().clear();
+        if (null != this.excludeColsInstance ) this.excludeCols ().clear();
     }
 
     // region Default Public Methods
@@ -430,8 +452,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                     NonNullOptionalFields.makeSeedDefault());
 
-        result.excludeRows.add(2);
-        result.excludeRows.add(5);
+        final java.util.ArrayList<java.lang.Integer> excludeRows = result.excludeRows();
+        excludeRows.add(2);
+        excludeRows.add(5);
 
         return result;
     }
