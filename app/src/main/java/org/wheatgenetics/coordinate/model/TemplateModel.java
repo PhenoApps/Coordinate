@@ -31,24 +31,19 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             }
             // endregion
 
-            // region Constructors
+            // region Constructor
             private Cell(final int x, final int y)
             {
                 super();
                 this.point = new android.graphics.Point(x, y);
             }
-
-            private Cell(final android.graphics.Point point)
-            {
-                super();
-                this.point = point;
-            }
             // endregion
 
             // region External Methods
-            private static android.graphics.Point random(final int xBound, final int yBound)
+            private static org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell random(
+            final int xBound, final int yBound)
             {
-                return new android.graphics.Point(
+                return new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(
                     org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(xBound),
                     org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(yBound));
             }
@@ -59,10 +54,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 if (null == cell)
                     return false;
                 else
-                if (null == cell.point || null == this.point)
-                    return false;
-                else
-                    return this.point.equals(cell.point.x, cell.point.y);
+                    if (null == cell.point || null == this.point)
+                        return false;
+                    else
+                        return this.point.equals(cell.point.x, cell.point.y);
             }
 
             private org.json.JSONObject json() throws org.json.JSONException
@@ -95,13 +90,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             return this.cellArrayListInstance;
         }
 
-        private static org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell randomCell(
-        final int xBound, final int yBound)
-        {
-            return new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(
-                org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(xBound, yBound));
-        }
-
         private boolean isPresent(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell candidateCell)
         {
@@ -124,7 +112,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         public String toString()
         {
             return null == this.cellArrayListInstance ?
-                super.toString() : this.cellArrayListInstance.toString();
+                super.toString() : this.cellArrayList().toString();
         }
 
         // region Constructors
@@ -142,7 +130,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                     try
                     {
                         jsonArray = (org.json.JSONArray)
-                            jsonTokener.nextValue();                    // throws org.json.JSONException
+                            jsonTokener.nextValue();                // throws org.json.JSONException
                     }
                     catch (final org.json.JSONException e)
                     { return; /* Leave cellArrayListInstance == null. */ }
@@ -175,7 +163,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 cellArrayList = this.cellArrayList();
             cellArrayList.clear();
             cellArrayList.add(
-                org.wheatgenetics.coordinate.model.TemplateModel.Cells.randomCell(xBound, yBound));
+                org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(xBound, yBound));
         }
 
         private void makeRandomCells(int amount, final int xBound, final int yBound)
@@ -195,7 +183,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                     {
                         do
                             cell =
-                                org.wheatgenetics.coordinate.model.TemplateModel.Cells.randomCell(
+                                org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(
                                     xBound, yBound);
                         while (this.isPresent(cell));
                         cellArrayList.add(cell);
