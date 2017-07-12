@@ -24,8 +24,6 @@ import android.widget.Toast;
 /**
  * Uses:
  * android.text.format.DateFormat
- *
- * org.json.JSONArray
  */
 
 public class Utils extends java.lang.Object
@@ -191,21 +189,5 @@ public class Utils extends java.lang.Object
     public static String getTag(final int r, final int c)
     {
         return String.format(Locale.US, "tag_%d_%d", r, c);
-    }
-
-    public static java.lang.String integerListToJson(
-    final java.util.List<java.lang.Integer> integerList)
-    {
-        if (null == integerList)
-            return null;
-        else if (integerList.size() <= 0)
-            return null;
-        else
-        {
-            final org.json.JSONArray jsonArray = new org.json.JSONArray();
-            for (final java.lang.Integer integer: integerList)
-                if (null != integer) jsonArray.put(integer.intValue());
-            return jsonArray.toString();
-        }
     }
 }

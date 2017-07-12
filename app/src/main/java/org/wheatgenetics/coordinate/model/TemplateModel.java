@@ -12,11 +12,11 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- * org.wheatgenetics.coordinate.utils.Utils
  */
 
 public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
 {
+    // region Types
     private static class Cells extends java.lang.Object
     {
         private static class Cell extends java.lang.Object
@@ -236,9 +236,110 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         // endregion
     }
 
+    private static class Coordinates extends java.lang.Object
+    {
+        private java.util.ArrayList<java.lang.Integer> integerArrayListInstance = null;
+
+        // region Internal Method
+        private java.util.ArrayList<java.lang.Integer> integerArrayList()
+        {
+            if (null == this.integerArrayListInstance)
+                this.integerArrayListInstance = new java.util.ArrayList<java.lang.Integer>();
+            return this.integerArrayListInstance;
+        }
+        // endregion
+
+        @java.lang.Override
+        public String toString()
+        {
+            return null == this.integerArrayListInstance ?
+                super.toString() : this.integerArrayList().toString();
+        }
+
+        // region Constructors
+        Coordinates() { super(); }
+
+        Coordinates(final java.lang.String json)
+        {
+            super();
+
+            if (null != json) if (json.length() <= 0)
+            {
+                org.json.JSONArray jsonArray;
+                {
+                    final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+                    try
+                    {
+                        jsonArray = (org.json.JSONArray)
+                            jsonTokener.nextValue();                // throws org.json.JSONException
+                    }
+                    catch (final org.json.JSONException e)
+                    { return; /* Leave integerArrayListInstance == null. */ }
+                }
+
+                assert null != jsonArray;
+                final int length = jsonArray.length();
+                if (length > 0)
+                {
+                    final int first = 0, last = length - 1;
+                    for (int i = first; i <= last; i++)
+                        try { this.add(jsonArray.getInt(i) /* throws org.json.JSONException */); }
+                        catch (final org.json.JSONException e) { /* Skip this jsonObject. */ }
+                }
+            }
+        }
+        // endregion
+
+        // region External Methods
+        private void add(final int integer) { this.integerArrayList().add(integer); }
+
+        private java.lang.String json()
+        {
+            if (null == this.integerArrayListInstance)
+                return null;
+            else
+            {
+                final java.util.ArrayList<java.lang.Integer> integerArrayList =
+                    this.integerArrayList();
+
+                if (integerArrayList.size() <= 0)
+                    return null;
+                else
+                {
+                    final org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+                    for (final java.lang.Integer integer: integerArrayList)
+                        if (null != integer) jsonArray.put(integer.intValue());
+
+                    return jsonArray.toString();
+                }
+            }
+        }
+
+        private void clear()
+        { if (null != this.integerArrayListInstance) this.integerArrayList().clear(); }
+
+        private boolean isPresent(final int candidateInteger)
+        {
+            boolean result = false;
+
+            if (null != this.integerArrayListInstance)
+                for (final java.lang.Integer integer: this.integerArrayListInstance)
+                    if (null != integer) if (integer.intValue() == candidateInteger)
+                    {
+                        result = true;
+                        break;
+                    }
+
+            return result;
+        }
+        // endregion
+    }
+    // endregion
+
     // region Fields
     private org.wheatgenetics.coordinate.model.TemplateModel.Cells excludeCellsInstance = null;
-    private java.util.ArrayList<java.lang.Integer>
+    private org.wheatgenetics.coordinate.model.TemplateModel.Coordinates
         excludeRowsInstance = null, excludeColsInstance = null;
 
     private boolean colNumbering, rowNumbering;
@@ -256,45 +357,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         return this.excludeCellsInstance;
     }
 
-    private java.util.ArrayList<java.lang.Integer> excludeRows()
+    private org.wheatgenetics.coordinate.model.TemplateModel.Coordinates excludeRows()
     {
-        if (null == this.excludeRowsInstance)
-            this.excludeRowsInstance = new java.util.ArrayList<java.lang.Integer>();
+        if (null == this.excludeRowsInstance) this.excludeRowsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates();
         return this.excludeRowsInstance;
     }
 
-    private java.util.ArrayList<java.lang.Integer> excludeCols()
+    private org.wheatgenetics.coordinate.model.TemplateModel.Coordinates excludeCols()
     {
-        if (null == this.excludeColsInstance)
-            this.excludeColsInstance = new java.util.ArrayList<java.lang.Integer>();
+        if (null == this.excludeColsInstance) this.excludeColsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates();
         return this.excludeColsInstance;
-    }
-
-    private static java.util.ArrayList<java.lang.Integer>
-    jsonToIntegerArrayList(final java.lang.String json) throws org.json.JSONException
-    {
-        if (null == json)
-            return null;
-        else
-            if (json.length() <= 0)
-                return null;
-            else
-            {
-                final java.util.ArrayList<java.lang.Integer> integerArrayList =
-                    new java.util.ArrayList<java.lang.Integer>();
-                {
-                    org.json.JSONArray jsonArray;
-                    {
-                        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-                        jsonArray = (org.json.JSONArray)
-                            jsonTokener.nextValue();                // throws org.json.JSONException
-                    }
-                    assert null != jsonArray;
-                    for (int i = 0; i < jsonArray.length(); i++)
-                        integerArrayList.add(jsonArray.getInt(i));  // throws org.json.JSONException
-                }
-                return integerArrayList;
-            }
     }
     // endregion
 
@@ -328,20 +402,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         this.excludeCellsInstance =
             new org.wheatgenetics.coordinate.model.TemplateModel.Cells(excludeCells);
 
-        try
-        {
-            this.excludeRowsInstance =
-                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerArrayList(
-                    excludeRows);
-        }
-        catch (final org.json.JSONException e) { this.excludeRowsInstance = null; }
-        try
-        {
-            this.excludeColsInstance =
-                org.wheatgenetics.coordinate.model.TemplateModel.jsonToIntegerArrayList(
-                    excludeCols);
-        }
-        catch (final org.json.JSONException e) { this.excludeColsInstance = null; }
+        this.excludeRowsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates(excludeRows);
+        this.excludeColsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates(excludeCols);
 
         this.colNumbering = colNumbering == 1;
         this.rowNumbering = rowNumbering == 1;
@@ -393,17 +457,20 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     // endregion
 
     // region excludeRows, excludeCols Public Methods
-    public java.util.ArrayList<java.lang.Integer> getExcludeRows()
-    { return this.excludeRowsInstance; }
-
-    public java.util.ArrayList<java.lang.Integer> getExcludeCols()
-    { return this.excludeColsInstance; }
+    public void addExcludeRow(final int row) { this.excludeRows().add(row); }
+    public void addExcludeCol(final int col) { this.excludeCols().add(col); }
 
     public java.lang.String getExcludeRowsAsJson()
-    { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeRows()); }
+    { return null == this.excludeRowsInstance ? null : this.excludeRows().json(); }
 
     public java.lang.String getExcludeColsAsJson()
-    { return org.wheatgenetics.coordinate.utils.Utils.integerListToJson(this.getExcludeCols()); }
+    { return null == this.excludeColsInstance ? null : this.excludeCols().json(); }
+
+    public boolean isExcludedRow(final int integer)
+    { return null == this.excludeRowsInstance ? false : this.excludeRows().isPresent(integer); }
+
+    public boolean isExcludedCol(final int integer)
+    { return null == this.excludeColsInstance ? false : this.excludeCols().isPresent(integer); }
     // endregion
 
     // region colNumbering, rowNumbering Public Methods
@@ -440,7 +507,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                     NonNullOptionalFields.makeSeedDefault());
 
-        final java.util.ArrayList<java.lang.Integer> excludeRows = result.excludeRows();
+        final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates excludeRows =
+            result.excludeRows();
         excludeRows.add(2);
         excludeRows.add(5);
 
