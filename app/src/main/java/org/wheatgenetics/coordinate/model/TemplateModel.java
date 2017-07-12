@@ -17,9 +17,240 @@ package org.wheatgenetics.coordinate.model;
 
 public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
 {
+    private static class Cells extends java.lang.Object
+    {
+        private static class Cell extends java.lang.Object
+        {
+            private final android.graphics.Point point;
+
+            // region Internal Method
+            private static int random(final int bound)
+            {
+                return new java.util.Random(
+                    java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1;
+            }
+            // endregion
+
+            // region Constructors
+            private Cell(final int x, final int y)
+            {
+                super();
+                this.point = new android.graphics.Point(x, y);
+            }
+
+            private Cell(final android.graphics.Point point)
+            {
+                super();
+                this.point = point;
+            }
+            // endregion
+
+            // region External Methods
+            private static android.graphics.Point random(final int xBound, final int yBound)
+            {
+                return new android.graphics.Point(
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(xBound),
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(yBound));
+            }
+
+            private boolean sameContents(
+            final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell)
+            {
+                if (null == cell)
+                    return false;
+                else
+                if (null == cell.point || null == this.point)
+                    return false;
+                else
+                    return this.point.equals(cell.point.x, cell.point.y);
+            }
+
+            private org.json.JSONObject json() throws org.json.JSONException
+            {
+                if (null == this.point)
+                    return null;
+                else
+                {
+                    final org.json.JSONObject jsonObject = new org.json.JSONObject();
+
+                    jsonObject.put("row", this.point.y);            // throws org.json.JSONException
+                    jsonObject.put("col", this.point.x);            // throws org.json.JSONException
+
+                    return jsonObject;
+                }
+            }
+            // endregion
+        }
+
+        private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>
+            cellArrayListInstance = null;
+
+        // region Internal Methods
+        private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>
+        cellArrayList()
+        {
+            if (null == this.cellArrayListInstance)
+                this.cellArrayListInstance = new java.util.ArrayList<
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>();
+            return this.cellArrayListInstance;
+        }
+
+        private static org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell randomCell(
+        final int xBound, final int yBound)
+        {
+            return new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(
+                org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(xBound, yBound));
+        }
+
+        private boolean isPresent(@android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell candidateCell)
+        {
+            boolean result = false;
+
+            if (null != this.cellArrayListInstance && null != candidateCell)
+                for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
+                this.cellArrayListInstance)
+                    if (null != cell) if (cell.sameContents(candidateCell))
+                    {
+                        result = true;
+                        break;
+                    }
+
+            return result;
+        }
+        // endregion
+
+        @java.lang.Override
+        public String toString()
+        {
+            return null == this.cellArrayListInstance ?
+                super.toString() : this.cellArrayListInstance.toString();
+        }
+
+        // region Constructors
+        private Cells() { super(); }
+
+        private Cells(final java.lang.String json)
+        {
+            super();
+
+            if (null != json) if (json.length() > 0)
+            {
+                org.json.JSONArray jsonArray;
+                {
+                    final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+                    try
+                    {
+                        jsonArray = (org.json.JSONArray)
+                            jsonTokener.nextValue();                    // throws org.json.JSONException
+                    }
+                    catch (final org.json.JSONException e)
+                    { return; /* Leave cellArrayListInstance == null. */ }
+                }
+
+                assert null != jsonArray;
+                final int length = jsonArray.length();
+                if (length > 0)
+                {
+                    final int                 first = 0, last = length - 1;
+                          org.json.JSONObject jsonObject                  ;
+                    for (int i = first; i <= last; i++)
+                        try
+                        {
+                            jsonObject = (org.json.JSONObject) jsonArray.get(i);
+                            if (null != jsonObject) this.add(
+                                jsonObject.getInt("col"),           // throws org.json.JSONException
+                                jsonObject.getInt("row"));          // throws org.json.JSONException
+                        }
+                        catch (final org.json.JSONException e) { /* Skip this jsonObject. */ }
+                }
+            }
+        }
+        // endregion
+
+        // region External Methods
+        private void makeOneRandomCell(final int xBound, final int yBound)
+        {
+            final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>
+                cellArrayList = this.cellArrayList();
+            cellArrayList.clear();
+            cellArrayList.add(
+                org.wheatgenetics.coordinate.model.TemplateModel.Cells.randomCell(xBound, yBound));
+        }
+
+        private void makeRandomCells(int amount, final int xBound, final int yBound)
+        {
+            if (1 == amount)
+                this.makeOneRandomCell(xBound, yBound);
+            else
+                if (amount > 1)
+                {
+                    final java.util.ArrayList<
+                        org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell> cellArrayList =
+                           this.cellArrayList();
+                    cellArrayList.clear();
+
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell;
+                    do
+                    {
+                        do
+                            cell =
+                                org.wheatgenetics.coordinate.model.TemplateModel.Cells.randomCell(
+                                    xBound, yBound);
+                        while (this.isPresent(cell));
+                        cellArrayList.add(cell);
+                    }
+                    while (--amount > 0);
+                }
+        }
+
+        private java.lang.String json()
+        {
+            if (null == this.cellArrayListInstance)
+                return null;
+            else
+            {
+                final java.util.ArrayList<
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell> cellArrayList =
+                        this.cellArrayList();
+
+                if (cellArrayList.size() <= 0)
+                    return null;
+                else
+                {
+                    final org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+                    for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
+                    cellArrayList)
+                        if (null != cell)
+                            try                                    { jsonArray.put(cell.json()); }
+                            catch (final org.json.JSONException e) { /* Skip this JSONObject. */ }
+
+                    return jsonArray.toString();
+                }
+            }
+        }
+
+        private void clear()
+        { if (null != this.cellArrayListInstance) this.cellArrayList().clear(); }
+
+        private boolean isPresent(final int x, final int y)
+        {
+            return this.isPresent(
+                new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(x, y));
+        }
+
+        private void add(final int x, final int y)
+        {
+            this.cellArrayList().add(
+                new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(x, y));
+        }
+        // endregion
+    }
+
     // region Fields
-    private java.util.List<android.graphics.Point> excludeCells            ;
-    private java.util.List<java.lang.Integer     > excludeRows, excludeCols;
+    private org.wheatgenetics.coordinate.model.TemplateModel.Cells excludeCellsInstance = null;
+    private java.util.List<java.lang.Integer>                      excludeRows, excludeCols   ;
 
     private boolean colNumbering, rowNumbering;
 
@@ -29,28 +260,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     // endregion
 
     // region Private Methods
-    private static java.util.List<android.graphics.Point> jsonToPointList(
-    final java.lang.String json) throws org.json.JSONException
+    private org.wheatgenetics.coordinate.model.TemplateModel.Cells excludeCells()
     {
-        final java.util.List<android.graphics.Point> pointList =
-            new java.util.ArrayList<android.graphics.Point>();
-        {
-            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-            final org.json.JSONArray   jsonArray   =
-                (org.json.JSONArray) jsonTokener.nextValue();       // throws org.json.JSONException
-
-            assert null != jsonArray;
-            for (int i = 0; i < jsonArray.length(); i++)
-            {
-                final org.json.JSONObject jsonObject = (org.json.JSONObject) jsonArray.get(i);
-
-                assert null != jsonObject;
-                pointList.add(new android.graphics.Point(
-                    jsonObject.getInt("col"),                       // throws org.json.JSONException
-                    jsonObject.getInt("row")));                     // throws org.json.JSONException
-            }
-        }
-        return pointList;
+        if (null == this.excludeCellsInstance) this.excludeCellsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Cells();
+        return this.excludeCellsInstance;
     }
 
     private static java.util.List<java.lang.Integer> jsonToIntegerList(final java.lang.String json)
@@ -69,56 +283,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         }
         return integerList;
     }
-
-    private static java.lang.String pointListToJson(
-    final java.util.List<android.graphics.Point> pointList) throws org.json.JSONException
-    {
-        final org.json.JSONArray jsonArray = new org.json.JSONArray();
-
-        assert null != pointList;
-        for (final android.graphics.Point point: pointList) if (null != point)
-        {
-            final org.json.JSONObject jsonObject = new org.json.JSONObject();
-            jsonObject.put("row", point.y);                         // throws org.json.JSONException
-            jsonObject.put("col", point.x);                         // throws org.json.JSONException
-
-            jsonArray.put(jsonObject);
-        }
-        return jsonArray.toString();
-    }
-
-    // region Cell Private Methods
-    static private int randomCoordinate(final int bound)
-    { return new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1; }
-
-    private android.graphics.Point randomCell()
-    {
-        return new android.graphics.Point(
-            org.wheatgenetics.coordinate.model.TemplateModel.randomCoordinate(this.getCols()),
-            org.wheatgenetics.coordinate.model.TemplateModel.randomCoordinate(this.getRows()));
-    }
-
-    private boolean isAlreadyExcluded(
-    @android.support.annotation.NonNull final android.graphics.Point candidateCell)
-    {
-        assert null != candidateCell    ;
-        assert null != this.excludeCells;
-
-        boolean result = false;
-
-        for (final android.graphics.Point excludedCell: this.excludeCells)
-        {
-            assert null != excludedCell;
-            if (excludedCell.equals(candidateCell.x, candidateCell.y))
-            {
-                result = true;
-                break;
-            }
-        }
-
-        return result;
-    }
-    // endregion
     // endregion
 
     // region Constructors
@@ -133,8 +297,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
         this.colNumbering = colNumbering;
         this.rowNumbering = rowNumbering;
-
-        this.excludeCells = new java.util.ArrayList<android.graphics.Point>();
     }
 
     private TemplateModel(final java.lang.String title,
@@ -157,12 +319,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     {
         super(id, title, code, rows, cols);
 
-        try
-        {
-            this.excludeCells =
-                org.wheatgenetics.coordinate.model.TemplateModel.jsonToPointList(excludeCells);
-        }
-        catch (final org.json.JSONException e) { this.excludeCells = null; }
+        this.excludeCellsInstance =
+            new org.wheatgenetics.coordinate.model.TemplateModel.Cells(excludeCells);
 
         try
         {
@@ -203,23 +361,20 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.lang.String toString()
     {
         return java.lang.String.format(this.formatString(),
-            "TemplateModel"    , this.excludeCells, this.excludeRows , this.excludeCols,
-            this.optionalFields, this.colNumbering, this.rowNumbering, this.timestamp  );
+            "TemplateModel"    , this.excludeCellsInstance, this.excludeRows , this.excludeCols,
+            this.optionalFields, this.colNumbering        , this.rowNumbering, this.timestamp  );
     }
     // endregion
 
     // region Public Methods
     // region excludeCells Public Methods
-    public java.util.List<android.graphics.Point> getExcludeCells() { return this.excludeCells; }
+    public java.lang.String getExcludeCellsAsJson()
+    { return null == this.excludeCellsInstance ? null : this.excludeCells().json(); }
 
-    public java.lang.String getExcludeCellsAsJson() throws org.json.JSONException
-    {
-        return org.wheatgenetics.coordinate.model.TemplateModel.pointListToJson(
-            this.getExcludeCells());
-    }
+    public boolean isExcludedCell(final int col, final int row)
+    { return null == this.excludeCellsInstance ? false : this.excludeCells().isPresent(col, row); }
 
-    public void setExcludeCells(final java.util.List<android.graphics.Point> excludeCells)
-    { this.excludeCells = new java.util.ArrayList<android.graphics.Point>(excludeCells); }
+    public void addExcludedCell(final int col, final int row) { this.excludeCells().add(col, row); }
     // endregion
 
     // region excludeRows, excludeCols Public Methods
@@ -248,35 +403,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 
     // region Cell Public Methods
     public void makeOneRandomCell()
-    {
-        assert null != this.excludeCells;
-        this.excludeCells.clear();
-        this.excludeCells.add(this.randomCell());
-    }
+    { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
 
     public void makeRandomCells(int amount)
-    {
-        if (1 == amount)
-            this.makeOneRandomCell();
-        else
-        {
-            assert null != this.excludeCells;
-            this.excludeCells.clear();
-            if (amount > 1)
-            {
-                android.graphics.Point cell;
-                do
-                {
-                    do
-                        cell = this.randomCell();
-                    while (this.isAlreadyExcluded(cell));
-                    this.excludeCells.add(cell);
-                }
-                while (--amount > 0);
-            }
-        }
-    }
+    { this.excludeCells().makeRandomCells(amount, this.getCols(), this.getRows()); }
     // endregion
+
+    public void clearExcludes()
+    {
+        if (null != this.excludeCellsInstance) this.excludeCells().clear();
+        this.excludeRows.clear();
+        this.excludeCols.clear();
+    }
 
     // region Default Public Methods
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()

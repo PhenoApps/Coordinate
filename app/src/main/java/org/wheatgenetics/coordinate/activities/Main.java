@@ -18,7 +18,6 @@ package org.wheatgenetics.coordinate.activities;
  * android.content.pm.PackageManager
  * android.content.res.Resources
  * android.database.Cursor
- * android.graphics.Point
  * android.media.MediaPlayer
  * android.media.MediaScannerConnection
  * android.net.Uri
@@ -1642,9 +1641,7 @@ android.view.View.OnKeyListener
     private void newTemplate()
     {
         assert null != this.templateModel;
-        this.templateModel.getExcludeCells().clear();
-        this.templateModel.getExcludeRows ().clear();
-        this.templateModel.getExcludeCols ().clear();
+        this.templateModel.clearExcludes();
 
         this.nonNullOptionalFields =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -1934,9 +1931,7 @@ android.view.View.OnKeyListener
                                 org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering == 1);  // model
                             }
 
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCells().clear();  // model
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeRows ().clear();   // model
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.getExcludeCols ().clear();   // model
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.clearExcludes();  // model
 
                             populateTemplate();
                             showTemplateUI();
@@ -2568,9 +2563,7 @@ android.view.View.OnKeyListener
             this.templateModel.setRows(grd.templateRows);
             this.templateModel.setCols(grd.templateCols);
 
-            this.templateModel.getExcludeCells().clear();  // model
-            this.templateModel.getExcludeRows ().clear();  // model
-            this.templateModel.getExcludeCols ().clear();  // model
+            this.templateModel.clearExcludes();  // model
 
             final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                 this.templatesTable();
@@ -2592,19 +2585,10 @@ android.view.View.OnKeyListener
             this.getString(org.wheatgenetics.coordinate.R.string.import_grid_failed));
     }
 
-    private boolean isExcludedCell(final int r, final int c)  // TODO: Should be TemplateModel method.
+    private boolean isExcludedCell(final int r, final int c)
     {
         assert null != this.templateModel;
-        final java.util.List<android.graphics.Point> excludeCells =
-            this.templateModel.getExcludeCells();
-
-        assert null != excludeCells;
-        for (int i = 0; i < excludeCells.size(); i++)
-        {
-            final android.graphics.Point point = excludeCells.get(i);
-            if (point.equals(c, r)) return true;
-        }
-        return false;
+        return this.templateModel.isExcludedCell(c, r);
     }
 
     private boolean isExcludedRow(final int r)
@@ -3079,7 +3063,7 @@ android.view.View.OnKeyListener
                     if (null != value && value.equals("exclude"))
                     {
                         this.setCellState(cell_cnt, STATE_INACTIVE);
-                        this.templateModel.getExcludeCells().add(new android.graphics.Point(c, r));
+                        this.templateModel.addExcludedCell(c, r);
                     }
 
                     cell_cnt.setOnClickListener(this);
