@@ -1928,8 +1928,8 @@ android.view.View.OnKeyListener
                                 }
                                 catch (final org.json.JSONException e) {}
 
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(templatesTable.rowNumbering == 1);  // model
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering == 1);  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(templatesTable.rowNumbering);  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering);  // model
                             }
 
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel.clearExcludes();  // model
@@ -2580,8 +2580,8 @@ android.view.View.OnKeyListener
                     new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
                         templatesTable.options); // throws org.json.JSONException, model
 
-                this.templateModel.setRowNumbering(templatesTable.rowNumbering == 1);
-                this.templateModel.setColNumbering(templatesTable.colNumbering == 1);
+                this.templateModel.setRowNumbering(templatesTable.rowNumbering);
+                this.templateModel.setColNumbering(templatesTable.colNumbering);
             }
 
             this.populateTemplate();

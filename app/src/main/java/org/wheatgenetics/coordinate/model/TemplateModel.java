@@ -407,8 +407,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         this.excludeColsInstance =
             new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates(excludeCols);
 
-        this.colNumbering = colNumbering == 1;
-        this.rowNumbering = rowNumbering == 1;
+        this.setColNumbering(colNumbering);
+        this.setRowNumbering(rowNumbering);
 
         try
         {
@@ -476,9 +476,23 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     // region colNumbering, rowNumbering Public Methods
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
+    public void    setColNumbering(final int     colNumbering)
+    {
+        if (colNumbering < 0 || colNumbering > 1)
+            throw new java.lang.IllegalArgumentException();
+        else
+            this.setColNumbering(1 == colNumbering);
+    }
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+    public void    setRowNumbering(final int     rowNumbering)
+    {
+        if (rowNumbering < 0 || rowNumbering > 1)
+            throw new java.lang.IllegalArgumentException();
+        else
+            this.setRowNumbering(1 == rowNumbering);
+    }
     // endregion
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
