@@ -507,6 +507,33 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         if (null != this.excludeColsInstance ) this.excludeCols ().clear();
     }
 
+    public android.graphics.Point nextFreeCell(final android.graphics.Point currentPoint)
+    {
+        if (null == currentPoint)
+            return null;
+        else
+        {
+            final android.graphics.Point result = null;
+            {
+                int col, row = currentPoint.y;
+                {
+                    final int lastCol = this.getCols();
+                    for (col = currentPoint.x; col <= lastCol; col++)
+                        if (!this.isExcludedCol(col))
+                        {
+                            final int lastRow = this.getRows();
+                            for (row = currentPoint.y; row <= lastRow; row++)
+                                if (!this.isExcludedRow(row))
+                                    if (!this.isExcludedCell(row, col)) break;
+                        }
+                }
+                currentPoint.x = col;
+                currentPoint.y = row;
+            }
+            return result;
+        }
+    }
+
     // region Default Public Methods
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {

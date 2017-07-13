@@ -31,19 +31,18 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     {
         this.setTitle(title);
 
-        if (rows <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.rows = rows;
-        if (cols <= 0) throw new java.lang.IndexOutOfBoundsException(); else this.cols = cols;
+        if (rows <= 0) throw new java.lang.IllegalArgumentException(); else this.setRows(rows);
+        if (cols <= 0) throw new java.lang.IllegalArgumentException(); else this.setCols(cols);
     }
     // endregion
 
     // region Constructors
-    PartialTemplateModel()              { super(  ); }
     PartialTemplateModel(final long id) { super(id); }
 
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
     {
-        this();
+        super();
         this.assign(title, rows, cols);
         this.setType(type);
     }
@@ -78,7 +77,7 @@ class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
     public void setType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     { this.type = templateType; }
     public void setType(final int code)
-    { this.type = org.wheatgenetics.coordinate.model.TemplateType.get(code); }
+    { this.setType(org.wheatgenetics.coordinate.model.TemplateType.get(code)); }
 
     public int  getRows()                            { return this.rows; }
     public void setRows(final int              rows) { this.rows = rows; }

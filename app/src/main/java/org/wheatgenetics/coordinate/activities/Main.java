@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate.activities;
  * android.content.pm.PackageManager
  * android.content.res.Resources
  * android.database.Cursor
+ * android.graphics.Point
  * android.media.MediaPlayer
  * android.media.MediaScannerConnection
  * android.net.Uri
@@ -2909,29 +2910,13 @@ android.view.View.OnKeyListener
     // first non excluded cell
     private boolean getNextFreeCell()
     {
-        int c, r = 1;
-
-        assert null != this.templateModel;
         {
-            final int lastCol = this.templateModel.getCols();
-            for (c = mCurCol; c <= lastCol; c++)
-            {
-                if (this.isExcludedCol(c)) continue;
-
-                {
-                    final int lastRow = this.templateModel.getRows();
-                    for (r = mCurRow; r <= lastRow; r++)
-                    {
-                        if ( this.isExcludedRow (r   )) continue;
-                        if (!this.isExcludedCell(r, c)) break   ;
-                    }
-                }
-                break;
-            }
+            assert null != this.templateModel;
+            final android.graphics.Point nextFreeCell = this.templateModel.nextFreeCell(
+                new android.graphics.Point(this.mCurCol, this.mCurRow));
+            this.mCurRow = nextFreeCell.y;
+            this.mCurCol = nextFreeCell.x;
         }
-
-        mCurRow = r;
-        mCurCol = c;
         return true;
     }
 
