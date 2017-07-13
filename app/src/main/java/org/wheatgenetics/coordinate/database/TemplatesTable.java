@@ -94,7 +94,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     android.content.ContentValues getContentValues(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
-        final android.content.ContentValues contentValues = super.getContentValues(model);
+        final android.content.ContentValues contentValues =
+            super.getContentValues(model);                          // throws org.json.JSONException
 
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) model;
@@ -110,7 +111,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             templateModel.getRows());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
-            templateModel.getExcludeCellsAsJson());                 // throws org.json.JSONException
+            templateModel.getExcludeCellsAsJson());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
             templateModel.getExcludeColsAsJson());
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
@@ -122,7 +123,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             templateModel.getRowNumbering());
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
-            templateModel.getOptionalFields().toJson());
+            templateModel.getOptionalFields());                     // throws org.json.JSONException
 
         contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
             templateModel.getTimestamp());

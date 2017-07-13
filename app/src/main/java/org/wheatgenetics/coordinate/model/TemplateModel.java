@@ -495,8 +495,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
-    { return this.optionalFields; }
+    public java.lang.String getOptionalFields() throws org.json.JSONException
+    { return null == this.optionalFields ? null : this.optionalFields.toJson(); }
 
     public long getTimestamp() { return this.timestamp; }
 
