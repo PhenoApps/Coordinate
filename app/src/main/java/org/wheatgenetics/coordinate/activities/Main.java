@@ -1690,10 +1690,12 @@ android.view.View.OnKeyListener
                         final java.lang.String cols = colsTextEdit.getText().toString().trim();
                         final java.lang.String rows = rowsTextEdit.getText().toString().trim();
 
-                        assert null != org.wheatgenetics.coordinate.activities.Main.this.templateModel;
-                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(name);  // TODO: Combine these
-                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRows (rows);  // TODO:  3 methods
-                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.setCols (cols);  // TODO:  into 1?
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
+                            /* title => */ name,
+                            /* rows  => */ rows,
+                            /* cols  => */ cols);
 
                         if (0 == name.length())
                         {
@@ -1907,14 +1909,14 @@ android.view.View.OnKeyListener
                             new org.wheatgenetics.coordinate.database.GridsTable(Main.this);
                         if (grd.get(id))
                         {
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.setTitle(
-                                grd.templateTitle);
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
+                                /* title => */ grd.templateTitle,
+                                /* rows  => */ grd.templateRows ,
+                                /* cols  => */ grd.templateCols );
                             org.wheatgenetics.coordinate.activities.Main.this.gridId = grd.id;
                             mGridTitle = grd.title;
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(
                                 grd.templateType);
-                            Main.this.templateModel.setRows(grd.templateRows);
-                            Main.this.templateModel.setCols(grd.templateCols);
 
                             final org.wheatgenetics.coordinate.database.TemplatesTable
                                 templatesTable = org.wheatgenetics.coordinate.activities.
@@ -2563,12 +2565,13 @@ android.view.View.OnKeyListener
         if (grd.get(id))
         {
             assert null != this.templateModel;
-            this.templateModel.setTitle(grd.templateTitle);
+            this.templateModel.assign(
+                /* title => */ grd.templateTitle,
+                /* rows  => */ grd.templateRows ,
+                /* cols  => */ grd.templateCols );
             this.gridId = grd.id   ;
             mGridTitle  = grd.title;
             this.templateModel.setType(grd.templateType);
-            this.templateModel.setRows(grd.templateRows);
-            this.templateModel.setCols(grd.templateCols);
 
             this.templateModel.clearExcludes();  // model
 
