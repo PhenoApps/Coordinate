@@ -13,7 +13,6 @@ package org.wheatgenetics.coordinate.activities;
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
  * android.content.Intent
- * android.content.SharedPreferences
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager
  * android.content.res.Resources
@@ -71,6 +70,7 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.utils.Constants
  * org.wheatgenetics.coordinate.utils.Utils
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
  */
 
 public class Main extends android.support.v7.app.AppCompatActivity
@@ -628,7 +628,7 @@ android.view.View.OnKeyListener
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
-    private android.content.SharedPreferences ep;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences;
 
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
@@ -720,7 +720,8 @@ android.view.View.OnKeyListener
             }
         }
 
-        ep = this.getSharedPreferences("Settings", 0);
+        this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
+            this.getSharedPreferences("Settings", 0));
 
         this.drawerLayout = (android.support.v4.widget.DrawerLayout)
             this.findViewById(org.wheatgenetics.coordinate.R.id.drawer_layout);
@@ -752,9 +753,11 @@ android.view.View.OnKeyListener
                         final android.widget.TextView personTextView = (android.widget.TextView)
                             org.wheatgenetics.coordinate.activities.Main.this.findViewById(
                                 org.wheatgenetics.coordinate.R.id.nameLabel);
-                        assert null != ep            ;
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
                         assert null != personTextView;
-                        personTextView.setText(ep.getString("Person", ""));
+                        personTextView.setText(org.wheatgenetics.coordinate.
+                            activities.Main.this.sharedPreferences.getPerson());
                     }
 
                     {
@@ -807,19 +810,17 @@ android.view.View.OnKeyListener
         this.initializeTemplatesTable();
         this.createDirs();
 
-        if (ep.getLong("CurrentGrid", -1) != -1)
-            try { this.loadGrid(ep.getLong("CurrentGrid", -1)); }
+        if (this.sharedPreferences.currentGridIsSet())
+            try { this.loadGrid(this.sharedPreferences.getCurrentGrid()); }
             catch (final java.lang.Exception e) {}
         else
             this.loadExistingTemplateOrCreateNewTemplate();
 
         this.showTemplateUI();
 
-        if (ep.getInt("UpdateVersion", -1) < this.getVersion())
+        if (!this.sharedPreferences.updateVersionIsSet(this.getVersion()))
         {
-            final android.content.SharedPreferences.Editor ed = ep.edit();
-            ed.putInt("UpdateVersion", getVersion());
-            ed.apply();
+            this.sharedPreferences.setUpdateVersion(this.getVersion());
             this.changelog();
         }
     }
@@ -1260,14 +1261,12 @@ android.view.View.OnKeyListener
                                         if (optionalField.nameEqualsIgnoreCase("Person")
                                         ||  optionalField.nameEqualsIgnoreCase("Name"  ))
                                         {
-                                            final android.content.SharedPreferences.Editor ed =
-                                                org.wheatgenetics.coordinate.
-                                                    activities.Main.this.ep.edit();
-                                            assert null != ed;
-                                            ed.putString("Person", optionalField.getValue());
-                                            ed.apply();
+                                            assert null != org.wheatgenetics.coordinate.activities.
+                                                Main.this.sharedPreferences;
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.sharedPreferences.setPerson(
+                                                optionalField.getValue());
                                         }
-
                                         i++;
                                     }
                                 }
@@ -1540,10 +1539,10 @@ android.view.View.OnKeyListener
                                 if (optionalField.nameEqualsIgnoreCase("Person")
                                 ||  optionalField.nameEqualsIgnoreCase("Name"  ))
                                 {
-                                    final android.content.SharedPreferences.Editor ed = ep.edit();
-                                    assert null != ed;
-                                    ed.putString("Person", optionalField.getValue());
-                                    ed.apply();
+                                    assert null != org.wheatgenetics.coordinate.activities.
+                                        Main.this.sharedPreferences;
+                                    org.wheatgenetics.coordinate.activities.Main.this.
+                                        sharedPreferences.setPerson(optionalField.getValue());
                                 }
                             }
                             i++;
@@ -1899,10 +1898,10 @@ android.view.View.OnKeyListener
                         final long id = gridIds[which];
 
                         {
-                            final android.content.SharedPreferences.Editor ed = ep.edit();
-                            assert null != ed;
-                            ed.putLong("CurrentGrid", id);
-                            ed.apply();
+                            assert null !=
+                                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.sharedPreferences.setCurrentGrid(id);
                         }
 
                         final org.wheatgenetics.coordinate.database.GridsTable grd =
@@ -2853,10 +2852,10 @@ android.view.View.OnKeyListener
                 this.gridId = gridId;
 
                 {
-                    final android.content.SharedPreferences.Editor ed = this.ep.edit();
-                    assert null != ed;
-                    ed.putLong("CurrentGrid", gridId);
-                    ed.apply();
+                    assert null !=
+                        org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                    org.wheatgenetics.coordinate.activities.
+                        Main.this.sharedPreferences.setCurrentGrid(gridId);
                 }
 
                 this.populateTemplate();
@@ -2880,10 +2879,10 @@ android.view.View.OnKeyListener
             this.gridId = gridId;
 
             {
-                final android.content.SharedPreferences.Editor ed = ep.edit();
-                assert null != ed;
-                ed.putLong("CurrentGrid", gridId);
-                ed.apply();
+                assert null !=
+                    org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences.setCurrentGrid(
+                    gridId);
             }
 
             this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
