@@ -57,6 +57,7 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.json.JSONException
  *
+ * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
@@ -1016,16 +1017,7 @@ android.view.View.OnKeyListener
         builder.setView(changeContainer)
             .setCancelable(true)
             .setPositiveButton(this.okStringResource,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.dismiss();
-                    }
-                });
+                org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
         builder.create().show();
     }
 
@@ -1121,15 +1113,7 @@ android.view.View.OnKeyListener
             builder.setView(listView);
         }
         builder.setNegativeButton(this.okStringResource,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.dismiss();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
         builder.show();
     }
 
@@ -2016,15 +2000,7 @@ android.view.View.OnKeyListener
             builder.setView(personView);
         }
         builder.setNegativeButton(this.okStringResource,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.dismiss();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
         builder.show();
     }
     // endregion
