@@ -96,8 +96,6 @@
     <string name="delete_template_menu">Delete template</string>
     <string name="reset_database_message">Are you sure you want to reset the database? This will delete all collected or created data and the app will close.</string>
 
-    <string name="updatemsg">Changelog</string>
-
     <!-- Export strings -->
     <string name="export_success">File successfully exported</string>
     <string name="grid_empty">No data has been collected</string>

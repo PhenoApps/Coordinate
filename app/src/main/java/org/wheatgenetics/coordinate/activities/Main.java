@@ -42,7 +42,6 @@ package org.wheatgenetics.coordinate.activities;
  * android.widget.Button
  * android.widget.EditText
  * android.widget.LinearLayout
- * android.widget.ScrollView
  * android.widget.Spinner
  * android.widget.TableLayout
  * android.widget.TableRow
@@ -54,7 +53,9 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
- * org.wheatgenetics.androidlibrary.Utils
+ * org.wheatgenetics.changelog.ChangeLogAlertDialog
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
@@ -68,7 +69,6 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.utils.Constants
  * org.wheatgenetics.coordinate.utils.Utils
- * org.wheatgenetics.sharedpreferences.SharedPreferences
  */
 
 public class Main extends android.support.v7.app.AppCompatActivity
@@ -564,9 +564,6 @@ android.view.View.OnKeyListener
     private android.support.v4.widget.DrawerLayout       drawerLayout         ;
     private android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private android.widget.LinearLayout parent         ;
-    private android.widget.ScrollView   changeContainer;
-
     private android.widget.LinearLayout mainLayout,
         gridAreaLayout, gridTableLayout, optionalFieldLayout;
     private android.widget.EditText cellIDEditText        ;
@@ -578,8 +575,9 @@ android.view.View.OnKeyListener
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences      ;
-    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
+    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
 
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
@@ -731,11 +729,6 @@ android.view.View.OnKeyListener
         assert null != this.drawerLayout;
         this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
 
-        parent = new android.widget.LinearLayout(this);
-        changeContainer = new android.widget.ScrollView(this);
-        changeContainer.removeAllViews();
-        changeContainer.addView(parent);
-
         this.mainLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.mainLayout);
         this.gridAreaLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.gridArea);
         this.optionalFieldLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
@@ -772,7 +765,7 @@ android.view.View.OnKeyListener
         if (!this.sharedPreferences.updateVersionIsSet(this.getVersion()))
         {
             this.sharedPreferences.setUpdateVersion(this.getVersion());
-            this.changelog();
+            this.showChangeLog();
         }
     }
 
@@ -957,74 +950,14 @@ android.view.View.OnKeyListener
         }
     }
 
-    private void changelog()
+    private void showChangeLog()
     {
-        this.parent.setOrientation(android.widget.LinearLayout.VERTICAL);
-        this.parseLog(org.wheatgenetics.coordinate.R.raw.changelog_releases);
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(Main.this);
-        builder.setTitle(this.getResources().getString(org.wheatgenetics.coordinate.R.string.updatemsg));
-        builder.setView(changeContainer)
-            .setCancelable(true)
-            .setPositiveButton(this.okStringResource,
-                org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
-        builder.create().show();
-    }
-
-    private void parseLog(final int resId)
-    {
-        try
-        {
-            final java.io.InputStream inputStream = this.getResources().openRawResource(resId);
-            final java.io.InputStreamReader inputStreamReader = new java.io.InputStreamReader(inputStream);
-            final java.io.BufferedReader br = new java.io.BufferedReader(inputStreamReader, 8192);
-
-            final android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.MATCH_PARENT, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
-            lp.setMargins(20, 5, 20, 0);
-
-            java.lang.String curVersionName = null;
-            java.lang.String line;
-
-            while ((line = br.readLine()) != null)
-            {
-                final android.widget.TextView header  = new android.widget.TextView(this);
-                final android.widget.TextView content = new android.widget.TextView(this);
-                final android.widget.TextView spacer  = new android.widget.TextView(this);
-                final android.view.View       ruler   = new android.view.View      (this);
-
-                header.setLayoutParams(lp);
-                content.setLayoutParams(lp);
-                spacer.setLayoutParams(lp);
-                ruler.setLayoutParams(lp);
-
-                spacer.setTextSize(5);
-
-                ruler.setBackgroundColor(this.getResources().getColor(org.wheatgenetics.coordinate.R.color.main_colorAccent));
-                header.setTextAppearance(getApplicationContext(), org.wheatgenetics.coordinate.R.style.ChangelogTitles);
-                content.setTextAppearance(getApplicationContext(), org.wheatgenetics.coordinate.R.style.ChangelogContent);
-
-                if (0 == line.length())
-                {
-                    curVersionName = null;
-                    spacer.setText("\n");
-                    parent.addView(spacer);
-                }
-                else if (null == curVersionName)
-                {
-                    final java.lang.String[] lineSplit = line.split("/");
-                    curVersionName = lineSplit[1];
-                    header.setText(curVersionName);
-                    parent.addView(header);
-                    parent.addView(ruler);
-                }
-                else
-                {
-                    content.setText("•  " + line);
-                    parent.addView(content);
-                }
-            }
-        }
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* context                => */ this,
+                /* changeLogRawResourceId => */
+                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
+        try                                 { this.changeLogAlertDialog.show()       ; }
         catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
     }
 
@@ -1896,7 +1829,7 @@ android.view.View.OnKeyListener
                     {
                         @java.lang.Override
                         public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.activities.Main.this.changelog(); }
+                        { org.wheatgenetics.coordinate.activities.Main.this.showChangeLog(); }
                     });
         }
         this.aboutAlertDialog.show();
