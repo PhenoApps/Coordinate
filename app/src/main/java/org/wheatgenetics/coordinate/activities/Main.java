@@ -37,16 +37,11 @@ package org.wheatgenetics.coordinate.activities;
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnKeyListener
- * android.view.ViewGroup
  * android.view.WindowManager
  * android.view.inputmethod.EditorInfo
- * android.widget.AdapterView
- * android.widget.ArrayAdapter
  * android.widget.Button
  * android.widget.EditText
- * android.widget.ImageView
  * android.widget.LinearLayout
- * android.widget.ListView
  * android.widget.ScrollView
  * android.widget.Spinner
  * android.widget.TableLayout
@@ -57,6 +52,8 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.json.JSONException
  *
+ * org.wheatgenetics.about.OtherApps.Index
+ * org.wheatgenetics.about.OtherAppsAlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
@@ -557,54 +554,6 @@ android.view.View.OnKeyListener
         }
     }
 
-    private static class OtherAppsArrayAdapter extends android.widget.ArrayAdapter<java.lang.String>
-    {
-        private final java.lang.String texts[] =
-            {"Field Book", "Inventory", "1KK"/*, "Intercross", "Rangle"*/ };
-
-        OtherAppsArrayAdapter(final android.app.Activity context)
-        {
-            super(
-                /* context  => */ context                                      ,
-                /* resource => */ org.wheatgenetics.coordinate.R.layout.appline);
-            this.addAll(this.texts);
-        }
-
-        @java.lang.Override
-        public @android.support.annotation.NonNull android.view.View getView(final int position,
-        final android.view.View convertView,
-        @android.support.annotation.NonNull final android.view.ViewGroup parent)
-        {
-            android.view.View appLineView;
-            {
-                final android.view.LayoutInflater layoutInflater = (android.view.LayoutInflater)
-                    this.getContext().getSystemService(
-                        android.content.Context.LAYOUT_INFLATER_SERVICE);
-                assert null != layoutInflater;
-                appLineView = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.appline, null, true);
-            }
-            assert null != appLineView;
-            {
-                final android.widget.TextView textView = (android.widget.TextView)
-                    appLineView.findViewById(org.wheatgenetics.coordinate.R.id.txt);
-                assert null != textView;
-                textView.setText(this.texts[position]);
-            }
-            {
-                final java.lang.Integer resIds[] = {
-                    org.wheatgenetics.coordinate.R.drawable.other_ic_field_book,
-                    org.wheatgenetics.coordinate.R.drawable.other_ic_inventory ,
-                    org.wheatgenetics.coordinate.R.drawable.other_ic_1kk       };
-                final android.widget.ImageView imageView = (android.widget.ImageView)
-                    appLineView.findViewById(org.wheatgenetics.coordinate.R.id.img);
-                assert null != imageView;
-                imageView.setImageResource(resIds[position]);
-            }
-            return appLineView;
-        }
-    }
-
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
     private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
@@ -629,7 +578,8 @@ android.view.View.OnKeyListener
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
+    private org.wheatgenetics.about.OtherAppsAlertDialog          otherAppsAlertDialog = null;
 
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
@@ -1080,41 +1030,10 @@ android.view.View.OnKeyListener
 
     private void showOtherAppsDialog()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(this.getResources().getString(
-            org.wheatgenetics.coordinate.R.string.otherapps));
-        {
-            final android.widget.ListView listView = new android.widget.ListView(this);
-            listView.setDivider      (null);
-            listView.setDividerHeight(   0);
-            listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
-                {
-                    @java.lang.Override
-                    public void onItemClick(final android.widget.AdapterView<?> parent,
-                    final android.view.View view, final int position, final long id)
-                    {
-                        if (0 <= position && 2 >= position)
-                        {
-                            final java.lang.String[] links = {          // TODO: Update these links.
-                                "https://play.google.com/store/apps/"       +
-                                    "details?id=com.fieldbook.tracker"      ,
-                                "https://play.google.com/store/apps/"       +
-                                    "details?id=org.wheatgenetics.inventory",
-                                "http://wheatgenetics.org/apps"             };
-                            org.wheatgenetics.coordinate.activities.Main.this.startActivity(
-                                new android.content.Intent(android.content.Intent.ACTION_VIEW,
-                                    android.net.Uri.parse(links[position])));
-                        }
-                    }
-                });
-            listView.setAdapter(
-                new org.wheatgenetics.coordinate.activities.Main.OtherAppsArrayAdapter(this));
-            builder.setView(listView);
-        }
-        builder.setNegativeButton(this.okStringResource,
-            org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
-        builder.show();
+        if (null == this.otherAppsAlertDialog)
+            this.otherAppsAlertDialog = new org.wheatgenetics.about.OtherAppsAlertDialog(this,
+                org.wheatgenetics.about.OtherApps.Index.COORDINATE);
+        this.otherAppsAlertDialog.show();
     }
 
     private void resetDatabase()
