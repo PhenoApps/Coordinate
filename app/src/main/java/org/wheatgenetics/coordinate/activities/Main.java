@@ -52,8 +52,8 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.json.JSONException
  *
+ * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
- * org.wheatgenetics.about.OtherAppsAlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
@@ -578,8 +578,8 @@ android.view.View.OnKeyListener
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
-    private org.wheatgenetics.about.OtherAppsAlertDialog          otherAppsAlertDialog = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences      ;
+    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog = null;
 
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
@@ -1026,14 +1026,6 @@ android.view.View.OnKeyListener
             }
         }
         catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
-    }
-
-    private void showOtherAppsDialog()
-    {
-        if (null == this.otherAppsAlertDialog)
-            this.otherAppsAlertDialog = new org.wheatgenetics.about.OtherAppsAlertDialog(this,
-                org.wheatgenetics.about.OtherApps.Index.COORDINATE);
-        this.otherAppsAlertDialog.show();
     }
 
     private void resetDatabase()
@@ -1858,69 +1850,56 @@ android.view.View.OnKeyListener
 
     private void about()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        if (null == this.aboutAlertDialog)
         {
-            android.view.View personView;
+            java.lang.String versionName = null;
             {
-                final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                personView = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.about,
-                    new android.widget.LinearLayout(this), false);
+                android.content.pm.PackageInfo packageInfo;
+                {
+                    final android.content.pm.PackageManager packageManager =
+                        this.getPackageManager();
+                    assert null != packageManager;
+                    try
+                    {
+                        packageInfo = packageManager.getPackageInfo(  // throws android.content.
+                            this.getPackageName(), 0);                //  pm.PackageManager.-
+                    }                                                 //  NameNotFoundException
+                    catch (final android.content.pm.PackageManager.NameNotFoundException e)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
+
+                        packageInfo = null;
+
+                        assert null != e;
+                        versionName = e.getMessage();
+                    }
+                }
+                versionName = null == packageInfo ? versionName : packageInfo.versionName;
             }
 
-            assert null != personView;
+            java.lang.String title, msgs[];
             {
-                final android.widget.TextView versionTextView = (android.widget.TextView)
-                    personView.findViewById(org.wheatgenetics.coordinate.R.id.tvVersion);
-                {
-                    android.content.pm.PackageInfo packageInfo;
-                    {
-                        final android.content.pm.PackageManager packageManager =
-                            this.getPackageManager();
-                        assert null != packageManager;
-                        try
-                        {
-                            packageInfo = packageManager.getPackageInfo(  // throws android.content.
-                                this.getPackageName(), 0);                //  pm.PackageManager.-
-                        }                                                 //  NameNotFoundException
-                        catch (final android.content.pm.PackageManager.NameNotFoundException e)
-                        {
-                            org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
-                            return;
-                        }
-                    }
-                    assert null != packageInfo    ;
-                    assert null != versionTextView;
-                    versionTextView.setText(this.getResources().getString(
-                            org.wheatgenetics.coordinate.R.string.versiontitle) +
-                        " " + packageInfo.versionName);
-                }
-                versionTextView.setOnClickListener(new android.view.View.OnClickListener()
+                final android.content.res.Resources resources = this.getResources();
+                assert null != resources;
+                title = resources.getString(org.wheatgenetics.coordinate.R.string.about);
+                msgs  = new java.lang.String[]
+                    { resources.getString(org.wheatgenetics.coordinate.R.string.grid_description) };
+            }
+
+            this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
+                /* context                => */ this       ,
+                /* title                  => */ title      ,
+                /* versionName            => */ versionName,
+                /* msgs[]                 => */ msgs       ,
+                /* suppressIndex          => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
+                /* versionOnClickListener => */ new android.view.View.OnClickListener()
                     {
                         @java.lang.Override
                         public void onClick(final android.view.View v)
                         { org.wheatgenetics.coordinate.activities.Main.this.changelog(); }
                     });
-            }
-
-            {
-                final android.widget.TextView otherAppsTextView = (android.widget.TextView)
-                    personView.findViewById(org.wheatgenetics.coordinate.R.id.tvOtherApps);
-                assert null != otherAppsTextView;
-                otherAppsTextView.setOnClickListener(new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.activities.Main.this.showOtherAppsDialog(); }
-                    });
-            }
-            builder.setCancelable(true);
-            builder.setTitle(this.getResources().getString(
-                org.wheatgenetics.coordinate.R.string.about));
-            builder.setView(personView);
         }
-        builder.setNegativeButton(this.okStringResource,
-            org.wheatgenetics.androidlibrary.Utils.dismissingOnClickListener());
-        builder.show();
+        this.aboutAlertDialog.show();
     }
     // endregion
 
