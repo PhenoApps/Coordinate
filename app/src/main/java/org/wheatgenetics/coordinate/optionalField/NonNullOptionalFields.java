@@ -14,19 +14,20 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
+implements java.lang.Cloneable
 {
-    // region Public Methods
-    // region Constructor Public Methods
+    // region Constructors
     public NonNullOptionalFields() { super(); }
 
     public NonNullOptionalFields(final java.lang.String json) throws org.json.JSONException
     {
         this();
 
-        final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-        final org.json.JSONArray   jsonArray   =
-            (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.JSONException
-
+        org.json.JSONArray jsonArray;
+        {
+            final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
+            jsonArray = (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.-
+        }                                                                       //  JSONException
         assert null != jsonArray     ;
         assert null != this.arrayList;
         for (int i = 0; i < jsonArray.length(); i++)
@@ -52,7 +53,16 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
     }
     // endregion
 
-    // region Add Public Methods
+    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    public Object clone() throws java.lang.CloneNotSupportedException
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new NonNullOptionalFields();
+        result.arrayList.addAll(this.arrayList);
+        return result;
+    }
+
+    // region Add Methods
     public boolean add(final java.lang.String name)
     {
         assert null != this.arrayList;
@@ -118,9 +128,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
                 int i = 0;
 
                 assert null != iterator;
-                do
-                    optionalField = iterator.next();
-                while (i++ < index);
+                do optionalField = iterator.next(); while (i++ < index);
             }
             return optionalField;
         }
@@ -162,5 +170,4 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
 
         return result;
     }
-    // endregion
 }

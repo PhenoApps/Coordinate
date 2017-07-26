@@ -1,6 +1,8 @@
 package org.wheatgenetics.coordinate.optionalField;
 
 /**
+ * An OtherOptionalField is an optional field that is anything other than a date optional field.
+ *
  * Uses:
  * org.json.JSONException
  * org.json.JSONObject
@@ -30,9 +32,8 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     {
         super(jsonObject);
 
-        final java.lang.String hint = this.getHint();
-        assert null != hint;
-        if (hint.equals(org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT))
+        if (org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT.equals(
+        this.getHint()))
             throw new org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass();
     }
     // endregion

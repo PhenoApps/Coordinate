@@ -5,44 +5,42 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONException
  * org.json.JSONObject
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.coordinate.BuildConfig
  */
 
 public abstract class OptionalField extends java.lang.Object
 {
-    // region Private Class Constants
+    // region Private Constants
     private static final java.lang.String
         NAME_JSON_NAME = "field", VALUE_JSON_NAME   = "value"  ,
         HINT_JSON_NAME = "hint" , CHECKED_JSON_NAME = "checked";
     // endregion
 
-    // region Package Class Constant
+    // region Package Constant
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
     // endregion
 
-    // region Private Fields
+    // region Fields
     private java.lang.String  name, value = "", hint = "";
     private boolean           checked = true             ;
     // endregion
 
-    // region Setter Private Methods
+    // region Private Methods
     private void setName(final java.lang.String name)
     {
         assert null != name;
-        if (org.wheatgenetics.coordinate.BuildConfig.DEBUG && 0 >= name.length())
+        if (org.wheatgenetics.coordinate.BuildConfig.DEBUG && name.length() <= 0)
             throw new java.lang.AssertionError();
         this.name = name;
     }
 
     private void setHint(final java.lang.String hint)
-    {
-        assert null != hint;
-        this.hint = hint;
-    }
+    { this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(hint); }
     // endregion
 
-    // region Package Methods
-    // region Constructor Package Methods
+    // region Constructor Methods
     OptionalField(final java.lang.String name)
     {
         super();
@@ -71,6 +69,28 @@ public abstract class OptionalField extends java.lang.Object
     }
     // endregion
 
+    // region Overridden Methods
+    @java.lang.Override
+    public java.lang.String toString() { return this.getName(); }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object o)
+    {
+        if (null == o)
+            return false;
+        else
+        if (o instanceof org.wheatgenetics.coordinate.optionalField.OptionalField)
+        {
+            final org.wheatgenetics.coordinate.optionalField.OptionalField f =
+                (org.wheatgenetics.coordinate.optionalField.OptionalField) o;
+            return
+                this.getName().equals(f.getName()) && this.getValue().equals(f.getValue()) &&
+                this.getHint().equals(f.getHint()) && this.getChecked() == f.getChecked()   ;
+        }
+        else return false;
+    }
+    // endregion
+
     org.json.JSONObject makeJSONObject() throws org.json.JSONException
     {
         final org.json.JSONObject jsonObject = new org.json.JSONObject();
@@ -90,23 +110,14 @@ public abstract class OptionalField extends java.lang.Object
 
         return jsonObject;
     }
-    // endregion
 
     // region Public Methods
-    // region Overridden Public Method
-    @java.lang.Override
-    public java.lang.String toString() { return this.getName(); }
-    // endregion
-
     // region Getter and Setter Public Methods
     public java.lang.String getName() { return this.name; }
 
     public java.lang.String getValue() { return this.value; }
     public void             setValue(final java.lang.String value)
-    {
-        assert null != value;
-        this.value = value;
-    }
+    { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value); }
 
     public java.lang.String getHint() { return this.hint; }
 
@@ -114,11 +125,7 @@ public abstract class OptionalField extends java.lang.Object
     public void    setChecked(final boolean checked) { this.checked = checked; }
     // endregion
 
-    public boolean nameEqualsIgnoreCase(final java.lang.String string)
-    {
-        final java.lang.String name = this.getName();
-        assert null != name;
-        return name.equalsIgnoreCase(string);
-    }
+    public boolean namesAreEqual(final java.lang.String name)
+    { return this.getName().equalsIgnoreCase(name); }
     // endregion
 }
