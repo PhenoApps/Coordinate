@@ -16,9 +16,25 @@ abstract public class Model extends java.lang.Object
         this.setId(id);
     }
 
+    // region Overridden Methods
     @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
+    @java.lang.Override
+    public boolean equals(final java.lang.Object o)
+    {
+        if (null == o)
+            return false;
+        else
+            if (o instanceof org.wheatgenetics.coordinate.model.Model)
+                return this.getId() == ((org.wheatgenetics.coordinate.model.Model) o).getId();
+            else
+                return false;
+    }
+    // endregion
+
+    // region Public Methods
     public long getId()              { return this.id; }
-    public void setId(final long id) { this.id = id  ; }               // TODO: Replace with copy().
+    public void setId(final long id) { this.id = id  ; }
+    // endregion
 }

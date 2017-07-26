@@ -10,16 +10,19 @@ package org.wheatgenetics.coordinate.model;
  * org.json.JSONObject
  * org.json.JSONTokener
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  */
 
 public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
+implements java.lang.Cloneable
 {
     // region Types
-    private static class Cells extends java.lang.Object
+    private static class Cells extends java.lang.Object implements java.lang.Cloneable
     {
-        private static class Cell extends java.lang.Object
+        private static class Cell extends java.lang.Object implements java.lang.Cloneable
         {
             private final android.graphics.Point point;
 
@@ -39,6 +42,43 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             }
             // endregion
 
+            // region Overridden Methods
+            @java.lang.Override
+            public String toString()
+            { return null == this.point ? super.toString() : this.point.toString(); }
+
+            @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+            public boolean equals(final java.lang.Object o)
+            {
+                if (null == o)
+                    return false;
+                else
+                    if  (o instanceof org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell)
+                    {
+                        final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell c =
+                            (org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell) o;
+
+                        if (null == this.point && null != c.point)
+                            return false;
+                        else
+                            if (null != this.point && null == c.point) return false;
+                         return null == this.point ? true : this.point.equals(c.point.x, c.point.y);
+                    }
+                    else return false;
+            }
+
+            @java.lang.Override
+            public int hashCode() { return this.toString().hashCode(); }
+
+            @java.lang.Override
+            protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
+            {
+                return null == this.point ? super.clone() :
+                    new org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell(
+                        this.point.x, this.point.y);
+            }
+            // endregion
+
             // region External Methods
             private static org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell random(
             final int xBound, final int yBound)
@@ -48,30 +88,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                     org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(yBound));
             }
 
-            private boolean sameContents(
-            final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell)
-            {
-                if (null == cell)
-                    return false;
-                else
-                    if (null == cell.point || null == this.point)
-                        return false;
-                    else
-                        return this.point.equals(cell.point.x, cell.point.y);
-            }
-
             private org.json.JSONObject json() throws org.json.JSONException
             {
                 if (null == this.point)
                     return null;
                 else
                 {
-                    final org.json.JSONObject jsonObject = new org.json.JSONObject();
+                    final org.json.JSONObject result = new org.json.JSONObject();
 
-                    jsonObject.put("row", this.point.y);            // throws org.json.JSONException
-                    jsonObject.put("col", this.point.x);            // throws org.json.JSONException
+                    result.put("row", this.point.y);                // throws org.json.JSONException
+                    result.put("col", this.point.x);                // throws org.json.JSONException
 
-                    return jsonObject;
+                    return result;
                 }
             }
             // endregion
@@ -81,12 +109,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             cellArrayListInstance = null;
 
         // region Internal Methods
+        private static
+        java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell> make()
+        {
+            return new
+                java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>();
+        }
+
         private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>
         cellArrayList()
         {
-            if (null == this.cellArrayListInstance)
-                this.cellArrayListInstance = new java.util.ArrayList<
-                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell>();
+            if (null == this.cellArrayListInstance) this.cellArrayListInstance =
+                org.wheatgenetics.coordinate.model.TemplateModel.Cells.make();
             return this.cellArrayListInstance;
         }
 
@@ -95,10 +129,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         {
             boolean result = false;
 
-            if (null != this.cellArrayListInstance && null != candidateCell)
+            if (null != this.cellArrayListInstance)
                 for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
                 this.cellArrayListInstance)
-                    if (null != cell) if (cell.sameContents(candidateCell))
+                    if (null != cell) if (cell.equals(candidateCell))
                     {
                         result = true;
                         break;
@@ -107,13 +141,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             return result;
         }
         // endregion
-
-        @java.lang.Override
-        public String toString()
-        {
-            return null == this.cellArrayListInstance ?
-                super.toString() : this.cellArrayList().toString();
-        }
 
         // region Constructors
         private Cells() { super(); }
@@ -140,12 +167,12 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 final int length = jsonArray.length();
                 if (length > 0)
                 {
-                    final int                 first = 0, last = length - 1;
-                          org.json.JSONObject jsonObject                  ;
+                    final int first = 0, last = length - 1;
                     for (int i = first; i <= last; i++)
                         try
                         {
-                            jsonObject = (org.json.JSONObject) jsonArray.get(i);
+                            final org.json.JSONObject jsonObject =
+                                (org.json.JSONObject) jsonArray.get(i);
                             if (null != jsonObject) this.add(
                                 jsonObject.getInt("col"),           // throws org.json.JSONException
                                 jsonObject.getInt("row"));          // throws org.json.JSONException
@@ -153,6 +180,105 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                         catch (final org.json.JSONException e) { /* Skip this jsonObject. */ }
                 }
             }
+        }
+        // endregion
+
+        // region Overridden Methods
+        @java.lang.Override
+        public String toString()
+        {
+            if (null == this.cellArrayListInstance)
+                return super.toString();
+            else
+                if (this.cellArrayListInstance.size() <= 0)
+                    return super.toString();
+                else
+                {
+                    java.lang.String result = null;
+                    {
+                        boolean firstCell = true;
+                        for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell
+                        cell: this.cellArrayListInstance) if (null != cell)
+                            if (firstCell)
+                            {
+                                result    = cell.toString();
+                                firstCell = false          ;
+                            }
+                            else result += '\n' + cell.toString();
+                    }
+                    return org.wheatgenetics.javalib.Utils.replaceIfNull(result, super.toString());
+                }
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object o)
+        {
+            if (null == o)
+                return false;
+            else
+                if (o instanceof org.wheatgenetics.coordinate.model.TemplateModel.Cells)
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateModel.Cells cs =
+                        (org.wheatgenetics.coordinate.model.TemplateModel.Cells) o;
+
+                    if (null == this.cellArrayListInstance && null != cs.cellArrayListInstance)
+                        return false;
+                    else
+                        if (null != this.cellArrayListInstance && null == cs.cellArrayListInstance)
+                            return false;
+
+                    if (null == this.cellArrayListInstance)
+                        return true;
+                    else
+                        if (this.cellArrayListInstance.size() != cs.cellArrayListInstance.size())
+                            return false;
+                        else
+                        {
+                            {
+                                int i = 0;
+
+                                for (final
+                                org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
+                                this.cellArrayListInstance)
+                                {
+                                    final
+                                        org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell
+                                            c = cs.cellArrayListInstance.get(i++);
+
+                                    if (null == cell && null != c)
+                                        return false;
+                                    else
+                                        if (null != cell && null == c)
+                                            return false;
+                                        else if (null != cell) if (!cell.equals(c)) return false;
+                                }
+                            }
+                            return true;
+                        }
+                }
+                else return false;
+        }
+
+        @java.lang.Override
+        public int hashCode() { return this.toString().hashCode(); }
+
+        @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+        protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModel.Cells result =
+                new org.wheatgenetics.coordinate.model.TemplateModel.Cells();
+
+            if (null != this.cellArrayListInstance)
+            {
+                result.cellArrayListInstance =
+                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.make();
+                for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
+                this.cellArrayListInstance)
+                    if (null != cell) result.cellArrayListInstance.add(
+                        (org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell) cell.clone());
+            }
+
+            return result;
         }
         // endregion
 
@@ -178,9 +304,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                            this.cellArrayList();
                     cellArrayList.clear();
 
-                    org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell;
                     do
                     {
+                        org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell;
                         do
                             cell =
                                 org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell.random(
@@ -236,25 +362,21 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
         // endregion
     }
 
-    private static class Coordinates extends java.lang.Object
+    private static class Coordinates extends java.lang.Object implements java.lang.Cloneable
     {
         private java.util.ArrayList<java.lang.Integer> integerArrayListInstance = null;
 
-        // region Internal Method
+        // region Internal Methods
+        private static java.util.ArrayList<java.lang.Integer> make()
+        { return new java.util.ArrayList<java.lang.Integer>(); }
+
         private java.util.ArrayList<java.lang.Integer> integerArrayList()
         {
-            if (null == this.integerArrayListInstance)
-                this.integerArrayListInstance = new java.util.ArrayList<java.lang.Integer>();
+            if (null == this.integerArrayListInstance) this.integerArrayListInstance =
+                org.wheatgenetics.coordinate.model.TemplateModel.Coordinates.make();
             return this.integerArrayListInstance;
         }
         // endregion
-
-        @java.lang.Override
-        public String toString()
-        {
-            return null == this.integerArrayListInstance ?
-                super.toString() : this.integerArrayList().toString();
-        }
 
         // region Constructors
         Coordinates() { super(); }
@@ -287,6 +409,106 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                         catch (final org.json.JSONException e) { /* Skip this jsonObject. */ }
                 }
             }
+        }
+        // endregion
+
+        // region Overridden Methods
+        @java.lang.Override
+        public java.lang.String toString()
+        {
+            if (null == this.integerArrayListInstance)
+                return super.toString();
+            else
+                if (this.integerArrayList().size() <= 0)
+                    return super.toString();
+                else
+                {
+                    java.lang.String result = null;
+                    {
+                        boolean firstInteger = true;
+                        for (final java.lang.Integer integer: this.integerArrayListInstance)
+                            if (null != integer)
+                                if (firstInteger)
+                                {
+                                    result       = integer.toString();
+                                    firstInteger = false             ;
+                                }
+                                else result += '\n' + integer.toString();
+                    }
+                    return org.wheatgenetics.javalib.Utils.replaceIfNull(result, super.toString());
+                }
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object o)
+        {
+            if (null == o)
+                return false;
+            else
+                if (o instanceof org.wheatgenetics.coordinate.model.TemplateModel.Coordinates)
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates cs =
+                        (org.wheatgenetics.coordinate.model.TemplateModel.Coordinates) o;
+
+                    if (null == this.integerArrayListInstance
+                    &&  null != cs.integerArrayListInstance  )
+                        return false;
+                    else
+                        if (null != this.integerArrayListInstance
+                        &&  null == cs.integerArrayListInstance  )
+                            return false;
+
+                    if (null == this.integerArrayListInstance)
+                        return true;
+                    else
+                        if (this.integerArrayListInstance.size()
+                        !=  cs.integerArrayListInstance.size()  )
+                            return false;
+                        else
+                        {
+                            {
+                                int i = 0;
+
+                                for (final java.lang.Integer integer: this.integerArrayListInstance)
+                                {
+                                    final java.lang.Integer c =
+                                        cs.integerArrayListInstance.get(i++);
+
+                                    if (null == integer && null != c)
+                                        return false;
+                                    else
+                                        if (null != integer && null == c)
+                                            return false;
+                                        else
+                                            if (null != integer)
+                                                if (!integer.equals(c)) return false;
+                                }
+                            }
+                            return true;
+                        }
+                }
+                else return false;
+        }
+
+        @java.lang.Override
+        public int hashCode() { return this.toString().hashCode(); }
+
+        @java.lang.Override @java.lang.SuppressWarnings(
+            {"CloneDoesntCallSuperClone", "UnnecessaryBoxing", "UnnecessaryUnboxing"})
+        protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates result =
+                new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates();
+
+            if (null != this.integerArrayListInstance)
+            {
+                result.integerArrayListInstance =
+                    org.wheatgenetics.coordinate.model.TemplateModel.Coordinates.make();
+                for (final java.lang.Integer integer: this.integerArrayListInstance)
+                    result.integerArrayListInstance.add(new java.lang.Integer(integer.intValue()));
+            }
+
+            return result;
         }
         // endregion
 
@@ -370,6 +592,14 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
             new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates();
         return this.excludeColsInstance;
     }
+
+    private static boolean valid(final int numbering)
+    {
+        if (numbering < 0 || numbering > 1)
+            throw new java.lang.IllegalArgumentException();
+        else
+            return 1 == numbering;
+    }
     // endregion
 
     // region Constructors
@@ -379,8 +609,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     {
         super(title, type, rows, cols);
 
-        this.colNumbering = colNumbering;
-        this.rowNumbering = rowNumbering;
+        this.setColNumbering(colNumbering);
+        this.setRowNumbering(rowNumbering);
     }
 
     private TemplateModel(final java.lang.String title,
@@ -421,7 +651,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     }
     // endregion
 
-    // region toString()
+    // region Overridden Methods
+    // region toString() Overridden Methods
     @java.lang.Override
     java.lang.String formatString()
     {
@@ -434,9 +665,90 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     {
         return java.lang.String.format(this.formatString(),
             "TemplateModel"         , this.excludeCellsInstance, this.excludeRowsInstance,
-            this.excludeColsInstance, this.optionalFields      , this.colNumbering       ,
-            this.rowNumbering       , this.timestamp                                     );
+            this.excludeColsInstance, this.optionalFields      , this.getColNumbering()  ,
+            this.getRowNumbering()  , this.getTimestamp()                                );
     }
+    // endregion
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object o)
+    {
+        if (super.equals(o))
+            if (o instanceof org.wheatgenetics.coordinate.model.TemplateModel)
+            {
+                final org.wheatgenetics.coordinate.model.TemplateModel t =
+                    (org.wheatgenetics.coordinate.model.TemplateModel) o;
+
+                if (null == this.excludeCellsInstance && null != t.excludeCellsInstance)
+                    return false;
+                else
+                    if (null != this.excludeCellsInstance && null == t.excludeCellsInstance)
+                        return false;
+                if (null != this.excludeCellsInstance)
+                    if (!this.excludeCellsInstance.equals(t.excludeCellsInstance)) return false;
+
+                if (null == this.excludeRowsInstance && null != t.excludeRowsInstance)
+                    return false;
+                else
+                    if (null != this.excludeRowsInstance && null == t.excludeRowsInstance)
+                        return false;
+                if (null != this.excludeRowsInstance)
+                    if (!this.excludeRowsInstance.equals(t.excludeRowsInstance)) return false;
+
+                if (null == this.excludeColsInstance && null != t.excludeColsInstance)
+                    return false;
+                else
+                    if (null != this.excludeColsInstance && null == t.excludeColsInstance)
+                        return false;
+                if (null != this.excludeColsInstance)
+                    if (!this.excludeColsInstance.equals(t.excludeColsInstance)) return false;
+
+                if (this.getColNumbering() != t.getColNumbering()) return false;
+                if (this.getRowNumbering() != t.getRowNumbering()) return false;
+
+                if (null == this.optionalFields && null != t.optionalFields)
+                    return false;
+                else
+                    if (null != this.optionalFields && null == t.optionalFields) return false;
+                if (null != this.optionalFields)
+                    if (!this.optionalFields.equals(t.optionalFields)) return false;
+
+                return this.getTimestamp() == t.getTimestamp();
+            }
+            else return false;
+        else return false;
+    }
+
+    @java.lang.Override
+    public int hashCode() { return this.toString().hashCode(); }
+
+    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(), this.getType(),
+                this.getRows(), this.getCols(), this.getColNumbering(), this.getRowNumbering());
+
+        if (null != this.excludeCellsInstance)
+            result.excludeCellsInstance = (org.wheatgenetics.coordinate.model.TemplateModel.Cells)
+                this.excludeCellsInstance.clone();
+
+        if (null != this.excludeRowsInstance) result.excludeRowsInstance =
+            (org.wheatgenetics.coordinate.model.TemplateModel.Coordinates)
+                this.excludeRowsInstance.clone();
+        if (null != this.excludeColsInstance) result.excludeColsInstance =
+            (org.wheatgenetics.coordinate.model.TemplateModel.Coordinates)
+                this.excludeColsInstance.clone();
+
+        if (null != this.optionalFields) result.optionalFields =
+            (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
+                this.optionalFields.clone();
+
+        result.timestamp = this.getTimestamp();
+
+        return result;
+    }
+
     // endregion
 
     // region Public Methods
@@ -452,6 +764,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.lang.String getExcludeCellsAsJson()
     { return null == this.excludeCellsInstance ? null : this.excludeCells().json(); }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedCell(final int col, final int row)
     { return null == this.excludeCellsInstance ? false : this.excludeCells().isPresent(col, row); }
     // endregion
@@ -466,9 +779,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public java.lang.String getExcludeColsAsJson()
     { return null == this.excludeColsInstance ? null : this.excludeCols().json(); }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedRow(final int integer)
     { return null == this.excludeRowsInstance ? false : this.excludeRows().isPresent(integer); }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedCol(final int integer)
     { return null == this.excludeColsInstance ? false : this.excludeCols().isPresent(integer); }
     // endregion
@@ -477,22 +792,12 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
     public void    setColNumbering(final int     colNumbering)
-    {
-        if (colNumbering < 0 || colNumbering > 1)
-            throw new java.lang.IllegalArgumentException();
-        else
-            this.setColNumbering(1 == colNumbering);
-    }
+    { this.setColNumbering(org.wheatgenetics.coordinate.model.TemplateModel.valid(colNumbering)); }
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
     public void    setRowNumbering(final int     rowNumbering)
-    {
-        if (rowNumbering < 0 || rowNumbering > 1)
-            throw new java.lang.IllegalArgumentException();
-        else
-            this.setRowNumbering(1 == rowNumbering);
-    }
+    { this.setRowNumbering(org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering)); }
     // endregion
 
     public java.lang.String getOptionalFields() throws org.json.JSONException
@@ -518,14 +823,12 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
                 int col, row = currentPoint.y;
                 {
                     final int lastCol = this.getCols();
-                    for (col = currentPoint.x; col <= lastCol; col++)
-                        if (!this.isExcludedCol(col))
-                        {
-                            final int lastRow = this.getRows();
-                            for (row = currentPoint.y; row <= lastRow; row++)
-                                if (!this.isExcludedRow(row))
-                                    if (!this.isExcludedCell(row, col)) break;
-                        }
+                    for (col = currentPoint.x; col <= lastCol; col++) if (!this.isExcludedCol(col))
+                    {
+                        final int lastRow = this.getRows();
+                        for (row = currentPoint.y; row <= lastRow; row++)
+                            if (!this.isExcludedRow(row)) if (!this.isExcludedCell(row, col)) break;
+                    }
                 }
                 currentPoint.x = col;
                 currentPoint.y = row;
