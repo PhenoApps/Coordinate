@@ -105,14 +105,13 @@ android.view.View.OnKeyListener
             org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
             {
                 assert null != optionalField;
-                if (optionalField.nameEqualsIgnoreCase("Tray"))  // TODO: Use polymorphism?
+                if (optionalField.namesAreEqual("Tray"))                  // TODO: Use polymorphism?
                     tray_id = optionalField.getValue();
                 else
-                    if (optionalField.nameEqualsIgnoreCase("Person"))
+                    if (optionalField.namesAreEqual("Person"))
                         person = optionalField.getValue().replace(" ", "_");  // TODO: Put in OptionalField?
                     else
-                        if (optionalField.nameEqualsIgnoreCase("date"))
-                            date = optionalField.getValue();
+                        if (optionalField.namesAreEqual("date")) date = optionalField.getValue();
             }
 
             this.exportFile = this.makeExportFile();
@@ -183,25 +182,25 @@ android.view.View.OnKeyListener
             org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
             {
                 assert null != optionalField;
-                if (optionalField.nameEqualsIgnoreCase("date"))  // TODO: Ditto.
+                if (optionalField.namesAreEqual("date"))                             // TODO: Ditto.
                     date = optionalField.getValue();
                 else
-                    if (optionalField.nameEqualsIgnoreCase("Plate"))
+                    if (optionalField.namesAreEqual("Plate"))
                         plate_id = optionalField.getValue();
                     else
-                        if (optionalField.nameEqualsIgnoreCase("Plate Name"))
+                        if (optionalField.namesAreEqual("Plate Name"))
                             plate_name = optionalField.getValue();
                         else
-                            if (optionalField.nameEqualsIgnoreCase("person"))
+                            if (optionalField.namesAreEqual("person"))
                                 dna_person = optionalField.getValue().replace(" ", "_");  // TODO: Ditto.
                             else
-                                if (optionalField.nameEqualsIgnoreCase("Notes"))
+                                if (optionalField.namesAreEqual("Notes"))
                                     notes = optionalField.getValue();
                                 else
-                                    if (optionalField.nameEqualsIgnoreCase("tissue_type"))
+                                    if (optionalField.namesAreEqual("tissue_type"))
                                         tissue_type = optionalField.getValue();
                                     else
-                                        if (optionalField.nameEqualsIgnoreCase("extraction"))
+                                        if (optionalField.namesAreEqual("extraction"))
                                             extraction = optionalField.getValue();
             }
 
@@ -1086,8 +1085,8 @@ android.view.View.OnKeyListener
                                         }
 
                                         optionalField.setValue(value);
-                                        if (optionalField.nameEqualsIgnoreCase("Person")
-                                        ||  optionalField.nameEqualsIgnoreCase("Name"  ))
+                                        if (optionalField.namesAreEqual("Person")
+                                        ||  optionalField.namesAreEqual("Name"  ))
                                         {
                                             assert null != org.wheatgenetics.coordinate.activities.
                                                 Main.this.sharedPreferences;
@@ -1364,8 +1363,8 @@ android.view.View.OnKeyListener
 
                                 optionalField.setValue(editText.getText().toString().trim());
 
-                                if (optionalField.nameEqualsIgnoreCase("Person")
-                                ||  optionalField.nameEqualsIgnoreCase("Name"  ))
+                                if (optionalField.namesAreEqual("Person")
+                                ||  optionalField.namesAreEqual("Name"  ))
                                 {
                                     assert null != org.wheatgenetics.coordinate.activities.
                                         Main.this.sharedPreferences;
@@ -1672,6 +1671,7 @@ android.view.View.OnKeyListener
                 }).show();
     }
 
+    @android.annotation.SuppressLint("DefaultLocale")
     private void importData()
     {
         java.lang.String names  [] = new java.lang.String[1];
@@ -2623,7 +2623,8 @@ android.view.View.OnKeyListener
         return gridsTable.insert();
     }
 
-    private void createNewTemplate(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    private void createNewTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
     throws org.json.JSONException
     {
         assert null != this.templateModel;
@@ -2675,7 +2676,8 @@ android.view.View.OnKeyListener
             this.getString(org.wheatgenetics.coordinate.R.string.create_template_fail));
     }
 
-    private void loadExistingTemplate(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    private void loadExistingTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         assert null != this.templateModel;
         this.templateModel.setType(templateType);
