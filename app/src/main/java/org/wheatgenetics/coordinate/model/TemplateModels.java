@@ -10,39 +10,6 @@ package org.wheatgenetics.coordinate.model;
 public class TemplateModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 {
-    static class Iterator extends java.lang.Object
-    implements java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel>
-    {
-        final private java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
-            listIterator;
-
-        Iterator(@android.support.annotation.NonNull
-        final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
-        {
-            super();
-
-            assert null != arrayList;
-            this.listIterator = arrayList.listIterator();
-        }
-
-        @java.lang.Override
-        public boolean hasNext()
-        {
-            assert null != this.listIterator;
-            return this.listIterator.hasNext();
-        }
-
-        @java.lang.Override
-        public org.wheatgenetics.coordinate.model.TemplateModel next()
-        {
-            assert null != this.listIterator;
-            return this.listIterator.next();
-        }
-
-        @java.lang.Override
-        public void remove() { throw new java.lang.UnsupportedOperationException(); }
-    }
-
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
@@ -59,10 +26,44 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     { return i < 0 ? false : null == this.arrayListInstance ? false : i < this.arrayList().size(); }
     // endregion
 
-    // region Public java.lang.Iterable<> Method
+    // region java.lang.Iterable<> Overridden Method
     @java.lang.Override
     public java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel> iterator()
-    { return new org.wheatgenetics.coordinate.model.TemplateModels.Iterator(this.arrayList()); }
+    {
+        class Iterator extends java.lang.Object
+        implements java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel>
+        {
+            final private java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
+                listIterator;
+
+            private Iterator(@android.support.annotation.NonNull
+            final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
+            {
+                super();
+
+                assert null != arrayList;
+                this.listIterator = arrayList.listIterator();
+            }
+
+            @java.lang.Override
+            public boolean hasNext()
+            {
+                assert null != this.listIterator;
+                return this.listIterator.hasNext();
+            }
+
+            @java.lang.Override
+            public org.wheatgenetics.coordinate.model.TemplateModel next()
+            {
+                assert null != this.listIterator;
+                return this.listIterator.next();
+            }
+
+            @java.lang.Override
+            public void remove() { throw new java.lang.UnsupportedOperationException(); }
+        }
+        return new Iterator(this.arrayList());
+    }
     // endregion
 
     // region Public Methods
@@ -83,7 +84,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
                 this.arrayList();
             final int size = arrayList.size();
 
-            if (0 >= size)
+            if (size <= 0)
                 return null;
             else
             {
