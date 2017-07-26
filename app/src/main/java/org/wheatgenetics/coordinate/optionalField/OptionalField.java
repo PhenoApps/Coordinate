@@ -89,6 +89,10 @@ public abstract class OptionalField extends java.lang.Object
         }
         else return false;
     }
+
+    @java.lang.Override
+    public java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    { return super.clone(); }
     // endregion
 
     org.json.JSONObject makeJSONObject() throws org.json.JSONException

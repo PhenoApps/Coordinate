@@ -54,11 +54,13 @@ implements java.lang.Cloneable
     // endregion
 
     @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
-    public Object clone() throws java.lang.CloneNotSupportedException
+    public java.lang.Object clone() throws java.lang.CloneNotSupportedException
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new NonNullOptionalFields();
-        result.arrayList.addAll(this.arrayList);
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField : this)
+            result.arrayList.add(
+                (org.wheatgenetics.coordinate.optionalField.OptionalField) optionalField.clone());
         return result;
     }
 
