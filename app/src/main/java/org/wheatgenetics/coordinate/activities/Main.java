@@ -71,7 +71,6 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.utils.Constants
  * org.wheatgenetics.coordinate.utils.Utils
  */
-
 public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
 android.view.View.OnKeyListener
@@ -516,7 +515,7 @@ android.view.View.OnKeyListener
                                                     Main.this.showTemplateUI();
                                             }
                                             else
-                                                org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                org.wheatgenetics.coordinate.utils.Utils.showToast(
                                                     org.wheatgenetics.coordinate.activities.Main.
                                                         Exporter.this.context,
                                                     org.wheatgenetics.coordinate.activities.Main.
@@ -525,7 +524,7 @@ android.view.View.OnKeyListener
                                         }
                                         catch (final java.lang.Exception e)
                                         {
-                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                            org.wheatgenetics.coordinate.utils.Utils.showToast(
                                                 org.wheatgenetics.coordinate.activities.Main.
                                                     Exporter.this.context,
                                                 org.wheatgenetics.coordinate.activities.Main.this.
@@ -1087,7 +1086,7 @@ android.view.View.OnKeyListener
                                             editText.getText().toString().trim();
                                         if (0 == i && 0 == value.length())
                                         {
-                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                            org.wheatgenetics.coordinate.utils.Utils.showToast(
                                                 org.wheatgenetics.coordinate.activities.Main.this,
                                                 optionalField.getHint() + org.wheatgenetics.
                                                     coordinate.activities.Main.this.getString(
@@ -1348,7 +1347,7 @@ android.view.View.OnKeyListener
                                         editText.getText().toString().trim();
                                     if (0 == i && 0 == value.length())
                                     {
-                                        org.wheatgenetics.coordinate.utils.Utils.toast(
+                                        org.wheatgenetics.coordinate.utils.Utils.showToast(
                                             org.wheatgenetics.coordinate.activities.Main.this,
                                             optionalField.getHint() + org.wheatgenetics.coordinate.
                                                 activities.Main.this.getString(org.wheatgenetics.
@@ -2441,8 +2440,10 @@ android.view.View.OnKeyListener
     {
         try
         {
-            final int resID = this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
-            final android.media.MediaPlayer chimePlayer = android.media.MediaPlayer.create(Main.this, resID);
+            final int resID =
+                this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
+            final android.media.MediaPlayer chimePlayer =
+                android.media.MediaPlayer.create(this, resID);
             assert null != chimePlayer;
             chimePlayer.start();
 

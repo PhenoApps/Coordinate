@@ -1,92 +1,101 @@
 package org.wheatgenetics.coordinate.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.util.Locale;
-
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
 /**
  * Uses:
+ * android.app.AlertDialog
+ * android.app.AlertDialog.Builder
+ * android.content.Context
+ * android.content.DialogInterface
+ * android.graphics.Bitmap
+ * android.graphics.BitmapFactory
+ * android.graphics.Matrix
+ * android.net.ConnectivityManager
+ * android.net.NetworkInfo
  * android.text.format.DateFormat
+ * android.util.DisplayMetrics
+ * android.util.Log
+ * android.view.Display
+ * android.view.inputmethod.InputMethodManager
+ * android.view.View
+ * android.view.WindowManager
+ * android.widget.Toast
+ *
+ * org.wheatgenetics.androidlibrary.Utils
  */
-
 public class Utils extends java.lang.Object
 {
-    private static final String TAG = "Utils";
-
-    public static boolean isOnline(Context mContext) {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) return true;
-        return false;
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public static boolean isOnline(final android.content.Context context)
+    {
+        android.net.NetworkInfo networkInfo;
+        {
+            assert null != context;
+            final android.net.ConnectivityManager connectivityManager =
+                (android.net.ConnectivityManager) context.getSystemService(
+                    android.content.Context.CONNECTIVITY_SERVICE);
+            assert null != connectivityManager;
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+        return null == networkInfo ? false : networkInfo.isConnectedOrConnecting();
     }
 
-    public static void alert(Context context, String title, String msg) {
-        Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(title);
-        dialog.setMessage(msg);
-        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
-        dialog.show();
+    public static void alert(final android.content.Context context, final java.lang.String title,
+    final java.lang.String message)
+    {
+        new android.app.AlertDialog.Builder(context).setTitle(title).setMessage(message).
+            setPositiveButton("Ok",
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
 
-    public static void alert(Context context, String title, String msg, final Runnable runnableYes) {
-        Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(title);
-        dialog.setMessage(msg);
-        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                if (runnableYes != null) {
-                    runnableYes.run();
+    public static void alert(final android.content.Context context, final java.lang.String title,
+    final java.lang.String message, final java.lang.Runnable runnableYes)
+    {
+        new android.app.AlertDialog.Builder(context).setTitle(title).setMessage(message).
+            setPositiveButton("Ok", new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog, final int id)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
+                        if (null != runnableYes) runnableYes.run();
+                    }
+                }).show();
+    }
+
+    public static void confirm(final android.content.Context context, final java.lang.String title,
+    final java.lang.String message, final java.lang.Runnable runnableYes,
+    final java.lang.Runnable runnableNo)
+    {
+        final android.app.AlertDialog.Builder builder =
+            new android.app.AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int id)
+                {
+                    assert null != dialog;
+                    dialog.cancel();
+                    if (null != runnableYes) runnableYes.run();
                 }
-            }
-        });
-        dialog.show();
+            });
+        builder.setNegativeButton("No", new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int id)
+                {
+                    assert null != dialog;
+                    dialog.cancel();
+                    if (null != runnableNo) runnableNo.run();
+                }
+            });
+        builder.show();
     }
 
-    public static void confirm(Context context, String title, String msg, final Runnable runnableYes, final Runnable runnableNo) {
-        Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(title);
-        dialog.setMessage(msg);
-        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                if (runnableYes != null) {
-                    runnableYes.run();
-                }
-            }
-        });
-        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                if (runnableNo != null) {
-                    runnableNo.run();
-                }
-            }
-        });
-        dialog.show();
-    }
-
-    public static void toast(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-    }
+    public static void showToast(final android.content.Context context, final java.lang.String text)
+    { android.widget.Toast.makeText(context, text, android.widget.Toast.LENGTH_LONG).show(); }
 
     public static java.lang.String formatDate(final long date)
     {
@@ -100,94 +109,130 @@ public class Utils extends java.lang.Object
             java.lang.System.currentTimeMillis());
     }
 
-    public static void hideKeys(final Context ctx, final View vw)
+    public static void hideKeys(final android.content.Context context, final android.view.View view)
     {
-        if (vw == null) return;
-        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(vw.getWindowToken(), 0);
-    }
-
-    public static void sleeper(final int i)
-    {
-        try { Thread.sleep(i); } catch (InterruptedException e) {}
-    }
-
-    public static Bitmap loadBitmap(final Context context, final String path)
-    {
-        Bitmap bmp = null;
-        FileInputStream is = null;
-        try
+        if (null != context && null != view)
         {
-            is = new FileInputStream(path);
-            if (is != null) bmp = BitmapFactory.decodeStream(is);
+            final android.view.inputmethod.InputMethodManager inputMethodManager =
+                (android.view.inputmethod.InputMethodManager)
+                    context.getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+            assert null != inputMethodManager;
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), /* flags => */ 0);
         }
-        catch (Exception e) {}
-        finally { try { if (is != null) is.close(); } catch (Exception e) {} }
-        return bmp;
     }
 
-    public static Bitmap scaleBitmap(Bitmap source, int quality,
-                                     int screenWidth, int screenHeight) {
-        float ratioX = (float) screenWidth / (float) source.getWidth();
-        float ratioY = (float) screenHeight / (float) source.getHeight();
-        float ratio = Math.min(ratioX, ratioY);
-        float dwidth = ratio * source.getWidth();
-        float dheight = ratio * source.getHeight();
+    @java.lang.SuppressWarnings("EmptyCatchBlock")
+    public static void sleeper(final int i)
+    { try { java.lang.Thread.sleep(i); } catch (final java.lang.InterruptedException e) {} }
 
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        source.compress(Bitmap.CompressFormat.JPEG, quality, os);
-        source.recycle();
-
-        byte[] array = os.toByteArray();
-
-        source = BitmapFactory.decodeByteArray(array, 0, array.length);
-
-        source = Bitmap.createScaledBitmap(source, (int) dwidth, (int) dheight, true);
-        assert source != null;
-        Log.i(TAG, String.format("output iw: %d ih: %d", source.getWidth(), source.getHeight()));
-        return source;
-    }
-
-    public static Bitmap resizeBitmap(Bitmap bm, int newHeight, int newWidth)
+    @java.lang.SuppressWarnings("EmptyCatchBlock")
+    public static android.graphics.Bitmap loadBitmap(final java.lang.String path)
     {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = scaleWidth; //((float) newHeight) / height;
+        android.graphics.Bitmap bitmap = null;
+        {
+            java.io.FileInputStream fileInputStream;
+            try { fileInputStream = new java.io.FileInputStream(path); }
+            catch (final java.io.FileNotFoundException e) { fileInputStream = null; }
+
+            if (fileInputStream != null)
+            {
+                bitmap = android.graphics.BitmapFactory.decodeStream(fileInputStream);
+                try { fileInputStream.close(); } catch (final java.io.IOException e) {}
+            }
+        }
+        return bitmap;
+    }
+
+    public static android.graphics.Bitmap scaleBitmap(android.graphics.Bitmap src,
+    final int quality, final int screenWidth, final int screenHeight)
+    {
+        {
+            {
+                byte byteArray[];
+                {
+                    final java.io.ByteArrayOutputStream byteArrayOutputStream =
+                        new java.io.ByteArrayOutputStream();
+
+                    src.compress(
+                        /* format =>  */ android.graphics.Bitmap.CompressFormat.JPEG,
+                        /* quality => */ quality                                    ,
+                        /* stream  => */ byteArrayOutputStream                      );
+                    src.recycle();
+
+                    byteArray = byteArrayOutputStream.toByteArray();
+                }
+                assert null != byteArray;
+                src = android.graphics.BitmapFactory.decodeByteArray(
+                    /* data => */ byteArray, /* offset => */ 0, /* length => */ byteArray.length);
+            }
+
+            int dstWidth, dstHeight;
+            {
+                assert null != src;
+                final float srcWidth = (float) src.getWidth(),
+                    srcHeight = (float) src.getHeight(), ratio;
+                {
+                    final float xRatio = (float) screenWidth  / srcWidth ;
+                    final float yRatio = (float) screenHeight / srcHeight;
+                    ratio = java.lang.Math.min(xRatio, yRatio);
+                }
+                dstWidth  = (int) (ratio * srcWidth );
+                dstHeight = (int) (ratio * srcHeight);
+            }
+            src = android.graphics.Bitmap.createScaledBitmap(
+                /* src       => */ src      ,
+                /* dstWidth  => */ dstWidth ,
+                /* dstHeight => */ dstHeight,
+                /* filter    => */ true     );
+        }
+        assert null != src;
+        android.util.Log.i("Utils", java.lang.String.format(
+            "output iw: %d ih: %d", src.getWidth(), src.getHeight()));
+        return src;
+    }
+
+    public static android.graphics.Bitmap resizeBitmap(final android.graphics.Bitmap bitmap,
+    final int newHeight, final int newWidth)
+    {
+        assert null != bitmap;
+        final int width = bitmap.getWidth(), height = bitmap.getHeight();
 
         // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
+        final android.graphics.Matrix matrix = new android.graphics.Matrix();
+        {
+            final float scaleWidth  =   ((float) newWidth ) / width              ;
+            final float scaleHeight = /*((float) newHeight) / height*/ scaleWidth;
 
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight);
+        }
 
         // RECREATE THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        return resizedBitmap;
+        return android.graphics.Bitmap.createBitmap(   /* source => */ bitmap,
+            /* x      => */ 0     , /* y => */ 0     , /* width  => */ width ,
+            /* height => */ height, /* m => */ matrix, /* filter => */ false );
     }
 
-    public static int getScreenSize(final Context context)
+    public static int getScreenSize(final android.content.Context context)
     {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
+        final android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
+        {
+            assert null != context;
+            final android.view.WindowManager windowManager = (android.view.WindowManager)
+                context.getSystemService(android.content.Context.WINDOW_SERVICE);
+            windowManager.getDefaultDisplay().getMetrics(metrics);
 
-        Display d = wm.getDefaultDisplay();
-
-        return Math.min(metrics.widthPixels, metrics.heightPixels);
-    }
+            final android.view.Display display = windowManager.getDefaultDisplay(); // TODO: Appears
+        }                                                                           // TODO:  unne-
+        return java.lang.Math.min(metrics.widthPixels, metrics.heightPixels);       // TODO:  cessa-
+    }                                                                               // TODO:  ry.
 
     public static int parseInt(final java.lang.String s)
     {
-        int i;
-        try                                             { i = java.lang.Integer.parseInt(s); }
-        catch (final java.lang.NumberFormatException e) { i =                            -1; }
-        return i;
+        try                                             { return java.lang.Integer.parseInt(s); }
+        catch (final java.lang.NumberFormatException e) { return                            -1; }
     }
 
-    public static String getTag(final int r, final int c)
-    {
-        return String.format(Locale.US, "tag_%d_%d", r, c);
-    }
+    public static java.lang.String getTag(final int r, final int c)
+    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
 }
