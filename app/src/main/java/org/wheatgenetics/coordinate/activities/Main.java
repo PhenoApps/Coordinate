@@ -1,2528 +1,2861 @@
 package org.wheatgenetics.coordinate.activities;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+/**
+ * Uses:
+ * android.annotation.SuppressLint
+ * android.app.Activity
+ * android.app.AlertDialog
+ * android.app.AlertDialog.Builder
+ * android.app.ProgressDialog
+ * android.content.Context
+ * android.content.DialogInterface
+ * android.content.DialogInterface.OnCancelListener
+ * android.content.DialogInterface.OnClickListener
+ * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.content.Intent
+ * android.content.pm.PackageInfo
+ * android.content.pm.PackageManager
+ * android.content.res.Resources
+ * android.database.Cursor
+ * android.graphics.Point
+ * android.media.MediaPlayer
+ * android.media.MediaScannerConnection
+ * android.net.Uri
+ * android.os.AsyncTask
+ * android.os.Bundle
+ * android.support.design.widget.NavigationView
+ * android.support.v4.view.GravityCompat
+ * android.support.v4.widget.DrawerLayout
+ * android.support.v7.app.ActionBarDrawerToggle
+ * android.support.v7.app.AppCompatActivity
+ * android.support.v7.widget.Toolbar
+ * android.util.Log
+ * android.view.KeyEvent
+ * android.view.LayoutInflater
+ * android.view.Menu
+ * android.view.MenuInflater
+ * android.view.MenuItem
+ * android.view.View
+ * android.view.View.OnKeyListener
+ * android.view.WindowManager
+ * android.view.inputmethod.EditorInfo
+ * android.widget.Button
+ * android.widget.EditText
+ * android.widget.LinearLayout
+ * android.widget.Spinner
+ * android.widget.TableLayout
+ * android.widget.TableRow
+ * android.widget.TextView
+ * android.widget.TextView.OnEditorActionListener
+ * android.widget.Toast
+ *
+ * org.json.JSONException
+ *
+ * org.wheatgenetics.about.AboutAlertDialog
+ * org.wheatgenetics.about.OtherApps.Index
+ * org.wheatgenetics.androidlibrary.Utils
+ * org.wheatgenetics.changelog.ChangeLogAlertDialog
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
+ * org.wheatgenetics.coordinate.barcodes.IntentResult
+ * org.wheatgenetics.coordinate.database.EntriesTable
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.TemplatesTable
+ * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
+ * org.wheatgenetics.coordinate.utils.Constants
+ * org.wheatgenetics.coordinate.utils.Utils
+ */
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Point;
-import android.media.MediaPlayer;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
+public class Main extends android.support.v7.app.AppCompatActivity
+implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
+android.view.View.OnKeyListener
+{
+    private class Exporter extends android.os.AsyncTask<
+    java.lang.Void, java.lang.String, java.lang.Boolean>
+    {
+        private final android.content.Context context                     ;
+        private final long                    templateId                  ;
+        private final java.lang.String        exportFileName, absolutePath;
 
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+        private android.app.ProgressDialog                           progressDialog;
+        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
+        private java.lang.String                                     message = null;
+        private java.io.File                                         exportFile    ;
 
-import org.wheatgenetics.coordinate.R;
-import org.wheatgenetics.coordinate.Coordinate;
-import org.wheatgenetics.coordinate.barcodes.IntentIntegrator;
-import org.wheatgenetics.coordinate.barcodes.IntentResult;
-import org.wheatgenetics.coordinate.csv.CsvWriter;
-import org.wheatgenetics.coordinate.database.DatabaseHelper;
-import org.wheatgenetics.coordinate.database.Entry;
-import org.wheatgenetics.coordinate.database.Grid;
-import org.wheatgenetics.coordinate.database.Template;
-import org.wheatgenetics.coordinate.objects.Optional;
-import org.wheatgenetics.coordinate.utils.Constants;
-import org.wheatgenetics.coordinate.utils.Utils;
-
-public class Main extends AppCompatActivity implements android.view.View.OnClickListener, OnEditorActionListener, OnKeyListener {
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_DONE = 1;
-    private static final int STATE_ACTIVE = 2;
-    private static final int STATE_INACTIVE = 3;
-
-    private static final int TYPE_SEED = 0;
-    private static final int TYPE_DNA = 1;
-    private static final int TYPE_DEFAULT = 2;
-
-    private static final int MODE_DNA = 0;
-    private static final int MODE_SAVED = 1;
-    private static final int MODE_DEFAULT = 2;
-
-    public final String TAG = "Coordinate";
-    public final String DATE_FORMAT = "yyyy-mm-dd";
-
-    private LinearLayout mLayoutMain;
-    private LinearLayout mLayoutGrid;
-    private LinearLayout mLayoutOptional;
-    private TableLayout mTableData;
-
-    private TextView mTextTemplate;
-
-    private EditText mEditData;
-
-    public View curCell = null;
-
-    private long mId = 0;
-    private long mGrid = 0;
-    private String mGridTitle = "";
-    private int mCurRow = 1;
-    private int mCurCol = 1;
-
-    private int mType = 0;
-    private String mTemplate = "";
-
-    private SharedPreferences ep;
-
-    private int mRows = 20;
-    private int mCols = 10;
-    private boolean mRowNumbering = false;
-    private boolean mColNumbering = true;
-
-    private List<Point> mExcludeCells = new ArrayList<>();
-
-    private List<Integer> mExcludeRows = new ArrayList<>();
-    private List<Integer> mExcludeCols = new ArrayList<>();
-    private String[] menuMain;
-
-    private List<Optional> mOptions;
-
-    private DataExporter mTask;
-    public long mLastExportGridId = -1;
-
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
-
-    private LinearLayout parent;
-    private ScrollView changeContainer;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Plate Id", "", "", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
-
-        menuMain = new String[]{getResources().getString(R.string.template_load), getResources().getString(R.string.template_new)};
-
-        setContentView(R.layout.main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-        toolbar.bringToFront();
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(null);
-            getSupportActionBar().getThemedContext();
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
+        private java.io.File makeExportFile()
+        {
+            assert null != this.absolutePath  ;
+            assert null != this.exportFileName;
+            final java.io.File exportFile =
+                new java.io.File(this.absolutePath, this.exportFileName + ".csv");
+            if (this.exportFile.exists()) this.exportFile.delete();
+            return exportFile;
         }
 
-        ep = getSharedPreferences("Settings", 0);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
-        setupDrawerContent(nvDrawer);
-        setupDrawer();
-
-        parent = new LinearLayout(this);
-        changeContainer = new ScrollView(this);
-        changeContainer.removeAllViews();
-        changeContainer.addView(parent);
-
-        mLayoutMain = (LinearLayout) findViewById(R.id.mainLayout);
-        mLayoutGrid = (LinearLayout) findViewById(R.id.gridArea);
-        mLayoutOptional = (LinearLayout) findViewById(R.id.optionalLayout);
-
-        mTableData = (TableLayout) findViewById(R.id.dataTable);
-
-        mTextTemplate = (TextView) findViewById(R.id.templateText);
-
-        mEditData = (EditText) findViewById(R.id.dataEdit);
-        mEditData.setImeActionLabel(getString(R.string.keyboard_save), KeyEvent.KEYCODE_ENTER);
-        mEditData.setOnEditorActionListener(this);
-
-        //mEditData.setOnKeyListener(this);
-
-        mTextTemplate.setText(mTemplate);
-
-        mLayoutMain.setVisibility(View.INVISIBLE);
-
-        initDb();
-        createDirs();
-
-        if (ep.getLong("CurrentGrid", -1) != -1) {
-            loadGrid(ep.getLong("CurrentGrid", -1));
-        } else {
-            menuList();
-        }
-
-        showTemplateUI();
-
-        SharedPreferences.Editor ed = ep.edit();
-        if (ep.getInt("UpdateVersion", -1) < getVersion()) {
-            ed.putInt("UpdateVersion", getVersion());
-            ed.apply();
-            changelog();
-        }
-    }
-
-    public int getVersion() {
-        int v = 0;
-        try {
-            v = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "" + e.getMessage());
-        }
-        return v;
-    }
-
-    private void createDirs() {
-        createDir(Constants.MAIN_PATH);
-        createDir(Constants.EXPORT_PATH);
-        createDir(Constants.TEMPLATE_PATH);
-    }
-
-    private void createDir(File path) {
-        File blankFile = new File(path, ".coordinate");
-
-        if (!path.exists()) {
-            path.mkdirs();
-
-            try {
-                blankFile.getParentFile().mkdirs();
-                blankFile.createNewFile();
-                makeFileDiscoverable(blankFile, this);
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
+        private boolean exportSeed()
+        {
+            java.lang.String tray_id = "", person = "", date = "";
+            assert null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
+            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+            {
+                assert null != optionalField;
+                if (optionalField.namesAreEqual("Tray"))                  // TODO: Use polymorphism?
+                    tray_id = optionalField.getValue();
+                else
+                    if (optionalField.namesAreEqual("Person"))
+                        person = optionalField.getValue().replace(" ", "_");  // TODO: Put in OptionalField?
+                    else
+                        if (optionalField.namesAreEqual("date")) date = optionalField.getValue();
             }
-        }
-    }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        cancelTask();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    private void aboutDialog() {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View personView = inflater.inflate(R.layout.about, new LinearLayout(this), false);
-        TextView version = (TextView) personView.findViewById(R.id.tvVersion);
-        TextView otherApps = (TextView) personView.findViewById(R.id.tvOtherApps);
-
-
-        final PackageManager packageManager = this.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
-            version.setText(getResources().getString(R.string.versiontitle) + " " + packageInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        version.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changelog();
-            }
-        });
-
-        otherApps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showOtherAppsDialog();
-            }
-        });
-
-        alert.setCancelable(true);
-        alert.setTitle(getResources().getString(R.string.about));
-        alert.setView(personView);
-        alert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-            }
-        });
-        alert.show();
-    }
-
-    private void changelog() {
-        parent.setOrientation(LinearLayout.VERTICAL);
-        parseLog(R.raw.changelog_releases);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-        builder.setTitle(getResources().getString(R.string.updatemsg));
-        builder.setView(changeContainer)
-                .setCancelable(true)
-                .setPositiveButton(getResources().getString(R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
+            this.exportFile = this.makeExportFile();
+            boolean success = false;
+            try
+            {
+                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
+                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(
+                        new java.io.FileWriter(this.exportFile, false));
+                {
+                    final java.lang.String header[] = {"tray_id", "cell_id", "tray_num",
+                        "tray_column", "tray_row", "seed_id", "person", "date"};
+                    csvWriter.writeRecord(header);
+                }
+                assert null != this.templatesTable;
+                for (int col = 1; col <= this.templatesTable.cols; col++)  // model
+                {
+                    for (int row = 1; row <= this.templatesTable.rows; row++)  // model
+                    {
+                        csvWriter.write(tray_id                                      );  // tray id
+                        csvWriter.write("%s_C%02d_R%d", this.exportFileName, col, row);  // cell_id
+                        csvWriter.write(                                             );  // tray_num
+                        csvWriter.write(col                                          );  // tray_column
+                        csvWriter.write(row                                          );  // tray_row
+                        {
+                            java.lang.String value;
+                            if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                                value = "exclude";
+                            else
+                            {
+                                value = getValue(
+                                    org.wheatgenetics.coordinate.activities.Main.this.gridId,
+                                    row, col);
+                                if (value == null) value = "BLANK_";
                             }
-                        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
+                            csvWriter.write(value);  // seed_id
+                        }
+                        csvWriter.write(person);  // person
+                        csvWriter.write(date  );  // date
 
-    public void parseLog(int resId) {
-        try {
-            InputStream is = getResources().openRawResource(resId);
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr, 8192);
+                        csvWriter.endRecord();
+                    }
+                    this.publishProgress(
+                        org.wheatgenetics.coordinate.activities.Main.this.getString(
+                            org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+                csvWriter.close();
+                makeFileDiscoverable(this.exportFile,
+                    org.wheatgenetics.coordinate.activities.Main.this);
+                success = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.export_failed);
+            }
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            lp.setMargins(20, 5, 20, 0);
+            return success;
+        }
 
-            String curVersionName = null;
-            String line;
+        private boolean exportDna()
+        {
+            java.lang.String date       = "", plate_id = "", plate_name  = ""                 ;
+            java.lang.String dna_person = "", notes    = "", tissue_type = "", extraction = "";
+            assert null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
+            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+            {
+                assert null != optionalField;
+                if (optionalField.namesAreEqual("date"))                             // TODO: Ditto.
+                    date = optionalField.getValue();
+                else
+                    if (optionalField.namesAreEqual("Plate"))
+                        plate_id = optionalField.getValue();
+                    else
+                        if (optionalField.namesAreEqual("Plate Name"))
+                            plate_name = optionalField.getValue();
+                        else
+                            if (optionalField.namesAreEqual("person"))
+                                dna_person = optionalField.getValue().replace(" ", "_");  // TODO: Ditto.
+                            else
+                                if (optionalField.namesAreEqual("Notes"))
+                                    notes = optionalField.getValue();
+                                else
+                                    if (optionalField.namesAreEqual("tissue_type"))
+                                        tissue_type = optionalField.getValue();
+                                    else
+                                        if (optionalField.namesAreEqual("extraction"))
+                                            extraction = optionalField.getValue();
+            }
 
-            while ((line = br.readLine()) != null) {
-                TextView header = new TextView(this);
-                TextView content = new TextView(this);
-                TextView spacer = new TextView(this);
-                View ruler = new View(this);
+            this.exportFile = this.makeExportFile();
+            boolean success = false;
+            try
+            {
+                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
+                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(
+                        new java.io.FileWriter(this.exportFile, false));
+                {
+                    final java.lang.String header[] = {"date", "plate_id", "plate_name",
+                        "sample_id", "well_A01", "well_01A", "tissue_id", "dna_person", "notes",
+                        "tissue_type", "extraction"};
+                    csvWriter.writeRecord(header);
+                }
+                assert null != this.templatesTable;
+                for (int col = 1; col <= this.templatesTable.cols; col++)  // model
+                {
+                    for (int r = 0; r < this.templatesTable.rows; r++)  // model
+                    {
+                        csvWriter.write(date      );
+                        csvWriter.write(plate_id  );
+                        csvWriter.write(plate_name);
+                        {
+                            java.lang.String sample_id;
+                            {
+                                final java.lang.String rowName =
+                                    java.lang.Character.toString((char) ('A' + r));
+                                final java.lang.String colName =
+                                    java.lang.String.format("%02d", col);
 
-                header.setLayoutParams(lp);
-                content.setLayoutParams(lp);
-                spacer.setLayoutParams(lp);
-                ruler.setLayoutParams(lp);
+                                sample_id = java.lang.String.format(
+                                    "%s_%s%s", plate_id, rowName, colName);
+                                csvWriter.write(sample_id               );  // sample_id
+                                csvWriter.write("%s%s", rowName, colName);  // well_A01
+                                csvWriter.write("%s%s", colName, rowName);  // well_01A
+                            }
+                            {
+                                java.lang.String tissue_id;
+                                {
+                                    final int row = r + 1;
+                                    if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                                        tissue_id = "BLANK_" + sample_id;
+                                    else
+                                    {
+                                        tissue_id = getValue(
+                                            org.wheatgenetics.coordinate.
+                                                activities.Main.this.gridId,
+                                            row, col);
+                                        if (tissue_id == null || tissue_id.trim().length() == 0)
+                                            tissue_id = "BLANK_" + sample_id;
+                                    }
+                                }
+                                csvWriter.write(tissue_id);
+                            }
+                        }
+                        csvWriter.write(dna_person );
+                        csvWriter.write(notes      );
+                        csvWriter.write(tissue_type);
+                        csvWriter.write(extraction );
 
-                spacer.setTextSize(5);
+                        csvWriter.endRecord();
+                    }
+                    this.publishProgress(
+                        org.wheatgenetics.coordinate.activities.Main.this.getString(
+                            org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+                csvWriter.close();
+                makeFileDiscoverable(this.exportFile,
+                    org.wheatgenetics.coordinate.activities.Main.this);
+                success = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.export_failed);
+            }
 
-                ruler.setBackgroundColor(getResources().getColor(R.color.main_colorAccent));
-                header.setTextAppearance(getApplicationContext(), R.style.ChangelogTitles);
-                content.setTextAppearance(getApplicationContext(), R.style.ChangelogContent);
+            return success;
+        }
 
-                if (line.length() == 0) {
-                    curVersionName = null;
-                    spacer.setText("\n");
-                    parent.addView(spacer);
-                } else if (curVersionName == null) {
-                    final String[] lineSplit = line.split("/");
-                    curVersionName = lineSplit[1];
-                    header.setText(curVersionName);
-                    parent.addView(header);
-                    parent.addView(ruler);
-                } else {
-                    content.setText("•  " + line);
-                    parent.addView(content);
+        private boolean exportDefault()
+        {
+            this.exportFile = this.makeExportFile();
+            boolean success = false;
+            try
+            {
+                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
+                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(
+                        new java.io.FileWriter(this.exportFile, false));
+
+                // Titles
+                csvWriter.write("Value" );
+                csvWriter.write("Column");
+                csvWriter.write("Row"   );
+
+                assert
+                    null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
+                for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+                org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+                {
+                    assert null != optionalField;
+                    csvWriter.write(optionalField.getName());
+                }
+                csvWriter.endRecord();
+
+                for (int col = 1; col <= this.templatesTable.cols; col++)  // model
+                {
+                    for (int row = 1; row <= this.templatesTable.rows; row++)  // model
+                    {
+                        {
+                            java.lang.String value;
+                            if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col))
+                                value = "exclude";
+                            else
+                            {
+                                value = getValue(
+                                    org.wheatgenetics.coordinate.activities.Main.this.gridId,
+                                    row, col);
+                                if (value == null) value = "";
+                            }
+                            csvWriter.write(value);
+                        }
+                        csvWriter.write(col);
+                        csvWriter.write(row);
+
+                        for (final
+                        org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+                        org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+                        {
+                            assert null != optionalField;
+                            csvWriter.write(optionalField.getValue());
+                        }
+
+                        csvWriter.endRecord();
+                    }
+                    this.publishProgress(
+                        org.wheatgenetics.coordinate.activities.Main.this.getString(
+                            org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
+                }
+                csvWriter.close();
+                makeFileDiscoverable(this.exportFile,
+                    org.wheatgenetics.coordinate.activities.Main.this);
+                success = true;
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.export_failed);
+            }
+
+            return success;
+        }
+
+        private void share()
+        {
+            final android.content.Intent intent =
+                new android.content.Intent(android.content.Intent.ACTION_SEND);
+
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+            assert null != this.exportFile;
+            intent.putExtra(android.content.Intent.EXTRA_STREAM,
+                android.net.Uri.parse(this.exportFile.getAbsolutePath()));
+
+            intent.setType("text/plain");
+
+            org.wheatgenetics.coordinate.activities.Main.this.startActivity(
+                android.content.Intent.createChooser(intent,
+                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.share_file)));
+        }
+
+        Exporter(final android.content.Context context, final long templateId,
+        final java.lang.String exportFileName, final java.lang.String absolutePath)
+        {
+            super();
+
+            this.context        = context       ;
+            this.templateId     = templateId    ;
+            this.exportFileName = exportFileName;
+            this.absolutePath   = absolutePath  ;
+        }
+
+        @java.lang.Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+
+            this.progressDialog = new android.app.ProgressDialog(this.context);
+            this.progressDialog.setTitle(
+                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.exporting_title));
+            this.progressDialog.setMessage(
+                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.exporting_body));
+            this.progressDialog.setCancelable(true);
+            this.progressDialog.setOnCancelListener(
+                new android.content.DialogInterface.OnCancelListener()
+                {
+                    @java.lang.Override
+                    public void onCancel(final android.content.DialogInterface dialog)
+                    { org.wheatgenetics.coordinate.activities.Main.this.cancelExporter(); }
+                });
+            this.progressDialog.show();
+        }
+
+        @java.lang.Override
+        protected java.lang.Boolean doInBackground(final java.lang.Void... bparams)
+        {
+            try
+            {
+                this.templatesTable = new org.wheatgenetics.coordinate.database.TemplatesTable(
+                    org.wheatgenetics.coordinate.activities.Main.this);
+            }
+            catch (final java.lang.Exception e)
+            {
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+
+            if (!this.templatesTable.get(this.templateId))
+            {
+                this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                    org.wheatgenetics.coordinate.R.string.import_template_failed);
+                return false;
+            }
+
+            if (this.templatesTable.type ==
+            org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
+                return this.exportSeed();
+            else
+                if (this.templatesTable.type ==
+                org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
+                    return this.exportDna();
+                else
+                    return this.exportDefault();
+        }
+
+        @java.lang.Override
+        protected void onProgressUpdate(final java.lang.String... msg)
+        {
+            if (null != msg)
+            {
+                final java.lang.String message = msg[0];
+                if (null != message)
+                {
+                    assert null != this.progressDialog;
+                    this.progressDialog.setMessage(message);
                 }
             }
+        }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        @java.lang.Override
+        protected void onPostExecute(final java.lang.Boolean result)
+        {
+            if (null != this.progressDialog && this.progressDialog.isShowing())
+            {
+                this.progressDialog.dismiss();
+                this.progressDialog = null;
+            }
+
+            // TODO: When grid is reset, make a new one.
+            if (null != result && result)
+            {
+                org.wheatgenetics.coordinate.activities.Main.this.mLastExportGridId =  // TODO: Make into
+                    org.wheatgenetics.coordinate.activities.Main.this.gridId;          // TODO:  Main method.
+                org.wheatgenetics.coordinate.utils.Utils.alert(this.context,
+                    org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
+                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export_success),
+                    new java.lang.Runnable()
+                    {
+                        @java.lang.Override
+                        public void run()
+                        {
+                            org.wheatgenetics.coordinate.utils.Utils.confirm(
+                                org.wheatgenetics.coordinate.activities.Main.Exporter.this.context,
+                                org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
+                                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                    org.wheatgenetics.coordinate.R.string.clear_grid),
+                                new java.lang.Runnable()
+                                {
+                                    @java.lang.Override
+                                    public void run()
+                                    {
+                                        try
+                                        {
+                                            final org.wheatgenetics.coordinate.database.EntriesTable
+                                                entriesTable = new org.wheatgenetics.
+                                                    coordinate.database.EntriesTable(org.
+                                                        wheatgenetics.coordinate.
+                                                            activities.Main.this);
+                                            if (entriesTable.deleteByGrid(org.wheatgenetics.
+                                            coordinate.activities.Main.this.gridId))
+                                            {
+                                                org.wheatgenetics.coordinate.activities.
+                                                    Main.this.populateTemplate();
+                                                org.wheatgenetics.coordinate.activities.
+                                                    Main.this.showTemplateUI();
+                                            }
+                                            else
+                                                org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                    org.wheatgenetics.coordinate.activities.Main.
+                                                        Exporter.this.context,
+                                                    org.wheatgenetics.coordinate.activities.Main.
+                                                        this.getString(org.wheatgenetics.coordinate.
+                                                            R.string.clear_fail));
+                                        }
+                                        catch (final java.lang.Exception e)
+                                        {
+                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                org.wheatgenetics.coordinate.activities.Main.
+                                                    Exporter.this.context,
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    getString(org.wheatgenetics.coordinate.
+                                                        R.string.clear_fail));
+                                            return;
+                                        }
+                                        org.wheatgenetics.coordinate.
+                                            activities.Main.Exporter.this.share();
+                                    }
+                                },
+                                new java.lang.Runnable()
+                                {
+                                    @java.lang.Override
+                                    public void run()
+                                    {
+                                        org.wheatgenetics.coordinate.
+                                            activities.Main.Exporter.this.share();
+                                    }
+                                });
+                        }
+                    });
+            }
+            else
+            {
+                if (null == this.message)
+                    this.message = org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export_no_data);
+                org.wheatgenetics.coordinate.utils.Utils.alert(this.context,
+                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                        org.wheatgenetics.coordinate.R.string.export),
+                    this.message);
+            }
         }
     }
 
-    private void showOtherAppsDialog() {
-        final AlertDialog.Builder otherAppsAlert = new AlertDialog.Builder(this);
+    // region Constants
+    private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
+    private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
+    // endregion
 
-        ListView myList = new ListView(this);
-        myList.setDivider(null);
-        myList.setDividerHeight(0);
-        String[] appsArray = new String[3];
+    // region Fields
+    // region Widget Fields
+    private android.support.v4.widget.DrawerLayout       drawerLayout         ;
+    private android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
 
-        appsArray[0] = "Field Book";
-        appsArray[1] = "Inventory";
-        appsArray[2] = "1KK";
-        //appsArray[3] = "Intercross";
-        //appsArray[4] = "Rangle";
+    private android.widget.LinearLayout mainLayout,
+        gridAreaLayout, gridTableLayout, optionalFieldLayout;
+    private android.widget.EditText cellIDEditText        ;
+    private android.widget.TextView templateTitleTextView ;
+    private android.view.View       currentCellView = null;
+    // endregion
 
-        Integer app_images[] = {R.drawable.other_ic_field_book, R.drawable.other_ic_inventory, R.drawable.other_ic_1kk};
-        final String[] links = {"https://play.google.com/store/apps/details?id=com.fieldbook.tracker",
-                "https://play.google.com/store/apps/details?id=org.wheatgenetics.inventory",
-                "http://wheatgenetics.org/apps"}; //TODO update these links
+    private long             gridId     =  0             ;
+    private java.lang.String mGridTitle = ""             ;
+    private int              mCurRow    =  1, mCurCol = 1;
 
-        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> av, View arg1, int which, long arg3) {
-                Uri uri = Uri.parse(links[which]);
-                Intent intent;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
+    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
 
-                switch (which) {
-                    case 0:
-                        intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                        break;
+    // region Template
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title        => */ ""                                                  ,
+            /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows         => */ 20                                                  ,
+            /* cols         => */ 10                                                  ,
+            /* colNumbering => */ true                                                ,
+            /* rowNumbering => */ false                                               );
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    // endregion
+
+    private java.lang.String templateOptions[];
+
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
+
+    private org.wheatgenetics.coordinate.activities.Main.Exporter exporter          = null;
+    private long                                                  mLastExportGridId =   -1;
+
+    // region Resources Fields
+    private java.lang.String appNameStringResource, okStringResource;
+    // endregion
+    // endregion
+
+    // region Class Method
+    private static int sendErrorLogMsg(final java.lang.Exception e)
+    {
+        assert null != e;
+        return android.util.Log.e("Coordinate", e.getMessage());
+    }
+    // endregion
+
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+    makeCheckedOptionalFields()
+    {
+        return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+            this.nonNullOptionalFields);
+    }
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance)this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
+
+    // region Overridden Methods
+    @java.lang.Override
+    protected void onCreate(final android.os.Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        this.setContentView(org.wheatgenetics.coordinate.R.layout.main);
+
+        {
+            final android.content.res.Resources resources = this.getResources();
+            assert null != resources;
+            this.appNameStringResource =
+                resources.getString(org.wheatgenetics.coordinate.R.string.app_name);
+            this.okStringResource = resources.getString(org.wheatgenetics.coordinate.R.string.ok);
+        }
+
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Plate Id");
+        this.nonNullOptionalFields.addDate("Date"    );
+
+        this.templateOptions = new java.lang.String[]{
+            this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_load),
+            this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_new )};
+
+        {
+            final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);
+
+            this.setSupportActionBar(toolbar);
+            assert null != toolbar;
+            toolbar.bringToFront();
+        }
+
+        {
+            final android.support.v7.app.ActionBar supportActionBar = this.getSupportActionBar();
+            if (null != supportActionBar)
+            {
+                supportActionBar.setTitle(null);
+                supportActionBar.getThemedContext();   // TODO: This appears to do nothing.  Remove?
+                supportActionBar.setDisplayHomeAsUpEnabled(true);
+                supportActionBar.setHomeButtonEnabled     (true);
+            }
+        }
+
+        this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
+            this.getSharedPreferences("Settings", 0));
+
+        this.drawerLayout = (android.support.v4.widget.DrawerLayout)
+            this.findViewById(org.wheatgenetics.coordinate.R.id.drawer_layout);
+        {
+            final android.support.design.widget.NavigationView navigationView =
+                (android.support.design.widget.NavigationView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.nvView);
+            assert null != navigationView;
+            navigationView.setNavigationItemSelectedListener(
+                new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @java.lang.Override
+                    public boolean onNavigationItemSelected(final android.view.MenuItem item)
+                    {
+                        return
+                            org.wheatgenetics.coordinate.activities.Main.this.selectNavigationItem(
+                                item);
+                    }
+                });
+        }
+        this.actionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,
+            this.drawerLayout, org.wheatgenetics.coordinate.R.string.drawer_open,
+            org.wheatgenetics.coordinate.R.string.drawer_close)
+            {
+                @java.lang.Override
+                public void onDrawerOpened(final android.view.View drawerView)
+                {
+                    {
+                        final android.widget.TextView personTextView = (android.widget.TextView)
+                            org.wheatgenetics.coordinate.activities.Main.this.findViewById(
+                                org.wheatgenetics.coordinate.R.id.nameLabel);
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                        assert null != personTextView;
+                        personTextView.setText(org.wheatgenetics.coordinate.
+                            activities.Main.this.sharedPreferences.getPerson());
+                    }
+
+                    {
+                        final android.widget.TextView templateTitleTextView =
+                            (android.widget.TextView)
+                            org.wheatgenetics.coordinate.activities.Main.this.findViewById(
+                                org.wheatgenetics.coordinate.R.id.templateLabel);
+                        assert
+                            null != org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        assert null != templateTitleTextView;
+                        templateTitleTextView.setText(org.wheatgenetics.coordinate.
+                            activities.Main.this.templateModel.getTitle());
+                    }
                 }
-            }
-        });
 
-        CustomListAdapter adapterImg = new CustomListAdapter(this, app_images, appsArray);
-        myList.setAdapter(adapterImg);
+                @java.lang.Override
+                public void onDrawerClosed(final android.view.View drawerView) {}
+            };
+        this.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        assert null != this.drawerLayout;
+        this.drawerLayout.setDrawerListener(this.actionBarDrawerToggle);
 
-        otherAppsAlert.setCancelable(true);
-        otherAppsAlert.setTitle(getResources().getString(R.string.otherapps));
-        otherAppsAlert.setView(myList);
-        otherAppsAlert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-            }
-        });
-        otherAppsAlert.show();
-    }
+        this.mainLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.mainLayout);
+        this.gridAreaLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.gridArea);
+        this.optionalFieldLayout = (android.widget.LinearLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
 
-    public class CustomListAdapter extends ArrayAdapter<String> {
-        String[] color_names;
-        Integer[] image_id;
-        Context context;
+        this.gridTableLayout = (android.widget.TableLayout) this.findViewById(org.wheatgenetics.coordinate.R.id.dataTable);
 
-        public CustomListAdapter(Activity context, Integer[] image_id, String[] text) {
-            super(context, R.layout.appline, text);
-            this.color_names = text;
-            this.image_id = image_id;
-            this.context = context;
+        this.templateTitleTextView = (android.widget.TextView) this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
+
+        this.cellIDEditText = (android.widget.EditText) this.findViewById(org.wheatgenetics.coordinate.R.id.dataEdit);
+        assert null != this.cellIDEditText;
+        this.cellIDEditText.setImeActionLabel(
+            this.getString(org.wheatgenetics.coordinate.R.string.keyboard_save),
+            android.view.KeyEvent.KEYCODE_ENTER                               );
+        this.cellIDEditText.setOnEditorActionListener(this);
+
+        // this.cellIDEditText.setOnKeyListener(this);
+
+        assert null != this.templateModel;
+        this.templateTitleTextView.setText(this.templateModel.getTitle());
+
+        this.mainLayout.setVisibility(android.view.View.INVISIBLE);
+
+        this.initializeTemplatesTable();
+        this.createDirs();
+
+        if (this.sharedPreferences.currentGridIsSet())
+            try { this.loadGrid(this.sharedPreferences.getCurrentGrid()); }
+            catch (final java.lang.Exception e) {}
+        else
+            this.loadExistingTemplateOrCreateNewTemplate();
+
+        this.showTemplateUI();
+
+        if (!this.sharedPreferences.updateVersionIsSet(this.getVersion()))
+        {
+            this.sharedPreferences.setUpdateVersion(this.getVersion());
+            this.showChangeLog();
         }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View single_row = inflater.inflate(R.layout.appline, null, true);
-            TextView textView = (TextView) single_row.findViewById(R.id.txt);
-            ImageView imageView = (ImageView) single_row.findViewById(R.id.img);
-            textView.setText(color_names[position]);
-            imageView.setImageResource(image_id[position]);
-            return single_row;
-        }
     }
 
-    public void resetDatabase() {
-        Utils.confirm(this, getString(R.string.reset_database), getString(R.string.reset_database_message), new Runnable() {
-            @Override
-            public void run() {
-                Main.this.deleteDatabase("seedtray1.db");
-                DatabaseHelper dbh = new DatabaseHelper(Main.this);
-                Coordinate.db = dbh.getWritableDatabase();
-                finish();
-            }
-        }, null);
+    @java.lang.Override
+    protected void onPostCreate(final android.os.Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        assert null != this.actionBarDrawerToggle;
+        this.actionBarDrawerToggle.syncState();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(Main.this).inflate(R.menu.mainmenu, menu);
-
-        menu.findItem(R.id.barcode_camera).setVisible(true);
-
+    @java.lang.Override
+    public boolean onCreateOptionsMenu(final android.view.Menu menu)
+    {
+        new android.view.MenuInflater(org.wheatgenetics.coordinate.activities.Main.this).
+            inflate(org.wheatgenetics.coordinate.R.menu.mainmenu, menu);
+        assert null != menu;
+        menu.findItem(org.wheatgenetics.coordinate.R.id.barcode_camera).setVisible(true);
         return true;
     }
 
+    @java.lang.Override
+    public boolean onOptionsItemSelected(final android.view.MenuItem item)
+    {
+        assert null != this.actionBarDrawerToggle;
+        if (this.actionBarDrawerToggle.onOptionsItemSelected(item)) return true;
 
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
-
-            public void onDrawerOpened(View drawerView) {
-                TextView person = (TextView) findViewById(R.id.nameLabel);
-                person.setText(ep.getString("Person", ""));
-
-                TextView template = (TextView) findViewById(R.id.templateLabel);
-                template.setText(mTemplate);
-            }
-
-            public void onDrawerClosed(View view) {
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
-    }
-
-    public void selectDrawerItem(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-
-            case R.id.menu_new_grid:
-                menuNewGrid();
-                break;
-
-            case R.id.menu_import:
-                importGrid();
-                break;
-
-            case R.id.menu_export:
-                if (mTemplate.equals("")) {
-                    makeToast(getString(R.string.grid_empty));
-                } else {
-                    exportData();
-                }
-                break;
-
-            case R.id.menu_load_template:
-                menuTemplateLoad();
-                break;
-
-            case R.id.menu_delete_grid:
-                menuDeleteGrid();
-                break;
-
-            case R.id.menu_delete_template:
-                menuDeleteTemplate();
-                break;
-
-            case R.id.menu_new_template:
-                inputTemplateNew();
-                break;
-
-            case R.id.about:
-                aboutDialog();
-                break;
-
-            // Keeping this for debugging purposes
-            /*case R.id.reset_database:
-                resetDatabase();
-                break;
-
-            case R.id.copy_database:
-                copydb();
-                break;*/
-        }
-
-        mDrawerLayout.closeDrawers();
-    }
-
-    private void copydb() {
-        File f = new File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-
-        try {
-            fis = new FileInputStream(f);
-            fos = new FileOutputStream("/mnt/sdcard/db_dump.db");
-            while (true) {
-                int i = fis.read();
-                if (i != -1) {
-                    fos.write(i);
-                } else {
-                    break;
-                }
-            }
-            fos.flush();
-            makeFileDiscoverable(new File("/mnt/sdcard/db_dump.db"), this);
-            Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
-        } finally {
-            try {
-                fos.close();
-                fis.close();
-            } catch (IOException ioe) {
-            }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        switch (item.getItemId()) {
+        assert null != item;
+        switch (item.getItemId())
+        {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                assert null != this.drawerLayout;
+                this.drawerLayout.openDrawer(android.support.v4.view.GravityCompat.START);
                 return true;
-            case R.id.barcode_camera:
-                barcodeScan();
+
+            case org.wheatgenetics.coordinate.R.id.barcode_camera:
+                final org.wheatgenetics.coordinate.barcodes.IntentIntegrator intentIntegrator =
+                    new org.wheatgenetics.coordinate.barcodes.IntentIntegrator(this);
+                intentIntegrator.initiateScan();
                 break;
         }
 
         return true;
     }
 
-    private void barcodeScan() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.initiateScan();
-    }
-
-    public void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void menuNewGrid() {
-        if (mGrid == 0) {
-            menuList();
-        } else {
-            if (mGrid >= 0 && mLastExportGridId == mGrid) {
-                newGridNow();
-            } else {
-
-                Utils.confirm(this, Coordinate.mAppName, getString(R.string.new_grid_warning), new Runnable() {
-                    @Override
-                    public void run() {
-                        exportData();
-                    }
-                }, new Runnable() {
-                    @Override
-                    public void run() {
-                        newGridNow();
-                    }
-                });
-            }
-        }
-    }
-
-    private void newGridNow() {
-        deleteGrid(mGrid);
-
-        if (mType == TYPE_SEED) {
-            Template temp = new Template();
-            if (temp.getByType(mType)) {
-                copyTemplate(temp);
-            }
-
-            inputSeed();
-        } else if (mType == TYPE_DNA) {
-            Template temp = new Template();
-            if (temp.getByType(mType)) {
-                copyTemplate(temp);
-            }
-
-            mExcludeCells.clear();
-            mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
-
-            inputTemplateInput(MODE_DNA);
-        } else {
-            // reset options?
-            inputTemplateInput(MODE_SAVED);
-        }
-
-    }
-
-    private void menuDeleteGrid() {
-        if (mGrid == 0)
-            return;
-
-        Utils.confirm(this, Coordinate.mAppName, getString(R.string.delete_grid_warning), new Runnable() {
-            @Override
-            public void run() {
-                if (deleteGrid(mGrid)) {
-                    Toast.makeText(Main.this, getString(R.string.grid_deleted), Toast.LENGTH_LONG).show();
-                    mGrid = 0;
-                    mLayoutOptional.setVisibility(View.INVISIBLE);
-                    mLayoutGrid.setVisibility(View.INVISIBLE);
-                    menuList();
-                } else
-                    Toast.makeText(Main.this, getString(R.string.grid_not_deleted), Toast.LENGTH_LONG).show();
-            }
-        }, null);
-    }
-
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-            saveData();
+    @java.lang.Override
+    public boolean onKey(final android.view.View v, final int keyCode,
+    final android.view.KeyEvent event)
+    {
+        assert null != event;
+        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
+        {
+            this.saveData();
             return true;
         }
-        return false;
+        else return false;
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            saveData();
+    @java.lang.Override
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId, final android.view.KeyEvent event)
+    {
+        if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
+        {
+            this.saveData();
             return true;
-        } else {
-            if (event != null) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    saveData();
+        }
+        else
+            if (null != event)
+                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+                &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
+                {
+                    this.saveData();
                     return true;
                 }
-            }
-        }
         return false;
     }
 
-    //TODO don't toggle already selected cell
-    @Override
-    public void onClick(View cell) {
-        int c = -1;
-        int r = -1;
-        Object obj;
+    // TODO: Don't toggle already selected cell.
+    @java.lang.Override
+    public void onClick(final android.view.View v)  // v is a cell
+    {
+        int              c = -1;
+        int              r = -1;
+        java.lang.Object obj;
 
-        obj = cell.getTag(R.string.cell_col);
-        if (obj instanceof Integer)
-            c = (Integer) obj;
+        assert null != v;
+        obj = v.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
+        if (obj instanceof java.lang.Integer) c = (java.lang.Integer) obj;
 
-        obj = cell.getTag(R.string.cell_row);
-        if (obj instanceof Integer)
-            r = (Integer) obj;
+        obj = v.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
+        if (obj instanceof java.lang.Integer) r = (java.lang.Integer) obj;
 
-        if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c)) {
-            mEditData.setText("");
+        if (this.isExcludedRow(r) || this.isExcludedCol(c) || this.isExcludedCell(r, c))
+        {
+            assert null != this.cellIDEditText;
+            this.cellIDEditText.setText("");
             return;
         }
 
-        if (c != -1 && r != -1) {
+        if (-1 != c && -1 != r)
+        {
             mCurRow = r;
             mCurCol = c;
 
-            String data = getDataEntry(mGrid, mCurRow, mCurCol);
+            java.lang.String value = this.getValue(this.gridId, mCurRow, mCurCol);
 
-            if (data != null && data.contains("exclude")) {
-                return;
-            }
+            if (null != value && value.contains("exclude")) return;
 
-            setCellState(cell, STATE_ACTIVE);
+            this.setCellState(v, STATE_ACTIVE);
 
-            if (data == null) {
-                data = "";
-            }
+            if (null == value) value = "";
 
-            mEditData.setSelectAllOnFocus(true);
-            mEditData.setText(data);
-            mEditData.selectAll();
-            mEditData.requestFocus();
+            assert null != this.cellIDEditText;
+            this.cellIDEditText.setSelectAllOnFocus(true);
+            this.cellIDEditText.setText(value);
+            this.cellIDEditText.selectAll();
+            this.cellIDEditText.requestFocus();
         }
 
-        resetCurrentCell();
-        curCell = cell;
+        this.resetCurrentCell();
+        this.currentCellView = v;
     }
 
-    // Adds default templates to database
-    private void initDb() {
-        mTemplate = "Seed Tray";
-        mType = TYPE_SEED;
-        mRows = 6;
-        mCols = 20;
-        mRowNumbering = true;
-        mColNumbering = true;
+    @java.lang.Override
+    protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        final org.wheatgenetics.coordinate.barcodes.IntentResult scanResult =
+            org.wheatgenetics.coordinate.barcodes.IntentIntegrator.parseActivityResult(
+                requestCode, resultCode, data);
 
-        mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Tray", "", "Tray ID", true));
-        mOptions.add(new Optional("Person", "", "Person name", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
-
-        mExcludeRows = new ArrayList<>();
-        mExcludeRows.add(2);
-        mExcludeRows.add(5);
-
-        mExcludeCols = new ArrayList<>();
-        mExcludeCells = new ArrayList<>();
-
-        createDb(mType);
-
-        mTemplate = "DNA Plate";
-        mRows = 8;
-        mCols = 12;
-        mType = TYPE_DNA;
-        mRowNumbering = true;
-        mColNumbering = false;
-
-        mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Plate", "", "Plate ID", true)); // TODO dna
-        mOptions.add(new Optional("Plate Name", "", "", true));
-        mOptions.add(new Optional("Notes", "", "", true));
-        mOptions.add(new Optional("tissue_type", "Leaf", "", true));
-        mOptions.add(new Optional("extraction", "CTAB", "", true));
-        mOptions.add(new Optional("person", "", "", true));
-        mOptions.add(new Optional("date", "", DATE_FORMAT, true));
-
-        mExcludeRows = new ArrayList<>();
-        mExcludeCols = new ArrayList<>();
-
-        mExcludeCells = new ArrayList<>();
-
-        createDb(mType);
-
-        mTemplate = "";
+        if (null != scanResult)
+        {
+            assert null != this.cellIDEditText;
+            this.cellIDEditText.setText(scanResult.getContents());
+            this.saveData();
+        }
     }
 
-    private boolean createDb(int type) {
-        Template temp = new Template();
-        boolean found = temp.getByType(type);
+    @java.lang.Override
+    protected void onDestroy()
+    {
+        this.cancelExporter();
+        super.onDestroy();
+    }
+    // endregion
 
-        temp.title = mTemplate;
-        temp.type = mType;
-        temp.rows = mRows;
-        temp.cols = mCols;
+    private int getVersion()
+    {
+        int v = 0;
+        try { v = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionCode; }
+        catch (final android.content.pm.PackageManager.NameNotFoundException e)
+        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
+        return v;
+    }
 
-        temp.ecells = Utils.pointToJson(mExcludeCells);
-        temp.ecols = Utils.listToJson(mExcludeCols);
-        temp.erows = Utils.listToJson(mExcludeRows);
+    private void createDirs()
+    {
+        this.createDir(org.wheatgenetics.coordinate.utils.Constants.MAIN_PATH    );
+        this.createDir(org.wheatgenetics.coordinate.utils.Constants.EXPORT_PATH  );
+        this.createDir(org.wheatgenetics.coordinate.utils.Constants.TEMPLATE_PATH);
+    }
 
-        temp.options = Utils.optionsToJson(mOptions);
+    private void createDir(final java.io.File path)
+    {
+        final java.io.File blankFile = new java.io.File(path, ".coordinate");
 
-        temp.cnumbering = mColNumbering ? 1 : 0;
-        temp.rnumbering = mRowNumbering ? 1 : 0;
+        assert null != path;
+        if (!path.exists())
+        {
+            path.mkdirs();
 
-        temp.stamp = System.currentTimeMillis();
+            try
+            {
+                blankFile.getParentFile().mkdirs();
+                blankFile.createNewFile();
+                this.makeFileDiscoverable(blankFile, this);
+            }
+            catch (final java.io.IOException e)
+            { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
+        }
+    }
 
-        boolean ret;
-        if (found)
-            ret = temp.update();
+    private void showChangeLog()
+    {
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* context                => */ this,
+                /* changeLogRawResourceId => */
+                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
+        try                                 { this.changeLogAlertDialog.show()       ; }
+        catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
+    }
+
+    private void resetDatabase()
+    {
+        org.wheatgenetics.coordinate.utils.Utils.confirm(this,
+            this.getString(org.wheatgenetics.coordinate.R.string.reset_database        ),
+            this.getString(org.wheatgenetics.coordinate.R.string.reset_database_message),
+            new java.lang.Runnable()
+            {
+                @java.lang.Override
+                public void run()
+                {
+                    org.wheatgenetics.coordinate.activities.Main.this.deleteDatabase(
+                        "seedtray1.db");                                       // TODO: Encapsulate!
+                    org.wheatgenetics.coordinate.database.Database.initialize(
+                        org.wheatgenetics.coordinate.activities.Main.this);
+                    org.wheatgenetics.coordinate.activities.Main.this.finish();
+                }
+            }, null);
+    }
+
+    // region Drawer Methods
+    // region Subsubaction Drawer Methods
+    private void loadSeedTrayTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        android.app.AlertDialog alertDialog;
+        {
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            {
+                final java.util.ArrayList<android.widget.EditText> editTextArrayList =
+                    new java.util.ArrayList<android.widget.EditText>();
+                {
+                    android.view.View gridView;
+                    {
+                        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+
+                        gridView = layoutInflater.inflate(
+                            org.wheatgenetics.coordinate.R.layout.grid_new,
+                            new android.widget.LinearLayout(this), false);
+
+                        assert null != gridView;
+                        final android.widget.LinearLayout linearLayout =
+                            (android.widget.LinearLayout) gridView.findViewById(
+                                org.wheatgenetics.coordinate.R.id.optionalLayout);
+
+                        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+                            checkedOptionalFields = this.makeCheckedOptionalFields();
+
+                        // load options
+                        assert null != linearLayout;
+                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                        optionalField : checkedOptionalFields)
+                        {
+                            final android.view.View optionalFieldView = layoutInflater.inflate(
+                                org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout,
+                                false);
+
+                            assert null != optionalFieldView;
+                            {
+                                final android.widget.TextView optionalFieldTextView =
+                                    (android.widget.TextView) optionalFieldView.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.optionText);
+
+                                assert null != optionalFieldTextView;
+                                optionalFieldTextView.setText(optionalField.getName());
+                            }
+
+                            {
+                                final android.widget.EditText optionalFieldEditText =
+                                    (android.widget.EditText) optionalFieldView.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.optionEdit);
+
+                                assert null != optionalFieldEditText;
+                                optionalFieldEditText.setText(optionalField.getValue());
+                                optionalFieldEditText.setHint(optionalField.getHint());
+
+                                editTextArrayList.add(optionalFieldEditText);
+                            }
+
+                            linearLayout.addView(optionalFieldView);
+                        }
+                    }
+                    assert null != templateModel;
+                    builder.setTitle(templateModel.getTitle());
+                    builder.setView(gridView);
+                }
+                builder.setCancelable(false);
+                builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
+                    new android.content.DialogInterface.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.content.DialogInterface dialog,
+                        final int which)
+                        {
+                            {
+                                      int                     i               = 0;
+                                final android.widget.EditText editTextArray[] =
+                                    editTextArrayList.toArray(
+                                        new android.widget.EditText[editTextArrayList.size()]);
+
+                                assert null != org.wheatgenetics.coordinate.
+                                    activities.Main.this.nonNullOptionalFields;
+                                for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                                optionalField : org.wheatgenetics.coordinate.
+                                activities.Main.this.nonNullOptionalFields) // Danger: CheckedOptionalFields above but nonNullOptionalFields here.
+                                {
+                                    final android.widget.EditText editText = editTextArray[i];
+                                    if (null != editText)
+                                    {
+                                        final java.lang.String value =
+                                            editText.getText().toString().trim();
+                                        if (0 == i && 0 == value.length())
+                                        {
+                                            org.wheatgenetics.coordinate.utils.Utils.toast(
+                                                org.wheatgenetics.coordinate.activities.Main.this,
+                                                optionalField.getHint() + org.wheatgenetics.
+                                                    coordinate.activities.Main.this.getString(
+                                                        org.wheatgenetics.coordinate.
+                                                            R.string.not_empty));
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.loadSeedTrayTemplate(templateModel);
+                                            return;
+                                        }
+
+                                        optionalField.setValue(value);
+                                        if (optionalField.namesAreEqual("Person")
+                                        ||  optionalField.namesAreEqual("Name"  ))
+                                        {
+                                            assert null != org.wheatgenetics.coordinate.activities.
+                                                Main.this.sharedPreferences;
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.sharedPreferences.setPerson(
+                                                optionalField.getValue());
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
+                            assert null != dialog;
+                            dialog.cancel();
+                            org.wheatgenetics.coordinate.activities.Main.this.loadExistingTemplate(
+                                org.wheatgenetics.coordinate.model.TemplateType.SEED);
+                        }
+                    });
+            }
+            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+            alertDialog = builder.create();
+        }
+        assert null != alertDialog;
+        alertDialog.getWindow().setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    private void tempLoad(final int mode) throws org.json.JSONException
+    {
+        if (org.wheatgenetics.coordinate.activities.Main.MODE_DNA == mode)
+            this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         else
-            ret = (temp.insert() > 0);
-
-        return ret;
+            if (org.wheatgenetics.coordinate.activities.Main.MODE_SAVED == mode)
+                this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
+            else
+                this.createNewTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);  // throws org.json.JSONException
     }
+    // endregion
 
-    public void menuList() {
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.template_options));
-        dialog.setItems(menuMain, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    menuTemplateLoad();
-                } else {
-                    inputTemplateNew();
-                }
-            }
-        });
-        dialog.show();
-    }
-
-    private void menuTemplateLoad() {
-        final List<Template> templates = new ArrayList<>();
-
-        Template tmp = new Template();
-        Cursor cursor = tmp.load();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                Template temp = new Template();
-                if (temp.copy(cursor)) {
-                    templates.add(temp);
-                }
-            }
-            cursor.close();
-        }
-
-        int size = templates.size();
-
-        String[] items = new String[size];
-
-        for (int i = 0; i < size; i++) {
-            Template item = templates.get(i);
-            items[i] = item.title;
-        }
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(menuMain[0]);
-        dialog.setItems(items, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which < 0 || which > templates.size()) {
-                    return;
-                }
-
-                Template tmp = templates.get(which);
-                copyTemplate(tmp);
-
-                if (which == 0) {
-                    inputSeed();
-                } else if (which == 1) {
-                    mExcludeCells.clear();
-                    mExcludeCells.add(new Point(randomBox(mCols), randomBox(mRows)));
-
-                    inputTemplateInput(MODE_DNA);
-                } else {
-                    inputTemplateInput(MODE_SAVED);
-                }
-            }
-
-        });
-        dialog.show();
-    }
-
-    private void menuDeleteTemplate() {
-        final List<Template> templates = new ArrayList<>();
-
-        Template tmp = new Template();
-        Cursor cursor = tmp.load();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                Template temp = new Template();
-                if (temp.copy(cursor)) {
-                    templates.add(temp);
-                }
-            }
-            cursor.close();
-        }
-
-        int size = templates.size();
-
-        String[] items = new String[size];
-
-        for (int i = 0; i < size; i++) {
-            Template item = templates.get(i);
-            items[i] = item.title;
-        }
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.delete_template));
-        dialog.setItems(items, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which < 0 || which > templates.size()) {
-                    return;
-                }
-
-                final Template tmp = templates.get(which);
-
-                Utils.confirm(Main.this, getString(R.string.delete_template), getString(R.string.delete_template_warning), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (deleteTemplate(tmp.id)) {
-                            Toast.makeText(Main.this, getString(R.string.template_deleted), Toast.LENGTH_LONG).show();
-                            menuList();
-                        } else
-                            Toast.makeText(Main.this, getString(R.string.template_not_deleted), Toast.LENGTH_LONG).show();
+    // region Subaction Drawer Methods
+    private void loadExistingTemplateOrCreateNewTemplate()
+    {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.template_options)
+            .setItems(this.templateOptions, new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        if (which == 0)
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.loadExistingTemplate();
+                        else
+                            org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
                     }
-                }, null);
-            }
-
-        });
-        dialog.show();
+                }).show();
     }
 
-    private void copyTemplate(Template tmp) {
-        mId = tmp.id;
-        mTemplate = tmp.title;
-        mType = tmp.type;
-        mRows = tmp.rows;
-        mCols = tmp.cols;
+    private void newGridNow() throws org.json.JSONException
+    {
+        this.deleteGrid(this.gridId);
 
-        mExcludeCells = Utils.jsonToPoints(tmp.ecells);
-
-        mExcludeCols = Utils.jsonToList(tmp.ecols);
-        mExcludeRows = Utils.jsonToList(tmp.erows);
-
-        mOptions = Utils.jsonToOptions(tmp.options);
-
-        mRowNumbering = tmp.rnumbering == 1;
-        mColNumbering = tmp.cnumbering == 1;
+        assert null != this.templateModel;
+        final org.wheatgenetics.coordinate.model.TemplateType templateType =
+            this.templateModel.getType();
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
+            this.loadSeedTrayTemplate(this.templatesTable().get(templateType));
+        else if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
+            this.inputTemplateInput(                                // throws org.json.JSONException
+                org.wheatgenetics.coordinate.activities.Main.MODE_DNA,
+                this.templatesTable().get(templateType)              );
+        else
+            // reset options?
+            this.inputTemplateInput(                                // throws org.json.JSONException
+                org.wheatgenetics.coordinate.activities.Main.MODE_SAVED, this.templateModel);
     }
 
-    private void inputTemplateNew() {
-        mExcludeCells = new ArrayList<>();
-        mExcludeRows = new ArrayList<>();
-        mExcludeCols = new ArrayList<>();
-
-        mOptions = new ArrayList<>();
-        mOptions.add(new Optional("Identification", "", "", true));
-        mOptions.add(new Optional("Person", "", "", true));
-        mOptions.add(new Optional("Date", "", DATE_FORMAT, true));
-
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.template_new, new LinearLayout(this), false);
-
-        final EditText nameEdit = (EditText) view.findViewById(R.id.nameEdit);
-        final EditText rowsEdit = (EditText) view.findViewById(R.id.rowsEdit);
-        final EditText colsEdit = (EditText) view.findViewById(R.id.colsEdit);
-
-        nameEdit.setText("");
-        rowsEdit.setText(mRows <= 0 ? "" : String.valueOf(mRows));
-        colsEdit.setText(mCols <= 0 ? "" : String.valueOf(mCols));
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(menuMain[1]);
-        dialog.setView(view);
-        dialog.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-
-                String sname = nameEdit.getText().toString().trim();
-                String scols = colsEdit.getText().toString().trim();
-                String srows = rowsEdit.getText().toString().trim();
-
-                mTemplate = sname;
-                mRows = Utils.getInteger(srows);
-                mCols = Utils.getInteger(scols);
-
-                if (sname.length() == 0) {
-                    Toast.makeText(Main.this, getString(R.string.template_no_name), Toast.LENGTH_LONG).show();
-                    inputTemplateNew();
-                    return;
-                }
-
-                if (srows.length() == 0 || mRows == -1) {
-                    Toast.makeText(Main.this, getString(R.string.no_rows), Toast.LENGTH_LONG).show();
-                    inputTemplateNew();
-                    return;
-                }
-
-                if (scols.length() == 0 || mCols == -1) {
-                    Toast.makeText(Main.this, getString(R.string.no_cols), Toast.LENGTH_LONG).show();
-                    inputTemplateNew();
-                    return;
-                }
-
-                inputTemplateNewExtra();
+    private void export()
+    {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        {
+            android.view.View view;
+            {
+                final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+                view = layoutInflater.inflate(
+                    org.wheatgenetics.coordinate.R.layout.file_input, null);
             }
-        });
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+            assert null != view;
+            final android.widget.EditText fileNameEditText = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
 
-        dialog.show();
-    }
+            assert null != this.nonNullOptionalFields;
+            assert null != fileNameEditText          ;
+            fileNameEditText.setText(this.nonNullOptionalFields.get(0).getValue() +
+                "_" + org.wheatgenetics.coordinate.utils.Utils.getCurrentDate().replace(".", "_"));
 
-    private void inputTemplateNewExtra() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.template_new_extra, new LinearLayout(this), false);
+            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.filename_set));
+            builder.setView(view);
+            builder.setPositiveButton(this.okStringResource,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
 
-        final Button optionalButton = (Button) view.findViewById(R.id.optionalButton);
-        final Button excludeButton = (Button) view.findViewById(R.id.excludeButton);
-        final Button namingButton = (Button) view.findViewById(R.id.namingButton);
+                        final java.lang.String fileName =
+                            fileNameEditText.getText().toString().trim();
+                        if (fileName.length() == 0)
+                            org.wheatgenetics.coordinate.utils.Utils.alert(
+                                org.wheatgenetics.coordinate.activities.Main.this,
+                                org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
+                                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                    org.wheatgenetics.coordinate.R.string.filename_empty));
+                        else
+                        {
+                            {
+                                assert null !=
+                                    org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                                final java.io.File path = new java.io.File(
+                                    org.wheatgenetics.coordinate.utils.Constants.EXPORT_PATH,
+                                    org.wheatgenetics.coordinate.activities.
+                                        Main.this.templateModel.getTitle());
+                                org.wheatgenetics.coordinate.activities.Main.this.createDir(path);
 
-        optionalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inputOptional();
-            }
-        });
-
-        excludeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inputExclude();
-            }
-        });
-
-        namingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inputNaming();
-            }
-        });
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.template_new);
-        dialog.setView(view);
-        dialog.setPositiveButton(R.string.next, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-
-                inputTemplateInput(MODE_DEFAULT);
-            }
-        });
-
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void inputSeed() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
-
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
-
-        final EditText[] edits = new EditText[mOptions.size()];
-
-        // load options
-        for (int i = 0; i < mOptions.size(); i++) {
-            View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
-
-            Optional opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
-
-            optionText.setText(opt.field);
-            optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
-            optionEdit.setHint(opt.hint);
-
-            edits[i] = optionEdit;
-
-            layout.addView(item);
-        }
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(mTemplate);
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < mOptions.size(); i++) {
-                    EditText edit = edits[i];
-                    if (edit == null)
-                        continue;
-
-                    if (mOptions.get(i) == null)
-                        continue;
-
-                    String value = edit.getText().toString().trim();
-                    if (i == 0 && value.length() == 0) {
-                        Utils.toast(Main.this, mOptions.get(i).hint + getString(R.string.not_empty));
-                        inputSeed();
-                        return;
+                                org.wheatgenetics.coordinate.activities.Main.this.exporter =
+                                    new org.wheatgenetics.coordinate.activities.Main.Exporter(
+                                        /* context => */
+                                            org.wheatgenetics.coordinate.activities.Main.this,
+                                        /* templateId => */ org.wheatgenetics.coordinate.
+                                            activities.Main.this.templateModel.getId(),
+                                        /* exportFileName => */ fileName              ,
+                                        /* absolutePath   => */ path.getAbsolutePath());
+                            }
+                            org.wheatgenetics.coordinate.activities.Main.this.exporter.execute();
+                        }
                     }
-
-                    mOptions.get(i).value = value;
-
-                    if (mOptions.get(i).field.equalsIgnoreCase("Person") || mOptions.get(i).field.equalsIgnoreCase("Name")) {
-                        SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", mOptions.get(i).value);
-                        ed.apply();
-                    }
-                }
-
-                dialog.cancel();
-                loadTemplate(TYPE_SEED);
-            }
-        });
-
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog dlg = dialog.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        dlg.setCancelable(false);
-        dlg.show();
-    }
-
-    private void tempLoad(int mode) {
-        if (mode == MODE_DNA) {
-            loadTemplate(TYPE_DNA);
-        } else if (mode == MODE_SAVED) {
-            loadTemplate(TYPE_DEFAULT);
-        } else {
-            newTemplate(TYPE_DEFAULT);
+                });
         }
+        builder.setNegativeButton(this.getString(org.wheatgenetics.coordinate.R.string.cancel),
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+        builder.show();
     }
 
     //TODO merge this method with the one above
-    private void inputTemplateInput(final int mode) {
-        if (mOptions.size() == 0) {
-            tempLoad(mode);
+    private void inputTemplateInput(final int mode,
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    throws org.json.JSONException
+    {
+        assert null != this.nonNullOptionalFields;
+        if (this.nonNullOptionalFields.isEmpty())
+        {
+            this.tempLoad(mode);                                    // throws org.json.JSONException
             return;
         }
 
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.grid_new, new LinearLayout(this), false);
+        final android.view.LayoutInflater layoutInflater =
+            org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();
 
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.optionalLayout);
+        final android.view.View gridView = layoutInflater.inflate(
+            org.wheatgenetics.coordinate.R.layout.grid_new, new android.widget.LinearLayout(this),
+            false);
 
-        final EditText[] edits = new EditText[mOptions.size()];
+        assert null != gridView;
+        final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)
+            gridView.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
+
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
+
+        final java.util.ArrayList<android.widget.EditText> editTextArrayList =
+            new java.util.ArrayList<android.widget.EditText>();
 
         // load options
-        for (int i = 0; i < mOptions.size(); i++) {
-            View item = inflater.inflate(R.layout.optional_edit, layout, false);
-            TextView optionText = (TextView) item.findViewById(R.id.optionText);
-            EditText optionEdit = (EditText) item.findViewById(R.id.optionEdit);
+        assert null != linearLayout;
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField :
+        checkedOptionalFields)
+        {
+            final android.view.View optionalFieldView = layoutInflater.inflate(
+                org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout, false);
 
-            Optional opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
+            assert null != optionalFieldView;
+            {
+                final android.widget.TextView optionalFieldTextView = (android.widget.TextView)
+                    optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionText);
 
-            optionText.setText(opt.field);
-            optionEdit.setText(opt.hint.equals(DATE_FORMAT) ? Utils.getDateFormat(System.currentTimeMillis()) : opt.value);
-            optionEdit.setHint(opt.hint);
+                assert null != optionalFieldTextView;
+                optionalFieldTextView.setText(optionalField.getName());
+            }
 
-            edits[i] = optionEdit;
+            {
+                final android.widget.EditText optionalFieldEditText = (android.widget.EditText)
+                    optionalFieldView.findViewById(org.wheatgenetics.coordinate.R.id.optionEdit);
 
-            layout.addView(item);
+                assert null != optionalFieldEditText;
+                optionalFieldEditText.setText(optionalField.getValue());
+                optionalFieldEditText.setHint(optionalField.getHint ());
+
+                editTextArrayList.add(optionalFieldEditText);
+            }
+
+            linearLayout.addView(optionalFieldView);
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        assert null != templateModel;
+        builder.setTitle(templateModel.getTitle());
+        builder.setView(gridView);
+        builder.setCancelable(false);
+        builder.setPositiveButton(this.getString(org.wheatgenetics.coordinate.R.string.create),
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    {
+                              int                     i               = 0;
+                        final android.widget.EditText editTextArray[] = editTextArrayList.toArray(
+                            new android.widget.EditText[editTextArrayList.size()]);
 
-        dialog.setTitle(mTemplate);
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getString(R.string.create), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                for (int i = 0; i < mOptions.size(); i++) {
-                    EditText edit = edits[i];
-                    if (edit == null)
-                        continue;
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
+                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                        optionalField :
+                        org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
+                        {
+                            final android.widget.EditText editText = editTextArray[i];
+                            if (null != editText)
+                            {
+                                if (org.wheatgenetics.coordinate.activities.Main.MODE_DNA == mode)
+                                {
+                                    final java.lang.String value =
+                                        editText.getText().toString().trim();
+                                    if (0 == i && 0 == value.length())
+                                    {
+                                        org.wheatgenetics.coordinate.utils.Utils.toast(
+                                            org.wheatgenetics.coordinate.activities.Main.this,
+                                            optionalField.getHint() + org.wheatgenetics.coordinate.
+                                                activities.Main.this.getString(org.wheatgenetics.
+                                                    coordinate.R.string.not_empty));
+                                        try
+                                        {
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                inputTemplateInput(org.wheatgenetics.coordinate.
+                                                    activities.Main.MODE_DNA, templateModel);
+                                        }
+                                        catch (final java.lang.Exception e) {}
+                                        return;
+                                    }
+                                }
 
-                    if (mOptions.get(i) == null)
-                        continue;
+                                optionalField.setValue(editText.getText().toString().trim());
 
-                    if (mode == MODE_DNA) {
-                        String value = edit.getText().toString().trim();
-                        if (i == 0 && value.length() == 0) {
-                            Utils.toast(Main.this, mOptions.get(i).hint + getString(R.string.not_empty));
-                            inputTemplateInput(MODE_DNA);
-                            return;
+                                if (optionalField.namesAreEqual("Person")
+                                ||  optionalField.namesAreEqual("Name"  ))
+                                {
+                                    assert null != org.wheatgenetics.coordinate.activities.
+                                        Main.this.sharedPreferences;
+                                    org.wheatgenetics.coordinate.activities.Main.this.
+                                        sharedPreferences.setPerson(optionalField.getValue());
+                                }
+                            }
+                            i++;
                         }
                     }
-
-                    mOptions.get(i).value = edit.getText().toString().trim();
-
-                    if (mOptions.get(i).field.equalsIgnoreCase("Person") || mOptions.get(i).field.equalsIgnoreCase("Name")) {
-                        SharedPreferences.Editor ed = ep.edit();
-                        ed.putString("Person", mOptions.get(i).value);
-                        ed.apply();
-                    }
+                    assert null != dialog;
+                    dialog.cancel();
+                    try { org.wheatgenetics.coordinate.activities.Main.this.tempLoad(mode); }
+                    catch (final java.lang.Exception e) {}
                 }
+            });
 
-                dialog.cancel();
-                tempLoad(mode);
-            }
-        });
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert null != alertDialog;
+        alertDialog.getWindow().setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+    // endregion
 
-        AlertDialog dlg = dialog.create();
-        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        dlg.setCancelable(false);
-        dlg.show();
+    // region Action Drawer Methods
+    private void newGrid() throws org.json.JSONException
+    {
+        if (0 == this.gridId)
+            this.loadExistingTemplateOrCreateNewTemplate();
+        else
+            if (0 <= this.gridId && mLastExportGridId == this.gridId)
+                this.newGridNow();                                  // throws org.json.JSONException
+            else
+                org.wheatgenetics.coordinate.utils.Utils.confirm(this, this.appNameStringResource,
+                    this.getString(org.wheatgenetics.coordinate.R.string.new_grid_warning),
+                    new java.lang.Runnable()
+                    {
+                        @java.lang.Override
+                        public void run()
+                        { org.wheatgenetics.coordinate.activities.Main.this.export(); }
+                    },
+                    new java.lang.Runnable()
+                    {
+                        @java.lang.Override
+                        public void run()
+                        {
+                            try { org.wheatgenetics.coordinate.activities.Main.this.newGridNow(); }
+                            catch (final org.json.JSONException e) {}
+                        }
+                    });
     }
 
-    private void inputOptional() {
-        final String[] items = new String[mOptions.size()];
-        final boolean[] selections = new boolean[mOptions.size()];
+    private void deleteGrid()
+    {
+        if (0 != this.gridId) org.wheatgenetics.coordinate.utils.Utils.confirm(this,
+            this.appNameStringResource,
+            this.getString(org.wheatgenetics.coordinate.R.string.delete_grid_warning),
+            new java.lang.Runnable()
+            {
+                @java.lang.Override
+                public void run()
+                {
+                    if (org.wheatgenetics.coordinate.activities.Main.this.deleteGrid(
+                    org.wheatgenetics.coordinate.activities.Main.this.gridId))
+                    {
+                        android.widget.Toast.makeText(
+                            org.wheatgenetics.coordinate.activities.Main.this,
+                            org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.grid_deleted),
+                            android.widget.Toast.LENGTH_LONG).show();
+                        org.wheatgenetics.coordinate.activities.Main.this.gridId = 0;
+                        org.wheatgenetics.coordinate.activities.Main.this.
+                            optionalFieldLayout.setVisibility(android.view.View.INVISIBLE);
+                        org.wheatgenetics.coordinate.activities.Main.this.
+                            gridAreaLayout.setVisibility(android.view.View.INVISIBLE);
+                        org.wheatgenetics.coordinate.activities.Main.this.
+                            loadExistingTemplateOrCreateNewTemplate();
+                    }
+                    else
+                        android.widget.Toast.makeText(
+                            org.wheatgenetics.coordinate.activities.Main.this,
+                            org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.grid_not_deleted),
+                            android.widget.Toast.LENGTH_LONG).show();
+                }
+            }, null);
+    }
 
-        for (int i = 0; i < mOptions.size(); i++) {
-            Optional opt = mOptions.get(i);
-            if (opt == null)
-                continue;
+    private void createNewTemplate()
+    {
+        assert null != this.templateModel;
+        this.templateModel.clearExcludes();
 
-            items[i] = opt.field;
-            selections[i] = opt.checked;
+        this.nonNullOptionalFields =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+        this.nonNullOptionalFields.add    ("Identification");
+        this.nonNullOptionalFields.add    ("Person"        );
+        this.nonNullOptionalFields.addDate("Date"          );
+
+        android.view.View view;
+        {
+            final android.view.LayoutInflater layoutInflater =
+                org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();  // TODO: Why Main.this and not this?
+            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new,
+                new android.widget.LinearLayout(this), false);
         }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.optional_fields));
-        dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                mOptions.get(which).checked = isChecked;
-            }
-        });
+        assert null != view;
+        final android.widget.EditText nameTextEdit = (android.widget.EditText)
+            view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
+        final android.widget.EditText rowsTextEdit = (android.widget.EditText)
+            view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
+        final android.widget.EditText colsTextEdit = (android.widget.EditText)
+            view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
 
-        dialog.setNeutralButton(getString(R.string.add_new), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                inputOptionalNew("", "");
-            }
-        });
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        assert null != nameTextEdit;
+        nameTextEdit.setText("");
+        assert null != rowsTextEdit;
+        rowsTextEdit.setText(this.templateModel.getRowsAsString());
+        assert null != colsTextEdit;
+        colsTextEdit.setText(this.templateModel.getColsAsString());
 
-        dialog.show();
-    }
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(this.templateOptions[1])
+            .setView(view)
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog, final int which)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
 
-    private void inputOptionalNew(final String field, final String value) {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.optional_new, null);
+                        final java.lang.String name = nameTextEdit.getText().toString().trim();
+                        final java.lang.String cols = colsTextEdit.getText().toString().trim();
+                        final java.lang.String rows = rowsTextEdit.getText().toString().trim();
 
-        final EditText fieldEdit = (EditText) view.findViewById(R.id.fieldEdit);
-        final EditText valueEdit = (EditText) view.findViewById(R.id.valueEdit);
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
+                            /* title => */ name,
+                            /* rows  => */ rows,
+                            /* cols  => */ cols);
 
-        fieldEdit.setText(field);
-        valueEdit.setText(value);
+                        if (0 == name.length())
+                        {
+                            android.widget.Toast.makeText(
+                                org.wheatgenetics.coordinate.activities.Main.this,
+                                    org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                    org.wheatgenetics.coordinate.R.string.template_no_name),
+                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
+                            return;
+                        }
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.new_optional_field));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                String sfield = fieldEdit.getText().toString().trim();
-                String svalue = valueEdit.getText().toString().trim();
+                        if (0 == rows.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getRows())
+                        {
+                            android.widget.Toast.makeText(
+                                org.wheatgenetics.coordinate.activities.Main.this,
+                                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.no_rows),
+                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
+                            return;
+                        }
 
-                if (sfield.length() == 0) {
-                    Toast.makeText(Main.this, getString(R.string.new_optional_field_no_name), Toast.LENGTH_LONG).show();
-                    inputOptionalNew(field, value);
-                    return;
-                }
-                dialog.cancel();
+                        if (0 == cols.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getCols())
+                        {
+                            android.widget.Toast.makeText(
+                                org.wheatgenetics.coordinate.activities.Main.this,
+                                org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.no_cols),
+                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
+                            return;
+                        }
 
-                mOptions.add(new Optional(sfield, svalue, "", true));
-
-                inputOptional();
-            }
-        });
-
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog dlg = dialog.create();
-        dlg.setCancelable(false);
-        dlg.show();
-    }
-
-    private void inputExclude() {
-        String[] items = {getString(R.string.rows), getString(R.string.cols), getString(R.string.random)};
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.exclude_title));
-        dialog.setItems(items, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    inputExcludeBoxes(0);
-                } else if (which == 1) {
-                    inputExcludeBoxes(1);
-                } else if (which == 2) {
-                    inputExcludeInput();
-                }
-            }
-        });
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void inputExcludeBoxes(final int type) {
-        final int total = type == 0 ? mRows : mCols;
-
-        final boolean[] selections = new boolean[total];
-
-        String[] items = new String[total];
-
-        for (int i = 0; i < total; i++) {
-            items[i] = String.format("%s %d", (type == 0 ? getString(R.string.row) : getString(R.string.col)), i + 1);
-            selections[i] = (type == 0 ? mExcludeRows.contains(Integer.valueOf(i + 1)) : mExcludeCols.contains(Integer.valueOf(i + 1)));
-        }
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.exclude_title) + " - " + (type == 0 ? getString(R.string.rows) : getString(R.string.cols)));
-        dialog.setMultiChoiceItems(items, selections, new OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                selections[which] = isChecked;
-            }
-        });
-
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // get choices
-                for (int i = 0; i < total; i++) {
-                    if (selections[i]) {
-                        if (type == 0)
-                            mExcludeRows.add(i + 1);
-                        else
-                            mExcludeCols.add(i + 1);
+                        org.wheatgenetics.coordinate.activities.Main.this.inputTemplateNewExtra();
                     }
-                }
-            }
-        });
-
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void inputExcludeInput() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.random, null);
-
-        final EditText cellsEdit = (EditText) view.findViewById(R.id.cellsEdit);
-
-        cellsEdit.setText("1");
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.random));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                String str = cellsEdit.getText().toString();
-
-                mExcludeCells = new ArrayList<>();
-
-                int cells = Utils.getInteger(str);
-                if (cells > 0) {
-                    for (int i = 0; i < cells; i++) {
-                        Point point = new Point(randomBox(mCols), randomBox(mRows));
-                        mExcludeCells.add(point); // FIXME check exclusivity
+                })
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog, final int which)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
                     }
-                } else {
-                    inputExcludeInput();
-                }
-
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog dlg = dialog.create();
-        dlg.setCancelable(false);
-        dlg.show();
+                }).show();
     }
 
-    private void inputNaming() {
-        LayoutInflater inflater = Main.this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.naming, null);
+    private void loadExistingTemplate()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            this.templatesTable().load();
 
-        final Spinner rowSpinner = (Spinner) view.findViewById(R.id.rowSpinner);
-        final Spinner colSpinner = (Spinner) view.findViewById(R.id.colSpinner);
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(this.templateOptions[0])
+            .setItems(templateModels.titles(), new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                            templateModels.get(which);
+                        if (null != templateModel) switch (which)
+                        {
+                            case 0:                                                     // seed tray
+                                org.wheatgenetics.coordinate.activities.
+                                    Main.this.loadSeedTrayTemplate(templateModel);
+                                break;
 
-        rowSpinner.setSelection(mRowNumbering ? 0 : 1);
-        colSpinner.setSelection(mColNumbering ? 0 : 1);
+                            case 1:                                                     // dna plate
+                                templateModel.makeOneRandomCell();
+                                try
+                                {
+                                    org.wheatgenetics.coordinate.activities.Main.this.
+                                        inputTemplateInput(         // throws org.json.JSONException
+                                            org.wheatgenetics.coordinate.activities.Main.MODE_DNA,
+                                            templateModel                                        );
+                                }
+                                catch (final org.json.JSONException e) {}
+                                break;
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.naming));
-        dialog.setView(view);
-        dialog.setCancelable(false);
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                mRowNumbering = (rowSpinner.getSelectedItemPosition() == 0);
-                mColNumbering = (colSpinner.getSelectedItemPosition() == 0);
-
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog dlg = dialog.create();
-        dlg.setCancelable(false);
-        dlg.show();
+                            default:
+                                try
+                                {
+                                    org.wheatgenetics.coordinate.activities.Main.this.
+                                        inputTemplateInput(         // throws org.json.JSONException
+                                            org.wheatgenetics.coordinate.activities.Main.MODE_SAVED,
+                                            templateModel                                          );
+                                }
+                                catch (final org.json.JSONException e) {}
+                                break;
+                        }
+                    }
+                }).show();
     }
 
-    private void importGrid() {
-        String[] names = new String[1];
-        long[] indexes = new long[1];
+    private void deleteTemplate()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            this.templatesTable().load();
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.delete_template)
+            .setItems(templateModels.titles(), new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                            templateModels.get(which);
+                        if (null != templateModel) org.wheatgenetics.coordinate.utils.Utils.confirm(
+                            org.wheatgenetics.coordinate.activities.Main.this,
+                            org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.delete_template),
+                            org.wheatgenetics.coordinate.activities.Main.this.getString(
+                                org.wheatgenetics.coordinate.R.string.delete_template_warning),
+                            new java.lang.Runnable()
+                            {
+                                @java.lang.Override
+                                public void run()
+                                {
+                                    if (org.wheatgenetics.coordinate.activities.
+                                    Main.this.deleteTemplate(templateModel))
+                                    {
+                                        android.widget.Toast.makeText(
+                                            org.wheatgenetics.coordinate.activities.Main.this,
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.getString(org.wheatgenetics.coordinate.
+                                                    R.string.template_deleted),
+                                            android.widget.Toast.LENGTH_LONG).show();
+                                        org.wheatgenetics.coordinate.activities.
+                                            Main.this.loadExistingTemplateOrCreateNewTemplate();
+                                    }
+                                    else
+                                        android.widget.Toast.makeText(
+                                            org.wheatgenetics.coordinate.activities.Main.this,
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.getString(org.wheatgenetics.coordinate.
+                                                    R.string.template_not_deleted),
+                                            android.widget.Toast.LENGTH_LONG).show();
+                                }
+                            }, null);
+                    }
+                }).show();
+    }
+
+    @android.annotation.SuppressLint("DefaultLocale")
+    private void importData()
+    {
+        java.lang.String names  [] = new java.lang.String[1];
+        long             indexes[] = new long            [1];
 
         int pos = 0;
 
-        Grid grid = new Grid();
-        Cursor gridCursor = grid.getAllGrids();
-        if (gridCursor != null) {
-            int size = gridCursor.getCount();
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        final android.database.Cursor gridCursor = gridsTable.getAllGrids();
+        if (null != gridCursor)
+        {
+            final int size = gridCursor.getCount();
 
-            names = new String[size];
-            indexes = new long[size];
+            names   = new java.lang.String[size];
+            indexes = new long            [size];
 
-            while (gridCursor.moveToNext()) {
-                Grid tmpG = new Grid();
-                if (tmpG.copyAll(gridCursor)) {
-                    names[pos] = String.format("Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title, tmpG.templateTitle, tmpG.cols, tmpG.rows, Utils.getDateFormat(tmpG.stamp));
-                    indexes[pos] = tmpG.id;
-                    pos++;
+            while (gridCursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.GridsTable tmpG =
+                    new org.wheatgenetics.coordinate.database.GridsTable(this);
+                if (tmpG.copyAll(gridCursor))
+                {
+                    names[pos] = java.lang.String.format(
+                        "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title,
+                        tmpG.templateTitle, tmpG.templateCols, tmpG.templateRows,
+                        org.wheatgenetics.coordinate.utils.Utils.formatDate(tmpG.timestamp));
+                    indexes[pos++] = tmpG.id;
                 }
             }
             gridCursor.close();
         }
 
-        if (pos == 0) {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.no_templates));
+        if (0 == pos)
+        {
+            org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
+                this.getString(org.wheatgenetics.coordinate.R.string.no_templates));
             return;
         }
 
-        final long[] gridIds = indexes;
+        final long gridIds[] = indexes;
 
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.import_grid));
-        dialog.setItems(names, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which < gridIds.length) {
-                    long id = gridIds[which];
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.import_grid));
+        builder.setItems(names, new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    if (gridIds.length > which)
+                    {
+                        final long id = gridIds[which];
 
-                    SharedPreferences.Editor ed = ep.edit();
-                    ed.putLong("CurrentGrid", id);
-                    ed.apply();
-
-                    Grid grd = new Grid();
-                    if (grd.get(id)) {
-                        mTemplate = grd.templateTitle;
-                        mGrid = grd.id;
-                        mGridTitle = grd.title;
-                        mType = grd.templateType;
-                        mRows = grd.rows;
-                        mCols = grd.cols;
-
-                        Template tmp = new Template();
-
-                        if (tmp.get(grd.templateId)) {
-                            mOptions = Utils.jsonToOptions(tmp.options);
-
-                            mRowNumbering = tmp.rnumbering == 1;
-                            mColNumbering = tmp.cnumbering == 1;
+                        {
+                            assert null !=
+                                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.sharedPreferences.setCurrentGrid(id);
                         }
 
-                        mExcludeCells.clear();
-                        mExcludeRows.clear();
-                        mExcludeCols.clear();
+                        final org.wheatgenetics.coordinate.database.GridsTable grd =
+                            new org.wheatgenetics.coordinate.database.GridsTable(Main.this);
+                        if (grd.get(id))
+                        {
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
+                                /* title => */ grd.templateTitle,
+                                /* rows  => */ grd.templateRows ,
+                                /* cols  => */ grd.templateCols );
+                            org.wheatgenetics.coordinate.activities.Main.this.gridId = grd.id;
+                            mGridTitle = grd.title;
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(
+                                grd.templateType);
 
-                        populateTemplate();
-                        showTemplateUI();
-                    } else {
-                        Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
+                            final org.wheatgenetics.coordinate.database.TemplatesTable
+                                templatesTable = org.wheatgenetics.coordinate.activities.
+                                    Main.this.templatesTable();
+
+                            if (templatesTable.get(grd.templateId))  // database
+                            {
+                                try
+                                {
+                                    nonNullOptionalFields =
+                                        new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(templatesTable.options);  // throws org.json.JSONException  // model
+                                }
+                                catch (final org.json.JSONException e) {}
+
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(templatesTable.rowNumbering);  // model
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering);  // model
+                            }
+
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.clearExcludes();  // model
+
+                            populateTemplate();
+                            showTemplateUI();
+                        }
+                        else
+                            org.wheatgenetics.coordinate.utils.Utils.alert(Main.this,
+                                org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
+                                getString
+                                    (org.wheatgenetics.coordinate.R.string.import_grid_failed));
+
+                        assert null != dialog;
+                        dialog.cancel();
                     }
+                }
+            });
+        builder.show();
+    }
 
+    private void about()
+    {
+        if (null == this.aboutAlertDialog)
+        {
+            java.lang.String versionName = null;
+            {
+                android.content.pm.PackageInfo packageInfo;
+                {
+                    final android.content.pm.PackageManager packageManager =
+                        this.getPackageManager();
+                    assert null != packageManager;
+                    try
+                    {
+                        packageInfo = packageManager.getPackageInfo(  // throws android.content.
+                            this.getPackageName(), 0);                //  pm.PackageManager.-
+                    }                                                 //  NameNotFoundException
+                    catch (final android.content.pm.PackageManager.NameNotFoundException e)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
+
+                        packageInfo = null;
+
+                        assert null != e;
+                        versionName = e.getMessage();
+                    }
+                }
+                versionName = null == packageInfo ? versionName : packageInfo.versionName;
+            }
+
+            java.lang.String title, msgs[];
+            {
+                final android.content.res.Resources resources = this.getResources();
+                assert null != resources;
+                title = resources.getString(org.wheatgenetics.coordinate.R.string.about);
+                msgs  = new java.lang.String[]
+                    { resources.getString(org.wheatgenetics.coordinate.R.string.grid_description) };
+            }
+
+            this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
+                /* context                => */ this       ,
+                /* title                  => */ title      ,
+                /* versionName            => */ versionName,
+                /* msgs[]                 => */ msgs       ,
+                /* suppressIndex          => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
+                /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.view.View v)
+                        { org.wheatgenetics.coordinate.activities.Main.this.showChangeLog(); }
+                    });
+        }
+        this.aboutAlertDialog.show();
+    }
+    // endregion
+
+    // region Selector Drawer Method
+    private boolean selectNavigationItem(final android.view.MenuItem menuItem)
+    {
+        assert null != menuItem;
+        switch (menuItem.getItemId())
+        {
+            case org.wheatgenetics.coordinate.R.id.menu_new_grid:
+                try { this.newGrid(); } catch (final org.json.JSONException e) { return false; }
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_delete_grid: this.deleteGrid(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_new_template:
+                this.createNewTemplate(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_load_template:
+                this.loadExistingTemplate(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_delete_template:
+                this.deleteTemplate(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_import: this.importData(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_export:
+                assert null != this.templateModel;
+                if (this.templateModel.getTitle().equals(""))
+                    this.makeToast(this.getString(org.wheatgenetics.coordinate.R.string.grid_empty));
+                else
+                    this.export();
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.about: this.about(); break;
+
+            // Keeping this for debugging purposes:
+            // case org.wheatgenetics.coordinate.R.id.reset_database: this.resetDatabase(); break;
+            // case org.wheatgenetics.coordinate.R.id.copy_database : this.copydb       (); break;
+        }
+
+        assert null != this.drawerLayout;
+        this.drawerLayout.closeDrawers();
+
+        return true;
+    }
+    // endregion
+    // endregion
+
+    private void copydb()
+    {
+        final java.io.File f = new java.io.File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
+        java.io.FileInputStream  fis = null;
+        java.io.FileOutputStream fos = null;
+
+        try
+        {
+            fis = new java.io.FileInputStream(f);                    // throws java.io.FileNotFoundException
+            fos = new java.io.FileOutputStream("/mnt/sdcard/db_dump.db");  // throws java.io.FileNotFoundException
+            while (true)
+            {
+                final int i = fis.read();                              // throws java.io.IOException
+                if (-1 != i)
+                    fos.write(i);                                      // throws java.io.IOException
+                else
+                    break;
+            }
+            fos.flush();
+            this.makeFileDiscoverable(new java.io.File("/mnt/sdcard/db_dump.db"), this);
+            android.widget.Toast.makeText(this, "DB dump OK", android.widget.Toast.LENGTH_LONG).show();
+        }
+        catch (final java.io.IOException e)
+        {
+            e.printStackTrace();
+            android.widget.Toast.makeText(this, "DB dump ERROR", android.widget.Toast.LENGTH_LONG).show();
+        }
+        finally
+        {
+            try
+            {
+                fos.close();
+                fis.close();
+            }
+            catch (final java.io.IOException ioe) {}
+        }
+    }
+
+    private void makeToast(final java.lang.String message)
+    { android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show(); }
+
+    /**
+     * Adds default templates to database if they aren't there already.  If they are there then they
+     * are updated to their default values.
+      */
+    private void initializeTemplatesTable()
+    {
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
+                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+            if (defaultTemplateModels.size() > 0)
+            {
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    this.templatesTable();
+                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
+                defaultTemplateModels)
+                    if (templatesTable.exists(defaultTemplateModel.getType()))
+                        templatesTable.update(defaultTemplateModel);
+                    else
+                        templatesTable.insert(defaultTemplateModel);
+            }
+        }
+        this.templateModel.setTitle("");
+    }
+
+    private void inputTemplateNewExtra()
+    {
+        android.view.View view;
+        {
+            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+            assert null != layoutInflater;
+            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new_extra,
+                new android.widget.LinearLayout(this), false);
+        }
+
+        assert null != view;
+        final android.widget.Button optionalButton = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
+        final android.widget.Button excludeButton  = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton );
+        final android.widget.Button namingButton   = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton  );
+
+        assert null != optionalButton;
+        optionalButton.setOnClickListener(new android.view.View.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.view.View v)
+                { org.wheatgenetics.coordinate.activities.Main.this.inputOptional(); }
+            });
+
+        assert null != excludeButton;
+        excludeButton.setOnClickListener(new android.view.View.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.view.View v)
+                { org.wheatgenetics.coordinate.activities.Main.this.inputExclude(); }
+            });
+
+        assert null != namingButton;
+        namingButton.setOnClickListener(new android.view.View.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.view.View v)
+                { org.wheatgenetics.coordinate.activities.Main.this.inputNaming(); }
+            });
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.template_new)
+            .setView(view)
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
+
+                        try
+                        {
+                            org.wheatgenetics.coordinate.activities.Main.this.inputTemplateInput(
+                                org.wheatgenetics.coordinate.activities.Main.this.MODE_DEFAULT ,
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel);
+                        }
+                        catch (final java.lang.Exception e) {}
+                    }
+                })
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+    }
+
+    private void inputOptional()
+    {
+        final java.util.ArrayList<java.lang.String > itemArrayList      = new java.util.ArrayList<java.lang.String >();
+        final java.util.ArrayList<java.lang.Boolean> selectionArrayList = new java.util.ArrayList<java.lang.Boolean>();
+
+        assert null != this.nonNullOptionalFields;
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this.nonNullOptionalFields)
+        {
+            itemArrayList.add     (optionalField.getName   ());
+            selectionArrayList.add(optionalField.getChecked());
+        }
+
+
+        final java.lang.String itemArray[] = itemArrayList.toArray(new java.lang.String[itemArrayList.size()]);
+
+        final int     selectionArrayListSize = selectionArrayList.size();
+        final boolean selectionArray[]       = new boolean[selectionArrayListSize];
+
+        for (int i = 0; i < selectionArrayListSize; i++)
+            selectionArray[i] = selectionArrayList.get(i);
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.optional_fields));
+        builder.setMultiChoiceItems(itemArray, selectionArray,
+            new android.content.DialogInterface.OnMultiChoiceClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which,
+                final boolean isChecked)
+                {
+                    assert null != nonNullOptionalFields;
+                    nonNullOptionalFields.get(which).setChecked(isChecked);
+                }
+            });
+
+        builder.setNeutralButton(this.getString(org.wheatgenetics.coordinate.R.string.add_new),
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    assert null != dialog;
+                    dialog.cancel();
+                    inputOptionalNew("", "");
+                }
+            });
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+        builder.show();
+    }
+
+    private void inputOptionalNew(final java.lang.String field, final java.lang.String value)
+    {
+        android.view.View view;
+        {
+            final android.view.LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.optional_new, null);
+        }
+        final android.widget.EditText fieldEdit = (android.widget.EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
+        final android.widget.EditText valueEdit = (android.widget.EditText) view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
+
+        assert null != fieldEdit;
+        assert null != valueEdit;
+        fieldEdit.setText(field);
+        valueEdit.setText(value);
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.new_optional_field));
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(org.wheatgenetics.coordinate.R.string.ok),
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    final java.lang.String sfield = fieldEdit.getText().toString().trim();
+                    final java.lang.String svalue = valueEdit.getText().toString().trim();
+
+                    if (0 == sfield.length())
+                    {
+                        android.widget.Toast.makeText(Main.this, getString(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name),
+                            android.widget.Toast.LENGTH_LONG).show();
+                        inputOptionalNew(field, value);
+                        return;
+                    }
+                    assert null != dialog;
+                    dialog.cancel();
+
+                    assert null != nonNullOptionalFields;
+                    nonNullOptionalFields.add(sfield, /* value => */ svalue, /* hint => */ "");
+
+                    inputOptional();
+                }
+            });
+
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    private void inputExclude()
+    {
+        final java.lang.String[] items = {
+            this.getString(org.wheatgenetics.coordinate.R.string.rows  ),
+            this.getString(org.wheatgenetics.coordinate.R.string.cols  ),
+            this.getString(org.wheatgenetics.coordinate.R.string.random)};
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(getString(org.wheatgenetics.coordinate.R.string.exclude_title));
+        builder.setItems(items, new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    if (which == 0)
+                        inputExcludeBoxes(0);
+                    else if (which == 1)
+                        inputExcludeBoxes(1);
+                    else if (which == 2)
+                        inputExcludeInput();
+                }
+            });
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+        builder.show();
+    }
+
+    private void inputExcludeBoxes(final int type)
+    {
+        assert null != this.templateModel;
+        final int total = 0 == type ? this.templateModel.getRows() : this.templateModel.getCols();
+        final boolean           selections[] = new boolean         [total];
+        final java.lang.String  items     [] = new java.lang.String[total];
+
+        for (int i = 0; i < total; i++)
+        {
+            {
+                final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.row :
+                    org.wheatgenetics.coordinate.R.string.col;
+                items[i] = java.lang.String.format("%s %d", this.getString(resId), i + 1);
+            }
+            {
+                final int rowOrCol = i + 1;
+                selections[i] = 0 == type ?
+                    this.templateModel.isExcludedRow(rowOrCol) :
+                    this.templateModel.isExcludedCol(rowOrCol) ;
+            }
+        }
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        {
+            final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.rows :
+                org.wheatgenetics.coordinate.R.string.cols;
+            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
+                " - " + this.getString(resId));
+        }
+        builder.setMultiChoiceItems(items, selections,
+            new android.content.DialogInterface.OnMultiChoiceClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which,
+                final boolean isChecked) { selections[which] = isChecked; }
+            });
+
+        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    // get choices
+                    for (int i = 0; i < total; i++) if (selections[i])
+                        if (0 == type)
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.addExcludeRow(i + 1);
+                        else
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.addExcludeCol(i + 1);
+                }
+            });
+
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+        builder.show();
+    }
+
+    private void inputExcludeInput()
+    {
+        android.view.View view;
+        {
+            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.random, null);
+        }
+
+        assert null != view;
+        final android.widget.EditText cellsEdit = (android.widget.EditText)
+            view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
+
+        assert null != cellsEdit;
+        cellsEdit.setText("1");
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.random)
+            .setView(view)
+            .setCancelable(false)
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        final int amount = org.wheatgenetics.coordinate.utils.Utils.parseInt(
+                            cellsEdit.getText().toString());
+
+                        if (amount > 0)
+                        {
+                            assert null !=
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.makeRandomCells(amount);
+                        }
+                        else org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput();
+
+                        assert null != dialog;
+                        dialog.cancel();
+                    }
+                });
+
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    private void inputNaming()
+    {
+        final android.view.LayoutInflater layoutInflater = Main.this.getLayoutInflater();
+        final android.view.View           view           = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
+
+        assert null != view;
+        final android.widget.Spinner rowSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
+        final android.widget.Spinner colSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+
+        assert null != this.templateModel;
+        assert null != rowSpinner        ;
+        assert null != colSpinner        ;
+        rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+        colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.naming));
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering((rowSpinner.getSelectedItemPosition() == 0));
+                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering((colSpinner.getSelectedItemPosition() == 0));
+
+                    assert null != dialog;
                     dialog.cancel();
                 }
+            });
+
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    private void loadGrid(final long id) throws org.json.JSONException
+    {
+        final org.wheatgenetics.coordinate.database.GridsTable grd =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        if (grd.get(id))
+        {
+            assert null != this.templateModel;
+            this.templateModel.assign(
+                /* title => */ grd.templateTitle,
+                /* rows  => */ grd.templateRows ,
+                /* cols  => */ grd.templateCols );
+            this.gridId = grd.id   ;
+            mGridTitle  = grd.title;
+            this.templateModel.setType(grd.templateType);
+
+            this.templateModel.clearExcludes();  // model
+
+            final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                this.templatesTable();
+
+            if (templatesTable.get(grd.templateId))  // database
+            {
+                this.nonNullOptionalFields =
+                    new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
+                        templatesTable.options); // throws org.json.JSONException, model
+
+                this.templateModel.setRowNumbering(templatesTable.rowNumbering);
+                this.templateModel.setColNumbering(templatesTable.colNumbering);
             }
-        });
-        dialog.show();
+
+            this.populateTemplate();
+            this.showTemplateUI();
+        }
+        else org.wheatgenetics.coordinate.utils.Utils.alert(Main.this, this.appNameStringResource,
+            this.getString(org.wheatgenetics.coordinate.R.string.import_grid_failed));
     }
 
-    private void loadGrid(long id) {
-        Grid grd = new Grid();
-        if (grd.get(id)) {
-            mTemplate = grd.templateTitle;
-            mGrid = grd.id;
-            mGridTitle = grd.title;
-            mType = grd.templateType;
-            mRows = grd.rows;
-            mCols = grd.cols;
+    private boolean isExcludedCell(final int r, final int c)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedCell(c, r);
+    }
 
-            mExcludeCells.clear();
-            mExcludeRows.clear();
-            mExcludeCols.clear();
+    private boolean isExcludedRow(final int r)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedRow(r);
+    }
 
-            Template tmp = new Template();
+    private boolean isExcludedCol(final int c)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedCol(c);
+    }
 
-            if (tmp.get(grd.templateId)) {
-                mOptions = Utils.jsonToOptions(tmp.options);
-
-                mRowNumbering = tmp.rnumbering == 1;
-                mColNumbering = tmp.cnumbering == 1;
+    private void saveData()
+    {
+        assert null != this.cellIDEditText;
+        java.lang.String value = this.cellIDEditText.getText().toString().trim();
+        {
+            boolean success;
+            {
+                final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                    new org.wheatgenetics.coordinate.database.EntriesTable(this);
+                entriesTable.value = value;
+                if (entriesTable.getByGrid(this.gridId, mCurRow, mCurCol))
+                    success = entriesTable.update();
+                else
+                {
+                    entriesTable.grid = this.gridId ;
+                    entriesTable.row  = this.mCurRow;
+                    entriesTable.col  = this.mCurCol;
+                    success = entriesTable.insert() > 0;
+                }
             }
-
-            populateTemplate();
-            showTemplateUI();
-        } else {
-            Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.import_grid_failed));
-        }
-    }
-
-    private boolean isExcludedCell(int r, int c) {
-        for (int i = 0; i < mExcludeCells.size(); i++) {
-            Point point = mExcludeCells.get(i);
-            if (point.equals(c, r))
-                return true;
+            if (!success)
+            {
+                android.widget.Toast.makeText(Main.this,
+                    this.getString(org.wheatgenetics.coordinate.R.string.update_failed),
+                    android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
-        return false;
-    }
+        android.view.View view;
+        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.utils.Utils.getTag(mCurRow, mCurCol));
 
-    private boolean isExcludedRow(int r) {
-        return mExcludeRows.contains(Integer.valueOf(r));
-    }
-
-    private boolean isExcludedCol(int c) {
-        return mExcludeCols.contains(Integer.valueOf(c));
-    }
-
-    public int randomBox(int size) {
-        Random rand = new Random();
-        rand.setSeed(System.currentTimeMillis());
-        return rand.nextInt(size - 1) + 1;
-    }
-
-    private void saveData() {
-        View view;
-
-        String data = mEditData.getText().toString().trim();
-
-        boolean ret;
-
-        Entry entry = new Entry();
-        if (entry.getByGrid(mGrid, mCurRow, mCurCol)) {
-            entry.value = data;
-            ret = entry.update();
-        } else {
-            entry.grid = mGrid;
-            entry.row = mCurRow;
-            entry.col = mCurCol;
-            entry.value = data;
-            ret = entry.insert() > 0;
-        }
-
-        if (!ret) {
-            Toast.makeText(Main.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
-
-        if (view != null) {
-            if (data.length() != 0)
-                setCellState(view, STATE_DONE);
+        if (null != view)
+            if (0 != value.length())
+                this.setCellState(view, STATE_DONE);
             else
-                setCellState(view, STATE_NORMAL);
-        }
+                this.setCellState(view, STATE_NORMAL);
 
         boolean endOfCell = false;
 
+        assert null != this.templateModel;
         mCurRow++;
-        if (mCurRow > mRows || (mCurRow == mRows && (isExcludedRow(mRows) || isExcludedCell(mRows, mCurCol)))) {
-            mCurRow = mRows;
+        if (this.templateModel.getRows() < mCurRow || (this.templateModel.getRows() == mCurRow
+        &&  (this.isExcludedRow(this.templateModel.getRows()) || this.isExcludedCell(this.templateModel.getRows(), mCurCol))))  // TODO: Bug?
+        {
+            mCurRow = this.templateModel.getRows();
 
             mCurCol++;
-            if (mCurCol > mCols || (mCurCol == mCols && (isExcludedCol(mCols) || isExcludedCell(mCurRow, mCols)))) {
-                mCurCol = mCols;
-                mCurCol = mRows;
+            if (this.templateModel.getCols() < mCurCol || (this.templateModel.getCols() == mCurCol
+            &&  (this.isExcludedCol(this.templateModel.getCols()) || this.isExcludedCell(mCurRow, this.templateModel.getCols()))))
+            {
+                mCurCol = this.templateModel.getCols();
+                mCurCol = this.templateModel.getRows();
 
                 endOfCell = true;
-            } else {
-                mCurRow = 1;
             }
+            else mCurRow = 1;
         }
 
-        if (!endOfCell) {
-            if (isExcludedRow(mCurRow) || isExcludedCol(mCurCol) || isExcludedCell(mCurRow, mCurCol)) {
-                if (!getNextFreeCell()) {
-                    endOfCell = true;
-                }
-            }
-        }
+        if (!endOfCell)
+            if (this.isExcludedRow(mCurRow) || this.isExcludedCol(mCurCol) || this.isExcludedCell(mCurRow, mCurCol))
+                if (!this.getNextFreeCell()) endOfCell = true;
 
-        data = getDataEntry(mGrid, mCurRow, mCurCol);
+        value = this.getValue(this.gridId, mCurRow, mCurCol);
 
-        if (data == null)
-            data = "";
+        if (null == value) value = "";
 
-        mEditData.setSelectAllOnFocus(true);
-        mEditData.setText(data);
-        mEditData.selectAll();
-        mEditData.requestFocus();
+        this.cellIDEditText.setSelectAllOnFocus(true);
+        this.cellIDEditText.setText(value);
+        this.cellIDEditText.selectAll();
+        this.cellIDEditText.requestFocus();
 
-        view = mTableData.findViewWithTag(Utils.getTag(mCurRow, mCurCol));
-        if (view != null) {
-            if (!isExcludedRow(mCurRow) && !isExcludedCol(mCurCol) && !isExcludedCell(mCurRow, mCurCol)) {
-                setCellState(view, STATE_ACTIVE);
-            }
-        }
+        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.utils.Utils.getTag(mCurRow, mCurCol));
+        if (null != view)
+            if (!this.isExcludedRow(mCurRow) && !this.isExcludedCol(mCurCol) && !this.isExcludedCell(mCurRow, mCurCol))
+                this.setCellState(view, STATE_ACTIVE);
 
-        resetCurrentCell();
-        curCell = view;
+        this.resetCurrentCell();
+        this.currentCellView = view;
 
-        if (endOfCell) {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.grid_filled));
-            completeSound();
+        if (endOfCell)
+        {
+            org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
+                this.getString(org.wheatgenetics.coordinate.R.string.grid_filled));
+            this.completeSound();
         }
     }
 
-    public void completeSound() {
-        try {
-            int resID = getResources().getIdentifier("plonk", "raw", getPackageName());
-            MediaPlayer chimePlayer = MediaPlayer.create(Main.this, resID);
+    private void completeSound()
+    {
+        try
+        {
+            final int resID = this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
+            final android.media.MediaPlayer chimePlayer = android.media.MediaPlayer.create(Main.this, resID);
+            assert null != chimePlayer;
             chimePlayer.start();
 
-            chimePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG, "" + e.getMessage());
+            chimePlayer.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+                {
+                    @java.lang.Override
+                    public void onCompletion(final android.media.MediaPlayer mp)
+                    {
+                        assert null != mp;
+                        mp.release();
+                    }
+                });
         }
+        catch (final java.lang.Exception e)
+        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
     }
 
-    private void resetCurrentCell() {
-        if (curCell != null) {
+    private void resetCurrentCell()
+    {
+        if (null != this.currentCellView)
+        {
             int r = -1;
             int c = -1;
 
-            Object obj;
+            {
+                java.lang.Object obj =
+                    this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
+                if (obj instanceof java.lang.Integer) c = (java.lang.Integer) obj;
 
-            obj = curCell.getTag(R.string.cell_col);
-            if (obj instanceof Integer)
-                c = (Integer) obj;
+                obj = this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
+                if (obj instanceof java.lang.Integer) r = (java.lang.Integer) obj;
+            }
 
-            obj = curCell.getTag(R.string.cell_row);
-            if (obj instanceof Integer)
-                r = (Integer) obj;
+            if (this.isExcludedRow(r) || this.isExcludedCol(c) || this.isExcludedCell(r, c))
+                this.setCellState(this.currentCellView, STATE_INACTIVE);
+            else
+            {
+                java.lang.String value = this.getValue(this.gridId, r, c);
+                if (null == value) value = "";
 
-            if (isExcludedRow(r) || isExcludedCol(c) || isExcludedCell(r, c)) {
-                setCellState(curCell, STATE_INACTIVE);
-            } else {
-                String data = getDataEntry(mGrid, r, c);
-                if (data == null)
-                    data = "";
-
-                if (data.length() == 0)
-                    setCellState(curCell, STATE_NORMAL);
+                if (0 == value.length())
+                    this.setCellState(this.currentCellView, STATE_NORMAL);
                 else
-                    setCellState(curCell, STATE_DONE);
+                    this.setCellState(this.currentCellView, STATE_DONE);
             }
         }
     }
 
-    private boolean deleteTemplate(long id) {
-        boolean ret;
-        Template tmp = new Template();
-        if (!tmp.get(id)) {
+    private boolean deleteTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        assert null != templateModel;
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+        if (!templatesTable.get(templateModel.getId())) return false;  // database
+
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
+        ||  org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode () == templatesTable.type)
+        {
+            this.makeToast(getString(org.wheatgenetics.coordinate.R.string.template_not_deleted_default));
             return false;
         }
 
-        if (tmp.type == TYPE_SEED || tmp.type == TYPE_DNA) {
-            makeToast(getString(R.string.template_not_deleted_default));
-            return false;
-        }
-
-        Grid grid = new Grid();
-        Cursor cursor = grid.loadByTemplate(id);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                Grid g = new Grid();
-                if (g.copy(cursor)) {
-                    deleteGrid(g.id);
-                }
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        final android.database.Cursor cursor = gridsTable.loadByTemplate(templateModel.getId());
+        if (null != cursor)
+        {
+            while (cursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.GridsTable g =
+                    new org.wheatgenetics.coordinate.database.GridsTable(this);
+                if (g.copy(cursor)) this.deleteGrid(g.id);
             }
             cursor.close();
         }
 
-        ret = tmp.delete(id);
-        return ret;
+        return templatesTable.delete(templateModel);  // database
     }
 
-    private boolean deleteGrid(long id) {
-        boolean ret;
+    private boolean deleteGrid(final long id)
+    {
+        boolean success;
 
-        Grid grid = new Grid();
-        ret = grid.delete(id);
+        {
+            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+                new org.wheatgenetics.coordinate.database.GridsTable(this);
+            success = gridsTable.delete(new org.wheatgenetics.coordinate.model.GridModel(id));
+        }
 
-        Entry entry = new Entry();
-        entry.deleteByGrid(id);
+        {
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+            entriesTable.deleteByGrid(id);
+        }
 
-        return ret;
+        return success;
     }
 
-    private long createGrid(long template) {
-        Grid grid = new Grid();
-        grid.template = template;
-        grid.stamp = System.currentTimeMillis();
-        grid.title = mOptions.get(0).value;
-        return grid.insert();
+    private long createGrid(final long templateId)
+    {
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        gridsTable.templateId = templateId;
+        gridsTable.timestamp  = java.lang.System.currentTimeMillis();
+        assert null != this.nonNullOptionalFields;
+        gridsTable.title = this.nonNullOptionalFields.get(0).getValue();
+        return gridsTable.insert();
     }
 
-    private void newTemplate(int type) {
-        mType = type;
-        Template temp = new Template();
-        temp.title = mTemplate;
-        temp.type = type;
-        temp.cols = mCols;
-        temp.rows = mRows;
+    private void createNewTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    throws org.json.JSONException
+    {
+        assert null != this.templateModel;
+        this.templateModel.setType(templateType);
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+        templatesTable.title = this.templateModel.getTitle();
+        templatesTable.type  = templateType.getCode()       ;
+        templatesTable.cols  = this.templateModel.getCols() ;
+        templatesTable.rows  = this.templateModel.getRows() ;
 
-        temp.ecells = Utils.pointToJson(mExcludeCells);
-        temp.ecols = Utils.listToJson(mExcludeCols);
-        temp.erows = Utils.listToJson(mExcludeRows);
+        templatesTable.excludeCells = this.templateModel.getExcludeCellsAsJson();  // throws org.json.JSONException, model
+        templatesTable.excludeCols = this.templateModel.getExcludeColsAsJson();  // model
+        templatesTable.excludeRows = this.templateModel.getExcludeRowsAsJson();  // model
 
-        temp.options = Utils.optionsToJson(mOptions);
+        templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException, model
 
-        temp.cnumbering = mColNumbering ? 1 : 0;
-        temp.rnumbering = mRowNumbering ? 1 : 0;
+        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
+        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
 
-        temp.stamp = System.currentTimeMillis();
+        templatesTable.stamp = java.lang.System.currentTimeMillis();  // model
 
-        long id = temp.insert();
-        if (id > 0) {
-            // deleteTemplate(mId); //TODO
+        final long templateId = templatesTable.insert();  // database
+        if (0 < templateId)
+        {
+            // deleteTemplate(this.templateModel); //TODO
 
-            mId = id;
+            this.templateModel.setId(templateId);
 
-            long grid = createGrid(mId);
-            if (grid > 0) {
-                mGrid = grid;
+            final long gridId = this.createGrid(this.templateModel.getId());
+            if (0 < gridId)
+            {
+                this.gridId = gridId;
 
-                SharedPreferences.Editor ed = ep.edit();
-                ed.putLong("CurrentGrid", grid);
-                ed.apply();
+                {
+                    assert null !=
+                        org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                    org.wheatgenetics.coordinate.activities.
+                        Main.this.sharedPreferences.setCurrentGrid(gridId);
+                }
 
-                populateTemplate();
-                showTemplateUI();
-            } else {
-                Utils.alert(this, Coordinate.mAppName, getString(R.string.create_grid_fail));
+                this.populateTemplate();
+                this.showTemplateUI();
             }
-        } else {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.create_template_fail));
+            else org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
+                this.getString(org.wheatgenetics.coordinate.R.string.create_grid_fail));
         }
+        else org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
+            this.getString(org.wheatgenetics.coordinate.R.string.create_template_fail));
     }
 
-    private void loadTemplate(int type) {
-        mType = type;
+    private void loadExistingTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        assert null != this.templateModel;
+        this.templateModel.setType(templateType);
 
-        long grid = createGrid(mId);
-        if (grid > 0) {
-            mGrid = grid;
+        final long gridId = this.createGrid(this.templateModel.getId());
+        if (0 < gridId)
+        {
+            this.gridId = gridId;
 
-            SharedPreferences.Editor ed = ep.edit();
-            ed.putLong("CurrentGrid", grid);
-            ed.apply();
+            {
+                assert null !=
+                    org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences.setCurrentGrid(
+                    gridId);
+            }
 
-            mLayoutOptional.setVisibility(View.VISIBLE);
-            mLayoutGrid.setVisibility(View.VISIBLE);
+            this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
+            this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
 
-            populateTemplate();
-            showTemplateUI();
-        } else {
-            Utils.alert(this, Coordinate.mAppName, getString(R.string.create_grid_fail));
+            this.populateTemplate();
+            this.showTemplateUI();
         }
+        else org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource, getString(org.wheatgenetics.coordinate.R.string.create_grid_fail));
 
     }
 
-    private void showTemplateUI() {
-        mTextTemplate.setText(mTemplate);
+    private void showTemplateUI()
+    {
+        assert null != this.templateModel        ;
+        assert null != this.templateTitleTextView;
+        this.templateTitleTextView.setText(this.templateModel.getTitle());
 
-        mLayoutMain.setVisibility(View.VISIBLE);
+        assert null != this.mainLayout;
+        this.mainLayout.setVisibility(android.view.View.VISIBLE);
 
-        String data = getDataEntry(mGrid, 1, 1);
-        if (data == null)
-            data = "";
-        mEditData.setText(data);
+        final java.lang.String value = this.getValue(this.gridId, 1, 1);
+        assert null != this.cellIDEditText;
+        this.cellIDEditText.setText(null == value ? "" : value);
     }
 
     // first non excluded cell
-    private boolean getNextFreeCell() {
-        int c;
-        int r = 1;
-
-        for (c = mCurCol; c <= mCols; c++) {
-            if (isExcludedCol(c))
-                continue;
-
-            for (r = mCurRow; r <= mRows; r++) {
-                if (isExcludedRow(r))
-                    continue;
-
-                if (!isExcludedCell(r, c)) {
-                    break;
-                }
-            }
-            break;
+    private boolean getNextFreeCell()
+    {
+        {
+            assert null != this.templateModel;
+            final android.graphics.Point nextFreeCell = this.templateModel.nextFreeCell(
+                new android.graphics.Point(this.mCurCol, this.mCurRow));
+            this.mCurRow = nextFreeCell.y;
+            this.mCurCol = nextFreeCell.x;
         }
-
-        mCurRow = r;
-        mCurCol = c;
         return true;
     }
 
-    private void populateTemplate() {
-        mCurRow = 1;
-        mCurCol = 1;
+    private void populateTemplate()
+    {
+        this.mCurRow = 1;
+        this.mCurCol = 1;
 
-        getNextFreeCell();
+        this.getNextFreeCell();
 
-        LayoutInflater inflater = getLayoutInflater();
+        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
 
-        mLayoutOptional.removeAllViews();
+        assert null != this.optionalFieldLayout;
+        this.optionalFieldLayout.removeAllViews();
 
-        for (int i = 0; i < mOptions.size(); i++) {
-            View view = inflater.inflate(R.layout.optional_line, new LinearLayout(this), false);
-            TextView fieldText = (TextView) view.findViewById(R.id.fieldText);
-            TextView valueText = (TextView) view.findViewById(R.id.valueText);
-
-            Optional opt = mOptions.get(i);
-            if (opt == null || !opt.checked)
-                continue;
-
-            if (i == 0) {
-                fieldText.setText(opt.field);
-                valueText.setText(mGridTitle);
-            } else {
-                fieldText.setText(opt.field);
-                valueText.setText(opt.value);
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
+        boolean first = true;
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+        checkedOptionalFields)
+        {
+            final android.view.View view = layoutInflater.inflate(
+                org.wheatgenetics.coordinate.R.layout.optional_line,
+                new android.widget.LinearLayout(this), false);
+            {
+                assert null != view;
+                final android.widget.TextView fieldText = (android.widget.TextView)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldText);
+                assert null != fieldText;
+                fieldText.setText(optionalField.getName());
             }
-
-            mLayoutOptional.addView(view);
+            {
+                final android.widget.TextView valueText = (android.widget.TextView)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
+                assert null != valueText;
+                if (first)
+                {
+                    valueText.setText(this.mGridTitle);
+                    first = false;
+                }
+                else valueText.setText(optionalField.getValue());
+            }
+            this.optionalFieldLayout.addView(view);
         }
-
-        mTableData.removeAllViews();
+        this.gridTableLayout.removeAllViews();
 
         // header
-        @SuppressLint("InflateParams")
-        TableRow hrow = (TableRow) inflater.inflate(R.layout.table_row, null);
+        @android.annotation.SuppressLint("InflateParams")
+        final android.widget.TableRow hrow = (android.widget.TableRow)
+            layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
         int chcol = 0;
-        for (int c = 0; c < (mCols + 1); c++) {
-            @SuppressLint("InflateParams")
-            LinearLayout cell_top = (LinearLayout) inflater.inflate(R.layout.table_cell_top, null);
-            TextView cell_txt = (TextView) cell_top.findViewById(R.id.dataCell);
+        assert null != this.templateModel;
+        assert null != hrow              ;
+        for (int c = 0; c < this.templateModel.getCols() + 1; c++)
+        {
+            @android.annotation.SuppressLint("InflateParams")
+            final android.widget.LinearLayout cell_top = (android.widget.LinearLayout)
+                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_top, null);
+            assert null != cell_top;
+            final android.widget.TextView cell_txt = (android.widget.TextView)
+                cell_top.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
-            if (c == 0) {
+            if (0 == c)
                 cell_txt.setText("");
-            } else {
-                cell_txt.setText("" + (mColNumbering ? c : Character.toString((char) ('A' + chcol)))); // Row
+            else
+            {
+                cell_txt.setText("" + (this.templateModel.getColNumbering() ? c :
+                    java.lang.Character.toString((char) ('A' + chcol)))); // Row
                 chcol++;
-                if (chcol >= 26)
-                    chcol = 0;
+                if (26 <= chcol) chcol = 0;
             }
             hrow.addView(cell_top);
         }
-        mTableData.addView(hrow);
+        this.gridTableLayout.addView(hrow);
 
         // body
         int chrow = 0;
-        for (int r = 1; r < (mRows + 1); r++) {
-            @SuppressLint("InflateParams")
-            TableRow brow = (TableRow) inflater.inflate(R.layout.table_row, null);
+        for (int r = 1; r < this.templateModel.getRows() + 1; r++)
+        {
+            @android.annotation.SuppressLint("InflateParams")
+            final android.widget.TableRow brow = (android.widget.TableRow)
+                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
 
-            boolean excludedRow = isExcludedRow(r);
+            final boolean excludedRow = this.isExcludedRow(r);
 
-            for (int c = 0; c < (mCols + 1); c++) {
-                boolean excludedCol = isExcludedCol(c);
+            for (int c = 0; c < this.templateModel.getCols() + 1; c++)
+            {
+                final boolean excludedCol = this.isExcludedCol(c);
 
-                @SuppressLint("InflateParams")
-                LinearLayout cell_box = (LinearLayout) inflater.inflate(R.layout.table_cell_box, null);
-                TextView cell_cnt = (TextView) cell_box.findViewById(R.id.dataCell);
+                @android.annotation.SuppressLint("InflateParams")
+                final android.widget.LinearLayout cell_box = (android.widget.LinearLayout)
+                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_box, null);
+                assert null != cell_box;
+                final android.widget.TextView cell_cnt = (android.widget.TextView)
+                    cell_box.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
-                @SuppressLint("InflateParams")
-                LinearLayout cell_left = (LinearLayout) inflater.inflate(R.layout.table_cell_left, null);
-                TextView cell_num = (TextView) cell_left.findViewById(R.id.dataCell);
+                @android.annotation.SuppressLint("InflateParams")
+                final android.widget.LinearLayout cell_left = (android.widget.LinearLayout)
+                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_left, null);
+                assert null != cell_left;
+                final android.widget.TextView cell_num = (android.widget.TextView)
+                    cell_left.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
 
-                if (c == 0) {
-                    cell_num.setText("" + (mRowNumbering ? r : Character.toString((char) ('A' + chrow)))); // Row
+                assert null != cell_num;
+                assert null != brow    ;
+                if (0 == c)
+                {
+                    cell_num.setText("" + (this.templateModel.getRowNumbering() ? r :
+                        java.lang.Character.toString((char) ('A' + chrow)))); // Row
                     chrow++;
-                    if (chrow >= 26)
-                        chrow = 0;
+                    if (26 <= chrow) chrow = 0;
 
                     brow.addView(cell_left);
-                } else {
-                    String data = getDataEntry(mGrid, r, c);
-                    setCellState(cell_cnt, STATE_NORMAL);
+                }
+                else
+                {
+                    final java.lang.String value = this.getValue(this.gridId, r, c);
+                    this.setCellState(cell_cnt, STATE_NORMAL);
 
-                    if (data != null && data.trim().length() != 0) {
-                        setCellState(cell_cnt, STATE_DONE);
+                    if (null != value && 0 != value.trim().length())
+                        this.setCellState(cell_cnt, STATE_DONE);
+
+                    if (r == mCurRow && c == mCurCol)
+                    {
+                        this.setCellState(cell_cnt, STATE_ACTIVE);
+                        this.currentCellView = cell_cnt;
                     }
 
-                    if (r == mCurRow && c == mCurCol) {
-                        setCellState(cell_cnt, STATE_ACTIVE);
-                        curCell = cell_cnt;
+                    if (excludedRow || excludedCol || this.isExcludedCell(r, c))
+                    {
+                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.saveExcludedCell(r, c);
                     }
 
-                    if (excludedRow || excludedCol || isExcludedCell(r, c)) {
-                        setCellState(cell_cnt, STATE_INACTIVE);
-                        saveExcludedCell(r, c);
-                    }
-
-                    if (data != null && data.equals("exclude")) {
-                        setCellState(cell_cnt, STATE_INACTIVE);
-                        mExcludeCells.add(new Point(c, r));
+                    if (null != value && value.equals("exclude"))
+                    {
+                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.templateModel.addExcludedCell(c, r);
                     }
 
                     cell_cnt.setOnClickListener(this);
-                    cell_cnt.setTag(Utils.getTag(r, c));
-                    cell_cnt.setTag(R.string.cell_col, c);
-                    cell_cnt.setTag(R.string.cell_row, r);
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.utils.Utils.getTag(r, c));
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_col, c);
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_row, r);
                     brow.addView(cell_box);
                 }
             }
-            mTableData.addView(brow);
+            this.gridTableLayout.addView(brow);
         }
     }
 
-    private void saveExcludedCell(int r, int c) {
-
-        boolean ret;
-
-        Entry entry = new Entry();
-        if (entry.getByGrid(mGrid, r, c)) {
-            entry.value = "exclude";
-            ret = entry.update();
-        } else {
-            entry.grid = mGrid;
-            entry.row = r;
-            entry.col = c;
-            entry.value = "exclude";
-            ret = entry.insert() > 0;
+    private void saveExcludedCell(final int r, final int c)
+    {
+        boolean success;
+        {
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+            entriesTable.value = "exclude";
+            if (entriesTable.getByGrid(this.gridId, r, c))
+                success = entriesTable.update();
+            else
+            {
+                entriesTable.grid = this.gridId;
+                entriesTable.row  = r          ;
+                entriesTable.col  = c          ;
+                success = entriesTable.insert() > 0;
+            }
         }
-
-        if (!ret) {
-            Toast.makeText(Main.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
+        if (!success)
+        {
+            android.widget.Toast.makeText(Main.this,
+                this.getString(org.wheatgenetics.coordinate.R.string.update_failed),
+                android.widget.Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
-    private String getDataEntry(long grid, int r, int c) {
-        String data = null;
-
-        Entry entry = new Entry();
-        if (entry.getByGrid(grid, r, c)) {
-            data = entry.value;
+    private java.lang.String getValue(final long grid, final int r, final int c)
+    {
+        java.lang.String value = null;
+        {
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+            if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
         }
-
-        return data;
+        return value;
     }
 
-    private void setCellState(View cell, int state) {
-        if (state == STATE_DONE)
-            cell.setBackgroundResource(R.drawable.table_cell_done);
-        else if (state == STATE_ACTIVE)
-            cell.setBackgroundResource(R.drawable.table_cell_active);
-        else if (state == STATE_INACTIVE)
-            cell.setBackgroundResource(R.drawable.table_cell_inactive);
+    private void setCellState(final android.view.View cell, final int state)
+    {
+        assert null != cell;
+        if (STATE_DONE == state)                                // TODO: Turn into switch statement?
+            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_done);
+        else if (STATE_ACTIVE == state)
+            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_active);
+        else if (STATE_INACTIVE == state)
+            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_inactive);
         else
-            cell.setBackgroundResource(R.drawable.table_cell);
+            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell);
     }
 
-    private void exportData() {
-        String name = mOptions.get(0).value + "_" + Utils.getDateFormat(System.currentTimeMillis()).replace(".", "_");
-
-        LayoutInflater inflater = getLayoutInflater();
-        @SuppressLint("InflateParams")
-        View view = inflater.inflate(R.layout.file_input, null);
-
-        final EditText nameEdit = (EditText) view.findViewById(R.id.nameEdit);
-        nameEdit.setText(name);
-
-        Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(getString(R.string.filename_set));
-        dialog.setView(view);
-        dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-
-                String filename = nameEdit.getText().toString().trim();
-                if (filename.length() == 0) {
-                    Utils.alert(Main.this, Coordinate.mAppName, getString(R.string.filename_empty));
-                    return;
-                }
-
-                File path = new File(Constants.EXPORT_PATH, mTemplate);
-                createDir(path);
-
-                mTask = new DataExporter(Main.this, mId, filename, path.getAbsolutePath());
-                mTask.execute();
-            }
-        });
-        dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        dialog.show();
-    }
-
-    private void cancelTask() {
-        if (mTask != null) {
-            mTask.cancel(true);
-            mTask = null;
+    private void cancelExporter()
+    {
+        if (null != this.exporter)
+        {
+            this.exporter.cancel(true);
+            this.exporter = null;
         }
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    public class DataExporter extends AsyncTask<Void, String, Boolean> {
-        private Context mContext;
-        private ProgressDialog mDlg;
-        private long mTempId;
-
-        private String mTempPath;
-        private String mTempName;
-
-        private Template mTemplate;
-
-        private String mMsg = null;
-
-        private File mFile;
-
-        public DataExporter(Context c, long id, String name, String path) {
-            mContext = c;
-            mTempId = id;
-            mTempName = name;
-            mTempPath = path;
-        }
-
-        protected void onProgressUpdate(String... msg) {
-            if (msg == null)
-                return;
-
-            String text = msg[0];
-            if (text == null)
-                return;
-
-            mDlg.setMessage(text);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            mDlg = new ProgressDialog(mContext);
-            mDlg.setTitle(getString(R.string.exporting_title));
-            mDlg.setMessage(getString(R.string.exporting_body));
-            mDlg.setCancelable(true);
-            mDlg.setOnCancelListener(new OnCancelListener() {
-                public void onCancel(DialogInterface d) {
-                    cancelTask();
-                }
-            });
-            mDlg.show();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (mDlg != null && mDlg.isShowing()) {
-                mDlg.dismiss();
-                mDlg = null;
-            }
-
-            //TODO when grid is reset, make a new one
-            if (result != null && result) {
-                mLastExportGridId = mGrid;
-                Utils.alert(mContext, Coordinate.mAppName, getString(R.string.export_success), new Runnable() {
-                    @Override
-                    public void run() {
-                        Utils.confirm(mContext, Coordinate.mAppName, getString(R.string.clear_grid),
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Entry entry = new Entry();
-                                        if (entry.deleteByGrid(mGrid)) {
-                                            populateTemplate();
-                                            showTemplateUI();
-                                        } else {
-                                            Utils.toast(mContext, getString(R.string.clear_fail));
-                                        }
-
-                                        share();
-                                    }
-                                },
-                                new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        share();
-                                    }
-
-                                });
-                    }
-                });
-            } else {
-                if (mMsg == null)
-                    mMsg = getString(R.string.export_no_data);
-
-                Utils.alert(mContext, getString(R.string.export), mMsg);
-            }
-        }
-
-        public void share() {
-            String path = mFile.getAbsolutePath();
-
-            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-            intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, getString(R.string.share_file)));
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... bparams) {
-            boolean ret;
-
-            mTemplate = new Template();
-            if (!mTemplate.get(mTempId)) {
-                mMsg = getString(R.string.import_template_failed);
-                return false;
-            }
-
-            if (mTemplate.type == TYPE_SEED) {
-                ret = exportSeed();
-            } else if (mTemplate.type == TYPE_DNA) {
-                ret = exportDna();
-            } else {
-                ret = exportDefault();
-            }
-
-            return ret;
-        }
-
-        private boolean exportDefault() {
-            boolean ret = false;
-
-            String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) {
-                mFile.delete();
-            }
-
-            CsvWriter csvOutput;
-            FileWriter writer;
-
-            try {
-
-                writer = new FileWriter(mFile, false);
-                csvOutput = new CsvWriter(writer, ',');
-
-                //Titles
-                csvOutput.write("Value");
-                csvOutput.write("Column");
-                csvOutput.write("Row");
-
-                for (int i = 0; i < mOptions.size(); i++) {
-                    Optional opt = mOptions.get(i);
-                    csvOutput.write(opt.field);
-                }
-
-                csvOutput.endRecord();
-
-                int row;
-                int col;
-                for (int c = 0; c < mTemplate.cols; c++) {
-                    col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
-                        row = r + 1;
-
-                        String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col)) {
-                            data = "exclude";
-                        } else {
-                            data = getDataEntry(mGrid, row, col);
-                            if (data == null) {
-                                data = "";
-                            }
-                        }
-
-                        csvOutput.write(data);
-                        csvOutput.write(String.valueOf(col));
-                        csvOutput.write(String.valueOf(row));
-
-                        for (int i = 0; i < mOptions.size(); i++) {
-                            Optional opt = mOptions.get(i);
-                            csvOutput.write(opt.value);
-                        }
-
-                        csvOutput.endRecord();
-                    }
-
-                    publishProgress(getString(R.string.exporting_column_title) + col);
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                mMsg = getString(R.string.export_failed);
-            }
-
-            return ret;
-        }
-
-        private boolean exportDna() {
-            boolean ret = false;
-            String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) {
-                mFile.delete();
-            }
-
-            CsvWriter csvOutput;
-            FileWriter writer;
-
-            String date = "";
-            String plate_id = "";
-            String plate_name = "";
-
-            String dna_person = "";
-            String notes = "";
-            String tissue_type = "";
-            String extraction = "";
-
-            for (int i = 0; i < mOptions.size(); i++) {
-                Optional opt = mOptions.get(i);
-                if (opt == null)
-                    continue;
-
-                if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Plate")) {
-                    plate_id = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Plate Name")) {
-                    plate_name = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Notes")) {
-                    notes = opt.value;
-                } else if (opt.field.equalsIgnoreCase("tissue_type")) {
-                    tissue_type = opt.value;
-                } else if (opt.field.equalsIgnoreCase("extraction")) {
-                    extraction = opt.value;
-                } else if (opt.field.equalsIgnoreCase("person")) {
-                    dna_person = opt.value;
-                } else if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                }
-            }
-
-            try {
-                writer = new FileWriter(mFile, false);
-
-                csvOutput = new CsvWriter(writer, ',');
-
-                csvOutput.write("date");
-                csvOutput.write("plate_id");
-                csvOutput.write("plate_name");
-                csvOutput.write("sample_id");
-                csvOutput.write("well_A01");
-                csvOutput.write("well_01A");
-                csvOutput.write("tissue_id");
-                csvOutput.write("dna_person");
-                csvOutput.write("notes");
-                csvOutput.write("tissue_type");
-                csvOutput.write("extraction");
-
-                csvOutput.endRecord();
-
-                int row, col;
-                for (int c = 0; c < mTemplate.cols; c++) {
-                    col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
-                        row = r + 1;
-
-                        String rowName = Character.toString((char) ('A' + r));
-                        String colName = String.format("%02d", col);
-                        String sample_id = String.format("%s_%s%s", plate_id, rowName, colName);
-
-                        String tissue_id;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col)) {
-                            tissue_id = "BLANK_" + sample_id;
-                        } else {
-                            tissue_id = getDataEntry(mGrid, row, col);
-                            if (tissue_id == null || tissue_id.trim().length() == 0) {
-                                tissue_id = "BLANK_" + sample_id;
-                            }
-                        }
-
-                        csvOutput.write(date);
-                        csvOutput.write(plate_id);
-                        csvOutput.write(plate_name);
-                        csvOutput.write(sample_id); // sample_id
-                        csvOutput.write(String.format("%s%s", rowName, colName)); // well_A01
-                        csvOutput.write(String.format("%s%s", colName, rowName)); // well_01A
-                        csvOutput.write(tissue_id);
-                        csvOutput.write(dna_person.replace(" ", "_"));
-                        csvOutput.write(notes);
-                        csvOutput.write(tissue_type);
-                        csvOutput.write(extraction);
-
-                        csvOutput.endRecord();
-
-                    }
-                    publishProgress(getString(R.string.exporting_column_title) + col);
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                mMsg = getString(R.string.export_failed);
-            }
-
-            return ret;
-        }
-
-        private boolean exportSeed() {
-            boolean ret = false;
-
-            String outputFile = mTempName + ".csv";
-
-            mFile = new File(mTempPath, outputFile);
-
-            if (mFile.exists()) {
-                mFile.delete();
-            }
-
-            CsvWriter csvOutput;
-            FileWriter writer;
-
-            String person = "";
-            String date = "";
-            String trayid = "";
-
-            for (int i = 0; i < mOptions.size(); i++) {
-                Optional opt = mOptions.get(i);
-                if (opt == null)
-                    continue;
-
-                if (opt.field.equalsIgnoreCase("Tray")) {
-                    trayid = opt.value;
-                } else if (opt.field.equalsIgnoreCase("Person")) {
-                    person = opt.value;
-                } else if (opt.field.equalsIgnoreCase("date")) {
-                    date = opt.value;
-                }
-            }
-
-            try {
-                writer = new FileWriter(mFile, false);
-
-                csvOutput = new CsvWriter(writer, ',');
-
-                csvOutput.write("tray_id");
-                csvOutput.write("cell_id");
-                csvOutput.write("tray_num");
-                csvOutput.write("tray_column");
-                csvOutput.write("tray_row");
-                csvOutput.write("seed_id");
-                csvOutput.write("person");
-                csvOutput.write("date");
-                csvOutput.endRecord();
-
-                int row;
-                int col;
-                for (int c = 0; c < mTemplate.cols; c++) {
-                    col = c + 1;
-                    for (int r = 0; r < mTemplate.rows; r++) {
-                        row = r + 1;
-
-                        String data;
-                        if (isExcludedRow(row) || isExcludedCol(col) || isExcludedCell(row, col)) {
-                            data = "exclude";
-                        } else {
-                            data = getDataEntry(mGrid, row, col);
-                            if (data == null)
-                                data = "BLANK_";
-                        }
-
-                        csvOutput.write(trayid); // tray id
-                        csvOutput.write(String.format("%s_C%02d_R%d", mTempName, col, row)); // "cell_id"
-                        csvOutput.write(""); // "tray_num"
-                        csvOutput.write(String.valueOf(col)); // "tray_column"
-                        csvOutput.write(String.valueOf(row)); // "tray_row"
-                        csvOutput.write(data); // "seed_id"
-                        csvOutput.write(person.replace(" ", "_")); // "person"
-                        csvOutput.write(date); // "date"
-                        csvOutput.endRecord();
-                    }
-
-                    publishProgress(getString(R.string.exporting_column_title) + col);
-
-                }
-
-                csvOutput.close();
-                makeFileDiscoverable(mFile, Main.this);
-
-                ret = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                mMsg = getString(R.string.export_failed);
-            }
-
-            return ret;
-        }
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        if (scanResult != null) {
-            String barcodeText = scanResult.getContents();
-            mEditData.setText(barcodeText);
-            saveData();
-        }
-    }
-
-    public void makeFileDiscoverable(File file, Context context) {
-        MediaScannerConnection.scanFile(context,
-                new String[]{file.getPath()}, null, null);
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                Uri.fromFile(file)));
+    private void makeFileDiscoverable(final java.io.File file,
+    final android.content.Context context)
+    {
+        android.media.MediaScannerConnection.scanFile(context,
+            new java.lang.String[]{file.getPath()}, null, null);
+        assert null != context;
+        context.sendBroadcast(new android.content.Intent(
+            android.content.Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, android.net.Uri.fromFile(file)));
     }
 }

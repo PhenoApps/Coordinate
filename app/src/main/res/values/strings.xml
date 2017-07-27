@@ -96,9 +96,6 @@
     <string name="delete_template_menu">Delete template</string>
     <string name="reset_database_message">Are you sure you want to reset the database? This will delete all collected or created data and the app will close.</string>
 
-    <string name="updatemsg">Changelog</string>
-    <string name="versiontitle">Version</string>
-
     <!-- Export strings -->
     <string name="export_success">File successfully exported</string>
     <string name="grid_empty">No data has been collected</string>
@@ -111,13 +108,6 @@
 
     <!-- About strings -->
     <string name="about">About Coordinate</string>
-    <string name="dev_trevor">Trevor Rife</string>
-    <string name="ksu">Kansas State University</string>
-    <string name="dev_trevor_email">trife@ksu.edu</string>
-    <string name="dev_jesse">Jesse Poland</string>
-    <string name="dev_jesse_email">jpoland@ksu.edu</string>
-    <string name="wg_site">http://wheatgenetics.org\n</string>
-    <string name="otherapps">Other Apps</string>
 
     <!-- Person  strings -->
     <string name="first_name">First Name</string>
