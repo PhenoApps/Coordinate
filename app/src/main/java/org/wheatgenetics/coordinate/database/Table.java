@@ -84,8 +84,8 @@ abstract class Table extends java.lang.Object
         if (null == cursor)
             return null;
         else
-            try     { if (cursor.moveToFirst()) return this.make(cursor); else return null; }
-            finally { cursor.close();                                                       }
+            try     { return cursor.moveToFirst() ? this.make(cursor) : null; }
+            finally { cursor.close();                                         }
     }
 
     android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }  // TODO: Remove later.
@@ -94,7 +94,7 @@ abstract class Table extends java.lang.Object
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     { return new android.content.ContentValues(); }
 
-    private android.content.ContentValues getContentValuesForUpdate()  // TODO: Remove later.
+    private android.content.ContentValues getContentValuesForUpdate()         // TODO: Remove later.
     {
         final android.content.ContentValues contentValues = this.getContentValues();
         assert null != contentValues;

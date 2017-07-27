@@ -53,6 +53,7 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
+ * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
@@ -1106,16 +1107,7 @@ android.view.View.OnKeyListener
                     });
             }
             builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.cancel();
-                    }
-                });
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
             alertDialog = builder.create();
         }
         assert null != alertDialog;
@@ -1242,15 +1234,7 @@ android.view.View.OnKeyListener
                 });
         }
         builder.setNegativeButton(this.getString(org.wheatgenetics.coordinate.R.string.cancel),
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
         builder.show();
     }
 
@@ -1383,15 +1367,7 @@ android.view.View.OnKeyListener
             });
 
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
         final android.app.AlertDialog alertDialog = builder.create();
         assert null != alertDialog;
@@ -1762,7 +1738,8 @@ android.view.View.OnKeyListener
                                 org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering);  // model
                             }
 
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.clearExcludes();  // model
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.clearExcludes();  // model
 
                             populateTemplate();
                             showTemplateUI();
@@ -2009,16 +1986,7 @@ android.view.View.OnKeyListener
                     }
                 })
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.cancel();
-                    }
-                }).show();
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
 
     private void inputOptional()
@@ -2068,25 +2036,9 @@ android.view.View.OnKeyListener
                 }
             });
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
         builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
         builder.show();
     }
@@ -2137,15 +2089,7 @@ android.view.View.OnKeyListener
             });
 
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
         final android.app.AlertDialog alertDialog = builder.create();
         assert null != alertDialog;
@@ -2176,15 +2120,7 @@ android.view.View.OnKeyListener
                 }
             });
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
         builder.show();
     }
 
@@ -2241,15 +2177,7 @@ android.view.View.OnKeyListener
             });
 
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
         builder.show();
     }
@@ -2274,16 +2202,7 @@ android.view.View.OnKeyListener
             .setView(view)
             .setCancelable(false)
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.cancel();
-                    }
-                })
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
             .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
                 new android.content.DialogInterface.OnClickListener()
                 {
@@ -2334,15 +2253,7 @@ android.view.View.OnKeyListener
         builder.setView(view);
         builder.setCancelable(false);
         builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    assert null != dialog;
-                    dialog.cancel();
-                }
-            });
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
         builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
             new android.content.DialogInterface.OnClickListener()

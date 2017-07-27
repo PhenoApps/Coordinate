@@ -44,7 +44,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "TemplatesTable"                                               );
     }
 
-    // region Storage
     // region Private Constants
     private static final java.lang.String TABLE_NAME = "templates";
 
@@ -94,44 +93,44 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     android.content.ContentValues getContentValues(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
-        final android.content.ContentValues contentValues =
+        final android.content.ContentValues result =
             super.getContentValues(model);                          // throws org.json.JSONException
 
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) model;
 
         assert null != templateModel;
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
             templateModel.getTitle());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
             templateModel.getType().getCode());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
             templateModel.getCols());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
             templateModel.getRows());
 
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
             templateModel.getExcludeCellsAsJson());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
             templateModel.getExcludeColsAsJson());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
             templateModel.getExcludeRowsAsJson());
 
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
             templateModel.getColNumbering());
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
             templateModel.getRowNumbering());
 
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
             templateModel.getOptionalFields());                     // throws org.json.JSONException
 
-        contentValues.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
             templateModel.getTimestamp());
 
-        return contentValues;
+        return result;
     }
 
-    public boolean copy(final android.database.Cursor cursor)
+    public boolean copy(final android.database.Cursor cursor)                 // TODO: Remove later.
     {
         if (null == cursor)
             return false;
@@ -198,7 +197,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
         if (null != result)
             if (result.getType() == org.wheatgenetics.coordinate.model.TemplateType.DNA)
-                result.makeOneRandomCell();
+                result.makeOneRandomCell();         // TODO: Time to subclass based on TemplateType?
 
         return result;
     }
@@ -229,12 +228,11 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return templateModels;
     }
 
-    public android.database.Cursor loadByOrder()                        // TODO: Push to superclass?
+    public android.database.Cursor loadByOrder()               // TODO: Push to superclass?  Remove?
     {
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
         return this.orderByQueryAll(/* orderBy => */ "_id DESC");
     }
-    // endregion
     // endregion
 }
