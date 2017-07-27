@@ -79,15 +79,19 @@ android.view.View.OnKeyListener
     private class Exporter extends android.os.AsyncTask<
     java.lang.Void, java.lang.String, java.lang.Boolean>
     {
-        private final android.content.Context context                     ;
-        private final long                    templateId                  ;
-        private final java.lang.String        exportFileName, absolutePath;
+        // region Fields
+        private final android.content.Context context                                   ;
+        private final java.lang.String        progressDialogTitle, progressDialogMessage;
+        private final long                    templateId                                ;
+        private final java.lang.String        exportFileName, absolutePath              ;
 
         private android.app.ProgressDialog                           progressDialog;
         private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
         private java.lang.String                                     message = null;
         private java.io.File                                         exportFile    ;
+        // endregion
 
+        // region Private Methods
         private java.io.File makeExportFile()
         {
             assert null != this.absolutePath  ;
@@ -377,37 +381,41 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.activities.Main.this.getString(
                         org.wheatgenetics.coordinate.R.string.share_file)));
         }
+        // endregion
 
-        Exporter(final android.content.Context context, final long templateId,
+        Exporter(final android.content.Context context, final java.lang.String progressDialogTitle,
+        final java.lang.String progressDialogMessage, final long templateId,
         final java.lang.String exportFileName, final java.lang.String absolutePath)
         {
             super();
 
-            this.context        = context       ;
-            this.templateId     = templateId    ;
-            this.exportFileName = exportFileName;
-            this.absolutePath   = absolutePath  ;
+            this.context               = context              ;
+            this.progressDialogTitle   = progressDialogTitle  ;
+            this.progressDialogMessage = progressDialogMessage;
+            this.templateId            = templateId           ;
+            this.exportFileName        = exportFileName       ;
+            this.absolutePath          = absolutePath         ;
         }
 
+        // region Overridden Methods
         @java.lang.Override
         protected void onPreExecute()
         {
             super.onPreExecute();
 
             this.progressDialog = new android.app.ProgressDialog(this.context);
-            this.progressDialog.setTitle(
-                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                    org.wheatgenetics.coordinate.R.string.exporting_title));
-            this.progressDialog.setMessage(
-                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                    org.wheatgenetics.coordinate.R.string.exporting_body));
-            this.progressDialog.setCancelable(true);
+            this.progressDialog.setTitle     (this.progressDialogTitle  );
+            this.progressDialog.setMessage   (this.progressDialogMessage);
+            this.progressDialog.setCancelable(true                      );
             this.progressDialog.setOnCancelListener(
                 new android.content.DialogInterface.OnCancelListener()
                 {
                     @java.lang.Override
                     public void onCancel(final android.content.DialogInterface dialog)
-                    { org.wheatgenetics.coordinate.activities.Main.this.cancelExporter(); }
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.Exporter.this.cancel(
+                            /* mayInterruptIfRunning => */ true);
+                    }
                 });
             this.progressDialog.show();
         }
@@ -552,6 +560,7 @@ android.view.View.OnKeyListener
                     this.message);
             }
         }
+        // endregion
     }
 
     // region Constants
@@ -909,7 +918,11 @@ android.view.View.OnKeyListener
     @java.lang.Override
     protected void onDestroy()
     {
-        this.cancelExporter();
+        if (null != this.exporter)
+        {
+            this.exporter.cancel(/* mayInterruptIfRunning => */ true);
+            this.exporter = null;
+        }
         super.onDestroy();
     }
     // endregion
@@ -1223,6 +1236,12 @@ android.view.View.OnKeyListener
                                     new org.wheatgenetics.coordinate.activities.Main.Exporter(
                                         /* context => */
                                             org.wheatgenetics.coordinate.activities.Main.this,
+                                        /* progressDialogTitle => */ org.wheatgenetics.coordinate.
+                                            activities.Main.this.getString(org.wheatgenetics.
+                                                coordinate.R.string.exporting_title),
+                                        /* progressDialogMessage => */ org.wheatgenetics.coordinate.
+                                            activities.Main.this.getString(org.wheatgenetics.
+                                                coordinate.R.string.exporting_body),
                                         /* templateId => */ org.wheatgenetics.coordinate.
                                             activities.Main.this.templateModel.getId(),
                                         /* exportFileName => */ fileName              ,
@@ -2838,15 +2857,6 @@ android.view.View.OnKeyListener
             cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_inactive);
         else
             cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell);
-    }
-
-    private void cancelExporter()
-    {
-        if (null != this.exporter)
-        {
-            this.exporter.cancel(true);
-            this.exporter = null;
-        }
     }
 
     private void makeFileDiscoverable(final java.io.File file,
