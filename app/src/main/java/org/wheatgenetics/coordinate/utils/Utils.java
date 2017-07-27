@@ -39,19 +39,32 @@ public class Utils extends java.lang.Object
         return null == networkInfo ? false : networkInfo.isConnectedOrConnecting();
     }
 
+    // region AlertDialog Methods
+    private static void alert(final android.content.Context context, final java.lang.String title,
+    final java.lang.String message, final java.lang.String positiveButtonText,
+    final android.content.DialogInterface.OnClickListener positiveButtonOnClickListener,
+    final android.content.DialogInterface.OnClickListener negativeButtonOnClickListener)
+    {
+        final android.app.AlertDialog.Builder builder =
+            new android.app.AlertDialog.Builder(context);
+        if (null != negativeButtonOnClickListener)
+            builder.setNegativeButton("No", negativeButtonOnClickListener);
+        builder.setTitle(title).setMessage(message).setPositiveButton(positiveButtonText,
+            positiveButtonOnClickListener).show();
+    }
+
     public static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message)
     {
-        new android.app.AlertDialog.Builder(context).setTitle(title).setMessage(message).
-            setPositiveButton("Ok",
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+        org.wheatgenetics.coordinate.utils.Utils.alert(context, title, message, "Ok",
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(), null);
     }
 
     public static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable runnableYes)
     {
-        new android.app.AlertDialog.Builder(context).setTitle(title).setMessage(message).
-            setPositiveButton("Ok", new android.content.DialogInterface.OnClickListener()
+        org.wheatgenetics.coordinate.utils.Utils.alert(context, title, message, "Ok",
+            new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
                     public void onClick(final android.content.DialogInterface dialog, final int id)
@@ -60,18 +73,15 @@ public class Utils extends java.lang.Object
                         dialog.cancel();
                         if (null != runnableYes) runnableYes.run();
                     }
-                }).show();
+                }, null);
     }
 
     public static void confirm(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable runnableYes,
     final java.lang.Runnable runnableNo)
     {
-        final android.app.AlertDialog.Builder builder =
-            new android.app.AlertDialog.Builder(context);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton("Yes", new android.content.DialogInterface.OnClickListener()
+        org.wheatgenetics.coordinate.utils.Utils.alert(context, title, message, "Yes",
+            new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int id)
@@ -80,8 +90,8 @@ public class Utils extends java.lang.Object
                     dialog.cancel();
                     if (null != runnableYes) runnableYes.run();
                 }
-            });
-        builder.setNegativeButton("No", new android.content.DialogInterface.OnClickListener()
+            },
+            new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int id)
@@ -91,8 +101,8 @@ public class Utils extends java.lang.Object
                     if (null != runnableNo) runnableNo.run();
                 }
             });
-        builder.show();
     }
+    // endregion
 
     public static void showToast(final android.content.Context context, final java.lang.String text)
     { android.widget.Toast.makeText(context, text, android.widget.Toast.LENGTH_LONG).show(); }
