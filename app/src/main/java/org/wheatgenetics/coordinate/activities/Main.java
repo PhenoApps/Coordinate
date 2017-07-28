@@ -47,7 +47,6 @@ package org.wheatgenetics.coordinate.activities;
  * android.widget.TableRow
  * android.widget.TextView
  * android.widget.TextView.OnEditorActionListener
- * android.widget.Toast
  *
  * org.json.JSONException
  *
@@ -515,21 +514,15 @@ android.view.View.OnKeyListener
                                                     Main.this.showTemplateUI();
                                             }
                                             else
-                                                org.wheatgenetics.coordinate.utils.Utils.showToast(
-                                                    org.wheatgenetics.coordinate.activities.Main.
-                                                        Exporter.this.context,
-                                                    org.wheatgenetics.coordinate.activities.Main.
-                                                        this.getString(org.wheatgenetics.coordinate.
-                                                            R.string.clear_fail));
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    showLongToast(org.wheatgenetics.coordinate.R.
+                                                        string.clear_fail);
                                         }
                                         catch (final java.lang.Exception e)
                                         {
-                                            org.wheatgenetics.coordinate.utils.Utils.showToast(
-                                                org.wheatgenetics.coordinate.activities.Main.
-                                                    Exporter.this.context,
-                                                org.wheatgenetics.coordinate.activities.Main.this.
-                                                    getString(org.wheatgenetics.coordinate.
-                                                        R.string.clear_fail));
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                showLongToast(org.wheatgenetics.coordinate.R.string.
+                                                    clear_fail);
                                             return;
                                         }
                                         org.wheatgenetics.coordinate.
@@ -1086,11 +1079,10 @@ android.view.View.OnKeyListener
                                             editText.getText().toString().trim();
                                         if (0 == i && 0 == value.length())
                                         {
-                                            org.wheatgenetics.coordinate.utils.Utils.showToast(
-                                                org.wheatgenetics.coordinate.activities.Main.this,
-                                                optionalField.getHint() + org.wheatgenetics.
-                                                    coordinate.activities.Main.this.getString(
-                                                        org.wheatgenetics.coordinate.
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                showLongToast(optionalField.getHint() +
+                                                    org.wheatgenetics.coordinate.activities.Main.
+                                                        this.getString(org.wheatgenetics.coordinate.
                                                             R.string.not_empty));
                                             org.wheatgenetics.coordinate.activities.
                                                 Main.this.loadSeedTrayTemplate(templateModel);
@@ -1347,11 +1339,11 @@ android.view.View.OnKeyListener
                                         editText.getText().toString().trim();
                                     if (0 == i && 0 == value.length())
                                     {
-                                        org.wheatgenetics.coordinate.utils.Utils.showToast(
-                                            org.wheatgenetics.coordinate.activities.Main.this,
-                                            optionalField.getHint() + org.wheatgenetics.coordinate.
-                                                activities.Main.this.getString(org.wheatgenetics.
-                                                    coordinate.R.string.not_empty));
+                                        org.wheatgenetics.coordinate.activities.Main.this.
+                                            showLongToast(optionalField.getHint() +
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    getString(org.wheatgenetics.coordinate.R.string.
+                                                        not_empty));
                                         try
                                         {
                                             org.wheatgenetics.coordinate.activities.Main.this.
@@ -1437,11 +1429,8 @@ android.view.View.OnKeyListener
                     if (org.wheatgenetics.coordinate.activities.Main.this.deleteGrid(
                     org.wheatgenetics.coordinate.activities.Main.this.gridId))
                     {
-                        android.widget.Toast.makeText(
-                            org.wheatgenetics.coordinate.activities.Main.this,
-                            org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                org.wheatgenetics.coordinate.R.string.grid_deleted),
-                            android.widget.Toast.LENGTH_LONG).show();
+                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                            org.wheatgenetics.coordinate.R.string.grid_deleted);
                         org.wheatgenetics.coordinate.activities.Main.this.gridId = 0;
                         org.wheatgenetics.coordinate.activities.Main.this.
                             optionalFieldLayout.setVisibility(android.view.View.INVISIBLE);
@@ -1451,11 +1440,8 @@ android.view.View.OnKeyListener
                             loadExistingTemplateOrCreateNewTemplate();
                     }
                     else
-                        android.widget.Toast.makeText(
-                            org.wheatgenetics.coordinate.activities.Main.this,
-                            org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                org.wheatgenetics.coordinate.R.string.grid_not_deleted),
-                            android.widget.Toast.LENGTH_LONG).show();
+                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                            org.wheatgenetics.coordinate.R.string.grid_not_deleted);
                 }
             }, null);
     }
@@ -1519,33 +1505,24 @@ android.view.View.OnKeyListener
 
                         if (0 == name.length())
                         {
-                            android.widget.Toast.makeText(
-                                org.wheatgenetics.coordinate.activities.Main.this,
-                                    org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                    org.wheatgenetics.coordinate.R.string.template_no_name),
-                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                                org.wheatgenetics.coordinate.R.string.template_no_name);
                             org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
                             return;
                         }
 
                         if (0 == rows.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getRows())
                         {
-                            android.widget.Toast.makeText(
-                                org.wheatgenetics.coordinate.activities.Main.this,
-                                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                org.wheatgenetics.coordinate.R.string.no_rows),
-                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                                org.wheatgenetics.coordinate.R.string.no_rows);
                             org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
                             return;
                         }
 
                         if (0 == cols.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getCols())
                         {
-                            android.widget.Toast.makeText(
-                                org.wheatgenetics.coordinate.activities.Main.this,
-                                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                org.wheatgenetics.coordinate.R.string.no_cols),
-                                android.widget.Toast.LENGTH_LONG).show();
+                            org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                                org.wheatgenetics.coordinate.R.string.no_cols);
                             org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
                             return;
                         }
@@ -1643,22 +1620,14 @@ android.view.View.OnKeyListener
                                     if (org.wheatgenetics.coordinate.activities.
                                     Main.this.deleteTemplate(templateModel))
                                     {
-                                        android.widget.Toast.makeText(
-                                            org.wheatgenetics.coordinate.activities.Main.this,
-                                            org.wheatgenetics.coordinate.activities.
-                                                Main.this.getString(org.wheatgenetics.coordinate.
-                                                    R.string.template_deleted),
-                                            android.widget.Toast.LENGTH_LONG).show();
+                                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                                            org.wheatgenetics.coordinate.R.string.template_deleted);
                                         org.wheatgenetics.coordinate.activities.
                                             Main.this.loadExistingTemplateOrCreateNewTemplate();
                                     }
                                     else
-                                        android.widget.Toast.makeText(
-                                            org.wheatgenetics.coordinate.activities.Main.this,
-                                            org.wheatgenetics.coordinate.activities.
-                                                Main.this.getString(org.wheatgenetics.coordinate.
-                                                    R.string.template_not_deleted),
-                                            android.widget.Toast.LENGTH_LONG).show();
+                                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                                            org.wheatgenetics.coordinate.R.string.template_not_deleted);
                                 }
                             }, null);
                     }
@@ -1857,7 +1826,7 @@ android.view.View.OnKeyListener
             case org.wheatgenetics.coordinate.R.id.menu_export:
                 assert null != this.templateModel;
                 if (this.templateModel.getTitle().equals(""))
-                    this.makeToast(this.getString(org.wheatgenetics.coordinate.R.string.grid_empty));
+                    this.showShortToast(org.wheatgenetics.coordinate.R.string.grid_empty);
                 else
                     this.export();
                 break;
@@ -1897,12 +1866,12 @@ android.view.View.OnKeyListener
             }
             fos.flush();
             this.makeFileDiscoverable(new java.io.File("/mnt/sdcard/db_dump.db"), this);
-            android.widget.Toast.makeText(this, "DB dump OK", android.widget.Toast.LENGTH_LONG).show();
+            this.showLongToast("DB dump OK");
         }
         catch (final java.io.IOException e)
         {
             e.printStackTrace();
-            android.widget.Toast.makeText(this, "DB dump ERROR", android.widget.Toast.LENGTH_LONG).show();
+            this.showLongToast("DB dump ERROR");
         }
         finally
         {
@@ -1915,8 +1884,17 @@ android.view.View.OnKeyListener
         }
     }
 
-    private void makeToast(final java.lang.String message)
-    { android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show(); }
+    // region Toast Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
+
+    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
+    // endregion
 
     /**
      * Adds default templates to database if they aren't there already.  If they are there then they
@@ -2091,8 +2069,8 @@ android.view.View.OnKeyListener
 
                     if (0 == sfield.length())
                     {
-                        android.widget.Toast.makeText(Main.this, getString(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name),
-                            android.widget.Toast.LENGTH_LONG).show();
+                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                            org.wheatgenetics.coordinate.R.string.new_optional_field_no_name);
                         inputOptionalNew(field, value);
                         return;
                     }
@@ -2370,9 +2348,7 @@ android.view.View.OnKeyListener
             }
             if (!success)
             {
-                android.widget.Toast.makeText(Main.this,
-                    this.getString(org.wheatgenetics.coordinate.R.string.update_failed),
-                    android.widget.Toast.LENGTH_SHORT).show();
+                this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
                 return;
             }
         }
@@ -2503,7 +2479,7 @@ android.view.View.OnKeyListener
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
         ||  org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode () == templatesTable.type)
         {
-            this.makeToast(getString(org.wheatgenetics.coordinate.R.string.template_not_deleted_default));
+            this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
             return false;
         }
 
@@ -2829,9 +2805,7 @@ android.view.View.OnKeyListener
         }
         if (!success)
         {
-            android.widget.Toast.makeText(Main.this,
-                this.getString(org.wheatgenetics.coordinate.R.string.update_failed),
-                android.widget.Toast.LENGTH_SHORT).show();
+            this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
             return;
         }
     }

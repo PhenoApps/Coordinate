@@ -18,7 +18,6 @@ package org.wheatgenetics.coordinate.utils;
  * android.view.inputmethod.InputMethodManager
  * android.view.View
  * android.view.WindowManager
- * android.widget.Toast
  *
  * org.wheatgenetics.androidlibrary.Utils
  */
@@ -103,9 +102,6 @@ public class Utils extends java.lang.Object
             });
     }
     // endregion
-
-    public static void showToast(final android.content.Context context, final java.lang.String text)
-    { android.widget.Toast.makeText(context, text, android.widget.Toast.LENGTH_LONG).show(); }
 
     public static java.lang.String formatDate(final long date)
     {
