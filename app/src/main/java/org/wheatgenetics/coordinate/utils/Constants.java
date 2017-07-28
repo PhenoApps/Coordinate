@@ -4,7 +4,6 @@ package org.wheatgenetics.coordinate.utils;
  * Uses:
  * android.os.Environment
  */
-
 public class Constants extends java.lang.Object
 {
     /**

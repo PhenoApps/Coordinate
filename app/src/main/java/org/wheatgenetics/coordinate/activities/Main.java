@@ -753,7 +753,9 @@ android.view.View.OnKeyListener
         this.mainLayout.setVisibility(android.view.View.INVISIBLE);
 
         this.initializeTemplatesTable();
-        this.createDirs();
+        this.createDirIfMissing(org.wheatgenetics.coordinate.utils.Constants.MAIN_PATH    );
+        this.createDirIfMissing(org.wheatgenetics.coordinate.utils.Constants.EXPORT_PATH  );
+        this.createDirIfMissing(org.wheatgenetics.coordinate.utils.Constants.TEMPLATE_PATH);
 
         if (this.sharedPreferences.currentGridIsSet())
             try { this.loadGrid(this.sharedPreferences.getCurrentGrid()); }
@@ -928,17 +930,8 @@ android.view.View.OnKeyListener
         return v;
     }
 
-    private void createDirs()
+    private void createDirIfMissing(final java.io.File path)
     {
-        this.createDir(org.wheatgenetics.coordinate.utils.Constants.MAIN_PATH    );
-        this.createDir(org.wheatgenetics.coordinate.utils.Constants.EXPORT_PATH  );
-        this.createDir(org.wheatgenetics.coordinate.utils.Constants.TEMPLATE_PATH);
-    }
-
-    private void createDir(final java.io.File path)
-    {
-        final java.io.File blankFile = new java.io.File(path, ".coordinate");
-
         assert null != path;
         if (!path.exists())
         {
@@ -946,9 +939,11 @@ android.view.View.OnKeyListener
 
             try
             {
-                blankFile.getParentFile().mkdirs();
-                blankFile.createNewFile();
-                this.makeFileDiscoverable(blankFile, this);
+                final java.io.File blankHiddenFile = new java.io.File(path, ".coordinate");
+
+                blankHiddenFile.getParentFile().mkdirs();
+                blankHiddenFile.createNewFile();
+                this.makeFileDiscoverable(blankHiddenFile, this);
             }
             catch (final java.io.IOException e)
             { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
@@ -1221,7 +1216,7 @@ android.view.View.OnKeyListener
                                     org.wheatgenetics.coordinate.utils.Constants.EXPORT_PATH,
                                     org.wheatgenetics.coordinate.activities.
                                         Main.this.templateModel.getTitle());
-                                org.wheatgenetics.coordinate.activities.Main.this.createDir(path);
+                                org.wheatgenetics.coordinate.activities.Main.this.createDirIfMissing(path);
 
                                 org.wheatgenetics.coordinate.activities.Main.this.exporter =
                                     new org.wheatgenetics.coordinate.activities.Main.Exporter(
