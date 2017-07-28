@@ -103,6 +103,7 @@ public class Utils extends java.lang.Object
     }
     // endregion
 
+    // region Date Methods
     public static java.lang.String formatDate(final long date)
     {
         return (java.lang.String) android.text.format.DateFormat.format(
@@ -114,6 +115,7 @@ public class Utils extends java.lang.Object
         return org.wheatgenetics.coordinate.utils.Utils.formatDate(
             java.lang.System.currentTimeMillis());
     }
+    // endregion
 
     public static void hideKeys(final android.content.Context context, final android.view.View view)
     {
@@ -131,6 +133,7 @@ public class Utils extends java.lang.Object
     public static void sleeper(final int i)
     { try { java.lang.Thread.sleep(i); } catch (final java.lang.InterruptedException e) {} }
 
+    // region Bitmap Methods
     @java.lang.SuppressWarnings("EmptyCatchBlock")
     public static android.graphics.Bitmap loadBitmap(final java.lang.String path)
     {
@@ -218,6 +221,7 @@ public class Utils extends java.lang.Object
             /* x      => */ 0     , /* y => */ 0     , /* width  => */ width ,
             /* height => */ height, /* m => */ matrix, /* filter => */ false );
     }
+    // endregion
 
     public static int getScreenSize(final android.content.Context context)
     {

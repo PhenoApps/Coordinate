@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.activities;
  * android.app.Activity
  * android.app.AlertDialog
  * android.app.AlertDialog.Builder
- * android.app.ProgressDialog
  * android.content.Context
  * android.content.DialogInterface
  * android.content.DialogInterface.OnCancelListener
@@ -52,6 +51,7 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  * org.wheatgenetics.androidlibrary.Dir
+ * org.wheatgenetics.androidlibrary.ProgressDialog
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
@@ -78,12 +78,11 @@ android.view.View.OnKeyListener
     java.lang.Void, java.lang.String, java.lang.Boolean>
     {
         // region Fields
-        private final android.content.Context context                                   ;
-        private final java.lang.String        progressDialogTitle, progressDialogMessage;
-        private final long                    templateId                                ;
-        private final java.lang.String        exportFileName, absolutePath              ;
+        private final android.content.Context                         context                     ;
+        private final org.wheatgenetics.androidlibrary.ProgressDialog progressDialog              ;
+        private final long                                            templateId                  ;
+        private final java.lang.String                                exportFileName, absolutePath;
 
-        private android.app.ProgressDialog                           progressDialog;
         private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
         private java.lang.String                                     message = null;
         private java.io.File                                         exportFile    ;
@@ -387,25 +386,9 @@ android.view.View.OnKeyListener
         {
             super();
 
-            this.context               = context              ;
-            this.progressDialogTitle   = progressDialogTitle  ;
-            this.progressDialogMessage = progressDialogMessage;
-            this.templateId            = templateId           ;
-            this.exportFileName        = exportFileName       ;
-            this.absolutePath          = absolutePath         ;
-        }
-
-        // region Overridden Methods
-        @java.lang.Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-
-            this.progressDialog = new android.app.ProgressDialog(this.context);
-            this.progressDialog.setTitle     (this.progressDialogTitle  );
-            this.progressDialog.setMessage   (this.progressDialogMessage);
-            this.progressDialog.setCancelable(true                      );
-            this.progressDialog.setOnCancelListener(
+            this.context        = context;
+            this.progressDialog = new org.wheatgenetics.androidlibrary.ProgressDialog(this.context,
+                progressDialogTitle, progressDialogMessage,
                 new android.content.DialogInterface.OnCancelListener()
                 {
                     @java.lang.Override
@@ -415,6 +398,17 @@ android.view.View.OnKeyListener
                             /* mayInterruptIfRunning => */ true);
                     }
                 });
+
+            this.templateId     = templateId    ;
+            this.exportFileName = exportFileName;
+            this.absolutePath   = absolutePath  ;
+        }
+
+        // region Overridden Methods
+        @java.lang.Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
             this.progressDialog.show();
         }
 
@@ -468,11 +462,7 @@ android.view.View.OnKeyListener
         @java.lang.Override
         protected void onPostExecute(final java.lang.Boolean result)
         {
-            if (null != this.progressDialog && this.progressDialog.isShowing())
-            {
-                this.progressDialog.dismiss();
-                this.progressDialog = null;
-            }
+            this.progressDialog.dismiss();
 
             // TODO: When grid is reset, make a new one.
             if (null != result && result)
