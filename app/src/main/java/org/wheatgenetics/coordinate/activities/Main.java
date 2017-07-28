@@ -162,8 +162,8 @@ android.view.View.OnKeyListener
                             org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
                 }
                 csvWriter.close();
-                makeFileDiscoverable(this.exportFile,
-                    org.wheatgenetics.coordinate.activities.Main.this);
+                org.wheatgenetics.coordinate.activities.Main.this.makeFileDiscoverable(
+                    this.exportFile);
                 success = true;
             }
             catch (final java.io.IOException e)
@@ -273,8 +273,8 @@ android.view.View.OnKeyListener
                             org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
                 }
                 csvWriter.close();
-                makeFileDiscoverable(this.exportFile,
-                    org.wheatgenetics.coordinate.activities.Main.this);
+                org.wheatgenetics.coordinate.activities.Main.this.makeFileDiscoverable(
+                    this.exportFile);
                 success = true;
             }
             catch (final java.io.IOException e)
@@ -347,8 +347,8 @@ android.view.View.OnKeyListener
                             org.wheatgenetics.coordinate.R.string.exporting_column_title) + col);
                 }
                 csvWriter.close();
-                makeFileDiscoverable(this.exportFile,
-                    org.wheatgenetics.coordinate.activities.Main.this);
+                org.wheatgenetics.coordinate.activities.Main.this.makeFileDiscoverable(
+                    this.exportFile);
                 success = true;
             }
             catch (final java.io.IOException e)
@@ -943,7 +943,7 @@ android.view.View.OnKeyListener
 
                 blankHiddenFile.getParentFile().mkdirs();
                 blankHiddenFile.createNewFile();
-                this.makeFileDiscoverable(blankHiddenFile, this);
+                this.makeFileDiscoverable(blankHiddenFile);
             }
             catch (final java.io.IOException e)
             { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
@@ -1860,7 +1860,7 @@ android.view.View.OnKeyListener
                     break;
             }
             fos.flush();
-            this.makeFileDiscoverable(new java.io.File("/mnt/sdcard/db_dump.db"), this);
+            this.makeFileDiscoverable(new java.io.File("/mnt/sdcard/db_dump.db"));
             this.showLongToast("DB dump OK");
         }
         catch (final java.io.IOException e)
@@ -2829,13 +2829,11 @@ android.view.View.OnKeyListener
             cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell);
     }
 
-    private void makeFileDiscoverable(final java.io.File file,
-    final android.content.Context context)
+    private void makeFileDiscoverable(final java.io.File file)
     {
-        android.media.MediaScannerConnection.scanFile(context,
+        android.media.MediaScannerConnection.scanFile(this,
             new java.lang.String[]{file.getPath()}, null, null);
-        assert null != context;
-        context.sendBroadcast(new android.content.Intent(
+        this.sendBroadcast(new android.content.Intent(
             android.content.Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, android.net.Uri.fromFile(file)));
     }
 }
