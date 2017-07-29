@@ -15,7 +15,6 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  */
-
 public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
 implements java.lang.Cloneable
 {
@@ -837,7 +836,19 @@ implements java.lang.Cloneable
         }
     }
 
-    // region Default Public Methods
+    // region Make Public Methods
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
+    {
+        return
+            new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title        => */ ""                                                  ,
+            /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows         => */ 20                                                  ,
+            /* cols         => */ 10                                                  ,
+            /* colNumbering => */ true                                                ,
+            /* rowNumbering => */ false                                               );
+    }
+
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =

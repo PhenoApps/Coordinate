@@ -144,6 +144,35 @@ implements java.lang.Cloneable
         return jsonArray.toString();
     }
 
+    public java.lang.String[] names()
+    {
+        final java.util.ArrayList<java.lang.String > nameArrayList =
+            new java.util.ArrayList<java.lang.String >();
+
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
+            nameArrayList.add(optionalField.getName());
+
+        return nameArrayList.toArray(new java.lang.String[nameArrayList.size()]);
+    }
+
+    public boolean[] checks()
+    {
+        boolean result[];
+        {
+            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
+                new java.util.ArrayList<java.lang.Boolean>();
+
+            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
+                checkedArrayList.add(optionalField.getChecked());
+
+            final int checkedArrayListSize = checkedArrayList.size();
+            result = new boolean[checkedArrayListSize];
+
+            for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
+        }
+        return result;
+    }
+
     // region Make Methods
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeInitial()
     {
@@ -152,6 +181,18 @@ implements java.lang.Cloneable
 
         result.add    ("Plate Id");
         result.addDate("Date"    );
+
+        return result;
+    }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+
+        result.add    ("Identification");
+        result.add    ("Person"        );
+        result.addDate("Date"          );
 
         return result;
     }
