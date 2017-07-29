@@ -645,11 +645,9 @@ android.view.View.OnKeyListener
         }
 
         this.nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        this.nonNullOptionalFields.add    ("Plate Id");
-        this.nonNullOptionalFields.addDate("Date"    );
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeInitial();
 
-        this.templateOptions = new java.lang.String[]{
+        this.templateOptions = new java.lang.String[] {
             this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_load),
             this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_new )};
 
@@ -851,7 +849,8 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onEditorAction(final android.widget.TextView v, final int actionId, final android.view.KeyEvent event)
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId,
+    final android.view.KeyEvent event)
     {
         if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
         {

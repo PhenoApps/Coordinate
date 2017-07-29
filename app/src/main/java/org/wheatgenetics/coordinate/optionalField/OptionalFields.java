@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
-
 abstract class OptionalFields extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.OptionalField>
 {

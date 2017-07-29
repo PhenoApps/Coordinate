@@ -12,7 +12,6 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  */
-
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
@@ -145,6 +144,18 @@ implements java.lang.Cloneable
         return jsonArray.toString();
     }
 
+    // region Make Methods
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeInitial()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+
+        result.add    ("Plate Id");
+        result.addDate("Date"    );
+
+        return result;
+    }
+
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
@@ -172,4 +183,5 @@ implements java.lang.Cloneable
 
         return result;
     }
+    // endregion
 }
