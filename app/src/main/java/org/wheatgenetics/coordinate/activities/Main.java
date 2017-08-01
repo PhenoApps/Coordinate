@@ -568,6 +568,7 @@ android.view.View.OnKeyListener
     private java.lang.String mGridTitle = ""             ;
     private int              mCurRow    =  1, mCurCol = 1;
 
+    private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
@@ -782,9 +783,23 @@ android.view.View.OnKeyListener
 
         this.showTemplateUI();
 
-        if (!this.sharedPreferences.updateVersionIsSet(this.getVersion()))
+        int versionCode;
+        try
         {
-            this.sharedPreferences.setUpdateVersion(this.getVersion());
+            final android.content.pm.PackageInfo packageInfo =
+                this.getPackageManager().getPackageInfo(this.getPackageName(), /* flags => 0 */ 0);
+            assert null != packageInfo;
+            versionCode      = packageInfo.versionCode;
+            this.versionName = packageInfo.versionName;
+        }
+        catch (final android.content.pm.PackageManager.NameNotFoundException e)
+        {
+            versionCode      = 0                                           ;
+            this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
+        }
+        if (!this.sharedPreferences.updateVersionIsSet(versionCode))
+        {
+            this.sharedPreferences.setUpdateVersion(versionCode);
             this.showChangeLog();
         }
     }
@@ -938,15 +953,6 @@ android.view.View.OnKeyListener
         super.onDestroy();
     }
     // endregion
-
-    private int getVersion()
-    {
-        int v = 0;
-        try { v = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionCode; }
-        catch (final android.content.pm.PackageManager.NameNotFoundException e)
-        { org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e); }
-        return v;
-    }
 
     private void showChangeLog()
     {
@@ -1734,31 +1740,6 @@ android.view.View.OnKeyListener
     {
         if (null == this.aboutAlertDialog)
         {
-            java.lang.String versionName = null;
-            {
-                android.content.pm.PackageInfo packageInfo;
-                {
-                    final android.content.pm.PackageManager packageManager =
-                        this.getPackageManager();
-                    assert null != packageManager;
-                    try
-                    {
-                        packageInfo = packageManager.getPackageInfo(  // throws android.content.
-                            this.getPackageName(), 0);                //  pm.PackageManager.-
-                    }                                                 //  NameNotFoundException
-                    catch (final android.content.pm.PackageManager.NameNotFoundException e)
-                    {
-                        org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
-
-                        packageInfo = null;
-
-                        assert null != e;
-                        versionName = e.getMessage();
-                    }
-                }
-                versionName = null == packageInfo ? versionName : packageInfo.versionName;
-            }
-
             java.lang.String title, msgs[];
             {
                 final android.content.res.Resources resources = this.getResources();
@@ -1769,10 +1750,10 @@ android.view.View.OnKeyListener
             }
 
             this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
-                /* context                => */ this       ,
-                /* title                  => */ title      ,
-                /* versionName            => */ versionName,
-                /* msgs[]                 => */ msgs       ,
+                /* context                => */ this            ,
+                /* title                  => */ title           ,
+                /* versionName            => */ this.versionName,
+                /* msgs[]                 => */ msgs            ,
                 /* suppressIndex          => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
                 /* versionOnClickListener => */ new android.view.View.OnClickListener()
                     {
