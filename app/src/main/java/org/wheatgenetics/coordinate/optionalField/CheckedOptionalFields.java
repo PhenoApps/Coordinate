@@ -5,7 +5,6 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
  */
-
 public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 {
     public CheckedOptionalFields(
@@ -47,9 +46,9 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
             @java.lang.Override
             public org.wheatgenetics.coordinate.optionalField.OptionalField next()
             {
-                org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
-                do optionalField = super.next(); while (!optionalField.getChecked());
-                return optionalField;
+                org.wheatgenetics.coordinate.optionalField.OptionalField result;
+                do result = super.next(); while (!result.getChecked());
+                return result;
             }
         }
         return new Iterator(this.arrayList);

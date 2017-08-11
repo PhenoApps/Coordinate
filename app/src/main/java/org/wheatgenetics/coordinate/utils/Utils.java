@@ -93,7 +93,4 @@ public class Utils extends java.lang.Object
         try                                             { return java.lang.Integer.parseInt(s); }
         catch (final java.lang.NumberFormatException e) { return                            -1; }
     }
-
-    public static java.lang.String getTag(final int r, final int c)
-    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
 }

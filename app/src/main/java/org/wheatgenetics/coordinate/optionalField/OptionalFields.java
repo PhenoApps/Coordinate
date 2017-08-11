@@ -25,13 +25,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         {
             super();
 
-            assert null != arrayList;
             this.arrayList = arrayList;
 
-            final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
-                listIterator = this.arrayList.listIterator();
-            assert null != listIterator;
-            this.listIterator = listIterator;
+            assert null != this.arrayList;
+            this.listIterator = this.arrayList.listIterator();
         }
 
         @java.lang.Override
@@ -51,11 +48,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         @java.lang.Override
         public org.wheatgenetics.coordinate.optionalField.OptionalField next()
         {
-            org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
+            org.wheatgenetics.coordinate.optionalField.OptionalField result;
 
             assert null != this.listIterator;
-            do optionalField = this.listIterator.next(); while (null == optionalField);
-            return optionalField;
+            do result = this.listIterator.next(); while (null == result);
+            return result;
         }
 
         @java.lang.Override
@@ -83,12 +80,12 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
                     return false;
                 else
                 {
-                    int i = 0;
-
-                    for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                    optionalField: this)
-                        if (!optionalField.equals(f.arrayList.get(i++))) return false;
-
+                    {
+                        int i = 0;
+                        for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                        optionalField : this)
+                            if (!optionalField.equals(f.arrayList.get(i++))) return false;
+                    }
                     return true;
                 }
             }

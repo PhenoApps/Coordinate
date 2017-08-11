@@ -598,6 +598,9 @@ android.view.View.OnKeyListener
         assert null != e;
         return android.util.Log.e("Coordinate", e.getMessage());
     }
+
+    public static java.lang.String getTag(final int r, final int c)
+    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
 
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
@@ -2339,7 +2342,7 @@ android.view.View.OnKeyListener
         }
 
         android.view.View view;
-        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.utils.Utils.getTag(mCurRow, mCurCol));
+        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.activities.Main.getTag(mCurRow, mCurCol));
 
         if (null != view)
             if (0 != value.length())
@@ -2380,7 +2383,7 @@ android.view.View.OnKeyListener
         this.cellIDEditText.selectAll();
         this.cellIDEditText.requestFocus();
 
-        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.utils.Utils.getTag(mCurRow, mCurCol));
+        view = this.gridTableLayout.findViewWithTag(org.wheatgenetics.coordinate.activities.Main.getTag(mCurRow, mCurCol));
         if (null != view)
             if (!this.isExcludedRow(mCurRow) && !this.isExcludedCol(mCurCol) && !this.isExcludedCell(mCurRow, mCurCol))
                 this.setCellState(view, STATE_ACTIVE);
@@ -2761,7 +2764,7 @@ android.view.View.OnKeyListener
                     }
 
                     cell_cnt.setOnClickListener(this);
-                    cell_cnt.setTag(org.wheatgenetics.coordinate.utils.Utils.getTag(r, c));
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.activities.Main.getTag(r, c));
                     cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_col, c);
                     cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_row, r);
                     brow.addView(cell_box);

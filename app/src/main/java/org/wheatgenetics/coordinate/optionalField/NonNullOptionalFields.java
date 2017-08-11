@@ -56,8 +56,8 @@ implements java.lang.Cloneable
     public java.lang.Object clone() throws java.lang.CloneNotSupportedException
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
-            new NonNullOptionalFields();
-        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField : this)
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
             result.arrayList.add(
                 (org.wheatgenetics.coordinate.optionalField.OptionalField) optionalField.clone());
         return result;
