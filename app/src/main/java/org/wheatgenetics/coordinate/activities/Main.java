@@ -2203,41 +2203,54 @@ android.view.View.OnKeyListener
 
     private void inputNaming()
     {
-        final android.view.LayoutInflater layoutInflater = Main.this.getLayoutInflater();
-        final android.view.View           view           = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
-
-        assert null != view;
-        final android.widget.Spinner rowSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-        final android.widget.Spinner colSpinner = (android.widget.Spinner) view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
-
-        assert null != this.templateModel;
-        assert null != rowSpinner        ;
-        assert null != colSpinner        ;
-        rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
-        colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.naming));
-        builder.setView(view);
-        builder.setCancelable(false);
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
+        android.app.AlertDialog alertDialog;
+        {
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.naming));
             {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
+                android.view.View view;
                 {
-                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering((rowSpinner.getSelectedItemPosition() == 0));
-                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering((colSpinner.getSelectedItemPosition() == 0));
-
-                    assert null != dialog;
-                    dialog.cancel();
+                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+                    assert null != layoutInflater;
+                    view =
+                        layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
                 }
-            });
 
-        final android.app.AlertDialog alertDialog = builder.create();
+                assert null != view;
+                final android.widget.Spinner rowSpinner = (android.widget.Spinner)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
+                final android.widget.Spinner colSpinner = (android.widget.Spinner)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+
+                assert null != this.templateModel;
+                assert null != rowSpinner        ;
+                assert null != colSpinner        ;
+                rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+                colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+
+                builder.setView(view).setCancelable(false).setNegativeButton(
+                    org.wheatgenetics.coordinate.R.string.cancel                      ,
+                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                    new android.content.DialogInterface.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.content.DialogInterface dialog,
+                        final int which)
+                        {
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
+                                setRowNumbering(rowSpinner.getSelectedItemPosition() == 0);
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
+                                setColNumbering(colSpinner.getSelectedItemPosition() == 0);
+
+                            assert null != dialog;
+                            dialog.cancel();
+                        }
+                    });
+            }
+            alertDialog = builder.create();
+        }
         assert null != alertDialog;
         alertDialog.setCancelable(false);
         alertDialog.show();
@@ -2359,9 +2372,8 @@ android.view.View.OnKeyListener
             if (this.isExcludedRow(mCurRow) || this.isExcludedCol(mCurCol) || this.isExcludedCell(mCurRow, mCurCol))
                 if (!this.getNextFreeCell()) endOfCell = true;
 
-        value = this.getValue(this.gridId, mCurRow, mCurCol);
-
-        if (null == value) value = "";
+        value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+            this.getValue(this.gridId, mCurRow, mCurCol));
 
         this.cellIDEditText.setSelectAllOnFocus(true);
         this.cellIDEditText.setText(value);
@@ -2562,7 +2574,7 @@ android.view.View.OnKeyListener
         this.templateModel.setType(templateType);
 
         final long gridId = this.createGrid(this.templateModel.getId());
-        if (0 < gridId)
+        if (gridId > 0)
         {
             this.gridId = gridId;
 
@@ -2574,12 +2586,13 @@ android.view.View.OnKeyListener
             }
 
             this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
-            this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
+            this.gridAreaLayout.setVisibility     (android.view.View.VISIBLE);
 
             this.populateTemplate();
             this.showTemplateUI();
         }
-        else org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource, getString(org.wheatgenetics.coordinate.R.string.create_grid_fail));
+        else org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
+            this.getString(org.wheatgenetics.coordinate.R.string.create_grid_fail));
 
     }
 
@@ -2594,7 +2607,7 @@ android.view.View.OnKeyListener
 
         final java.lang.String value = this.getValue(this.gridId, 1, 1);
         assert null != this.cellIDEditText;
-        this.cellIDEditText.setText(null == value ? "" : value);
+        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
     }
 
     // first non excluded cell
@@ -2775,11 +2788,7 @@ android.view.View.OnKeyListener
                 success = entriesTable.insert() > 0;
             }
         }
-        if (!success)
-        {
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
-            return;
-        }
+        if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
     }
 
     private java.lang.String getValue(final long grid, final int r, final int c)
@@ -2795,14 +2804,23 @@ android.view.View.OnKeyListener
 
     private void setCellState(final android.view.View cell, final int state)
     {
+        int backgroundResourceId;
+        switch (state)
+        {
+            case org.wheatgenetics.coordinate.activities.Main.STATE_DONE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_done; break;
+
+            case org.wheatgenetics.coordinate.activities.Main.STATE_ACTIVE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_active; break;
+
+            case org.wheatgenetics.coordinate.activities.Main.STATE_INACTIVE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_inactive; break;
+
+            default: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell; break;
+        }
+
         assert null != cell;
-        if (STATE_DONE == state)                                // TODO: Turn into switch statement?
-            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_done);
-        else if (STATE_ACTIVE == state)
-            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_active);
-        else if (STATE_INACTIVE == state)
-            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell_inactive);
-        else
-            cell.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.table_cell);
+        cell.setBackgroundResource(backgroundResourceId);
     }
 }

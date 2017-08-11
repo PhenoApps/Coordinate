@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.utils.Utils
  */
-
 class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     // region Constructors
