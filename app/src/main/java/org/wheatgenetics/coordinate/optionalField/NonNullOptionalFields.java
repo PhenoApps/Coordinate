@@ -162,22 +162,15 @@ implements java.lang.Cloneable
         return nameArrayList.toArray(new java.lang.String[nameArrayList.size()]);
     }
 
-    public boolean[] checks()
+    public java.lang.String[] values()
     {
-        boolean result[];
-        {
-            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
-                new java.util.ArrayList<java.lang.Boolean>();
+        final java.util.ArrayList<java.lang.String > valueArrayList =
+            new java.util.ArrayList<java.lang.String >();
 
-            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
-                checkedArrayList.add(optionalField.getChecked());
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
+            valueArrayList.add(optionalField.getValue());
 
-            final int checkedArrayListSize = checkedArrayList.size();
-            result = new boolean[checkedArrayListSize];
-
-            for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
-        }
-        return result;
+        return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
     }
 
     public java.lang.String[] values(final java.lang.String names[])
@@ -211,6 +204,24 @@ implements java.lang.Cloneable
 
                 return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
             }
+    }
+
+    public boolean[] checks()
+    {
+        boolean result[];
+        {
+            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
+                new java.util.ArrayList<java.lang.Boolean>();
+
+            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
+                checkedArrayList.add(optionalField.getChecked());
+
+            final int checkedArrayListSize = checkedArrayList.size();
+            result = new boolean[checkedArrayListSize];
+
+            for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
+        }
+        return result;
     }
 
     // region Make Methods

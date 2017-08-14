@@ -306,14 +306,11 @@ android.view.View.OnKeyListener
                         csvWriter.write(col);
                         csvWriter.write(row);
 
-                        for (final
-                        org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
-                        org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
                         {
-                            assert null != optionalField;
-                            csvWriter.write(optionalField.getValue());
+                            final java.lang.String values[] = org.wheatgenetics.
+                                coordinate.activities.Main.this.optionalFieldValues();
+                            for (final java.lang.String value: values) csvWriter.write(value);
                         }
-
                         csvWriter.endRecord();
                     }
                     this.publishProgress(
@@ -574,6 +571,12 @@ android.view.View.OnKeyListener
     public static java.lang.String getTag(final int r, final int c)
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
+
+    private java.lang.String[] optionalFieldValues()
+    {
+        assert null != this.nonNullOptionalFields;
+        return this.nonNullOptionalFields.values();
+    }
 
     private java.lang.String[] optionalFieldValues(final java.lang.String names[])
     {
