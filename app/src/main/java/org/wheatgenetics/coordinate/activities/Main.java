@@ -174,31 +174,14 @@ android.view.View.OnKeyListener
         {
             java.lang.String date       = "", plate_id = "", plate_name  = ""                 ;
             java.lang.String dna_person = "", notes    = "", tissue_type = "", extraction = "";
-            assert null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
-            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
-            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
             {
-                assert null != optionalField;
-                if (optionalField.namesAreEqual("date"))                             // TODO: Ditto.
-                    date = optionalField.getValue();
-                else
-                    if (optionalField.namesAreEqual("Plate"))
-                        plate_id = optionalField.getValue();
-                    else
-                        if (optionalField.namesAreEqual("Plate Name"))
-                            plate_name = optionalField.getValue();
-                        else
-                            if (optionalField.namesAreEqual("person"))
-                                dna_person = optionalField.getValue().replace(" ", "_");  // TODO: Ditto.
-                            else
-                                if (optionalField.namesAreEqual("Notes"))
-                                    notes = optionalField.getValue();
-                                else
-                                    if (optionalField.namesAreEqual("tissue_type"))
-                                        tissue_type = optionalField.getValue();
-                                    else
-                                        if (optionalField.namesAreEqual("extraction"))
-                                            extraction = optionalField.getValue();
+                final java.lang.String values[] =
+                    org.wheatgenetics.coordinate.activities.Main.this.optionalFieldValues(
+                        new java.lang.String[] { "date", "Plate", "Plate Name",
+                            "person", "Notes", "tissue_type", "extraction" });
+                date       = values[0]; plate_id = values[1]; plate_name  = values[2];
+                dna_person = values[3]; notes    = values[4]; tissue_type = values[5];
+                extraction = values[6];
             }
 
             this.exportFile = this.makeExportFile();
