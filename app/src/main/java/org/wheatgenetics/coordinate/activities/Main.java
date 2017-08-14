@@ -2181,7 +2181,7 @@ android.view.View.OnKeyListener
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
                     {
-                        final int amount = org.wheatgenetics.coordinate.utils.Utils.parseInt(
+                        final int amount = org.wheatgenetics.coordinate.utils.Utils.convert(
                             cellsEdit.getText().toString());
 
                         if (amount > 0)

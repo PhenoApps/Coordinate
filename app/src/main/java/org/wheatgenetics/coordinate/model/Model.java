@@ -4,17 +4,12 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.annotation.SuppressLint
  */
-
-abstract public class Model extends java.lang.Object
+public abstract class Model extends java.lang.Object
 {
     private long id;
 
-    Model() { super(); }
-    Model(final long id)
-    {
-        this();
-        this.setId(id);
-    }
+    Model()              { super();                }
+    Model(final long id) { this(); this.setId(id); }
 
     // region Overridden Methods
     @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")

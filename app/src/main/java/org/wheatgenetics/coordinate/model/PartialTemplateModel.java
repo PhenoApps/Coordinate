@@ -24,21 +24,22 @@ implements java.lang.Cloneable
     // endregion
 
     // region Private Methods
-    private static int valid(final int i)
+    private static int validate(final int i)
     { if (i <= 0) throw new java.lang.IllegalArgumentException(); else return i; }
 
 
     private void setRows(final int rows)
-    { this.rows = org.wheatgenetics.coordinate.model.PartialTemplateModel.valid(rows); }
+    { this.rows = org.wheatgenetics.coordinate.model.PartialTemplateModel.validate(rows); }
 
     private void setRows(final java.lang.String rows)
-    { this.setRows(org.wheatgenetics.coordinate.utils.Utils.parseInt(rows)); }
+    { this.setRows(org.wheatgenetics.coordinate.utils.Utils.convert(rows)); }
+
 
     private void setCols(final int cols)
-    { this.cols = org.wheatgenetics.coordinate.model.PartialTemplateModel.valid(cols); }
+    { this.cols = org.wheatgenetics.coordinate.model.PartialTemplateModel.validate(cols); }
 
     private void setCols(final java.lang.String cols)
-    { this.setCols(org.wheatgenetics.coordinate.utils.Utils.parseInt(cols)); }
+    { this.setCols(org.wheatgenetics.coordinate.utils.Utils.convert(cols)); }
 
 
     private static java.lang.String convert(final int integer)

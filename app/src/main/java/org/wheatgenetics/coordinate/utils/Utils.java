@@ -88,7 +88,7 @@ public class Utils extends java.lang.Object
     }
     // endregion
 
-    public static int parseInt(final java.lang.String s)
+    public static int convert(final java.lang.String s)
     {
         try                                             { return java.lang.Integer.parseInt(s); }
         catch (final java.lang.NumberFormatException e) { return                            -1; }
