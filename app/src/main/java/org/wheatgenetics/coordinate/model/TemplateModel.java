@@ -747,7 +747,6 @@ implements java.lang.Cloneable
 
         return result;
     }
-
     // endregion
 
     // region Public Methods

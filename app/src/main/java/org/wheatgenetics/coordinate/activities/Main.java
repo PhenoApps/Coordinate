@@ -113,7 +113,7 @@ android.view.View.OnKeyListener
                     tray_id = optionalField.getValue();
                 else
                     if (optionalField.namesAreEqual("Person"))
-                        person = optionalField.getValue().replace(" ", "_");  // TODO: Put in OptionalField?
+                        person = optionalField.getSafeValue();
                     else
                         if (optionalField.namesAreEqual("date")) date = optionalField.getValue();
             }
@@ -576,12 +576,11 @@ android.view.View.OnKeyListener
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
     private java.lang.String templateOptions[];
-
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir               ;
     private org.wheatgenetics.coordinate.activities.Main.Exporter exporter          = null;

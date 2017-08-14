@@ -112,7 +112,8 @@ public abstract class OptionalField extends java.lang.Object
     // region Getter and Setter Public Methods
     public java.lang.String getName() { return this.name; }
 
-    public java.lang.String getValue() { return this.value; }
+    public java.lang.String getValue    () { return this.value                       ; }
+    public java.lang.String getSafeValue() { return this.getValue().replace(" ", "_"); }
     public void             setValue(final java.lang.String value)
     { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value); }
 
