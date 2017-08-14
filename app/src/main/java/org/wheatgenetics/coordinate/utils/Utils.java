@@ -77,16 +77,8 @@ public class Utils extends java.lang.Object
     }
     // endregion
 
-    // region Date Methods
     public static java.lang.CharSequence formatDate(final long date)
     { return android.text.format.DateFormat.format("yyyy-MM-dd", new java.util.Date(date)); }
-
-    public static java.lang.String getCurrentDate()
-    {
-        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
-            java.lang.System.currentTimeMillis()).toString();
-    }
-    // endregion
 
     public static int convert(final java.lang.String s)
     {

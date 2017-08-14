@@ -1052,7 +1052,7 @@ android.view.View.OnKeyListener
                                 assert null != org.wheatgenetics.coordinate.
                                     activities.Main.this.nonNullOptionalFields;
                                 for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                                optionalField : org.wheatgenetics.coordinate.
+                                optionalField: org.wheatgenetics.coordinate.
                                 activities.Main.this.nonNullOptionalFields) // Danger: CheckedOptionalFields above but nonNullOptionalFields here.
                                 {
                                     final android.widget.EditText editText = editTextArray[i];
@@ -1172,8 +1172,7 @@ android.view.View.OnKeyListener
 
             assert null != this.nonNullOptionalFields;
             assert null != fileNameEditText          ;
-            fileNameEditText.setText(this.nonNullOptionalFields.get(0).getValue() +
-                "_" + org.wheatgenetics.coordinate.utils.Utils.getCurrentDate().replace(".", "_"));
+            fileNameEditText.setText(this.nonNullOptionalFields.getDatedFirstValue());
 
             builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.filename_set));
             builder.setView(view);

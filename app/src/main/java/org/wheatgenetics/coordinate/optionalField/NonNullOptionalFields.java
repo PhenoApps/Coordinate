@@ -135,6 +135,13 @@ implements java.lang.Cloneable
         }
     }
 
+    public java.lang.String getDatedFirstValue()
+    {
+        return this.get(0).getValue() + "_" +
+            org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate().replace(
+                ".", "_");
+    }
+
     public java.lang.String toJson() throws org.json.JSONException
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
