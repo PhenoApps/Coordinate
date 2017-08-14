@@ -600,6 +600,12 @@ android.view.View.OnKeyListener
         catch (final org.json.JSONException e) { this.nonNullOptionalFields = null; }
     }
 
+    private void addOptionalField(final java.lang.String name, final java.lang.String value)
+    {
+        assert null != this.nonNullOptionalFields;
+        this.nonNullOptionalFields.add(/* name => */ name, /* value => */ value, /* hint => */ "");
+    }
+
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     {
@@ -2037,12 +2043,8 @@ android.view.View.OnKeyListener
                                 assert null != dialog;
                                 dialog.cancel();
 
-                                assert null != org.wheatgenetics.coordinate.
-                                    activities.Main.this.nonNullOptionalFields;
-                                org.wheatgenetics.coordinate.activities.Main.this.
-                                    nonNullOptionalFields.add(/* name => */ newName,
-                                        /* value => */ newDefault, /* hint => */ "");
-
+                                org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
+                                    newName, newDefault);
                                 org.wheatgenetics.coordinate.activities.
                                     Main.this.addNewOptionalFields();
                             }
