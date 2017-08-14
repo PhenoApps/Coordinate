@@ -590,6 +590,16 @@ android.view.View.OnKeyListener
         return this.nonNullOptionalFields.names();
     }
 
+    private void importOptionalFields(final java.lang.String json)
+    {
+        try
+        {
+            this.nonNullOptionalFields = new org.wheatgenetics.coordinate.
+                optionalField.NonNullOptionalFields(json);          // throws org.json.JSONException
+        }
+        catch (final org.json.JSONException e) { this.nonNullOptionalFields = null; }
+    }
+
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     {
@@ -1310,7 +1320,7 @@ android.view.View.OnKeyListener
                         assert null !=
                             org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
                         for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                        optionalField :
+                        optionalField:
                         org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
                         {
                             final android.widget.EditText editText = editTextArray[i];
@@ -1694,12 +1704,7 @@ android.view.View.OnKeyListener
 
                             if (templatesTable.get(grd.templateId))  // database
                             {
-                                try
-                                {
-                                    nonNullOptionalFields =
-                                        new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(templatesTable.options);  // throws org.json.JSONException  // model
-                                }
-                                catch (final org.json.JSONException e) {}
+                                org.wheatgenetics.coordinate.activities.Main.this.importOptionalFields(templatesTable.options);
 
                                 org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(templatesTable.rowNumbering);  // model
                                 org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering);  // model
