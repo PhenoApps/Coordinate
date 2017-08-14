@@ -173,6 +173,39 @@ implements java.lang.Cloneable
         return result;
     }
 
+    public java.lang.String[] values(final java.lang.String names[])
+    {
+        if (null == names)
+            return null;
+        else
+            if (names.length <= 0)
+                return null;
+            else
+            {
+                final java.util.ArrayList<java.lang.String> valueArrayList =
+                    new java.util.ArrayList<java.lang.String>();
+
+                for (final java.lang.String name: names)
+                {
+                    boolean nameFound = false;
+                    for (final org.wheatgenetics.coordinate.optionalField.OptionalField
+                    optionalField: this)
+                    {
+                        if (optionalField.namesAreEqual(name))
+                        {
+                            valueArrayList.add(name.equals("Person") ?
+                                optionalField.getSafeValue() : optionalField.getValue());
+                            nameFound = true;
+                            break;
+                        }
+                    }
+                    if (!nameFound) valueArrayList.add("");
+                }
+
+                return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
+            }
+    }
+
     // region Make Methods
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeInitial()
     {

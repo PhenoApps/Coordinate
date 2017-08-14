@@ -105,17 +105,11 @@ android.view.View.OnKeyListener
         {
             java.lang.String tray_id = "", person = "", date = "";
             assert null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
-            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
-            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields)
             {
-                assert null != optionalField;
-                if (optionalField.namesAreEqual("Tray"))                  // TODO: Use polymorphism?
-                    tray_id = optionalField.getValue();
-                else
-                    if (optionalField.namesAreEqual("Person"))
-                        person = optionalField.getSafeValue();
-                    else
-                        if (optionalField.namesAreEqual("date")) date = optionalField.getValue();
+                final java.lang.String values[] =
+                    org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields.values(
+                        new java.lang.String[] { "Tray", "Person", "date" });
+                tray_id = values[0]; person = values[1]; date = values[2];
             }
 
             this.exportFile = this.makeExportFile();
