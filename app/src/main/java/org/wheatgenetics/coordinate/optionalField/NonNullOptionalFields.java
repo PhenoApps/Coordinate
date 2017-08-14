@@ -135,9 +135,11 @@ implements java.lang.Cloneable
         }
     }
 
+    public java.lang.String getFirstValue() { return this.get(0).getValue(); }
+
     public java.lang.String getDatedFirstValue()
     {
-        return this.get(0).getValue() + "_" +
+        return this.getFirstValue() + "_" +
             org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate().replace(
                 ".", "_");
     }

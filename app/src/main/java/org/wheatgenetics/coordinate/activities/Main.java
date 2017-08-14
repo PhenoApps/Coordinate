@@ -2255,7 +2255,7 @@ android.view.View.OnKeyListener
         alertDialog.show();
     }
 
-    private void loadGrid(final long id) throws org.json.JSONException
+    private void loadGrid(final long id)
     {
         final org.wheatgenetics.coordinate.database.GridsTable grd =
             new org.wheatgenetics.coordinate.database.GridsTable(this);
@@ -2277,9 +2277,7 @@ android.view.View.OnKeyListener
 
             if (templatesTable.get(grd.templateId))  // database
             {
-                this.nonNullOptionalFields =
-                    new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
-                        templatesTable.options); // throws org.json.JSONException, model
+                this.importOptionalFields(templatesTable.options);
 
                 this.templateModel.setRowNumbering(templatesTable.rowNumbering);
                 this.templateModel.setColNumbering(templatesTable.colNumbering);
@@ -2509,7 +2507,7 @@ android.view.View.OnKeyListener
         gridsTable.templateId = templateId;
         gridsTable.timestamp  = java.lang.System.currentTimeMillis();
         assert null != this.nonNullOptionalFields;
-        gridsTable.title = this.nonNullOptionalFields.get(0).getValue();
+        gridsTable.title = this.nonNullOptionalFields.getFirstValue();
         return gridsTable.insert();
     }
 
