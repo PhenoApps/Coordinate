@@ -104,10 +104,9 @@ android.view.View.OnKeyListener
         private boolean exportSeed()
         {
             java.lang.String tray_id = "", person = "", date = "";
-            assert null != org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
             {
                 final java.lang.String values[] =
-                    org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields.values(
+                    org.wheatgenetics.coordinate.activities.Main.this.optionalFieldValues(
                         new java.lang.String[] { "Tray", "Person", "date" });
                 tray_id = values[0]; person = values[1]; date = values[2];
             }
@@ -595,6 +594,12 @@ android.view.View.OnKeyListener
     public static java.lang.String getTag(final int r, final int c)
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
+
+    private java.lang.String[] optionalFieldValues(final java.lang.String names[])
+    {
+        assert null != this.nonNullOptionalFields;
+        return this.nonNullOptionalFields.values(names);
+    }
 
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
