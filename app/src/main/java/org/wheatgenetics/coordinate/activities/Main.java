@@ -600,10 +600,17 @@ android.view.View.OnKeyListener
         catch (final org.json.JSONException e) { this.nonNullOptionalFields = null; }
     }
 
+    private void setOptionalFieldChecked(final int index, final boolean checked)
+    {
+        assert null != this.nonNullOptionalFields;
+        this.nonNullOptionalFields.get(index).setChecked(checked);
+    }
+
     private void addOptionalField(final java.lang.String name, final java.lang.String value)
     {
         assert null != this.nonNullOptionalFields;
         this.nonNullOptionalFields.add(/* name => */ name, /* value => */ value, /* hint => */ "");
+        this.addNewOptionalFields();
     }
 
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
@@ -1965,10 +1972,8 @@ android.view.View.OnKeyListener
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which, final boolean isChecked)
                     {
-                        assert null !=
-                            org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields;
-                        org.wheatgenetics.coordinate.activities.Main.this.nonNullOptionalFields.get(
-                            which).setChecked(isChecked);//TODO: Make into method.
+                        org.wheatgenetics.coordinate.activities.Main.this.setOptionalFieldChecked(
+                            which, isChecked);
                     }
                 })
             .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
@@ -2045,8 +2050,6 @@ android.view.View.OnKeyListener
 
                                 org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
                                     newName, newDefault);
-                                org.wheatgenetics.coordinate.activities.
-                                    Main.this.addNewOptionalFields();
                             }
                         }
                     });
