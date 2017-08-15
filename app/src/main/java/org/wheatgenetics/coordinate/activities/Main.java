@@ -550,14 +550,12 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
-    private java.lang.String templateOptions[];
-
     private org.wheatgenetics.androidlibrary.Dir                  exportDir               ;
     private org.wheatgenetics.coordinate.activities.Main.Exporter exporter          = null;
     private long                                                  mLastExportGridId =   -1;
 
     // region Resources Fields
-    private java.lang.String appNameStringResource, okStringResource;
+    private java.lang.String appNameStringResource, okStringResource, templateOptions[];
     // endregion
     // endregion
 
@@ -768,6 +766,7 @@ android.view.View.OnKeyListener
         this.mainLayout.setVisibility(android.view.View.INVISIBLE);
 
         this.initializeTemplatesTable();
+        this.templateModel.setTitle("");
         {
             final java.lang.String coordinateDirName = "Coordinate",
                 blankHiddenFileName = ".coordinate";
@@ -1877,22 +1876,29 @@ android.view.View.OnKeyListener
       */
     private void initializeTemplatesTable()
     {
+        final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
+            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+        if (defaultTemplateModels.size() > 0)
         {
-            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
-                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-            if (defaultTemplateModels.size() > 0)
+            final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                this.templatesTable();
+            for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
+            defaultTemplateModels)
             {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    this.templatesTable();
-                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
-                defaultTemplateModels)
-                    if (templatesTable.exists(defaultTemplateModel.getType()))
-                        templatesTable.update(defaultTemplateModel);
-                    else
-                        templatesTable.insert(defaultTemplateModel);
+                final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
+                    defaultTemplateModel.getType();
+                if (templatesTable.exists(defaultTemplateType))
+                {
+                    {
+                        final org.wheatgenetics.coordinate.model.TemplateModel
+                            existingTemplateModel = templatesTable.get(defaultTemplateType);
+                        defaultTemplateModel.setId(existingTemplateModel.getId());
+                    }
+                    templatesTable.update(defaultTemplateModel);
+                }
+                else templatesTable.insert(defaultTemplateModel);
             }
         }
-        this.templateModel.setTitle("");
     }
 
     private void inputTemplateNewExtra()

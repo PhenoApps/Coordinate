@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-
 public class TemplateModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 {
