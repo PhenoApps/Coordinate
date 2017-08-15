@@ -572,6 +572,7 @@ android.view.View.OnKeyListener
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
 
+    // region OptionalField Methods
     private java.lang.String[] optionalFieldValues()
     {
         assert null != this.nonNullOptionalFields;
@@ -619,10 +620,11 @@ android.view.View.OnKeyListener
         return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
             this.nonNullOptionalFields);
     }
+    // endregion
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
-        if (null == this.templatesTableInstance)this.templatesTableInstance =
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
     }
@@ -648,18 +650,19 @@ android.view.View.OnKeyListener
 
         {
             final android.content.res.Resources resources = this.getResources();
+
             assert null != resources;
             this.appNameStringResource =
                 resources.getString(org.wheatgenetics.coordinate.R.string.app_name);
             this.okStringResource = resources.getString(org.wheatgenetics.coordinate.R.string.ok);
+
+            this.templateOptions = new java.lang.String[] {
+                resources.getString(org.wheatgenetics.coordinate.R.string.template_load),
+                resources.getString(org.wheatgenetics.coordinate.R.string.template_new )};
         }
 
         this.nonNullOptionalFields =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeInitial();
-
-        this.templateOptions = new java.lang.String[] {
-            this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_load),
-            this.getResources().getString(org.wheatgenetics.coordinate.R.string.template_new )};
 
         {
             final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
@@ -897,9 +900,8 @@ android.view.View.OnKeyListener
     @java.lang.Override
     public void onClick(final android.view.View v)  // v is a cell
     {
-        int              c = -1;
-        int              r = -1;
-        java.lang.Object obj;
+        int              c = -1, r = -1;
+        java.lang.Object obj           ;
 
         assert null != v;
         obj = v.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
@@ -1462,8 +1464,7 @@ android.view.View.OnKeyListener
 
         android.view.View view;
         {
-            final android.view.LayoutInflater layoutInflater =
-                org.wheatgenetics.coordinate.activities.Main.this.getLayoutInflater();  // TODO: Why Main.this and not this?
+            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
             view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new,
                 new android.widget.LinearLayout(this), false);
         }
@@ -1514,7 +1515,7 @@ android.view.View.OnKeyListener
                             return;
                         }
 
-                        if (0 == rows.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getRows())
+                        if (0 == rows.length() || !org.wheatgenetics.coordinate.activities.Main.this.templateModel.rowsIsSpecified())
                         {
                             org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
                                 org.wheatgenetics.coordinate.R.string.no_rows);
@@ -1522,7 +1523,7 @@ android.view.View.OnKeyListener
                             return;
                         }
 
-                        if (0 == cols.length() || -1 == org.wheatgenetics.coordinate.activities.Main.this.templateModel.getCols())
+                        if (0 == cols.length() || !org.wheatgenetics.coordinate.activities.Main.this.templateModel.colsIsSpecified())
                         {
                             org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
                                 org.wheatgenetics.coordinate.R.string.no_cols);
@@ -2211,7 +2212,6 @@ android.view.View.OnKeyListener
                 android.view.View view;
                 {
                     final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                    assert null != layoutInflater;
                     view =
                         layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
                 }
@@ -2422,8 +2422,7 @@ android.view.View.OnKeyListener
     {
         if (null != this.currentCellView)
         {
-            int r = -1;
-            int c = -1;
+            int r = -1, c = -1;
 
             {
                 java.lang.Object obj =
@@ -2536,7 +2535,7 @@ android.view.View.OnKeyListener
         templatesTable.stamp = java.lang.System.currentTimeMillis();  // model
 
         final long templateId = templatesTable.insert();  // database
-        if (0 < templateId)
+        if (templateId > 0)
         {
             // deleteTemplate(this.templateModel); //TODO
 

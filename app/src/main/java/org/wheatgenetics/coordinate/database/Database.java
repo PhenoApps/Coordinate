@@ -14,7 +14,6 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.R
  */
-
 public class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase db = null;
@@ -33,7 +32,7 @@ public class Database extends java.lang.Object
             private       boolean                 createNeeded = false, createSucceeded = false;
             // endregion
 
-            SQLiteOpenHelper(final android.content.Context context)
+            private SQLiteOpenHelper(final android.content.Context context)
             {
                 super(
                     /* context => */ context       ,
@@ -81,10 +80,10 @@ public class Database extends java.lang.Object
                     assert null != statementNodeList;
                     assert null != db               ;
                     {
-                        java.lang.String statement;
-                        for (int i = 0; i < statementNodeList.getLength(); i++)
+                        final int length = statementNodeList.getLength();
+                        for (int i = 0; i < length; i++)
                         {
-                            statement =
+                            final java.lang.String statement =
                                 statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
                             android.util.Log.i(SQLiteOpenHelper.TAG, "statement: " + statement);
                             db.execSQL(statement);
@@ -98,8 +97,8 @@ public class Database extends java.lang.Object
             public void onUpgrade(final android.database.sqlite.SQLiteDatabase db,
             final int oldVersion, final int newVersion)
             {
-                android.util.Log.w(TAG, "Upgrading database from version " + oldVersion +
-                    " to " + newVersion + ", which will destroy all old data");
+                android.util.Log.w(SQLiteOpenHelper.TAG, "Upgrading database from version " +
+                    oldVersion + " to " + newVersion + ", which will destroy all old data");
                 assert null != db;
                 db.execSQL("DROP TABLE IF EXISTS entries");            // TODO: What about templates
                 this.onCreate(db);                                     // TODO:  and grids tables?
@@ -109,7 +108,7 @@ public class Database extends java.lang.Object
             public android.database.sqlite.SQLiteDatabase getReadableDatabase()
             {
                 if (this.createNeeded)
-                    if (this.createSucceeded) return super.getReadableDatabase(); else return null;
+                    return this.createSucceeded ? super.getReadableDatabase() : null;
                 else
                     return super.getReadableDatabase();
             }
@@ -118,7 +117,7 @@ public class Database extends java.lang.Object
             public android.database.sqlite.SQLiteDatabase getWritableDatabase()
             {
                 if (this.createNeeded)
-                    if (this.createSucceeded) return super.getWritableDatabase(); else return null;
+                    return this.createSucceeded ? super.getWritableDatabase() : null;
                 else
                     return super.getWritableDatabase();
             }

@@ -53,6 +53,7 @@ implements java.lang.Cloneable
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
     {
         super();
+
         this.assign(title, rows, cols);
         this.setType(type);
     }
@@ -61,6 +62,7 @@ implements java.lang.Cloneable
     final int code, final int rows, final int cols)
     {
         this(id);
+
         this.assign(title, rows, cols);
         this.setType(code);
     }
@@ -150,11 +152,15 @@ implements java.lang.Cloneable
     public java.lang.String getRowsAsString()
     { return org.wheatgenetics.coordinate.model.PartialTemplateModel.convert(this.getRows()); }
 
+    public boolean rowsIsSpecified() { return this.getRows() >= 0; }
+
 
     public int getCols() { return this.cols; }
 
     public java.lang.String getColsAsString()
     { return org.wheatgenetics.coordinate.model.PartialTemplateModel.convert(this.getCols()); }
+
+    public boolean colsIsSpecified() { return this.getCols() >= 0; }
 
 
     public void assign(final java.lang.String title, final int rows, final int cols)

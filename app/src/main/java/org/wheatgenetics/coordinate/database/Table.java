@@ -12,7 +12,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.Database
  * org.wheatgenetics.coordinate.model.Model
  */
-
 abstract class Table extends java.lang.Object
 {
     static final java.lang.String ID_FIELD_NAME = "_id";                // TODO: Make private later.

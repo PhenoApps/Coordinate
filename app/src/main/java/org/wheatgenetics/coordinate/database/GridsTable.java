@@ -13,7 +13,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.Model
  */
-
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Fields
@@ -45,31 +44,28 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Storage
-    // region Private Constants
+    // region Constants
     private static final java.lang.String TABLE_NAME      = "grids";
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
         TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
     // endregion
 
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.GridModel make(final android.database.Cursor cursor)
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
-        if (null == cursor)
-            return null;
-        else
-            return new org.wheatgenetics.coordinate.model.GridModel(
-                /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others?
-                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-                /* title => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
-                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
-                /* templateId => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
-                /* templateTitle => */ cursor.getString(cursor.getColumnIndex("templateTitle")),
-                /* templateType  => */ cursor.getInt   (cursor.getColumnIndex("templateType" )),
-                /* templateRows  => */ cursor.getInt   (cursor.getColumnIndex("rows"         )),
-                /* templateCols  => */ cursor.getInt   (cursor.getColumnIndex("cols"         )));
+        return null == cursor ? null : new org.wheatgenetics.coordinate.model.GridModel(
+            /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others?
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+            /* title => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
+            /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
+            /* templateId => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
+            /* templateTitle => */ cursor.getString(cursor.getColumnIndex("templateTitle")),
+            /* templateType  => */ cursor.getInt   (cursor.getColumnIndex("templateType" )),
+            /* templateRows  => */ cursor.getInt   (cursor.getColumnIndex("rows"         )),
+            /* templateCols  => */ cursor.getInt   (cursor.getColumnIndex("cols"         )));
     }
 
     @java.lang.Override
@@ -152,9 +148,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     public boolean get(final long id)
     {
         final android.database.Cursor cursor = this.rawQuery(
-            "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, " +
-                "templates._id as templateId, templates.rows, templates.cols from grids, templates " +
-                    "where templates._id = grids.temp and grids." + org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
+            "SELECT grids._id, grids.title as gridTitle, grids.stamp, " +
+                "templates.type as templateType, templates.title as templateTitle, " +
+                "templates._id as templateId, templates.rows, templates.cols from grids, " +
+                "templates " +
+                    "where templates._id = grids.temp and grids." +
+                        org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
         if (null == cursor)
              return false;
         else

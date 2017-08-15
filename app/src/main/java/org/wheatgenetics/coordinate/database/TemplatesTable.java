@@ -14,7 +14,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Fields
@@ -44,7 +43,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "TemplatesTable"                                               );
     }
 
-    // region Private Constants
+    // region Constants
     private static final java.lang.String TABLE_NAME = "templates";
 
     private static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
@@ -57,36 +56,33 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.TemplateModel make(final android.database.Cursor cursor)  // TODO: Make private.
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
-        if (null == cursor)
-            return null;
-        else
-            return new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-                /* title => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME)),
-                /* type => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME)),
-                /* rows => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME)),
-                /* cols => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
-                /* excludeCells => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME)),
-                /* excludeRows => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME)),
-                /* excludeCols => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME)),
-                /* colNumbering => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
-                /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
-                /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
-                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME)));
+        return null == cursor ? null : new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+            /* title => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME)),
+            /* type => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME)),
+            /* rows => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME)),
+            /* cols => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
+            /* excludeCells => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME)),
+            /* excludeRows => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME)),
+            /* excludeCols => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME)),
+            /* colNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
+            /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
+            /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
+            /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME)));
     }
 
     @java.lang.Override
@@ -207,25 +203,26 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         this.sendInfoLogMsg(
             "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
 
-        org.wheatgenetics.coordinate.model.TemplateModels templateModels;
+        org.wheatgenetics.coordinate.model.TemplateModels result;
         {
             final android.database.Cursor cursor = this.orderByQueryAll(/* orderBy => */
                 org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC");
             if (null == cursor)
-                templateModels = null;
+                result = null;
             else
             {
                 if (cursor.getCount() <= 0)
-                    templateModels = null;
+                    result = null;
                 else
                 {
-                    templateModels = new org.wheatgenetics.coordinate.model.TemplateModels();
-                    while (cursor.moveToNext()) templateModels.add(this.make(cursor));
+                    result = new org.wheatgenetics.coordinate.model.TemplateModels();
+                    while (cursor.moveToNext()) result.add(
+                        (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
                 }
                 cursor.close();
             }
         }
-        return templateModels;
+        return result;
     }
 
     public android.database.Cursor loadByOrder()               // TODO: Push to superclass?  Remove?

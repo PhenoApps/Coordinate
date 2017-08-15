@@ -13,7 +13,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.Model
  */
-
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Fields
@@ -40,7 +39,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Storage
-    // region Private Constants
+    // region Constants
     private static final java.lang.String TABLE_NAME = "entries";
     private static final java.lang.String
         GRID_FIELD_NAME  = "grid" , COL_FIELD_NAME   = "col"  , ROW_FIELD_NAME = "row",
@@ -48,24 +47,21 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.EntryModel make(final android.database.Cursor cursor)
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
-        if (null == cursor)
-            return null;
-        else
-            return new org.wheatgenetics.coordinate.model.EntryModel(
-                /* id => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-                /* gridId => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME)),
-                /* row => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME)),
-                /* col => */ cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME)),
-                /* value => */ cursor.getString(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME)),
-                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME)));
+        return null == cursor ? null : new org.wheatgenetics.coordinate.model.EntryModel(
+            /* id => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+            /* gridId => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME)),
+            /* row => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME)),
+            /* col => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME)),
+            /* value => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME)),
+            /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME)));
     }
 
     @java.lang.Override
