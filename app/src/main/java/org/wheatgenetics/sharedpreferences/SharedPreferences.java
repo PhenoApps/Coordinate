@@ -3,19 +3,17 @@ package org.wheatgenetics.sharedpreferences;
 /**
  * Uses:
  * android.support.annotation.NonNull
+ *
  * org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
  */
-
 public class SharedPreferences
 extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
     private static final java.lang.String PERSON = "Person", CURRENT_GRID = "CurrentGrid";
 
     // region Public Methods
-    // region Constructor Public Method
     public SharedPreferences(@android.support.annotation.NonNull
     final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
-    // endregion
 
     // region Person Public Methods
     public java.lang.String getPerson()

@@ -75,6 +75,13 @@ public class Utils extends java.lang.Object
                 }
             });
     }
+
+    public static void confirm(final android.content.Context context, final java.lang.String title,
+    final java.lang.String message, final java.lang.Runnable yesRunnable)
+    {
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            context, title, message, yesRunnable, null);
+    }
     // endregion
 
     public static java.lang.CharSequence formatDate(final long date)
