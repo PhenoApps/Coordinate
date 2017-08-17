@@ -994,13 +994,23 @@ android.view.View.OnKeyListener
     // region Overview
     // createNewGrid()
     //     loadExistingTemplateOrCreateNewTemplate()
+    //         loadExistingTemplate()
+    //         createNewTemplate()
     //     newGridNow()
+    //         deleteGrid(long)
+    //         loadSeedTrayTemplate()
+    //         loadTemplate()
     //     exportGrid()
+    //         createExportFile()
+    //         exporter.execute()
     // deleteGrid()
     //     deleteGrid(long)
     //     loadExistingTemplateOrCreateNewTemplate()
+    //         loadExistingTemplate()
+    //         createNewTemplate()
     // createNewTemplate()
     //     inputTemplateNewExtra()
+    //         ?
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
     //     loadTemplate()
@@ -1059,14 +1069,15 @@ android.view.View.OnKeyListener
             this.templateModel.getType();
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
             this.loadSeedTrayTemplate(this.templatesTable().get(templateType));
-        else if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-            this.loadTemplate(                                      // throws org.json.JSONException
-                org.wheatgenetics.coordinate.activities.Main.MODE_DNA,
-                this.templatesTable().get(templateType)              );
         else
-            // reset options?
-            this.loadTemplate(                                      // throws org.json.JSONException
-                org.wheatgenetics.coordinate.activities.Main.MODE_SAVED, this.templateModel);
+            if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
+                this.loadTemplate(                                  // throws org.json.JSONException
+                    org.wheatgenetics.coordinate.activities.Main.MODE_DNA,
+                    this.templatesTable().get(templateType)              );
+            else
+                // reset options?
+                this.loadTemplate(                                  // throws org.json.JSONException
+                    org.wheatgenetics.coordinate.activities.Main.MODE_SAVED, this.templateModel);
     }
 
     private boolean deleteGrid(final long gridId)
@@ -1090,65 +1101,76 @@ android.view.View.OnKeyListener
 
     private void inputTemplateNewExtra()
     {
-        android.view.View view;
-        {
-            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new_extra,
-                new android.widget.LinearLayout(this), false);
-        }
-
-        assert null != view;
-        final android.widget.Button optionalButton = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
-        final android.widget.Button excludeButton  = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton );
-        final android.widget.Button namingButton   = (android.widget.Button) view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton  );
-
-        assert null != optionalButton;
-        optionalButton.setOnClickListener(new android.view.View.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.view.View v)
-                { org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalFields(); }
-            });
-
-        assert null != excludeButton;
-        excludeButton.setOnClickListener(new android.view.View.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.view.View v)
-                { org.wheatgenetics.coordinate.activities.Main.this.inputExclude(); }
-            });
-
-        assert null != namingButton;
-        namingButton.setOnClickListener(new android.view.View.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.view.View v)
-                { org.wheatgenetics.coordinate.activities.Main.this.inputNaming(); }
-            });
-
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.template_new)
-            .setView(view)
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.cancel();
+        {
+            android.view.View view;
+            {
+                final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+                view = layoutInflater.inflate(
+                    org.wheatgenetics.coordinate.R.layout.template_new_extra,
+                    new android.widget.LinearLayout(this), false);
+            }
 
-                        try
+            {
+                assert null != view;
+                final android.widget.Button optionalButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
+                assert null != optionalButton;
+                optionalButton.setOnClickListener(new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.view.View v)
                         {
-                            org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(
-                                org.wheatgenetics.coordinate.activities.Main.this.MODE_DEFAULT ,
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel);
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.addNewOptionalFields();
                         }
-                        catch (final org.json.JSONException e) {}
+                    });
+            }
+
+            {
+                final android.widget.Button excludeButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton);
+                assert null != excludeButton;
+                excludeButton.setOnClickListener(new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.view.View v)
+                        { org.wheatgenetics.coordinate.activities.Main.this.inputExclude(); }
+                    });
+            }
+
+            {
+                final android.widget.Button namingButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton);
+                assert null != namingButton;
+                namingButton.setOnClickListener(new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.view.View v)
+                        { org.wheatgenetics.coordinate.activities.Main.this.inputNaming(); }
+                    });
+            }
+
+            builder.setTitle(org.wheatgenetics.coordinate.R.string.template_new).setView(view);
+        }
+        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    assert null != dialog;
+                    dialog.cancel();
+
+                    try
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(
+                            org.wheatgenetics.coordinate.activities.Main.MODE_DEFAULT      ,
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel);
                     }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                    catch (final org.json.JSONException e) {}
+                }
+            }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                 org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
 
