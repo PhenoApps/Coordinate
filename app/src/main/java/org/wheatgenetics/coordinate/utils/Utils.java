@@ -27,6 +27,7 @@ public class Utils extends java.lang.Object
             positiveButtonOnClickListener).show();
     }
 
+    // region alert(context, title, message) AlertDialog Methods
     public static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message)
     {
@@ -47,7 +48,9 @@ public class Utils extends java.lang.Object
         assert null != context;
         org.wheatgenetics.coordinate.utils.Utils.alert(context, title, context.getString(message));
     }
+    // endregion
 
+    // region alert(context, title, message, yesRunnable) AlertDialog Methods
     public static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable yesRunnable)
     {
@@ -73,9 +76,10 @@ public class Utils extends java.lang.Object
             context, title, context.getString(message), yesRunnable);
     }
     // endregion
+    // endregion
 
     // region confirm() AlertDialog Methods
-    public static void confirm(final android.content.Context context, final java.lang.String title,
+    private static void confirm(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable yesRunnable,
     final java.lang.Runnable noRunnable)
     {
@@ -101,12 +105,40 @@ public class Utils extends java.lang.Object
             });
     }
 
+    // region confirm(context, title, message, yesRunnable) AlertDialog Methods
     public static void confirm(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.utils.Utils.confirm(
             context, title, message, yesRunnable, null);
     }
+
+    public static void confirm(final android.content.Context context, final java.lang.String title,
+    final int message, final java.lang.Runnable yesRunnable)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            context, title, context.getString(message), yesRunnable);
+    }
+
+    public static void confirm(final android.content.Context context, final int title,
+    final int message, final java.lang.Runnable yesRunnable)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            context, context.getString(title), message, yesRunnable);
+    }
+    // endregion
+
+    // region confirm(context, title, message, yesRunnable, noRunnable) AlertDialog Methods
+    public static void confirm(final android.content.Context context, final java.lang.String title,
+    final int message, final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            context, title, context.getString(message), yesRunnable, noRunnable);
+    }
+    // endregion
     // endregion
     // endregion
 

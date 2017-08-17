@@ -448,13 +448,8 @@ android.view.View.OnKeyListener
                         @java.lang.Override
                         public void run()
                         {
-                            org.wheatgenetics.coordinate.utils.Utils.confirm(
-                                /* context => */ org.wheatgenetics.coordinate.activities.
-                                    Main.Exporter.this.context,
-                                /* title => */ org.wheatgenetics.coordinate.activities.
-                                    Main.this.appNameStringResource,
-                                /* message => */ org.wheatgenetics.coordinate.activities.Main.this.
-                                    getString(org.wheatgenetics.coordinate.R.string.clear_grid),
+                            org.wheatgenetics.coordinate.activities.Main.this.confirm(
+                                /* message => */ org.wheatgenetics.coordinate.R.string.clear_grid,
                                 /* yesRunnable => */ new java.lang.Runnable()
                                 {
                                     @java.lang.Override
@@ -638,7 +633,8 @@ android.view.View.OnKeyListener
         }
     }
 
-    // region alert() Methods
+    // region AlertDialog Methods
+    // region alert() AlertDialog Methods
     private void alert(final int message)
     { org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource, message); }
 
@@ -647,6 +643,19 @@ android.view.View.OnKeyListener
         org.wheatgenetics.coordinate.utils.Utils.alert(
             this, this.appNameStringResource, message, yesRunnable);
     }
+    // endregion
+
+    // region confirm() AlertDialog Methods
+    private void confirm(final int message, final java.lang.Runnable yesRunnable,
+    final java.lang.Runnable noRunnable)
+    {
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            this, this.appNameStringResource, message, yesRunnable, noRunnable);
+    }
+
+    private void confirm(final int title, final int message, final java.lang.Runnable yesRunnable)
+    { org.wheatgenetics.coordinate.utils.Utils.confirm(this, title, message, yesRunnable); }
+    // endregion
     // endregion
 
     // region Overridden Methods
@@ -990,11 +999,9 @@ android.view.View.OnKeyListener
 
     private void resetDatabase()
     {
-        org.wheatgenetics.coordinate.utils.Utils.confirm(
-            /* context => */ this                                                                ,
-            /* title   => */ this.getString(org.wheatgenetics.coordinate.R.string.reset_database),
-            /* message => */
-                this.getString(org.wheatgenetics.coordinate.R.string.reset_database_message),
+        this.confirm(
+            /* title       => */ org.wheatgenetics.coordinate.R.string.reset_database        ,
+            /* message     => */ org.wheatgenetics.coordinate.R.string.reset_database_message,
             /* yesRunnable => */ new java.lang.Runnable()
             {
                 @java.lang.Override
@@ -1492,11 +1499,8 @@ android.view.View.OnKeyListener
             if (this.gridId >= 0 && mLastExportGridId == this.gridId)
                 this.newGridNow();                                  // throws org.json.JSONException
             else
-                org.wheatgenetics.coordinate.utils.Utils.confirm(
-                    /* context => */ this                      ,
-                    /* title   => */ this.appNameStringResource,
-                    /* message => */
-                        this.getString(org.wheatgenetics.coordinate.R.string.new_grid_warning),
+                this.confirm(
+                    /* message     => */ org.wheatgenetics.coordinate.R.string.new_grid_warning,
                     /* yesRunnable => */ new java.lang.Runnable()
                     {
                         @java.lang.Override
@@ -1517,10 +1521,9 @@ android.view.View.OnKeyListener
     private void deleteGrid()
     {
         if (0 != this.gridId) org.wheatgenetics.coordinate.utils.Utils.confirm(
-            /* context => */ this                      ,
-            /* title   => */ this.appNameStringResource,
-            /* message => */
-                this.getString(org.wheatgenetics.coordinate.R.string.delete_grid_warning),
+            /* context     => */ this                                                     ,
+            /* title       => */ this.appNameStringResource                               ,
+            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_grid_warning,
             /* yesRunnable => */ new java.lang.Runnable()
             {
                 @java.lang.Override
@@ -1693,34 +1696,32 @@ android.view.View.OnKeyListener
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                             templateModels.get(which);
-                        if (null != templateModel) org.wheatgenetics.coordinate.utils.Utils.confirm(
-                            /* context => */ org.wheatgenetics.coordinate.activities.Main.this,
-                            /* title   => */
-                                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                    org.wheatgenetics.coordinate.R.string.delete_template),
-                            /* message => */
-                                org.wheatgenetics.coordinate.activities.Main.this.getString(
-                                    org.wheatgenetics.coordinate.R.string.delete_template_warning),
-                            /* yesRunnable => */ new java.lang.Runnable()
-                            {
-                                @java.lang.Override
-                                public void run()
+                        if (null != templateModel)
+                            org.wheatgenetics.coordinate.activities.Main.this.confirm(
+                                /* title => */
+                                    org.wheatgenetics.coordinate.R.string.delete_template,
+                                /* message => */
+                                    org.wheatgenetics.coordinate.R.string.delete_template_warning,
+                                /* yesRunnable => */ new java.lang.Runnable()
                                 {
-                                    if (org.wheatgenetics.coordinate.activities.
-                                    Main.this.deleteTemplate(templateModel))
+                                    @java.lang.Override
+                                    public void run()
                                     {
-                                        org.wheatgenetics.coordinate.activities.Main.this.
-                                            showLongToast(org.wheatgenetics.coordinate.
-                                                R.string.template_deleted);
-                                        org.wheatgenetics.coordinate.activities.
-                                            Main.this.loadExistingTemplateOrCreateNewTemplate();
+                                        if (org.wheatgenetics.coordinate.activities.
+                                        Main.this.deleteTemplate(templateModel))
+                                        {
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                showLongToast(org.wheatgenetics.coordinate.
+                                                    R.string.template_deleted);
+                                            org.wheatgenetics.coordinate.activities.
+                                                Main.this.loadExistingTemplateOrCreateNewTemplate();
+                                        }
+                                        else
+                                            org.wheatgenetics.coordinate.activities.Main.this.
+                                                showLongToast(org.wheatgenetics.coordinate.
+                                                    R.string.template_not_deleted);
                                     }
-                                    else
-                                        org.wheatgenetics.coordinate.activities.Main.this.
-                                            showLongToast(org.wheatgenetics.coordinate.
-                                                R.string.template_not_deleted);
-                                }
-                            });
+                                });
                     }
                 }).show();
     }
