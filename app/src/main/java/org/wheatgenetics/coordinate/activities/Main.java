@@ -1011,9 +1011,10 @@ android.view.View.OnKeyListener
     // createNewTemplate()
     //     inputTemplateNewExtra()
     //         addNewOptionalFields()
-    //             o setOptionalFieldChecked()
     //             addNewOptionalField()
     //         inputExclude()
+    //             inputExcludeBoxes()
+    //             o inputExcludeInput()
     //         inputNaming()
     //         loadTemplate()
     // loadExistingTemplate()
@@ -1110,6 +1111,61 @@ android.view.View.OnKeyListener
         assert null != alertDialog;
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    private void inputExcludeBoxes(final int type)
+    {
+        assert null != this.templateModel;
+        final int total = 0 == type ? this.templateModel.getRows() : this.templateModel.getCols();
+        final boolean           selections[] = new boolean         [total];
+        final java.lang.String  items     [] = new java.lang.String[total];
+
+        for (int i = 0; i < total; i++)
+        {
+            {
+                final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.row :
+                    org.wheatgenetics.coordinate.R.string.col;
+                items[i] = java.lang.String.format("%s %d", this.getString(resId), i + 1);
+            }
+            {
+                final int rowOrCol = i + 1;
+                selections[i] = 0 == type ?
+                    this.templateModel.isExcludedRow(rowOrCol) :
+                    this.templateModel.isExcludedCol(rowOrCol) ;
+            }
+        }
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        {
+            final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.rows :
+                org.wheatgenetics.coordinate.R.string.cols;
+            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
+                " - " + this.getString(resId));
+        }
+        builder.setMultiChoiceItems(items, selections,
+            new android.content.DialogInterface.OnMultiChoiceClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which,
+                final boolean isChecked) { selections[which] = isChecked; }
+            }).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        // get choices
+                        for (int i = 0; i < total; i++) if (selections[i])
+                            if (0 == type)
+                                org.wheatgenetics.coordinate.activities.
+                                    Main.this.templateModel.addExcludeRow(i + 1);
+                            else
+                                org.wheatgenetics.coordinate.activities.
+                                    Main.this.templateModel.addExcludeCol(i + 1);
+                    }
+                }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
     // endregion
 
@@ -2555,64 +2611,6 @@ android.view.View.OnKeyListener
                 else templatesTable.insert(defaultTemplateModel);
             }
         }
-    }
-
-    private void inputExcludeBoxes(final int type)
-    {
-        assert null != this.templateModel;
-        final int total = 0 == type ? this.templateModel.getRows() : this.templateModel.getCols();
-        final boolean           selections[] = new boolean         [total];
-        final java.lang.String  items     [] = new java.lang.String[total];
-
-        for (int i = 0; i < total; i++)
-        {
-            {
-                final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.row :
-                    org.wheatgenetics.coordinate.R.string.col;
-                items[i] = java.lang.String.format("%s %d", this.getString(resId), i + 1);
-            }
-            {
-                final int rowOrCol = i + 1;
-                selections[i] = 0 == type ?
-                    this.templateModel.isExcludedRow(rowOrCol) :
-                    this.templateModel.isExcludedCol(rowOrCol) ;
-            }
-        }
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        {
-            final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.rows :
-                org.wheatgenetics.coordinate.R.string.cols;
-            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
-                " - " + this.getString(resId));
-        }
-        builder.setMultiChoiceItems(items, selections,
-            new android.content.DialogInterface.OnMultiChoiceClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which,
-                final boolean isChecked) { selections[which] = isChecked; }
-            });
-
-        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    // get choices
-                    for (int i = 0; i < total; i++) if (selections[i])
-                        if (0 == type)
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.addExcludeRow(i + 1);
-                        else
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.addExcludeCol(i + 1);
-                }
-            });
-
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-        builder.show();
     }
 
     private void inputExcludeInput()
