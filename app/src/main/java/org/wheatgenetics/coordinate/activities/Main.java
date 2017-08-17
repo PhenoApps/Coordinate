@@ -1032,7 +1032,7 @@ android.view.View.OnKeyListener
     //         setCellState()
     //         isExcludedCell()
     //         saveExcludedCell()
-    //         o showTemplateUI()
+    //         showTemplateUI()
     // exportGrid()
     //     createExportFile()
     //     exporter.execute()
@@ -1043,7 +1043,7 @@ android.view.View.OnKeyListener
     // region Subsubsubaction Drawer Methods: not done
     // endregion
 
-    // region Subsubaction Drawer Methods: not done
+    // region Subsubaction Drawer Methods
     private void addNewOptionalFields()
     {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -1258,6 +1258,20 @@ android.view.View.OnKeyListener
             }
         }
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
+    }
+
+    private void showTemplateUI()
+    {
+        assert null != this.templateModel        ;
+        assert null != this.templateTitleTextView;
+        this.templateTitleTextView.setText(this.templateModel.getTitle());
+
+        assert null != this.mainLayout;
+        this.mainLayout.setVisibility(android.view.View.VISIBLE);
+
+        assert null != this.cellIDEditText;
+        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+            this.getValue(this.gridId, 1, 1)));
     }
     // endregion
 
@@ -2902,19 +2916,5 @@ android.view.View.OnKeyListener
             this.populateTemplate();
         }
         else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
-    }
-
-    private void showTemplateUI()
-    {
-        assert null != this.templateModel        ;
-        assert null != this.templateTitleTextView;
-        this.templateTitleTextView.setText(this.templateModel.getTitle());
-
-        assert null != this.mainLayout;
-        this.mainLayout.setVisibility(android.view.View.VISIBLE);
-
-        assert null != this.cellIDEditText;
-        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getValue(this.gridId, 1, 1)));
     }
 }
