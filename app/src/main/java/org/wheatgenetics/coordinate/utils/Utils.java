@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.utils;
 public class Utils extends java.lang.Object
 {
     // region AlertDialog Methods
+    // region alert() AlertDialog Methods
     private static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.String positiveButtonText,
     final android.content.DialogInterface.OnClickListener positiveButtonOnClickListener,
@@ -33,6 +34,20 @@ public class Utils extends java.lang.Object
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(), null);
     }
 
+    public static void alert(final android.content.Context context, final int title,
+    final java.lang.String message)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.alert(context, context.getString(title), message);
+    }
+
+    public static void alert(final android.content.Context context, final java.lang.String title,
+    final int message)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.alert(context, title, context.getString(message));
+    }
+
     public static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable yesRunnable)
     {
@@ -50,6 +65,16 @@ public class Utils extends java.lang.Object
             null);
     }
 
+    public static void alert(final android.content.Context context, final java.lang.String title,
+    final int message, final java.lang.Runnable yesRunnable)
+    {
+        assert null != context;
+        org.wheatgenetics.coordinate.utils.Utils.alert(
+            context, title, context.getString(message), yesRunnable);
+    }
+    // endregion
+
+    // region confirm() AlertDialog Methods
     public static void confirm(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.Runnable yesRunnable,
     final java.lang.Runnable noRunnable)
@@ -82,6 +107,7 @@ public class Utils extends java.lang.Object
         org.wheatgenetics.coordinate.utils.Utils.confirm(
             context, title, message, yesRunnable, null);
     }
+    // endregion
     // endregion
 
     public static java.lang.CharSequence formatDate(final long date)
