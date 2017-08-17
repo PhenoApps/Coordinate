@@ -1026,8 +1026,8 @@ android.view.View.OnKeyListener
     //     importOptionalFields()
     //     populateTemplate()
     //         getNextFreeCell()
-    //         o isExcludedRow()
-    //         o isExcludedCol()
+    //         isExcludedRow()
+    //         isExcludedCol()
     //         o getValue()
     //         o setCellState()
     //         o isExcludedCell()
@@ -1187,6 +1187,18 @@ android.view.View.OnKeyListener
             this.mCurCol = nextFreeCell.x;
         }
         return true;
+    }
+
+    private boolean isExcludedRow(final int r)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedRow(r);
+    }
+
+    private boolean isExcludedCol(final int c)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedCol(c);
     }
     // endregion
 
@@ -2618,18 +2630,6 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel;
         return this.templateModel.isExcludedCell(c, r);
-    }
-
-    private boolean isExcludedRow(final int r)
-    {
-        assert null != this.templateModel;
-        return this.templateModel.isExcludedRow(r);
-    }
-
-    private boolean isExcludedCol(final int c)
-    {
-        assert null != this.templateModel;
-        return this.templateModel.isExcludedCol(c);
     }
 
     private void saveData()
