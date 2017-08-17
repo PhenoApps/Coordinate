@@ -1031,7 +1031,7 @@ android.view.View.OnKeyListener
     //         getValue()
     //         setCellState()
     //         isExcludedCell()
-    //         o saveExcludedCell()
+    //         saveExcludedCell()
     //         o showTemplateUI()
     // exportGrid()
     //     createExportFile()
@@ -1238,6 +1238,26 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel;
         return this.templateModel.isExcludedCell(c, r);
+    }
+
+    private void saveExcludedCell(final int r, final int c)
+    {
+        boolean success;
+        {
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+            entriesTable.value = "exclude";
+            if (entriesTable.getByGrid(this.gridId, r, c))
+                success = entriesTable.update();
+            else
+            {
+                entriesTable.grid = this.gridId;
+                entriesTable.row  = r          ;
+                entriesTable.col  = c          ;
+                success = entriesTable.insert() > 0;
+            }
+        }
+        if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
     }
     // endregion
 
@@ -2896,25 +2916,5 @@ android.view.View.OnKeyListener
         assert null != this.cellIDEditText;
         this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
             this.getValue(this.gridId, 1, 1)));
-    }
-
-    private void saveExcludedCell(final int r, final int c)
-    {
-        boolean success;
-        {
-            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
-            entriesTable.value = "exclude";
-            if (entriesTable.getByGrid(this.gridId, r, c))
-                success = entriesTable.update();
-            else
-            {
-                entriesTable.grid = this.gridId;
-                entriesTable.row  = r          ;
-                entriesTable.col  = c          ;
-                success = entriesTable.insert() > 0;
-            }
-        }
-        if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
     }
 }
