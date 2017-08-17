@@ -603,18 +603,6 @@ android.view.View.OnKeyListener
         return this.templatesTableInstance;
     }
 
-    private java.io.File createExportFile()
-    {
-        assert null != this.templateModel;
-        assert null != this.exportDir    ;
-        try { return this.exportDir.createNewFile(this.templateModel.getTitle()); }
-        catch (final java.io.IOException e)
-        {
-            org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
-            return null;
-        }
-    }
-
     // region AlertDialog Methods
     // region alert() AlertDialog Methods
     private void alert(final int message)
@@ -1034,7 +1022,8 @@ android.view.View.OnKeyListener
     //     importOptionalFields()
     //     populateTemplate()
     // exportGrid()
-    //
+    //     createExportFile()
+    //     exporter.execute()
     // showAboutAlertDialog()
     //
     // endregion
@@ -1647,6 +1636,18 @@ android.view.View.OnKeyListener
 
         this.showTemplateUI();
     }
+
+    private java.io.File createExportFile()
+    {
+        assert null != this.templateModel;
+        assert null != this.exportDir    ;
+        try { return this.exportDir.createNewFile(this.templateModel.getTitle()); }
+        catch (final java.io.IOException e)
+        {
+            org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
+            return null;
+        }
+    }
     // endregion
 
     // region Action Drawer Methods
@@ -2019,8 +2020,7 @@ android.view.View.OnKeyListener
             fileNameEditText.setText(this.nonNullOptionalFields.getDatedFirstValue());
 
             builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.filename_set))
-                .setView(view)
-                .setPositiveButton(this.okStringResource,
+                .setView(view).setPositiveButton(this.okStringResource,
                     new android.content.DialogInterface.OnClickListener()
                     {
                         @java.lang.Override
@@ -2045,15 +2045,17 @@ android.view.View.OnKeyListener
                                         new org.wheatgenetics.coordinate.activities.Main.Exporter(
                                             /* context => */
                                                 org.wheatgenetics.coordinate.activities.Main.this,
-                                            /* progressDialogTitle => */ org.wheatgenetics.coordinate.
-                                                activities.Main.this.getString(org.wheatgenetics.
-                                                    coordinate.R.string.exporting_title),
-                                            /* progressDialogMessage => */ org.wheatgenetics.coordinate.
-                                                activities.Main.this.getString(org.wheatgenetics.
-                                                    coordinate.R.string.exporting_body),
+                                            /* progressDialogTitle => */ org.wheatgenetics.
+                                                coordinate.activities.Main.this.getString(
+                                                    org.wheatgenetics.coordinate.
+                                                        R.string.exporting_title),
+                                            /* progressDialogMessage => */ org.wheatgenetics.
+                                                coordinate.activities.Main.this.getString(
+                                                    org.wheatgenetics.coordinate.
+                                                        R.string.exporting_body),
                                             /* templateId => */ org.wheatgenetics.coordinate.
                                                 activities.Main.this.templateModel.getId(),
-                                            /* exportFileName => */ fileName              ,
+                                            /* exportFileName => */ fileName                    ,
                                             /* absolutePath   => */ exportFile.getAbsolutePath());
                                 }
                                 org.wheatgenetics.coordinate.activities.Main.this.exporter.execute();
