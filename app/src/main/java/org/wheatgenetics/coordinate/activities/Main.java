@@ -1030,7 +1030,7 @@ android.view.View.OnKeyListener
     //         isExcludedCol()
     //         getValue()
     //         setCellState()
-    //         o isExcludedCell()
+    //         isExcludedCell()
     //         o saveExcludedCell()
     //         o showTemplateUI()
     // exportGrid()
@@ -1232,6 +1232,12 @@ android.view.View.OnKeyListener
 
         assert null != cell;
         cell.setBackgroundResource(backgroundResourceId);
+    }
+
+    private boolean isExcludedCell(final int r, final int c)
+    {
+        assert null != this.templateModel;
+        return this.templateModel.isExcludedCell(c, r);
     }
     // endregion
 
@@ -2657,12 +2663,6 @@ android.view.View.OnKeyListener
             this.populateTemplate();
         }
         else this.alert(org.wheatgenetics.coordinate.R.string.import_grid_failed);
-    }
-
-    private boolean isExcludedCell(final int r, final int c)
-    {
-        assert null != this.templateModel;
-        return this.templateModel.isExcludedCell(c, r);
     }
 
     private void saveData()
