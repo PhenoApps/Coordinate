@@ -1010,7 +1010,10 @@ android.view.View.OnKeyListener
     //         createNewTemplate()
     // createNewTemplate()
     //     inputTemplateNewExtra()
-    //         ?
+    //         addNewOptionalFields()
+    //         ()
+    //         ()
+    //         ()
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
     //     loadTemplate()
@@ -1028,6 +1031,42 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Subsubaction Drawer Methods: not done
+    private void addNewOptionalFields()
+    {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        assert null != this.nonNullOptionalFields;
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
+            .setMultiChoiceItems(this.nonNullOptionalFields.names(),
+                this.nonNullOptionalFields.checks(),
+                new android.content.DialogInterface.OnMultiChoiceClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which, final boolean isChecked)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.this.setOptionalFieldChecked(
+                            which, isChecked);
+                    }
+                })
+            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert null != dialog;
+                        dialog.cancel();
+                        org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalField(
+                            "", "");
+                    }
+                })
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+    }
+
     private void tempLoad(final int mode) throws org.json.JSONException
     {
         if (org.wheatgenetics.coordinate.activities.Main.MODE_DNA == mode)
@@ -2250,42 +2289,6 @@ android.view.View.OnKeyListener
                 else templatesTable.insert(defaultTemplateModel);
             }
         }
-    }
-
-    private void addNewOptionalFields()
-    {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        assert null != this.nonNullOptionalFields;
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
-            .setMultiChoiceItems(this.nonNullOptionalFields.names(),
-                this.nonNullOptionalFields.checks(),
-                new android.content.DialogInterface.OnMultiChoiceClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which, final boolean isChecked)
-                    {
-                        org.wheatgenetics.coordinate.activities.Main.this.setOptionalFieldChecked(
-                            which, isChecked);
-                    }
-                })
-            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        assert null != dialog;
-                        dialog.cancel();
-                        org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalField(
-                            "", "");
-                    }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
 
     private void addNewOptionalField(final java.lang.String oldName,
