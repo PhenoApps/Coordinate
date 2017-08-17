@@ -1012,7 +1012,7 @@ android.view.View.OnKeyListener
     //     inputTemplateNewExtra()
     //         addNewOptionalFields()
     //         inputExclude()
-    //         ()
+    //         inputNaming()
     //         ()
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
@@ -1098,6 +1098,59 @@ android.view.View.OnKeyListener
         builder.setTitle(org.wheatgenetics.coordinate.R.string.exclude_title).setNegativeButton(
             org.wheatgenetics.coordinate.R.string.cancel                      ,
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+    }
+
+    private void inputNaming()
+    {
+        android.app.AlertDialog alertDialog;
+        {
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            builder.setTitle(org.wheatgenetics.coordinate.R.string.naming).setCancelable(false)
+                .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+            {
+                android.view.View view;
+                {
+                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+                    view =
+                        layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
+                }
+
+                assert null != view;
+                final android.widget.Spinner rowSpinner = (android.widget.Spinner)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
+                final android.widget.Spinner colSpinner = (android.widget.Spinner)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+
+                assert null != this.templateModel;
+                assert null != rowSpinner        ;
+                assert null != colSpinner        ;
+                rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+                colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+
+                builder.setView(view).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                    new android.content.DialogInterface.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.content.DialogInterface dialog,
+                        final int which)
+                        {
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
+                                setRowNumbering(rowSpinner.getSelectedItemPosition() == 0);
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
+                                setColNumbering(colSpinner.getSelectedItemPosition() == 0);
+
+                            assert null != dialog;
+                            dialog.cancel();
+                        }
+                    });
+            }
+            alertDialog = builder.create();
+        }
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     private void tempLoad(final int mode) throws org.json.JSONException
@@ -2498,60 +2551,6 @@ android.view.View.OnKeyListener
                 });
 
         final android.app.AlertDialog alertDialog = builder.create();
-        assert null != alertDialog;
-        alertDialog.setCancelable(false);
-        alertDialog.show();
-    }
-
-    private void inputNaming()
-    {
-        android.app.AlertDialog alertDialog;
-        {
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.naming));
-            {
-                android.view.View view;
-                {
-                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                    view =
-                        layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
-                }
-
-                assert null != view;
-                final android.widget.Spinner rowSpinner = (android.widget.Spinner)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-                final android.widget.Spinner colSpinner = (android.widget.Spinner)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
-
-                assert null != this.templateModel;
-                assert null != rowSpinner        ;
-                assert null != colSpinner        ;
-                rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
-                colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
-
-                builder.setView(view).setCancelable(false).setNegativeButton(
-                    org.wheatgenetics.coordinate.R.string.cancel                      ,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-                builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
-                                setRowNumbering(rowSpinner.getSelectedItemPosition() == 0);
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
-                                setColNumbering(colSpinner.getSelectedItemPosition() == 0);
-
-                            assert null != dialog;
-                            dialog.cancel();
-                        }
-                    });
-            }
-            alertDialog = builder.create();
-        }
         assert null != alertDialog;
         alertDialog.setCancelable(false);
         alertDialog.show();
