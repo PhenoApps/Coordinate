@@ -575,16 +575,6 @@ android.view.View.OnKeyListener
         return this.nonNullOptionalFields.names();
     }
 
-    private void importOptionalFields(final java.lang.String json)
-    {
-        try
-        {
-            this.nonNullOptionalFields = new org.wheatgenetics.coordinate.
-                optionalField.NonNullOptionalFields(json);          // throws org.json.JSONException
-        }
-        catch (final org.json.JSONException e) { this.nonNullOptionalFields = null; }
-    }
-
     private void setOptionalFieldChecked(final int index, final boolean checked)
     {
         assert null != this.nonNullOptionalFields;
@@ -1495,6 +1485,167 @@ android.view.View.OnKeyListener
         }
 
         return templatesTable.delete(templateModel);  // database
+    }
+
+    private void importOptionalFields(final java.lang.String json)
+    {
+        try
+        {
+            this.nonNullOptionalFields = new org.wheatgenetics.coordinate.
+                optionalField.NonNullOptionalFields(json);          // throws org.json.JSONException
+        }
+        catch (final org.json.JSONException e) { this.nonNullOptionalFields = null; }
+    }
+
+    private void populateTemplate()
+    {
+        this.mCurRow = 1;
+        this.mCurCol = 1;
+
+        this.getNextFreeCell();
+
+        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+
+        assert null != this.optionalFieldLayout;
+        this.optionalFieldLayout.removeAllViews();
+
+        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+            checkedOptionalFields = this.makeCheckedOptionalFields();
+        boolean first = true;
+        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+        checkedOptionalFields)
+        {
+            final android.view.View view = layoutInflater.inflate(
+                org.wheatgenetics.coordinate.R.layout.optional_line,
+                new android.widget.LinearLayout(this), false);
+            {
+                assert null != view;
+                final android.widget.TextView fieldText = (android.widget.TextView)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldText);
+                assert null != fieldText;
+                fieldText.setText(optionalField.getName());
+            }
+            {
+                final android.widget.TextView valueText = (android.widget.TextView)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
+                assert null != valueText;
+                if (first)
+                {
+                    valueText.setText(this.gridTitle);
+                    first = false;
+                }
+                else valueText.setText(optionalField.getValue());
+            }
+            this.optionalFieldLayout.addView(view);
+        }
+        this.gridTableLayout.removeAllViews();
+
+        // header
+        @android.annotation.SuppressLint("InflateParams")
+        final android.widget.TableRow hrow = (android.widget.TableRow)
+            layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
+        int chcol = 0;
+        assert null != this.templateModel;
+        assert null != hrow              ;
+        for (int c = 0; c < this.templateModel.getCols() + 1; c++)
+        {
+            @android.annotation.SuppressLint("InflateParams")
+            final android.widget.LinearLayout cell_top = (android.widget.LinearLayout)
+                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_top, null);
+            assert null != cell_top;
+            final android.widget.TextView cell_txt = (android.widget.TextView)
+                cell_top.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+
+            if (0 == c)
+                cell_txt.setText("");
+            else
+            {
+                cell_txt.setText("" + (this.templateModel.getColNumbering() ? c :
+                    java.lang.Character.toString((char) ('A' + chcol)))); // Row
+                chcol++;
+                if (26 <= chcol) chcol = 0;
+            }
+            hrow.addView(cell_top);
+        }
+        this.gridTableLayout.addView(hrow);
+
+        // body
+        int chrow = 0;
+        for (int r = 1; r < this.templateModel.getRows() + 1; r++)
+        {
+            @android.annotation.SuppressLint("InflateParams")
+            final android.widget.TableRow brow = (android.widget.TableRow)
+                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
+
+            final boolean excludedRow = this.isExcludedRow(r);
+
+            for (int c = 0; c < this.templateModel.getCols() + 1; c++)
+            {
+                final boolean excludedCol = this.isExcludedCol(c);
+
+                @android.annotation.SuppressLint("InflateParams")
+                final android.widget.LinearLayout cell_box = (android.widget.LinearLayout)
+                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_box, null);
+                assert null != cell_box;
+                final android.widget.TextView cell_cnt = (android.widget.TextView)
+                    cell_box.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+
+                @android.annotation.SuppressLint("InflateParams")
+                final android.widget.LinearLayout cell_left = (android.widget.LinearLayout)
+                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_left,
+                        null);
+                assert null != cell_left;
+                final android.widget.TextView cell_num = (android.widget.TextView)
+                    cell_left.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
+
+                assert null != cell_num;
+                assert null != brow    ;
+                if (0 == c)
+                {
+                    cell_num.setText("" + (this.templateModel.getRowNumbering() ? r :
+                        java.lang.Character.toString((char) ('A' + chrow)))); // Row
+                    chrow++;
+                    if (26 <= chrow) chrow = 0;
+
+                    brow.addView(cell_left);
+                }
+                else
+                {
+                    final java.lang.String value = this.getValue(this.gridId, r, c);
+                    this.setCellState(cell_cnt, STATE_NORMAL);
+
+                    if (null != value && 0 != value.trim().length())
+                        this.setCellState(cell_cnt, STATE_DONE);
+
+                    if (r == mCurRow && c == mCurCol)
+                    {
+                        this.setCellState(cell_cnt, STATE_ACTIVE);
+                        this.currentCellView = cell_cnt;
+                    }
+
+                    if (excludedRow || excludedCol || this.isExcludedCell(r, c))
+                    {
+                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.saveExcludedCell(r, c);
+                    }
+
+                    if (null != value && value.equals("exclude"))
+                    {
+                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.templateModel.addExcludedCell(c, r);
+                    }
+
+                    cell_cnt.setOnClickListener(this);
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.activities.Main.getTag(r, c));
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_col, c);
+                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_row, r);
+                    brow.addView(cell_box);
+                }
+            }
+            this.gridTableLayout.addView(brow);
+        }
+
+        this.showTemplateUI();
     }
     // endregion
 
@@ -2668,156 +2819,6 @@ android.view.View.OnKeyListener
             this.mCurCol = nextFreeCell.x;
         }
         return true;
-    }
-
-    private void populateTemplate()
-    {
-        this.mCurRow = 1;
-        this.mCurCol = 1;
-
-        this.getNextFreeCell();
-
-        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-
-        assert null != this.optionalFieldLayout;
-        this.optionalFieldLayout.removeAllViews();
-
-        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-            checkedOptionalFields = this.makeCheckedOptionalFields();
-        boolean first = true;
-        for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
-        checkedOptionalFields)
-        {
-            final android.view.View view = layoutInflater.inflate(
-                org.wheatgenetics.coordinate.R.layout.optional_line,
-                new android.widget.LinearLayout(this), false);
-            {
-                assert null != view;
-                final android.widget.TextView fieldText = (android.widget.TextView)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldText);
-                assert null != fieldText;
-                fieldText.setText(optionalField.getName());
-            }
-            {
-                final android.widget.TextView valueText = (android.widget.TextView)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
-                assert null != valueText;
-                if (first)
-                {
-                    valueText.setText(this.gridTitle);
-                    first = false;
-                }
-                else valueText.setText(optionalField.getValue());
-            }
-            this.optionalFieldLayout.addView(view);
-        }
-        this.gridTableLayout.removeAllViews();
-
-        // header
-        @android.annotation.SuppressLint("InflateParams")
-        final android.widget.TableRow hrow = (android.widget.TableRow)
-            layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
-        int chcol = 0;
-        assert null != this.templateModel;
-        assert null != hrow              ;
-        for (int c = 0; c < this.templateModel.getCols() + 1; c++)
-        {
-            @android.annotation.SuppressLint("InflateParams")
-            final android.widget.LinearLayout cell_top = (android.widget.LinearLayout)
-                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_top, null);
-            assert null != cell_top;
-            final android.widget.TextView cell_txt = (android.widget.TextView)
-                cell_top.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
-
-            if (0 == c)
-                cell_txt.setText("");
-            else
-            {
-                cell_txt.setText("" + (this.templateModel.getColNumbering() ? c :
-                    java.lang.Character.toString((char) ('A' + chcol)))); // Row
-                chcol++;
-                if (26 <= chcol) chcol = 0;
-            }
-            hrow.addView(cell_top);
-        }
-        this.gridTableLayout.addView(hrow);
-
-        // body
-        int chrow = 0;
-        for (int r = 1; r < this.templateModel.getRows() + 1; r++)
-        {
-            @android.annotation.SuppressLint("InflateParams")
-            final android.widget.TableRow brow = (android.widget.TableRow)
-                layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_row, null);
-
-            final boolean excludedRow = this.isExcludedRow(r);
-
-            for (int c = 0; c < this.templateModel.getCols() + 1; c++)
-            {
-                final boolean excludedCol = this.isExcludedCol(c);
-
-                @android.annotation.SuppressLint("InflateParams")
-                final android.widget.LinearLayout cell_box = (android.widget.LinearLayout)
-                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_box, null);
-                assert null != cell_box;
-                final android.widget.TextView cell_cnt = (android.widget.TextView)
-                    cell_box.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
-
-                @android.annotation.SuppressLint("InflateParams")
-                final android.widget.LinearLayout cell_left = (android.widget.LinearLayout)
-                    layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.table_cell_left, null);
-                assert null != cell_left;
-                final android.widget.TextView cell_num = (android.widget.TextView)
-                    cell_left.findViewById(org.wheatgenetics.coordinate.R.id.dataCell);
-
-                assert null != cell_num;
-                assert null != brow    ;
-                if (0 == c)
-                {
-                    cell_num.setText("" + (this.templateModel.getRowNumbering() ? r :
-                        java.lang.Character.toString((char) ('A' + chrow)))); // Row
-                    chrow++;
-                    if (26 <= chrow) chrow = 0;
-
-                    brow.addView(cell_left);
-                }
-                else
-                {
-                    final java.lang.String value = this.getValue(this.gridId, r, c);
-                    this.setCellState(cell_cnt, STATE_NORMAL);
-
-                    if (null != value && 0 != value.trim().length())
-                        this.setCellState(cell_cnt, STATE_DONE);
-
-                    if (r == mCurRow && c == mCurCol)
-                    {
-                        this.setCellState(cell_cnt, STATE_ACTIVE);
-                        this.currentCellView = cell_cnt;
-                    }
-
-                    if (excludedRow || excludedCol || this.isExcludedCell(r, c))
-                    {
-                        this.setCellState(cell_cnt, STATE_INACTIVE);
-                        this.saveExcludedCell(r, c);
-                    }
-
-                    if (null != value && value.equals("exclude"))
-                    {
-                        this.setCellState(cell_cnt, STATE_INACTIVE);
-                        this.templateModel.addExcludedCell(c, r);
-                    }
-
-                    cell_cnt.setOnClickListener(this);
-                    cell_cnt.setTag(org.wheatgenetics.coordinate.activities.Main.getTag(r, c));
-                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_col, c);
-                    cell_cnt.setTag(org.wheatgenetics.coordinate.R.string.cell_row, r);
-                    brow.addView(cell_box);
-                }
-            }
-            this.gridTableLayout.addView(brow);
-        }
-
-        this.showTemplateUI();
     }
 
     private void saveExcludedCell(final int r, final int c)
