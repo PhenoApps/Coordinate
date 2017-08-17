@@ -971,17 +971,6 @@ android.view.View.OnKeyListener
     }
     // endregion
 
-    private void showChangeLog()
-    {
-        if (null == this.changeLogAlertDialog)
-            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
-                /* context                => */ this,
-                /* changeLogRawResourceId => */
-                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
-        try                                 { this.changeLogAlertDialog.show()       ; }
-        catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
-    }
-
     private void resetDatabase()
     {
         this.confirm(
@@ -1025,7 +1014,7 @@ android.view.View.OnKeyListener
     //     createExportFile()
     //     exporter.execute()
     // showAboutAlertDialog()
-    //
+    //     showChangeLog()
     // endregion
 
     // region Subsubaction Drawer Methods: not done
@@ -1041,7 +1030,7 @@ android.view.View.OnKeyListener
     }
     // endregion
 
-    // region Subaction Drawer Methods: not done
+    // region Subaction Drawer Methods
     private void loadExistingTemplateOrCreateNewTemplate()
     {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -1647,6 +1636,17 @@ android.view.View.OnKeyListener
             org.wheatgenetics.coordinate.activities.Main.sendErrorLogMsg(e);
             return null;
         }
+    }
+
+    private void showChangeLog()
+    {
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* context                => */ this,
+                /* changeLogRawResourceId => */
+                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
+        try                                 { this.changeLogAlertDialog.show()       ; }
+        catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
     }
     // endregion
 
