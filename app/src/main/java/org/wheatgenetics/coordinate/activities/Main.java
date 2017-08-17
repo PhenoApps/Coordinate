@@ -499,14 +499,10 @@ android.view.View.OnKeyListener
                     });
             }
             else
-            {
-                org.wheatgenetics.coordinate.utils.Utils.alert(
-                    /* context => */ this.context                                ,
-                    /* title   => */ org.wheatgenetics.coordinate.R.string.export,
-                    /* message => */ org.wheatgenetics.javalib.Utils.replaceIfNull(this.message,
-                        org.wheatgenetics.coordinate.activities.Main.this.getString(
-                            org.wheatgenetics.coordinate.R.string.export_no_data)));
-            }
+                org.wheatgenetics.coordinate.activities.Main.this.alert(
+                    /* title         => */ org.wheatgenetics.coordinate.R.string.export        ,
+                    /* message       => */ this.message                                        ,
+                    /* messageIfNull => */ org.wheatgenetics.coordinate.R.string.export_no_data);
         }
         // endregion
     }
@@ -637,6 +633,15 @@ android.view.View.OnKeyListener
     // region alert() AlertDialog Methods
     private void alert(final int message)
     { org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource, message); }
+
+    private void alert(final int title, final java.lang.String message, final int messageIfNull)
+    {
+        org.wheatgenetics.coordinate.utils.Utils.alert(
+            /* context => */ this ,
+            /* title   => */ title,
+            /* message => */ org.wheatgenetics.javalib.Utils.replaceIfNull(
+                message, this.getString(messageIfNull)));
+    }
 
     private void alert(final int message, final java.lang.Runnable yesRunnable)
     {
