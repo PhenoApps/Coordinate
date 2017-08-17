@@ -1016,7 +1016,7 @@ android.view.View.OnKeyListener
     //     loadSeedTrayTemplate()
     //     loadTemplate()
     // deleteTemplate()
-    //     o deleteTemplate(TemplateModel)
+    //     deleteTemplate(TemplateModel)
     //     loadExistingTemplateOrCreateNewTemplate()
     // importGrid()
     //
@@ -1441,6 +1441,38 @@ android.view.View.OnKeyListener
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
+
+    private boolean deleteTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        assert null != templateModel;
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+        if (!templatesTable.get(templateModel.getId())) return false;  // database
+
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
+        ||  org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode () == templatesTable.type)
+        {
+            this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
+            return false;
+        }
+
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        final android.database.Cursor cursor = gridsTable.loadByTemplate(templateModel.getId());
+        if (null != cursor)
+        {
+            while (cursor.moveToNext())
+            {
+                final org.wheatgenetics.coordinate.database.GridsTable g =
+                    new org.wheatgenetics.coordinate.database.GridsTable(this);
+                if (g.copy(cursor)) this.deleteGrid(g.id);
+            }
+            cursor.close();
+        }
+
+        return templatesTable.delete(templateModel);  // database
+    }
     // endregion
 
     // region Action Drawer Methods
@@ -1688,107 +1720,121 @@ android.view.View.OnKeyListener
     @android.annotation.SuppressLint("DefaultLocale")
     private void importGrid()
     {
-        java.lang.String names  [] = new java.lang.String[1];
-        long             indexes[] = new long            [1];
-
         int pos = 0;
 
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
-        final android.database.Cursor gridCursor = gridsTable.getAllGrids();
-        if (null != gridCursor)
+        java.lang.String names  [];
+        long             indexes[];
         {
-            final int size = gridCursor.getCount();
-
-            names   = new java.lang.String[size];
-            indexes = new long            [size];
-
-            while (gridCursor.moveToNext())
+            final android.database.Cursor gridCursor =
+                new org.wheatgenetics.coordinate.database.GridsTable(this).getAllGrids();
+            if (null == gridCursor)
             {
-                final org.wheatgenetics.coordinate.database.GridsTable tmpG =
-                    new org.wheatgenetics.coordinate.database.GridsTable(this);
-                if (tmpG.copyAll(gridCursor))
-                {
-                    names[pos] = java.lang.String.format(
-                        "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", tmpG.title,
-                        tmpG.templateTitle, tmpG.templateCols, tmpG.templateRows,
-                        org.wheatgenetics.coordinate.utils.Utils.formatDate(tmpG.timestamp));
-                    indexes[pos++] = tmpG.id;
-                }
+                names   = new java.lang.String[1];
+                indexes = new long            [1];
             }
-            gridCursor.close();
+            else
+            {
+                {
+                    final int size = gridCursor.getCount();
+
+                    names   = new java.lang.String[size];
+                    indexes = new long            [size];
+                }
+
+                while (gridCursor.moveToNext())
+                {
+                    final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+                        new org.wheatgenetics.coordinate.database.GridsTable(this);
+                    if (gridsTable.copyAll(gridCursor))
+                    {
+                        names[pos] = java.lang.String.format(
+                            "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", gridsTable.title,
+                            gridsTable.templateTitle, gridsTable.templateCols,
+                            gridsTable.templateRows, org.wheatgenetics.coordinate.utils.Utils.
+                                formatDate(gridsTable.timestamp));
+                        indexes[pos++] = gridsTable.id;
+                    }
+                }
+                gridCursor.close();
+            }
         }
 
         if (0 == pos)
-        {
             org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource,
                 this.getString(org.wheatgenetics.coordinate.R.string.no_templates));
-            return;
-        }
+        else
+        {
+            final long gridIds[] = indexes;
 
-        final long gridIds[] = indexes;
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.import_grid));
-        builder.setItems(names, new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            builder.setTitle(org.wheatgenetics.coordinate.R.string.import_grid).setItems(names,
+                new android.content.DialogInterface.OnClickListener()
                 {
-                    if (gridIds.length > which)
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
                     {
-                        final long id = gridIds[which];
-
+                        if (which < gridIds.length)
                         {
-                            assert null !=
-                                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
-                            org.wheatgenetics.coordinate.activities.
-                                Main.this.sharedPreferences.setCurrentGrid(id);
-                        }
+                            final long gridId = gridIds[which];
 
-                        final org.wheatgenetics.coordinate.database.GridsTable grd =
-                            new org.wheatgenetics.coordinate.database.GridsTable(Main.this);
-                        if (grd.get(id))
-                        {
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
-                                /* title => */ grd.templateTitle,
-                                /* rows  => */ grd.templateRows ,
-                                /* cols  => */ grd.templateCols );
-                            org.wheatgenetics.coordinate.activities.Main.this.gridId    = grd.id   ;
-                            org.wheatgenetics.coordinate.activities.Main.this.gridTitle = grd.title;
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(
-                                grd.templateType);
-
-                            final org.wheatgenetics.coordinate.database.TemplatesTable
-                                templatesTable = org.wheatgenetics.coordinate.activities.
-                                    Main.this.templatesTable();
-
-                            if (templatesTable.get(grd.templateId))  // database
                             {
-                                org.wheatgenetics.coordinate.activities.Main.this.importOptionalFields(templatesTable.options);
-
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(templatesTable.rowNumbering);  // model
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(templatesTable.colNumbering);  // model
+                                assert null != org.wheatgenetics.coordinate.
+                                    activities.Main.this.sharedPreferences;
+                                org.wheatgenetics.coordinate.activities.
+                                    Main.this.sharedPreferences.setCurrentGrid(gridId);
                             }
 
-                            org.wheatgenetics.coordinate.activities.
-                                Main.this.templateModel.clearExcludes();  // model
+                            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+                                new org.wheatgenetics.coordinate.database.GridsTable(
+                                    org.wheatgenetics.coordinate.activities.Main.this);
+                            if (gridsTable.get(gridId))
+                            {
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
+                                    /* title => */ gridsTable.templateTitle,
+                                    /* rows  => */ gridsTable.templateRows ,
+                                    /* cols  => */ gridsTable.templateCols );
+                                org.wheatgenetics.coordinate.activities.Main.this.gridId =
+                                    gridsTable.id;
+                                org.wheatgenetics.coordinate.activities.Main.this.gridTitle =
+                                    gridsTable.title;
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel.setType(
+                                    gridsTable.templateType);
 
-                            populateTemplate();
-                            showTemplateUI();
+                                final org.wheatgenetics.coordinate.database.TemplatesTable
+                                    templatesTable = org.wheatgenetics.coordinate.activities.
+                                    Main.this.templatesTable();
+
+                                if (templatesTable.get(gridsTable.templateId))  // database
+                                {
+                                    org.wheatgenetics.coordinate.activities.Main.this.importOptionalFields(
+                                        templatesTable.options);
+
+                                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setRowNumbering(
+                                        templatesTable.rowNumbering);  // model
+                                    org.wheatgenetics.coordinate.activities.Main.this.templateModel.setColNumbering(
+                                        templatesTable.colNumbering);  // model
+                                }
+
+                                org.wheatgenetics.coordinate.activities.
+                                    Main.this.templateModel.clearExcludes();  // model
+
+                                org.wheatgenetics.coordinate.activities.Main.this.populateTemplate();
+                                org.wheatgenetics.coordinate.activities.Main.this.showTemplateUI();
+                            }
+                            else
+                                org.wheatgenetics.coordinate.utils.Utils.alert(Main.this,
+                                    org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
+                                    getString
+                                        (org.wheatgenetics.coordinate.R.string.import_grid_failed));
+
+                            assert null != dialog;
+                            dialog.cancel();
                         }
-                        else
-                            org.wheatgenetics.coordinate.utils.Utils.alert(Main.this,
-                                org.wheatgenetics.coordinate.activities.Main.this.appNameStringResource,
-                                getString
-                                    (org.wheatgenetics.coordinate.R.string.import_grid_failed));
-
-                        assert null != dialog;
-                        dialog.cancel();
                     }
-                }
-            });
-        builder.show();
+                }).show();
+        }
     }
 
     private void exportGrid()
@@ -2506,38 +2552,6 @@ android.view.View.OnKeyListener
                     this.setCellState(this.currentCellView, STATE_DONE);
             }
         }
-    }
-
-    private boolean deleteTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        assert null != templateModel;
-        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            this.templatesTable();
-        if (!templatesTable.get(templateModel.getId())) return false;  // database
-
-        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
-        ||  org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode () == templatesTable.type)
-        {
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
-            return false;
-        }
-
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
-        final android.database.Cursor cursor = gridsTable.loadByTemplate(templateModel.getId());
-        if (null != cursor)
-        {
-            while (cursor.moveToNext())
-            {
-                final org.wheatgenetics.coordinate.database.GridsTable g =
-                    new org.wheatgenetics.coordinate.database.GridsTable(this);
-                if (g.copy(cursor)) this.deleteGrid(g.id);
-            }
-            cursor.close();
-        }
-
-        return templatesTable.delete(templateModel);  // database
     }
 
     private long createGrid(final long templateId)
