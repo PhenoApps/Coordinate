@@ -1014,8 +1014,9 @@ android.view.View.OnKeyListener
     //             addNewOptionalField()
     //         inputExclude()
     //             inputExcludeBoxes()
-    //             o inputExcludeInput()
+    //             inputExcludeInput()
     //         inputNaming()
+    //              ?
     //         loadTemplate()
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
@@ -1166,6 +1167,55 @@ android.view.View.OnKeyListener
                     }
                 }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                     org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+    }
+
+    private void inputExcludeInput()
+    {
+        android.view.View view;
+        {
+            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.random, null);
+        }
+
+        assert null != view;
+        final android.widget.EditText cellsEdit = (android.widget.EditText)
+            view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
+
+        assert null != cellsEdit;
+        cellsEdit.setText("1");
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(org.wheatgenetics.coordinate.R.string.random).setView(view)
+            .setCancelable(false).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        final int amount = org.wheatgenetics.coordinate.utils.Utils.convert(
+                            cellsEdit.getText().toString());
+
+                        if (amount > 0)
+                        {
+                            assert null !=
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.makeRandomCells(amount);
+                        }
+                        else org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput();
+
+                        assert null != dialog;
+                        dialog.cancel();
+                    }
+                });
+
+        final android.app.AlertDialog alertDialog = builder.create();
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
     // endregion
 
@@ -2611,57 +2661,6 @@ android.view.View.OnKeyListener
                 else templatesTable.insert(defaultTemplateModel);
             }
         }
-    }
-
-    private void inputExcludeInput()
-    {
-        android.view.View view;
-        {
-            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.random, null);
-        }
-
-        assert null != view;
-        final android.widget.EditText cellsEdit = (android.widget.EditText)
-            view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
-
-        assert null != cellsEdit;
-        cellsEdit.setText("1");
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.random)
-            .setView(view)
-            .setCancelable(false)
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        final int amount = org.wheatgenetics.coordinate.utils.Utils.convert(
-                            cellsEdit.getText().toString());
-
-                        if (amount > 0)
-                        {
-                            assert null !=
-                                org.wheatgenetics.coordinate.activities.Main.this.templateModel;
-                            org.wheatgenetics.coordinate.activities.
-                                Main.this.templateModel.makeRandomCells(amount);
-                        }
-                        else org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput();
-
-                        assert null != dialog;
-                        dialog.cancel();
-                    }
-                });
-
-        final android.app.AlertDialog alertDialog = builder.create();
-        assert null != alertDialog;
-        alertDialog.setCancelable(false);
-        alertDialog.show();
     }
 
     private void loadGrid(final long id)
