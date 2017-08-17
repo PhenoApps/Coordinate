@@ -1011,6 +1011,8 @@ android.view.View.OnKeyListener
     // createNewTemplate()
     //     inputTemplateNewExtra()
     //         addNewOptionalFields()
+    //             o setOptionalFieldChecked()
+    //             addNewOptionalField()
     //         inputExclude()
     //         inputNaming()
     //         loadTemplate()
@@ -1041,6 +1043,74 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Subsubsubaction Drawer Methods: not done
+    private void addNewOptionalField(final java.lang.String oldName,
+    final java.lang.String oldDefault)
+    {
+        android.app.AlertDialog alertDialog;
+        {
+            final android.app.AlertDialog.Builder builder =
+                new android.app.AlertDialog.Builder(this);
+            builder.setTitle(
+                org.wheatgenetics.coordinate.R.string.new_optional_field).setCancelable(false);
+            {
+                android.view.View view;
+                {
+                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+                    view = layoutInflater.inflate(
+                        org.wheatgenetics.coordinate.R.layout.optional_new, null);
+                }
+
+                assert null != view;
+                final android.widget.EditText nameEditText = (android.widget.EditText)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
+                final android.widget.EditText defaultEditText = (android.widget.EditText)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
+
+                assert null != nameEditText   ;
+                assert null != defaultEditText;
+                nameEditText.setText   (oldName   );
+                defaultEditText.setText(oldDefault);
+
+                builder.setView(view).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                    new android.content.DialogInterface.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.content.DialogInterface dialog,
+                        final int which)
+                        {
+                            final java.lang.String newName = org.wheatgenetics.javalib.Utils.adjust(
+                                nameEditText.getText().toString());
+                            final java.lang.String newDefault =
+                                org.wheatgenetics.javalib.Utils.adjust(
+                                    defaultEditText.getText().toString());
+
+                            if (0 == newName.length())
+                            {
+                                org.wheatgenetics.coordinate.activities.Main.this.showLongToast(org.
+                                    wheatgenetics.coordinate.R.string.new_optional_field_no_name);
+                                org.wheatgenetics.coordinate.activities.Main.this.
+                                    addNewOptionalField(oldName, newDefault);
+                            }
+                            else
+                            {
+                                assert null != dialog;
+                                dialog.cancel();
+
+                                org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
+                                    newName, newDefault);
+                            }
+                        }
+                    });
+            }
+            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+            alertDialog = builder.create();
+        }
+        assert null != alertDialog;
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
     // endregion
 
     // region Subsubaction Drawer Methods
@@ -2485,75 +2555,6 @@ android.view.View.OnKeyListener
                 else templatesTable.insert(defaultTemplateModel);
             }
         }
-    }
-
-    private void addNewOptionalField(final java.lang.String oldName,
-    final java.lang.String oldDefault)
-    {
-        android.app.AlertDialog alertDialog;
-        {
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            builder.setTitle(
-                org.wheatgenetics.coordinate.R.string.new_optional_field).setCancelable(false);
-            {
-                android.view.View view;
-                {
-                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                    view = layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.optional_new, null);
-                }
-
-                assert null != view;
-                final android.widget.EditText nameEditText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
-                final android.widget.EditText defaultEditText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
-
-                assert null != nameEditText   ;
-                assert null != defaultEditText;
-                nameEditText.setText   (oldName   );
-                defaultEditText.setText(oldDefault);
-
-                builder.setView(view).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            final java.lang.String newName = org.wheatgenetics.javalib.Utils.adjust(
-                                nameEditText.getText().toString());
-                            final java.lang.String newDefault =
-                                org.wheatgenetics.javalib.Utils.adjust(
-                                    defaultEditText.getText().toString());
-
-                            if (0 == newName.length())
-                            {
-                                org.wheatgenetics.coordinate.activities.Main.this.showLongToast(org.
-                                    wheatgenetics.coordinate.R.string.new_optional_field_no_name);
-                                org.wheatgenetics.coordinate.activities.Main.this.
-                                    addNewOptionalField(oldName, newDefault);
-                            }
-                            else
-                            {
-                                assert null != dialog;
-                                dialog.cancel();
-
-                                org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
-                                    newName, newDefault);
-                            }
-                        }
-                    });
-            }
-            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-            alertDialog = builder.create();
-        }
-        assert null != alertDialog;
-        alertDialog.setCancelable(false);
-        alertDialog.show();
     }
 
     private void inputExcludeBoxes(final int type)
