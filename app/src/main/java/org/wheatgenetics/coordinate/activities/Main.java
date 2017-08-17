@@ -1028,7 +1028,7 @@ android.view.View.OnKeyListener
     //         getNextFreeCell()
     //         isExcludedRow()
     //         isExcludedCol()
-    //         o getValue()
+    //         getValue()
     //         o setCellState()
     //         o isExcludedCell()
     //         o saveExcludedCell()
@@ -1199,6 +1199,17 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel;
         return this.templateModel.isExcludedCol(c);
+    }
+
+    private java.lang.String getValue(final long grid, final int r, final int c)
+    {
+        java.lang.String value = null;
+        {
+            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
+                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+            if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
+        }
+        return value;
     }
     // endregion
 
@@ -2753,8 +2764,8 @@ android.view.View.OnKeyListener
                 this.setCellState(this.currentCellView, STATE_INACTIVE);
             else
             {
-                java.lang.String value = this.getValue(this.gridId, r, c);
-                if (null == value) value = "";
+                final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+                    this.getValue(this.gridId, r, c));
 
                 if (0 == value.length())
                     this.setCellState(this.currentCellView, STATE_NORMAL);
@@ -2860,9 +2871,9 @@ android.view.View.OnKeyListener
         assert null != this.mainLayout;
         this.mainLayout.setVisibility(android.view.View.VISIBLE);
 
-        final java.lang.String value = this.getValue(this.gridId, 1, 1);
         assert null != this.cellIDEditText;
-        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
+        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+            this.getValue(this.gridId, 1, 1)));
     }
 
     private void saveExcludedCell(final int r, final int c)
@@ -2883,17 +2894,6 @@ android.view.View.OnKeyListener
             }
         }
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
-    }
-
-    private java.lang.String getValue(final long grid, final int r, final int c)
-    {
-        java.lang.String value = null;
-        {
-            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
-            if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
-        }
-        return value;
     }
 
     private void setCellState(final android.view.View cell, final int state)
