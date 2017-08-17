@@ -1029,7 +1029,7 @@ android.view.View.OnKeyListener
     //         isExcludedRow()
     //         isExcludedCol()
     //         getValue()
-    //         o setCellState()
+    //         setCellState()
     //         o isExcludedCell()
     //         o saveExcludedCell()
     //         o showTemplateUI()
@@ -1210,6 +1210,28 @@ android.view.View.OnKeyListener
             if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
         }
         return value;
+    }
+
+    private void setCellState(final android.view.View cell, final int state)
+    {
+        int backgroundResourceId;
+        switch (state)
+        {
+            case org.wheatgenetics.coordinate.activities.Main.STATE_DONE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_done; break;
+
+            case org.wheatgenetics.coordinate.activities.Main.STATE_ACTIVE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_active; break;
+
+            case org.wheatgenetics.coordinate.activities.Main.STATE_INACTIVE: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell_inactive; break;
+
+            default: backgroundResourceId =
+                org.wheatgenetics.coordinate.R.drawable.table_cell; break;
+        }
+
+        assert null != cell;
+        cell.setBackgroundResource(backgroundResourceId);
     }
     // endregion
 
@@ -2894,27 +2916,5 @@ android.view.View.OnKeyListener
             }
         }
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
-    }
-
-    private void setCellState(final android.view.View cell, final int state)
-    {
-        int backgroundResourceId;
-        switch (state)
-        {
-            case org.wheatgenetics.coordinate.activities.Main.STATE_DONE: backgroundResourceId =
-                org.wheatgenetics.coordinate.R.drawable.table_cell_done; break;
-
-            case org.wheatgenetics.coordinate.activities.Main.STATE_ACTIVE: backgroundResourceId =
-                org.wheatgenetics.coordinate.R.drawable.table_cell_active; break;
-
-            case org.wheatgenetics.coordinate.activities.Main.STATE_INACTIVE: backgroundResourceId =
-                org.wheatgenetics.coordinate.R.drawable.table_cell_inactive; break;
-
-            default: backgroundResourceId =
-                org.wheatgenetics.coordinate.R.drawable.table_cell; break;
-        }
-
-        assert null != cell;
-        cell.setBackgroundResource(backgroundResourceId);
     }
 }
