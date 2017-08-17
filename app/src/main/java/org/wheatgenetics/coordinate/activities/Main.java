@@ -651,15 +651,21 @@ android.view.View.OnKeyListener
     // endregion
 
     // region confirm() AlertDialog Methods
+    private void confirm(final int title, final int message, final java.lang.Runnable yesRunnable)
+    { org.wheatgenetics.coordinate.utils.Utils.confirm(this, title, message, yesRunnable); }
+
+    private void confirm(final int message, final java.lang.Runnable yesRunnable)
+    {
+        org.wheatgenetics.coordinate.utils.Utils.confirm(
+            this, this.appNameStringResource, message, yesRunnable);
+    }
+
     private void confirm(final int message, final java.lang.Runnable yesRunnable,
     final java.lang.Runnable noRunnable)
     {
         org.wheatgenetics.coordinate.utils.Utils.confirm(
             this, this.appNameStringResource, message, yesRunnable, noRunnable);
     }
-
-    private void confirm(final int title, final int message, final java.lang.Runnable yesRunnable)
-    { org.wheatgenetics.coordinate.utils.Utils.confirm(this, title, message, yesRunnable); }
     // endregion
     // endregion
 
@@ -1525,9 +1531,7 @@ android.view.View.OnKeyListener
 
     private void deleteGrid()
     {
-        if (0 != this.gridId) org.wheatgenetics.coordinate.utils.Utils.confirm(
-            /* context     => */ this                                                     ,
-            /* title       => */ this.appNameStringResource                               ,
+        if (0 != this.gridId) this.confirm(
             /* message     => */ org.wheatgenetics.coordinate.R.string.delete_grid_warning,
             /* yesRunnable => */ new java.lang.Runnable()
             {
