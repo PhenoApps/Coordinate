@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.activities;
 /**
  * Uses:
  * android.annotation.SuppressLint
- * android.app.Activity
  * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.Context
@@ -34,8 +33,9 @@ package org.wheatgenetics.coordinate.activities;
  * android.view.MenuInflater
  * android.view.MenuItem
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.View.OnKeyListener
- * android.view.WindowManager
+ * android.view.WindowManager.LayoutParams
  * android.view.inputmethod.EditorInfo
  * android.widget.Button
  * android.widget.EditText
@@ -2698,43 +2698,33 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
-    private void copydb()
+    private void copydb() throws java.io.IOException
     {
-        final java.io.File f = new java.io.File("/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
-        java.io.FileInputStream  fis = null;
-        java.io.FileOutputStream fos = null;
-
-        try
         {
-            fis = new java.io.FileInputStream(f);                    // throws java.io.FileNotFoundException
-            fos = new java.io.FileOutputStream("/mnt/sdcard/db_dump.db");  // throws java.io.FileNotFoundException
-            while (true)
+            final java.lang.String outputFileName = "/mnt/sdcard/db_dump.db";
             {
-                final int i = fis.read();                              // throws java.io.IOException
-                if (-1 != i)
-                    fos.write(i);                                      // throws java.io.IOException
-                else
-                    break;
+                final java.io.FileOutputStream fileOutputStream =
+                    new java.io.FileOutputStream(outputFileName);      // throws java.io.IOException
+                try
+                {
+                    final java.io.FileInputStream fileInputStream =
+                        new java.io.FileInputStream(                   // throws java.io.IOException
+                            "/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
+                    try
+                    {
+                        int oneByte;
+                        while ((oneByte = fileInputStream.read()) != -1) // thrw java.io.IOException
+                            fileOutputStream.write(oneByte);             // thrw java.io.IOException
+                    }
+                    finally { fileInputStream.close(); }               // throws java.io.IOException
+                    fileOutputStream.flush();                          // throws java.io.IOException
+                }
+                finally { fileOutputStream.close(); }                  // throws java.io.IOException
             }
-            fos.flush();
             org.wheatgenetics.androidlibrary.Utils.makeFileDiscoverable(
-                this, new java.io.File("/mnt/sdcard/db_dump.db"));
-            this.showLongToast("DB dump OK");
+                this, new java.io.File(outputFileName));
         }
-        catch (final java.io.IOException e)
-        {
-            e.printStackTrace();
-            this.showLongToast("DB dump ERROR");
-        }
-        finally
-        {
-            try
-            {
-                fos.close();
-                fis.close();
-            }
-            catch (final java.io.IOException ioe) {}
-        }
+        this.showLongToast("DB dump OK");
     }
 
     // region Toast Methods
@@ -2919,7 +2909,7 @@ android.view.View.OnKeyListener
     {
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
             new org.wheatgenetics.coordinate.database.GridsTable(this);
-        gridsTable.templateId = templateId;
+        gridsTable.templateId = templateId                          ;
         gridsTable.timestamp  = java.lang.System.currentTimeMillis();
         assert null != this.nonNullOptionalFields;
         gridsTable.title = this.nonNullOptionalFields.getFirstValue();
