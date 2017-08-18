@@ -504,7 +504,7 @@ android.view.View.OnKeyListener
 
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
-    private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2;
+    private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2                    ;
     // endregion
 
     // region Fields
@@ -555,6 +555,21 @@ android.view.View.OnKeyListener
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
 
+    // region Toast Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+
+    private void showLongToast(final java.lang.String firstText, final int secondText)
+    { this.showLongToast(firstText + this.getString(secondText)); }
+
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
+
+    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
+    // endregion
+
     // region OptionalField Methods
     private java.lang.String[] optionalFieldValues()
     {
@@ -595,13 +610,6 @@ android.view.View.OnKeyListener
     }
     // endregion
 
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
-    }
-
     // region AlertDialog Methods
     // region alert() AlertDialog Methods
     private void alert(final int message)
@@ -641,6 +649,13 @@ android.view.View.OnKeyListener
     }
     // endregion
     // endregion
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
 
     // region Overridden Methods
     @java.lang.Override
@@ -2677,21 +2692,6 @@ android.view.View.OnKeyListener
         return true;
     }
     // endregion
-    // endregion
-
-    // region Toast Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
-
-    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
-
-    private void showLongToast(final java.lang.String firstText, final int secondText)
-    { this.showLongToast(firstText + this.getString(secondText)); }
-
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
-
-    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
     // endregion
 
     /**
