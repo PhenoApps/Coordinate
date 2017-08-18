@@ -2801,26 +2801,21 @@ android.view.View.OnKeyListener
         if (endOfCell)
         {
             this.alert(org.wheatgenetics.coordinate.R.string.grid_filled);
-            this.completeSound();
-        }
-    }
 
-    private void completeSound()
-    {
-        android.media.MediaPlayer chimePlayer;
-        {
-            final int resID =
-                this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
-            (chimePlayer = android.media.MediaPlayer.create(this, resID)).setOnCompletionListener(
-                new android.media.MediaPlayer.OnCompletionListener()
+            android.media.MediaPlayer chimePlayer;
+            {
+                final int resID =
+                    this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
+                chimePlayer = android.media.MediaPlayer.create(this, resID);
+            }
+            chimePlayer.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
                 {
                     @java.lang.Override
                     public void onCompletion(final android.media.MediaPlayer mp)
                     { assert null != mp; mp.release(); }
                 });
+            chimePlayer.start();
         }
-        assert null != chimePlayer;
-        chimePlayer.start();
     }
 
     private void resetCurrentCell()
