@@ -1061,7 +1061,7 @@ android.view.View.OnKeyListener
     //     loadTemplate()
     //         tempLoad()
     //              loadExistingTemplate()
-    //              createNewTemplate()
+    //              createNewTemplate(TemplateType)
     // deleteTemplate()
     //     deleteTemplate(TemplateModel)
     //     loadExistingTemplateOrCreateNewTemplate()
@@ -1260,6 +1260,56 @@ android.view.View.OnKeyListener
         assert null != alertDialog;
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    private void createNewTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    throws org.json.JSONException
+    {
+        assert null != this.templateModel;
+        this.templateModel.setType(templateType);
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+        templatesTable.title = this.templateModel.getTitle();
+        templatesTable.type  = templateType.getCode()       ;
+        templatesTable.cols  = this.templateModel.getCols() ;
+        templatesTable.rows  = this.templateModel.getRows() ;
+
+        templatesTable.excludeCells = this.templateModel.getExcludeCellsAsJson();  // throws org.json.JSONException, model
+        templatesTable.excludeCols  = this.templateModel.getExcludeColsAsJson ();
+        templatesTable.excludeRows  = this.templateModel.getExcludeRowsAsJson ();
+
+        templatesTable.options = this.nonNullOptionalFields.toJson();  // throws org.json.JSONException, model
+
+        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
+        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
+
+        templatesTable.stamp = java.lang.System.currentTimeMillis();
+
+        final long templateId = templatesTable.insert();
+        if (templateId > 0)
+        {
+            // deleteTemplate(this.templateModel); // TODO
+
+            this.templateModel.setId(templateId);
+
+            final long gridId = this.createGrid(this.templateModel.getId());
+            if (0 < gridId)
+            {
+                this.gridId = gridId;
+
+                {
+                    assert null !=
+                        org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                    org.wheatgenetics.coordinate.activities.
+                        Main.this.sharedPreferences.setCurrentGrid(gridId);
+                }
+
+                this.populateTemplate();
+            }
+            else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
+        }
+        else this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
     }
     // endregion
 
@@ -2848,56 +2898,6 @@ android.view.View.OnKeyListener
         assert null != this.nonNullOptionalFields;
         gridsTable.title = this.nonNullOptionalFields.getFirstValue();
         return gridsTable.insert();
-    }
-
-    private void createNewTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    throws org.json.JSONException
-    {
-        assert null != this.templateModel;
-        this.templateModel.setType(templateType);
-        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            this.templatesTable();
-        templatesTable.title = this.templateModel.getTitle();
-        templatesTable.type  = templateType.getCode()       ;
-        templatesTable.cols  = this.templateModel.getCols() ;
-        templatesTable.rows  = this.templateModel.getRows() ;
-
-        templatesTable.excludeCells = this.templateModel.getExcludeCellsAsJson();  // throws org.json.JSONException, model
-        templatesTable.excludeCols = this.templateModel.getExcludeColsAsJson();  // model
-        templatesTable.excludeRows = this.templateModel.getExcludeRowsAsJson();  // model
-
-        templatesTable.options = this.nonNullOptionalFields.toJson();     // throws org.json.JSONException, model
-
-        templatesTable.colNumbering = this.templateModel.getColNumbering() ? 1 : 0;
-        templatesTable.rowNumbering = this.templateModel.getRowNumbering() ? 1 : 0;
-
-        templatesTable.stamp = java.lang.System.currentTimeMillis();  // model
-
-        final long templateId = templatesTable.insert();  // database
-        if (templateId > 0)
-        {
-            // deleteTemplate(this.templateModel); //TODO
-
-            this.templateModel.setId(templateId);
-
-            final long gridId = this.createGrid(this.templateModel.getId());
-            if (0 < gridId)
-            {
-                this.gridId = gridId;
-
-                {
-                    assert null !=
-                        org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
-                    org.wheatgenetics.coordinate.activities.
-                        Main.this.sharedPreferences.setCurrentGrid(gridId);
-                }
-
-                this.populateTemplate();
-            }
-            else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
-        }
-        else this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
     }
 
     private void loadExistingTemplate(
