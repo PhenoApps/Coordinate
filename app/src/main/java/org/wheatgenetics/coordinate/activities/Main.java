@@ -898,10 +898,37 @@ android.view.View.OnKeyListener
         return false;
     }
 
-    // TODO: Don't toggle already selected cell.
     @java.lang.Override
-    public void onClick(final android.view.View v)  // v is a cell
+    protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
     {
+        final org.wheatgenetics.coordinate.barcodes.IntentResult scanResult =
+            org.wheatgenetics.coordinate.barcodes.IntentIntegrator.parseActivityResult(
+                requestCode, resultCode, data);
+
+        if (null != scanResult)
+        {
+            assert null != this.cellIDEditText;
+            this.cellIDEditText.setText(scanResult.getContents());
+            this.saveData();
+        }
+    }
+
+    @java.lang.Override
+    protected void onDestroy()
+    {
+        if (null != this.exporter)
+        {
+            this.exporter.cancel(/* mayInterruptIfRunning => */ true);
+            this.exporter = null;
+        }
+        super.onDestroy();
+    }
+
+    // region android.view.View.OnClickListener Overridden Method
+    @java.lang.Override
+    public void onClick(final android.view.View v)      // v is a cell.
+    {                                                   // TODO: Don't toggle already selected cell.
         int              c = -1, r = -1;
         java.lang.Object obj           ;
 
@@ -930,11 +957,9 @@ android.view.View.OnKeyListener
 
             this.setCellState(v, STATE_ACTIVE);
 
-            if (null == value) value = "";
-
             assert null != this.cellIDEditText;
             this.cellIDEditText.setSelectAllOnFocus(true);
-            this.cellIDEditText.setText(value);
+            this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
             this.cellIDEditText.selectAll();
             this.cellIDEditText.requestFocus();
         }
@@ -942,33 +967,7 @@ android.view.View.OnKeyListener
         this.resetCurrentCell();
         this.currentCellView = v;
     }
-
-    @java.lang.Override
-    protected void onActivityResult(final int requestCode,
-    final int resultCode, final android.content.Intent data)
-    {
-        final org.wheatgenetics.coordinate.barcodes.IntentResult scanResult =
-            org.wheatgenetics.coordinate.barcodes.IntentIntegrator.parseActivityResult(
-                requestCode, resultCode, data);
-
-        if (null != scanResult)
-        {
-            assert null != this.cellIDEditText;
-            this.cellIDEditText.setText(scanResult.getContents());
-            this.saveData();
-        }
-    }
-
-    @java.lang.Override
-    protected void onDestroy()
-    {
-        if (null != this.exporter)
-        {
-            this.exporter.cancel(/* mayInterruptIfRunning => */ true);
-            this.exporter = null;
-        }
-        super.onDestroy();
-    }
+    // endregion
     // endregion
 
     private void resetDatabase()
@@ -996,10 +995,13 @@ android.view.View.OnKeyListener
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //         createNewTemplate()
+    //             inputTemplateNewExtra()
     //     newGridNow()
     //         deleteGrid(long)
     //         loadSeedTrayTemplate()
+    //             loadExistingTemplate()
     //         loadTemplate()
+    //             tempLoad()
     //     exportGrid()
     //         createExportFile()
     //         exporter.execute()
@@ -1008,6 +1010,7 @@ android.view.View.OnKeyListener
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //         createNewTemplate()
+    //             inputTemplateNewExtra()
     // createNewTemplate()
     //     inputTemplateNewExtra()
     //         addNewOptionalFields()
@@ -1016,16 +1019,23 @@ android.view.View.OnKeyListener
     //             inputExcludeBoxes()
     //             inputExcludeInput()
     //         inputNaming()
-    //              ?
     //         loadTemplate()
+    //             tempLoad()
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
     //         loadExistingTemplate()
     //     loadTemplate()
     //         tempLoad()
+    //              loadExistingTemplate()
+    //              createNewTemplate()
     // deleteTemplate()
     //     deleteTemplate(TemplateModel)
     //     loadExistingTemplateOrCreateNewTemplate()
+    //         loadExistingTemplate()
+    //             loadSeedTrayTemplate()
+    //             loadTemplate()
+    //         createNewTemplate()
+    //             inputTemplateNewExtra()
     // importGrid()
     //     importOptionalFields()
     //     populateTemplate()
@@ -1044,7 +1054,7 @@ android.view.View.OnKeyListener
     //     showChangeLog()
     // endregion
 
-    // region Subsubsubaction Drawer Methods: not done
+    // region Subsubsubaction Drawer Methods
     private void addNewOptionalField(final java.lang.String oldName,
     final java.lang.String oldDefault)
     {
