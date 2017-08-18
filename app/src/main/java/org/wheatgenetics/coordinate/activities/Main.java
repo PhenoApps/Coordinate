@@ -1004,25 +1004,6 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
-    private void resetDatabase()
-    {
-        this.confirm(
-            /* title       => */ org.wheatgenetics.coordinate.R.string.reset_database        ,
-            /* message     => */ org.wheatgenetics.coordinate.R.string.reset_database_message,
-            /* yesRunnable => */ new java.lang.Runnable()
-            {
-                @java.lang.Override
-                public void run()
-                {
-                    org.wheatgenetics.coordinate.activities.Main.this.deleteDatabase(
-                        "seedtray1.db");                                       // TODO: Encapsulate!
-                    org.wheatgenetics.coordinate.database.Database.initialize(
-                        org.wheatgenetics.coordinate.activities.Main.this);
-                    org.wheatgenetics.coordinate.activities.Main.this.finish();
-                }
-            });
-    }
-
     // region Drawer Methods
     // region Overview
     // createNewGrid()
