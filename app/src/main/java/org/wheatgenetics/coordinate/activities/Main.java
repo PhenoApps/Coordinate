@@ -1081,7 +1081,7 @@ android.view.View.OnKeyListener
     //         addNewOptionalFields()
     //             addNewOptionalField()
     //         exclude()
-    //             excludeRowOrColumn()
+    //             excludeRowsOrColumns()
     //             inputExcludeInput()
     //         inputNaming()
     //         loadTemplate()
@@ -1148,23 +1148,23 @@ android.view.View.OnKeyListener
         this.newOptionalFieldAlertDialog.show(oldName, oldDefault);
     }
 
-    private void excludeRowOrColumn(final boolean row)
+    private void excludeRowsOrColumns(final boolean rows)
     {
         assert null != this.templateModel;
-        final int total = row ? this.templateModel.getRows() : this.templateModel.getCols();
+        final int total = rows ? this.templateModel.getRows() : this.templateModel.getCols();
         final boolean           selections[] = new boolean         [total];
         final java.lang.String  items     [] = new java.lang.String[total];
 
         for (int i = 0; i < total; i++)
         {
             {
-                final int resId = row ? org.wheatgenetics.coordinate.R.string.row :
+                final int resId = rows ? org.wheatgenetics.coordinate.R.string.row :
                     org.wheatgenetics.coordinate.R.string.col;
                 items[i] = java.lang.String.format("%s %d", this.getString(resId), i + 1);
             }
             {
                 final int rowOrCol = i + 1;
-                selections[i] = row ?
+                selections[i] = rows ?
                     this.templateModel.isExcludedRow(rowOrCol) :
                     this.templateModel.isExcludedCol(rowOrCol) ;
             }
@@ -1172,7 +1172,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         {
-            final int resId = row ? org.wheatgenetics.coordinate.R.string.rows :
+            final int resId = rows ? org.wheatgenetics.coordinate.R.string.rows :
                 org.wheatgenetics.coordinate.R.string.cols;
             builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
                 " - " + this.getString(resId));
@@ -1192,7 +1192,7 @@ android.view.View.OnKeyListener
                     {
                         // get choices
                         for (int i = 0; i < total; i++) if (selections[i])
-                            if (row)
+                            if (rows)
                                 org.wheatgenetics.coordinate.activities.
                                     Main.this.templateModel.addExcludeRow(i + 1);
                             else
@@ -1373,8 +1373,11 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void excludeRowOrColumn(final boolean row)
-                    { org.wheatgenetics.coordinate.activities.Main.this.excludeRowOrColumn(row); }
+                    public void excludeRowsOrColumns(final boolean rows)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.this.excludeRowsOrColumns(
+                            rows);
+                    }
 
                     @java.lang.Override
                     public void excludeCell()

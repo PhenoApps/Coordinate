@@ -16,8 +16,8 @@ class ExcludeAlertDialog extends java.lang.Object
 {
     interface Handler
     {
-        public abstract void excludeRowOrColumn(final boolean row);
-        public abstract void excludeCell()                        ;
+        public abstract void excludeRowsOrColumns(final boolean rows);
+        public abstract void excludeCell()                           ;
     }
 
     // region Fields
@@ -37,8 +37,8 @@ class ExcludeAlertDialog extends java.lang.Object
         assert null != this.handler;
         switch (which)
         {
-            case 0: case 1: this.handler.excludeRowOrColumn(0 == which); break;
-            case 2        : this.handler.excludeCell()                 ; break;
+            case 0: case 1: this.handler.excludeRowsOrColumns(0 == which); break;
+            case 2        : this.handler.excludeCell()                   ; break;
         }
     }
 
