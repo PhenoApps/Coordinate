@@ -2811,20 +2811,16 @@ android.view.View.OnKeyListener
         {
             final int resID =
                 this.getResources().getIdentifier("plonk", "raw", this.getPackageName());
-            chimePlayer = android.media.MediaPlayer.create(this, resID);
+            (chimePlayer = android.media.MediaPlayer.create(this, resID)).setOnCompletionListener(
+                new android.media.MediaPlayer.OnCompletionListener()
+                {
+                    @java.lang.Override
+                    public void onCompletion(final android.media.MediaPlayer mp)
+                    { assert null != mp; mp.release(); }
+                });
         }
         assert null != chimePlayer;
         chimePlayer.start();
-
-        chimePlayer.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
-            {
-                @java.lang.Override
-                public void onCompletion(final android.media.MediaPlayer mp)
-                {
-                    assert null != mp;
-                    mp.release();
-                }
-            });
     }
 
     private void resetCurrentCell()
