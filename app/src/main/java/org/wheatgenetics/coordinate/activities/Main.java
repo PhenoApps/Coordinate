@@ -1033,7 +1033,7 @@ android.view.View.OnKeyListener
     //     newGridNow()
     //         deleteGrid(long)
     //         loadSeedTrayTemplate()
-    //             loadExistingTemplate()
+    //             loadExistingTemplate(TemplateType)
     //         loadTemplate()
     //             tempLoad()
     //     exportGrid()
@@ -1057,10 +1057,10 @@ android.view.View.OnKeyListener
     //             tempLoad()
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
-    //         loadExistingTemplate()
+    //         loadExistingTemplate(TemplateType)
     //     loadTemplate()
     //         tempLoad()
-    //              loadExistingTemplate()
+    //              loadExistingTemplate(TemplateType)
     //              createNewTemplate(TemplateType)
     // deleteTemplate()
     //     deleteTemplate(TemplateModel)
@@ -1314,6 +1314,32 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Subsubaction Drawer Methods
+    private void loadExistingTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        assert null != this.templateModel;
+        this.templateModel.setType(templateType);
+
+        final long gridId = this.createGrid(this.templateModel.getId());
+        if (gridId > 0)
+        {
+            this.gridId = gridId;
+
+            {
+                assert null !=
+                    org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
+                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences.setCurrentGrid(
+                    gridId);
+            }
+
+            this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
+            this.gridAreaLayout.setVisibility     (android.view.View.VISIBLE);
+
+            this.populateTemplate();
+        }
+        else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
+    }
+
     private void addNewOptionalFields()
     {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -2898,31 +2924,5 @@ android.view.View.OnKeyListener
         assert null != this.nonNullOptionalFields;
         gridsTable.title = this.nonNullOptionalFields.getFirstValue();
         return gridsTable.insert();
-    }
-
-    private void loadExistingTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        assert null != this.templateModel;
-        this.templateModel.setType(templateType);
-
-        final long gridId = this.createGrid(this.templateModel.getId());
-        if (gridId > 0)
-        {
-            this.gridId = gridId;
-
-            {
-                assert null !=
-                    org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences;
-                org.wheatgenetics.coordinate.activities.Main.this.sharedPreferences.setCurrentGrid(
-                    gridId);
-            }
-
-            this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
-            this.gridAreaLayout.setVisibility     (android.view.View.VISIBLE);
-
-            this.populateTemplate();
-        }
-        else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
     }
 }
