@@ -865,20 +865,6 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onKey(final android.view.View v, final int keyCode,
-    final android.view.KeyEvent event)
-    {
-        assert null != event;
-        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
-        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
-        {
-            this.saveData();
-            return true;
-        }
-        else return false;
-    }
-
-    @java.lang.Override
     protected void onActivityResult(final int requestCode,
     final int resultCode, final android.content.Intent data)
     {
@@ -968,6 +954,22 @@ android.view.View.OnKeyListener
                     return true;
                 }
         return false;
+    }
+    // endregion
+
+    // region android.view.View.OnKeyListener Overridden Method
+    @java.lang.Override
+    public boolean onKey(final android.view.View v, final int keyCode,
+    final android.view.KeyEvent event)
+    {
+        assert null != event;
+        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
+        {
+            this.saveData();
+            return true;
+        }
+        else return false;
     }
     // endregion
     // endregion
