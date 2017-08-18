@@ -58,7 +58,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
- * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
+ * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
  * org.wheatgenetics.coordinate.database.EntriesTable
@@ -69,6 +70,7 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.utils.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
@@ -538,6 +540,9 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.androidlibrary.Dir                  exportDir               ;
     private org.wheatgenetics.coordinate.activities.Main.Exporter exporter          = null;
     private long                                                  mLastExportGridId =   -1;
+
+    private org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
+        newOptionalFieldAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1115,70 +1120,29 @@ android.view.View.OnKeyListener
     private void addNewOptionalField(final java.lang.String oldName,
     final java.lang.String oldDefault)
     {
-        android.app.AlertDialog alertDialog;
-        {
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            builder.setTitle(
-                org.wheatgenetics.coordinate.R.string.new_optional_field).setCancelable(false);
-            {
-                android.view.View view;
+        if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
+            new org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler()
                 {
-                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                    view = layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.optional_new, null);
-                }
-
-                assert null != view;
-                final android.widget.EditText nameEditText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
-                final android.widget.EditText defaultEditText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
-
-                assert null != nameEditText   ;
-                assert null != defaultEditText;
-                nameEditText.setText   (oldName   );
-                defaultEditText.setText(oldDefault);
-
-                builder.setView(view).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                    new android.content.DialogInterface.OnClickListener()
+                    @java.lang.Override
+                    public void retry(final int errorMsgResId, final java.lang.String oldName,
+                    final java.lang.String newDefault)
                     {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            final java.lang.String newName = org.wheatgenetics.javalib.Utils.adjust(
-                                nameEditText.getText().toString());
-                            final java.lang.String newDefault =
-                                org.wheatgenetics.javalib.Utils.adjust(
-                                    defaultEditText.getText().toString());
+                        org.wheatgenetics.coordinate.activities.Main.this.showLongToast(
+                            errorMsgResId);
+                        org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalField(
+                            oldName, newDefault);
+                    }
 
-                            if (0 == newName.length())
-                            {
-                                org.wheatgenetics.coordinate.activities.Main.this.showLongToast(org.
-                                    wheatgenetics.coordinate.R.string.new_optional_field_no_name);
-                                org.wheatgenetics.coordinate.activities.Main.this.
-                                    addNewOptionalField(oldName, newDefault);
-                            }
-                            else
-                            {
-                                assert null != dialog;
-                                dialog.cancel();
-
-                                org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
-                                    newName, newDefault);
-                            }
-                        }
-                    });
-            }
-            builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-            alertDialog = builder.create();
-        }
-        assert null != alertDialog;
-        alertDialog.setCancelable(false);
-        alertDialog.show();
+                    @java.lang.Override
+                    public void addOptionalField(final java.lang.String newName,
+                    final java.lang.String newDefault)
+                    {
+                        org.wheatgenetics.coordinate.activities.Main.this.addOptionalField(
+                            newName, newDefault);
+                    }
+                });
+        this.newOptionalFieldAlertDialog.show(oldName, oldDefault);
     }
 
     private void inputExcludeBoxes(final int type)
