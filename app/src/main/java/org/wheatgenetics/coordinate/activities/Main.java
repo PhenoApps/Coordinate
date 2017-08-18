@@ -58,6 +58,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog
+ * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
@@ -543,6 +545,7 @@ android.view.View.OnKeyListener
 
     private org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
         newOptionalFieldAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.ExcludeAlertDialog excludeAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1145,23 +1148,23 @@ android.view.View.OnKeyListener
         this.newOptionalFieldAlertDialog.show(oldName, oldDefault);
     }
 
-    private void inputExcludeBoxes(final int type)
+    private void inputExcludeBoxes(final boolean row)
     {
         assert null != this.templateModel;
-        final int total = 0 == type ? this.templateModel.getRows() : this.templateModel.getCols();
+        final int total = row ? this.templateModel.getRows() : this.templateModel.getCols();
         final boolean           selections[] = new boolean         [total];
         final java.lang.String  items     [] = new java.lang.String[total];
 
         for (int i = 0; i < total; i++)
         {
             {
-                final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.row :
+                final int resId = row ? org.wheatgenetics.coordinate.R.string.row :
                     org.wheatgenetics.coordinate.R.string.col;
                 items[i] = java.lang.String.format("%s %d", this.getString(resId), i + 1);
             }
             {
                 final int rowOrCol = i + 1;
-                selections[i] = 0 == type ?
+                selections[i] = row ?
                     this.templateModel.isExcludedRow(rowOrCol) :
                     this.templateModel.isExcludedCol(rowOrCol) ;
             }
@@ -1169,7 +1172,7 @@ android.view.View.OnKeyListener
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         {
-            final int resId = 0 == type ? org.wheatgenetics.coordinate.R.string.rows :
+            final int resId = row ? org.wheatgenetics.coordinate.R.string.rows :
                 org.wheatgenetics.coordinate.R.string.cols;
             builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
                 " - " + this.getString(resId));
@@ -1189,7 +1192,7 @@ android.view.View.OnKeyListener
                     {
                         // get choices
                         for (int i = 0; i < total; i++) if (selections[i])
-                            if (0 == type)
+                            if (row)
                                 org.wheatgenetics.coordinate.activities.
                                     Main.this.templateModel.addExcludeRow(i + 1);
                             else
@@ -1365,32 +1368,19 @@ android.view.View.OnKeyListener
 
     private void inputExclude()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        {
-            final java.lang.String[] items = {
-                this.getString(org.wheatgenetics.coordinate.R.string.rows  ),
-                this.getString(org.wheatgenetics.coordinate.R.string.cols  ),
-                this.getString(org.wheatgenetics.coordinate.R.string.random) };
-            builder.setItems(items, new android.content.DialogInterface.OnClickListener()
+        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
+            new org.wheatgenetics.coordinate.activities.ExcludeAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        switch (which)
-                        {
-                            case 0: case 1: org.wheatgenetics.coordinate.activities.
-                                Main.this.inputExcludeBoxes(which); break;
+                    public void excludeRowOrColumn(final boolean row)
+                    { org.wheatgenetics.coordinate.activities.Main.this.inputExcludeBoxes(row); }
 
-                            case 2: org.wheatgenetics.coordinate.activities.
-                                Main.this.inputExcludeInput() ; break;
-                        }
-                    }
+                    @java.lang.Override
+                    public void excludeCell()
+                    {org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput(); }
                 });
-        }
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.exclude_title).setNegativeButton(
-            org.wheatgenetics.coordinate.R.string.cancel                      ,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+        this.excludeAlertDialog.show();
     }
 
     private void inputNaming()
