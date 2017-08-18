@@ -2698,35 +2698,6 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
-    private void copydb() throws java.io.IOException
-    {
-        {
-            final java.lang.String outputFileName = "/mnt/sdcard/db_dump.db";
-            {
-                final java.io.FileOutputStream fileOutputStream =
-                    new java.io.FileOutputStream(outputFileName);      // throws java.io.IOException
-                try
-                {
-                    final java.io.FileInputStream fileInputStream =
-                        new java.io.FileInputStream(                   // throws java.io.IOException
-                            "/data/data/org.wheatgenetics.coordinate/databases/seedtray1.db");
-                    try
-                    {
-                        int oneByte;
-                        while ((oneByte = fileInputStream.read()) != -1) // thrw java.io.IOException
-                            fileOutputStream.write(oneByte);             // thrw java.io.IOException
-                    }
-                    finally { fileInputStream.close(); }               // throws java.io.IOException
-                    fileOutputStream.flush();                          // throws java.io.IOException
-                }
-                finally { fileOutputStream.close(); }                  // throws java.io.IOException
-            }
-            org.wheatgenetics.androidlibrary.Utils.makeFileDiscoverable(
-                this, new java.io.File(outputFileName));
-        }
-        this.showLongToast("DB dump OK");
-    }
-
     // region Toast Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
