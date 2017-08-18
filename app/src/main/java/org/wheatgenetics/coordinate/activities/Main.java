@@ -1080,8 +1080,8 @@ android.view.View.OnKeyListener
     //     inputTemplateNewExtra()
     //         addNewOptionalFields()
     //             addNewOptionalField()
-    //         inputExclude()
-    //             inputExcludeBoxes()
+    //         exclude()
+    //             excludeRowOrColumn()
     //             inputExcludeInput()
     //         inputNaming()
     //         loadTemplate()
@@ -1148,7 +1148,7 @@ android.view.View.OnKeyListener
         this.newOptionalFieldAlertDialog.show(oldName, oldDefault);
     }
 
-    private void inputExcludeBoxes(final boolean row)
+    private void excludeRowOrColumn(final boolean row)
     {
         assert null != this.templateModel;
         final int total = row ? this.templateModel.getRows() : this.templateModel.getCols();
@@ -1366,7 +1366,7 @@ android.view.View.OnKeyListener
                 org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
     }
 
-    private void inputExclude()
+    private void exclude()
     {
         if (null == this.excludeAlertDialog) this.excludeAlertDialog =
             new org.wheatgenetics.coordinate.activities.ExcludeAlertDialog(this,
@@ -1374,7 +1374,7 @@ android.view.View.OnKeyListener
                 {
                     @java.lang.Override
                     public void excludeRowOrColumn(final boolean row)
-                    { org.wheatgenetics.coordinate.activities.Main.this.inputExcludeBoxes(row); }
+                    { org.wheatgenetics.coordinate.activities.Main.this.excludeRowOrColumn(row); }
 
                     @java.lang.Override
                     public void excludeCell()
@@ -1643,7 +1643,7 @@ android.view.View.OnKeyListener
                     {
                         @java.lang.Override
                         public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.activities.Main.this.inputExclude(); }
+                        { org.wheatgenetics.coordinate.activities.Main.this.exclude(); }
                     });
             }
 
