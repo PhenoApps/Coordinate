@@ -69,7 +69,6 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
- * org.wheatgenetics.coordinate.utils.Constants
  * org.wheatgenetics.coordinate.utils.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
@@ -794,8 +793,9 @@ android.view.View.OnKeyListener
         }
 
         if (this.sharedPreferences.currentGridIsSet())
-            try { this.loadGrid(this.sharedPreferences.getCurrentGrid()); }
-            catch (final java.lang.Exception e) {}
+        {
+            this.loadGrid(this.sharedPreferences.getCurrentGrid());
+        }
         else
             this.loadExistingTemplateOrCreateNewTemplate();
 
@@ -2828,18 +2828,18 @@ android.view.View.OnKeyListener
                 if (obj instanceof java.lang.Integer) r = (java.lang.Integer) obj;
             }
 
+            int state;
             if (this.isExcludedRow(r) || this.isExcludedCol(c) || this.isExcludedCell(r, c))
-                this.setCellState(this.currentCellView, STATE_INACTIVE);
+                state = org.wheatgenetics.coordinate.activities.Main.STATE_INACTIVE;
             else
             {
                 final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
                     this.getValue(this.gridId, r, c));
-
-                if (0 == value.length())
-                    this.setCellState(this.currentCellView, STATE_NORMAL);
-                else
-                    this.setCellState(this.currentCellView, STATE_DONE);
+                state = 0 == value.length() ?
+                    org.wheatgenetics.coordinate.activities.Main.STATE_NORMAL :
+                    org.wheatgenetics.coordinate.activities.Main.STATE_DONE    ;
             }
+            this.setCellState(this.currentCellView, state);
         }
     }
 
