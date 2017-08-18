@@ -879,26 +879,6 @@ android.view.View.OnKeyListener
     }
 
     @java.lang.Override
-    public boolean onEditorAction(final android.widget.TextView v, final int actionId,
-    final android.view.KeyEvent event)
-    {
-        if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
-        {
-            this.saveData();
-            return true;
-        }
-        else
-            if (null != event)
-                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
-                &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
-                {
-                    this.saveData();
-                    return true;
-                }
-        return false;
-    }
-
-    @java.lang.Override
     protected void onActivityResult(final int requestCode,
     final int resultCode, final android.content.Intent data)
     {
@@ -966,6 +946,28 @@ android.view.View.OnKeyListener
 
         this.resetCurrentCell();
         this.currentCellView = v;
+    }
+    // endregion
+
+    // region android.widget.TextView.OnEditorActionListener Overridden Method
+    @java.lang.Override
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId,
+    final android.view.KeyEvent event)
+    {
+        if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
+        {
+            this.saveData();
+            return true;
+        }
+        else
+            if (null != event)
+                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+                &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
+                {
+                    this.saveData();
+                    return true;
+                }
+        return false;
     }
     // endregion
     // endregion
