@@ -835,6 +835,34 @@ implements java.lang.Cloneable
         }
     }
 
+    // region checkedItems Public Methods
+    public boolean[] rowCheckedItems()
+    {
+        final int rows = this.getRows();
+        if (rows <= 0)
+            return null;
+        else
+        {
+            final boolean result[] = new boolean[rows];
+            for (int i = 0; i < rows; i++) result[i] = this.isExcludedRow(i + 1);
+            return result;
+        }
+    }
+
+    public boolean[] colCheckedItems()
+    {
+        final int cols = this.getCols();
+        if (cols <= 0)
+            return null;
+        else
+        {
+            final boolean result[] = new boolean[cols];
+            for (int i = 0; i < cols; i++) result[i] = this.isExcludedCol(i + 1);
+            return result;
+        }
+    }
+    // endregion
+
     // region Make Public Methods
     public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
     {

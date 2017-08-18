@@ -44,6 +44,21 @@ implements java.lang.Cloneable
 
     private static java.lang.String convert(final int integer)
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
+
+
+    @android.annotation.SuppressLint("DefaultLocale")
+    private static java.lang.String[] items(final int length, final java.lang.String label)
+    {
+        if (length <= 0)
+            return null;
+        else
+        {
+            final java.lang.String result[] = new java.lang.String[length];
+            for (int i = 0; i < length; i++)
+                result[i] = java.lang.String.format("%s %d", label, i + 1);
+            return result;
+        }
+    }
     // endregion
 
     // region Constructors
@@ -51,21 +66,11 @@ implements java.lang.Cloneable
 
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
-    {
-        super();
-
-        this.assign(title, rows, cols);
-        this.setType(type);
-    }
+    { super(); this.assign(title, rows, cols); this.setType(type); }
 
     PartialTemplateModel(final long id, final java.lang.String title,
     final int code, final int rows, final int cols)
-    {
-        this(id);
-
-        this.assign(title, rows, cols);
-        this.setType(code);
-    }
+    { this(id); this.assign(title, rows, cols); this.setType(code); }
     // endregion
 
     // region Overridden Methods
@@ -164,20 +169,17 @@ implements java.lang.Cloneable
 
 
     public void assign(final java.lang.String title, final int rows, final int cols)
-    {
-        this.setTitle(title);
-
-        this.setRows(rows);
-        this.setCols(cols);
-    }
+    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
     public void assign(final java.lang.String title,
     final java.lang.String rows, final java.lang.String cols)
-    {
-        this.setTitle(title);
+    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
-        this.setRows(rows);
-        this.setCols(cols);
-    }
+
+    public java.lang.String[] rowItems(final java.lang.String label)
+    { return org.wheatgenetics.coordinate.model.PartialTemplateModel.items(this.getRows(), label); }
+
+    public java.lang.String[] colItems(final java.lang.String label)
+    { return org.wheatgenetics.coordinate.model.PartialTemplateModel.items(this.getCols(), label); }
     // endregion
 }
