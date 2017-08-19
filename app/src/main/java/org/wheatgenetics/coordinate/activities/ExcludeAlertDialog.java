@@ -16,8 +16,9 @@ class ExcludeAlertDialog extends java.lang.Object
 {
     interface Handler
     {
-        public abstract void excludeRowsOrColumns(final boolean rows);
-        public abstract void excludeCell()                           ;
+        public abstract void excludeRows();
+        public abstract void excludeCols();
+        public abstract void excludeCell();
     }
 
     // region Fields
@@ -28,19 +29,20 @@ class ExcludeAlertDialog extends java.lang.Object
     private android.app.AlertDialog.Builder builder      = null;
     // endregion
 
-    ExcludeAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler handler)
-    { super(); this.context = context; this.handler = handler; }
-
     private void exclude(final int which)
     {
         assert null != this.handler;
         switch (which)
         {
-            case 0: case 1: this.handler.excludeRowsOrColumns(0 == which); break;
-            case 2        : this.handler.excludeCell()                   ; break;
+            case 0: this.handler.excludeRows(); break;
+            case 1: this.handler.excludeCols(); break;
+            case 2: this.handler.excludeCell(); break;
         }
     }
+
+    ExcludeAlertDialog(final android.content.Context context,
+    final org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler handler)
+    { super(); this.context = context; this.handler = handler; }
 
     void show()
     {

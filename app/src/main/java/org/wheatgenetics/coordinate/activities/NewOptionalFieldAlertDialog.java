@@ -38,10 +38,6 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     private android.widget.EditText         nameEditText = null, defaultEditText = null;
     // endregion
 
-    NewOptionalFieldAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
-
     // region Private Methods
     private static java.lang.String getText(final android.widget.EditText editText)
     {
@@ -72,6 +68,10 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
         }
     }
     // endregion
+
+    NewOptionalFieldAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler handler)
+    { super(); this.activity = activity; this.handler = handler; }
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)
     {
