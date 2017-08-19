@@ -60,6 +60,8 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog
+ * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
@@ -546,6 +548,8 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
         newOptionalFieldAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.ExcludeAlertDialog excludeAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog
+        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1151,72 +1155,54 @@ android.view.View.OnKeyListener
 
     private void excludeRows()
     {
-        final java.lang.String label = this.getString(org.wheatgenetics.coordinate.R.string.row);
-
-        assert null != this.templateModel;
-        final boolean checkedItems[] = this.templateModel.rowCheckedItems();
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
-            " - " + label);
-        builder.setMultiChoiceItems(this.templateModel.rowItems(label), checkedItems,
-            new android.content.DialogInterface.OnMultiChoiceClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which,
-                final boolean isChecked) { checkedItems[which] = isChecked; }
-            });
-        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog,
-                final int which)
+        if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
+            new org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.row,
+                new org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler()
                 {
-                    // TODO: Are they cleared first?
-                    int i = 1;
-                    for (final boolean checkedItem: checkedItems) if (checkedItem)
-                        org.wheatgenetics.coordinate.activities.
-                            Main.this.templateModel.addExcludeRow(i++);
-                }
-            });
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                    @java.lang.Override
+                    public void process(final boolean[] checkedItems)
+                    {
+                        int i = 1;
+                        assert null != checkedItems;
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        for (final boolean checkedItem: checkedItems) if (checkedItem)
+                            // TODO: Are they cleared first?
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.addExcludeRow(i++);
+                    }
+                });
+        assert null != this.templateModel;
+        this.excludeRowsAlertDialog.show(
+            this.templateModel.rowItems(this.getString(org.wheatgenetics.coordinate.R.string.row)),
+            this.templateModel.rowCheckedItems()                                                 );
     }
 
     private void excludeCols()
     {
-        final java.lang.String label = this.getString(org.wheatgenetics.coordinate.R.string.col);
-
-        assert null != this.templateModel;
-        final boolean checkedItems[] = this.templateModel.colCheckedItems();
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
-            " - " + label);
-        builder.setMultiChoiceItems(this.templateModel.colItems(label), checkedItems,
-            new android.content.DialogInterface.OnMultiChoiceClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which,
-                final boolean isChecked) { checkedItems[which] = isChecked; }
-            });
-        builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog,
-                final int which)
+        if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
+            new org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.col,
+                new org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler()
                 {
-                    // TODO: Are they cleared first?
-                    int i = 1;
-                    for (final boolean checkedItem: checkedItems) if (checkedItem)
-                        org.wheatgenetics.coordinate.activities.
-                            Main.this.templateModel.addExcludeCol(i++);
-                }
-            });
-        builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                    @java.lang.Override
+                    public void process(final boolean[] checkedItems)
+                    {
+                        int i = 1;
+                        assert null != checkedItems;
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        for (final boolean checkedItem: checkedItems) if (checkedItem)
+                            // TODO: Are they cleared first?
+                            org.wheatgenetics.coordinate.activities.
+                                Main.this.templateModel.addExcludeCol(i++);
+                    }
+                });
+        assert null != this.templateModel;
+        this.excludeColsAlertDialog.show(
+            this.templateModel.colItems(this.getString(org.wheatgenetics.coordinate.R.string.col)),
+            this.templateModel.colCheckedItems()                                                 );
     }
 
     private void inputExcludeInput()
