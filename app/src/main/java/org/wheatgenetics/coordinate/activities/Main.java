@@ -1087,7 +1087,7 @@ android.view.View.OnKeyListener
     //         exclude()
     //             excludeRows()
     //             excludeCols()
-    //             inputExcludeInput()
+    //             excludeCells()
     //         inputNaming()
     //         loadTemplate()
     //             tempLoad()
@@ -1205,7 +1205,7 @@ android.view.View.OnKeyListener
             this.templateModel.colCheckedItems()                                                 );
     }
 
-    private void inputExcludeInput()
+    private void excludeCells()
     {
         android.view.View view;
         {
@@ -1241,7 +1241,7 @@ android.view.View.OnKeyListener
                             org.wheatgenetics.coordinate.activities.
                                 Main.this.templateModel.makeRandomCells(amount);
                         }
-                        else org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput();
+                        else org.wheatgenetics.coordinate.activities.Main.this.excludeCells();
 
                         assert null != dialog;
                         dialog.cancel();
@@ -1383,8 +1383,8 @@ android.view.View.OnKeyListener
                     { org.wheatgenetics.coordinate.activities.Main.this.excludeCols(); }
 
                     @java.lang.Override
-                    public void excludeCell()
-                    { org.wheatgenetics.coordinate.activities.Main.this.inputExcludeInput(); }
+                    public void excludeCells()
+                    { org.wheatgenetics.coordinate.activities.Main.this.excludeCells(); }
                 });
         this.excludeAlertDialog.show();
     }
