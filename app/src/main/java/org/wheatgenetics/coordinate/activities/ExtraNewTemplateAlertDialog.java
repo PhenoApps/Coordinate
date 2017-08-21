@@ -32,7 +32,6 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
 
     private android.app.AlertDialog         alertDialog  = null;
     private android.app.AlertDialog.Builder builder      = null;
-    private android.widget.Button optionalButton = null, excludeButton = null, namingButton = null;
     // endregion
 
     // region Private Methods
@@ -85,13 +84,11 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
                     }
 
                     assert null != view;
-                    if (null == this.optionalButton)
                     {
-                        this.optionalButton = (android.widget.Button)
+                        final android.widget.Button optionalButton = (android.widget.Button)
                             view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
-                        assert null != this.optionalButton;
-                        this.optionalButton.setOnClickListener(
-                            new android.view.View.OnClickListener()
+                        assert null != optionalButton;
+                        optionalButton.setOnClickListener(new android.view.View.OnClickListener()
                             {
                                 @java.lang.Override
                                 public void onClick(final android.view.View v)
@@ -102,13 +99,11 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
                             });
                     }
 
-                    if (null == this.excludeButton)
                     {
-                        this.excludeButton = (android.widget.Button)
+                        final android.widget.Button excludeButton = (android.widget.Button)
                             view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton);
-                        assert null != this.excludeButton;
-                        this.excludeButton.setOnClickListener(
-                            new android.view.View.OnClickListener()
+                        assert null != excludeButton;
+                        excludeButton.setOnClickListener(new android.view.View.OnClickListener()
                             {
                                 @java.lang.Override
                                 public void onClick(final android.view.View v)
@@ -119,12 +114,11 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
                             });
                     }
 
-                    if (null == this.namingButton)
                     {
-                        this.namingButton = (android.widget.Button)
+                        final android.widget.Button namingButton = (android.widget.Button)
                             view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton);
-                        assert null != this.namingButton;
-                        this.namingButton.setOnClickListener(new android.view.View.OnClickListener()
+                        assert null != namingButton;
+                        namingButton.setOnClickListener(new android.view.View.OnClickListener()
                             {
                                 @java.lang.Override
                                 public void onClick(final android.view.View v)

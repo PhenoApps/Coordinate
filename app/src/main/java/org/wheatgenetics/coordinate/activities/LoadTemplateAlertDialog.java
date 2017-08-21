@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.activities;
 
 /**
  * Uses:
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.Context
  * android.content.DialogInterface
@@ -12,13 +11,12 @@ package org.wheatgenetics.coordinate.activities;
  */
 class LoadTemplateAlertDialog extends java.lang.Object
 {
-    interface Handler { public abstract void loadTemplate(final int i); }
+    interface Handler { public abstract void loadTemplate(int i); }
 
     // region Fields
     private final android.content.Context                                                 context;
     private final org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog.Handler handler;
 
-    private android.app.AlertDialog                         alertDialog             = null;
     private android.app.AlertDialog.Builder                 builder                 = null;
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;
     // endregion
@@ -50,17 +48,12 @@ class LoadTemplateAlertDialog extends java.lang.Object
 
     void show(final java.lang.CharSequence items[])
     {
-        if (null == this.alertDialog)
+        if (null == this.builder)
         {
-            if (null == this.builder)
-            {
-                this.builder = new android.app.AlertDialog.Builder(this.context);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.template_load)
-                    .setItems(items, this.onClickListener());
-            }
-            this.alertDialog = this.builder.create();
-            assert null != this.alertDialog;
+            this.builder = new android.app.AlertDialog.Builder(this.context);
+            this.builder.setTitle(org.wheatgenetics.coordinate.R.string.template_load);
         }
-        this.alertDialog.show();
+        this.builder.setItems(items, this.onClickListener());
+        this.builder.create().show();
     }
 }
