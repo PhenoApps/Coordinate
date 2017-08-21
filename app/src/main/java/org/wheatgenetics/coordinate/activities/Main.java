@@ -64,6 +64,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.ExcludeCellsAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog
+ * org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NamingAlertDialog
  * org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
@@ -569,6 +571,8 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.activities.NamingAlertDialog namingAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog
         templateOptionsAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog
+        extraNewTemplateAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1564,78 +1568,35 @@ android.view.View.OnKeyListener
 
     private void inputTemplateNewExtra()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        {
-            android.view.View view;
-            {
-                final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.template_new_extra,
-                    new android.widget.LinearLayout(this), false);
-            }
-
-            {
-                assert null != view;
-                final android.widget.Button optionalButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.optionalButton);
-                assert null != optionalButton;
-                optionalButton.setOnClickListener(new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v)
-                        {
-                            org.wheatgenetics.coordinate.activities.
-                                Main.this.addNewOptionalFields();
-                        }
-                    });
-            }
-
-            {
-                final android.widget.Button excludeButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton);
-                assert null != excludeButton;
-                excludeButton.setOnClickListener(new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.activities.Main.this.exclude(); }
-                    });
-            }
-
-            {
-                final android.widget.Button namingButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.namingButton);
-                assert null != namingButton;
-                namingButton.setOnClickListener(new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.activities.Main.this.inputNaming(); }
-                    });
-            }
-
-            builder.setView(view);
-        }
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.template_new).setPositiveButton(
-            org.wheatgenetics.coordinate.R.string.next,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
+        if (null == this.extraNewTemplateAlertDialog) this.extraNewTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog.Handler()
                 {
-                    assert null != dialog;
-                    dialog.cancel();
+                    @java.lang.Override
+                    public void addOptionalFields()
+                    { org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalFields(); }
 
-                    try
+                    @java.lang.Override
+                    public void addExcludes()
+                    { org.wheatgenetics.coordinate.activities.Main.this.exclude(); }
+
+                    @java.lang.Override
+                    public void addNaming()
+                    { org.wheatgenetics.coordinate.activities.Main.this.inputNaming(); }
+
+                    @java.lang.Override
+                    public void handleNext()
                     {
-                        org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(
-                            org.wheatgenetics.coordinate.activities.Main.MODE_DEFAULT      ,
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel);
+                        try
+                        {
+                            org.wheatgenetics.coordinate.activities.Main.this.loadTemplate(  // throws org.json.JSONException
+                                org.wheatgenetics.coordinate.activities.Main.MODE_DEFAULT      ,
+                                org.wheatgenetics.coordinate.activities.Main.this.templateModel);
+                        }
+                        catch (final org.json.JSONException e) {}
                     }
-                    catch (final org.json.JSONException e) {}
-                }
-            }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                });
+        this.excludeAlertDialog.show();
     }
 
     private void loadSeedTrayTemplate(

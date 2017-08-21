@@ -28,14 +28,15 @@ class NewTemplateAlertDialog extends java.lang.Object
     private final android.app.Activity                                                   activity;
     private final org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog.Handler handler ;
 
-    private android.app.AlertDialog         alertDialog  = null                     ;
-    private android.app.AlertDialog.Builder builder      = null                     ;
-    private android.widget.EditText         nameTextEdit, rowsTextEdit, colsTextEdit;
+    private android.app.AlertDialog         alertDialog  = null;
+    private android.app.AlertDialog.Builder builder      = null;
+    private android.widget.EditText nameTextEdit = null, rowsTextEdit = null, colsTextEdit = null;
     // endregion
 
     private void createNewTemplate()
     {
-        assert null != this.handler;
+        assert null != this.nameTextEdit; assert null != this.colsTextEdit;
+        assert null != this.rowsTextEdit; assert null != this.handler     ;
         this.handler.createNewTemplate(
             this.nameTextEdit.getText().toString().trim(),
             this.colsTextEdit.getText().toString().trim(),
@@ -66,11 +67,11 @@ class NewTemplateAlertDialog extends java.lang.Object
                     }
 
                     assert null != view;
-                    this.nameTextEdit = (android.widget.EditText)
+                    if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
-                    this.rowsTextEdit = (android.widget.EditText)
+                    if (null == this.rowsTextEdit) this.rowsTextEdit = (android.widget.EditText)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
-                    this.colsTextEdit = (android.widget.EditText)
+                    if (null == this.colsTextEdit) this.colsTextEdit = (android.widget.EditText)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
 
                     this.builder.setView(view).setPositiveButton(

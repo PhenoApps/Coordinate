@@ -63,9 +63,9 @@ class NamingAlertDialog extends java.lang.Object
                     }
 
                     assert null != view;
-                    this.rowSpinner =(android.widget.Spinner)
+                    if (null == this.rowSpinner) this.rowSpinner =(android.widget.Spinner)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-                    this.colSpinner = (android.widget.Spinner)
+                    if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
 
                     this.builder.setView(view).setPositiveButton(
