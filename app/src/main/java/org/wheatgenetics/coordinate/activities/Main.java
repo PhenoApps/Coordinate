@@ -72,6 +72,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog
+ * org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
  * org.wheatgenetics.coordinate.database.EntriesTable
@@ -565,6 +567,8 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog
         optionalFieldsAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.NamingAlertDialog namingAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog
+        templateOptionsAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1504,21 +1508,19 @@ android.view.View.OnKeyListener
     // region Subaction Drawer Methods
     private void loadExistingTemplateOrCreateNewTemplate()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.template_options)
-            .setItems(this.templateOptions, new android.content.DialogInterface.OnClickListener()
+        if (null == this.templateOptionsAlertDialog) this.templateOptionsAlertDialog =
+            new org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        if (0 == which)
-                            org.wheatgenetics.coordinate.activities.
-                                Main.this.loadExistingTemplate();
-                        else
-                            org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate();
-                    }
-                }).show();
+                    public void loadExistingTemplate()
+                    { org.wheatgenetics.coordinate.activities.Main.this.loadExistingTemplate(); }
+
+                    @java.lang.Override
+                    public void createNewTemplate()
+                    { org.wheatgenetics.coordinate.activities.Main.this.createNewTemplate(); }
+                });
+        this.templateOptionsAlertDialog.show();
     }
 
     private void newGridNow() throws org.json.JSONException
