@@ -66,6 +66,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog
+ * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
  * org.wheatgenetics.coordinate.database.EntriesTable
@@ -554,6 +556,8 @@ android.view.View.OnKeyListener
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.ExcludeCellsAlertDialog
         excludeCellsAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog
+        newTemplateAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -2222,51 +2226,14 @@ android.view.View.OnKeyListener
 
     private void createNewTemplate()
     {
-        assert null != this.templateModel;
-        this.templateModel.clearExcludes();
-
-        this.nonNullOptionalFields =
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
-
-        android.view.View view;
-        {
-            final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-            view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new,
-                new android.widget.LinearLayout(this), false);
-        }
-
-        assert null != view;
-        final android.widget.EditText nameTextEdit = (android.widget.EditText)
-            view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
-        final android.widget.EditText rowsTextEdit = (android.widget.EditText)
-            view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
-        final android.widget.EditText colsTextEdit = (android.widget.EditText)
-            view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
-
-        assert null != nameTextEdit;
-        nameTextEdit.setText("");
-        assert null != rowsTextEdit;
-        rowsTextEdit.setText(this.templateModel.getRowsAsString());
-        assert null != colsTextEdit;
-        colsTextEdit.setText(this.templateModel.getColsAsString());
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.templateOptions[1])
-            .setView(view)
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
-                new android.content.DialogInterface.OnClickListener()
+        if (null == this.newTemplateAlertDialog) this.newTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
+                    public void createNewTemplate(final java.lang.String name,
+                    final java.lang.String rows, final java.lang.String cols)
                     {
-                        assert null != dialog;
-                        dialog.cancel();
-
-                        final java.lang.String name = nameTextEdit.getText().toString().trim();
-                        final java.lang.String cols = colsTextEdit.getText().toString().trim();
-                        final java.lang.String rows = rowsTextEdit.getText().toString().trim();
-
                         assert null !=
                             org.wheatgenetics.coordinate.activities.Main.this.templateModel;
                         org.wheatgenetics.coordinate.activities.Main.this.templateModel.assign(
@@ -2300,9 +2267,14 @@ android.view.View.OnKeyListener
 
                         org.wheatgenetics.coordinate.activities.Main.this.inputTemplateNewExtra();
                     }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                });
+
+        assert null != this.templateModel; this.templateModel.clearExcludes();
+        this.nonNullOptionalFields =
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
+
+        this.newTemplateAlertDialog.show(
+            this.templateModel.getRowsAsString(), this.templateModel.getColsAsString());
     }
 
     private void loadExistingTemplate()

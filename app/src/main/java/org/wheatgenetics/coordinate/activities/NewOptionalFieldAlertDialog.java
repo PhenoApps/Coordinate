@@ -22,10 +22,9 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     interface Handler
     {
         public abstract void retry(int errorMsgResId, java.lang.String oldName,
-        java.lang.String newDefault);
-
+          java.lang.String newDefault);
         public abstract void addOptionalField(java.lang.String newName,
-        java.lang.String newDefault);
+            java.lang.String newDefault);
     }
 
     // region Fields
