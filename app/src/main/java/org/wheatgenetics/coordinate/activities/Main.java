@@ -66,6 +66,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog
  * org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog
+ * org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NamingAlertDialog
  * org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
@@ -573,6 +575,8 @@ android.view.View.OnKeyListener
         templateOptionsAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.ExtraNewTemplateAlertDialog
         extraNewTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog
+        loadTemplateAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -2210,18 +2214,16 @@ android.view.View.OnKeyListener
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(this.templateOptions[0])
-            .setItems(templateModels.titles(), new android.content.DialogInterface.OnClickListener()
+        if (null == this.loadTemplateAlertDialog) this.loadTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
+                    public void loadTemplate(final int i)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(which);
-                        if (null != templateModel) switch (which)
+                            templateModels.get(i);
+                        if (null != templateModel) switch (i)
                         {
                             case 0:                                                     // seed tray
                                 org.wheatgenetics.coordinate.activities.
@@ -2250,7 +2252,8 @@ android.view.View.OnKeyListener
                                 break;
                         }
                     }
-                }).show();
+                });
+        this.loadTemplateAlertDialog.show(templateModels.titles());
     }
 
     private void deleteTemplate()
