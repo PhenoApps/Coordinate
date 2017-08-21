@@ -58,6 +58,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.activities.DeleteTemplateAlertDialog
+ * org.wheatgenetics.coordinate.activities.DeleteTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.ExcludeCellsAlertDialog
@@ -577,6 +579,8 @@ android.view.View.OnKeyListener
         extraNewTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog
         loadTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.DeleteTemplateAlertDialog
+        deleteTemplateAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -2261,16 +2265,15 @@ android.view.View.OnKeyListener
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
 
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.delete_template)
-            .setItems(templateModels.titles(), new android.content.DialogInterface.OnClickListener()
+        if (null == this.deleteTemplateAlertDialog) this.deleteTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.activities.DeleteTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.DeleteTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
+                    public void deleteTemplate(final int i)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(which);
+                            templateModels.get(i);
                         if (null != templateModel)
                             org.wheatgenetics.coordinate.activities.Main.this.confirm(
                                 /* title => */
@@ -2278,27 +2281,28 @@ android.view.View.OnKeyListener
                                 /* message => */
                                     org.wheatgenetics.coordinate.R.string.delete_template_warning,
                                 /* yesRunnable => */ new java.lang.Runnable()
-                                {
-                                    @java.lang.Override
-                                    public void run()
                                     {
-                                        if (org.wheatgenetics.coordinate.activities.
-                                        Main.this.deleteTemplate(templateModel))
+                                        @java.lang.Override
+                                        public void run()
                                         {
-                                            org.wheatgenetics.coordinate.activities.Main.this.
-                                                showLongToast(org.wheatgenetics.coordinate.
-                                                    R.string.template_deleted);
-                                            org.wheatgenetics.coordinate.activities.
-                                                Main.this.loadExistingTemplateOrCreateNewTemplate();
+                                            if (org.wheatgenetics.coordinate.activities.
+                                            Main.this.deleteTemplate(templateModel))
+                                            {
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    showLongToast(org.wheatgenetics.coordinate.
+                                                        R.string.template_deleted);
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    loadExistingTemplateOrCreateNewTemplate();
+                                            }
+                                            else
+                                                org.wheatgenetics.coordinate.activities.Main.this.
+                                                    showLongToast(org.wheatgenetics.coordinate.
+                                                        R.string.template_not_deleted);
                                         }
-                                        else
-                                            org.wheatgenetics.coordinate.activities.Main.this.
-                                                showLongToast(org.wheatgenetics.coordinate.
-                                                    R.string.template_not_deleted);
-                                    }
-                                });
+                                    });
                     }
-                }).show();
+                });
+        this.deleteTemplateAlertDialog.show(templateModels.titles());
     }
 
     @android.annotation.SuppressLint("DefaultLocale")
