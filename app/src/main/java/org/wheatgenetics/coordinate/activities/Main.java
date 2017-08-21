@@ -64,6 +64,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.ExcludeCellsAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.NamingAlertDialog
+ * org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog
@@ -562,6 +564,7 @@ android.view.View.OnKeyListener
         newTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog
         optionalFieldsAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.NamingAlertDialog namingAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1365,55 +1368,25 @@ android.view.View.OnKeyListener
 
     private void inputNaming()
     {
-        android.app.AlertDialog alertDialog;
-        {
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            builder.setTitle(org.wheatgenetics.coordinate.R.string.naming).setCancelable(false)
-                .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-            {
-                android.view.View view;
+        if (null == this.namingAlertDialog) this.namingAlertDialog =
+            new org.wheatgenetics.coordinate.activities.NamingAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler()
                 {
-                    final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
-                    view =
-                        layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
-                }
-
-                assert null != view;
-                final android.widget.Spinner rowSpinner = (android.widget.Spinner)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-                final android.widget.Spinner colSpinner = (android.widget.Spinner)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
-
-                assert null != this.templateModel;
-                assert null != rowSpinner        ;
-                assert null != colSpinner        ;
-                rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
-                colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
-
-                builder.setView(view).setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                    new android.content.DialogInterface.OnClickListener()
+                    @java.lang.Override
+                    public void setNumbering(final boolean rowNumbering, final boolean colNumbering)
                     {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
-                                setRowNumbering(rowSpinner.getSelectedItemPosition() == 0);
-                            org.wheatgenetics.coordinate.activities.Main.this.templateModel.
-                                setColNumbering(colSpinner.getSelectedItemPosition() == 0);
+                        assert null !=
+                            org.wheatgenetics.coordinate.activities.Main.this.templateModel;
+                        org.wheatgenetics.coordinate.activities.
+                            Main.this.templateModel.setRowNumbering(rowNumbering);
+                        org.wheatgenetics.coordinate.activities.
+                            Main.this.templateModel.setColNumbering(colNumbering);
+                    }
+                });
 
-                            assert null != dialog;
-                            dialog.cancel();
-                        }
-                    });
-            }
-            alertDialog = builder.create();
-        }
-        assert null != alertDialog;
-        alertDialog.setCancelable(false);
-        alertDialog.show();
+        assert null != this.templateModel;
+        this.namingAlertDialog.show(
+            this.templateModel.getRowNumbering(), this.templateModel.getColNumbering());
     }
 
     private void tempLoad(final int mode) throws org.json.JSONException
