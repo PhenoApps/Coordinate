@@ -68,6 +68,8 @@ package org.wheatgenetics.coordinate.activities;
  * org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog
  * org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog
+ * org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog.Handler
  * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
  * org.wheatgenetics.coordinate.barcodes.IntentResult
  * org.wheatgenetics.coordinate.database.EntriesTable
@@ -558,6 +560,8 @@ android.view.View.OnKeyListener
         excludeCellsAlertDialog = null;
     private org.wheatgenetics.coordinate.activities.NewTemplateAlertDialog
         newTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog
+        optionalFieldsAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -1315,38 +1319,27 @@ android.view.View.OnKeyListener
 
     private void addNewOptionalFields()
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        assert null != this.nonNullOptionalFields;
-        builder.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
-            .setMultiChoiceItems(this.nonNullOptionalFields.names(),
-                this.nonNullOptionalFields.checks(),
-                new android.content.DialogInterface.OnMultiChoiceClickListener()
+        if (null == this.optionalFieldsAlertDialog) this.optionalFieldsAlertDialog =
+            new org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog(this,
+                new org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which, final boolean isChecked)
+                    public void checkOptionalField(final int i, final boolean b)
                     {
                         org.wheatgenetics.coordinate.activities.Main.this.setOptionalFieldChecked(
-                            which, isChecked);
+                            i, b);
                     }
-                })
-            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
-                new android.content.DialogInterface.OnClickListener()
-                {
+
                     @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
+                    public void addNewOptionalField()
                     {
-                        assert null != dialog;
-                        dialog.cancel();
                         org.wheatgenetics.coordinate.activities.Main.this.addNewOptionalField(
                             "", "");
                     }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                });
+        assert null != this.nonNullOptionalFields;
+        this.optionalFieldsAlertDialog.show(this.nonNullOptionalFields.names(),
+            this.nonNullOptionalFields.checks());
     }
 
     private void exclude()
