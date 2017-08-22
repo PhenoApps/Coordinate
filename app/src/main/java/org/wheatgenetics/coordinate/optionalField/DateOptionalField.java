@@ -28,12 +28,7 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     { super(jsonObject); }
     // endregion
 
-    // region Public Methods
     @java.lang.Override
     public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
-
-    @java.lang.Override
-    public java.lang.String getSafeValue() { return this.getSafeValue(); }
-    // endregion
 }

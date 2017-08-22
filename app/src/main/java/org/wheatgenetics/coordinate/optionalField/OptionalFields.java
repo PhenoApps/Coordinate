@@ -15,10 +15,12 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
     static class Iterator extends java.lang.Object
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
     {
+        // region Fields
         final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>
             arrayList;
         final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
             listIterator;
+        // endregion
 
         Iterator(final java.util.ArrayList<
         org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList)
@@ -31,11 +33,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
             this.listIterator = this.arrayList.listIterator();
         }
 
+        // region Overridden Methods
         @java.lang.Override
         public boolean hasNext()
         {
-            assert null != this.listIterator;
-            assert null != this.arrayList   ;
+            assert null != this.listIterator; assert null != this.arrayList;
             while (this.listIterator.hasNext())
             {
                 final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField =
@@ -57,6 +59,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
 
         @java.lang.Override
         public void remove() { throw new java.lang.UnsupportedOperationException(); }
+        // endregion
     }
 
     java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
@@ -74,8 +77,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
                 final org.wheatgenetics.coordinate.optionalField.OptionalFields f =
                     (org.wheatgenetics.coordinate.optionalField.OptionalFields) o;
 
-                assert null != this.arrayList;
-                assert null != f.arrayList   ;
+                assert null != this.arrayList; assert null != f.arrayList;
                 if (this.arrayList.size() != f.arrayList.size())
                     return false;
                 else
@@ -83,7 +85,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
                     {
                         int i = 0;
                         for (final org.wheatgenetics.coordinate.optionalField.OptionalField
-                        optionalField : this)
+                        optionalField: this)
                             if (!optionalField.equals(f.arrayList.get(i++))) return false;
                     }
                     return true;
@@ -95,7 +97,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
     @java.lang.Override
     public int hashCode()
     {
-        java.lang.String signatures = null;
+        java.lang.StringBuffer signatures = null;
         {
             boolean firstOptionalField = true;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
@@ -105,15 +107,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
                 catch (final org.json.JSONException e) { continue; }
 
                 if (firstOptionalField)
-                    signatures = signature;
+                    signatures = new java.lang.StringBuffer(signature);
                 else
                 {
-                    signatures += '\n' + signature;
+                    signatures.append('\n' + signature);
                     firstOptionalField = false;
                 }
             }
         }
-        return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(signatures).hashCode();
+        return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(signatures.toString()).hashCode();
     }
     // endregion
 

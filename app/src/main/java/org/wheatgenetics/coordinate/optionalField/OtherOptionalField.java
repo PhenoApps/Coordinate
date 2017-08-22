@@ -19,9 +19,8 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     OtherOptionalField(final java.lang.String name, final java.lang.String hint)
     { super(name, hint); }
 
-    OtherOptionalField(final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint)
-    { super(name, hint); this.setValue(value); }
+    OtherOptionalField(final java.lang.String name, final java.lang.String value,
+    final java.lang.String hint) { super(name, hint); this.setValue(value); }
 
     OtherOptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException,
     org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
