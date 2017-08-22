@@ -20,13 +20,13 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.R
  */
-class LoadSeedTrayTemplateAlertDialog extends java.lang.Object
+class LoadTemplateAlertDialog extends java.lang.Object
 {
     interface Handler { public abstract void process(java.lang.String values[]); }
 
     // region Fields
-    private final android.app.Activity                                                    activity;
-    private final org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog.Handler handler ;
+    private final android.app.Activity                                            activity;
+    private final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler ;
 
     private android.app.AlertDialog.Builder              builder           = null;
     private java.util.ArrayList<android.widget.EditText> editTextArrayList = null;
@@ -47,8 +47,8 @@ class LoadSeedTrayTemplateAlertDialog extends java.lang.Object
         this.handler.process(values);
     }
 
-    LoadSeedTrayTemplateAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog.Handler handler)
+    LoadTemplateAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
     void show(final java.lang.CharSequence title,
@@ -65,8 +65,7 @@ class LoadSeedTrayTemplateAlertDialog extends java.lang.Object
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
                         {
-                            org.wheatgenetics.coordinate.ui.
-                                LoadSeedTrayTemplateAlertDialog.this.process();
+                            org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
                             assert null != dialog; dialog.cancel();
                         }
                     })

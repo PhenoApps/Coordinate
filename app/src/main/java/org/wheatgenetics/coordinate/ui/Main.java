@@ -74,8 +74,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
@@ -578,7 +578,7 @@ android.view.View.OnKeyListener
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ImportAlertDialog importAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog
+    private org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
         loadSeedTrayTemplateAlertDialog = null;
 
     // region Resources Fields
@@ -1590,8 +1590,8 @@ android.view.View.OnKeyListener
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null == this.loadSeedTrayTemplateAlertDialog) this.loadSeedTrayTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.LoadSeedTrayTemplateAlertDialog.Handler()
+            new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void process(final java.lang.String values[])
