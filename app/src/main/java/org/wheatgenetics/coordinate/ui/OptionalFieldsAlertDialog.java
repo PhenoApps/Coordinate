@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -22,8 +22,8 @@ class OptionalFieldsAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.content.Context                                                   context;
-    private final org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog.Handler handler;
+    private final android.content.Context                                           context;
+    private final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler;
 
     private android.app.AlertDialog.Builder builder = null;
     private android.content.DialogInterface.OnMultiChoiceClickListener
@@ -47,7 +47,7 @@ class OptionalFieldsAlertDialog extends java.lang.Object
                     public void onClick(final android.content.DialogInterface dialogInterface,
                     final int i, final boolean b)
                     {
-                        org.wheatgenetics.coordinate.activities.
+                        org.wheatgenetics.coordinate.ui.
                             OptionalFieldsAlertDialog.this.checkOptionalField(i, b);
                     }
                 };
@@ -56,7 +56,7 @@ class OptionalFieldsAlertDialog extends java.lang.Object
     // endregion
 
     OptionalFieldsAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.activities.OptionalFieldsAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler)
     { super(); this.context = context; this.handler = handler; }
 
     void show(final java.lang.CharSequence items[], final boolean checkedItems[])
@@ -73,7 +73,7 @@ class OptionalFieldsAlertDialog extends java.lang.Object
                         final int which)
                         {
                             assert null != dialog; dialog.cancel();
-                            org.wheatgenetics.coordinate.activities.
+                            org.wheatgenetics.coordinate.ui.
                                 OptionalFieldsAlertDialog.this.addNewOptionalField();
                         }
                     })

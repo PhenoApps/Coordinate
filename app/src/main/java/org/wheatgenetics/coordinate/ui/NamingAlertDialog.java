@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -21,8 +21,8 @@ class NamingAlertDialog extends java.lang.Object
     { public abstract void setNumbering(boolean rowNumbering, boolean colNumbering); }
 
     // region Fields
-    private final android.app.Activity                                              activity;
-    private final org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler handler ;
+    private final android.app.Activity                                      activity;
+    private final org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler handler ;
 
     private android.app.AlertDialog         alertDialog  = null                   ;
     private android.app.AlertDialog.Builder builder      = null                   ;
@@ -38,7 +38,7 @@ class NamingAlertDialog extends java.lang.Object
     }
 
     NamingAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.activities.NamingAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
     void show(final boolean rowNumbering, final boolean colNumbering)
@@ -76,7 +76,7 @@ class NamingAlertDialog extends java.lang.Object
                             public void onClick(final android.content.DialogInterface dialog,
                             final int which)
                             {
-                                org.wheatgenetics.coordinate.activities.
+                                org.wheatgenetics.coordinate.ui.
                                     NamingAlertDialog.this.setNumbering();
 
                                 assert null != dialog;

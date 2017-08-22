@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -22,8 +22,8 @@ class ExcludeAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.content.Context                                            context;
-    private final org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler handler;
+    private final android.content.Context                                    context;
+    private final org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler handler;
 
     private android.app.AlertDialog         alertDialog  = null;
     private android.app.AlertDialog.Builder builder      = null;
@@ -41,7 +41,7 @@ class ExcludeAlertDialog extends java.lang.Object
     }
 
     ExcludeAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler handler)
     { super(); this.context = context; this.handler = handler; }
 
     void show()
@@ -66,8 +66,7 @@ class ExcludeAlertDialog extends java.lang.Object
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
                         {
-                            org.wheatgenetics.coordinate.activities.ExcludeAlertDialog.this.exclude(
-                                which);
+                            org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which);
                         }
                     });
             }

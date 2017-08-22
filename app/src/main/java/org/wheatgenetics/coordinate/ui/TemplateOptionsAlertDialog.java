@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -16,9 +16,8 @@ class TemplateOptionsAlertDialog extends java.lang.Object
     { public abstract void loadExistingTemplate(); public abstract void createNewTemplate(); }
 
     // region Fields
-    private final android.content.Context context;
-    private final org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog.Handler
-        handler;
+    private final android.content.Context                                            context;
+    private final org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler handler;
 
     private android.app.AlertDialog         alertDialog  = null;
     private android.app.AlertDialog.Builder builder      = null;
@@ -35,7 +34,7 @@ class TemplateOptionsAlertDialog extends java.lang.Object
     }
 
     TemplateOptionsAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.activities.TemplateOptionsAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler handler)
     { super(); this.context = context; this.handler = handler; }
 
     void show()
@@ -58,7 +57,7 @@ class TemplateOptionsAlertDialog extends java.lang.Object
                             public void onClick(final android.content.DialogInterface dialog,
                             final int which)
                             {
-                                org.wheatgenetics.coordinate.activities.
+                                org.wheatgenetics.coordinate.ui.
                                     TemplateOptionsAlertDialog.this.onClick(which);
                             }
                         });

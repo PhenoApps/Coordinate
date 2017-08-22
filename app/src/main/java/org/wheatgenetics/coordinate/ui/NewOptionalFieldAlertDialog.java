@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -28,9 +28,8 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.app.Activity activity;
-    private final org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler
-        handler;
+    private final android.app.Activity                                                activity;
+    private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler ;
 
     private android.app.AlertDialog         alertDialog  = null                        ;
     private android.app.AlertDialog.Builder builder      = null                        ;
@@ -49,12 +48,11 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     {
         assert null != this.nameEditText;
         final java.lang.String newName =
-            org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.getText(
-                this.nameEditText);
+            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(this.nameEditText);
 
         assert null != this.defaultEditText;
         final java.lang.String newDefault =
-            org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.getText(
+            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(
                 this.defaultEditText);
 
         assert null != this.handler;
@@ -72,7 +70,7 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     // endregion
 
     NewOptionalFieldAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)
@@ -121,7 +119,7 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
                         {
-                            org.wheatgenetics.coordinate.activities.NewOptionalFieldAlertDialog.
+                            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
                                 this.handlePositiveButtonClick(oldName, dialog);
                         }
                     });

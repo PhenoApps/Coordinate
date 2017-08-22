@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -14,8 +14,8 @@ class LoadTemplateAlertDialog extends java.lang.Object
     interface Handler { public abstract void loadTemplate(int i); }
 
     // region Fields
-    private final android.content.Context                                                 context;
-    private final org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog.Handler handler;
+    private final android.content.Context                                         context;
+    private final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler;
 
     private android.app.AlertDialog.Builder                 builder                 = null;
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;
@@ -34,8 +34,7 @@ class LoadTemplateAlertDialog extends java.lang.Object
                 public void onClick(final android.content.DialogInterface dialogInterface,
                 final int i)
                 {
-                    org.wheatgenetics.coordinate.activities.
-                        LoadTemplateAlertDialog.this.loadTemplate(i);
+                    org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.loadTemplate(i);
                 }
             };
         return this.onClickListenerInstance;
@@ -43,7 +42,7 @@ class LoadTemplateAlertDialog extends java.lang.Object
     // endregion
 
     LoadTemplateAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.activities.LoadTemplateAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler)
     { super(); this.context = context; this.handler = handler; }
 
     void show(final java.lang.CharSequence items[])

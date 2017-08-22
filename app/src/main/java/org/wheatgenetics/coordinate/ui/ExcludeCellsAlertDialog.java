@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -15,37 +15,37 @@ package org.wheatgenetics.coordinate.activities;
  *
  * org.wheatgenetics.coordinate.R
  */
-class ExportAlertDialog extends java.lang.Object
+class ExcludeCellsAlertDialog extends java.lang.Object
 {
-    interface Handler { public abstract void exportGrid(java.lang.String fileName); }
+    interface Handler { public abstract void excludeCells(int amount); }
 
     // region Fields
-    private final android.app.Activity                                              activity;
-    private final org.wheatgenetics.coordinate.activities.ExportAlertDialog.Handler handler ;
+    private final android.app.Activity                                            activity;
+    private final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler ;
 
-    private android.app.AlertDialog         alertDialog = null;
-    private android.app.AlertDialog.Builder builder     = null;
-    private android.widget.EditText         editText    = null;
+    private android.app.AlertDialog         alertDialog  = null;
+    private android.app.AlertDialog.Builder builder      = null;
     // endregion
 
-    private void exportGrid()
+    private void excludeCells(final int amount)
     {
-        assert null != this.editText; assert null != this.handler;
-        this.handler.exportGrid(this.editText.getText().toString().trim());
+        assert null != this.handler;
+        this.handler.excludeCells(amount);
     }
 
-    ExportAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.activities.ExportAlertDialog.Handler handler)
+    ExcludeCellsAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
-    void show(final java.lang.String datedFirstValue)
+    void show()
     {
         if (null == this.alertDialog)
         {
             if (null == this.builder)
             {
                 this.builder = new android.app.AlertDialog.Builder(this.activity);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.filename_set);
+                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.random)
+                    .setCancelable(false);
                 {
                     android.view.View view;
                     {
@@ -53,15 +53,15 @@ class ExportAlertDialog extends java.lang.Object
                         final android.view.LayoutInflater layoutInflater =
                             this.activity.getLayoutInflater();
                         view = layoutInflater.inflate(
-                            org.wheatgenetics.coordinate.R.layout.file_input, null);
+                            org.wheatgenetics.coordinate.R.layout.random, null);
                     }
 
-                    if (null == this.editText)
-                    {
-                        assert null != view;
-                        this.editText = (android.widget.EditText)
-                            view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
-                    }
+                    assert null != view;
+                    final android.widget.EditText editText = (android.widget.EditText)
+                        view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
+
+                    assert null != editText;
+                    editText.setText("1");
 
                     this.builder.setView(view).setPositiveButton(
                         org.wheatgenetics.coordinate.R.string.ok,
@@ -71,9 +71,13 @@ class ExportAlertDialog extends java.lang.Object
                             public void onClick(final android.content.DialogInterface dialog,
                             final int which)
                             {
-                                assert null != dialog; dialog.cancel();
-                                org.wheatgenetics.coordinate.activities.
-                                    ExportAlertDialog.this.exportGrid();
+                                org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.
+                                    this.excludeCells(
+                                        org.wheatgenetics.coordinate.utils.Utils.convert(
+                                            editText.getText().toString()));
+
+                                assert null != dialog;
+                                dialog.cancel();
                             }
                         });
                 }
@@ -83,10 +87,6 @@ class ExportAlertDialog extends java.lang.Object
             this.alertDialog = this.builder.create();
             assert null != this.alertDialog;
         }
-
-        assert null != this.editText;
-        this.editText.setText(datedFirstValue);
-
         this.alertDialog.show();
     }
 }

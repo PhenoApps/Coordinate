@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.activities;
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -17,10 +17,9 @@ class ExcludeRowsOrColsAlertDialog extends java.lang.Object
     interface Handler { public abstract void process(boolean checkedItems[]); }
 
     // region Fields
-    private final android.content.Context context;
-    private final int                     label  ;
-    private final org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler
-        handler;
+    private final android.content.Context                                              context;
+    private final int                                                                  label  ;
+    private final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler;
 
     private android.app.AlertDialog.Builder builder = null;
     // endregion
@@ -32,7 +31,7 @@ class ExcludeRowsOrColsAlertDialog extends java.lang.Object
     }
 
     ExcludeRowsOrColsAlertDialog(final android.content.Context context, final int label,
-    final org.wheatgenetics.coordinate.activities.ExcludeRowsOrColsAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler)
     { super(); this.context = context; this.label = label; this.handler = handler; }
 
     void show(final java.lang.String items[], final boolean checkedItems[])
@@ -52,7 +51,7 @@ class ExcludeRowsOrColsAlertDialog extends java.lang.Object
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
                         {
-                            org.wheatgenetics.coordinate.activities.
+                            org.wheatgenetics.coordinate.ui.
                                 ExcludeRowsOrColsAlertDialog.this.process(checkedItems);
                         }
                     })
