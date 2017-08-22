@@ -70,6 +70,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.ImportAlertDialog
+ * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
@@ -572,6 +574,7 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.ImportAlertDialog importAlertDialog = null;
 
     // region Resources Fields
     private java.lang.String appNameStringResource, okStringResource, templateOptions[];
@@ -2317,70 +2320,66 @@ android.view.View.OnKeyListener
         {
             final long gridIds[] = indexes;
 
-            final android.app.AlertDialog.Builder builder =
-                new android.app.AlertDialog.Builder(this);
-            builder.setTitle(org.wheatgenetics.coordinate.R.string.import_grid).setItems(names,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
+            if (null == this.importAlertDialog) this.importAlertDialog =
+                new org.wheatgenetics.coordinate.ui.ImportAlertDialog(this,
+                    new org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler()
                     {
-                        if (which < gridIds.length)
+                        @Override
+                        public void importGrid(final int i)
                         {
-                            final long gridId = gridIds[which];
-
+                            if (i < gridIds.length)
                             {
-                                assert null !=
-                                    org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                                org.wheatgenetics.coordinate.ui.
-                                    Main.this.sharedPreferences.setCurrentGrid(gridId);
-                            }
+                                final long gridId = gridIds[i];
 
-                            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                                new org.wheatgenetics.coordinate.database.GridsTable(
-                                    org.wheatgenetics.coordinate.ui.Main.this);
-                            if (gridsTable.get(gridId))
-                            {
-                                org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
+                                {
+                                    assert null !=
+                                        org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
+                                    org.wheatgenetics.coordinate.ui.
+                                        Main.this.sharedPreferences.setCurrentGrid(gridId);
+                                }
+
+                                final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+                                    new org.wheatgenetics.coordinate.database.GridsTable(
+                                        org.wheatgenetics.coordinate.ui.Main.this);
+                                if (gridsTable.get(gridId))
+                                {
+                                    org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
                                     /* title => */ gridsTable.templateTitle,
                                     /* rows  => */ gridsTable.templateRows ,
                                     /* cols  => */ gridsTable.templateCols );
-                                org.wheatgenetics.coordinate.ui.Main.this.gridId = gridsTable.id;
-                                org.wheatgenetics.coordinate.ui.Main.this.gridTitle =
-                                    gridsTable.title;
-                                org.wheatgenetics.coordinate.ui.Main.this.templateModel.setType(
-                                    gridsTable.templateType);
+                                    org.wheatgenetics.coordinate.ui.Main.this.gridId = gridsTable.id;
+                                    org.wheatgenetics.coordinate.ui.Main.this.gridTitle =
+                                        gridsTable.title;
+                                    org.wheatgenetics.coordinate.ui.Main.this.templateModel.setType(
+                                        gridsTable.templateType);
 
-                                final org.wheatgenetics.coordinate.database.TemplatesTable
-                                    templatesTable =
+                                    final org.wheatgenetics.coordinate.database.TemplatesTable
+                                        templatesTable =
                                         org.wheatgenetics.coordinate.ui.Main.this.templatesTable();
 
-                                if (templatesTable.get(gridsTable.templateId))  // database
-                                {
-                                    org.wheatgenetics.coordinate.ui.Main.this.importOptionalFields(
-                                        templatesTable.options);
+                                    if (templatesTable.get(gridsTable.templateId))  // database
+                                    {
+                                        org.wheatgenetics.coordinate.ui.Main.this.importOptionalFields(
+                                            templatesTable.options);
 
-                                    org.wheatgenetics.coordinate.ui.Main.this.templateModel.
-                                        setRowNumbering(templatesTable.rowNumbering);  // model
-                                    org.wheatgenetics.coordinate.ui.Main.this.templateModel.
-                                        setColNumbering(templatesTable.colNumbering);  // model
+                                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.
+                                            setRowNumbering(templatesTable.rowNumbering);  // model
+                                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.
+                                            setColNumbering(templatesTable.colNumbering);  // model
+                                    }
+
+                                    org.wheatgenetics.coordinate.ui.
+                                        Main.this.templateModel.clearExcludes();  // model
+
+                                    org.wheatgenetics.coordinate.ui.Main.this.populateTemplate();
                                 }
-
-                                org.wheatgenetics.coordinate.ui.
-                                    Main.this.templateModel.clearExcludes();  // model
-
-                                org.wheatgenetics.coordinate.ui.Main.this.populateTemplate();
+                                else
+                                    org.wheatgenetics.coordinate.ui.Main.this.alert(
+                                        org.wheatgenetics.coordinate.R.string.import_grid_failed);
                             }
-                            else
-                                org.wheatgenetics.coordinate.ui.Main.this.alert(
-                                    org.wheatgenetics.coordinate.R.string.import_grid_failed);
-
-                            assert null != dialog;
-                            dialog.cancel();
                         }
-                    }
-                }).show();
+                    });
+            this.importAlertDialog.show(names);
         }
     }
 
