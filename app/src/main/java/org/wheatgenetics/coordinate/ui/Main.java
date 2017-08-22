@@ -72,8 +72,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
@@ -570,7 +570,8 @@ android.view.View.OnKeyListener
         templateOptionsAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
         extraNewTemplateAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog loadTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
+        loadExistingTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
@@ -2185,9 +2186,9 @@ android.view.View.OnKeyListener
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
-        if (null == this.loadTemplateAlertDialog) this.loadTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
+        if (null == this.loadExistingTemplateAlertDialog) this.loadExistingTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void loadTemplate(final int i)
@@ -2224,7 +2225,7 @@ android.view.View.OnKeyListener
                         }
                     }
                 });
-        this.loadTemplateAlertDialog.show(templateModels.titles());
+        this.loadExistingTemplateAlertDialog.show(templateModels.titles());
     }
 
     private void deleteTemplate()

@@ -9,13 +9,13 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  */
-class LoadTemplateAlertDialog extends java.lang.Object
+class LoadExistingTemplateAlertDialog extends java.lang.Object
 {
     interface Handler { public abstract void loadTemplate(int i); }
 
     // region Fields
-    private final android.content.Context                                         context;
-    private final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler;
+    private final android.content.Context                                                 context;
+    private final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler;
 
     private android.app.AlertDialog.Builder                 builder                 = null;
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;
@@ -33,14 +33,17 @@ class LoadTemplateAlertDialog extends java.lang.Object
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialogInterface,
                 final int i)
-                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.loadTemplate(i); }
+                {
+                    org.wheatgenetics.coordinate.ui.
+                        LoadExistingTemplateAlertDialog.this.loadTemplate(i);
+                }
             };
         return this.onClickListenerInstance;
     }
     // endregion
 
-    LoadTemplateAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler)
+    LoadExistingTemplateAlertDialog(final android.content.Context context,
+    final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler)
     { super(); this.context = context; this.handler = handler; }
 
     void show(final java.lang.CharSequence items[])
