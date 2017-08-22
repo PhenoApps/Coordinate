@@ -1623,6 +1623,8 @@ android.view.View.OnKeyListener
                             }
                             i++;
                         }
+                        org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(
+                            org.wheatgenetics.coordinate.model.TemplateType.SEED);
                     }
                 });
         assert null != templateModel;

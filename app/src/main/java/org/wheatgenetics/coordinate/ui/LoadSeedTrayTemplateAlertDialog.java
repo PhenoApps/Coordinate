@@ -67,6 +67,7 @@ class LoadSeedTrayTemplateAlertDialog extends java.lang.Object
                         {
                             org.wheatgenetics.coordinate.ui.
                                 LoadSeedTrayTemplateAlertDialog.this.process();
+                            assert null != dialog; dialog.cancel();
                         }
                     })
                 .setNegativeButton(
@@ -124,13 +125,11 @@ class LoadSeedTrayTemplateAlertDialog extends java.lang.Object
                     linearLayout.addView(optionalFieldView);
                 }
             }
-            this.builder.setView(view);
+            this.builder.setTitle(title).setView(view);
         }
 
         final android.app.AlertDialog alertDialog = this.builder.create();
-        assert null != alertDialog;
-        alertDialog.setTitle(title);
-        alertDialog.getWindow().setSoftInputMode(
+        assert null != alertDialog; alertDialog.getWindow().setSoftInputMode(
             android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         alertDialog.show();
     }
