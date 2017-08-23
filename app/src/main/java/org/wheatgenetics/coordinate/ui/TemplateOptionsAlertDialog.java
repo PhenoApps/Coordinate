@@ -23,7 +23,7 @@ class TemplateOptionsAlertDialog extends java.lang.Object
     private android.app.AlertDialog.Builder builder      = null;
     // endregion
 
-    private void onClick(final int which)
+    private void choose(final int which)
     {
         assert null != this.handler; switch (which)
         {
@@ -57,7 +57,7 @@ class TemplateOptionsAlertDialog extends java.lang.Object
                             final int which)
                             {
                                 org.wheatgenetics.coordinate.ui.
-                                    TemplateOptionsAlertDialog.this.onClick(which);
+                                    TemplateOptionsAlertDialog.this.choose(which);
                             }
                         });
             }
