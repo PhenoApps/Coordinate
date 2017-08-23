@@ -58,8 +58,7 @@ class ExportAlertDialog extends java.lang.Object
 
                     if (null == this.editText)
                     {
-                        assert null != view;
-                        this.editText = (android.widget.EditText)
+                        assert null != view; this.editText = (android.widget.EditText)
                             view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
                     }
 

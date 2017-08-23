@@ -28,10 +28,7 @@ class ExcludeCellsAlertDialog extends java.lang.Object
     // endregion
 
     private void excludeCells(final int amount)
-    {
-        assert null != this.handler;
-        this.handler.excludeCells(amount);
-    }
+    { assert null != this.handler; this.handler.excludeCells(amount); }
 
     ExcludeCellsAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler)
@@ -60,8 +57,7 @@ class ExcludeCellsAlertDialog extends java.lang.Object
                     final android.widget.EditText editText = (android.widget.EditText)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
 
-                    assert null != editText;
-                    editText.setText("1");
+                    assert null != editText; editText.setText("1");
 
                     this.builder.setView(view).setPositiveButton(
                         org.wheatgenetics.coordinate.R.string.ok,
@@ -75,9 +71,7 @@ class ExcludeCellsAlertDialog extends java.lang.Object
                                     this.excludeCells(
                                         org.wheatgenetics.coordinate.utils.Utils.convert(
                                             editText.getText().toString()));
-
-                                assert null != dialog;
-                                dialog.cancel();
+                                assert null != dialog; dialog.cancel();
                             }
                         });
                 }

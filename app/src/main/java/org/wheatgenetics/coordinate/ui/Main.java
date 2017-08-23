@@ -2017,11 +2017,11 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void loadTemplate(final int i)
+                    public void loadTemplate(final int which)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(i);
-                        if (null != templateModel) switch (i)
+                            templateModels.get(which);
+                        if (null != templateModel) switch (which)
                         {
                             case 0:                                                     // seed tray
                                 org.wheatgenetics.coordinate.ui.Main.this.loadSeedTrayTemplate(
@@ -2064,10 +2064,10 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void deleteTemplate(final int i)
+                    public void deleteTemplate(final int which)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(i);
+                            templateModels.get(which);
                         if (null != templateModel)
                             org.wheatgenetics.coordinate.ui.Main.this.confirm(
                                 /* title => */
@@ -2152,11 +2152,11 @@ android.view.View.OnKeyListener
                     new org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler()
                     {
                         @Override
-                        public void importGrid(final int i)
+                        public void importGrid(final int which)
                         {
-                            if (i < gridIds.length)
+                            if (which < gridIds.length)
                             {
-                                final long gridId = gridIds[i];
+                                final long gridId = gridIds[which];
 
                                 {
                                     assert null !=

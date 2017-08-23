@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 class LoadExistingTemplateAlertDialog extends java.lang.Object
 {
-    interface Handler { public abstract void loadTemplate(int i); }
+    interface Handler { public abstract void loadTemplate(int which); }
 
     // region Fields
     private final android.content.Context                                                 context;
@@ -22,8 +22,8 @@ class LoadExistingTemplateAlertDialog extends java.lang.Object
     // endregion
 
     // region Private Methods
-    private void loadTemplate(final int i)
-    { assert null != this.handler; this.handler.loadTemplate(i); }
+    private void loadTemplate(final int which)
+    { assert null != this.handler; this.handler.loadTemplate(which); }
 
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
@@ -31,11 +31,10 @@ class LoadExistingTemplateAlertDialog extends java.lang.Object
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialogInterface,
-                final int i)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.
-                        LoadExistingTemplateAlertDialog.this.loadTemplate(i);
+                        LoadExistingTemplateAlertDialog.this.loadTemplate(which);
                 }
             };
         return this.onClickListenerInstance;

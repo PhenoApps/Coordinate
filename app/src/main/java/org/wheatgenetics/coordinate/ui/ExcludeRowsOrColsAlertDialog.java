@@ -25,10 +25,7 @@ class ExcludeRowsOrColsAlertDialog extends java.lang.Object
     // endregion
 
     private void process(final boolean checkedItems[])
-    {
-        assert null != this.handler;
-        this.handler.process(checkedItems);
-    }
+    { assert null != this.handler; this.handler.process(checkedItems); }
 
     ExcludeRowsOrColsAlertDialog(final android.content.Context context, final int label,
     final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler)
@@ -39,8 +36,7 @@ class ExcludeRowsOrColsAlertDialog extends java.lang.Object
         if (null == this.builder)
         {
             this.builder = new android.app.AlertDialog.Builder(this.context);
-            assert null != this.context;
-            this.builder.setTitle(
+            assert null != this.context; this.builder.setTitle(
                     this.context.getString(
                         org.wheatgenetics.coordinate.R.string.exclude_title) +
                     " - " + this.context.getString(this.label))

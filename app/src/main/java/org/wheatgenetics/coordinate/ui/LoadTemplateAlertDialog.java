@@ -42,9 +42,7 @@ class LoadTemplateAlertDialog extends java.lang.Object
             for (final android.widget.EditText editText: this.editTextArrayList)
                 if (null != editText) values[i] = editText.getText().toString().trim();
         }
-
-        assert null != this.handler;
-        this.handler.process(values);
+        assert null != this.handler; this.handler.process(values);
     }
 
     LoadTemplateAlertDialog(final android.app.Activity activity,

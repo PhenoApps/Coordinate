@@ -46,12 +46,10 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     private void handlePositiveButtonClick(final java.lang.String oldName,
     final android.content.DialogInterface dialog)
     {
-        assert null != this.nameEditText;
-        final java.lang.String newName =
+        assert null != this.nameEditText; final java.lang.String newName =
             org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(this.nameEditText);
 
-        assert null != this.defaultEditText;
-        final java.lang.String newDefault =
+        assert null != this.defaultEditText; final java.lang.String newDefault =
             org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(
                 this.defaultEditText);
 
@@ -61,9 +59,7 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
                 oldName, newDefault);
         else
         {
-            assert null != dialog;
-            dialog.cancel();
-
+            assert null != dialog; dialog.cancel();
             this.handler.addOptionalField(newName, newDefault);
         }
     }

@@ -22,41 +22,29 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
     interface Handler
     {
         public abstract void addOptionalFields(); public abstract void addExcludes();
-        public abstract void addNaming()        ; public abstract void handleNext() ;
+        public abstract void addNaming()        ; public abstract void handleNext ();
     }
 
     // region Fields
     private final android.app.Activity                                                activity;
     private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler ;
 
-    private android.app.AlertDialog         alertDialog  = null;
-    private android.app.AlertDialog.Builder builder      = null;
+    private android.app.AlertDialog         alertDialog = null;
+    private android.app.AlertDialog.Builder builder     = null;
     // endregion
 
     // region Private Methods
     private void addOptionalFields()
-    {
-        assert null != this.handler;
-        this.handler.addOptionalFields();
-    }
+    { assert null != this.handler; this.handler.addOptionalFields(); }
 
     private void addExcludes()
-    {
-        assert null != this.handler;
-        this.handler.addExcludes();
-    }
+    { assert null != this.handler; this.handler.addExcludes(); }
 
     private void addNaming()
-    {
-        assert null != this.handler;
-        this.handler.addNaming();
-    }
+    { assert null != this.handler; this.handler.addNaming(); }
 
     private void handleNext()
-    {
-        assert null != this.handler;
-        this.handler.handleNext();
-    }
+    { assert null != this.handler; this.handler.handleNext(); }
     // endregion
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,
@@ -137,9 +125,7 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
                         {
-                            assert null != dialog;
-                            dialog.cancel();
-
+                            assert null != dialog; dialog.cancel();
                             org.wheatgenetics.coordinate.ui.
                                 ExtraNewTemplateAlertDialog.this.handleNext();
                         }

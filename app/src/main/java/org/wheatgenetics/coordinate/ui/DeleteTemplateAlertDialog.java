@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 class DeleteTemplateAlertDialog extends java.lang.Object
 {
-    interface Handler { public abstract void deleteTemplate(int i); }
+    interface Handler { public abstract void deleteTemplate(int which); }
 
     // region Fields
     private final android.content.Context                                           context;
@@ -31,11 +31,10 @@ class DeleteTemplateAlertDialog extends java.lang.Object
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialogInterface,
-                final int i)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.this.deleteTemplate(
-                        i);
+                        which);
                 }
             };
         return this.onClickListenerInstance;

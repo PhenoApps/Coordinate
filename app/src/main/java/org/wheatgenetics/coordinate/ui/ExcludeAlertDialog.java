@@ -31,8 +31,7 @@ class ExcludeAlertDialog extends java.lang.Object
 
     private void exclude(final int which)
     {
-        assert null != this.handler;
-        switch (which)
+        assert null != this.handler; switch (which)
         {
             case 0: this.handler.excludeRows (); break;
             case 1: this.handler.excludeCols (); break;
@@ -55,8 +54,7 @@ class ExcludeAlertDialog extends java.lang.Object
                     .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel       ,
                         org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
-                assert null != this.context;
-                final java.lang.String items[] = {
+                assert null != this.context; final java.lang.String items[] = {
                     this.context.getString(org.wheatgenetics.coordinate.R.string.rows  ),
                     this.context.getString(org.wheatgenetics.coordinate.R.string.cols  ),
                     this.context.getString(org.wheatgenetics.coordinate.R.string.random)};
@@ -65,9 +63,7 @@ class ExcludeAlertDialog extends java.lang.Object
                         @java.lang.Override
                         public void onClick(final android.content.DialogInterface dialog,
                         final int which)
-                        {
-                            org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which);
-                        }
+                        { org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which); }
                     });
             }
             this.alertDialog = this.builder.create();

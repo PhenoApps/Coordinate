@@ -63,7 +63,7 @@ class NamingAlertDialog extends java.lang.Object
                     }
 
                     assert null != view;
-                    if (null == this.rowSpinner) this.rowSpinner =(android.widget.Spinner)
+                    if (null == this.rowSpinner) this.rowSpinner = (android.widget.Spinner)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
                     if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
@@ -78,9 +78,7 @@ class NamingAlertDialog extends java.lang.Object
                             {
                                 org.wheatgenetics.coordinate.ui.
                                     NamingAlertDialog.this.setNumbering();
-
-                                assert null != dialog;
-                                dialog.cancel();
+                                assert null != dialog; dialog.cancel();
                             }
                         });
                 }

@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 public class ImportAlertDialog extends java.lang.Object
 {
-    interface Handler { public abstract void importGrid(int i); }
+    interface Handler { public abstract void importGrid(int which); }
 
     // region Fields
     private final android.content.Context                                   context;
@@ -22,8 +22,8 @@ public class ImportAlertDialog extends java.lang.Object
     // endregion
 
     // region Private Methods
-    private void importGrid(final int i)
-    { assert null != this.handler; this.handler.importGrid(i); }
+    private void importGrid(final int which)
+    { assert null != this.handler; this.handler.importGrid(which); }
 
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
@@ -31,11 +31,10 @@ public class ImportAlertDialog extends java.lang.Object
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialogInterface,
-                final int i)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    org.wheatgenetics.coordinate.ui.ImportAlertDialog.this.importGrid(i);
-                    assert null != dialogInterface; dialogInterface.cancel();
+                    org.wheatgenetics.coordinate.ui.ImportAlertDialog.this.importGrid(which);
+                    assert null != dialog; dialog.cancel();
                 }
             };
         return this.onClickListenerInstance;

@@ -25,8 +25,7 @@ class TemplateOptionsAlertDialog extends java.lang.Object
 
     private void onClick(final int which)
     {
-        assert null != this.handler;
-        switch (which)
+        assert null != this.handler; switch (which)
         {
             case 0: this.handler.loadExistingTemplate(); break;
             case 1: this.handler.createNewTemplate   (); break;
