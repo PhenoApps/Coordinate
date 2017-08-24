@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.Context
  * android.content.DialogInterface
@@ -11,8 +10,9 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
  */
-class ExcludeAlertDialog extends java.lang.Object
+class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
 {
     interface Handler
     {
@@ -21,13 +21,7 @@ class ExcludeAlertDialog extends java.lang.Object
         public abstract void excludeCells();
     }
 
-    // region Fields
-    private final android.content.Context                                    context;
     private final org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler handler;
-
-    private android.app.AlertDialog         alertDialog  = null;
-    private android.app.AlertDialog.Builder builder      = null;
-    // endregion
 
     private void exclude(final int which)
     {
@@ -41,34 +35,22 @@ class ExcludeAlertDialog extends java.lang.Object
 
     ExcludeAlertDialog(final android.content.Context context,
     final org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler handler)
-    { super(); this.context = context; this.handler = handler; }
+    { super(context, org.wheatgenetics.coordinate.R.string.exclude_title); this.handler = handler; }
 
-    void show()
+    @java.lang.Override
+    android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
-        if (null == this.alertDialog)
-        {
-            if (null == this.builder)
+        assert null != this.context;
+        return super.makeBuilder(titleId).setItems(new java.lang.String[] {
+                this.context.getString(org.wheatgenetics.coordinate.R.string.rows  ),
+                this.context.getString(org.wheatgenetics.coordinate.R.string.cols  ),
+                this.context.getString(org.wheatgenetics.coordinate.R.string.random)},
+            new android.content.DialogInterface.OnClickListener()
             {
-                this.builder = new android.app.AlertDialog.Builder(this.context);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.exclude_title)
-                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel       ,
-                        org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-                assert null != this.context; final java.lang.String items[] = {
-                    this.context.getString(org.wheatgenetics.coordinate.R.string.rows  ),
-                    this.context.getString(org.wheatgenetics.coordinate.R.string.cols  ),
-                    this.context.getString(org.wheatgenetics.coordinate.R.string.random)};
-                this.builder.setItems(items, new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        { org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which); }
-                    });
-            }
-            this.alertDialog = this.builder.create();
-            assert null != this.alertDialog;
-        }
-        this.alertDialog.show();
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                { org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which); }
+            }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel     ,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
     }
 }

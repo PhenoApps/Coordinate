@@ -2,26 +2,20 @@ package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.Context
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
  */
-class TemplateOptionsAlertDialog extends java.lang.Object
+class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
 {
     interface Handler
     { public abstract void loadExistingTemplate(); public abstract void createNewTemplate(); }
 
-    // region Fields
-    private final android.content.Context                                            context;
     private final org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler handler;
-
-    private android.app.AlertDialog         alertDialog  = null;
-    private android.app.AlertDialog.Builder builder      = null;
-    // endregion
 
     private void choose(final int which)
     {
@@ -34,36 +28,23 @@ class TemplateOptionsAlertDialog extends java.lang.Object
 
     TemplateOptionsAlertDialog(final android.content.Context context,
     final org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler handler)
-    { super(); this.context = context; this.handler = handler; }
-
-    void show()
     {
-        if (null == this.alertDialog)
-        {
-            if (null == this.builder)
+        super(context, org.wheatgenetics.coordinate.R.string.template_options);
+        this.handler = handler;
+    }
+
+    @java.lang.Override
+    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    {
+        assert null != this.context;
+        return super.makeBuilder(titleId).setItems(new java.lang.String[] {
+                this.context.getString(org.wheatgenetics.coordinate.R.string.template_load),
+                this.context.getString(org.wheatgenetics.coordinate.R.string.template_new )},
+            new android.content.DialogInterface.OnClickListener()
             {
-                this.builder = new android.app.AlertDialog.Builder(this.context);
-                assert null != this.context;
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.template_options)
-                    .setItems(new java.lang.String[] {
-                            this.context.getString(
-                                org.wheatgenetics.coordinate.R.string.template_load),
-                            this.context.getString(
-                                org.wheatgenetics.coordinate.R.string.template_new)},
-                        new android.content.DialogInterface.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.content.DialogInterface dialog,
-                            final int which)
-                            {
-                                org.wheatgenetics.coordinate.ui.
-                                    TemplateOptionsAlertDialog.this.choose(which);
-                            }
-                        });
-            }
-            this.alertDialog = this.builder.create();
-            assert null != this.alertDialog;
-        }
-        this.alertDialog.show();
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                { org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.this.choose(which); }
+            });
     }
 }
