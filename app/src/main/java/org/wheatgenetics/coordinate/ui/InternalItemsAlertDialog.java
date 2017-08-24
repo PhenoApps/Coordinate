@@ -9,8 +9,8 @@ package org.wheatgenetics.coordinate.ui;
  */
 abstract class InternalItemsAlertDialog extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
 {
-    private android.app.AlertDialog alertDialog = null;
-    private int                     titleId           ;
+    private final int                     titleId           ;
+    private       android.app.AlertDialog alertDialog = null;
 
     InternalItemsAlertDialog(final android.content.Context context, final int titleId)
     { super(context); this.titleId = titleId; }
@@ -20,7 +20,7 @@ abstract class InternalItemsAlertDialog extends org.wheatgenetics.coordinate.ui.
         if (null == this.alertDialog)
         {
             if (null == this.builder) this.makeBuilder(this.titleId);
-            this.alertDialog = this.builder.create();
+            assert null != this.builder; this.alertDialog = this.builder.create();
             assert null != this.alertDialog;
         }
         this.alertDialog.show();
