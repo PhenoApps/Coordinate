@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.Context
  * android.content.DialogInterface
@@ -12,8 +11,9 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  */
-class OptionalFieldsAlertDialog extends java.lang.Object
+class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
 {
     interface Handler
     {
@@ -22,11 +22,8 @@ class OptionalFieldsAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.content.Context                                           context;
     private final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler;
-
-    private android.app.AlertDialog.Builder builder = null;
-    private android.content.DialogInterface.OnMultiChoiceClickListener
+    private       android.content.DialogInterface.OnMultiChoiceClickListener
         onMultiChoiceClickListenerInstance = null;
     // endregion
 
@@ -57,32 +54,28 @@ class OptionalFieldsAlertDialog extends java.lang.Object
 
     OptionalFieldsAlertDialog(final android.content.Context context,
     final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler)
-    { super(); this.context = context; this.handler = handler; }
+    { super(context); this.handler = handler; }
+
+    @java.lang.Override
+    android.app.AlertDialog.Builder makeBuilder()
+    {
+        return super.makeBuilder().setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
+            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert null != dialog; dialog.cancel();
+                        org.wheatgenetics.coordinate.ui.
+                            OptionalFieldsAlertDialog.this.addNewOptionalField();
+                    }
+                })
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+    }
 
     void show(final java.lang.CharSequence items[], final boolean checkedItems[])
-    {
-        if (null == this.builder)
-        {
-            this.builder = new android.app.AlertDialog.Builder(this.context);
-            this.builder.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
-                .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            assert null != dialog; dialog.cancel();
-                            org.wheatgenetics.coordinate.ui.
-                                OptionalFieldsAlertDialog.this.addNewOptionalField();
-                        }
-                    })
-                .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener())
-                .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-        }
-        this.builder.setMultiChoiceItems(items, checkedItems, this.onMultiChoiceClickListener());
-        this.builder.create().show();
-    }
+    { this.show(items, checkedItems, this.onMultiChoiceClickListener()); }
 }
