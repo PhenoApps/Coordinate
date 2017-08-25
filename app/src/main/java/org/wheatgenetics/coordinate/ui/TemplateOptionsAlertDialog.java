@@ -36,10 +36,9 @@ class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.Interna
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
-        assert null != this.context;
         return super.makeBuilder(titleId).setItems(new java.lang.String[] {
-                this.context.getString(org.wheatgenetics.coordinate.R.string.template_load),
-                this.context.getString(org.wheatgenetics.coordinate.R.string.template_new )},
+                this.getString(org.wheatgenetics.coordinate.R.string.template_load),
+                this.getString(org.wheatgenetics.coordinate.R.string.template_new )},
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override

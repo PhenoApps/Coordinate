@@ -32,10 +32,9 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
     {
-        assert null != this.context;
         return super.makeBuilder().setTitle(
-            this.context.getString(org.wheatgenetics.coordinate.R.string.exclude_title) + " - " +
-            this.context.getString(this.label                                         )          );
+            this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) + " - " +
+            this.getString(this.label                                         )          );
     }
 
     @java.lang.Override

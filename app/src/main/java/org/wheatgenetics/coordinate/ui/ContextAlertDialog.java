@@ -9,11 +9,14 @@ package org.wheatgenetics.coordinate.ui;
  */
 abstract class ContextAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
-    final android.content.Context context;
+    private final android.content.Context context;
 
     ContextAlertDialog(final android.content.Context context) { super(); this.context = context; }
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
     { return this.builder = new android.app.AlertDialog.Builder(this.context); }
+
+    java.lang.String getString(final int resId)
+    { assert null != this.context; return this.context.getString(resId); }
 }

@@ -40,11 +40,10 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
-        assert null != this.context;
         return super.makeBuilder(titleId).setItems(new java.lang.String[] {
-                this.context.getString(org.wheatgenetics.coordinate.R.string.rows  ),
-                this.context.getString(org.wheatgenetics.coordinate.R.string.cols  ),
-                this.context.getString(org.wheatgenetics.coordinate.R.string.random)},
+                this.getString(org.wheatgenetics.coordinate.R.string.rows  ),
+                this.getString(org.wheatgenetics.coordinate.R.string.cols  ),
+                this.getString(org.wheatgenetics.coordinate.R.string.random)},
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override

@@ -23,6 +23,7 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
     }
 
+    // region Package Methods
     android.app.AlertDialog.Builder configureBuilder(final java.lang.CharSequence items[],
     final boolean checkedItems[],
     final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
@@ -42,4 +43,5 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
         this.configureBuilder(items, checkedItems, onMultiChoiceClickListener);
         this.builder.create().show();
     }
+    // endregion
 }

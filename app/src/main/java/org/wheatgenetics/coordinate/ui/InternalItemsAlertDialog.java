@@ -9,8 +9,10 @@ package org.wheatgenetics.coordinate.ui;
  */
 abstract class InternalItemsAlertDialog extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
 {
+    // region Fields
     private final int                     titleId           ;
     private       android.app.AlertDialog alertDialog = null;
+    // endregion
 
     InternalItemsAlertDialog(final android.content.Context context, final int titleId)
     { super(context); this.titleId = titleId; }
