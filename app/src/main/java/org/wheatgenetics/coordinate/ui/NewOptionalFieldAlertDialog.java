@@ -66,9 +66,9 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    android.app.AlertDialog.Builder configure(final int titleId)
     {
-        super.configureOnce(titleId).setCancelable(false);
+        super.configure(titleId).setCancelable(false);
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -100,7 +100,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)
     {
-        this.configureOnce(org.wheatgenetics.coordinate.R.string.new_optional_field);
+        this.configure(org.wheatgenetics.coordinate.R.string.new_optional_field);
 
         this.oldName = oldName;
         assert null != this.nameEditText   ; this.nameEditText.setText   (oldName   );

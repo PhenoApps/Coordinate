@@ -34,9 +34,9 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    android.app.AlertDialog.Builder configure(final int titleId)
     {
-        super.configureOnce(titleId);
+        super.configure(titleId);
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -68,7 +68,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
 
     void show(final java.lang.String datedFirstValue)
     {
-        this.configureOnce(org.wheatgenetics.coordinate.R.string.filename_set);
+        this.configure(org.wheatgenetics.coordinate.R.string.filename_set);
         assert null != this.editText; this.editText.setText(datedFirstValue);
         this.show();
     }

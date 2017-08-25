@@ -29,9 +29,9 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    android.app.AlertDialog.Builder configure(final int titleId)
     {
-        super.configureOnce(titleId).setCancelable(false);
+        super.configure(titleId).setCancelable(false);
 
         {
             final android.view.View view =
@@ -64,7 +64,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
 
     void show()
     {
-        this.configureOnce(org.wheatgenetics.coordinate.R.string.random);
+        this.configure(org.wheatgenetics.coordinate.R.string.random);
         super.show();
     }
 }

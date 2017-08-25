@@ -44,9 +44,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    android.app.AlertDialog.Builder configure(final int titleId)
     {
-        super.configureOnce(titleId);
+        super.configure(titleId);
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -82,7 +82,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
 
     void show(final java.lang.String rows, final java.lang.String cols)
     {
-        this.configureOnce(org.wheatgenetics.coordinate.R.string.template_new);
+        this.configure(org.wheatgenetics.coordinate.R.string.template_new);
 
         assert null != this.nameTextEdit; this.nameTextEdit.setText(""  );
         assert null != this.rowsTextEdit; this.rowsTextEdit.setText(rows);

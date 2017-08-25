@@ -37,9 +37,9 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    android.app.AlertDialog.Builder configure(final int titleId)
     {
-        super.configureOnce(titleId).setCancelable(false);
+        super.configure(titleId).setCancelable(false);
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -71,7 +71,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
 
     void show(final boolean rowNumbering, final boolean colNumbering)
     {
-        this.configureOnce(org.wheatgenetics.coordinate.R.string.naming);
+        this.configure(org.wheatgenetics.coordinate.R.string.naming);
 
         assert null != this.rowSpinner; this.rowSpinner.setSelection(rowNumbering ? 0 : 1);
         assert null != this.colSpinner; this.colSpinner.setSelection(colNumbering ? 0 : 1);
