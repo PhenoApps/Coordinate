@@ -9,7 +9,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.Button
- * android.widget.LinearLayout
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -45,9 +44,8 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
         super.configure(titleId);
 
         {
-            final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.template_new_extra,
-                new android.widget.LinearLayout(this.activity), false);
+            final android.view.View view =
+                this.inflate(org.wheatgenetics.coordinate.R.layout.template_new_extra);
 
             assert null != view;
             {

@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  * android.view.View
  * android.widget.EditText
- * android.widget.LinearLayout
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -49,9 +48,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
         super.configure(titleId);
 
         {
-            final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.template_new,
-                new android.widget.LinearLayout(this.activity), false);
+            final android.view.View view =
+                this.inflate(org.wheatgenetics.coordinate.R.layout.template_new);
 
             assert null != view;
             if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)

@@ -5,13 +5,16 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.Activity
  * android.app.AlertDialog.Builder
  * android.view.LayoutInflater
+ * android.view.View
  *
  * org.wheatgenetics.coordinate.ui.AlertDialog
  */
 abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
-            final android.app.Activity        activity                     ;
+    // region Fields
+    private final android.app.Activity        activity                     ;
     private       android.view.LayoutInflater layoutInflaterInstance = null;
+    // endregion
 
     ActivityAlertDialog(final android.app.Activity activity) { super(); this.activity = activity; }
 
@@ -19,6 +22,7 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
     android.app.AlertDialog.Builder makeBuilder()
     { return this.builder = new android.app.AlertDialog.Builder(this.activity); }
 
+    // region Package Methods
     android.view.LayoutInflater layoutInflater()
     {
         if (null == this.layoutInflaterInstance)
@@ -28,4 +32,13 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
         }
         return this.layoutInflaterInstance;
     }
+
+    android.view.View inflate(final int resource)
+    {
+        return this.layoutInflater().inflate(
+            /* resource     => */ resource                                      ,
+            /* root         => */ new android.widget.LinearLayout(this.activity),
+            /* attachToRoot => */ false                                         );
+    }
+    // endregion
 }

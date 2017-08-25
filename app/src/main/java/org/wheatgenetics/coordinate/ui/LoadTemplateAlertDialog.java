@@ -74,19 +74,18 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
 
         this.builder.setTitle(title);
         {
-            android.view.View view;
+            final android.view.View view =
+                this.inflate(org.wheatgenetics.coordinate.R.layout.grid_new);
             {
                 final android.view.LayoutInflater layoutInflater = this.layoutInflater();
-
-                assert null != layoutInflater; view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.grid_new,
-                    new android.widget.LinearLayout(this.activity), false);
+                assert null != layoutInflater;
 
                 assert null != view;
                 final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
+                assert null != linearLayout;
 
-                assert null != checkedOptionalFields; assert null != linearLayout;
+                assert null != checkedOptionalFields;
                 for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
                 checkedOptionalFields)
                 {
