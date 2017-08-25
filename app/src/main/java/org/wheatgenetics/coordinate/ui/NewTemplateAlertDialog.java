@@ -15,8 +15,9 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
-class NewTemplateAlertDialog extends java.lang.Object
+class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
     interface Handler
     {
@@ -25,12 +26,9 @@ class NewTemplateAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.app.Activity                                           activity;
-    private final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler handler ;
-
-    private android.app.AlertDialog         alertDialog  = null;
-    private android.app.AlertDialog.Builder builder      = null;
-    private android.widget.EditText nameTextEdit = null, rowsTextEdit = null, colsTextEdit = null;
+    private final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler handler;
+    private       android.widget.EditText nameTextEdit = null, rowsTextEdit = null,
+        colsTextEdit = null;
     // endregion
 
     private void createNewTemplate()
@@ -45,60 +43,60 @@ class NewTemplateAlertDialog extends java.lang.Object
 
     NewTemplateAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
+    { super(activity); this.handler = handler; }
+
+    @java.lang.Override
+    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    {
+        super.configureOnce(titleId);
+
+        {
+            android.view.View view;
+            {
+                assert null != this.activity;
+                final android.view.LayoutInflater layoutInflater =
+                    this.activity.getLayoutInflater();
+                view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new,
+                    new android.widget.LinearLayout(this.activity), false);
+            }
+
+            assert null != view;
+            if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
+            if (null == this.rowsTextEdit) this.rowsTextEdit = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
+            if (null == this.colsTextEdit) this.colsTextEdit = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
+
+            this.builder.setView(view);
+        }
+
+        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        assert null != dialog; dialog.cancel();
+                        org.wheatgenetics.coordinate.ui.
+                            NewTemplateAlertDialog.this.createNewTemplate();
+                    }
+                })
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+
+        return this.builder;
+    }
 
     void show(final java.lang.String rows, final java.lang.String cols)
     {
-        if (null == this.alertDialog)
-        {
-            if (null == this.builder)
-            {
-                this.builder = new android.app.AlertDialog.Builder(this.activity);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.template_new);
-                {
-                    android.view.View view;
-                    {
-                        assert null != this.activity;
-                        final android.view.LayoutInflater layoutInflater =
-                            this.activity.getLayoutInflater();
-                        view = layoutInflater.inflate(
-                            org.wheatgenetics.coordinate.R.layout.template_new,
-                            new android.widget.LinearLayout(this.activity), false);
-                    }
-
-                    assert null != view;
-                    if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
-                    if (null == this.rowsTextEdit) this.rowsTextEdit = (android.widget.EditText)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
-                    if (null == this.colsTextEdit) this.colsTextEdit = (android.widget.EditText)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
-
-                    this.builder.setView(view);
-                }
-                this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
-                        new android.content.DialogInterface.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.content.DialogInterface dialog,
-                            final int which)
-                            {
-                                assert null != dialog; dialog.cancel();
-                                org.wheatgenetics.coordinate.ui.
-                                    NewTemplateAlertDialog.this.createNewTemplate();
-                            }
-                        })
-                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                        org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
-            }
-            this.alertDialog = this.builder.create();
-            assert null != this.alertDialog;
-        }
+        this.configureOnce(org.wheatgenetics.coordinate.R.string.template_new);
 
         assert null != this.nameTextEdit; this.nameTextEdit.setText(""  );
         assert null != this.rowsTextEdit; this.rowsTextEdit.setText(rows);
         assert null != this.colsTextEdit; this.colsTextEdit.setText(cols);
 
-        this.alertDialog.show();
+        this.show();
     }
 }

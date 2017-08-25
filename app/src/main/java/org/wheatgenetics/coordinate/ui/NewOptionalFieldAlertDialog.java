@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
@@ -16,8 +15,9 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
-class NewOptionalFieldAlertDialog extends java.lang.Object
+class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
     interface Handler
     {
@@ -28,12 +28,9 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
     }
 
     // region Fields
-    private final android.app.Activity                                                activity;
-    private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler ;
-
-    private android.app.AlertDialog         alertDialog  = null                        ;
-    private android.app.AlertDialog.Builder builder      = null                        ;
-    private android.widget.EditText         nameEditText = null, defaultEditText = null;
+    private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler;
+    private       java.lang.String                                                    oldName;
+    private       android.widget.EditText         nameEditText = null, defaultEditText = null;
     // endregion
 
     // region Private Methods
@@ -43,20 +40,19 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
         return org.wheatgenetics.javalib.Utils.adjust(editText.getText().toString());
     }
 
-    private void handlePositiveButtonClick(final java.lang.String oldName,
-    final android.content.DialogInterface dialog)
+    private void handlePositiveButtonClick(final android.content.DialogInterface dialog)
     {
-        assert null != this.nameEditText; final java.lang.String newName =
+        final java.lang.String newName =
             org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(this.nameEditText);
 
-        assert null != this.defaultEditText; final java.lang.String newDefault =
+        final java.lang.String newDefault =
             org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(
                 this.defaultEditText);
 
         assert null != this.handler;
         if (0 == newName.length())
             this.handler.retry(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name,
-                oldName, newDefault);
+                this.oldName, newDefault);
         else
         {
             assert null != dialog; dialog.cancel();
@@ -67,64 +63,56 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
 
     NewOptionalFieldAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
+    { super(activity); this.handler = handler; }
+
+    @java.lang.Override
+    android.app.AlertDialog.Builder configureOnce(final int titleId)
+    {
+        super.configureOnce(titleId).setCancelable(false)
+            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
+                    {
+                        org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
+                            this.handlePositiveButtonClick(dialog);
+                    }
+                })
+            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+
+        {
+            android.view.View view;
+            {
+                assert null != this.activity;
+                final android.view.LayoutInflater layoutInflater =
+                    this.activity.getLayoutInflater();
+                view = layoutInflater.inflate(
+                    org.wheatgenetics.coordinate.R.layout.optional_new, null);
+            }
+
+            assert null != view;
+            if (null == this.nameEditText) this.nameEditText = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
+
+            if (null == this.defaultEditText) this.defaultEditText = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
+
+            this.builder.setView(view);
+        }
+
+        return this.builder;
+    }
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)
     {
-        if (null == this.alertDialog)
-        {
-            if (null == this.builder)
-            {
-                this.builder = new android.app.AlertDialog.Builder(this.activity);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.new_optional_field)
-                    .setCancelable(false)
-                    .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                        new android.content.DialogInterface.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.content.DialogInterface dialog,
-                            final int which)
-                            {
-                                org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
-                                    this.handlePositiveButtonClick(oldName, dialog);
-                            }
-                        })
-                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                        org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+        this.configureOnce(org.wheatgenetics.coordinate.R.string.new_optional_field);
 
-                android.view.View view;
-                {
-                    assert null != this.activity;
-                    final android.view.LayoutInflater layoutInflater =
-                        this.activity.getLayoutInflater();
-                    view = layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.optional_new, null);
-                }
-
-                assert null != view;
-                if (null == this.nameEditText)
-                {
-                    this.nameEditText = (android.widget.EditText)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
-                    assert null != this.nameEditText;
-                }
-
-                if (null == this.defaultEditText)
-                {
-                    this.defaultEditText = (android.widget.EditText)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
-                    assert null != this.defaultEditText;
-                }
-
-                this.builder.setView(view);
-            }
-            this.alertDialog = this.builder.create();
-            assert null != this.alertDialog;
-        }
-
+        this.oldName = oldName;
         assert null != this.nameEditText   ; this.nameEditText.setText   (oldName   );
         assert null != this.defaultEditText; this.defaultEditText.setText(oldDefault);
-
-        this.alertDialog.show();
+        this.show();
     }
 }
