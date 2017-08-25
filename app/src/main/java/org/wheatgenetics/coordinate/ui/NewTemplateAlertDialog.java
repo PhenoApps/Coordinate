@@ -3,11 +3,9 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.widget.EditText
  * android.widget.LinearLayout
@@ -51,14 +49,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
         super.configureOnce(titleId);
 
         {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.template_new,
-                    new android.widget.LinearLayout(this.activity), false);
-            }
+            final android.view.View view = this.layoutInflater().inflate(
+                org.wheatgenetics.coordinate.R.layout.template_new,
+                new android.widget.LinearLayout(this.activity), false);
 
             assert null != view;
             if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)
@@ -71,7 +64,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
             this.builder.setView(view);
         }
 
-        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
@@ -84,9 +77,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
                     }
                 })
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
-
-        return this.builder;
+                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
     }
 
     void show(final java.lang.String rows, final java.lang.String cols)
@@ -96,7 +87,6 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
         assert null != this.nameTextEdit; this.nameTextEdit.setText(""  );
         assert null != this.rowsTextEdit; this.rowsTextEdit.setText(rows);
         assert null != this.colsTextEdit; this.colsTextEdit.setText(cols);
-
         this.show();
     }
 }

@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.widget.EditText
  *
@@ -35,16 +34,10 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
         super.configureOnce(titleId).setCancelable(false);
 
         {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.random, null);
-            }
+            final android.view.View view =
+                this.layoutInflater().inflate(org.wheatgenetics.coordinate.R.layout.random, null);
 
-            assert null != view;
-            final android.widget.EditText editText = (android.widget.EditText)
+            assert null != view; final android.widget.EditText editText = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
 
             assert null != editText; editText.setText("1");

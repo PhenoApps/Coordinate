@@ -3,11 +3,9 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.Button
@@ -23,7 +21,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     interface Handler
     {
         public abstract void addOptionalFields(); public abstract void addExcludes();
-        public abstract void addNaming()        ; public abstract void handleNext ();
+        public abstract void addNaming        (); public abstract void handleNext ();
     }
 
     private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler;
@@ -33,10 +31,8 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     { assert null != this.handler; this.handler.addOptionalFields(); }
 
     private void addExcludes() { assert null != this.handler; this.handler.addExcludes(); }
-
-    private void addNaming() { assert null != this.handler; this.handler.addNaming(); }
-
-    private void handleNext() { assert null != this.handler; this.handler.handleNext(); }
+    private void addNaming  () { assert null != this.handler; this.handler.addNaming  (); }
+    private void handleNext () { assert null != this.handler; this.handler.handleNext (); }
     // endregion
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,
@@ -47,16 +43,11 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     android.app.AlertDialog.Builder configureOnce(final int titleId)
     {
         super.configureOnce(titleId);
+
         {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.template_new_extra,
-                    new android.widget.LinearLayout(this.activity), false);
-            }
+            final android.view.View view = this.layoutInflater().inflate(
+                org.wheatgenetics.coordinate.R.layout.template_new_extra,
+                new android.widget.LinearLayout(this.activity), false);
 
             assert null != view;
             {

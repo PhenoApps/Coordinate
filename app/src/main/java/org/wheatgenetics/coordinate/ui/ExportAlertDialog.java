@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.widget.EditText
  *
@@ -40,14 +39,8 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
         super.configureOnce(titleId);
 
         {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.file_input, null);
-            }
+            final android.view.View view = this.layoutInflater().inflate(
+                org.wheatgenetics.coordinate.R.layout.file_input, null);
 
             if (null == this.editText)
             {
@@ -58,7 +51,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
             assert null != this.builder; this.builder.setView(view);
         }
 
-        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
@@ -71,8 +64,6 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                 })
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                 org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-        return this.builder;
     }
 
     void show(final java.lang.String datedFirstValue)

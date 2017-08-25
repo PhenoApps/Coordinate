@@ -16,7 +16,7 @@ abstract class ShowingAlertDialog extends org.wheatgenetics.coordinate.ui.Activi
 
     // region Package Methods
     android.app.AlertDialog.Builder configureOnce(final int titleId)
-    { if (null == this.builder) this.builder = this.makeBuilder(titleId); return this.builder; }
+    { if (null == this.builder) this.makeBuilder(titleId); return this.builder; }
 
     void show()
     {

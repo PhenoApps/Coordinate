@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.widget.Spinner
  *
@@ -40,8 +39,22 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     @java.lang.Override
     android.app.AlertDialog.Builder configureOnce(final int titleId)
     {
-        super.configureOnce(titleId).setCancelable(false).setPositiveButton(
-                org.wheatgenetics.coordinate.R.string.ok,
+        super.configureOnce(titleId).setCancelable(false);
+
+        {
+            final android.view.View view = this.layoutInflater().inflate(
+                org.wheatgenetics.coordinate.R.layout.naming, null);
+
+            assert null != view;
+            if (null == this.rowSpinner) this.rowSpinner = (android.widget.Spinner)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
+            if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+
+            this.builder.setView(view);
+        }
+
+        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
@@ -54,26 +67,6 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                 })
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                 org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-        {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(org.wheatgenetics.coordinate.R.layout.naming, null);
-            }
-
-            assert null != view;
-            if (null == this.rowSpinner) this.rowSpinner = (android.widget.Spinner)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-            if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
-
-            this.builder.setView(view);
-        }
-
-        return this.builder;
     }
 
     void show(final boolean rowNumbering, final boolean colNumbering)

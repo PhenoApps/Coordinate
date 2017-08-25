@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.view.LayoutInflater
  * android.view.View
  * android.widget.EditText
  *
@@ -29,8 +28,9 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 
     // region Fields
     private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler;
-    private       java.lang.String                                                    oldName;
-    private       android.widget.EditText         nameEditText = null, defaultEditText = null;
+
+    private java.lang.String        oldName                                    ;
+    private android.widget.EditText nameEditText = null, defaultEditText = null;
     // endregion
 
     // region Private Methods
@@ -68,8 +68,22 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     @java.lang.Override
     android.app.AlertDialog.Builder configureOnce(final int titleId)
     {
-        super.configureOnce(titleId).setCancelable(false)
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+        super.configureOnce(titleId).setCancelable(false);
+
+        {
+            final android.view.View view = this.layoutInflater().inflate(
+                org.wheatgenetics.coordinate.R.layout.optional_new, null);
+
+            assert null != view;
+            if (null == this.nameEditText) this.nameEditText = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
+            if (null == this.defaultEditText) this.defaultEditText = (android.widget.EditText)
+                view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
+
+            this.builder.setView(view);
+        }
+
+        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
@@ -82,28 +96,6 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
                 })
             .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                 org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-
-        {
-            android.view.View view;
-            {
-                assert null != this.activity;
-                final android.view.LayoutInflater layoutInflater =
-                    this.activity.getLayoutInflater();
-                view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.optional_new, null);
-            }
-
-            assert null != view;
-            if (null == this.nameEditText) this.nameEditText = (android.widget.EditText)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
-
-            if (null == this.defaultEditText) this.defaultEditText = (android.widget.EditText)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
-
-            this.builder.setView(view);
-        }
-
-        return this.builder;
     }
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)
