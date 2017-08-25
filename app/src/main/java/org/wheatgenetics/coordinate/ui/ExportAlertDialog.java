@@ -62,8 +62,9 @@ class ExportAlertDialog extends java.lang.Object
                             view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
                     }
 
-                    this.builder.setView(view).setPositiveButton(
-                        org.wheatgenetics.coordinate.R.string.ok,
+                    this.builder.setView(view);
+                }
+                this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
                         new android.content.DialogInterface.OnClickListener()
                         {
                             @java.lang.Override
@@ -73,18 +74,15 @@ class ExportAlertDialog extends java.lang.Object
                                 assert null != dialog; dialog.cancel();
                                 org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid();
                             }
-                        });
-                }
-                this.builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                        })
+                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                        org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
             }
             this.alertDialog = this.builder.create();
             assert null != this.alertDialog;
         }
 
-        assert null != this.editText;
-        this.editText.setText(datedFirstValue);
-
+        assert null != this.editText; this.editText.setText(datedFirstValue);
         this.alertDialog.show();
     }
 }

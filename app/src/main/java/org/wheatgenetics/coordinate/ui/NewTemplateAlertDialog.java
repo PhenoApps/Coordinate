@@ -74,8 +74,9 @@ class NewTemplateAlertDialog extends java.lang.Object
                     if (null == this.colsTextEdit) this.colsTextEdit = (android.widget.EditText)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
 
-                    this.builder.setView(view).setPositiveButton(
-                        org.wheatgenetics.coordinate.R.string.next,
+                    this.builder.setView(view);
+                }
+                this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
                         new android.content.DialogInterface.OnClickListener()
                         {
                             @java.lang.Override
@@ -86,10 +87,9 @@ class NewTemplateAlertDialog extends java.lang.Object
                                 org.wheatgenetics.coordinate.ui.
                                     NewTemplateAlertDialog.this.createNewTemplate();
                             }
-                        });
-                }
-                this.builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
+                        })
+                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                        org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()).show();
             }
             this.alertDialog = this.builder.create();
             assert null != this.alertDialog;

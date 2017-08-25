@@ -48,8 +48,20 @@ class NamingAlertDialog extends java.lang.Object
             if (null == this.builder)
             {
                 this.builder = new android.app.AlertDialog.Builder(this.activity);
-                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.naming).
-                    setCancelable(false)
+                this.builder.setTitle(org.wheatgenetics.coordinate.R.string.naming)
+                    .setCancelable(false).setPositiveButton(
+                        org.wheatgenetics.coordinate.R.string.ok,
+                        new android.content.DialogInterface.OnClickListener()
+                        {
+                            @java.lang.Override
+                            public void onClick(final android.content.DialogInterface dialog,
+                            final int which)
+                            {
+                                org.wheatgenetics.coordinate.ui.
+                                    NamingAlertDialog.this.setNumbering();
+                                assert null != dialog; dialog.cancel();
+                            }
+                        })
                     .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                         org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
                 {
@@ -68,19 +80,7 @@ class NamingAlertDialog extends java.lang.Object
                     if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
 
-                    this.builder.setView(view).setPositiveButton(
-                        org.wheatgenetics.coordinate.R.string.ok,
-                        new android.content.DialogInterface.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.content.DialogInterface dialog,
-                            final int which)
-                            {
-                                org.wheatgenetics.coordinate.ui.
-                                    NamingAlertDialog.this.setNumbering();
-                                assert null != dialog; dialog.cancel();
-                            }
-                        });
+                    this.builder.setView(view);
                 }
             }
             this.alertDialog = this.builder.create();

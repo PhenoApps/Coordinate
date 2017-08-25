@@ -37,14 +37,11 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
     private void addOptionalFields()
     { assert null != this.handler; this.handler.addOptionalFields(); }
 
-    private void addExcludes()
-    { assert null != this.handler; this.handler.addExcludes(); }
+    private void addExcludes() { assert null != this.handler; this.handler.addExcludes(); }
 
-    private void addNaming()
-    { assert null != this.handler; this.handler.addNaming(); }
+    private void addNaming() { assert null != this.handler; this.handler.addNaming(); }
 
-    private void handleNext()
-    { assert null != this.handler; this.handler.handleNext(); }
+    private void handleNext() { assert null != this.handler; this.handler.handleNext(); }
     // endregion
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,
@@ -119,17 +116,18 @@ class ExtraNewTemplateAlertDialog extends java.lang.Object
                     this.builder.setView(view);
                 }
                 this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
+                        new android.content.DialogInterface.OnClickListener()
                         {
-                            assert null != dialog; dialog.cancel();
-                            org.wheatgenetics.coordinate.ui.
-                                ExtraNewTemplateAlertDialog.this.handleNext();
-                        }
-                    }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+                            @java.lang.Override
+                            public void onClick(final android.content.DialogInterface dialog,
+                            final int which)
+                            {
+                                assert null != dialog; dialog.cancel();
+                                org.wheatgenetics.coordinate.ui.
+                                    ExtraNewTemplateAlertDialog.this.handleNext();
+                            }
+                        })
+                    .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                         org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
             }
             this.alertDialog = this.builder.create();

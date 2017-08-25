@@ -78,6 +78,17 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
                 this.builder = new android.app.AlertDialog.Builder(this.activity);
                 this.builder.setTitle(org.wheatgenetics.coordinate.R.string.new_optional_field)
                     .setCancelable(false)
+                    .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+                        new android.content.DialogInterface.OnClickListener()
+                        {
+                            @java.lang.Override
+                            public void onClick(final android.content.DialogInterface dialog,
+                            final int which)
+                            {
+                                org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
+                                    this.handlePositiveButtonClick(oldName, dialog);
+                            }
+                        })
                     .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
                         org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
 
@@ -97,7 +108,6 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
                         view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
                     assert null != this.nameEditText;
                 }
-                this.nameEditText.setText(oldName);
 
                 if (null == this.defaultEditText)
                 {
@@ -105,24 +115,16 @@ class NewOptionalFieldAlertDialog extends java.lang.Object
                         view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
                     assert null != this.defaultEditText;
                 }
-                this.defaultEditText.setText(oldDefault);
 
-                this.builder.setView(view).setPositiveButton(
-                    org.wheatgenetics.coordinate.R.string.ok,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
-                                this.handlePositiveButtonClick(oldName, dialog);
-                        }
-                    });
+                this.builder.setView(view);
             }
             this.alertDialog = this.builder.create();
             assert null != this.alertDialog;
         }
+
+        assert null != this.nameEditText   ; this.nameEditText.setText   (oldName   );
+        assert null != this.defaultEditText; this.defaultEditText.setText(oldDefault);
+
         this.alertDialog.show();
     }
 }
