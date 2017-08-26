@@ -9,15 +9,18 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
  */
-public class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
+class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
 {
     interface Handler { public abstract void importGrid(int which); }
 
     private final org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler handler;
 
-    // region Private Methods
     private void importGrid(final int which)
     { assert null != this.handler; this.handler.importGrid(which); }
+
+    ImportAlertDialog(final android.content.Context context,
+    final org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler handler)
+    { super(context, org.wheatgenetics.coordinate.R.string.import_grid); this.handler = handler; }
 
     @java.lang.Override
     android.content.DialogInterface.OnClickListener makeOnClickListener()
@@ -32,9 +35,4 @@ public class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ExternalI
                 }
             };
     }
-    // endregion
-
-    ImportAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler handler)
-    { super(context, org.wheatgenetics.coordinate.R.string.import_grid); this.handler = handler; }
 }

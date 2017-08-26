@@ -7,8 +7,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
  */
@@ -40,7 +38,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
-        return super.makeBuilder(titleId).setItems(new java.lang.String[] {
+        super.makeBuilder(titleId).setItems(new java.lang.String[] {
                 this.getString(org.wheatgenetics.coordinate.R.string.rows  ),
                 this.getString(org.wheatgenetics.coordinate.R.string.cols  ),
                 this.getString(org.wheatgenetics.coordinate.R.string.random)},
@@ -49,7 +47,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 { org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which); }
-            }).setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel     ,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+            });
+        return this.setNegativeButton();
     }
 }

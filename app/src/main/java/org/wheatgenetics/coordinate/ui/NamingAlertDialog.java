@@ -9,8 +9,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.Spinner
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
@@ -54,19 +52,18 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
             this.builder.setView(view);
         }
 
-        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                new android.content.DialogInterface.OnClickListener()
+        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
-                        assert null != dialog; dialog.cancel();
-                    }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                    org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
+                    assert null != dialog; dialog.cancel();
+                }
+            });
+
+        return this.setNegativeButton();
     }
 
     void show(final boolean rowNumbering, final boolean colNumbering)

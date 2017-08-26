@@ -9,8 +9,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  * org.wheatgenetics.coordinate.utils.Utils
@@ -58,8 +56,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
                 });
         }
 
-        return this.builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+        return this.setNegativeButton();
     }
 
     void show()

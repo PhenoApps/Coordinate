@@ -15,29 +15,27 @@ class DeleteTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.External
 
     private final org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler handler;
 
-    // region Private Methods
-    private void deleteTemplate(final int i)
-    { assert null != this.handler; this.handler.deleteTemplate(i); }
-
-    @java.lang.Override
-    android.content.DialogInterface.OnClickListener makeOnClickListener()
-    {
-        return new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.this.deleteTemplate(
-                        which);
-                }
-            };
-    }
-    // endregion
+    private void deleteTemplate(final int which)
+    { assert null != this.handler; this.handler.deleteTemplate(which); }
 
     DeleteTemplateAlertDialog(final android.content.Context context,
     final org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler handler)
     {
         super(context, org.wheatgenetics.coordinate.R.string.delete_template);
         this.handler = handler;
+    }
+
+    @java.lang.Override
+    android.content.DialogInterface.OnClickListener makeOnClickListener()
+    {
+        return new android.content.DialogInterface.OnClickListener()
+        {
+            @java.lang.Override
+            public void onClick(final android.content.DialogInterface dialog, final int which)
+            {
+                org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.this.deleteTemplate(
+                    which);
+            }
+        };
     }
 }

@@ -16,9 +16,12 @@ extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
 
     private final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler;
 
-    // region Private Methods
     private void loadTemplate(final int which)
     { assert null != this.handler; this.handler.loadTemplate(which); }
+
+    LoadExistingTemplateAlertDialog(final android.content.Context context,
+    final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler)
+    { super(context, org.wheatgenetics.coordinate.R.string.template_load); this.handler = handler; }
 
     @java.lang.Override
     android.content.DialogInterface.OnClickListener makeOnClickListener()
@@ -33,9 +36,4 @@ extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
                 }
             };
     }
-    // endregion
-
-    LoadExistingTemplateAlertDialog(final android.content.Context context,
-    final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler)
-    { super(context, org.wheatgenetics.coordinate.R.string.template_load); this.handler = handler; }
 }

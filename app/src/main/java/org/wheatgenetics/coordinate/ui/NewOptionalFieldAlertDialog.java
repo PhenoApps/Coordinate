@@ -11,8 +11,6 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
@@ -83,19 +81,18 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
             this.builder.setView(view);
         }
 
-        return this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                new android.content.DialogInterface.OnClickListener()
+        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
-                            this.handlePositiveButtonClick(dialog);
-                    }
-                })
-            .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                    org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
+                        this.handlePositiveButtonClick(dialog);
+                }
+            });
+
+        return this.setNegativeButton();
     }
 
     void show(final java.lang.String oldName, final java.lang.String oldDefault)

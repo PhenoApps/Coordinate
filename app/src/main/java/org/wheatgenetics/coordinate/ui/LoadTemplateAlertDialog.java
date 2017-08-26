@@ -13,8 +13,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.widget.LinearLayout
  * android.widget.TextView
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.R
@@ -61,9 +59,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
                             org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
                             assert null != dialog; dialog.cancel();
                         }
-                    })
-                .setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
-                    org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                    });
+            this.setNegativeButton();
             assert null != this.builder;
         }
 
