@@ -8,8 +8,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  */
@@ -59,7 +57,7 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
     {
-        return super.makeBuilder().setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
+        super.makeBuilder().setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
             .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
                 new android.content.DialogInterface.OnClickListener()
                 {
@@ -71,9 +69,8 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                         org.wheatgenetics.coordinate.ui.
                             OptionalFieldsAlertDialog.this.addNewOptionalField();
                     }
-                })
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
+                });
+        return this.setOKPositiveButton();
     }
 
     void show(final java.lang.CharSequence items[], final boolean checkedItems[])

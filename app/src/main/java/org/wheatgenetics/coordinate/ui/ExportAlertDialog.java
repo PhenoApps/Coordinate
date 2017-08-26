@@ -49,8 +49,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
             assert null != this.builder; this.builder.setView(view);
         }
 
-        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-            new android.content.DialogInterface.OnClickListener()
+        this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)

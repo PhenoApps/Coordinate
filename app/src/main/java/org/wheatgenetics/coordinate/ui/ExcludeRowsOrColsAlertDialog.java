@@ -42,18 +42,16 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     final boolean[] checkedItems,
     final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
     {
-        return super.configureBuilder(items, checkedItems, onMultiChoiceClickListener)
-            .setPositiveButton(org.wheatgenetics.coordinate.R.string.ok,
-                new android.content.DialogInterface.OnClickListener()
+        super.configureBuilder(items, checkedItems, onMultiChoiceClickListener);
+        return this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.
-                            ExcludeRowsOrColsAlertDialog.this.process(checkedItems);
-                    }
-                });
+                    org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.this.process(
+                        checkedItems);
+                }
+            });
     }
     // endregion
 
