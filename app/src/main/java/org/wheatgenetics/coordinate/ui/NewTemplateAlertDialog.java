@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.Utils
  */
 class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
@@ -28,12 +29,10 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
 
     private void createNewTemplate()
     {
-        assert null != this.nameTextEdit; assert null != this.colsTextEdit;
-        assert null != this.rowsTextEdit; assert null != this.handler     ;
-        this.handler.createNewTemplate(
-            this.nameTextEdit.getText().toString().trim(),
-            this.colsTextEdit.getText().toString().trim(),
-            this.rowsTextEdit.getText().toString().trim());
+        assert null != this.handler; this.handler.createNewTemplate(
+            org.wheatgenetics.coordinate.ui.Utils.getText(this.nameTextEdit),
+            org.wheatgenetics.coordinate.ui.Utils.getText(this.colsTextEdit),
+            org.wheatgenetics.coordinate.ui.Utils.getText(this.rowsTextEdit));
     }
 
     NewTemplateAlertDialog(final android.app.Activity activity,

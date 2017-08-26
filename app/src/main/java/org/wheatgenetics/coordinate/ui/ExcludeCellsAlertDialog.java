@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.Utils
  * org.wheatgenetics.coordinate.utils.Utils
  */
 class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
@@ -19,8 +20,12 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
 
     private final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler;
 
-    private void excludeCells(final int amount)
-    { assert null != this.handler; this.handler.excludeCells(amount); }
+    private void excludeCells(final android.widget.EditText editText)
+    {
+        assert null != editText; assert null != this.handler;
+        this.handler.excludeCells(org.wheatgenetics.coordinate.utils.Utils.convert(
+            org.wheatgenetics.coordinate.ui.Utils.getText(editText)));
+    }
 
     ExcludeCellsAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler)
@@ -48,8 +53,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
                     final int which)
                     {
                         org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells(
-                            org.wheatgenetics.coordinate.utils.Utils.convert(
-                                editText.getText().toString()));
+                            editText);
                         assert null != dialog; dialog.cancel();
                     }
                 });

@@ -17,6 +17,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
+ * org.wheatgenetics.coordinate.ui.Utils
  */
 class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
 {
@@ -34,7 +35,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
         {
             int i = 0;
             for (final android.widget.EditText editText: this.editTextArrayList)
-                if (null != editText) values[i] = editText.getText().toString().trim();
+                values[i] = null == editText ? "" :
+                    org.wheatgenetics.coordinate.ui.Utils.getText(editText);
         }
         assert null != this.handler; this.handler.process(values);
     }

@@ -9,10 +9,9 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
- * org.wheatgenetics.javalib.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.Utils
  */
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
@@ -31,21 +30,12 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     private android.widget.EditText nameEditText = null, defaultEditText = null;
     // endregion
 
-    // region Private Methods
-    private static java.lang.String getText(final android.widget.EditText editText)
-    {
-        assert null != editText;
-        return org.wheatgenetics.javalib.Utils.adjust(editText.getText().toString());
-    }
-
     private void handlePositiveButtonClick(final android.content.DialogInterface dialog)
     {
         final java.lang.String newName =
-            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(this.nameEditText);
-
+            org.wheatgenetics.coordinate.ui.Utils.getText(this.nameEditText);
         final java.lang.String newDefault =
-            org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.getText(
-                this.defaultEditText);
+            org.wheatgenetics.coordinate.ui.Utils.getText(this.defaultEditText);
 
         assert null != this.handler;
         if (0 == newName.length())
@@ -57,7 +47,6 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
             this.handler.addOptionalField(newName, newDefault);
         }
     }
-    // endregion
 
     NewOptionalFieldAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler)
