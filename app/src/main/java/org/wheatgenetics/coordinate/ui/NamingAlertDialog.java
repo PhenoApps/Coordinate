@@ -49,7 +49,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
             if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
 
-            assert null != this.builder; this.builder.setView(view);
+            this.setView(view);
         }
 
         this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()

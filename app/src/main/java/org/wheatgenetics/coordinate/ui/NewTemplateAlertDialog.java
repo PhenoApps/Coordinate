@@ -57,9 +57,10 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
             if (null == this.colsTextEdit) this.colsTextEdit = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.colsEdit);
 
-            this.builder.setView(view);
+            this.setView(view);
         }
 
+        assert null != this.builder;
         this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
             new android.content.DialogInterface.OnClickListener()
             {

@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.AlertDialog.Builder
+ * android.content.DialogInterface.OnClickListener
+ * android.view.View
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -20,7 +22,13 @@ abstract class AlertDialog extends java.lang.Object
     { return this.makeBuilder().setTitle(titleId); }
     // endregion
 
-    // region setButton() Package Methods
+    // region set() Package Methods
+    org.wheatgenetics.coordinate.ui.AlertDialog setView(final android.view.View view)
+    {
+        assert null != this.builder; this.builder.setView(view);
+        return this;
+    }
+
     android.app.AlertDialog.Builder setOKPositiveButton(
     final android.content.DialogInterface.OnClickListener onClickListener)
     {

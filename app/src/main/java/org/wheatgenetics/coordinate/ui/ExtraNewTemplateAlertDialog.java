@@ -91,9 +91,10 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
                     });
             }
 
-            this.builder.setView(view);
+            this.setView(view);
         }
 
+        assert null != this.builder;
         this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
             new android.content.DialogInterface.OnClickListener()
             {

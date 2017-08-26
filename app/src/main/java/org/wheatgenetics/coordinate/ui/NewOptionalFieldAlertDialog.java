@@ -78,7 +78,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
             if (null == this.defaultEditText) this.defaultEditText = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
 
-            assert null != this.builder; this.builder.setView(view);
+            this.setView(view);
         }
 
         this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()

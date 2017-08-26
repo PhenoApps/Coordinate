@@ -114,7 +114,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
                     linearLayout.addView(optionalFieldView);
                 }
             }
-            this.builder.setView(view);
+            this.setView(view);
         }
 
         final android.app.AlertDialog alertDialog = this.builder.create();

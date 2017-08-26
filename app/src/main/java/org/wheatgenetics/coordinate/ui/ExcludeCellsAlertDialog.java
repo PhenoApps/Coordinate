@@ -40,8 +40,8 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
 
             assert null != editText; editText.setText("1");
 
-            assert null != this.builder; this.builder.setView(view);
-            this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
+            this.setView(view).setOKPositiveButton(
+                new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
                     public void onClick(final android.content.DialogInterface dialog,

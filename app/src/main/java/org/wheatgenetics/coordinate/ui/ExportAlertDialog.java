@@ -46,7 +46,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                     view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
             }
 
-            assert null != this.builder; this.builder.setView(view);
+            this.setView(view);
         }
 
         this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
