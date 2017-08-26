@@ -648,11 +648,11 @@ android.view.View.OnKeyListener
     // region AlertDialog Methods
     // region alert() AlertDialog Methods
     private void alert(final int message)
-    { org.wheatgenetics.coordinate.utils.Utils.alert(this, this.appNameStringResource, message); }
+    { org.wheatgenetics.coordinate.ui.Utils.alert(this, this.appNameStringResource, message); }
 
     private void alert(final int title, final java.lang.String message, final int messageIfNull)
     {
-        org.wheatgenetics.coordinate.utils.Utils.alert(
+        org.wheatgenetics.coordinate.ui.Utils.alert(
             /* context => */ this ,
             /* title   => */ title,
             /* message => */ org.wheatgenetics.javalib.Utils.replaceIfNull(
@@ -661,25 +661,25 @@ android.view.View.OnKeyListener
 
     private void alert(final int message, final java.lang.Runnable yesRunnable)
     {
-        org.wheatgenetics.coordinate.utils.Utils.alert(
+        org.wheatgenetics.coordinate.ui.Utils.alert(
             this, this.appNameStringResource, message, yesRunnable);
     }
     // endregion
 
     // region confirm() AlertDialog Methods
     private void confirm(final int title, final int message, final java.lang.Runnable yesRunnable)
-    { org.wheatgenetics.coordinate.utils.Utils.confirm(this, title, message, yesRunnable); }
+    { org.wheatgenetics.coordinate.ui.Utils.confirm(this, title, message, yesRunnable); }
 
     private void confirm(final int message, final java.lang.Runnable yesRunnable)
     {
-        org.wheatgenetics.coordinate.utils.Utils.confirm(
+        org.wheatgenetics.coordinate.ui.Utils.confirm(
             this, this.appNameStringResource, message, yesRunnable);
     }
 
     private void confirm(final int message, final java.lang.Runnable yesRunnable,
     final java.lang.Runnable noRunnable)
     {
-        org.wheatgenetics.coordinate.utils.Utils.confirm(
+        org.wheatgenetics.coordinate.ui.Utils.confirm(
             this, this.appNameStringResource, message, yesRunnable, noRunnable);
     }
     // endregion
