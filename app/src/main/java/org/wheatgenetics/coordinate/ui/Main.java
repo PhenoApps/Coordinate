@@ -47,9 +47,11 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.about.OtherApps.Index
  * org.wheatgenetics.androidlibrary.Dir
  * org.wheatgenetics.androidlibrary.ProgressDialog
+ * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
+ * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
@@ -79,8 +81,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
- * org.wheatgenetics.coordinate.barcodes.IntentIntegrator
- * org.wheatgenetics.coordinate.barcodes.IntentResult
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
@@ -535,6 +535,7 @@ android.view.View.OnKeyListener
 
     private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
+    private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
 
@@ -680,10 +681,8 @@ android.view.View.OnKeyListener
         {
             final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
                 this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);
-
             this.setSupportActionBar(toolbar);
-            assert null != toolbar;
-            toolbar.bringToFront();
+            assert null != toolbar; toolbar.bringToFront();
         }
 
         {
@@ -706,8 +705,7 @@ android.view.View.OnKeyListener
             final android.support.design.widget.NavigationView navigationView =
                 (android.support.design.widget.NavigationView)
                 this.findViewById(org.wheatgenetics.coordinate.R.id.nvView);
-            assert null != navigationView;
-            navigationView.setNavigationItemSelectedListener(
+            assert null != navigationView; navigationView.setNavigationItemSelectedListener(
                 new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener()
                 {
                     @java.lang.Override
@@ -731,15 +729,13 @@ android.view.View.OnKeyListener
                         personTextView.setText(org.wheatgenetics.coordinate.
                             ui.Main.this.sharedPreferences.getPerson());
                     }
-
                     {
                         final android.widget.TextView templateTitleTextView =
                             (android.widget.TextView)
                                 org.wheatgenetics.coordinate.ui.Main.this.findViewById(
                                     org.wheatgenetics.coordinate.R.id.templateLabel);
                         assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        assert null != templateTitleTextView                                  ;
-                        templateTitleTextView.setText(
+                        assert null != templateTitleTextView; templateTitleTextView.setText(
                             org.wheatgenetics.coordinate.ui.Main.this.templateModel.getTitle());
                     }
                 }
@@ -761,8 +757,7 @@ android.view.View.OnKeyListener
             this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
 
         this.cellIDEditText = (android.widget.EditText) this.findViewById(org.wheatgenetics.coordinate.R.id.dataEdit);
-        assert null != this.cellIDEditText;
-        this.cellIDEditText.setImeActionLabel(
+        assert null != this.cellIDEditText; this.cellIDEditText.setImeActionLabel(
             this.getString(org.wheatgenetics.coordinate.R.string.keyboard_save),
             android.view.KeyEvent.KEYCODE_ENTER                               );
         this.cellIDEditText.setOnEditorActionListener(this);
@@ -779,12 +774,12 @@ android.view.View.OnKeyListener
         {
             final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
                 org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-            if (defaultTemplateModels.size() > 0)
+            assert null != defaultTemplateModels; if (defaultTemplateModels.size() > 0)
             {
                 final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
                     this.templatesTable();
                 for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
-                    defaultTemplateModels)
+                defaultTemplateModels)
                 {
                     final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
                         defaultTemplateModel.getType();
@@ -832,8 +827,7 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.database.GridsTable(this);
             if (gridsTable.get(this.sharedPreferences.getCurrentGrid()))
             {
-                assert null != this.templateModel;
-                this.templateModel.assign(
+                assert null != this.templateModel; this.templateModel.assign(
                     /* title => */ gridsTable.templateTitle,
                     /* rows  => */ gridsTable.templateRows ,
                     /* cols  => */ gridsTable.templateCols );
@@ -859,16 +853,17 @@ android.view.View.OnKeyListener
             }
             else this.alert(org.wheatgenetics.coordinate.R.string.import_grid_failed);
         }
-        else
-            this.loadExistingTemplateOrCreateNewTemplate();
+        else this.loadExistingTemplateOrCreateNewTemplate();
 
         this.showTemplateUI();
 
         int versionCode;
         try
         {
-            final android.content.pm.PackageInfo packageInfo =
-                this.getPackageManager().getPackageInfo(this.getPackageName(), /* flags => 0 */ 0);
+            final android.content.pm.PackageInfo packageInfo = this.getPackageManager().
+                getPackageInfo(    // throws android.content.pm.PackageManager.NameNotFoundException
+                    /* packageName => */ this.getPackageName(),
+                    /* flags       => */ 0                    );
             assert null != packageInfo;
             versionCode      = packageInfo.versionCode;
             this.versionName = packageInfo.versionName;
@@ -896,9 +891,7 @@ android.view.View.OnKeyListener
     public boolean onCreateOptionsMenu(final android.view.Menu menu)
     {
         new android.view.MenuInflater(this).inflate(
-            org.wheatgenetics.coordinate.R.menu.mainmenu, menu);
-        assert null != menu;
-        menu.findItem(org.wheatgenetics.coordinate.R.id.barcode_camera).setVisible(true);
+            org.wheatgenetics.androidlibrary.R.menu.camera_options_menu, menu);
         return true;
     }
 
@@ -914,12 +907,12 @@ android.view.View.OnKeyListener
             case android.R.id.home:
                 assert null != this.drawerLayout;
                 this.drawerLayout.openDrawer(android.support.v4.view.GravityCompat.START);
-                return true;
+                break;
 
-            case org.wheatgenetics.coordinate.R.id.barcode_camera:
-                final org.wheatgenetics.coordinate.barcodes.IntentIntegrator intentIntegrator =
-                    new org.wheatgenetics.coordinate.barcodes.IntentIntegrator(this);
-                intentIntegrator.initiateScan();
+            case org.wheatgenetics.androidlibrary.R.id.cameraOptionsMenuItem:
+                if (null == this.barcodeScanner)
+                    this.barcodeScanner = new org.wheatgenetics.zxing.BarcodeScanner(this);
+                this.barcodeScanner.scan();
                 break;
         }
 
@@ -930,14 +923,12 @@ android.view.View.OnKeyListener
     protected void onActivityResult(final int requestCode,
     final int resultCode, final android.content.Intent data)
     {
-        final org.wheatgenetics.coordinate.barcodes.IntentResult scanResult =
-            org.wheatgenetics.coordinate.barcodes.IntentIntegrator.parseActivityResult(
+        final java.lang.String scanResult =
+            org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
                 requestCode, resultCode, data);
-
         if (null != scanResult)
         {
-            assert null != this.cellIDEditText;
-            this.cellIDEditText.setText(scanResult.getContents());
+            assert null != this.cellIDEditText; this.cellIDEditText.setText(scanResult);
             this.saveData();
         }
     }
