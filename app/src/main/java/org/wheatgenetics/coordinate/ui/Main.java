@@ -1034,6 +1034,7 @@ android.view.View.OnKeyListener
     //         deleteGrid(long)
     //         loadSeedTrayTemplate()
     //             loadExistingTemplate(TemplateType)
+    //                 createGrid()
     //         loadTemplate()
     //             tempLoad()
     //     exportGrid()
@@ -1059,9 +1060,11 @@ android.view.View.OnKeyListener
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
     //         loadExistingTemplate(TemplateType)
+    //             createGrid()
     //     loadTemplate()
     //         tempLoad()
     //              loadExistingTemplate(TemplateType)
+    //                 createGrid()
     //              createNewTemplate(TemplateType)
     // deleteTemplate()
     //     deleteTemplate(TemplateModel)
@@ -1186,6 +1189,17 @@ android.view.View.OnKeyListener
                     }
                 });
         this.excludeCellsAlertDialog.show();
+    }
+
+    private long createGrid(final long templateId)
+    {
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        gridsTable.templateId = templateId                          ;
+        gridsTable.timestamp  = java.lang.System.currentTimeMillis();
+        assert null != this.nonNullOptionalFields;
+        gridsTable.title = this.nonNullOptionalFields.getFirstValue();
+        return gridsTable.insert();
     }
 
     private void createNewTemplate(
@@ -2379,16 +2393,5 @@ android.view.View.OnKeyListener
             }
             this.setCellState(this.currentCellView, state);
         }
-    }
-
-    private long createGrid(final long templateId)
-    {
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
-        gridsTable.templateId = templateId                          ;
-        gridsTable.timestamp  = java.lang.System.currentTimeMillis();
-        assert null != this.nonNullOptionalFields;
-        gridsTable.title = this.nonNullOptionalFields.getFirstValue();
-        return gridsTable.insert();
     }
 }
