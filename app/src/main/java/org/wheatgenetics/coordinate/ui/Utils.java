@@ -22,10 +22,10 @@ class Utils extends java.lang.Object
     //     alert(int title, String message)
     //         alert(int message)
     //     alert(int message, yesRunnable)
-    //     private confirm(String title, String message, yesRunnable, noRunnable)
-    //         confirm(String title, int message, yesRunnable)_
-    //             confirm(int title, int message, yesRunnable)
-    //         confirm(String title, int message, yesRunnable, noRunnable)_
+    //     private confirm(int title, int message, yesRunnable, noRunnable)
+    //         confirm(int title, int message, yesRunnable)
+    //             confirm(int message, yesRunnable)
+    //         confirm(int message, yesRunnable, noRunnable)
     // endregion
 
     // region alert() AlertDialog Methods
@@ -46,9 +46,9 @@ class Utils extends java.lang.Object
     static void alert(final android.content.Context context, final int title,
     final java.lang.String message)
     {
-        assert null != context; org.wheatgenetics.coordinate.ui.Utils.alert(context,
-            context.getString(title), message, "Ok",
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(), null);
+        assert null != context;
+        org.wheatgenetics.coordinate.ui.Utils.alert(context, context.getString(title), message,
+            "Ok", org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(), null);
     }
 
     static void alert(final android.content.Context context, final int message)
@@ -78,12 +78,12 @@ class Utils extends java.lang.Object
     // endregion
 
     // region confirm() AlertDialog Methods
-    private static void confirm(final android.content.Context context, final java.lang.String title,
-    final java.lang.String message, final java.lang.Runnable yesRunnable,
-    final java.lang.Runnable noRunnable)
+    private static void confirm(final android.content.Context context, final int title,
+    final int message, final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
     {
-        org.wheatgenetics.coordinate.ui.Utils.alert(context, title, message, "Yes",
-            new android.content.DialogInterface.OnClickListener()
+        assert null != context;
+        org.wheatgenetics.coordinate.ui.Utils.alert(context, context.getString(title),
+            context.getString(message), "Yes", new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int id)
@@ -103,27 +103,24 @@ class Utils extends java.lang.Object
     }
 
     // region confirm(title, message, yesRunnable) AlertDialog Methods
-    static void confirm(final android.content.Context context, final java.lang.String title,
-    final int message, final java.lang.Runnable yesRunnable)
-    {
-        assert null != context; org.wheatgenetics.coordinate.ui.Utils.confirm(
-            context, title, context.getString(message), yesRunnable, null);
-    }
-
     static void confirm(final android.content.Context context, final int title, final int message,
     final java.lang.Runnable yesRunnable)
+    { org.wheatgenetics.coordinate.ui.Utils.confirm(context, title, message, yesRunnable, null); }
+
+    static void confirm(final android.content.Context context, final int message,
+    final java.lang.Runnable yesRunnable)
     {
-        assert null != context; org.wheatgenetics.coordinate.ui.Utils.confirm(
-            context, context.getString(title), message, yesRunnable);
+        org.wheatgenetics.coordinate.ui.Utils.confirm(context,
+            org.wheatgenetics.coordinate.R.string.app_name, message, yesRunnable);
     }
     // endregion
 
     // region confirm(title, message, yesRunnable, noRunnable) AlertDialog Methods
-    static void confirm(final android.content.Context context, final java.lang.String title,
-    final int message, final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
+    static void confirm(final android.content.Context context, final int message,
+    final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
     {
-        assert null != context; org.wheatgenetics.coordinate.ui.Utils.confirm(
-            context, title, context.getString(message), yesRunnable, noRunnable);
+        org.wheatgenetics.coordinate.ui.Utils.confirm(context,
+            org.wheatgenetics.coordinate.R.string.app_name, message, yesRunnable, noRunnable);
     }
     // endregion
     // endregion

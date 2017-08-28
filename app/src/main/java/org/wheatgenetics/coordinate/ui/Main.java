@@ -573,10 +573,6 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
         loadSeedTrayTemplateAlertDialog = null, loadTemplateAlertDialog = null;
     // endregion
-
-    // region Resources Field
-    private java.lang.String appNameStringResource;
-    // endregion
     // endregion
 
     // region Class Methods
@@ -656,17 +652,11 @@ android.view.View.OnKeyListener
     { org.wheatgenetics.coordinate.ui.Utils.confirm(this, title, message, yesRunnable); }
 
     private void confirm(final int message, final java.lang.Runnable yesRunnable)
-    {
-        org.wheatgenetics.coordinate.ui.Utils.confirm(this,
-            this.appNameStringResource, message, yesRunnable);
-    }
+    { org.wheatgenetics.coordinate.ui.Utils.confirm(this, message, yesRunnable); }
 
     private void confirm(final int message, final java.lang.Runnable yesRunnable,
     final java.lang.Runnable noRunnable)
-    {
-        org.wheatgenetics.coordinate.ui.Utils.confirm(this,
-            this.appNameStringResource, message, yesRunnable, noRunnable);
-    }
+    { org.wheatgenetics.coordinate.ui.Utils.confirm(this, message, yesRunnable, noRunnable); }
     // endregion
     // endregion
 
@@ -683,12 +673,6 @@ android.view.View.OnKeyListener
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.main);
-
-        {
-            final android.content.res.Resources resources = this.getResources();
-            assert null != resources; this.appNameStringResource =
-                resources.getString(org.wheatgenetics.coordinate.R.string.app_name);
-        }
 
         this.nonNullOptionalFields =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeInitial();
