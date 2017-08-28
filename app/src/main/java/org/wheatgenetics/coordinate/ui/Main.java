@@ -636,7 +636,7 @@ android.view.View.OnKeyListener
     // region AlertDialog Methods
     // region alert() AlertDialog Methods
     private void alert(final int message)
-    { org.wheatgenetics.coordinate.ui.Utils.alert(this, this.appNameStringResource, message); }
+    { org.wheatgenetics.coordinate.ui.Utils.alert(this, message); }
 
     private void alert(final int title, final java.lang.String message, final int messageIfNull)
     {
@@ -648,10 +648,7 @@ android.view.View.OnKeyListener
     }
 
     private void alert(final int message, final java.lang.Runnable yesRunnable)
-    {
-        org.wheatgenetics.coordinate.ui.Utils.alert(this,
-            this.appNameStringResource, message, yesRunnable);
-    }
+    { org.wheatgenetics.coordinate.ui.Utils.alert(this, message, yesRunnable); }
     // endregion
 
     // region confirm() AlertDialog Methods
