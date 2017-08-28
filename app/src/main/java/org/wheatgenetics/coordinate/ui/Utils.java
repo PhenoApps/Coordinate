@@ -17,11 +17,10 @@ class Utils extends java.lang.Object
     // region AlertDialog Methods
     // region Overview
     // private alert(String title, String message, positiveText, positiveListener, negativeListener)
-    //     alert(String title, String message)
+    //     private alert(String title, String message)
     //         alert(   int title, String message)
     //         alert(String title, int    message)
-    //     alert(String title, String message, yesRunnable)
-    //         alert(String title, int message, yesRunnable)
+    //     alert(String title, int message, yesRunnable)
     //     private confirm(String title, String message, yesRunnable, noRunnable)
     //         confirm(String title, int message, yesRunnable)
     //             confirm(int title, int message, yesRunnable)
@@ -43,7 +42,7 @@ class Utils extends java.lang.Object
     }
 
     // region alert(title, message) AlertDialog Methods
-    static void alert(final android.content.Context context, final java.lang.String title,
+    private static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message)
     {
         org.wheatgenetics.coordinate.ui.Utils.alert(context, title, message, "Ok",
@@ -65,12 +64,13 @@ class Utils extends java.lang.Object
     }
     // endregion
 
-    // region alert(title, message, yesRunnable) AlertDialog Methods
+    // region alert(title, message, yesRunnable) AlertDialog Method
     static void alert(final android.content.Context context, final java.lang.String title,
-    final java.lang.String message, final java.lang.Runnable yesRunnable)
+    final int message, final java.lang.Runnable yesRunnable)
     {
-        org.wheatgenetics.coordinate.ui.Utils.alert(context, title, message, "Ok",
-            new android.content.DialogInterface.OnClickListener()
+        assert null != context;
+        org.wheatgenetics.coordinate.ui.Utils.alert(context, title, context.getString(message),
+            "Ok", new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int id)
@@ -79,13 +79,6 @@ class Utils extends java.lang.Object
                     if (null != yesRunnable) yesRunnable.run();
                 }
             }, null);
-    }
-
-    static void alert(final android.content.Context context, final java.lang.String title,
-    final int message, final java.lang.Runnable yesRunnable)
-    {
-        assert null != context; org.wheatgenetics.coordinate.ui.Utils.alert(
-            context, title, context.getString(message), yesRunnable);
     }
     // endregion
     // endregion
