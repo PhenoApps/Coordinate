@@ -9,9 +9,10 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
- * org.wheatgenetics.coordinate.ui.Utils
  */
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
@@ -33,9 +34,9 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     private void handlePositiveButtonClick(final android.content.DialogInterface dialog)
     {
         final java.lang.String newName =
-            org.wheatgenetics.coordinate.ui.Utils.getText(this.nameEditText);
+            org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
         final java.lang.String newDefault =
-            org.wheatgenetics.coordinate.ui.Utils.getText(this.defaultEditText);
+            org.wheatgenetics.androidlibrary.Utils.getText(this.defaultEditText);
 
         assert null != this.handler;
         if (0 == newName.length())

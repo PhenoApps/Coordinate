@@ -2271,7 +2271,7 @@ android.view.View.OnKeyListener
 
     private boolean saveData()
     {
-        java.lang.String value = org.wheatgenetics.coordinate.ui.Utils.getText(this.cellIDEditText);
+        java.lang.String value = org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
         {
             boolean success;
             {

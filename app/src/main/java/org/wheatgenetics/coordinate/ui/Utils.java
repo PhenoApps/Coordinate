@@ -125,10 +125,4 @@ class Utils extends java.lang.Object
     // endregion
     // endregion
     // endregion
-
-    static java.lang.String getText(final android.widget.EditText editText)
-    {
-        assert null != editText;
-        return org.wheatgenetics.javalib.Utils.adjust(editText.getText().toString());
-    }
 }

@@ -9,9 +9,10 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
- * org.wheatgenetics.coordinate.ui.Utils
  */
 class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
@@ -25,7 +26,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     private void exportGrid()
     {
         assert null != this.handler;
-        this.handler.exportGrid(org.wheatgenetics.coordinate.ui.Utils.getText(this.editText));
+        this.handler.exportGrid(org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
     }
 
     ExportAlertDialog(final android.app.Activity activity,

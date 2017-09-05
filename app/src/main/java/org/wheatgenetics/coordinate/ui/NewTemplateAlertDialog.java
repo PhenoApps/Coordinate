@@ -9,9 +9,10 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
- * org.wheatgenetics.coordinate.ui.Utils
  */
 class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
@@ -30,9 +31,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
     private void createNewTemplate()
     {
         assert null != this.handler; this.handler.createNewTemplate(
-            org.wheatgenetics.coordinate.ui.Utils.getText(this.nameTextEdit),
-            org.wheatgenetics.coordinate.ui.Utils.getText(this.colsTextEdit),
-            org.wheatgenetics.coordinate.ui.Utils.getText(this.rowsTextEdit));
+            org.wheatgenetics.androidlibrary.Utils.getText(this.nameTextEdit),
+            org.wheatgenetics.androidlibrary.Utils.getText(this.colsTextEdit),
+            org.wheatgenetics.androidlibrary.Utils.getText(this.rowsTextEdit));
     }
 
     NewTemplateAlertDialog(final android.app.Activity activity,

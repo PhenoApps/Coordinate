@@ -13,11 +13,12 @@ package org.wheatgenetics.coordinate.ui;
  * android.widget.LinearLayout
  * android.widget.TextView
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
- * org.wheatgenetics.coordinate.ui.Utils
  */
 class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
 {
@@ -36,7 +37,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             int i = 0;
             for (final android.widget.EditText editText: this.editTextArrayList)
                 values[i] = null == editText ? "" :
-                    org.wheatgenetics.coordinate.ui.Utils.getText(editText);
+                    org.wheatgenetics.androidlibrary.Utils.getText(editText);
         }
         assert null != this.handler; this.handler.process(values);
     }
