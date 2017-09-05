@@ -22,7 +22,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.support.v7.app.ActionBarDrawerToggle
  * android.support.v7.app.AppCompatActivity
  * android.support.v7.widget.Toolbar
- * android.util.Log
  * android.view.KeyEvent
  * android.view.LayoutInflater
  * android.view.Menu
@@ -576,10 +575,7 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
-    // region Class Methods
-    private static int sendErrorLogMsg(final java.lang.Exception e)
-    { assert null != e; return android.util.Log.e("Coordinate", e.getMessage()); }
-
+    // region Class Method
     public static java.lang.String getTag(final int r, final int c)
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
     // endregion
@@ -798,26 +794,22 @@ android.view.View.OnKeyListener
         }
 
         this.templateModel.setTitle("");
+
         {
             final java.lang.String coordinateDirName = "Coordinate",
                 blankHiddenFileName = ".coordinate";
 
+            new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
+                blankHiddenFileName).createIfMissing();
+
             // Exported data is saved to this folder.
             this.exportDir = new org.wheatgenetics.androidlibrary.Dir(
                 this, coordinateDirName + "/Export", blankHiddenFileName);
-            try
-            {
-                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
-                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
+            this.exportDir.createIfMissing();
 
-                this.exportDir.createIfMissing();                      // throws java.io.IOException
-
-                // This directory will be used in the future to transfer templates between devices.
-                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
-                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
-            }
-            catch (final java.io.IOException e)
-            { org.wheatgenetics.coordinate.ui.Main.sendErrorLogMsg(e); }
+            // This directory will be used in the future to transfer templates between devices.
+            new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
+                blankHiddenFileName).createIfMissing();
         }
 
         if (this.sharedPreferences.currentGridIsSet())
@@ -1823,9 +1815,7 @@ android.view.View.OnKeyListener
     private java.io.File createExportFile()
     {
         assert null != this.templateModel; assert null != this.exportDir;
-        try { return this.exportDir.createNewFile(this.templateModel.getTitle()); }
-        catch (final java.io.IOException e)
-        { org.wheatgenetics.coordinate.ui.Main.sendErrorLogMsg(e); return null; }
+        return this.exportDir.createNewFile(this.templateModel.getTitle());
     }
 
     private void showChangeLog()
