@@ -412,19 +412,23 @@ android.view.View.OnKeyListener
                 return false;
             }
 
-            if (!this.templatesTable.get(this.templateId))
+            if (!this.templatesTable.exists(this.templateId))
             {
                 this.message = org.wheatgenetics.coordinate.ui.Main.this.getString(
                     org.wheatgenetics.coordinate.R.string.import_template_failed);
                 return false;
             }
 
-            if (this.templatesTable.type ==
-            org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode())
+            org.wheatgenetics.coordinate.model.TemplateType templateType;
+            {
+                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                    this.templatesTable.get(this.templateId);
+                assert null != templateModel; templateType = templateModel.getType();
+            }
+            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
                 return this.exportSeed();
             else
-                if (this.templatesTable.type ==
-                org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode())
+                if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
                     return this.exportDna();
                 else
                     return this.exportDefault();
@@ -830,14 +834,14 @@ android.view.View.OnKeyListener
                 this.gridTitle = gridsTable.title;
 
                 {
-                    final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                        this.templatesTable();
-                    if (templatesTable.get(gridsTable.templateId))
+                    final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                        this.templatesTable().get(gridsTable.templateId);
+                    if (null != templateModel)
                     {
-                        this.importOptionalFields(templatesTable.options);
+                        this.importOptionalFields(templateModel.getOptionalFields());
 
-                        this.templateModel.setRowNumbering(templatesTable.rowNumbering);
-                        this.templateModel.setColNumbering(templatesTable.colNumbering);
+                        this.templateModel.setRowNumbering(templateModel.getRowNumbering());
+                        this.templateModel.setColNumbering(templateModel.getColNumbering());
                     }
                 }
 
@@ -1624,35 +1628,45 @@ android.view.View.OnKeyListener
     }
 
     private boolean deleteTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    final org.wheatgenetics.coordinate.model.TemplateModel searchTemplateModel)
     {
-        assert null != templateModel;
+        assert null != searchTemplateModel; final long templateId = searchTemplateModel.getId();
+
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             this.templatesTable();
-        if (!templatesTable.get(templateModel.getId())) return false;  // database
-
-        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == templatesTable.type
-        ||  org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode () == templatesTable.type)
+        assert null != templatesTable;
+        if (templatesTable.exists(templateId))
         {
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);  // TODO: Move to TemplatesTable.
-            return false;
-        }
-
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
-        final android.database.Cursor cursor = gridsTable.loadByTemplate(templateModel.getId());
-        if (null != cursor)
-        {
-            while (cursor.moveToNext())
             {
-                final org.wheatgenetics.coordinate.database.GridsTable g =
-                    new org.wheatgenetics.coordinate.database.GridsTable(this);
-                if (g.copy(cursor)) this.deleteGrid(g.id);
+                org.wheatgenetics.coordinate.model.TemplateType templateType;
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateModel tableTemplateModel =
+                        templatesTable.get(templateId);
+                    assert null != tableTemplateModel; templateType = tableTemplateModel.getType();
+                }
+                if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
+                || org.wheatgenetics.coordinate.model.TemplateType.DNA   == templateType)
+                {
+                    this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);  // TODO: Move to TemplatesTable.
+                    return false;
+                }
             }
-            cursor.close();
+            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
+                new org.wheatgenetics.coordinate.database.GridsTable(this);
+            final android.database.Cursor cursor = gridsTable.loadByTemplate(templateId);
+            if (null != cursor)
+            {
+                while (cursor.moveToNext())
+                {
+                    final org.wheatgenetics.coordinate.database.GridsTable g =
+                        new org.wheatgenetics.coordinate.database.GridsTable(this);
+                    if (g.copy(cursor)) this.deleteGrid(g.id);
+                }
+                cursor.close();
+            }
+            return templatesTable.delete(searchTemplateModel);
         }
-
-        return templatesTable.delete(templateModel);  // database
+        else return false;
     }
 
     private void importOptionalFields(final java.lang.String json)
@@ -2109,19 +2123,21 @@ android.view.View.OnKeyListener
                                     org.wheatgenetics.coordinate.ui.Main.this.templateModel.setType(
                                         gridsTable.templateType);
 
-                                    final org.wheatgenetics.coordinate.database.TemplatesTable
-                                        templatesTable = org.wheatgenetics.coordinate.ui.
-                                            Main.this.templatesTable();
-
-                                    if (templatesTable.get(gridsTable.templateId))  // database
                                     {
-                                        org.wheatgenetics.coordinate.ui.
-                                            Main.this.importOptionalFields(templatesTable.options);
+                                        final org.wheatgenetics.coordinate.model.TemplateModel
+                                            templateModel = org.wheatgenetics.coordinate.ui.
+                                            Main.this.templatesTable().get(gridsTable.templateId);
+                                        if (null != templateModel)
+                                        {
+                                            org.wheatgenetics.coordinate.ui.
+                                                Main.this.importOptionalFields(
+                                                    templateModel.getOptionalFields());
 
-                                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.
-                                            setRowNumbering(templatesTable.rowNumbering);  // model
-                                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.
-                                            setColNumbering(templatesTable.colNumbering);  // model
+                                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.
+                                                setRowNumbering(templateModel.getRowNumbering());
+                                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.
+                                                setColNumbering(templateModel.getColNumbering());
+                                        }
                                     }
 
                                     org.wheatgenetics.coordinate.ui.

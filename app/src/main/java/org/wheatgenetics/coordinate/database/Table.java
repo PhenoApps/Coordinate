@@ -42,8 +42,7 @@ abstract class Table extends java.lang.Object
     private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
     final java.lang.String selectionArgs[], final java.lang.String orderBy)
     {
-        assert null != this.db;
-        return this.db.query(
+        assert null != this.db; return this.db.query(
             /* distinct      => */ distinct      ,
             /* table         => */ this.tableName,
             /* columns       => */ null          ,
@@ -67,8 +66,7 @@ abstract class Table extends java.lang.Object
 
     boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
-        assert null != this.db;
-        return this.db.delete(
+        assert null != this.db; return this.db.delete(
             /* table       => */ this.tableName,
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
@@ -90,7 +88,7 @@ abstract class Table extends java.lang.Object
     android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }  // TODO: Remove later.
 
     android.content.ContentValues getContentValues(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
     { return new android.content.ContentValues(); }
 
     private android.content.ContentValues getContentValuesForUpdate()         // TODO: Remove later.
@@ -102,12 +100,11 @@ abstract class Table extends java.lang.Object
     }
 
     private android.content.ContentValues getContentValuesForUpdate(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
     {
         final android.content.ContentValues contentValues = this.getContentValues(model);
 
-        assert null != model        ;
-        assert null != contentValues;
+        assert null != model; assert null != contentValues;
         contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, model.getId());
 
         return contentValues;
@@ -118,8 +115,8 @@ abstract class Table extends java.lang.Object
     // region Query Method Dependencies
     // method                      scope   usage
     // ======                      =====   =====
-    // query()                     private
-    //     queryAll()              private
+    // query()                     private N/A
+    //     queryAll()              private N/A
     //         selectionQueryAll() package                GridsTable EntriesTable
     //             queryAll()      package                GridsTable EntriesTable
     //         orderByQueryAll()   package TemplatesTable
@@ -157,8 +154,7 @@ abstract class Table extends java.lang.Object
     public long insert()                                                      // TODO: Remove later.
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
-        assert null != this.db;
-        return this.db.insert(
+        assert null != this.db; return this.db.insert(
             /* table          => */ this.tableName         ,
             /* nullColumnHack => */ null                   ,
             /* values         => */ this.getContentValues());
@@ -167,21 +163,19 @@ abstract class Table extends java.lang.Object
     public long insert(final org.wheatgenetics.coordinate.model.Model model)
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
-        assert null != this.db;
         try
         {
-            return this.db.insert(
+            assert null != this.db; return this.db.insert(
                 /* table          => */ this.tableName              ,
                 /* nullColumnHack => */ null                        ,
-                /* values         => */ this.getContentValues(model));
-        }
+                /* values         => */ this.getContentValues(model));          // throws org.json.-
+        }                                                                       //  JSONException
         catch (final org.json.JSONException e) { return -1; }
     }
 
     boolean update(final java.lang.String whereClause)                        // TODO: Remove later.
     {
-        assert null != this.db;
-        return this.db.update(
+        assert null != this.db; return this.db.update(
             /* table       => */ this.tableName                  ,
             /* values      => */ this.getContentValuesForUpdate(),
             /* whereClause => */ whereClause                     ,
@@ -196,13 +190,12 @@ abstract class Table extends java.lang.Object
 
         this.sendInfoLogMsg("Updating table " + this.tableName + " on " + whereClause);
 
-        assert null != this.db;
         try
         {
-            return this.db.update(
+            assert null != this.db; return this.db.update(
                 /* table       => */ this.tableName                       ,
-                /* values      => */ this.getContentValuesForUpdate(model),
-                /* whereClause => */ whereClause                          ,
+                /* values      => */ this.getContentValuesForUpdate(model),     // throws org.json.-
+                /* whereClause => */ whereClause                          ,     //  JSONException
                 /* whereArgs   => */ null                                 ) > 0;
         }
         catch (final org.json.JSONException e) { return false; }

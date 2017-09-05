@@ -798,11 +798,14 @@ implements java.lang.Cloneable
     { this.setRowNumbering(org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering)); }
     // endregion
 
-    public java.lang.String getOptionalFields() throws org.json.JSONException
-    { return null == this.optionalFields ? null : this.optionalFields.toJson(); }
-
-    public long getTimestamp() { return this.timestamp; }
-
+    public java.lang.String getOptionalFields()
+    {
+        try { return null == this.optionalFields ? null : this.optionalFields.toJson(); } // throws
+        catch (final org.json.JSONException e) { return null; }                           //  org.-
+    }                                                                                     //  json.-
+                                                                                          //  JSON-
+    public long getTimestamp() { return this.timestamp; }                                 //  Excep-
+                                                                                          //  tion
     public void clearExcludes()
     {
         if (null != this.excludeCellsInstance) this.excludeCells().clear();

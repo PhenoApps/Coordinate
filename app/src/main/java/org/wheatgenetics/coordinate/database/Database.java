@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.R
  */
-public class Database extends java.lang.Object
+class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase db = null;
 
@@ -76,8 +76,7 @@ public class Database extends java.lang.Object
                             assert null != document;
                             statementNodeList = document.getElementsByTagName("statement");
                         }
-                        assert null != statementNodeList;
-                        assert null != db               ;
+                        assert null != statementNodeList; assert null != db;
                         {
                             final int length = statementNodeList.getLength();
                             for (int i = 0; i < length; i++)
