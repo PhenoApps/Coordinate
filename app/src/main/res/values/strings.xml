@@ -62,7 +62,6 @@
 
     <string name="import_template">Import Template</string>
     <string name="no_templates">No templates found to import.</string>
-    <string name="import_template_failed">Unable to load template.</string>
     <string name="import_grid_failed">Unable to load grid</string>
 
     <string name="update_failed">Unable to update entry.</string>

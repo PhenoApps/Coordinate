@@ -100,14 +100,13 @@ android.view.View.OnKeyListener
     java.lang.Void, java.lang.String, java.lang.Boolean>
     {
         // region Fields
-        private final android.content.Context                         context                     ;
-        private final org.wheatgenetics.androidlibrary.ProgressDialog progressDialog              ;
-        private final long                                            templateId                  ;
-        private final java.lang.String                                exportFileName, absolutePath;
+        private final android.content.Context                          context                     ;
+        private final org.wheatgenetics.androidlibrary.ProgressDialog  progressDialog              ;
+        private final org.wheatgenetics.coordinate.model.TemplateModel templateModel               ;
+        private final java.lang.String                                 exportFileName, absolutePath;
 
-        private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable;
-        private java.lang.String                                     message = null;
-        private java.io.File                                         exportFile    ;
+        private java.lang.String message = null;
+        private java.io.File     exportFile    ;
         // endregion
 
         // region Private Methods
@@ -142,15 +141,9 @@ android.view.View.OnKeyListener
                     csvWriter.writeRecord(header);
                 }
                 {
-                    int cols, rows;
-                    {
-                        assert null != this.templatesTable;
-                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            this.templatesTable.get(this.templateId);
-
-                        assert null != templateModel;
-                        cols = templateModel.getCols(); rows = templateModel.getRows();
-                    }
+                    assert null != this.templateModel;
+                    final int
+                        cols = this.templateModel.getCols(), rows = this.templateModel.getRows();
 
                     for (int col = 1; col <= cols; col++)
                     {
@@ -227,15 +220,9 @@ android.view.View.OnKeyListener
                     csvWriter.writeRecord(header);
                 }
                 {
-                    int rows, cols;
-                    {
-                        assert null != this.templatesTable;
-                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            this.templatesTable.get(this.templateId);
-
-                        assert null != templateModel;
-                        cols = templateModel.getCols(); rows = templateModel.getRows();
-                    }
+                    assert null != this.templateModel;
+                    final int
+                        cols = this.templateModel.getCols(), rows = this.templateModel.getRows();
 
                     for (int col = 1; col <= cols; col++)
                     {
@@ -327,15 +314,9 @@ android.view.View.OnKeyListener
                 csvWriter.endRecord();
 
                 {
-                    int rows, cols;
-                    {
-                        assert null != this.templatesTable;
-                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            this.templatesTable.get(this.templateId);
-
-                        assert null != templateModel;
-                        rows = templateModel.getRows(); cols = templateModel.getCols();
-                    }
+                    assert null != this.templateModel;
+                    final int
+                        cols = this.templateModel.getCols(), rows = this.templateModel.getRows();
 
                     for (int col = 1; col <= cols; col++)
                     {
@@ -402,7 +383,8 @@ android.view.View.OnKeyListener
         // endregion
 
         Exporter(final android.content.Context context, final int progressDialogTitle,
-        final int progressDialogMessage, final long templateId,
+        final int progressDialogMessage,
+        final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
         final java.lang.String exportFileName, final java.lang.String absolutePath)
         {
             super();
@@ -420,7 +402,7 @@ android.view.View.OnKeyListener
                     }
                 });
 
-            this.templateId     = templateId    ;
+            this.templateModel  = templateModel ;
             this.exportFileName = exportFileName;
             this.absolutePath   = absolutePath  ;
         }
@@ -436,28 +418,8 @@ android.view.View.OnKeyListener
         @java.lang.Override
         protected java.lang.Boolean doInBackground(final java.lang.Void... bparams)
         {
-            try
-            { this.templatesTable = org.wheatgenetics.coordinate.ui.Main.this.templatesTable(); }
-            catch (final java.lang.Exception e)
-            {
-                this.message = org.wheatgenetics.coordinate.ui.Main.this.getString(
-                    org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-
-            if (!this.templatesTable.exists(this.templateId))
-            {
-                this.message = org.wheatgenetics.coordinate.ui.Main.this.getString(
-                    org.wheatgenetics.coordinate.R.string.import_template_failed);
-                return false;
-            }
-
-            org.wheatgenetics.coordinate.model.TemplateType templateType;
-            {
-                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                    this.templatesTable.get(this.templateId);
-                assert null != templateModel; templateType = templateModel.getType();
-            }
+            final org.wheatgenetics.coordinate.model.TemplateType templateType =
+                this.templateModel.getType();
             if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
                 return this.exportSeed();
             else
@@ -2183,30 +2145,35 @@ android.view.View.OnKeyListener
                                 org.wheatgenetics.coordinate.R.string.filename_empty);
                         else
                         {
+                            assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
+                            final long templateId =
+                                org.wheatgenetics.coordinate.ui.Main.this.templateModel.getId();
+
+                            final org.wheatgenetics.coordinate.database.TemplatesTable
+                                templatesTable =
+                                    org.wheatgenetics.coordinate.ui.Main.this.templatesTable();
+
+                            assert null != templatesTable;
+                            if (templatesTable.exists(templateId))
                             {
                                 final java.io.File exportFile =
                                     org.wheatgenetics.coordinate.ui.Main.this.createExportFile();
-
-                                assert null !=
-                                    org.wheatgenetics.coordinate.ui.Main.this.templateModel;
+                                assert null != exportFile;
                                 org.wheatgenetics.coordinate.ui.Main.this.exporter =
                                     new org.wheatgenetics.coordinate.ui.Main.Exporter(
-                                        /* context => */
-                                            org.wheatgenetics.coordinate.ui.Main.this,
+                                        /* context => */ org.wheatgenetics.coordinate.ui.Main.this,
                                         /* progressDialogTitle => */
                                             org.wheatgenetics.coordinate.R.string.exporting_title,
                                         /* progressDialogMessage => */
                                             org.wheatgenetics.coordinate.R.string.exporting_body,
-                                        /* templateId => */ org.wheatgenetics.coordinate.
-                                            ui.Main.this.templateModel.getId(),
-                                        /* exportFileName => */ fileName                    ,
-                                        /* absolutePath   => */ exportFile.getAbsolutePath());
+                                        /* templateModel  => */ templatesTable.get(templateId),
+                                        /* exportFileName => */ fileName                      ,
+                                        /* absolutePath   => */ exportFile.getAbsolutePath()  );
+                                org.wheatgenetics.coordinate.ui.Main.this.exporter.execute();
                             }
-                            org.wheatgenetics.coordinate.ui.Main.this.exporter.execute();
                         }
                     }
                 });
-
         assert null != this.nonNullOptionalFields;
         this.exportAlertDialog.show(this.nonNullOptionalFields.getDatedFirstValue());
     }
