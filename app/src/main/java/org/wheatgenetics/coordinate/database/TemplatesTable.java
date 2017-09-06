@@ -17,25 +17,6 @@ package org.wheatgenetics.coordinate.database;
  */
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    // region Fields
-    public java.lang.String title = "";                                // TODO: Remove fields later.
-    public int              type  =  0;
-    public int              rows  =  0;
-    public int              cols  =  0;
-
-    public java.lang.String excludeCells = "";
-
-    public java.lang.String excludeRows = "";
-    public java.lang.String excludeCols = "";
-
-    public java.lang.String options = "";
-
-    public int colNumbering = 1;
-    public int rowNumbering = 1;
-
-    public long stamp = 0;
-    // endregion
-
     // region Constants
     private static final java.lang.String TABLE_NAME = "templates";
 
@@ -56,6 +37,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "TemplatesTable"                                               );
     }
 
+    // region Overridden Methods
     @java.lang.Override
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
@@ -126,6 +108,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
         return result;
     }
+    // endregion
 
     // region Operations
     private android.database.Cursor query(
