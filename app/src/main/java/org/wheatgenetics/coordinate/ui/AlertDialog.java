@@ -6,9 +6,8 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  * android.view.View
  *
+ * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.R
  */
 abstract class AlertDialog extends java.lang.Object
 {
@@ -33,7 +32,7 @@ abstract class AlertDialog extends java.lang.Object
     final android.content.DialogInterface.OnClickListener onClickListener)
     {
         assert null != this.builder; return this.builder.setPositiveButton(
-            org.wheatgenetics.coordinate.R.string.ok, onClickListener);
+            org.wheatgenetics.androidlibrary.R.string.okButtonText, onClickListener);
     }
 
     android.app.AlertDialog.Builder setOKPositiveButton()
@@ -45,7 +44,8 @@ abstract class AlertDialog extends java.lang.Object
     android.app.AlertDialog.Builder setNegativeButton()
     {
         assert null != this.builder;
-        return this.builder.setNegativeButton(org.wheatgenetics.coordinate.R.string.cancel,
+        return this.builder.setNegativeButton(
+            org.wheatgenetics.androidlibrary.R.string.cancelButtonText        ,
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
     }
     // endregion

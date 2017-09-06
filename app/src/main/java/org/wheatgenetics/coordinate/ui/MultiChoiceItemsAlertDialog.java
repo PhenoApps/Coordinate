@@ -5,9 +5,9 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.Context
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
+ * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.ContextAlertDialog
  */
 abstract class MultiChoiceItemsAlertDialog
@@ -19,7 +19,7 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
     android.app.AlertDialog.Builder makeBuilder()
     {
         return super.makeBuilder().setNegativeButton(
-            org.wheatgenetics.coordinate.R.string.cancel                      ,
+            org.wheatgenetics.androidlibrary.R.string.cancelButtonText        ,
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
     }
 

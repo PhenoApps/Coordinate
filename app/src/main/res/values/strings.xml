@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Coordinate</string>
-    <string name="ok">OK</string>
     <string name="next">Next</string>
-    <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="grid_identification">Grid Identification</string>
     <string name="number_of_rows">Number of rows</string>
@@ -60,7 +58,6 @@
 
     <string name="naming">Naming</string>
 
-    <string name="import_template">Import Template</string>
     <string name="no_templates">No templates found to import.</string>
     <string name="import_grid_failed">Unable to load grid</string>
 
@@ -95,8 +92,8 @@
     <!-- Export strings -->
     <string name="export_success">File successfully exported</string>
     <string name="grid_empty">No data has been collected</string>
-    <string name="share_file">Share file via...</string>
-    <string name="exporting_title">Exporting...</string>
+    <string name="share_file">Share file via&#8230;</string>
+    <string name="exporting_title">Exporting&#8230;</string>
     <string name="exporting_body">File is being saved.</string>
     <string name="export_no_data">No data was exported.</string>
     <string name="export_failed">Unable to export grid.</string>
@@ -105,10 +102,5 @@
     <!-- About strings -->
     <string name="about">About Coordinate</string>
 
-    <!-- Person  strings -->
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
-
-    <string name="barcode">Camera scanner</string>
     <string name="grid_description">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
 </resources>
