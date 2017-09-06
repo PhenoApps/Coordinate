@@ -2,10 +2,11 @@ package org.wheatgenetics.coordinate.csv;
 
 /**
  * Uses:
- * org.wheatgenetics.coordinate.csv.CsvWriter
+ * android.annotation.SuppressLint
+ *
+ * com.csvreader.CsvWriter
  */
-
-public class CoordinateCsvWriter extends org.wheatgenetics.coordinate.csv.CsvWriter
+public class CoordinateCsvWriter extends com.csvreader.CsvWriter
 {
     public CoordinateCsvWriter(final java.io.Writer outputStream)
     { super(/* outputStream => */ outputStream, /* delimiter => */ ','); }
@@ -16,6 +17,8 @@ public class CoordinateCsvWriter extends org.wheatgenetics.coordinate.csv.CsvWri
     public void write(final int content) throws java.io.IOException
     { super.write(java.lang.String.valueOf(content));}
 
+    @android.annotation.SuppressLint("DefaultLocale")
     public void write(final java.lang.String format, java.lang.Object... args)
-    { java.lang.String.format(format, args); }
+    throws java.io.IOException
+    { this.write(java.lang.String.format(format, args)); }
 }
