@@ -401,8 +401,8 @@ android.view.View.OnKeyListener
         }
         // endregion
 
-        Exporter(final android.content.Context context, final java.lang.String progressDialogTitle,
-        final java.lang.String progressDialogMessage, final long templateId,
+        Exporter(final android.content.Context context, final int progressDialogTitle,
+        final int progressDialogMessage, final long templateId,
         final java.lang.String exportFileName, final java.lang.String absolutePath)
         {
             super();
@@ -2194,13 +2194,9 @@ android.view.View.OnKeyListener
                                         /* context => */
                                             org.wheatgenetics.coordinate.ui.Main.this,
                                         /* progressDialogTitle => */
-                                            org.wheatgenetics.coordinate.ui.Main.this.getString(
-                                                org.wheatgenetics.coordinate.
-                                                R.string.exporting_title),
+                                            org.wheatgenetics.coordinate.R.string.exporting_title,
                                         /* progressDialogMessage => */
-                                            org.wheatgenetics.coordinate.ui.Main.this.getString(
-                                                org.wheatgenetics.coordinate.
-                                                R.string.exporting_body),
+                                            org.wheatgenetics.coordinate.R.string.exporting_body,
                                         /* templateId => */ org.wheatgenetics.coordinate.
                                             ui.Main.this.templateModel.getId(),
                                         /* exportFileName => */ fileName                    ,
