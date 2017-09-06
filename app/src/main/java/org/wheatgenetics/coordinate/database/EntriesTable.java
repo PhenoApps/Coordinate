@@ -9,9 +9,10 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.json.JSONException
  *
- * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.Model
+ *
+ * org.wheatgenetics.coordinate.database.Table
  */
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {

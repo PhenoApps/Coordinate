@@ -9,8 +9,9 @@ package org.wheatgenetics.coordinate.database;
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
  *
- * org.wheatgenetics.coordinate.database.Database
  * org.wheatgenetics.coordinate.model.Model
+ *
+ * org.wheatgenetics.coordinate.database.Database
  */
 abstract class Table extends java.lang.Object
 {

@@ -8,11 +8,12 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.json.JSONException
  *
- * org.wheatgenetics.coordinate.database.Table
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
+ *
+ * org.wheatgenetics.coordinate.database.Table
  */
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
@@ -35,14 +36,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public long stamp = 0;
     // endregion
 
-    public TemplatesTable(final android.content.Context context)
-    {
-        super(
-            /* context   => */ context                                                        ,
-            /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
-            /* tag       => */ "TemplatesTable"                                               );
-    }
-
     // region Constants
     private static final java.lang.String TABLE_NAME = "templates";
 
@@ -54,6 +47,14 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String OPTIONS_FIELD_NAME = "options";
     private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
     // endregion
+
+    public TemplatesTable(final android.content.Context context)
+    {
+        super(
+            /* context   => */ context                                                        ,
+            /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
+            /* tag       => */ "TemplatesTable"                                               );
+    }
 
     @java.lang.Override
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
@@ -124,33 +125,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             templateModel.getTimestamp());
 
         return result;
-    }
-
-    public boolean copy(final android.database.Cursor cursor)                 // TODO: Remove later.
-    {
-        if (null == cursor)
-            return false;
-        else
-        {
-            this.id = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME));
-            this.title = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME));
-            this.type = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME));
-            this.cols = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
-            this.rows = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME));
-
-            this.excludeCells = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME));
-            this.excludeCols = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME));
-            this.excludeRows = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME));
-
-            this.options = cursor.getString(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME));
-
-            this.colNumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME));  // TODO: Bug?
-            this.rowNumbering = cursor.getInt(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME));  // TODO: Bug?
-
-            this.stamp = cursor.getLong(cursor.getColumnIndex(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME));
-
-            return true;
-        }
     }
 
     // region Operations
@@ -233,13 +207,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             }
         }
         return result;
-    }
-
-    public android.database.Cursor loadByOrder()               // TODO: Push to superclass?  Remove?
-    {
-        this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
-        return this.orderByQueryAll(/* orderBy => */ "_id DESC");
     }
     // endregion
 }
