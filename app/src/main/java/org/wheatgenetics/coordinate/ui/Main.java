@@ -52,6 +52,21 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  * org.wheatgenetics.zxing.BarcodeScanner
  *
+ * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.database.EntriesTable
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
+ *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
+ *
+ * org.wheatgenetics.coordinate.utils.Utils
+ *
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
@@ -80,17 +95,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
- * org.wheatgenetics.coordinate.database.EntriesTable
- * org.wheatgenetics.coordinate.database.GridsTable
- * org.wheatgenetics.coordinate.database.TemplatesTable
- * org.wheatgenetics.coordinate.model.GridModel
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateType
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- * org.wheatgenetics.coordinate.optionalField.OptionalField
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.ui.Utils
- * org.wheatgenetics.coordinate.utils.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
@@ -527,9 +532,10 @@ android.view.View.OnKeyListener
     private android.view.View       currentCellView = null;
     // endregion
 
-    private long             gridId    =  0             ;
-    private java.lang.String gridTitle = ""             ;
-    private int              mCurRow   =  1, mCurCol = 1;
+    private long                                             gridId             =    0             ;
+    private java.lang.String                                 gridTitle          =   ""             ;
+    private int                                              mCurRow            =    1, mCurCol = 1;
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null             ;
 
     private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -661,6 +667,13 @@ android.view.View.OnKeyListener
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance)
+            this.gridsTableInstance = new org.wheatgenetics.coordinate.database.GridsTable(this);
+        return this.gridsTableInstance;
     }
 
     // region Overridden Methods
@@ -814,23 +827,23 @@ android.view.View.OnKeyListener
         if (this.sharedPreferences.currentGridIsSet())
         {
             // Load grid:
-            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                new org.wheatgenetics.coordinate.database.GridsTable(this);
-            if (gridsTable.get(this.sharedPreferences.getCurrentGrid()))
+            final org.wheatgenetics.coordinate.model.GridModel gridModel =
+                this.gridsTable().get(this.sharedPreferences.getCurrentGrid());
+            if (null != gridModel)
             {
                 assert null != this.templateModel; this.templateModel.assign(
-                    /* title => */ gridsTable.templateTitle,
-                    /* rows  => */ gridsTable.templateRows ,
-                    /* cols  => */ gridsTable.templateCols );
-                this.templateModel.setType(gridsTable.templateType);
+                    /* title => */ gridModel.getTemplateTitle(),
+                    /* rows  => */ gridModel.getRows()         ,
+                    /* cols  => */ gridModel.getCols()         );
+                this.templateModel.setType(gridModel.getType());
                 this.templateModel.clearExcludes();
 
-                this.gridId    = gridsTable.id   ;
-                this.gridTitle = gridsTable.title;
+                this.gridId    = gridModel.getId()   ;
+                this.gridTitle = gridModel.getTitle();
 
                 {
                     final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                        this.templatesTable().get(gridsTable.templateId);
+                        this.templatesTable().get(gridModel.getTemplateId());
                     if (null != templateModel)
                     {
                         this.importOptionalFields(templateModel.getOptionalFields());
@@ -1184,8 +1197,8 @@ android.view.View.OnKeyListener
 
     private long createGrid(final long templateId)
     {
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
+        assert null != gridsTable;
         gridsTable.templateId = templateId                          ;
         gridsTable.timestamp  = java.lang.System.currentTimeMillis();
         assert null != this.nonNullOptionalFields;
@@ -1443,20 +1456,13 @@ android.view.View.OnKeyListener
 
     private boolean deleteGrid(final long gridId)
     {
-        boolean success;
-
-        {
-            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                new org.wheatgenetics.coordinate.database.GridsTable(this);
-            success = gridsTable.delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
-        }
-
+        final boolean success =
+            this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 new org.wheatgenetics.coordinate.database.EntriesTable(this);
             entriesTable.deleteByGrid(gridId);
         }
-
         return success;
     }
 
@@ -1627,9 +1633,7 @@ android.view.View.OnKeyListener
                     return false;
                 }
             }
-            final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                new org.wheatgenetics.coordinate.database.GridsTable(this);
-            final android.database.Cursor cursor = gridsTable.loadByTemplate(templateId);
+            final android.database.Cursor cursor = this.gridsTable().loadByTemplate(templateId);
             if (null != cursor)
             {
                 while (cursor.moveToNext())
@@ -2047,7 +2051,8 @@ android.view.View.OnKeyListener
                 while (gridCursor.moveToNext())
                 {
                     final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                        new org.wheatgenetics.coordinate.database.GridsTable(this);
+                        this.gridsTable();
+                    assert null != gridsTable;
                     if (gridsTable.copyAll(gridCursor))
                     {
                         names[pos] = java.lang.String.format(
@@ -2084,25 +2089,26 @@ android.view.View.OnKeyListener
                                 org.wheatgenetics.coordinate.ui.
                                     Main.this.sharedPreferences.setCurrentGrid(gridId);
 
-                                final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                                    new org.wheatgenetics.coordinate.database.GridsTable(
-                                        org.wheatgenetics.coordinate.ui.Main.this);
-                                if (gridsTable.get(gridId))
+                                final org.wheatgenetics.coordinate.model.GridModel gridModel = org.
+                                    wheatgenetics.coordinate.ui.Main.this.gridsTable().get(gridId);
+                                if (null != gridModel)                                 // TODO: DRY!
                                 {
                                     org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
-                                        /* title => */ gridsTable.templateTitle,
-                                        /* rows  => */ gridsTable.templateRows ,
-                                        /* cols  => */ gridsTable.templateCols );
-                                    org.wheatgenetics.coordinate.ui.Main.this.gridId = gridsTable.id;
+                                        /* title => */ gridModel.getTemplateTitle(),
+                                        /* rows  => */ gridModel.getRows()         ,
+                                        /* cols  => */ gridModel.getCols()         );
+                                    org.wheatgenetics.coordinate.ui.Main.this.gridId =
+                                        gridModel.getId();
                                     org.wheatgenetics.coordinate.ui.Main.this.gridTitle =
-                                        gridsTable.title;
+                                        gridModel.getTitle();
                                     org.wheatgenetics.coordinate.ui.Main.this.templateModel.setType(
-                                        gridsTable.templateType);
+                                        gridModel.getType());
 
                                     {
                                         final org.wheatgenetics.coordinate.model.TemplateModel
-                                            templateModel = org.wheatgenetics.coordinate.ui.
-                                            Main.this.templatesTable().get(gridsTable.templateId);
+                                            templateModel = org.wheatgenetics.coordinate.ui.Main.
+                                                this.templatesTable().get(
+                                                    gridModel.getTemplateId());
                                         if (null != templateModel)
                                         {
                                             org.wheatgenetics.coordinate.ui.

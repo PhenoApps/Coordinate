@@ -148,29 +148,17 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Operations
-    public boolean get(final long id)
+    private android.database.Cursor query(final long id) // TODO: Push to superclass? Fold into get()?
     {
-        final android.database.Cursor cursor = this.rawQuery(
-            "SELECT grids._id, grids.title as gridTitle, grids.stamp, " +
-                "templates.type as templateType, templates.title as templateTitle, " +
-                "templates._id as templateId, templates.rows, templates.cols from grids, " +
-                "templates " +
-                    "where templates._id = grids.temp and grids." +
-                        org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-        if (null == cursor)
-             return false;
-        else
-            try
-            {
-                if (cursor.moveToFirst())
-                {
-                    this.copyAll(cursor);
-                    return true;
-                }
-                else return false;
-            }
-            finally { cursor.close(); }
+        return this.rawQuery("SELECT ALL grids._id, grids.title, grids.stamp, grids.temp, "      +
+            "templates.type as templateType, templates.title as templateTitle, templates.rows, " +
+            "templates.cols "                                                                    +
+                "FROM grids, templates "                                                         +
+                "WHERE grids.temp = templates._id AND grids._id = " + id);
     }
+
+    public org.wheatgenetics.coordinate.model.GridModel get(final long id)
+    { return (org.wheatgenetics.coordinate.model.GridModel) this.makeFromFirst(this.query(id)); }
 
     public android.database.Cursor loadByTemplate(final long tmp)
     {

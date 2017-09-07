@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.widget.Button
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog

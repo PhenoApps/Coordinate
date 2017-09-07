@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
  */
 class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog

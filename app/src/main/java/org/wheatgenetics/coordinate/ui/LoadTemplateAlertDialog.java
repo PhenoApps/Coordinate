@@ -15,9 +15,11 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
- * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
  */
 class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog

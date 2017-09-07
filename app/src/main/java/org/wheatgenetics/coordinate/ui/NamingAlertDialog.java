@@ -10,6 +10,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.widget.Spinner
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog

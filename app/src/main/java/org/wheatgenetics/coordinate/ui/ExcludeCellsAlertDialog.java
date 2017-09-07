@@ -12,8 +12,10 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ *
  * org.wheatgenetics.coordinate.utils.Utils
+ *
+ * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {

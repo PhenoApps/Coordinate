@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  */
 class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog

@@ -5,8 +5,9 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONException
  * org.json.JSONObject
  *
- * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.utils.Utils
+ *
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {

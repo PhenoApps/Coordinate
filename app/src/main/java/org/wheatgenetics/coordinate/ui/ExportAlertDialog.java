@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
