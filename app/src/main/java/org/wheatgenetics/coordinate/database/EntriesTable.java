@@ -150,21 +150,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close(); }
     }
 
-    public android.database.Cursor load()                                     // TODO: Remove later.
-    {
-        this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME);
-        return this.queryAll();
-    }
-
-    public android.database.Cursor loadByEntry(final int entry)               // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Loading table " +
-            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " by entry = " + entry);
-        return this.selectionQueryAll(/* selection => */
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = " + entry);
-    }
-
     public boolean getByGrid(final long grid, final int row, final int col)
     {
         android.database.Cursor cursor;

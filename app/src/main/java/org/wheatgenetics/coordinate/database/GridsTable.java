@@ -172,13 +172,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close(); }
     }
 
-    public android.database.Cursor load()                                     // TODO: Remove later.
-    {
-        this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME);
-        return this.queryAll();
-    }
-
     public android.database.Cursor loadByTemplate(final long tmp)
     {
         this.sendInfoLogMsg("Loading table " +
@@ -194,37 +187,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.rawQuery(
             "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, " +
                 "templates._id as templateId, templates.rows, templates.cols from grids, templates where templates._id = grids.temp");
-    }
-
-    public boolean getByTemplate(final long entry)                            // TODO: Remove later.
-    {
-        android.database.Cursor cursor;
-        {
-            final java.lang.String selection = org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + "= ?";
-            final java.lang.String[] selectionArgs = new java.lang.String[]{java.lang.String.valueOf(entry)};
-            cursor = this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs);
-        }
-        if (null == cursor)
-            return false;
-        else
-            try     { return cursor.moveToFirst() ? this.copy(cursor) : false; }
-            finally { cursor.close();                                          }
-    }
-
-    public boolean update()                                                   // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Updating table " +
-            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " on id = " + id);
-        return this.update(/* whereClause   => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-    }
-
-    public boolean deleteByTemplate(long entryId)                             // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " on id = " + entryId);
-        return this.deleteUsingWhereClause(/* whereClause => */
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + "=" + entryId);
     }
     // endregion
 }
