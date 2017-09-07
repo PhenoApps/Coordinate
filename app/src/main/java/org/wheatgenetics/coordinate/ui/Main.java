@@ -474,11 +474,8 @@ android.view.View.OnKeyListener
                                     {
                                         try
                                         {
-                                            final org.wheatgenetics.coordinate.database.EntriesTable
-                                                entriesTable = new org.wheatgenetics.
-                                                    coordinate.database.EntriesTable(org.
-                                                        wheatgenetics.coordinate.ui.Main.this);
-                                            if (entriesTable.deleteByGrid(
+                                            if (org.wheatgenetics.coordinate.ui.
+                                            Main.this.entriesTable().deleteByGrid(
                                             org.wheatgenetics.coordinate.ui.Main.this.gridId))
                                                 org.wheatgenetics.coordinate.ui.
                                                     Main.this.populateTemplate();
@@ -535,7 +532,6 @@ android.view.View.OnKeyListener
     private long                                             gridId             =    0             ;
     private java.lang.String                                 gridTitle          =   ""             ;
     private int                                              mCurRow            =    1, mCurCol = 1;
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null             ;
 
     private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -543,11 +539,16 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
 
+    // region Table Fields
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
+    private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
+    // endregion
+
     // region Template
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
     private org.wheatgenetics.androidlibrary.Dir          exportDir               ;
@@ -662,6 +663,7 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
+    // region Table Methods
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -675,6 +677,14 @@ android.view.View.OnKeyListener
             this.gridsTableInstance = new org.wheatgenetics.coordinate.database.GridsTable(this);
         return this.gridsTableInstance;
     }
+
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
+    {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+            new org.wheatgenetics.coordinate.database.EntriesTable(this);
+        return this.entriesTableInstance;
+    }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override
@@ -1353,7 +1363,8 @@ android.view.View.OnKeyListener
         java.lang.String value = null;
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
+                this.entriesTable();
+            assert null != entriesTable;
             if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
         }
         return value;
@@ -1388,8 +1399,8 @@ android.view.View.OnKeyListener
         boolean success;
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
-            entriesTable.value = "exclude";
+                this.entriesTable();
+            assert null != entriesTable; entriesTable.value = "exclude";
             if (entriesTable.getByGrid(this.gridId, r, c))
                 success = entriesTable.update();
             else
@@ -1458,11 +1469,7 @@ android.view.View.OnKeyListener
     {
         final boolean success =
             this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
-        {
-            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
-            entriesTable.deleteByGrid(gridId);
-        }
+        this.entriesTable().deleteByGrid(gridId);
         return success;
     }
 
@@ -2265,8 +2272,8 @@ android.view.View.OnKeyListener
             boolean success;
             {
                 final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                    new org.wheatgenetics.coordinate.database.EntriesTable(this);
-                entriesTable.value = value;
+                    this.entriesTable();
+                assert null != entriesTable; entriesTable.value = value;
                 if (entriesTable.getByGrid(this.gridId, mCurRow, mCurCol))
                     success = entriesTable.update();
                 else
