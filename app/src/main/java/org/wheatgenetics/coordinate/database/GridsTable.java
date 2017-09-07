@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
- *  org.json.JSONException
+ * org.json.JSONException
  *
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.Model
@@ -29,6 +29,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
     // endregion
 
+    // region Constants
+    private static final java.lang.String TABLE_NAME      = "grids";
+    private static final java.lang.String TEMP_FIELD_NAME = "temp",
+        TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
+    // endregion
+
     public GridsTable(final android.content.Context context)
     {
         super(
@@ -37,6 +43,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tag       => */ "GridsTable"                                               );
     }
 
+    // region Overridden Methods
     @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString()
     {
@@ -44,18 +51,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             " templateId: %02d timestamp: %02d", this.templateId, this.timestamp);
     }
 
-    // region Storage
-    // region Constants
-    private static final java.lang.String TABLE_NAME      = "grids";
-    private static final java.lang.String TEMP_FIELD_NAME = "temp",
-        TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
-    // endregion
-
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.GridModel(
-            /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others?
+            /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others? Put in ancestor?
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
@@ -70,7 +70,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues()
+    android.content.ContentValues getContentValues()                          // TODO: Remove later.
     {
         final android.content.ContentValues contentValues = super.getContentValues();
 
@@ -88,23 +88,25 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     android.content.ContentValues getContentValues(  // TODO: U will need another getContentValues() to replace copyAll().
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
-        final android.content.ContentValues contentValues = super.getContentValues(model);
+        final android.content.ContentValues result =
+            super.getContentValues(model);                          // throws org.json.JSONException
 
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
             (org.wheatgenetics.coordinate.model.GridModel) model;
 
         assert null != gridModel;
-        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
             gridModel.getId());
-        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
             gridModel.getTitle());
-        contentValues.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
+        result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
             gridModel.getTimestamp());
 
-        return contentValues;
+        return result;
     }
+    // endregion
 
-    public boolean copy(final android.database.Cursor cursor)
+    public boolean copy(final android.database.Cursor cursor)                 // TODO: Remove later.
     {
         if (null == cursor)
             return false;
@@ -123,7 +125,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
-    public boolean copyAll(final android.database.Cursor cursor)
+    public boolean copyAll(final android.database.Cursor cursor)               // TODO: Remove later.
     {
         if (null == cursor)
             return false;
@@ -224,6 +226,5 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + "=" + entryId);
     }
-    // endregion
     // endregion
 }
