@@ -18,12 +18,12 @@ package org.wheatgenetics.coordinate.database;
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Constants
-    private static final java.lang.String TABLE_NAME = "templates";
+    static final java.lang.String TABLE_NAME = "templates";
 
-    private static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
-    private static final java.lang.String COLS_FIELD_NAME  = "cols" , ROWS_FIELD_NAME = "rows";
-    private static final java.lang.String
-        ECELLS_FIELD_NAME = "ecells", ECOLS_FIELD_NAME = "ecols", EROWS_FIELD_NAME = "erows";
+            static final java.lang.String TITLE_FIELD_NAME  = "title" , TYPE_FIELD_NAME  = "type" ;
+            static final java.lang.String ROWS_FIELD_NAME   = "rows"  , COLS_FIELD_NAME  = "cols" ;
+    private static final java.lang.String ECELLS_FIELD_NAME = "ecells", EROWS_FIELD_NAME = "erows",
+        ECOLS_FIELD_NAME = "ecols";
     private static final java.lang.String CNUMB_FIELD_NAME   = "cnumb", RNUMB_FIELD_NAME = "rnumb";
     private static final java.lang.String OPTIONS_FIELD_NAME = "options";
     private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
@@ -128,7 +128,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         final android.database.Cursor cursor = this.query(templateType);
-        if (null == cursor)
+        if (null == cursor)                                                            // TODO: DRY!
             return false;
         else
             try     { return cursor.getCount() > 0; }
@@ -152,7 +152,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public boolean exists(final long id)                                // TODO: Push to superclass?
     {
         final android.database.Cursor cursor = this.query(id);
-        if (null == cursor)
+        if (null == cursor)                                                            // TODO: DRY!
             return false;
         else
             try     { return cursor.getCount() > 0; }

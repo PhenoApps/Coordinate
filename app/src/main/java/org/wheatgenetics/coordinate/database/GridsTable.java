@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
+ * org.wheatgenetics.coordinate.database.TemplatesTable
  */
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
@@ -33,6 +34,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String TABLE_NAME      = "grids";
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
         TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
+    private static final java.lang.String TEMPLATETITLE_FIELD_NAME = "templateTitle",
+        TEMPLATETYPE_FIELD_NAME ="templateType";
     // endregion
 
     public GridsTable(final android.content.Context context)
@@ -63,10 +66,14 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
             /* templateId => */ cursor.getInt(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
-            /* templateTitle => */ cursor.getString(cursor.getColumnIndex("templateTitle")),
-            /* templateType  => */ cursor.getInt   (cursor.getColumnIndex("templateType" )),
-            /* templateRows  => */ cursor.getInt   (cursor.getColumnIndex("rows"         )),
-            /* templateCols  => */ cursor.getInt   (cursor.getColumnIndex("cols"         )));
+            /* templateTitle => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME)),
+            /* templateType  => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME)),
+            /* templateRows  => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
+            /* templateCols  => */ cursor.getInt(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME)));
     }
 
     @java.lang.Override
@@ -150,22 +157,51 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // region Operations
     private android.database.Cursor query(final long id) // TODO: Push to superclass? Fold into get()?
     {
-        return this.rawQuery("SELECT ALL grids._id, grids.title, grids.stamp, grids.temp, "      +
-            "templates.type as templateType, templates.title as templateTitle, templates.rows, " +
-            "templates.cols "                                                                    +
-                "FROM grids, templates "                                                         +
-                "WHERE grids.temp = templates._id AND grids._id = " + id);
+        final java.lang.String
+            gridsTableName     = org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME    ,
+            templatesTableName = org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME;
+        final java.lang.String
+            gridsQualifier = gridsTableName + '.', templatesQualifier = templatesTableName + '.';
+        final java.lang.String
+            idFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME,
+            titleFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+            stampFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
+            tempFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+            templateTitleFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
+            templateTypeFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
+            rowsFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
+            colsFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+            templateIdFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
+        return this.rawQuery("SELECT ALL " + idFieldName + ", " + titleFieldName + ", " +
+            stampFieldName + ", " + tempFieldName + ", " +
+            templateTitleFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME + ", " +
+            templateTypeFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME + ", " +
+            rowsFieldName + ", " + colsFieldName +
+                " FROM " + gridsTableName + ", " + templatesTableName +
+                " WHERE " + tempFieldName + " = " + templateIdFieldName +
+                    " AND " + idFieldName + " = " + id);
     }
 
     public org.wheatgenetics.coordinate.model.GridModel get(final long id)
     { return (org.wheatgenetics.coordinate.model.GridModel) this.makeFromFirst(this.query(id)); }
 
-    public android.database.Cursor loadByTemplate(final long tmp)
+    public android.database.Cursor loadByTemplate(final long temp)
     {
         this.sendInfoLogMsg("Loading table " +
-            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + tmp);
+            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + temp);
         return this.selectionQueryAll(/* selection => */
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + tmp);
+            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + temp);
     }
 
     public android.database.Cursor getAllGrids()

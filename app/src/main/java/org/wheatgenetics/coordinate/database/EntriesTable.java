@@ -24,10 +24,9 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Constants
-    private static final java.lang.String TABLE_NAME = "entries";
-    private static final java.lang.String
-        GRID_FIELD_NAME  = "grid" , COL_FIELD_NAME   = "col"  , ROW_FIELD_NAME = "row",
-        EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
+    private static final java.lang.String TABLE_NAME      = "entries";
+    private static final java.lang.String GRID_FIELD_NAME = "grid", ROW_FIELD_NAME = "row",
+        COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
 
     public EntriesTable(final android.content.Context context)
