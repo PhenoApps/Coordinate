@@ -1467,10 +1467,8 @@ android.view.View.OnKeyListener
 
     private boolean deleteGrid(final long gridId)
     {
-        final boolean success =
-            this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
         this.entriesTable().deleteByGrid(gridId);
-        return success;
+        return this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
     }
 
     private void inputTemplateNewExtra()

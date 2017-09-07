@@ -40,6 +40,13 @@ abstract class Table extends java.lang.Object
     int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
 
     // region Database Internal Operations
+    private static java.lang.String whereClause(
+    final org.wheatgenetics.coordinate.model.Model model)
+    {
+        assert null != model;
+        return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
+    }
+
     private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
     final java.lang.String selectionArgs[], final java.lang.String orderBy)
     {
@@ -67,6 +74,7 @@ abstract class Table extends java.lang.Object
 
     boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
     {
+        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
         assert null != this.db; return this.db.delete(
             /* table       => */ this.tableName,
             /* whereClause => */ whereClause   ,
@@ -185,12 +193,9 @@ abstract class Table extends java.lang.Object
 
     public boolean update(final org.wheatgenetics.coordinate.model.Model model)
     {
-        assert null != model;
         final java.lang.String whereClause =
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
-
+            org.wheatgenetics.coordinate.database.Table.whereClause(model);
         this.sendInfoLogMsg("Updating table " + this.tableName + " on " + whereClause);
-
         try
         {
             assert null != this.db; return this.db.update(
@@ -202,19 +207,10 @@ abstract class Table extends java.lang.Object
         catch (final org.json.JSONException e) { return false; }
     }
 
-    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)  // TODO: Remove later?
+    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)
     {
-        assert null != model;
-        final java.lang.String whereClause =                              // TODO: Make into method.
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
-        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
-        return this.deleteUsingWhereClause(/* whereClause => */ whereClause);
-    }
-
-    boolean delete()                                                          // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Clearing table " + this.tableName);
-        return this.deleteUsingWhereClause(/* whereClause => */ null);
+        return this.deleteUsingWhereClause(/* whereClause => */
+            org.wheatgenetics.coordinate.database.Table.whereClause(model));
     }
     // endregion
 }

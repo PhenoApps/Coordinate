@@ -189,8 +189,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     public boolean deleteByGrid(final long grid)
     {
-        this.sendInfoLogMsg("Deleting from table " +
-            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + grid);
         return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "=" + grid);
     }
