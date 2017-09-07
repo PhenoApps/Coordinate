@@ -32,31 +32,20 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         class Iterator extends java.lang.Object
         implements java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel>
         {
-            final private java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
+            private final java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
                 listIterator;
 
             private Iterator(@android.support.annotation.NonNull
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
-            {
-                super();
-
-                assert null != arrayList;
-                this.listIterator = arrayList.listIterator();
-            }
+            { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
 
             @java.lang.Override
             public boolean hasNext()
-            {
-                assert null != this.listIterator;
-                return this.listIterator.hasNext();
-            }
+            { assert null != this.listIterator; return this.listIterator.hasNext(); }
 
             @java.lang.Override
             public org.wheatgenetics.coordinate.model.TemplateModel next()
-            {
-                assert null != this.listIterator;
-                return this.listIterator.next();
-            }
+            { assert null != this.listIterator; return this.listIterator.next(); }
 
             @java.lang.Override
             public void remove() { throw new java.lang.UnsupportedOperationException(); }

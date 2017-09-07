@@ -4,7 +4,6 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * org.wheatgenetics.coordinate.model.Model
  */
-
 public class EntryModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields

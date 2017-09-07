@@ -8,14 +8,13 @@ public abstract class Model extends java.lang.Object
 {
     private long id;
 
-    Model()              { super();                }
-    Model(final long id) { this(); this.setId(id); }
+    Model() { super(); } Model(final long id) { this(); this.setId(id); }
 
     // region Overridden Methods
     @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
 
-    @java.lang.Override
+    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object o)
     {
         if (null == o)

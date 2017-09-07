@@ -10,9 +10,10 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.annotation.SuppressLint
  *
+ * org.wheatgenetics.coordinate.utils.Utils
+ *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
- * org.wheatgenetics.coordinate.utils.Utils
  */
 class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
 implements java.lang.Cloneable
