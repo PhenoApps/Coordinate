@@ -196,7 +196,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     public org.wheatgenetics.coordinate.model.GridModel get(final long id)
     { return (org.wheatgenetics.coordinate.model.GridModel) this.makeFromFirst(this.query(id)); }
 
-    public android.database.Cursor loadByTemplate(final long temp)
+    public android.database.Cursor load(final long temp)
     {
         this.sendInfoLogMsg("Loading table " +
             org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + temp);

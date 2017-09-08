@@ -1633,7 +1633,7 @@ android.view.View.OnKeyListener
                     return false;
                 }
             }
-            final android.database.Cursor cursor = this.gridsTable().loadByTemplate(templateId);
+            final android.database.Cursor cursor = this.gridsTable().load(templateId);
             if (null != cursor)
             {
                 while (cursor.moveToNext())
