@@ -475,7 +475,7 @@ android.view.View.OnKeyListener
                                         try
                                         {
                                             if (org.wheatgenetics.coordinate.ui.
-                                            Main.this.entriesTable().deleteByGrid(
+                                            Main.this.entriesTable().delete(
                                             org.wheatgenetics.coordinate.ui.Main.this.gridId))
                                                 org.wheatgenetics.coordinate.ui.
                                                     Main.this.populateTemplate();
@@ -1462,7 +1462,7 @@ android.view.View.OnKeyListener
 
     private boolean deleteGrid(final long gridId)
     {
-        this.entriesTable().deleteByGrid(gridId);
+        this.entriesTable().delete(gridId);
         return this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
     }
 
@@ -1633,17 +1633,7 @@ android.view.View.OnKeyListener
                     return false;
                 }
             }
-            final android.database.Cursor cursor = this.gridsTable().load(templateId);
-            if (null != cursor)
-            {
-                while (cursor.moveToNext())
-                {
-                    final org.wheatgenetics.coordinate.database.GridsTable g =
-                        new org.wheatgenetics.coordinate.database.GridsTable(this);
-                    if (g.copy(cursor)) this.deleteGrid(g.id);
-                }
-                cursor.close();
-            }
+            this.gridsTable().delete(templateId);
             return templatesTable.delete(searchTemplateModel);
         }
         else return false;

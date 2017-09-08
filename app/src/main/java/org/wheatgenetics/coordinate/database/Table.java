@@ -72,7 +72,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy  );
     }
 
-    boolean deleteUsingWhereClause(final java.lang.String whereClause)  // TODO: Make private later.
+    boolean deleteUsingWhereClause(final java.lang.String whereClause)
     {
         this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
         assert null != this.db; return this.db.delete(

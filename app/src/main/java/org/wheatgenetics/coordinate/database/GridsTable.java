@@ -196,14 +196,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     public org.wheatgenetics.coordinate.model.GridModel get(final long id)
     { return (org.wheatgenetics.coordinate.model.GridModel) this.makeFromFirst(this.query(id)); }
 
-    public android.database.Cursor load(final long temp)
-    {
-        this.sendInfoLogMsg("Loading table " +
-            org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " by entry = " + temp);
-        return this.selectionQueryAll(/* selection => */
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + temp);
-    }
-
     public android.database.Cursor getAllGrids()
     {
         this.sendInfoLogMsg(
@@ -211,6 +203,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.rawQuery(
             "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, " +
                 "templates._id as templateId, templates.rows, templates.cols from grids, templates where templates._id = grids.temp");
+    }
+
+    public boolean delete(final long temp)
+    {
+        return this.deleteUsingWhereClause(/* whereClause => */
+            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + temp );
     }
     // endregion
 }
