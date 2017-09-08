@@ -109,74 +109,36 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     }
     // endregion
 
-    private void copy(final android.database.Cursor cursor)                   // TODO: Remove later.
-    {
-        assert null != cursor;
-        this.id = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME          ));
-        this.grid = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME ));
-
-        this.col = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  ));
-        this.row = cursor.getInt(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  ));
-
-        this.value = cursor.getString(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME));
-
-        this.stamp = cursor.getLong(cursor.getColumnIndex(
-            org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
-    }
-
     // region Operations
-    public boolean get(final long id)                                         // TODO: Remove later.
+    private android.database.Cursor query(final long grid, final int row, final int col)
     {
-        final android.database.Cursor cursor = this.queryDistinct(
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-        if (null == cursor)
-            return false;
-        else
-            try
-            {
-                if (cursor.moveToFirst())
-                {
-                    this.copy(cursor);
-                    return true;
-                }
-                else return false;
-            }
-            finally { cursor.close(); }
+        final java.lang.String selection =
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
+        final java.lang.String[] selectionArgs = new java.lang.String[] {
+            java.lang.String.valueOf(grid),
+            java.lang.String.valueOf(col ),
+            java.lang.String.valueOf(row ) };
+        return this.queryDistinct(
+            /* selection => */ selection, /* selectionArgs => */ selectionArgs);
     }
 
-    public boolean getByGrid(final long grid, final int row, final int col)
+    public boolean exists(final long grid, final int row, final int col)
     {
-        android.database.Cursor cursor;
-        {
-            final java.lang.String selection =
-                org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "= ? AND " +
-                org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + "= ? AND " +
-                org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + "= ?"      ;
-            final java.lang.String[] selectionArgs = new java.lang.String[]{
-                java.lang.String.valueOf(grid),
-                java.lang.String.valueOf(col ),
-                java.lang.String.valueOf(row )};
-            cursor = this.queryDistinct(
-                /* selection => */ selection, /* selectionArgs => */ selectionArgs);
-        }
-        if (null == cursor)                                                             // TODO: DRY
+        final android.database.Cursor cursor = this.query(grid, row, col);
+        if (null == cursor)                                                            // TODO: DRY!
             return false;
         else
-            try
-            {
-                if (cursor.moveToFirst())
-                {
-                    this.copy(cursor);
-                    return true;
-                }
-                else return false;
-            }
-            finally { cursor.close(); }
+            try     { return cursor.getCount() > 0; }
+            finally { cursor.close()              ; }
+    }
+
+    public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
+    final int col)
+    {
+        return (org.wheatgenetics.coordinate.model.EntryModel)
+            this.makeFromFirst(this.query(grid, row, col));
     }
 
     public boolean update()

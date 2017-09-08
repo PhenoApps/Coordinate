@@ -122,14 +122,14 @@ abstract class Table extends java.lang.Object
     // endregion
 
     // region Query Method Dependencies
-    // method                      scope   usage
-    // ======                      =====   =====
+    // method                      scope   external usage
+    // =========================== ======= ======================================
     // query()                     private N/A
     //     queryAll()              private N/A
-    //         selectionQueryAll() package                GridsTable EntriesTable
-    //             queryAll()      package                GridsTable EntriesTable
+    //         selectionQueryAll() package                GridsTable
     //         orderByQueryAll()   package TemplatesTable
-    //     queryDistinct()         package TemplatesTable GridsTable EntriesTable
+    //     queryDistinct()         package                           EntriesTable
+    //         queryDistinct()     package TemplatesTable
     // endregion
 
     // region External Operations
@@ -138,8 +138,6 @@ abstract class Table extends java.lang.Object
 
     android.database.Cursor orderByQueryAll(final java.lang.String orderBy)
     { return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy); }
-
-    android.database.Cursor queryAll() { return this.selectionQueryAll(/* selection => */ null); }
 
     android.database.Cursor queryDistinct(final java.lang.String selection,
     final java.lang.String selectionArgs[])

@@ -1358,16 +1358,11 @@ android.view.View.OnKeyListener
     private boolean isExcludedCol(final int c)
     { assert null != this.templateModel; return this.templateModel.isExcludedCol(c); }
 
-    private java.lang.String getValue(final long grid, final int r, final int c)
+    private java.lang.String getValue(final long grid, final int row, final int col)
     {
-        java.lang.String value = null;
-        {
-            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                this.entriesTable();
-            assert null != entriesTable;
-            if (entriesTable.getByGrid(grid, r, c)) value = entriesTable.value;
-        }
-        return value;
+        final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+            this.entriesTable().get(grid, row, col);
+        return null == entryModel ? null : entryModel.getValue();
     }
 
     private void setCellState(final android.view.View cell, final int state)
@@ -1394,20 +1389,20 @@ android.view.View.OnKeyListener
     private boolean isExcludedCell(final int r, final int c)
     { assert null != this.templateModel; return this.templateModel.isExcludedCell(c, r); }
 
-    private void saveExcludedCell(final int r, final int c)
+    private void saveExcludedCell(final int row, final int col)
     {
-        boolean success;
+        boolean success;                                                               // TODO: DRY!
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
             assert null != entriesTable; entriesTable.value = "exclude";
-            if (entriesTable.getByGrid(this.gridId, r, c))
-                success = entriesTable.update();
+            if (entriesTable.exists(this.gridId, row, col))
+                success = entriesTable.update();                         // TODO: Update only edata!
             else
             {
                 entriesTable.grid = this.gridId;
-                entriesTable.row  = r          ;
-                entriesTable.col  = c          ;
+                entriesTable.row  = row          ;
+                entriesTable.col  = col          ;
                 success = entriesTable.insert() > 0;
             }
         }
@@ -2265,15 +2260,16 @@ android.view.View.OnKeyListener
 
     private boolean saveData()
     {
-        java.lang.String value = org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
+        java.lang.String value =
+            org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
         {
-            boolean success;
+            boolean success;                                                           // TODO: DRY!
             {
                 final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                     this.entriesTable();
                 assert null != entriesTable; entriesTable.value = value;
-                if (entriesTable.getByGrid(this.gridId, mCurRow, mCurCol))
-                    success = entriesTable.update();
+                if (entriesTable.exists(this.gridId, mCurRow, mCurCol))
+                    success = entriesTable.update();                     // TODO: Update only edata!
                 else
                 {
                     entriesTable.grid = this.gridId ;
