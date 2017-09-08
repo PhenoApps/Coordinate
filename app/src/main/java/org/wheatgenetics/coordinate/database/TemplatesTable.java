@@ -69,11 +69,11 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues(
+    android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
         final android.content.ContentValues result =
-            super.getContentValues(model);                          // throws org.json.JSONException
+            super.getContentValuesForInsert(model);                 // throws org.json.JSONException
 
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) model;

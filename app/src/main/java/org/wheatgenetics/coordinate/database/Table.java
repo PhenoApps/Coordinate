@@ -73,7 +73,7 @@ abstract class Table extends java.lang.Object
 
     android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }  // TODO: Remove later.
 
-    android.content.ContentValues getContentValues(
+    android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
     { return new android.content.ContentValues(); }
 
@@ -88,7 +88,7 @@ abstract class Table extends java.lang.Object
     private android.content.ContentValues getContentValuesForUpdate(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
     {
-        final android.content.ContentValues contentValues = this.getContentValues(model);
+        final android.content.ContentValues contentValues = this.getContentValuesForInsert(model);
 
         assert null != model; assert null != contentValues;
         contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, model.getId());
@@ -108,6 +108,7 @@ abstract class Table extends java.lang.Object
     // endregion
 
     // region External Operations
+    // region Package External Operations
     android.database.Cursor queryAll(final java.lang.String orderBy)
     {
         return this.query(
@@ -148,7 +149,9 @@ abstract class Table extends java.lang.Object
             /* whereClause => */ whereClause   ,
             /* whereArgs   => */ null          ) > 0;
     }
+    // endregion
 
+    // region Public External Operations
     public long insert()                                                      // TODO: Remove later.
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
@@ -166,7 +169,7 @@ abstract class Table extends java.lang.Object
             assert null != this.db; return this.db.insert(
                 /* table          => */ this.tableName              ,
                 /* nullColumnHack => */ null                        ,
-                /* values         => */ this.getContentValues(model));          // throws org.json.-
+                /* values         => */ this.getContentValuesForInsert(model)); // throws org.json.-
         }                                                                       //  JSONException
         catch (final org.json.JSONException e) { return -1; }
     }
@@ -201,5 +204,6 @@ abstract class Table extends java.lang.Object
         return this.deleteUsingWhereClause(/* whereClause => */
             org.wheatgenetics.coordinate.database.Table.whereClause(model));
     }
+    // endregion
     // endregion
 }

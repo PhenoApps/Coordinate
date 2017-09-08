@@ -94,11 +94,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues(  // TODO: U will need another getContentValues() to replace copyAll().
+    android.content.ContentValues getContentValuesForInsert(  // TODO: U will need another getContentValuesForInsert() to replace copyAll().
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
         final android.content.ContentValues result =
-            super.getContentValues(model);                          // throws org.json.JSONException
+            super.getContentValuesForInsert(model);                 // throws org.json.JSONException
 
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
             (org.wheatgenetics.coordinate.model.GridModel) model;
