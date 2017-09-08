@@ -143,8 +143,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     public boolean update()
     {
-        this.sendInfoLogMsg("Updating table " +
-            org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + " on id = " + id);
         return this.update(/* whereClause   => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }

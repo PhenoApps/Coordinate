@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.json.JSONException
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.Model
  *
@@ -157,40 +159,44 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // region Operations
     private android.database.Cursor query(final long id) // TODO: Push to superclass? Fold into get()?
     {
-        final java.lang.String
-            gridsTableName     = org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME    ,
-            templatesTableName = org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME;
-        final java.lang.String
-            gridsQualifier = gridsTableName + '.', templatesQualifier = templatesTableName + '.';
-        final java.lang.String
-            idFieldName = gridsQualifier +
+        java.lang.String selection;
+        {
+            final java.lang.String
+                gridsTableName = org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
+                templatesTableName = org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME;
+            final java.lang.String
+                gridsQualifier = gridsTableName + '.', templatesQualifier = templatesTableName + '.';
+            final java.lang.String
+                idFieldName = gridsQualifier +
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME,
-            titleFieldName = gridsQualifier +
-                org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
-            stampFieldName = gridsQualifier +
-                org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
-            tempFieldName = gridsQualifier +
-                org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
-            templateTitleFieldName = templatesQualifier +
-                org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
-            templateTypeFieldName = templatesQualifier +
-                org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
-            rowsFieldName = templatesQualifier +
-                org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
-            colsFieldName = templatesQualifier +
-                org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
-            templateIdFieldName = templatesQualifier +
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
-        return this.rawQuery("SELECT ALL " + idFieldName + ", " + titleFieldName + ", " +
-            stampFieldName + ", " + tempFieldName + ", " +
-            templateTitleFieldName + " AS " +
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME + ", " +
-            templateTypeFieldName + " AS " +
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME + ", " +
-            rowsFieldName + ", " + colsFieldName +
-                " FROM " + gridsTableName + ", " + templatesTableName +
-                " WHERE " + tempFieldName + " = " + templateIdFieldName +
-                    " AND " + idFieldName + " = " + id);
+                titleFieldName = gridsQualifier +
+                    org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+                stampFieldName = gridsQualifier +
+                    org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
+                tempFieldName = gridsQualifier +
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+                templateTitleFieldName = templatesQualifier +
+                    org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
+                templateTypeFieldName = templatesQualifier +
+                    org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
+                rowsFieldName = templatesQualifier +
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
+                colsFieldName = templatesQualifier +
+                    org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+                templateIdFieldName = templatesQualifier +
+                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
+            selection = "SELECT ALL " + idFieldName + ", " + titleFieldName + ", " +
+                stampFieldName + ", " + tempFieldName +
+                ", " + templateTitleFieldName + " AS " +
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME +
+                ", " + templateTypeFieldName + " AS " +
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME +
+                ", " + rowsFieldName + ", " + colsFieldName +
+                    " FROM " + gridsTableName + ", " + templatesTableName +
+                    " WHERE " + tempFieldName + " = " + templateIdFieldName +
+                        " AND " + idFieldName + " = ?";
+        }
+        return this.rawQuery(selection, org.wheatgenetics.javalib.Utils.stringArray(id));
     }
 
     public org.wheatgenetics.coordinate.model.GridModel get(final long id)
@@ -198,8 +204,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
     public android.database.Cursor getAllGrids()
     {
-        this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME);
         return this.rawQuery(
             "SELECT grids._id, grids.title as gridTitle, grids.stamp, templates.type as templateType, templates.title as templateTitle, " +
                 "templates._id as templateId, templates.rows, templates.cols from grids, templates where templates._id = grids.temp");

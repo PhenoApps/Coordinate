@@ -167,12 +167,9 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
     public org.wheatgenetics.coordinate.model.TemplateModels load()     // TODO: Push to superclass?
     {
-        this.sendInfoLogMsg(
-            "Loading table " + org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME);
-
         org.wheatgenetics.coordinate.model.TemplateModels result;
         {
-            final android.database.Cursor cursor = this.orderByQueryAll(/* orderBy => */
+            final android.database.Cursor cursor = this.queryAll(/* orderBy => */
                 org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC");
             if (null == cursor)
                 result = null;

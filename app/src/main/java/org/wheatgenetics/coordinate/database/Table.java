@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
- * android.annotation.SuppressLint
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
@@ -15,7 +14,7 @@ package org.wheatgenetics.coordinate.database;
  */
 abstract class Table extends java.lang.Object
 {
-    static final java.lang.String ID_FIELD_NAME = "_id";                // TODO: Make private later.
+    static final java.lang.String ID_FIELD_NAME = "_id";
 
     // region Fields
     private final android.database.sqlite.SQLiteDatabase db            ;
@@ -28,16 +27,13 @@ abstract class Table extends java.lang.Object
     {
         super();
 
-        this.db        = org.wheatgenetics.coordinate.database.Database.getDb(context);
-        this.tableName = tableName                                                    ;
-        this.tag       = tag                                                          ;
+        this.db = org.wheatgenetics.coordinate.database.Database.getDb(context);
+        this.tableName = tableName; this.tag = tag;
     }
 
-    @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
-    public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
-
     // region Internal Operations
-    int sendInfoLogMsg(final java.lang.String msg) { return android.util.Log.i(this.tag, msg); }  // TODO: Make private later.
+    private int sendInfoLogMsg(final java.lang.String msg)
+    { return android.util.Log.i(this.tag, msg); }
 
     // region Database Internal Operations
     private static java.lang.String whereClause(
@@ -60,25 +56,6 @@ abstract class Table extends java.lang.Object
             /* having        => */ null          ,
             /* orderBy       => */ orderBy       ,
             /* limit         => */ null          );
-    }
-
-    private android.database.Cursor queryAll(final java.lang.String selection,
-    final java.lang.String orderBy)
-    {
-        return this.query(
-            /* distinct      => */ false    ,
-            /* selection     => */ selection,
-            /* selectionArgs => */ null     ,
-            /* orderBy       => */ orderBy  );
-    }
-
-    boolean deleteUsingWhereClause(final java.lang.String whereClause)
-    {
-        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
-        assert null != this.db; return this.db.delete(
-            /* table       => */ this.tableName,
-            /* whereClause => */ whereClause   ,
-            /* whereArgs   => */ null          ) > 0;
     }
     // endregion
 
@@ -123,21 +100,22 @@ abstract class Table extends java.lang.Object
 
     // region Query Method Dependencies
     // method                      scope   external usage
-    // =========================== ======= ======================================
+    // =========================== ======= ===========================
     // query()                     private N/A
-    //     queryAll()              private N/A
-    //         selectionQueryAll() package                GridsTable
-    //         orderByQueryAll()   package TemplatesTable
-    //     queryDistinct()         package                           EntriesTable
+    //     queryAll()              package TemplatesTable
+    //     queryDistinct()         package                EntriesTable
     //         queryDistinct()     package TemplatesTable
     // endregion
 
     // region External Operations
-    android.database.Cursor selectionQueryAll(final java.lang.String selection)
-    { return this.queryAll(/* selection => */ selection, /* orderBy => */ null); }
-
-    android.database.Cursor orderByQueryAll(final java.lang.String orderBy)
-    { return this.queryAll(/* selection => */ null, /* orderBy => */ orderBy); }
+    android.database.Cursor queryAll(final java.lang.String orderBy)
+    {
+        return this.query(
+            /* distinct      => */ false  ,
+            /* selection     => */ null   ,
+            /* selectionArgs => */ null   ,
+            /* orderBy       => */ orderBy);
+    }
 
     android.database.Cursor queryDistinct(final java.lang.String selection,
     final java.lang.String selectionArgs[])
@@ -152,10 +130,23 @@ abstract class Table extends java.lang.Object
     android.database.Cursor queryDistinct(final java.lang.String selection)
     { return this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ null); }
 
-    android.database.Cursor rawQuery(final java.lang.String sql)
+    android.database.Cursor rawQuery(final java.lang.String sql,
+    final java.lang.String selectionArgs[])
     {
         assert null != this.db;
-        return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ null);
+        return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ selectionArgs);
+    }
+
+    android.database.Cursor rawQuery(final java.lang.String sql)
+    { return this.rawQuery(/* sql => */ sql, /* selectionArgs => */ null); }
+
+    boolean deleteUsingWhereClause(final java.lang.String whereClause)
+    {
+        this.sendInfoLogMsg("Deleting from table " + this.tableName + " on " + whereClause);
+        assert null != this.db; return this.db.delete(
+            /* table       => */ this.tableName,
+            /* whereClause => */ whereClause   ,
+            /* whereArgs   => */ null          ) > 0;
     }
 
     public long insert()                                                      // TODO: Remove later.
