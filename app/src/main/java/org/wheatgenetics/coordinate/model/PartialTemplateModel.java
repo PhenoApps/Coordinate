@@ -5,7 +5,7 @@ package org.wheatgenetics.coordinate.model;
  * TemplateModel.  What purpose does PartialTemplateModel serve?  What criteria was used to
  * determine which parts of a template should go in PartialTemplateModel and which parts should go
  * in TemplateModel?  Answer: PartialTemplateModel contains those parts of a template needed by
- * GridModel.
+ * JoinedGridModel.
  *
  * Uses:
  * android.annotation.SuppressLint

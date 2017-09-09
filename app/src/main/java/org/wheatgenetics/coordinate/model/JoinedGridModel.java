@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-public class GridModel extends org.wheatgenetics.coordinate.model.Model
+public class JoinedGridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
     private java.lang.String title    ;
@@ -16,9 +16,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Constructors
-    public GridModel(final long id) { super(id); }
+    public JoinedGridModel(final long id) { super(id); }
 
-    public GridModel(final long id, final java.lang.String title, final long timestamp,
+    public JoinedGridModel(final long id, final java.lang.String title, final long timestamp,
     final long templateId, final java.lang.String templateTitle, final int templateType,
     final int templateRows, final int templateCols)
     {

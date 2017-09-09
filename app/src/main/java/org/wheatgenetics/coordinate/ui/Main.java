@@ -58,7 +58,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
- * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  *
@@ -837,23 +837,23 @@ android.view.View.OnKeyListener
         if (this.sharedPreferences.currentGridIsSet())
         {
             // Load grid:
-            final org.wheatgenetics.coordinate.model.GridModel gridModel =
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                 this.gridsTable().get(this.sharedPreferences.getCurrentGrid());
-            if (null != gridModel)
+            if (null != joinedGridModel)
             {
                 assert null != this.templateModel; this.templateModel.assign(
-                    /* title => */ gridModel.getTemplateTitle(),
-                    /* rows  => */ gridModel.getRows()         ,
-                    /* cols  => */ gridModel.getCols()         );
-                this.templateModel.setType(gridModel.getType());
+                    /* title => */ joinedGridModel.getTemplateTitle(),
+                    /* rows  => */ joinedGridModel.getRows()         ,
+                    /* cols  => */ joinedGridModel.getCols()         );
+                this.templateModel.setType(joinedGridModel.getType());
                 this.templateModel.clearExcludes();
 
-                this.gridId    = gridModel.getId()   ;
-                this.gridTitle = gridModel.getTitle();
+                this.gridId    = joinedGridModel.getId()   ;
+                this.gridTitle = joinedGridModel.getTitle();
 
                 {
                     final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                        this.templatesTable().get(gridModel.getTemplateId());
+                        this.templatesTable().get(joinedGridModel.getTemplateId());
                     if (null != templateModel)
                     {
                         this.importOptionalFields(templateModel.getOptionalFields());
@@ -1463,7 +1463,8 @@ android.view.View.OnKeyListener
     private boolean deleteGrid(final long gridId)
     {
         this.entriesTable().delete(gridId);
-        return this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
+        return this.gridsTable().delete(
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(gridId));
     }
 
     private void inputTemplateNewExtra()
@@ -2079,26 +2080,27 @@ android.view.View.OnKeyListener
                                 org.wheatgenetics.coordinate.ui.
                                     Main.this.sharedPreferences.setCurrentGrid(gridId);
 
-                                final org.wheatgenetics.coordinate.model.GridModel gridModel = org.
-                                    wheatgenetics.coordinate.ui.Main.this.gridsTable().get(gridId);
-                                if (null != gridModel)                                 // TODO: DRY!
+                                final org.wheatgenetics.coordinate.model.JoinedGridModel
+                                    joinedGridModel = org.wheatgenetics.coordinate.ui.
+                                        Main.this.gridsTable().get(gridId);
+                                if (null != joinedGridModel)                                 // TODO: DRY!
                                 {
                                     org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
-                                        /* title => */ gridModel.getTemplateTitle(),
-                                        /* rows  => */ gridModel.getRows()         ,
-                                        /* cols  => */ gridModel.getCols()         );
+                                        /* title => */ joinedGridModel.getTemplateTitle(),
+                                        /* rows  => */ joinedGridModel.getRows()         ,
+                                        /* cols  => */ joinedGridModel.getCols()         );
                                     org.wheatgenetics.coordinate.ui.Main.this.gridId =
-                                        gridModel.getId();
+                                        joinedGridModel.getId();
                                     org.wheatgenetics.coordinate.ui.Main.this.gridTitle =
-                                        gridModel.getTitle();
+                                        joinedGridModel.getTitle();
                                     org.wheatgenetics.coordinate.ui.Main.this.templateModel.setType(
-                                        gridModel.getType());
+                                        joinedGridModel.getType());
 
                                     {
                                         final org.wheatgenetics.coordinate.model.TemplateModel
                                             templateModel = org.wheatgenetics.coordinate.ui.Main.
                                                 this.templatesTable().get(
-                                                    gridModel.getTemplateId());
+                                                    joinedGridModel.getTemplateId());
                                         if (null != templateModel)
                                         {
                                             org.wheatgenetics.coordinate.ui.

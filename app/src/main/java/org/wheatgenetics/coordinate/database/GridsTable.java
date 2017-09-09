@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
@@ -59,7 +59,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @java.lang.Override
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
-        return null == cursor ? null : new org.wheatgenetics.coordinate.model.GridModel(
+        return null == cursor ? null : new org.wheatgenetics.coordinate.model.JoinedGridModel(
             /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others? Put in ancestor?
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
@@ -100,16 +100,16 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         final android.content.ContentValues result =
             super.getContentValuesForInsert(model);                 // throws org.json.JSONException
 
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            (org.wheatgenetics.coordinate.model.GridModel) model;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            (org.wheatgenetics.coordinate.model.JoinedGridModel) model;
 
-        assert null != gridModel;
+        assert null != joinedGridModel;
         result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
-            gridModel.getId());
+            joinedGridModel.getId());
         result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
-            gridModel.getTitle());
+            joinedGridModel.getTitle());
         result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
-            gridModel.getTimestamp());
+            joinedGridModel.getTimestamp());
 
         return result;
     }
@@ -199,8 +199,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.rawQuery(selection, org.wheatgenetics.javalib.Utils.stringArray(id));
     }
 
-    public org.wheatgenetics.coordinate.model.GridModel get(final long id)
-    { return (org.wheatgenetics.coordinate.model.GridModel) this.makeFromFirst(this.query(id)); }
+    public org.wheatgenetics.coordinate.model.JoinedGridModel get(final long id)
+    { return (org.wheatgenetics.coordinate.model.JoinedGridModel) this.makeFromFirst(this.query(id)); }
 
     public android.database.Cursor getAllGrids()
     {
