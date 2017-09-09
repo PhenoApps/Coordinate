@@ -27,8 +27,5 @@ public abstract class Model extends java.lang.Object
     }
     // endregion
 
-    // region Public Methods
-    public long getId()              { return this.id; }
-    public void setId(final long id) { this.id = id  ; }
-    // endregion
+    public long getId() { return this.id; } public void setId(final long id) { this.id = id; }
 }

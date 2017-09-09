@@ -1142,7 +1142,7 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void process(final boolean[] checkedItems)
+                    public void process(final boolean checkedItems[])
                     {
                         int i = 1;
                         assert null != checkedItems                                           ;

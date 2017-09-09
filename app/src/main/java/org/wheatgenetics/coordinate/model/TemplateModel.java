@@ -803,27 +803,27 @@ implements java.lang.Cloneable
         if (null != this.excludeColsInstance ) this.excludeCols ().clear();
     }
 
-    public android.graphics.Point nextFreeCell(final android.graphics.Point currentPoint) // TODO: Seems broken.
+    public android.graphics.Point nextFreeCell(final android.graphics.Point currentCell)
     {
-        if (null == currentPoint)
+        if (null == currentCell)
             return null;
         else
         {
-            final android.graphics.Point result = null;
             {
-                int col, row = currentPoint.y;
+                final int     lastCol  = this.getCols(), lastRow = this.getRows();
+                      boolean currentCol = true                                  ;
+                for (int col = currentCell.x; col <= lastCol; col++)
                 {
-                    final int lastCol = this.getCols();
-                    for (col = currentPoint.x; col <= lastCol; col++) if (!this.isExcludedCol(col))
-                    {
-                        final int lastRow = this.getRows();
-                        for (row = currentPoint.y; row <= lastRow; row++)
-                            if (!this.isExcludedRow(row)) if (!this.isExcludedCell(row, col)) break;
-                    }
+                    if (!this.isExcludedCol(col))
+                        for (int row = currentCol ? currentCell.y : 1; row <= lastRow; row++)
+                            if (!this.isExcludedRow(row))
+                                if (!this.isExcludedCell(row, col))
+                                    return new android.graphics.Point(
+                                        /* x => */ col, /* y => */ row);
+                    currentCol = false;
                 }
-                currentPoint.x = col; currentPoint.y = row;
             }
-            return result;
+            return null;
         }
     }
 
@@ -836,7 +836,7 @@ implements java.lang.Cloneable
         else
         {
             final boolean result[] = new boolean[rows];
-            for (int i = 0; i < rows; i++) result[i] = this.isExcludedRow(i + 1);  // TODO: Seems backwards.
+            for (int i = 0; i < rows; i++) result[i] = this.isExcludedRow(i + 1);
             return result;
         }
     }
@@ -849,7 +849,7 @@ implements java.lang.Cloneable
         else
         {
             final boolean result[] = new boolean[cols];
-            for (int i = 0; i < cols; i++) result[i] = this.isExcludedCol(i + 1);  // TODO: Seems backwards.
+            for (int i = 0; i < cols; i++) result[i] = this.isExcludedCol(i + 1);
             return result;
         }
     }

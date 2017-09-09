@@ -63,15 +63,13 @@ implements java.lang.Cloneable
     // endregion
 
     // region Constructors
-    private PartialTemplateModel(final long id) { super(id); }
-
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
     { super(); this.assign(title, rows, cols); this.setType(type); }
 
     PartialTemplateModel(final long id, final java.lang.String title,
     final int code, final int rows, final int cols)
-    { this(id); this.assign(title, rows, cols); this.setType(code); }
+    { super(id); this.assign(title, rows, cols); this.setType(code); }
     // endregion
 
     // region Overridden Methods
