@@ -96,10 +96,10 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         assert null != entryModel;
         result.put(org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME,
             entryModel.getGridId());
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
-            entryModel.getCol());
         result.put(org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME,
             entryModel.getRow());
+        result.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
+            entryModel.getCol());
         result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
             entryModel.getValue());
         result.put(org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME,
@@ -141,9 +141,9 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
             this.makeFromFirst(this.query(grid, row, col));
     }
 
-    public boolean update()
+    public boolean update()                                                   // TODO: Remove later.
     {
-        return this.update(/* whereClause   => */
+        return this.update(/* whereClause => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 

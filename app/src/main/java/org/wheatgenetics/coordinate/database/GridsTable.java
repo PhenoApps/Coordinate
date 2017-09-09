@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.Model
  *
@@ -100,16 +101,16 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         final android.content.ContentValues result =
             super.getContentValuesForInsert(model);                 // throws org.json.JSONException
 
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-            (org.wheatgenetics.coordinate.model.JoinedGridModel) model;
+        final org.wheatgenetics.coordinate.model.GridModel gridModel =
+            (org.wheatgenetics.coordinate.model.GridModel) model;
 
-        assert null != joinedGridModel;
+        assert null != gridModel;
         result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
-            joinedGridModel.getId());
+            gridModel.getTemp());
         result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
-            joinedGridModel.getTitle());
+            gridModel.getTitle());
         result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
-            joinedGridModel.getTimestamp());
+            gridModel.getTimestamp());
 
         return result;
     }

@@ -40,7 +40,7 @@ abstract class Table extends java.lang.Object
     final org.wheatgenetics.coordinate.model.Model model)
     {
         assert null != model;
-        return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + model.getId();
+        return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + model.getId();
     }
 
     private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
@@ -167,8 +167,8 @@ abstract class Table extends java.lang.Object
         try
         {
             assert null != this.db; return this.db.insert(
-                /* table          => */ this.tableName              ,
-                /* nullColumnHack => */ null                        ,
+                /* table          => */ this.tableName                       ,
+                /* nullColumnHack => */ null                                 ,
                 /* values         => */ this.getContentValuesForInsert(model)); // throws org.json.-
         }                                                                       //  JSONException
         catch (final org.json.JSONException e) { return -1; }

@@ -20,6 +20,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Public Methods
+    public long             getTemp     () { return this.temp     ; }
     public java.lang.String getTitle    () { return this.title    ; }
     public long             getTimestamp() { return this.timestamp; }
     // endregion
