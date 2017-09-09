@@ -60,6 +60,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  *
@@ -1611,7 +1612,7 @@ android.view.View.OnKeyListener
     }
 
     private boolean deleteTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel searchTemplateModel)
+    final org.wheatgenetics.coordinate.model.PartialTemplateModel searchTemplateModel)
     {
         assert null != searchTemplateModel; final long templateId = searchTemplateModel.getId();
 

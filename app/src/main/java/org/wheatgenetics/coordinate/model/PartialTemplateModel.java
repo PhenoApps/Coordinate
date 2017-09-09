@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
+public class PartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
 implements java.lang.Cloneable
 {
     // region Fields
