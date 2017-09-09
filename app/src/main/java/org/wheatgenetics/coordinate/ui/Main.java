@@ -58,6 +58,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -1463,8 +1464,7 @@ android.view.View.OnKeyListener
     private boolean deleteGrid(final long gridId)
     {
         this.entriesTable().delete(gridId);
-        return this.gridsTable().delete(
-            new org.wheatgenetics.coordinate.model.JoinedGridModel(gridId));
+        return this.gridsTable().delete(new org.wheatgenetics.coordinate.model.GridModel(gridId));
     }
 
     private void inputTemplateNewExtra()
