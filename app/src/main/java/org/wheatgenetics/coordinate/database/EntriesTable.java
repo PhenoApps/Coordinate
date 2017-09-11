@@ -7,8 +7,6 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
- * org.json.JSONException
- *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.Model
  *
@@ -66,26 +64,25 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     @java.lang.Override
     android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.Model model)
     {
-        final android.content.ContentValues result =
-            super.getContentValuesForInsert(model);                 // throws org.json.JSONException
+        final android.content.ContentValues result = super.getContentValuesForInsert(model);
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                (org.wheatgenetics.coordinate.model.EntryModel) model;
 
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-            (org.wheatgenetics.coordinate.model.EntryModel) model;
-
-        assert null != entryModel;
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME,
-            entryModel.getGridId());
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME,
-            entryModel.getRow());
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
-            entryModel.getCol());
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
-            entryModel.getValue());
-        result.put(org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME,
-            entryModel.getTimestamp());
-
+            assert null != entryModel;
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME,
+                entryModel.getGridId());
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME,
+                entryModel.getRow());
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
+                entryModel.getCol());
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
+                entryModel.getValue());
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME,
+                entryModel.getTimestamp());
+        }
         return result;
     }
     // endregion

@@ -19,7 +19,6 @@ abstract class Table extends java.lang.Object
     // region Fields
     private final android.database.sqlite.SQLiteDatabase db            ;
     private final java.lang.String                       tableName, tag;
-    public        long                                   id = 0        ;      // TODO: Remove later.
     // endregion
 
     Table(final android.content.Context context, final java.lang.String tableName,
@@ -72,11 +71,11 @@ abstract class Table extends java.lang.Object
     }
 
     android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
+    final org.wheatgenetics.coordinate.model.Model model)
     { return new android.content.ContentValues(); }
 
     private android.content.ContentValues getContentValuesForUpdate(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
+    final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues contentValues = this.getContentValuesForInsert(model);
 
@@ -145,14 +144,10 @@ abstract class Table extends java.lang.Object
     public long insert(final org.wheatgenetics.coordinate.model.Model model)
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
-        try
-        {
-            assert null != this.db; return this.db.insert(
-                /* table          => */ this.tableName                       ,
-                /* nullColumnHack => */ null                                 ,
-                /* values         => */ this.getContentValuesForInsert(model)); // throws org.json.-
-        }                                                                       //  JSONException
-        catch (final org.json.JSONException e) { return -1; }
+        assert null != this.db; return this.db.insert(
+            /* table          => */ this.tableName                       ,
+            /* nullColumnHack => */ null                                 ,
+            /* values         => */ this.getContentValuesForInsert(model));
     }
 
     public boolean update(final org.wheatgenetics.coordinate.model.Model model)
@@ -160,15 +155,11 @@ abstract class Table extends java.lang.Object
         final java.lang.String whereClause =
             org.wheatgenetics.coordinate.database.Table.whereClause(model);
         this.sendInfoLogMsg("Updating table " + this.tableName + " on " + whereClause);
-        try
-        {
-            assert null != this.db; return this.db.update(
-                /* table       => */ this.tableName                       ,
-                /* values      => */ this.getContentValuesForUpdate(model),     // throws org.json.-
-                /* whereClause => */ whereClause                          ,     //  JSONException
-                /* whereArgs   => */ null                                 ) > 0;
-        }
-        catch (final org.json.JSONException e) { return false; }
+        assert null != this.db; return this.db.update(
+            /* table       => */ this.tableName                       ,
+            /* values      => */ this.getContentValuesForUpdate(model),
+            /* whereClause => */ whereClause                          ,
+            /* whereArgs   => */ null                                 ) > 0;
     }
 
     public boolean delete(final org.wheatgenetics.coordinate.model.Model model)

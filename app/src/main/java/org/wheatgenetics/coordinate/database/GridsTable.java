@@ -6,8 +6,6 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
- * org.json.JSONException
- *
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.model.GridModel
@@ -97,22 +95,21 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 
     @java.lang.Override
     android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.Model model)
     {
-        final android.content.ContentValues result =
-            super.getContentValuesForInsert(model);                 // throws org.json.JSONException
+        final android.content.ContentValues result = super.getContentValuesForInsert(model);
+        {
+            final org.wheatgenetics.coordinate.model.GridModel gridModel =
+                (org.wheatgenetics.coordinate.model.GridModel) model;
 
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            (org.wheatgenetics.coordinate.model.GridModel) model;
-
-        assert null != gridModel;
-        result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
-            gridModel.getTemp());
-        result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
-            gridModel.getTitle());
-        result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
-            gridModel.getTimestamp());
-
+            assert null != gridModel;
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+                gridModel.getTemp());
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+                gridModel.getTitle());
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
+                gridModel.getTimestamp());
+        }
         return result;
     }
     // endregion

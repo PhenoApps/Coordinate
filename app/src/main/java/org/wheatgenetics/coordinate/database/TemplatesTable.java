@@ -6,8 +6,6 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
- * org.json.JSONException
- *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -70,42 +68,41 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
     @java.lang.Override
     android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
+    final org.wheatgenetics.coordinate.model.Model model)
     {
-        final android.content.ContentValues result =
-            super.getContentValuesForInsert(model);                 // throws org.json.JSONException
+        final android.content.ContentValues result = super.getContentValuesForInsert(model);
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                (org.wheatgenetics.coordinate.model.TemplateModel) model;
 
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            (org.wheatgenetics.coordinate.model.TemplateModel) model;
+            assert null != templateModel;
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
+                templateModel.getTitle());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
+                templateModel.getType().getCode());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+                templateModel.getCols());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
+                templateModel.getRows());
 
-        assert null != templateModel;
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
-            templateModel.getTitle());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
-            templateModel.getType().getCode());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
-            templateModel.getCols());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
-            templateModel.getRows());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
+                templateModel.getExcludeCellsAsJson());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
+                templateModel.getExcludeColsAsJson());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
+                templateModel.getExcludeRowsAsJson());
 
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
-            templateModel.getExcludeCellsAsJson());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
-            templateModel.getExcludeColsAsJson());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
-            templateModel.getExcludeRowsAsJson());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
+                templateModel.getColNumbering());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
+                templateModel.getRowNumbering());
 
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
-            templateModel.getColNumbering());
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
-            templateModel.getRowNumbering());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
+                templateModel.getOptionalFields());
 
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
-            templateModel.getOptionalFields());
-
-        result.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
-            templateModel.getTimestamp());
-
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
+                templateModel.getTimestamp());
+        }
         return result;
     }
     // endregion
