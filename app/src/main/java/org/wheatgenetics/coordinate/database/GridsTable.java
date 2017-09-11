@@ -75,13 +75,13 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.JoinedGridModel(
-            /* id => */ cursor.getInt(cursor.getColumnIndex(        // TODO: Why getInt() not getLong()? Others? Put in ancestor?
+            /* id => */ cursor.getLong(cursor.getColumnIndex(              // TODO: Put in ancestor?
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
             /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
-            /* templateId => */ cursor.getInt(cursor.getColumnIndex(
+            /* templateId => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
             /* templateTitle => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME)),

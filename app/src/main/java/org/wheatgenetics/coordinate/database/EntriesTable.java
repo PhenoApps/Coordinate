@@ -48,9 +48,9 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.EntryModel(
-            /* id => */ cursor.getInt(cursor.getColumnIndex(
+            /* id => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-            /* gridId => */ cursor.getInt(cursor.getColumnIndex(
+            /* gridId => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME)),
             /* row => */ cursor.getInt(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME)),

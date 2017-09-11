@@ -27,6 +27,22 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
     // endregion
 
+    // region Private Methods
+    private android.database.Cursor query(
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    {
+        assert null != templateType; return this.queryDistinct(/* selection => */
+        org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
+            templateType.getCode());
+    }
+
+    private android.database.Cursor query(final long id)                // TODO: Push to superclass?
+    {
+        return this.queryDistinct(/* selection => */
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
+    }
+    // endregion
+
     public TemplatesTable(final android.content.Context context)
     {
         super(
@@ -40,7 +56,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* id => */ cursor.getInt(cursor.getColumnIndex(
+            /* id => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME)),
@@ -108,20 +124,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Operations
-    private android.database.Cursor query(
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        assert null != templateType; return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
-                templateType.getCode());
-    }
-
-    private android.database.Cursor query(final long id)                // TODO: Push to superclass?
-    {
-        return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
-    }
-
     public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         final android.database.Cursor cursor = this.query(templateType);
