@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
+ *
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -20,6 +22,14 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             templateId, templateTitle, templateType, templateRows, templateCols);
     }
     // endregion
+
+    @android.annotation.SuppressLint("DefaultLocale")
+    java.lang.String name()
+    {
+        return java.lang.String.format("Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
+            this.getTitle(), this.getTemplateTitle(), this.getCols(), this.getRows(),
+            this.getFormattedTimestamp());
+    }
 
     // region Public Methods
     public long getTemplateId()

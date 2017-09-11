@@ -10,7 +10,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager
  * android.content.res.Resources
- * android.database.Cursor
  * android.graphics.Point
  * android.media.MediaPlayer
  * android.net.Uri
@@ -2018,51 +2017,13 @@ android.view.View.OnKeyListener
     @android.annotation.SuppressLint("DefaultLocale")
     private void importGrid()
     {
-        int pos = 0;
-
-        java.lang.String names  [];
-        long             indexes[];
-        {
-            final android.database.Cursor gridCursor =
-                new org.wheatgenetics.coordinate.database.GridsTable(this).getAllGrids();
-            if (null == gridCursor)
-            {
-                names   = new java.lang.String[1];
-                indexes = new long            [1];
-            }
-            else
-            {
-                {
-                    final int size = gridCursor.getCount();
-
-                    names   = new java.lang.String[size];
-                    indexes = new long            [size];
-                }
-
-                while (gridCursor.moveToNext())
-                {
-                    final org.wheatgenetics.coordinate.database.GridsTable gridsTable =
-                        this.gridsTable();
-                    assert null != gridsTable;
-                    if (gridsTable.copyAll(gridCursor))
-                    {
-                        names[pos] = java.lang.String.format(
-                            "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", gridsTable.title,
-                            gridsTable.templateTitle, gridsTable.templateCols,
-                            gridsTable.templateRows, org.wheatgenetics.coordinate.utils.Utils.
-                                formatDate(gridsTable.timestamp));
-                        indexes[pos++] = gridsTable.id;
-                    }
-                }
-                gridCursor.close();
-            }
-        }
-
-        if (0 == pos)
+        final org.wheatgenetics.coordinate.model.GridModels gridModels = this.gridsTable().load();
+        if (null == gridModels)
             this.alert(org.wheatgenetics.coordinate.R.string.no_templates);
         else
         {
-            final long gridIds[] = indexes;
+            final java.lang.String names  [] = gridModels.names  ();
+            final long             indexes[] = gridModels.indexes();
 
             if (null == this.importAlertDialog) this.importAlertDialog =
                 new org.wheatgenetics.coordinate.ui.ImportAlertDialog(this,
@@ -2071,9 +2032,9 @@ android.view.View.OnKeyListener
                         @Override
                         public void importGrid(final int which)
                         {
-                            if (which < gridIds.length)
+                            if (which < indexes.length)
                             {
-                                final long gridId = gridIds[which];
+                                final long gridId = indexes[which];
 
                                 assert null !=
                                     org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;

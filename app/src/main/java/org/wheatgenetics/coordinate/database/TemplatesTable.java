@@ -39,7 +39,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Overridden Methods
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.TemplateModel(
             /* id => */ cursor.getInt(cursor.getColumnIndex(
