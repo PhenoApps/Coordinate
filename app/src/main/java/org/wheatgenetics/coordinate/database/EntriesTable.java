@@ -19,20 +19,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
 
-    private android.database.Cursor query(final long grid, final int row, final int col)
-    {
-        final java.lang.String selection =
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
-        final java.lang.String[] selectionArgs = new java.lang.String[] {
-            java.lang.String.valueOf(grid),
-            java.lang.String.valueOf(col ),
-            java.lang.String.valueOf(row ) };
-        return this.queryDistinct(
-            /* selection => */ selection, /* selectionArgs => */ selectionArgs);
-    }
-
     public EntriesTable(final android.content.Context context)
     {
         super(
@@ -43,7 +29,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Overridden Methods
     @java.lang.Override
-    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
+    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.EntryModel(
             /* id => */ cursor.getLong(cursor.getColumnIndex(
@@ -86,20 +72,25 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Operations
-    public boolean exists(final long grid, final int row, final int col)
-    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(grid, row, col)); }
-
     public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
     final int col)
     {
-        return (org.wheatgenetics.coordinate.model.EntryModel)
-            this.makeFromFirst(this.query(grid, row, col));
+        final java.lang.String selection =
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
+        final java.lang.String[] selectionArgs = new java.lang.String[] {
+            java.lang.String.valueOf(grid),
+            java.lang.String.valueOf(col ),
+            java.lang.String.valueOf(row ) };
+        return (org.wheatgenetics.coordinate.model.EntryModel) this.makeFromFirst(
+            this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs));
     }
 
-    public boolean delete(final long grid)
+    public boolean deleteByGrid(final long grid)
     {
         return this.deleteUsingWhereClause(/* whereClause => */
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + "=" + grid);
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = " + grid);
     }
     // endregion
 }

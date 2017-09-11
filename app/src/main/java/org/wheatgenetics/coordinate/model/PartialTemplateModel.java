@@ -69,7 +69,12 @@ implements java.lang.Cloneable
 
     PartialTemplateModel(final long id, final java.lang.String title,
     final int code, final int rows, final int cols)
-    { super(id); this.assign(title, rows, cols); this.setType(code); }
+    {
+        super(id);
+
+        this.assign(title, rows, cols);
+        this.setType(org.wheatgenetics.coordinate.model.TemplateType.get(code));
+    }
     // endregion
 
     // region Overridden Methods
@@ -146,9 +151,6 @@ implements java.lang.Cloneable
 
     public void setType(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     { this.type = templateType; }
-
-    public void setType(final int code)
-    { this.setType(org.wheatgenetics.coordinate.model.TemplateType.get(code)); }
 
 
     public int getRows() { return this.rows; }

@@ -12,7 +12,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 {
     private org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel = null;
 
-    // region Constructors
     public JoinedGridModel(final long id, final java.lang.String title, final long timestamp,
     final long templateId, final java.lang.String templateTitle, final int templateType,
     final int templateRows, final int templateCols)
@@ -21,7 +20,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
         this.partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             templateId, templateTitle, templateType, templateRows, templateCols);
     }
-    // endregion
 
     @android.annotation.SuppressLint("DefaultLocale")
     java.lang.String name()

@@ -31,12 +31,8 @@ abstract class Table extends java.lang.Object
     }
 
     // region Internal Operations
-    private static java.lang.String whereClause(
-    final org.wheatgenetics.coordinate.model.Model model)
-    {
-        assert null != model;
-        return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + model.getId();
-    }
+    private static java.lang.String whereClause(final long id)
+    { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
 
     private int sendInfoLogMsg(final java.lang.String msg)
     { return android.util.Log.i(this.tag, msg); }
@@ -157,8 +153,9 @@ abstract class Table extends java.lang.Object
 
     public boolean update(final org.wheatgenetics.coordinate.model.Model model)
     {
+        assert null != model;
         final java.lang.String whereClause =
-            org.wheatgenetics.coordinate.database.Table.whereClause(model);
+            org.wheatgenetics.coordinate.database.Table.whereClause(model.getId());
         this.sendInfoLogMsg("Updating table " + this.tableName + " on " + whereClause);
         assert null != this.db; return this.db.update(
             /* table       => */ this.tableName                       ,
@@ -167,10 +164,10 @@ abstract class Table extends java.lang.Object
             /* whereArgs   => */ null                                 ) > 0;
     }
 
-    public boolean delete(final org.wheatgenetics.coordinate.model.Model model)
+    public boolean delete(final long id)
     {
         return this.deleteUsingWhereClause(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Table.whereClause(model));
+            org.wheatgenetics.coordinate.database.Table.whereClause(id));
     }
     // endregion
     // endregion

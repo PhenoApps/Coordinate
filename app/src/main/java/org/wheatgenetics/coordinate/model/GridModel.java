@@ -15,8 +15,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Constructors
-    public GridModel(final long id) { super(id); }
-
     public GridModel(final long temp, final java.lang.String title)
     {
         super();

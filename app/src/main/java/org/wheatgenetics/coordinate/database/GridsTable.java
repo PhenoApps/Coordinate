@@ -75,7 +75,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.JoinedGridModel(
-            /* id => */ cursor.getLong(cursor.getColumnIndex(              // TODO: Put in ancestor?
+            /* id => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
@@ -124,10 +124,10 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)));
     }
 
-    public boolean delete(final long temp)
+    public boolean deleteByTemp(final long temp)
     {
         return this.deleteUsingWhereClause(/* whereClause => */
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + temp );
+            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + temp);
     }
 
     public org.wheatgenetics.coordinate.model.GridModels load()

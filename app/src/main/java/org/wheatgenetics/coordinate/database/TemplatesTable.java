@@ -144,13 +144,13 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     public boolean exists(final long id)
     { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
 
-    public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)  // TODO: Push to superclass?
+    public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)
     {
         return (org.wheatgenetics.coordinate.model.TemplateModel)
             this.makeFromFirst(this.query(id));
     }
 
-    public org.wheatgenetics.coordinate.model.TemplateModels load()     // TODO: Push to superclass?
+    public org.wheatgenetics.coordinate.model.TemplateModels load()
     {
         org.wheatgenetics.coordinate.model.TemplateModels result;
         {
