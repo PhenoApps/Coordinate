@@ -80,21 +80,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues()                          // TODO: Remove later.
-    {
-        final android.content.ContentValues contentValues = super.getContentValues();
-
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME , this.templateId);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME, this.title     );
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME, this.timestamp );
-
-        return contentValues;
-    }
-
-    @java.lang.Override
     android.content.ContentValues getContentValuesForInsert(  // TODO: U will need another getContentValuesForInsert() to replace copyAll().
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {

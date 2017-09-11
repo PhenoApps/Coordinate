@@ -1209,13 +1209,9 @@ android.view.View.OnKeyListener
 
     private long createGrid(final long templateId)
     {
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
-        assert null != gridsTable;
-        gridsTable.templateId = templateId                          ;
-        gridsTable.timestamp  = java.lang.System.currentTimeMillis();
         assert null != this.nonNullOptionalFields;
-        gridsTable.title = this.nonNullOptionalFields.getFirstValue();
-        return gridsTable.insert();
+        return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
+            templateId, this.nonNullOptionalFields.getFirstValue()));
     }
 
     private void createNewTemplate(
@@ -1397,15 +1393,18 @@ android.view.View.OnKeyListener
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
-            assert null != entriesTable; entriesTable.value = "exclude";
-            if (entriesTable.exists(this.gridId, row, col))
-                success = entriesTable.update();                         // TODO: Update only edata!
+            assert null != entriesTable;
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                entriesTable.get(this.gridId, row, col);
+            if (null == entryModel)
+            {
+                success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
+                    this.gridId, row, col, "exclude")) > 0;
+            }
             else
             {
-                entriesTable.grid = this.gridId;
-                entriesTable.row  = row          ;
-                entriesTable.col  = col          ;
-                success = entriesTable.insert() > 0;
+                entryModel.setValue("exclude");
+                success = entriesTable.update(entryModel);
             }
         }
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
@@ -2260,15 +2259,16 @@ android.view.View.OnKeyListener
             {
                 final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                     this.entriesTable();
-                assert null != entriesTable; entriesTable.value = value;
-                if (entriesTable.exists(this.gridId, mCurRow, mCurCol))
-                    success = entriesTable.update();                     // TODO: Update only edata!
+                assert null != entriesTable;
+                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                    entriesTable.get(this.gridId, this.mCurRow, this.mCurCol);
+                if (null == entryModel)
+                    success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
+                        this.gridId, this.mCurRow, this.mCurCol, value)) > 0;
                 else
                 {
-                    entriesTable.grid = this.gridId ;
-                    entriesTable.row  = this.mCurRow;
-                    entriesTable.col  = this.mCurCol;
-                    success = entriesTable.insert() > 0;
+                    entryModel.setValue(value);
+                    success = entriesTable.update(entryModel);
                 }
             }
             if (!success)

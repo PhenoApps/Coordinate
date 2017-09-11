@@ -15,6 +15,12 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // region Constructors
     public GridModel(final long id) { super(id); }
 
+    public GridModel(final long temp, final java.lang.String title)
+    {
+        super();
+        this.temp = temp; this.title = title; this.timestamp = java.lang.System.currentTimeMillis();
+    }
+
     GridModel(final long id, final java.lang.String title, final long timestamp)
     { super(id); this.title = title; this.timestamp = timestamp; }
     // endregion

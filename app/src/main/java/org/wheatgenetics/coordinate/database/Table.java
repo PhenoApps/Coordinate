@@ -71,19 +71,9 @@ abstract class Table extends java.lang.Object
             finally { cursor.close();                                         }
     }
 
-    android.content.ContentValues getContentValues() { return new android.content.ContentValues(); }  // TODO: Remove later.
-
     android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
     { return new android.content.ContentValues(); }
-
-    private android.content.ContentValues getContentValuesForUpdate()         // TODO: Remove later.
-    {
-        final android.content.ContentValues contentValues = this.getContentValues();
-        assert null != contentValues;
-        contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, this.id);
-        return contentValues;
-    }
 
     private android.content.ContentValues getContentValuesForUpdate(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException  // TODO: Stop throwing.
@@ -152,15 +142,6 @@ abstract class Table extends java.lang.Object
     // endregion
 
     // region Public External Operations
-    public long insert()                                                      // TODO: Remove later.
-    {
-        this.sendInfoLogMsg("Inserting into table " + this.tableName);
-        assert null != this.db; return this.db.insert(
-            /* table          => */ this.tableName         ,
-            /* nullColumnHack => */ null                   ,
-            /* values         => */ this.getContentValues());
-    }
-
     public long insert(final org.wheatgenetics.coordinate.model.Model model)
     {
         this.sendInfoLogMsg("Inserting into table " + this.tableName);
@@ -172,15 +153,6 @@ abstract class Table extends java.lang.Object
                 /* values         => */ this.getContentValuesForInsert(model)); // throws org.json.-
         }                                                                       //  JSONException
         catch (final org.json.JSONException e) { return -1; }
-    }
-
-    boolean update(final java.lang.String whereClause)                        // TODO: Remove later.
-    {
-        assert null != this.db; return this.db.update(
-            /* table       => */ this.tableName                  ,
-            /* values      => */ this.getContentValuesForUpdate(),
-            /* whereClause => */ whereClause                     ,
-            /* whereArgs   => */ null                            ) > 0;
     }
 
     public boolean update(final org.wheatgenetics.coordinate.model.Model model)

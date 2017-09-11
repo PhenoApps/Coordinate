@@ -65,25 +65,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @java.lang.Override
-    android.content.ContentValues getContentValues()                          // TODO: Remove later.
-    {
-        final android.content.ContentValues contentValues = super.getContentValues();
-
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME , this.grid );
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  , this.col  );
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  , this.row  );
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME, this.value);
-        contentValues.put(
-            org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME, this.stamp);
-
-        return contentValues;
-    }
-
-    @java.lang.Override
     android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model) throws org.json.JSONException
     {
@@ -139,12 +120,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     {
         return (org.wheatgenetics.coordinate.model.EntryModel)
             this.makeFromFirst(this.query(grid, row, col));
-    }
-
-    public boolean update()                                                   // TODO: Remove later.
-    {
-        return this.update(/* whereClause => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
     }
 
     public boolean delete(final long grid)
