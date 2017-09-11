@@ -79,17 +79,6 @@ abstract class Table extends java.lang.Object
 
     // region External Operations
     // region Package External Operations
-    abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
-
-    org.wheatgenetics.coordinate.model.Model makeFromFirst(final android.database.Cursor cursor)
-    {
-        if (null == cursor)
-            return null;
-        else
-            try     { return cursor.moveToFirst() ? this.make(cursor) : null; }
-            finally { cursor.close();                                         }
-    }
-
     android.database.Cursor queryAll(final java.lang.String orderBy)
     {
         return this.query(
@@ -121,6 +110,26 @@ abstract class Table extends java.lang.Object
 
     android.database.Cursor rawQuery(final java.lang.String sql)
     { return this.rawQuery(/* sql => */ sql, /* selectionArgs => */ null); }
+
+    static boolean exists(final android.database.Cursor cursor)
+    {
+        if (null == cursor)
+            return false;
+        else
+            try     { return cursor.getCount() > 0; }
+            finally { cursor.close()              ; }
+    }
+
+    abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
+
+    org.wheatgenetics.coordinate.model.Model makeFromFirst(final android.database.Cursor cursor)
+    {
+        if (null == cursor)
+            return null;
+        else
+            try     { return cursor.moveToFirst() ? this.make(cursor) : null; }
+            finally { cursor.close();                                         }
+    }
 
     android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model)

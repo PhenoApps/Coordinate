@@ -125,14 +125,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Operations
     public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        final android.database.Cursor cursor = this.query(templateType);
-        if (null == cursor)                                                            // TODO: DRY!
-            return false;
-        else
-            try     { return cursor.getCount() > 0; }
-            finally { cursor.close()              ; }
-    }
+    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(templateType)); }
 
     public org.wheatgenetics.coordinate.model.TemplateModel get(
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
@@ -148,15 +141,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return result;
     }
 
-    public boolean exists(final long id)                                // TODO: Push to superclass?
-    {
-        final android.database.Cursor cursor = this.query(id);
-        if (null == cursor)                                                            // TODO: DRY!
-            return false;
-        else
-            try     { return cursor.getCount() > 0; }
-            finally { cursor.close()              ; }
-    }
+    public boolean exists(final long id)
+    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
 
     public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)  // TODO: Push to superclass?
     {

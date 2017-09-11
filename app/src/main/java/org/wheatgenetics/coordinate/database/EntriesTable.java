@@ -87,14 +87,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Operations
     public boolean exists(final long grid, final int row, final int col)
-    {
-        final android.database.Cursor cursor = this.query(grid, row, col);
-        if (null == cursor)                                                            // TODO: DRY!
-            return false;
-        else
-            try     { return cursor.getCount() > 0; }
-            finally { cursor.close()              ; }
-    }
+    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(grid, row, col)); }
 
     public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
     final int col)
