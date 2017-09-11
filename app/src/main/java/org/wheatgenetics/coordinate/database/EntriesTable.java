@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
- * android.annotation.SuppressLint
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
@@ -14,18 +13,25 @@ package org.wheatgenetics.coordinate.database;
  */
 public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 {
-    // region Fields
-    public  long             grid  =  0         ;
-    public  int              col   =  0, row = 0;
-    public  java.lang.String value = ""         ;
-    private long             stamp =  0         ;
-    // endregion
-
     // region Constants
     private static final java.lang.String TABLE_NAME      = "entries";
     private static final java.lang.String GRID_FIELD_NAME = "grid", ROW_FIELD_NAME = "row",
         COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
+
+    private android.database.Cursor query(final long grid, final int row, final int col)
+    {
+        final java.lang.String selection =
+            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
+            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
+        final java.lang.String[] selectionArgs = new java.lang.String[] {
+            java.lang.String.valueOf(grid),
+            java.lang.String.valueOf(col ),
+            java.lang.String.valueOf(row ) };
+        return this.queryDistinct(
+            /* selection => */ selection, /* selectionArgs => */ selectionArgs);
+    }
 
     public EntriesTable(final android.content.Context context)
     {
@@ -36,14 +42,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Overridden Methods
-    @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
-    public java.lang.String toString()
-    {
-        return super.toString() + java.lang.String.format(
-            " entry: %02d col: %02d row: %02d value: %.2f",
-            this.grid, this.col, this.row, this.value);
-    }
-
     @java.lang.Override
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)  // TODO: Make private.
     {
@@ -88,20 +86,6 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Operations
-    private android.database.Cursor query(final long grid, final int row, final int col)
-    {
-        final java.lang.String selection =
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
-        final java.lang.String[] selectionArgs = new java.lang.String[] {
-            java.lang.String.valueOf(grid),
-            java.lang.String.valueOf(col ),
-            java.lang.String.valueOf(row ) };
-        return this.queryDistinct(
-            /* selection => */ selection, /* selectionArgs => */ selectionArgs);
-    }
-
     public boolean exists(final long grid, final int row, final int col)
     {
         final android.database.Cursor cursor = this.query(grid, row, col);

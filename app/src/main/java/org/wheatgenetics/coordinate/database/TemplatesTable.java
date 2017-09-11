@@ -36,7 +36,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             templateType.getCode());
     }
 
-    private android.database.Cursor query(final long id)                // TODO: Push to superclass?
+    private android.database.Cursor query(final long id)
     {
         return this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
