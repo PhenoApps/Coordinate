@@ -71,7 +71,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME +
             ", " + templateTypeFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME +
-            ", " + rowsFieldName + ", " + colsFieldName +
+            ", " + rowsFieldName + ", " + colsFieldName + ", " + cnumbFieldName + ", " +
+            rnumbFieldName + ", " + optionsFieldName +
                 " FROM " + gridsTableName + ", " + templatesTableName +
                 " WHERE " + tempFieldName + " = " + templateIdFieldName;
     }
