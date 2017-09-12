@@ -16,12 +16,14 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     { return null == this.partialTemplateModel ? null : this.partialTemplateModel.getTitle(); }
 
     public JoinedGridModel(final long id, final java.lang.String title, final long timestamp,
-    final long templateId, final java.lang.String templateTitle, final int templateType,
-    final int templateRows, final int templateCols)
+    final long templateId, final java.lang.String templateTitle, final int code, final int rows,
+    final int cols, final int colNumbering, final int rowNumbering,
+    final java.lang.String optionalFields)
     {
         super(id, title, timestamp);
         this.partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-            templateId, templateTitle, templateType, templateRows, templateCols);
+            templateId, templateTitle, code, rows, cols, colNumbering, rowNumbering,
+            optionalFields);
     }
 
     @android.annotation.SuppressLint("DefaultLocale")

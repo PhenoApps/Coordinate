@@ -22,8 +22,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             static final java.lang.String ROWS_FIELD_NAME   = "rows"  , COLS_FIELD_NAME  = "cols" ;
     private static final java.lang.String ECELLS_FIELD_NAME = "ecells", EROWS_FIELD_NAME = "erows",
         ECOLS_FIELD_NAME = "ecols";
-    private static final java.lang.String CNUMB_FIELD_NAME   = "cnumb", RNUMB_FIELD_NAME = "rnumb";
-    private static final java.lang.String OPTIONS_FIELD_NAME = "options";
+            static final java.lang.String CNUMB_FIELD_NAME   = "cnumb", RNUMB_FIELD_NAME = "rnumb";
+            static final java.lang.String OPTIONS_FIELD_NAME = "options";
     private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
     // endregion
 

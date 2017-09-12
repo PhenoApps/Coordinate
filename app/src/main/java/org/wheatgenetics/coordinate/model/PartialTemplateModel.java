@@ -10,7 +10,11 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.annotation.SuppressLint
  *
+ * org.json.JSONException
+ *
  * org.wheatgenetics.coordinate.utils.Utils
+ *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -22,6 +26,10 @@ implements java.lang.Cloneable
     private java.lang.String                                title     ;
     private org.wheatgenetics.coordinate.model.TemplateType type      ;
     private int                                             rows, cols;
+
+    private boolean colNumbering, rowNumbering;
+
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields;
     // endregion
 
     // region Private Methods
@@ -43,12 +51,29 @@ implements java.lang.Cloneable
     { this.setCols(org.wheatgenetics.coordinate.utils.Utils.convert(cols)); }
 
 
+    private static boolean valid(final int numbering)
+    {
+        if (numbering < 0 || numbering > 1)
+            throw new java.lang.IllegalArgumentException();
+        else
+            return 1 == numbering;
+    }
+
     private static java.lang.String convert(final int integer)
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
 
-    private void assign(final java.lang.String title, final int rows, final int cols)
-    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+    private void assign(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
+    { this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols); }
+
+    private void assign(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
+    {
+        this.assign(title, type, rows, cols);
+        this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
+    }
 
 
     @android.annotation.SuppressLint("DefaultLocale")
@@ -66,18 +91,53 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    // region Method Overview
+    // signature                                                       scope
+    // =============================================================== =======
+    // assign(title, type, rows, cols)                                 private
+    //     assign(title, type, rows, cols, colNumbering, rowNumbering) private
+    //         PartialTemplateModel(    type                )          package
+    //         PartialTemplateModel(id, type                )          private
+    //         PartialTemplateModel(id, code, optionalFields)          package
+    //     assign(partialTemplateModel)                                package
+    // endregion
+
     // region Constructors
     PartialTemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
-    { super(); this.assign(title, rows, cols); this.setType(type); }
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
+    { super(); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
 
-    PartialTemplateModel(final long id, final java.lang.String title,
-    final int code, final int rows, final int cols)
+    PartialTemplateModel(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
+    {
+        this(title, type, rows, cols, colNumbering, rowNumbering);
+        this.optionalFields = nonNullOptionalFields;
+    }
+
+    private PartialTemplateModel(final long id, final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
+    { super(id); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
+
+    PartialTemplateModel(final long id, final java.lang.String title, final int code,
+    final int rows, final int cols, final int colNumbering, final int rowNumbering,
+    final java.lang.String optionalFields)
     {
         super(id);
 
-        this.assign(title, rows, cols);
-        this.setType(org.wheatgenetics.coordinate.model.TemplateType.get(code));
+        this.assign(title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
+            org.wheatgenetics.coordinate.model.PartialTemplateModel.valid(colNumbering),
+            org.wheatgenetics.coordinate.model.PartialTemplateModel.valid(rowNumbering));
+
+        try
+        {
+            this.optionalFields = new
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+        }
+        catch (final org.json.JSONException e) { this.optionalFields = null; }
     }
     // endregion
 
@@ -86,9 +146,10 @@ implements java.lang.Cloneable
     @android.annotation.SuppressLint("DefaultLocale")
     java.lang.String formatString()
     {
-        return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d",
-            super.toString(), this.getTitle(), this.getType().getCode(), this.getRows(),
-            this.getCols());
+        return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d, colNumb" +
+            "ering=%b, rowNumbering=%b, options=%s", super.toString(), this.getTitle(),
+            this.getType().getCode(), this.getRows(), this.getCols(), this.getColNumbering(),
+            this.getRowNumbering(), this.optionalFields);
     }
 
     @java.lang.Override
@@ -96,7 +157,7 @@ implements java.lang.Cloneable
     { return java.lang.String.format(this.formatString(), "PartialTemplateModel") + "]"; }
     // endregion
 
-    @java.lang.Override
+    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean equals(final java.lang.Object o)
     {
         if (super.equals(o))
@@ -114,6 +175,7 @@ implements java.lang.Cloneable
                             return false;
                         else if (null != myTitle) if (!myTitle.equals(yourTitle)) return false;
                 }
+
                 {
                     final org.wheatgenetics.coordinate.model.TemplateType
                         myTemplateType = this.getType(), yourTemplateType = p.getType();
@@ -127,7 +189,18 @@ implements java.lang.Cloneable
                                 if (myTemplateType.getCode() != yourTemplateType.getCode())
                                     return false;
                 }
-                return this.getRows() == p.getRows() && this.getCols() == p.getCols();
+
+                if (this.getRows() != p.getRows() || this.getCols() != p.getCols()) return false;
+
+                if (this.getColNumbering() != p.getColNumbering()) return false;
+                if (this.getRowNumbering() != p.getRowNumbering()) return false;
+
+                if (null == this.optionalFields && null != p.optionalFields)
+                    return false;
+                else
+                    if (null != this.optionalFields && null == p.optionalFields) return false;
+                return  null == this.optionalFields ? true :
+                    this.optionalFields.equals(p.optionalFields);
             }
             else return false;
         else return false;
@@ -140,17 +213,22 @@ implements java.lang.Cloneable
     @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone", "RedundantStringConstructorCall"})
     protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
     {
-        return new org.wheatgenetics.coordinate.model.PartialTemplateModel(this.getId(),
-            new java.lang.String(this.getTitle()), this.getType().getCode(), this.getRows(),
-            this.getCols());
+        final org.wheatgenetics.coordinate.model.PartialTemplateModel result =
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(this.getId(),
+                new java.lang.String(this.getTitle()), this.getType(), this.getRows(),
+                this.getCols(), this.getColNumbering(), this.getRowNumbering());
+        if (null != this.optionalFields) result.optionalFields =
+            (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
+                this.optionalFields.clone();
+        return result;
     }
     // endregion
 
     void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
-        assert null != partialTemplateModel; this.assign(partialTemplateModel.getTitle(),
+        assert null != partialTemplateModel;
+        this.assign(partialTemplateModel.getTitle(), partialTemplateModel.getType(),
             partialTemplateModel.getRows(), partialTemplateModel.getCols());
-        this.setType(partialTemplateModel.getType());
     }
 
     // region Public Methods
@@ -180,9 +258,22 @@ implements java.lang.Cloneable
     public boolean colsIsSpecified() { return this.getCols() >= 0; }
 
 
-    public void assign(final java.lang.String title,
-    final java.lang.String rows, final java.lang.String cols)
-    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+    public boolean getColNumbering()                           { return this.colNumbering        ; }
+    public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
+
+    public boolean getRowNumbering()                           { return this.rowNumbering        ; }
+    public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+
+
+    public java.lang.String getOptionalFields()
+    {
+        try { return null == this.optionalFields ? null : this.optionalFields.toJson(); } // throws
+        catch (final org.json.JSONException e) { return null; }                           //  org.-
+    }                                                                                     //  json.-
+                                                                                          //  JSON-
+                                                                                          //  Excep-
+    public void assign(final java.lang.String title, final java.lang.String rows,         //  tion
+    final java.lang.String cols) { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
 
     public java.lang.String[] rowItems(final java.lang.String label)
