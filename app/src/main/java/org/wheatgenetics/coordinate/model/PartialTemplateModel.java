@@ -47,6 +47,10 @@ implements java.lang.Cloneable
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
 
+    private void assign(final java.lang.String title, final int rows, final int cols)
+    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+
+
     @android.annotation.SuppressLint("DefaultLocale")
     private static java.lang.String[] items(final int length, final java.lang.String label)
     {
@@ -142,6 +146,13 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    {
+        assert null != partialTemplateModel; this.assign(partialTemplateModel.getTitle(),
+            partialTemplateModel.getRows(), partialTemplateModel.getCols());
+        this.setType(partialTemplateModel.getType());
+    }
+
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }
     public void             setTitle(final java.lang.String title) { this.title = title; }
@@ -168,9 +179,6 @@ implements java.lang.Cloneable
 
     public boolean colsIsSpecified() { return this.getCols() >= 0; }
 
-
-    public void assign(final java.lang.String title, final int rows, final int cols)
-    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
     public void assign(final java.lang.String title,
     final java.lang.String rows, final java.lang.String cols)

@@ -743,6 +743,10 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    @java.lang.Override
+    void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    { super.assign(partialTemplateModel); this.clearExcludes(); }
+
     // region Public Methods
     // region excludeCells Public Methods
     public void addExcludedCell(final int col, final int row) { this.excludeCells().add(col, row); }
@@ -854,8 +858,9 @@ implements java.lang.Cloneable
         }
     }
     // endregion
+    // endregion
 
-    // region Make Public Methods
+    // region Make Methods
     public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -899,6 +904,5 @@ implements java.lang.Cloneable
             /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                 NonNullOptionalFields.makeDNADefault());
     }
-    // endregion
     // endregion
 }

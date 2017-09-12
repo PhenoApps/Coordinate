@@ -12,6 +12,9 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 {
     private org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel = null;
 
+    private java.lang.String getTemplateTitle()
+    { return null == this.partialTemplateModel ? null : this.partialTemplateModel.getTitle(); }
+
     public JoinedGridModel(final long id, final java.lang.String title, final long timestamp,
     final long templateId, final java.lang.String templateTitle, final int templateType,
     final int templateRows, final int templateCols)
@@ -33,9 +36,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     public long getTemplateId()
     { return null == this.partialTemplateModel ? 0 : this.partialTemplateModel.getId(); }
 
-    public java.lang.String getTemplateTitle()
-    { return null == this.partialTemplateModel ? null : this.partialTemplateModel.getTitle(); }
-
     public org.wheatgenetics.coordinate.model.TemplateType getType()
     { assert null != this.partialTemplateModel; return this.partialTemplateModel.getType(); }
 
@@ -44,5 +44,9 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 
     public int getCols()
     { return null == this.partialTemplateModel ? 0 : this.partialTemplateModel.getCols(); }
+
+
+    public void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    { assert null != templateModel; templateModel.assign(this.partialTemplateModel); }
     // endregion
 }
