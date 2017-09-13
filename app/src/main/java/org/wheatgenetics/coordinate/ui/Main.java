@@ -123,6 +123,15 @@ android.view.View.OnKeyListener
             return exportFile;
         }
 
+        private boolean isExcludedRow(final int row)
+        { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
+
+        private boolean isExcludedCol(final int col)
+        { assert null != this.templateModel; return this.templateModel.isExcludedCol(col); }
+
+        private boolean isExcludedCell(final int row, final int col)
+        { assert null != this.templateModel; return this.templateModel.isExcludedCell(col, row); }
+
         private boolean exportSeed()
         {
             java.lang.String tray_id = "", person = "", date = "";
@@ -160,8 +169,8 @@ android.view.View.OnKeyListener
                             csvWriter.write(row                                          );  // tray_row
                             {
                                 java.lang.String value;
-                                if (isExcludedRow(row) || isExcludedCol(col)
-                                || isExcludedCell(row, col))
+                                if (this.isExcludedRow(row) || this.isExcludedCol(col)
+                                || this.isExcludedCell(row, col))
                                     value = "exclude";
                                 else
                                     value = org.wheatgenetics.javalib.Utils.replaceIfNull(
@@ -252,8 +261,8 @@ android.view.View.OnKeyListener
                                     java.lang.String tissue_id;
                                     {
                                         final int row = r + 1;
-                                        if (isExcludedRow(row) || isExcludedCol(col)
-                                        || isExcludedCell(row, col))
+                                        if (this.isExcludedRow(row) || this.isExcludedCol(col)
+                                        || this.isExcludedCell(row, col))
                                             tissue_id = "BLANK_" + sample_id;
                                         else
                                         {
@@ -326,8 +335,8 @@ android.view.View.OnKeyListener
                         {
                             {
                                 java.lang.String value;
-                                if (isExcludedRow(row) || isExcludedCol(col)
-                                || isExcludedCell(row, col))
+                                if (this.isExcludedRow(row) || this.isExcludedCol(col)
+                                || this.isExcludedCell(row, col))
                                     value = "exclude";
                                 else
                                     value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
@@ -516,19 +525,25 @@ android.view.View.OnKeyListener
 
     // region Fields
     // region Widget Fields
-    private android.support.v4.widget.DrawerLayout       drawerLayout         ;
+    private android.widget.LinearLayout mainLayout;                                      // main.xml
+
+    private android.support.v4.widget.DrawerLayout       drawerLayout         ;          // main.xml
     private android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private android.widget.LinearLayout mainLayout,
-        gridAreaLayout, gridTableLayout, optionalFieldLayout;
-    private android.widget.EditText cellIDEditText        ;
-    private android.widget.TextView templateTitleTextView ;
-    private android.view.View       currentCellView = null;
+    private android.widget.LinearLayout
+        gridAreaLayout ,                                                                 // main.xml
+        gridTableLayout;                                                                 // main.xml
+
+    private android.widget.EditText     cellIDEditText       ;                           // main.xml
+    private android.widget.TextView     templateTitleTextView;                           // main.xml
+    private android.widget.LinearLayout optionalFieldLayout  ;                           // main.xml
+
+    private android.view.View currentCellView = null;
     // endregion
 
-    private long             gridId    =    0             ;
-    private java.lang.String gridTitle =   ""             ;
-    private int              mCurRow   =    1, mCurCol = 1;
+    private long             gridId    =  0             ;
+    private java.lang.String gridTitle = ""             ;
+    private int              mCurRow   =  1, mCurCol = 1;
 
     private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -686,8 +701,7 @@ android.view.View.OnKeyListener
             final android.support.v7.app.ActionBar supportActionBar = this.getSupportActionBar();
             if (null != supportActionBar)
             {
-                supportActionBar.setTitle(null);
-                supportActionBar.getThemedContext();   // TODO: This appears to do nothing.  Remove?
+                supportActionBar.setTitle                 (null);
                 supportActionBar.setDisplayHomeAsUpEnabled(true);
                 supportActionBar.setHomeButtonEnabled     (true);
             }
@@ -766,7 +780,7 @@ android.view.View.OnKeyListener
         this.optionalFieldLayout = (android.widget.LinearLayout)
             this.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
 
-        assert null != this.templateModel;
+        assert null != this.templateModel; assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.templateModel.getTitle());
 
         // Adds default templates to database if they aren't there already.  If they are there then
@@ -1201,7 +1215,7 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Subsubaction Drawer Methods
-    private void loadExistingTemplate(
+    private void loadExistingTemplate(                      // TODO: DRY? (Compare to deleteGrid().)
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         assert null != this.templateModel; this.templateModel.setType(templateType);
@@ -1214,8 +1228,11 @@ android.view.View.OnKeyListener
             assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
             org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setCurrentGrid(gridId);
 
+            assert null != this.optionalFieldLayout;
             this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
-            this.gridAreaLayout.setVisibility     (android.view.View.VISIBLE);
+
+            assert null != this.gridAreaLayout;
+            this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
 
             this.populateTemplate();
         }
@@ -1634,7 +1651,7 @@ android.view.View.OnKeyListener
             }
             this.optionalFieldLayout.addView(view);
         }
-        this.gridTableLayout.removeAllViews();
+        assert null != this.gridTableLayout; this.gridTableLayout.removeAllViews();
 
         // header
         @android.annotation.SuppressLint("InflateParams")
@@ -1789,33 +1806,38 @@ android.view.View.OnKeyListener
                         });
     }
 
-    private void deleteGrid()
+    private void deleteGrid()                     // TODO: DRY? (Compare to loadExistingTemplate().)
     {
         if (0 != this.gridId) this.confirm(
             /* message     => */ org.wheatgenetics.coordinate.R.string.delete_grid_warning,
             /* yesRunnable => */ new java.lang.Runnable()
-            {
-                @java.lang.Override
-                public void run()
                 {
-                    if (org.wheatgenetics.coordinate.ui.Main.this.deleteGrid(
-                    org.wheatgenetics.coordinate.ui.Main.this.gridId))
+                    @java.lang.Override
+                    public void run()
                     {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
-                            org.wheatgenetics.coordinate.R.string.grid_deleted);
-                        org.wheatgenetics.coordinate.ui.Main.this.gridId = 0;
-                        org.wheatgenetics.coordinate.ui.Main.this.optionalFieldLayout.setVisibility(
-                            android.view.View.INVISIBLE);
-                        org.wheatgenetics.coordinate.ui.Main.this.gridAreaLayout.setVisibility(
-                            android.view.View.INVISIBLE);
-                        org.wheatgenetics.coordinate.ui.Main.this.
-                            loadExistingTemplateOrCreateNewTemplate();
+                        if (org.wheatgenetics.coordinate.ui.Main.this.deleteGrid(
+                        org.wheatgenetics.coordinate.ui.Main.this.gridId))
+                        {
+                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
+                                org.wheatgenetics.coordinate.R.string.grid_deleted);
+                            org.wheatgenetics.coordinate.ui.Main.this.gridId = 0;
+
+                            assert null != org.wheatgenetics.coordinate.ui.Main.this.optionalFieldLayout;
+                            org.wheatgenetics.coordinate.ui.Main.this.optionalFieldLayout.setVisibility(
+                                android.view.View.INVISIBLE);
+
+                            assert null != org.wheatgenetics.coordinate.ui.Main.this.gridAreaLayout;
+                            org.wheatgenetics.coordinate.ui.Main.this.gridAreaLayout.setVisibility(
+                                android.view.View.INVISIBLE);
+
+                            org.wheatgenetics.coordinate.ui.Main.this.
+                                loadExistingTemplateOrCreateNewTemplate();
+                        }
+                        else
+                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
+                                org.wheatgenetics.coordinate.R.string.grid_not_deleted);
                     }
-                    else
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
-                            org.wheatgenetics.coordinate.R.string.grid_not_deleted);
-                }
-            });
+                });
     }
 
     private void createNewTemplate()
@@ -2158,6 +2180,7 @@ android.view.View.OnKeyListener
             }
         }
 
+        assert null != this.gridTableLayout;
         android.view.View view = this.gridTableLayout.findViewWithTag(
             org.wheatgenetics.coordinate.ui.Main.getTag(mCurRow, mCurCol));
 
