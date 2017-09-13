@@ -581,14 +581,16 @@ implements java.lang.Cloneable
             new org.wheatgenetics.coordinate.model.TemplateModel.Coordinates();
         return this.excludeColsInstance;
     }
+
+    private void clearExcludes()
+    {
+        if (null != this.excludeCellsInstance) this.excludeCells().clear();
+        if (null != this.excludeRowsInstance ) this.excludeRows ().clear();
+        if (null != this.excludeColsInstance ) this.excludeCols ().clear();
+    }
     // endregion
 
     // region Constructors
-    private TemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering)
-    { super(title, type, rows, cols, colNumbering, rowNumbering); }
-
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
     final boolean colNumbering, final boolean rowNumbering,
@@ -740,12 +742,8 @@ implements java.lang.Cloneable
 
     public long getTimestamp() { return this.timestamp; }
 
-    public void clearExcludes()
-    {
-        if (null != this.excludeCellsInstance) this.excludeCells().clear();
-        if (null != this.excludeRowsInstance ) this.excludeRows ().clear();
-        if (null != this.excludeColsInstance ) this.excludeCols ().clear();
-    }
+    public void clearExcludesAndOptionalFields()
+    { this.clearExcludes(); this.makeOptionalFieldsNew(); }
 
     public android.graphics.Point nextFreeCell(final android.graphics.Point currentCell)
     {
@@ -804,12 +802,15 @@ implements java.lang.Cloneable
     public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title        => */ ""                                                  ,
-            /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-            /* rows         => */ 20                                                  ,
-            /* cols         => */ 10                                                  ,
-            /* colNumbering => */ true                                                ,
-            /* rowNumbering => */ false                                               );
+            /* title          => */ ""                                                  ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows           => */ 20                                                  ,
+            /* cols           => */ 10                                                  ,
+            /* colNumbering   => */ true                                                ,
+            /* rowNumbering   => */ false                                               ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                NonNullOptionalFields.makeInitial());
+
     }
 
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()

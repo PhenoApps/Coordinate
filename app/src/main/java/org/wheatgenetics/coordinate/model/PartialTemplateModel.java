@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.utils.Utils
  *
+ * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Model
@@ -64,14 +65,10 @@ implements java.lang.Cloneable
 
 
     private void assign(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols)
-    { this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols); }
-
-    private void assign(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
     final boolean colNumbering, final boolean rowNumbering)
     {
-        this.assign(title, type, rows, cols);
+        this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
         this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
     }
 
@@ -99,21 +96,17 @@ implements java.lang.Cloneable
     //         PartialTemplateModel(    type                )          package
     //         PartialTemplateModel(id, type                )          private
     //         PartialTemplateModel(id, code, optionalFields)          package
-    //     assign(partialTemplateModel)                                package
+    //         assign(partialTemplateModel)                            package
     // endregion
 
     // region Constructors
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering)
-    { super(); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
-
-    PartialTemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
     final boolean colNumbering, final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
-        this(title, type, rows, cols, colNumbering, rowNumbering);
+        super();
+        this.assign(title, type, rows, cols, colNumbering, rowNumbering);
         this.optionalFields = nonNullOptionalFields;
     }
 
@@ -224,12 +217,22 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    // region Package Methods
     void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
         assert null != partialTemplateModel;
         this.assign(partialTemplateModel.getTitle(), partialTemplateModel.getType(),
-            partialTemplateModel.getRows(), partialTemplateModel.getCols());
+            partialTemplateModel.getRows(), partialTemplateModel.getCols(),
+            partialTemplateModel.getColNumbering(), partialTemplateModel.getRowNumbering());
+        this.optionalFields = partialTemplateModel.optionalFields;
     }
+
+    void makeOptionalFieldsNew()
+    {
+        this.optionalFields =
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
+    }
+    // endregion
 
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }
@@ -281,5 +284,44 @@ implements java.lang.Cloneable
 
     public java.lang.String[] colItems(final java.lang.String label)
     { return org.wheatgenetics.coordinate.model.PartialTemplateModel.items(this.getCols(), label); }
+
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean optionalFieldsIsEmpty()
+    { return null == this.optionalFields ? true : this.optionalFields.isEmpty(); }
+
+    public java.lang.String[] optionalFieldNames()
+    { return null == this.optionalFields ? null : this.optionalFields.names(); }
+
+    public java.lang.String[] optionalFieldValues()
+    { return null == this.optionalFields ? null : this.optionalFields.values(); }
+
+    public java.lang.String[] optionalFieldValues(final java.lang.String names[])
+    { return null == this.optionalFields ? null : this.optionalFields.values(names); }
+
+    public boolean[] optionalFieldschecks()
+    { return null == this.optionalFields ? null : this.optionalFields.checks(); }
+
+    public void addOptionalField(final java.lang.String name, final java.lang.String value)
+    {
+        assert null != this.optionalFields;
+        this.optionalFields.add(/* name => */ name, /* value => */ value, /* hint => */ "");
+    }
+
+    public void setOptionalFieldChecked(final int index, final boolean checked)
+    { assert null != this.optionalFields; this.optionalFields.get(index).setChecked(checked); }
+
+    public org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+    makeCheckedOptionalFields()
+    {
+        return new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+            this.optionalFields);
+    }
+
+    public java.lang.String getFirstOptionalFieldValue()
+    { assert null != this.optionalFields; return this.optionalFields.getFirstValue(); }
+
+    public java.lang.String getFirstOptionalFieldDatedValue()
+    { assert null != this.optionalFields; return this.optionalFields.getDatedFirstValue(); }
     // endregion
 }
