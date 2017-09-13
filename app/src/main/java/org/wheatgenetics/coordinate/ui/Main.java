@@ -484,7 +484,7 @@ android.view.View.OnKeyListener
                                             Main.this.entriesTable().deleteByGrid(
                                             org.wheatgenetics.coordinate.ui.Main.this.gridId))
                                                 org.wheatgenetics.coordinate.ui.
-                                                    Main.this.populateTemplate();
+                                                    Main.this.populateUI();
                                             else
                                                 org.wheatgenetics.coordinate.ui.Main.this.
                                                     showLongToast(org.wheatgenetics.coordinate.R.
@@ -843,12 +843,12 @@ android.view.View.OnKeyListener
                 joinedGridModel.assign(this.templateModel);
                 this.gridId = joinedGridModel.getId(); this.gridTitle = joinedGridModel.getTitle();
 
-                this.populateTemplate();
+                this.populateUI();
             }
         }
         else this.loadExistingTemplateOrCreateNewTemplate();
 
-        this.showTemplateUI();
+        this.showUI();
 
         int versionCode;
         try
@@ -1064,7 +1064,7 @@ android.view.View.OnKeyListener
     //         createNewTemplate()
     //             inputTemplateNewExtra()
     // importGrid()
-    //     populateTemplate()
+    //     populateUI()
     //         getNextFreeCell()
     //         isExcludedRow()
     //         isExcludedCol()
@@ -1072,7 +1072,7 @@ android.view.View.OnKeyListener
     //         setCellState()
     //         isExcludedCell()
     //         saveExcludedCell()
-    //         showTemplateUI()
+    //         showUI()
     // exportGrid()
     //     createExportFile()
     //     exporter.execute()
@@ -1206,7 +1206,7 @@ android.view.View.OnKeyListener
                 assert null != this.sharedPreferences;
                 this.sharedPreferences.setCurrentGrid(gridId);
 
-                this.populateTemplate();
+                this.populateUI();
             }
             else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
         }
@@ -1234,7 +1234,7 @@ android.view.View.OnKeyListener
             assert null != this.gridAreaLayout;
             this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
 
-            this.populateTemplate();
+            this.populateUI();
         }
         else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
     }
@@ -1386,7 +1386,7 @@ android.view.View.OnKeyListener
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
     }
 
-    private void showTemplateUI()
+    private void showUI()
     {
         assert null != this.templateModel; assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.templateModel.getTitle());
@@ -1613,19 +1613,16 @@ android.view.View.OnKeyListener
         else return false;
     }
 
-    private void populateTemplate()
+    private void populateUI()
     {
-        this.mCurRow = 1; this.mCurCol = 1;
-
-        this.getNextFreeCell();
-
-        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+        this.mCurRow = 1; this.mCurCol = 1; this.getNextFreeCell();
 
         assert null != this.optionalFieldLayout; this.optionalFieldLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
             checkedOptionalFields = this.makeCheckedOptionalFields();
-        boolean first = true;
+        final android.view.LayoutInflater layoutInflater = this.getLayoutInflater();
+              boolean                     first          = true                    ;
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
         checkedOptionalFields)                                                         // TODO: DRY!
         {
@@ -1639,18 +1636,21 @@ android.view.View.OnKeyListener
                 assert null != nameTextView; nameTextView.setText(optionalField.getName());
             }
             {
-                final android.widget.TextView valueTextView = (android.widget.TextView)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
-                assert null != valueTextView;
+                java.lang.String text;
                 if (first)
                 {
-                    valueTextView.setText(this.gridTitle);
-                    first = false;
+                    text  = this.gridTitle;
+                    first = false         ;
                 }
-                else valueTextView.setText(optionalField.getValue());
+                else text = optionalField.getValue();
+
+                final android.widget.TextView valueTextView = (android.widget.TextView)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
+                assert null != valueTextView; valueTextView.setText(text);
             }
             this.optionalFieldLayout.addView(view);
         }
+
         assert null != this.gridTableLayout; this.gridTableLayout.removeAllViews();
 
         // header
@@ -1757,7 +1757,7 @@ android.view.View.OnKeyListener
             this.gridTableLayout.addView(brow);
         }
 
-        this.showTemplateUI();
+        this.showUI();
     }
 
     private java.io.File createExportFile()
@@ -2022,7 +2022,7 @@ android.view.View.OnKeyListener
                                     org.wheatgenetics.coordinate.ui.Main.this.gridTitle =
                                         joinedGridModel.getTitle();
 
-                                    org.wheatgenetics.coordinate.ui.Main.this.populateTemplate();
+                                    org.wheatgenetics.coordinate.ui.Main.this.populateUI();
                                 }
                             }
                         }
