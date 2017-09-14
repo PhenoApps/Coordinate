@@ -459,8 +459,8 @@ android.view.View.OnKeyListener
             // TODO: When grid is reset, make a new one.
             if (null != result && result)
             {
-                org.wheatgenetics.coordinate.ui.Main.this.mLastExportGridId =  // TODO: Make into
-                    org.wheatgenetics.coordinate.ui.Main.this.gridId;          // TODO:  Main method.
+                org.wheatgenetics.coordinate.ui.Main.this.lastExportGridId =  // TODO: Make into
+                    org.wheatgenetics.coordinate.ui.Main.this.gridId;         // TODO:  Main method.
                 org.wheatgenetics.coordinate.ui.Main.this.alert(
                     /* message     => */ org.wheatgenetics.coordinate.R.string.export_success,
                     /* yesRunnable => */ new java.lang.Runnable()
@@ -557,9 +557,9 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
 
-    private org.wheatgenetics.androidlibrary.Dir          exportDir               ;
-    private org.wheatgenetics.coordinate.ui.Main.Exporter exporter          = null;
-    private long                                          mLastExportGridId =   -1;
+    private org.wheatgenetics.androidlibrary.Dir          exportDir              ;
+    private org.wheatgenetics.coordinate.ui.Main.Exporter exporter         = null;
+    private long                                          lastExportGridId =   -1;
 
     // region AlertDialog Fields
     private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
@@ -1014,7 +1014,7 @@ android.view.View.OnKeyListener
     //         createNewTemplate()
     //             inputTemplateNewExtra()
     //     newGridNow()
-    //         deleteGrid(long)
+    //         deleteEntriesAndGrid(long)
     //         loadSeedTrayTemplate()
     //             loadExistingTemplate(TemplateType)
     //                 insertGrid()
@@ -1024,7 +1024,7 @@ android.view.View.OnKeyListener
     //         createExportFile()
     //         exporter.execute()
     // deleteGrid()
-    //     deleteGrid(long)
+    //     deleteEntriesAndGrid(long)
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //         createNewTemplate()
@@ -1414,7 +1414,7 @@ android.view.View.OnKeyListener
 
     private void newGridNow() throws org.json.JSONException
     {
-        this.deleteGrid(this.gridId);
+        this.deleteEntriesAndGrid(this.gridId);
 
         assert null != this.templateModel;
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
@@ -1432,7 +1432,7 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.ui.Main.MODE_SAVED, this.templateModel);
     }
 
-    private boolean deleteGrid(final long gridId)
+    private boolean deleteEntriesAndGrid(final long gridId)
     { this.entriesTable().deleteByGrid(gridId); return this.gridsTable().delete(gridId); }
 
     private void inputTemplateNewExtra()
@@ -1755,7 +1755,7 @@ android.view.View.OnKeyListener
         if (0 == this.gridId)
             this.loadExistingTemplateOrCreateNewTemplate();
         else
-            if (this.gridId >= 0 && mLastExportGridId == this.gridId)
+            if (this.gridId >= 0 && this.lastExportGridId == this.gridId)
                 this.newGridNow();                                  // throws org.json.JSONException
             else
                 this.confirm(
@@ -1786,7 +1786,7 @@ android.view.View.OnKeyListener
                     @java.lang.Override
                     public void run()
                     {
-                        if (org.wheatgenetics.coordinate.ui.Main.this.deleteGrid(
+                        if (org.wheatgenetics.coordinate.ui.Main.this.deleteEntriesAndGrid(
                         org.wheatgenetics.coordinate.ui.Main.this.gridId))
                         {
                             org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
