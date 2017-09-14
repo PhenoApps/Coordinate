@@ -1006,6 +1006,51 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
+    // region Operations
+    private long insertGrid(
+    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    {
+        assert null != partialTemplateModel;
+        return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
+            /* temp  => */ partialTemplateModel.getId                     (),
+            /* title => */ partialTemplateModel.getFirstOptionalFieldValue()));
+    }
+
+    private boolean deleteEntriesAndGrid()
+    { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
+
+    private boolean deleteGridsAndTemplate(
+    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    {
+        assert null != partialTemplateModel; final long templateId = partialTemplateModel.getId();
+
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+        assert null != templatesTable; if (templatesTable.exists(templateId))
+        {
+            org.wheatgenetics.coordinate.model.TemplateType templateType;
+            {
+                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                    templatesTable.get(templateId);
+                assert null != templateModel; templateType = templateModel.getType();
+            }
+            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
+            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
+            {
+                this.showShortToast(
+                    org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
+                return false;
+            }
+            else
+            {
+                this.gridsTable().deleteByTemp(templateId);
+                return templatesTable.delete(templateId);
+            }
+        }
+        else return false;
+    }
+    // endregion
+
     // region Drawer Methods
     // region Overview
     // createNewGrid()
@@ -1171,15 +1216,6 @@ android.view.View.OnKeyListener
                     }
                 });
         this.excludeCellsAlertDialog.show();
-    }
-
-    private long insertGrid(
-    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
-    {
-        assert null != partialTemplateModel;
-        return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
-            /* temp  => */ partialTemplateModel.getId                     (),
-            /* title => */ partialTemplateModel.getFirstOptionalFieldValue()));
     }
 
     private void createNewTemplate(
@@ -1432,9 +1468,6 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.ui.Main.MODE_SAVED, this.templateModel);
     }
 
-    private boolean deleteEntriesAndGrid()
-    { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
-
     private void inputTemplateNewExtra()
     {
         if (null == this.extraNewTemplateAlertDialog) this.extraNewTemplateAlertDialog =
@@ -1552,37 +1585,6 @@ android.view.View.OnKeyListener
                 templateModel.getTitle(), this.makeCheckedOptionalFields(),
                 org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode);
         }
-    }
-
-    private boolean deleteGridsAndTemplate(
-    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
-    {
-        assert null != partialTemplateModel; final long templateId = partialTemplateModel.getId();
-
-        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            this.templatesTable();
-        assert null != templatesTable; if (templatesTable.exists(templateId))
-        {
-            org.wheatgenetics.coordinate.model.TemplateType templateType;
-            {
-                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                    templatesTable.get(templateId);
-                assert null != templateModel; templateType = templateModel.getType();
-            }
-            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
-            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
-            {
-                this.showShortToast(
-                    org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
-                return false;
-            }
-            else
-            {
-                this.gridsTable().deleteByTemp(templateId);
-                return templatesTable.delete(templateId);
-            }
-        }
-        else return false;
     }
 
     private void populateUI()
