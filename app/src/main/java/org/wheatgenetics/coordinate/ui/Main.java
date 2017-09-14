@@ -175,7 +175,6 @@ android.view.View.OnKeyListener
                                 else
                                     value = org.wheatgenetics.javalib.Utils.replaceIfNull(
                                         org.wheatgenetics.coordinate.ui.Main.this.getValue(
-                                            org.wheatgenetics.coordinate.ui.Main.this.gridId,
                                             row, col),
                                         "BLANK_");
                                 csvWriter.write(value);  // seed_id
@@ -268,7 +267,6 @@ android.view.View.OnKeyListener
                                         {
                                             tissue_id =
                                                 org.wheatgenetics.coordinate.ui.Main.this.getValue(
-                                                    org.wheatgenetics.coordinate.ui.Main.this.gridId,
                                                     row, col);
                                             if (null == tissue_id || tissue_id.trim().length() == 0)
                                                 tissue_id = "BLANK_" + sample_id;
@@ -341,7 +339,6 @@ android.view.View.OnKeyListener
                                 else
                                     value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
                                         org.wheatgenetics.coordinate.ui.Main.this.getValue(
-                                            org.wheatgenetics.coordinate.ui.Main.this.gridId,
                                             row, col));
                                 csvWriter.write(value);
                             }
@@ -957,7 +954,7 @@ android.view.View.OnKeyListener
             mCurRow = r;
             mCurCol = c;
 
-            java.lang.String value = this.getValue(this.gridId, mCurRow, mCurCol);
+            java.lang.String value = this.getValue(mCurRow, mCurCol);
 
             if (null != value && value.contains("exclude")) return;
 
@@ -1330,10 +1327,10 @@ android.view.View.OnKeyListener
     private boolean isExcludedCol(final int col)
     { assert null != this.templateModel; return this.templateModel.isExcludedCol(col); }
 
-    private java.lang.String getValue(final long grid, final int row, final int col)
+    private java.lang.String getValue(final int row, final int col)
     {
         final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-            this.entriesTable().get(grid, row, col);
+            this.entriesTable().get(this.gridId, row, col);
         return null == entryModel ? null : entryModel.getValue();
     }
 
@@ -1393,7 +1390,7 @@ android.view.View.OnKeyListener
 
         assert null != this.cellIDEditText;
         this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getValue(this.gridId, 1, 1)));
+            this.getValue(1, 1)));
     }
     // endregion
 
@@ -1697,7 +1694,7 @@ android.view.View.OnKeyListener
                 }
                 else
                 {
-                    final java.lang.String value = this.getValue(this.gridId, r, c);
+                    final java.lang.String value = this.getValue(r, c);
                     this.setCellState(cell_cnt, STATE_NORMAL);
 
                     if (null != value && 0 != value.trim().length())
@@ -2180,8 +2177,7 @@ android.view.View.OnKeyListener
             ||  this.isExcludedCell(mCurRow, mCurCol)                     )
                 if (!this.getNextFreeCell()) endOfCell = true;
 
-        value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getValue(this.gridId, mCurRow, mCurCol));
+        value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(this.getValue(mCurRow, mCurCol));
 
         assert null != this.cellIDEditText;
         this.cellIDEditText.setSelectAllOnFocus(true);
@@ -2242,7 +2238,7 @@ android.view.View.OnKeyListener
             else
             {
                 final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                    this.getValue(this.gridId, row, col));
+                    this.getValue(row, col));
                 state = 0 == value.length() ?
                     org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
                     org.wheatgenetics.coordinate.ui.Main.STATE_DONE   ;
