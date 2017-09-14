@@ -1176,12 +1176,13 @@ android.view.View.OnKeyListener
         this.excludeCellsAlertDialog.show();
     }
 
-    private long insertGrid(final long templateId)
+    private long insertGrid(
+    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
-        assert null != this.templateModel;
+        assert null != partialTemplateModel;
         return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
-            /* temp  => */ templateId                                     ,
-            /* title => */ this.templateModel.getFirstOptionalFieldValue()));
+            /* temp  => */ partialTemplateModel.getId                     (),
+            /* title => */ partialTemplateModel.getFirstOptionalFieldValue()));
     }
 
     private void createNewTemplate(
@@ -1195,7 +1196,7 @@ android.view.View.OnKeyListener
 
             this.templateModel.setId(templateId);
 
-            final long gridId = this.insertGrid(this.templateModel.getId());
+            final long gridId = this.insertGrid(this.templateModel);
             if (gridId > 0)
             {
                 this.gridId = gridId;  // TODO: make setGridId() with sharedPreferences side effect?
@@ -1217,7 +1218,7 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel; this.templateModel.setType(templateType);
 
-        final long gridId = this.insertGrid(this.templateModel.getId());
+        final long gridId = this.insertGrid(this.templateModel);
         if (gridId > 0)
         {
             this.gridId = gridId;                                                    // TODO: Ditto.
