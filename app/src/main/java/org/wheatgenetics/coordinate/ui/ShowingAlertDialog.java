@@ -22,10 +22,10 @@ abstract class ShowingAlertDialog extends org.wheatgenetics.coordinate.ui.Activi
     {
         if (null == this.alertDialog)
         {
-            assert null != this.builder;
-            this.alertDialog = this.builder.create();
+            assert null != this.builder; this.alertDialog = this.builder.create();
+            assert null != this.alertDialog;
         }
-        assert null != this.alertDialog; this.alertDialog.show();
+        this.alertDialog.show();
     }
     // end
 }

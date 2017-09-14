@@ -1820,45 +1820,39 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void createNewTemplate(final java.lang.String name,
-                    final java.lang.String rows, final java.lang.String cols)
+                    public void handleEmptyName(final java.lang.String message)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
+                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
+                    }
+
+                    @java.lang.Override
+                    public void handleUnspecifiedRows(final java.lang.String message)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
+                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
+                    }
+
+                    @java.lang.Override
+                    public void handleUnspecifiedCols(final java.lang.String message)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
+                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
+                    }
+
+                    @java.lang.Override
+                    public void createNewTemplate(final java.lang.String name, final int rows,
+                    final int cols)
                     {
                         assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
                         org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
                             /* title => */ name, /* rows => */ rows, /* cols => */ cols);
-
-                        if (0 == name.length())
-                        {
-                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
-                                org.wheatgenetics.coordinate.R.string.template_no_name);
-                            org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                            return;
-                        }
-
-                        if (0 == rows.length() ||
-                        !org.wheatgenetics.coordinate.ui.Main.this.templateModel.rowsIsSpecified())
-                        {
-                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
-                                org.wheatgenetics.coordinate.R.string.no_rows);
-                            org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                            return;
-                        }
-
-                        if (0 == cols.length() ||
-                        !org.wheatgenetics.coordinate.ui.Main.this.templateModel.colsIsSpecified())
-                        {
-                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
-                                org.wheatgenetics.coordinate.R.string.no_cols);
-                            org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                            return;
-                        }
-
                         org.wheatgenetics.coordinate.ui.Main.this.inputTemplateNewExtra();
                     }
                 });
         assert null != this.templateModel; this.templateModel.clearExcludesAndOptionalFields();
         this.newTemplateAlertDialog.show(
-            this.templateModel.getRowsAsString(), this.templateModel.getColsAsString());
+            this.templateModel.getRows(), this.templateModel.getCols());
     }
 
     private void loadExistingTemplate()

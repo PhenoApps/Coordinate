@@ -12,8 +12,6 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.json.JSONException
  *
- * org.wheatgenetics.coordinate.utils.Utils
- *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
@@ -37,19 +35,11 @@ implements java.lang.Cloneable
     private static int validate(final int i)
     { if (i <= 0) throw new java.lang.IllegalArgumentException(); else return i; }
 
-
     private void setRows(final int rows)
     { this.rows = org.wheatgenetics.coordinate.model.PartialTemplateModel.validate(rows); }
 
-    private void setRows(final java.lang.String rows)
-    { this.setRows(org.wheatgenetics.coordinate.utils.Utils.convert(rows)); }
-
-
     private void setCols(final int cols)
     { this.cols = org.wheatgenetics.coordinate.model.PartialTemplateModel.validate(cols); }
-
-    private void setCols(final java.lang.String cols)
-    { this.setCols(org.wheatgenetics.coordinate.utils.Utils.convert(cols)); }
 
 
     private static boolean valid(final int numbering)
@@ -59,9 +49,6 @@ implements java.lang.Cloneable
         else
             return 1 == numbering;
     }
-
-    private static java.lang.String convert(final int integer)
-    { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
 
     private void assign(final java.lang.String title,
@@ -245,20 +232,7 @@ implements java.lang.Cloneable
     { this.type = templateType; }
 
 
-    public int getRows() { return this.rows; }
-
-    public java.lang.String getRowsAsString()
-    { return org.wheatgenetics.coordinate.model.PartialTemplateModel.convert(this.getRows()); }
-
-    public boolean rowsIsSpecified() { return this.getRows() >= 0; }
-
-
-    public int getCols() { return this.cols; }
-
-    public java.lang.String getColsAsString()
-    { return org.wheatgenetics.coordinate.model.PartialTemplateModel.convert(this.getCols()); }
-
-    public boolean colsIsSpecified() { return this.getCols() >= 0; }
+    public int getRows() { return this.rows; } public int getCols() { return this.cols; }
 
 
     public boolean getColNumbering()                           { return this.colNumbering        ; }
@@ -275,8 +249,8 @@ implements java.lang.Cloneable
     }                                                                                     //  json.-
                                                                                           //  JSON-
                                                                                           //  Excep-
-    public void assign(final java.lang.String title, final java.lang.String rows,         //  tion
-    final java.lang.String cols) { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+    public void assign(final java.lang.String title, final int rows, final int cols)      //  tion
+    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
 
     public java.lang.String[] rowItems(final java.lang.String label)
