@@ -48,7 +48,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     { return null == this.partialTemplateModel ? 0 : this.partialTemplateModel.getCols(); }
 
 
-    public void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { assert null != templateModel; templateModel.assign(this.partialTemplateModel); }
     // endregion
 }

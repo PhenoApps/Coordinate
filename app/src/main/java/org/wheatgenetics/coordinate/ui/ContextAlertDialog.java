@@ -17,6 +17,6 @@ abstract class ContextAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     android.app.AlertDialog.Builder makeBuilder()
     { return this.builder = new android.app.AlertDialog.Builder(this.context); }
 
-    java.lang.String getString(final int resId)
-    { assert null != this.context; return this.context.getString(resId); }
+    @java.lang.Override
+    java.lang.String getString(final int resId) { return this.getString(this.context, resId); }
 }

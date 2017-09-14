@@ -51,4 +51,6 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         }
         return new Iterator(this.arrayList);
     }
+
+    public int size() { return null == this.arrayList ? 0 : this.arrayList.size(); }
 }

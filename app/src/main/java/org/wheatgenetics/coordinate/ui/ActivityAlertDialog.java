@@ -22,6 +22,9 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
     android.app.AlertDialog.Builder makeBuilder()
     { return this.builder = new android.app.AlertDialog.Builder(this.activity); }
 
+    @java.lang.Override
+    java.lang.String getString(final int resId) { return this.getString(this.activity, resId); }
+
     // region Package Methods
     android.view.LayoutInflater layoutInflater()
     {

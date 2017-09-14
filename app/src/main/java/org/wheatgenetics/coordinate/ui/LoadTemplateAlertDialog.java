@@ -24,24 +24,52 @@ package org.wheatgenetics.coordinate.ui;
  */
 class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
 {
-    interface Handler { public abstract void process(java.lang.String values[]); }
+    interface Handler
+    {
+        public abstract void processError (java.lang.String message);
+        public abstract void processPerson(java.lang.String person );
+        public abstract void createGrid   ()                        ;
+    }
 
     // region Fields
     private final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler;
-    private       java.util.ArrayList<android.widget.EditText>   editTextArrayList = null;
+
+    private java.util.ArrayList<android.widget.EditText>                  editTextArrayList = null;
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields;
+    private boolean                                                          cannotBeEmpty        ;
     // endregion
 
     private void process()
     {
-        assert null != this.editTextArrayList;
-        final java.lang.String values[] = new java.lang.String[this.editTextArrayList.size()];
+        assert null != this.checkedOptionalFields; assert null != this.editTextArrayList;
+        assert this.checkedOptionalFields.size() == this.editTextArrayList.size();
+
         {
-            int i = 0;
-            for (final android.widget.EditText editText: this.editTextArrayList)
-                values[i] = null == editText ? "" :
-                    org.wheatgenetics.androidlibrary.Utils.getText(editText);
+            int i = 0; assert null != this.handler;
+            for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
+            this.checkedOptionalFields)
+            {
+                java.lang.String value;
+                {
+                    final android.widget.EditText editText = this.editTextArrayList.get(i);
+                    value = null == editText ? "" :
+                        org.wheatgenetics.androidlibrary.Utils.getText(editText);
+                }
+
+                if (this.cannotBeEmpty && 0 == i)
+                    if (0 == value.length()) this.handler.processError(optionalField.getHint() +
+                        this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
+
+                optionalField.setValue(value);
+
+                if (optionalField.namesAreEqual("Person") || optionalField.namesAreEqual("Name"))  // TODO: Should be done in OptionalField.
+                    this.handler.processPerson(optionalField.getValue());
+
+                i++;
+            }
         }
-        assert null != this.handler; this.handler.process(values);
+
+        this.handler.createGrid();
     }
 
     LoadTemplateAlertDialog(final android.app.Activity activity,
@@ -49,7 +77,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
     { super(activity); this.handler = handler; }
 
     void show(final java.lang.CharSequence title,
-    final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields)
+    final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
+    final boolean cannotBeEmpty)
     {
         if (null == this.builder)
         {
@@ -69,12 +98,12 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             assert null != this.builder;
         }
 
+        this.builder.setTitle(title);
+
         if (null == this.editTextArrayList)
             this.editTextArrayList = new java.util.ArrayList<android.widget.EditText>();
         else
             this.editTextArrayList.clear();
-
-        this.builder.setTitle(title);
         {
             final android.view.View view =
                 this.inflate(org.wheatgenetics.coordinate.R.layout.grid_new);
@@ -121,6 +150,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             }
             this.setView(view);
         }
+
+        this.checkedOptionalFields = checkedOptionalFields; this.cannotBeEmpty = cannotBeEmpty;
 
         final android.app.AlertDialog alertDialog = this.builder.create();
         assert null != alertDialog; alertDialog.getWindow().setSoftInputMode(
