@@ -1014,7 +1014,7 @@ android.view.View.OnKeyListener
     //         createNewTemplate()
     //             inputTemplateNewExtra()
     //     newGridNow()
-    //         deleteEntriesAndGrid(long)
+    //         deleteEntriesAndGrid()
     //         loadSeedTrayTemplate()
     //             loadExistingTemplate(TemplateType)
     //                 insertGrid()
@@ -1024,7 +1024,7 @@ android.view.View.OnKeyListener
     //         createExportFile()
     //         exporter.execute()
     // deleteGrid()
-    //     deleteEntriesAndGrid(long)
+    //     deleteEntriesAndGrid()
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //         createNewTemplate()
@@ -1414,7 +1414,7 @@ android.view.View.OnKeyListener
 
     private void newGridNow() throws org.json.JSONException
     {
-        this.deleteEntriesAndGrid(this.gridId);
+        this.deleteEntriesAndGrid();
 
         assert null != this.templateModel;
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
@@ -1432,8 +1432,8 @@ android.view.View.OnKeyListener
                     org.wheatgenetics.coordinate.ui.Main.MODE_SAVED, this.templateModel);
     }
 
-    private boolean deleteEntriesAndGrid(final long gridId)
-    { this.entriesTable().deleteByGrid(gridId); return this.gridsTable().delete(gridId); }
+    private boolean deleteEntriesAndGrid()
+    { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
 
     private void inputTemplateNewExtra()
     {
@@ -1786,8 +1786,7 @@ android.view.View.OnKeyListener
                     @java.lang.Override
                     public void run()
                     {
-                        if (org.wheatgenetics.coordinate.ui.Main.this.deleteEntriesAndGrid(
-                        org.wheatgenetics.coordinate.ui.Main.this.gridId))
+                        if (org.wheatgenetics.coordinate.ui.Main.this.deleteEntriesAndGrid())
                         {
                             org.wheatgenetics.coordinate.ui.Main.this.showLongToast(
                                 org.wheatgenetics.coordinate.R.string.grid_deleted);
