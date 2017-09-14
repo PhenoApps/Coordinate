@@ -1020,7 +1020,7 @@ android.view.View.OnKeyListener
     //         deleteGrid(long)
     //         loadSeedTrayTemplate()
     //             loadExistingTemplate(TemplateType)
-    //                 createGrid()
+    //                 insertGrid()
     //         loadTemplate()
     //             tempLoad()
     //     exportGrid()
@@ -1046,11 +1046,11 @@ android.view.View.OnKeyListener
     // loadExistingTemplate()
     //     loadSeedTrayTemplate()
     //         loadExistingTemplate(TemplateType)
-    //             createGrid()
+    //             insertGrid()
     //     loadTemplate()
     //         tempLoad()
     //              loadExistingTemplate(TemplateType)
-    //                 createGrid()
+    //                 insertGrid()
     //              createNewTemplate(TemplateType)
     // deleteTemplate()
     //     deleteTemplate(TemplateModel)
@@ -1176,7 +1176,7 @@ android.view.View.OnKeyListener
         this.excludeCellsAlertDialog.show();
     }
 
-    private long createGrid(final long templateId)
+    private long insertGrid(final long templateId)
     {
         assert null != this.templateModel;
         return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
@@ -1195,7 +1195,7 @@ android.view.View.OnKeyListener
 
             this.templateModel.setId(templateId);
 
-            final long gridId = this.createGrid(this.templateModel.getId());
+            final long gridId = this.insertGrid(this.templateModel.getId());
             if (gridId > 0)
             {
                 this.gridId = gridId;  // TODO: make setGridId() with sharedPreferences side effect?
@@ -1217,7 +1217,7 @@ android.view.View.OnKeyListener
     {
         assert null != this.templateModel; this.templateModel.setType(templateType);
 
-        final long gridId = this.createGrid(this.templateModel.getId());
+        final long gridId = this.insertGrid(this.templateModel.getId());
         if (gridId > 0)
         {
             this.gridId = gridId;                                                    // TODO: Ditto.
