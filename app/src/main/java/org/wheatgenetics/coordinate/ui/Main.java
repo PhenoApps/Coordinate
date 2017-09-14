@@ -459,8 +459,8 @@ android.view.View.OnKeyListener
             // TODO: When grid is reset, make a new one.
             if (null != result && result)
             {
-                org.wheatgenetics.coordinate.ui.Main.this.lastExportGridId =  // TODO: Make into
-                    org.wheatgenetics.coordinate.ui.Main.this.gridId;         // TODO:  Main method.
+                org.wheatgenetics.coordinate.ui.Main.this.lastExportedGridId =  // TODO: Make into
+                    org.wheatgenetics.coordinate.ui.Main.this.gridId;           // TODO:  Main method.
                 org.wheatgenetics.coordinate.ui.Main.this.alert(
                     /* message     => */ org.wheatgenetics.coordinate.R.string.export_success,
                     /* yesRunnable => */ new java.lang.Runnable()
@@ -557,9 +557,9 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
 
-    private org.wheatgenetics.androidlibrary.Dir          exportDir              ;
-    private org.wheatgenetics.coordinate.ui.Main.Exporter exporter         = null;
-    private long                                          lastExportGridId =   -1;
+    private org.wheatgenetics.androidlibrary.Dir          exportDir                ;
+    private org.wheatgenetics.coordinate.ui.Main.Exporter exporter           = null;
+    private long                                          lastExportedGridId =   -1;
 
     // region AlertDialog Fields
     private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
@@ -1050,7 +1050,7 @@ android.view.View.OnKeyListener
     //                 insertGrid()
     //              createNewTemplate(TemplateType)
     // deleteTemplate()
-    //     deleteTemplate(TemplateModel)
+    //     deleteGridsAndTemplate(TemplateModel)
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //             loadSeedTrayTemplate()
@@ -1189,7 +1189,7 @@ android.view.View.OnKeyListener
         final long templateId = this.templatesTable().insert(this.templateModel);
         if (templateId > 0)
         {
-            // deleteTemplate(this.templateModel); // TODO
+            // deleteGridsAndTemplate(this.templateModel); // TODO
 
             this.templateModel.setId(templateId);
 
@@ -1554,32 +1554,33 @@ android.view.View.OnKeyListener
         }
     }
 
-    private boolean deleteTemplate(
-    final org.wheatgenetics.coordinate.model.PartialTemplateModel searchTemplateModel)
+    private boolean deleteGridsAndTemplate(
+    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
-        assert null != searchTemplateModel; final long templateId = searchTemplateModel.getId();
+        assert null != partialTemplateModel; final long templateId = partialTemplateModel.getId();
 
         final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
             this.templatesTable();
-        assert null != templatesTable;
-        if (templatesTable.exists(templateId))
+        assert null != templatesTable; if (templatesTable.exists(templateId))
         {
+            org.wheatgenetics.coordinate.model.TemplateType templateType;
             {
-                org.wheatgenetics.coordinate.model.TemplateType templateType;
-                {
-                    final org.wheatgenetics.coordinate.model.TemplateModel tableTemplateModel =
-                        templatesTable.get(templateId);
-                    assert null != tableTemplateModel; templateType = tableTemplateModel.getType();
-                }
-                if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
-                ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
-                {
-                    this.showShortToast(org.wheatgenetics.coordinate.R.string.template_not_deleted_default);  // TODO: Move to TemplatesTable.
-                    return false;
-                }
+                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                    templatesTable.get(templateId);
+                assert null != templateModel; templateType = templateModel.getType();
             }
-            this.gridsTable().deleteByTemp(templateId);
-            return templatesTable.delete(templateId);
+            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
+            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
+            {
+                this.showShortToast(
+                    org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
+                return false;
+            }
+            else
+            {
+                this.gridsTable().deleteByTemp(templateId);
+                return templatesTable.delete(templateId);
+            }
         }
         else return false;
     }
@@ -1755,7 +1756,7 @@ android.view.View.OnKeyListener
         if (0 == this.gridId)
             this.loadExistingTemplateOrCreateNewTemplate();
         else
-            if (this.gridId >= 0 && this.lastExportGridId == this.gridId)
+            if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
                 this.newGridNow();                                  // throws org.json.JSONException
             else
                 this.confirm(
@@ -1924,7 +1925,7 @@ android.view.View.OnKeyListener
                                         public void run()
                                         {
                                             if (org.wheatgenetics.coordinate.ui.
-                                            Main.this.deleteTemplate(templateModel))
+                                            Main.this.deleteGridsAndTemplate(templateModel))
                                             {
                                                 org.wheatgenetics.coordinate.ui.Main.this.
                                                     showLongToast(org.wheatgenetics.coordinate.
