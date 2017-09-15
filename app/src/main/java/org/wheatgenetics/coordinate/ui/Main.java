@@ -1250,8 +1250,11 @@ android.view.View.OnKeyListener
                     { org.wheatgenetics.coordinate.ui.Main.this.setOptionalFieldChecked(i, b); }
 
                     @java.lang.Override
-                    public void showErrorMsg(final int errorMsgResId)
-                    { org.wheatgenetics.coordinate.ui.Main.this.showLongToast(errorMsgResId); }
+                    public void retryAddOptionalField(final int errorMsgResId)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(errorMsgResId);
+                        org.wheatgenetics.coordinate.ui.Main.this.addNewOptionalFields();
+                    }
 
                     @java.lang.Override
                     public void addOptionalField(final java.lang.String newName,

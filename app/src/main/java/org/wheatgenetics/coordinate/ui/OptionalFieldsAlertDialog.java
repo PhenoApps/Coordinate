@@ -20,7 +20,7 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     {
         public abstract void checkOptionalField (int i, boolean b);
 
-        public abstract void showErrorMsg(final int errorMsgResId);
+        public abstract void retryAddOptionalField(final int errorMsgResId);
         public abstract void addOptionalField(java.lang.String newName,
             java.lang.String newDefault);
     }
@@ -44,14 +44,14 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     private void retryAddOptionalField(final int errorMsgResId, final java.lang.String oldName,
     final java.lang.String newDefault)
     {
-        assert null != this.handler; this.handler.showErrorMsg(errorMsgResId);
-        this.oldName = oldName; this.oldDefault = newDefault; this.addNewOptionalField();
+        assert null != this.handler; this.handler.retryAddOptionalField(errorMsgResId);
+        this.oldName = oldName; this.oldDefault = newDefault; this.addOptionalField();
     }
 
     private void addOptionalField(final java.lang.String newName, final java.lang.String newDefault)
     { assert null != this.handler; this.handler.addOptionalField(newName, newDefault); }
 
-    private void addNewOptionalField()
+    private void addOptionalField()
     {
         if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
             new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity,
@@ -111,7 +111,7 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                     {
                         assert null != dialog; dialog.cancel();
                         org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.
-                            this.addNewOptionalField();
+                            this.addOptionalField();
                     }
                 });
         return this.setOKPositiveButton();
