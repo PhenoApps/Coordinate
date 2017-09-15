@@ -21,13 +21,16 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
 {
     interface Handler { public abstract void excludeCells(int amount); }
 
-    private final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler;
+    // region Fields
+    private final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler        ;
+    private       android.widget.EditText                                         editText = null;
+    // endregion
 
-    private void excludeCells(final android.widget.EditText editText)
+    private void excludeCells()
     {
-        assert null != editText; assert null != this.handler;
+        assert null != this.editText; assert null != this.handler;
         this.handler.excludeCells(org.wheatgenetics.coordinate.utils.Utils.convert(
-            org.wheatgenetics.androidlibrary.Utils.getText(editText)));
+            org.wheatgenetics.androidlibrary.Utils.getText(this.editText)));
     }
 
     ExcludeCellsAlertDialog(final android.app.Activity activity,
@@ -43,24 +46,26 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
             final android.view.View view =
                 this.layoutInflater().inflate(org.wheatgenetics.coordinate.R.layout.random, null);
 
-            assert null != view; final android.widget.EditText editText = (android.widget.EditText)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
+            if (null == this.editText)
+            {
+                assert null != view; this.editText = (android.widget.EditText)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
+                assert null != editText;
+            }
+            this.editText.setText("1");
 
-            assert null != editText; editText.setText("1");
-
-            this.setView(view).setOKPositiveButton(
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells(
-                            editText);
-                        assert null != dialog; dialog.cancel();
-                    }
-                });
+            this.setView(view);
         }
+
+        this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells();
+                    assert null != dialog; dialog.cancel();
+                }
+            });
 
         return this.setNegativeButton();
     }
