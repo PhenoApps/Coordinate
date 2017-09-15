@@ -1494,7 +1494,7 @@ android.view.View.OnKeyListener
                             org.wheatgenetics.coordinate.ui.Main.this.templateModel);
                     }
                 });
-        this.excludeAlertDialog.show();
+        this.extraNewTemplateAlertDialog.show();
     }
 
     private void loadSeedTrayTemplate(
