@@ -65,9 +65,5 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
         return this.setNegativeButton();
     }
 
-    void show()
-    {
-        this.configure(org.wheatgenetics.coordinate.R.string.random);
-        super.show();
-    }
+    void show() { this.configure(org.wheatgenetics.coordinate.R.string.random); super.show(); }
 }

@@ -111,8 +111,5 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     }
 
     void show()
-    {
-        this.configure(org.wheatgenetics.coordinate.R.string.template_new);
-        super.show();
-    }
+    { this.configure(org.wheatgenetics.coordinate.R.string.template_new); super.show(); }
 }
