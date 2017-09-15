@@ -38,9 +38,9 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder configure(final int titleId)
+    android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
-        super.configure(titleId);
+        super.makeBuilder(titleId);
 
         {
             final android.view.View view =
