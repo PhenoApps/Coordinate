@@ -1026,10 +1026,31 @@ android.view.View.OnKeyListener
         }
     }
 
+    private void insertLoadTemplateAndGridAndPopulateUI()
+    {
+        assert null != this.templateModel;
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
+
+        final long templateId = this.templatesTable().insert(this.templateModel);
+        if (templateId > 0)
+        {
+            // deleteUserDefineTemplateAndItsGrids(this.templateModel); // TODO
+
+            this.templateModel.setId(templateId);
+            final long gridId = this.insertGrid(this.templateModel);
+            if (gridId > 0)
+                this.loadTemplateAndGridAndPopulateUI(gridId, false);
+            else
+                this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
+        }
+        else this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
+    }
+
     private boolean deleteEntriesAndGrid()
     { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
 
-    private boolean deleteGridsAndTemplate(
+    // TODO: Shouldn't this also delete entries records associated with grids records?
+    private boolean deleteUserDefineTemplateAndItsGrids(
     final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
         assert null != partialTemplateModel; final long templateId = partialTemplateModel.getId();
@@ -1105,7 +1126,7 @@ android.view.View.OnKeyListener
     //                 insertGrid()
     //              createNewTemplate(TemplateType)
     // deleteTemplate()
-    //     deleteGridsAndTemplate(TemplateModel)
+    //     deleteUserDefineTemplateAndItsGrids(TemplateModel)
     //     loadExistingTemplateOrCreateNewTemplate()
     //         loadExistingTemplate()
     //             loadSeedTrayTemplate()
@@ -1226,27 +1247,6 @@ android.view.View.OnKeyListener
                     }
                 });
         this.excludeCellsAlertDialog.show();
-    }
-
-    private void insertLoadTemplateAndGridAndPopulateUI()
-    {
-        assert null != this.templateModel;
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
-
-        final long templateId = this.templatesTable().insert(this.templateModel);
-        if (templateId > 0)
-        {
-            // deleteGridsAndTemplate(this.templateModel); // TODO
-
-            this.templateModel.setId(templateId);
-
-            final long gridId = this.insertGrid(this.templateModel);
-            if (gridId > 0)
-                this.loadTemplateAndGridAndPopulateUI(gridId, false);
-            else
-                this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
-        }
-        else this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
     }
     // endregion
 
@@ -1902,7 +1902,7 @@ android.view.View.OnKeyListener
                                         public void run()
                                         {
                                             if (org.wheatgenetics.coordinate.ui.
-                                            Main.this.deleteGridsAndTemplate(templateModel))
+                                            Main.this.deleteUserDefineTemplateAndItsGrids(templateModel))
                                             {
                                                 org.wheatgenetics.coordinate.ui.Main.this.
                                                     showLongToast(org.wheatgenetics.coordinate.
