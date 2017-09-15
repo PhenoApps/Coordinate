@@ -87,8 +87,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
- * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
@@ -562,8 +560,6 @@ android.view.View.OnKeyListener
     private long                                          lastExportedGridId =   -1;
 
     // region AlertDialog Fields
-    private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
-        newOptionalFieldAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
@@ -1151,33 +1147,6 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Subsubsubaction Drawer Methods
-    private void addNewOptionalField(final java.lang.String oldName,
-    final java.lang.String oldDefault)
-    {
-        if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void retry(final int errorMsgResId, final java.lang.String oldName,
-                    final java.lang.String newDefault)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(errorMsgResId);
-                        org.wheatgenetics.coordinate.ui.Main.this.addNewOptionalField(
-                            oldName, newDefault);
-                    }
-
-                    @java.lang.Override
-                    public void addOptionalField(final java.lang.String newName,
-                    final java.lang.String newDefault)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.addOptionalField(
-                            newName, newDefault);
-                    }
-                });
-        this.newOptionalFieldAlertDialog.show(oldName, oldDefault);
-    }
-
     private void excludeRows()
     {
         if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
@@ -1281,8 +1250,16 @@ android.view.View.OnKeyListener
                     { org.wheatgenetics.coordinate.ui.Main.this.setOptionalFieldChecked(i, b); }
 
                     @java.lang.Override
-                    public void addNewOptionalField()
-                    { org.wheatgenetics.coordinate.ui.Main.this.addNewOptionalField("", ""); }
+                    public void showErrorMsg(final int errorMsgResId)
+                    { org.wheatgenetics.coordinate.ui.Main.this.showLongToast(errorMsgResId); }
+
+                    @java.lang.Override
+                    public void addOptionalField(final java.lang.String newName,
+                    final java.lang.String newDefault)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.addOptionalField(
+                            newName, newDefault);
+                    }
                 });
         assert null != this.templateModel;
         this.optionalFieldsAlertDialog.show(this.templateModel.optionalFieldNames(),

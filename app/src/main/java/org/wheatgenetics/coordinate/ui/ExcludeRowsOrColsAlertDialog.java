@@ -41,9 +41,9 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     @java.lang.Override
     android.app.AlertDialog.Builder configureBuilder(final java.lang.CharSequence[] items,
     final boolean[] checkedItems,
-    final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
+    final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
-        super.configureBuilder(items, checkedItems, onMultiChoiceClickListener);
+        super.configureBuilder(items, checkedItems, listener);
         return this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override

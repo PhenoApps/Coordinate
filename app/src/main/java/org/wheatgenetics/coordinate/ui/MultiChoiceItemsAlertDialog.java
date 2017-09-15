@@ -5,9 +5,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.Context
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
- * org.wheatgenetics.androidlibrary.R
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.ui.ContextAlertDialog
  */
 abstract class MultiChoiceItemsAlertDialog
@@ -17,30 +14,26 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
-    {
-        return super.makeBuilder().setNegativeButton(
-            org.wheatgenetics.androidlibrary.R.string.cancelButtonText        ,
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
-    }
+    { super.makeBuilder(); return this.setNegativeButton(); }
 
     // region Package Methods
     android.app.AlertDialog.Builder configureBuilder(final java.lang.CharSequence items[],
     final boolean checkedItems[],
-    final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
+    final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
         assert null != this.builder;
-        return this.builder.setMultiChoiceItems(items, checkedItems, onMultiChoiceClickListener);
+        return this.builder.setMultiChoiceItems(items, checkedItems, listener);
     }
 
     void show(final java.lang.CharSequence items[], final boolean checkedItems[],
-    final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
+    final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
         if (null == this.builder)
         {
             this.builder = this.makeBuilder();
             assert null != this.builder;
         }
-        this.configureBuilder(items, checkedItems, onMultiChoiceClickListener);
+        this.configureBuilder(items, checkedItems, listener);
         this.builder.create().show();
     }
     // endregion
