@@ -1042,73 +1042,6 @@ android.view.View.OnKeyListener
     // endregion
 
     // region Drawer Methods
-    // region Overview
-    // createNewGrid()
-    //     loadExistingTemplateOrCreateNewTemplate()
-    //         loadExistingTemplate()
-    //         createNewTemplate()
-    //             inputTemplateNewExtra()
-    //     newGridNow()
-    //         deleteEntriesAndGrid()
-    //         loadSeedTrayTemplate()
-    //             loadExistingTemplate(TemplateType)
-    //                 insertGrid()
-    //         loadTemplate()
-    //             tempLoad()
-    //     exportGrid()
-    //         createExportFile()
-    //         exporter.execute()
-    // deleteGrid()
-    //     deleteEntriesAndGrid()
-    //     loadExistingTemplateOrCreateNewTemplate()
-    //         loadExistingTemplate()
-    //         createNewTemplate()
-    //             inputTemplateNewExtra()
-    // createNewTemplate()
-    //     inputTemplateNewExtra()
-    //         addNewOptionalFields()
-    //             addNewOptionalField()
-    //         exclude()
-    //             excludeRows()
-    //             excludeCols()
-    //             excludeCells()
-    //         inputNaming()
-    //         loadTemplate()
-    //             tempLoad()
-    // loadExistingTemplate()
-    //     loadSeedTrayTemplate()
-    //         loadExistingTemplate(TemplateType)
-    //             insertGrid()
-    //     loadTemplate()
-    //         tempLoad()
-    //              loadExistingTemplate(TemplateType)
-    //                 insertGrid()
-    //              createNewTemplate(TemplateType)
-    // deleteTemplate()
-    //     deleteUserDefineTemplateAndItsGrids(TemplateModel)
-    //     loadExistingTemplateOrCreateNewTemplate()
-    //         loadExistingTemplate()
-    //             loadSeedTrayTemplate()
-    //             loadTemplate()
-    //         createNewTemplate()
-    //             inputTemplateNewExtra()
-    // importGrid()
-    //     populateUI()
-    //         getNextFreeCell()
-    //         isExcludedRow()
-    //         isExcludedCol()
-    //         getValue()
-    //         setCellState()
-    //         isExcludedCell()
-    //         saveExcludedCell()
-    //         showUI()
-    // exportGrid()
-    //     createExportFile()
-    //     exporter.execute()
-    // showAboutAlertDialog()
-    //     showChangeLog()
-    // endregion
-
     // region Subsubaction Drawer Methods
     private void loadExistingTemplate(                      // TODO: DRY? (Compare to deleteGrid().)
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
@@ -1241,7 +1174,7 @@ android.view.View.OnKeyListener
 
                     @java.lang.Override
                     public void createNewTemplate()
-                    { org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate(); }
+                    { org.wheatgenetics.coordinate.ui.Main.this.createTemplate(); }
                 });
         this.templateOptionsAlertDialog.show();
     }
@@ -1565,7 +1498,7 @@ android.view.View.OnKeyListener
                 });
     }
 
-    private void createNewTemplate()
+    private void createTemplate()
     {
         if (null == this.templateCreator)
             this.templateCreator = new org.wheatgenetics.coordinate.ui.TemplateCreator(this,
@@ -1777,10 +1710,8 @@ android.view.View.OnKeyListener
                 catch (final org.json.JSONException e) { return false        ; }
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.menu_delete_grid: this.deleteGrid(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.createNewTemplate(); break;
+            case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid    (); break;
+            case org.wheatgenetics.coordinate.R.id.menu_new_template: this.createTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
                 this.loadExistingTemplate(); break;
