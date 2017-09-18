@@ -34,6 +34,7 @@ class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.Interna
         this.handler = handler;
     }
 
+    // region Overridden Methods
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
@@ -47,4 +48,8 @@ class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.Interna
                 { org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.this.choose(which); }
             });
     }
+
+    @java.lang.Override
+    void show() { this.makeConfiguredTrue(); super.show(); }
+    // endregion
 }

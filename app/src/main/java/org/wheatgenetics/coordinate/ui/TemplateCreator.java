@@ -6,16 +6,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.androidlibrary.Utils.showLongToast
  *
- * org.wheatgenetics.coordinate.R
- *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
@@ -29,8 +22,6 @@ class TemplateCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler,
-org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler,
-org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
 {
     interface Handler { public abstract void handleNext(); }
@@ -47,21 +38,16 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     private org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
         optionalFieldsAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
-        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog excludeCellsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.NamingAlertDialog       namingAlertDialog       = null;
+    private org.wheatgenetics.coordinate.ui.NamingAlertDialog  namingAlertDialog  = null;
     // endregion
 
     // region Private Methods
-    private java.lang.String getString(final int resId)
-    { assert null != this.activity; return this.activity.getString(resId); }
-
     // region showLongToast() Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
-    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+    private void showLongToast(final int text)
+    { assert null != this.activity; this.showLongToast(this.activity.getString(text)); }
     // endregion
 
     private void performStep2()
@@ -70,24 +56,6 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
             new org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog(this.activity, this);
         this.extraNewTemplateAlertDialog.show();
     }
-
-    // region processExclude(Rows|Cols)() Private Methods
-    private void processExcludeRows(final boolean checkedItems[])
-    {
-        int i = 1;
-        assert null != checkedItems; assert null != this.templateModel;
-        for (final boolean checkedItem: checkedItems) if (checkedItem) // TODO: Are they cleared first?
-            templateModel.addExcludeRow(i++);
-    }
-
-    private void processExcludeCols(final boolean checkedItems[])
-    {
-        int i = 1;
-        assert null != checkedItems; assert null != this.templateModel;
-        for (final boolean checkedItem: checkedItems) if (checkedItem) // TODO: Are they cleared first?
-            templateModel.addExcludeCol(i++);
-    }
-    // endregion
     // endregion
 
     TemplateCreator(final android.app.Activity activity,
@@ -130,8 +98,8 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     public void addExcludes()
     {
         if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity, this);
-        this.excludeAlertDialog.show();
+            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity);
+        this.excludeAlertDialog.show(this.templateModel);
     }
 
     @java.lang.Override
@@ -166,69 +134,6 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
         assert null != this.templateModel;
         this.templateModel.addOptionalField(/* name => */ newName, /* value => */ newDefault);
         this.addOptionalFields();
-    }
-    // endregion
-
-    // region org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler Overridden Methods
-    @java.lang.Override
-    public void excludeRows()
-    {
-        if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.row,
-                new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void process(final boolean checkedItems[])
-                    {
-                        org.wheatgenetics.coordinate.ui.
-                            TemplateCreator.this.processExcludeRows(checkedItems);
-                    }
-                });
-        assert null != this.templateModel; this.excludeRowsAlertDialog.show(
-            this.templateModel.rowItems(this.getString(org.wheatgenetics.coordinate.R.string.row)),
-            this.templateModel.rowCheckedItems()                                                 );
-    }
-
-    @java.lang.Override
-    public void excludeCols()
-    {
-        if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.col,
-                new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void process(final boolean[] checkedItems)
-                    {
-                        org.wheatgenetics.coordinate.ui.
-                            TemplateCreator.this.processExcludeCols(checkedItems);
-                    }
-                });
-        assert null != this.templateModel; this.excludeColsAlertDialog.show(
-            this.templateModel.colItems(this.getString(org.wheatgenetics.coordinate.R.string.col)),
-            this.templateModel.colCheckedItems()                                                 );
-    }
-
-    @java.lang.Override
-    public void excludeCells()
-    {
-        if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this.activity, this);
-        this.excludeCellsAlertDialog.show();
-    }
-    // endregion
-
-    // region org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void excludeCells(final int amount)
-    {
-        if (amount > 0)
-        {
-            assert null != this.templateModel;
-            this.templateModel.makeRandomCells(amount);
-        }
-        else this.excludeCells();
     }
     // endregion
 

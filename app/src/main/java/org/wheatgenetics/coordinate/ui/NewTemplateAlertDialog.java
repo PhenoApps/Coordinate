@@ -25,7 +25,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
         public abstract void handleUnspecifiedCols(java.lang.String message);
         public abstract void createNewTemplate    (java.lang.String name, int rows, int cols);
     }
-    private static class Unspecified extends java.lang.Exception {};
+    private static class Unspecified extends java.lang.Exception {}
     // endregion
 
     // region Fields
