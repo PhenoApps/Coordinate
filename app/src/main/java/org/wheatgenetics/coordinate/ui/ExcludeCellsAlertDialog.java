@@ -15,17 +15,16 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.utils.Utils
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
-    interface Handler { public abstract void excludeCells(int amount); }
-
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler;
-
-    private android.widget.EditText editText                = null ;
-    private boolean                 onClickListenerReplaced = false;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
+    private android.widget.EditText                          editText                = null ;
+    private boolean                                          onClickListenerReplaced = false;
     // endregion
 
     private void excludeCells()
@@ -34,14 +33,12 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
             org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
         if (amount > 0)
         {
-            assert null != this.handler    ; this.handler.excludeCells(amount);
-            assert null != this.alertDialog; this.alertDialog.cancel()        ;
+            assert null != this.templateModel; this.templateModel.makeRandomCells(amount);
+            assert null != this.alertDialog  ; this.alertDialog.cancel()                 ;
         }
     }
 
-    ExcludeCellsAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
+    ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     // region Overridden Methods
     @java.lang.Override

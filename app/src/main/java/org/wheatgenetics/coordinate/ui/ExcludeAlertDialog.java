@@ -12,13 +12,11 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
  */
 class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
-implements org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
 {
     // region Fields
     private final android.app.Activity activity;
@@ -93,8 +91,7 @@ implements org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
 
             case 2:
                 if (null == this.excludeCellsAlertDialog)this.excludeCellsAlertDialog =
-                    new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(
-                        this.activity, this);
+                    new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this.activity);
                 this.excludeCellsAlertDialog.show();
                 break;
         }
@@ -123,12 +120,6 @@ implements org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
             });
         return this.setNegativeButton();
     }
-
-    // region org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void excludeCells(final int amount)
-    { assert null != this.templateModel; this.templateModel.makeRandomCells(amount); }
-    // endregion
     // endregion
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
