@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  *
  * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog
  */
 class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAlertDialog

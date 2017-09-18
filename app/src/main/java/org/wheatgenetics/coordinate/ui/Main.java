@@ -69,28 +69,16 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.NamingAlertDialog
- * org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
- * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.TemplateCreator
+ * org.wheatgenetics.coordinate.ui.TemplateCreator.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
@@ -559,19 +547,11 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.ui.Main.Exporter exporter           = null;
     private long                                          lastExportedGridId =   -1;
 
+    private org.wheatgenetics.coordinate.ui.TemplateCreator templateCreator = null;
+
     // region AlertDialog Fields
-    private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
-        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog excludeCellsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog  newTemplateAlertDialog  = null;
-    private org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
-        optionalFieldsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.NamingAlertDialog namingAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
         templateOptionsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
-        extraNewTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
         loadExistingTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
@@ -583,10 +563,8 @@ android.view.View.OnKeyListener
     // endregion
     // endregion
 
-    // region Class Method
     public static java.lang.String getTag(final int r, final int c)
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
-    // endregion
 
     // region Toast Methods
     private void showLongToast(final java.lang.String text)
@@ -600,24 +578,9 @@ android.view.View.OnKeyListener
     private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
     // endregion
 
-    // region OptionalField Methods
-    private void addOptionalField(final java.lang.String name, final java.lang.String value)
-    {
-        assert null != this.templateModel;
-        this.templateModel.addOptionalField(/* name => */ name, /* value => */ value);
-        this.addNewOptionalFields();
-    }
-
-    private void setOptionalFieldChecked(final int index, final boolean checked)
-    {
-        assert null != this.templateModel;
-        this.templateModel.setOptionalFieldChecked(index, checked);
-    }
-
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
-    // endregion
 
     // region Utils AlertDialog Methods
     // region alert() Utils AlertDialog Methods
@@ -1146,79 +1109,6 @@ android.view.View.OnKeyListener
     //     showChangeLog()
     // endregion
 
-    // region Subsubsubaction Drawer Methods
-    private void excludeRows()
-    {
-        if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.row,
-                new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void process(final boolean checkedItems[])
-                    {
-                        int i = 1;
-                        assert null != checkedItems                                           ;
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        for (final boolean checkedItem: checkedItems) if (checkedItem)
-                            // TODO: Are they cleared first?
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.addExcludeRow(
-                                i++);
-                    }
-                });
-        assert null != this.templateModel;
-        this.excludeRowsAlertDialog.show(
-            this.templateModel.rowItems(this.getString(org.wheatgenetics.coordinate.R.string.row)),
-            this.templateModel.rowCheckedItems()                                                 );
-    }
-
-    private void excludeCols()
-    {
-        if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.col,
-                new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void process(final boolean[] checkedItems)
-                    {
-                        int i = 1;
-                        assert null != checkedItems                                           ;
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        for (final boolean checkedItem: checkedItems) if (checkedItem)
-                            // TODO: Are they cleared first?
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.addExcludeCol(
-                                i++);
-                    }
-                });
-        assert null != this.templateModel;
-        this.excludeColsAlertDialog.show(
-            this.templateModel.colItems(this.getString(org.wheatgenetics.coordinate.R.string.col)),
-            this.templateModel.colCheckedItems()                                                 );
-    }
-
-    private void excludeCells()
-    {
-        if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void excludeCells(final int amount)
-                    {
-                        if (amount > 0)
-                        {
-                            assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.makeRandomCells(
-                                amount);
-                        }
-                        else org.wheatgenetics.coordinate.ui.Main.this.excludeCells();
-                    }
-                });
-        this.excludeCellsAlertDialog.show();
-    }
-    // endregion
-
     // region Subsubaction Drawer Methods
     private void loadExistingTemplate(                      // TODO: DRY? (Compare to deleteGrid().)
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
@@ -1237,78 +1127,6 @@ android.view.View.OnKeyListener
             this.loadTemplateAndGridAndPopulateUI(gridId, false);
         }
         else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
-    }
-
-    private void addNewOptionalFields()
-    {
-        if (null == this.optionalFieldsAlertDialog) this.optionalFieldsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void checkOptionalField(final int i, final boolean b)
-                    { org.wheatgenetics.coordinate.ui.Main.this.setOptionalFieldChecked(i, b); }
-
-                    @java.lang.Override
-                    public void retryAddOptionalField(final int errorMsgResId)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(errorMsgResId);
-                        org.wheatgenetics.coordinate.ui.Main.this.addNewOptionalFields();
-                    }
-
-                    @java.lang.Override
-                    public void addOptionalField(final java.lang.String newName,
-                    final java.lang.String newDefault)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.addOptionalField(
-                            newName, newDefault);
-                    }
-                });
-        assert null != this.templateModel;
-        this.optionalFieldsAlertDialog.show(this.templateModel.optionalFieldNames(),
-            this.templateModel.optionalFieldschecks());
-    }
-
-    private void exclude()
-    {
-        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void excludeRows()
-                    { org.wheatgenetics.coordinate.ui.Main.this.excludeRows(); }
-
-                    @java.lang.Override
-                    public void excludeCols()
-                    { org.wheatgenetics.coordinate.ui.Main.this.excludeCols(); }
-
-                    @java.lang.Override
-                    public void excludeCells()
-                    { org.wheatgenetics.coordinate.ui.Main.this.excludeCells(); }
-                });
-        this.excludeAlertDialog.show();
-    }
-
-    private void inputNaming()
-    {
-        if (null == this.namingAlertDialog) this.namingAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NamingAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void setNumbering(final boolean rowNumbering, final boolean colNumbering)
-                    {
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.setRowNumbering(
-                            rowNumbering);
-                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.setColNumbering(
-                            colNumbering);
-                    }
-                });
-
-        assert null != this.templateModel; this.namingAlertDialog.show(
-            this.templateModel.getRowNumbering(), this.templateModel.getColNumbering());
     }
 
     private void tempLoad(final int mode)
@@ -1446,35 +1264,6 @@ android.view.View.OnKeyListener
                 // reset options?
                 this.loadTemplate(                                  // throws org.json.JSONException
                     org.wheatgenetics.coordinate.ui.Main.MODE_SAVED, this.templateModel);
-    }
-
-    private void inputTemplateNewExtra()
-    {
-        if (null == this.extraNewTemplateAlertDialog) this.extraNewTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void addOptionalFields()
-                    { org.wheatgenetics.coordinate.ui.Main.this.addNewOptionalFields(); }
-
-                    @java.lang.Override
-                    public void addExcludes()
-                    { org.wheatgenetics.coordinate.ui.Main.this.exclude(); }
-
-                    @java.lang.Override
-                    public void addNaming()
-                    { org.wheatgenetics.coordinate.ui.Main.this.inputNaming(); }
-
-                    @java.lang.Override
-                    public void handleNext()
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(
-                            org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel);
-                    }
-                });
-        this.extraNewTemplateAlertDialog.show();
     }
 
     private void loadSeedTrayTemplate(
@@ -1778,44 +1567,19 @@ android.view.View.OnKeyListener
 
     private void createNewTemplate()
     {
-        if (null == this.newTemplateAlertDialog) this.newTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler()
+        if (null == this.templateCreator)
+            this.templateCreator = new org.wheatgenetics.coordinate.ui.TemplateCreator(this,
+                new org.wheatgenetics.coordinate.ui.TemplateCreator.Handler()
                 {
                     @java.lang.Override
-                    public void handleEmptyName(final java.lang.String message)
+                    public void handleNext()
                     {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
-                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                    }
-
-                    @java.lang.Override
-                    public void handleUnspecifiedRows(final java.lang.String message)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
-                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                    }
-
-                    @java.lang.Override
-                    public void handleUnspecifiedCols(final java.lang.String message)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
-                        org.wheatgenetics.coordinate.ui.Main.this.createNewTemplate();
-                    }
-
-                    @java.lang.Override
-                    public void createNewTemplate(final java.lang.String name, final int rows,
-                    final int cols)
-                    {
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        org.wheatgenetics.coordinate.ui.Main.this.templateModel.assign(
-                            /* title => */ name, /* rows => */ rows, /* cols => */ cols);
-                        org.wheatgenetics.coordinate.ui.Main.this.inputTemplateNewExtra();
+                        org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(
+                            org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
+                            org.wheatgenetics.coordinate.ui.Main.this.templateModel);
                     }
                 });
-        assert null != this.templateModel; this.templateModel.clearExcludesAndOptionalFields();
-        this.newTemplateAlertDialog.show(
-            this.templateModel.getRows(), this.templateModel.getCols());
+        this.templateCreator.create(this.templateModel);
     }
 
     private void loadExistingTemplate()
@@ -2004,7 +1768,6 @@ android.view.View.OnKeyListener
     }
     // endregion
 
-    // region Selector Drawer Method
     private boolean selectNavigationItem(final android.view.MenuItem menuItem)
     {
         assert null != menuItem; switch (menuItem.getItemId())
@@ -2045,7 +1808,6 @@ android.view.View.OnKeyListener
         assert null != this.drawerLayout; this.drawerLayout.closeDrawers();
         return true;
     }
-    // endregion
     // endregion
 
     private boolean saveData()
