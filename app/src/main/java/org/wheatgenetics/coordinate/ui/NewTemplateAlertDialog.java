@@ -132,8 +132,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
 
             if (!this.onClickListenerReplaced)
             {
-                this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                    .setOnClickListener(new android.view.View.OnClickListener()
+                assert null != this.alertDialog; this.alertDialog.getButton(
+                    android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+                        new android.view.View.OnClickListener()
                         {
                             @java.lang.Override
                             public void onClick(final android.view.View view)

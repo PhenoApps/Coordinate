@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;
+package org.wheatgenetics.coordinate.ui;                     // TODO: Make this stay open after add.
 
 /**
  * Uses:
@@ -10,70 +10,29 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
  * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
- * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
  */
 class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
 {
-    interface Handler
-    {
-        public abstract void checkOptionalField (int i, boolean b);
-
-        public abstract void retryAddOptionalField(final int errorMsgResId);
-        public abstract void addOptionalField(java.lang.String newName,
-            java.lang.String newDefault);
-    }
-
     // region Fields
-    private final android.app.Activity                                              activity;
-    private final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler ;
+    private final android.app.Activity activity;
 
+    private org.wheatgenetics.coordinate.model.TemplateModel           templateModel;
     private android.content.DialogInterface.OnMultiChoiceClickListener
         onMultiChoiceClickListenerInstance = null;
     private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
         newOptionalFieldAlertDialog = null;
-
-    private java.lang.String oldName, oldDefault;
+    private boolean onClickListenerReplaced = false;
     // endregion
 
     // region Private Methods
     private void checkOptionalField(final int i, final boolean b)
-    { assert null != this.handler; this.handler.checkOptionalField(i, b); }
-
-    private void retryAddOptionalField(final int errorMsgResId, final java.lang.String oldName,
-    final java.lang.String newDefault)
     {
-        assert null != this.handler; this.handler.retryAddOptionalField(errorMsgResId);
-        this.oldName = oldName; this.oldDefault = newDefault; this.addOptionalField();
-    }
-
-    private void addOptionalField(final java.lang.String newName, final java.lang.String newDefault)
-    { assert null != this.handler; this.handler.addOptionalField(newName, newDefault); }
-
-    private void addOptionalField()
-    {
-        if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity,
-                new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void retry(final int errorMsgResId, final java.lang.String oldName,
-                    final java.lang.String newDefault)
-                    {
-                        org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.
-                            this.retryAddOptionalField(errorMsgResId, oldName, newDefault);
-                    }
-
-                    @java.lang.Override
-                    public void addOptionalField(final java.lang.String newName,
-                    final java.lang.String newDefault)
-                    {
-                        org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.
-                            this.addOptionalField(newName, newDefault);
-                    }
-                });
-        this.newOptionalFieldAlertDialog.show(this.oldName, this.oldDefault);
+        assert null != this.templateModel;
+        this.templateModel.setOptionalFieldChecked(/* index => */ i, /* checked => */ b);
     }
 
     private android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener()
@@ -86,17 +45,23 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                     public void onClick(final android.content.DialogInterface dialogInterface,
                     final int i, final boolean b)
                     {
-                        org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.
-                            this.checkOptionalField(i, b);
+                        org.wheatgenetics.coordinate.ui.
+                            OptionalFieldsAlertDialog.this.checkOptionalField(i, b);
                     }
                 };
         return this.onMultiChoiceClickListenerInstance;
     }
+
+    private void addOptionalField()
+    {
+        if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
+            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity);
+        this.newOptionalFieldAlertDialog.show(this.templateModel);
+    }
     // endregion
 
-    OptionalFieldsAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler)
-    { super(activity); this.activity = activity; this.handler = handler; }
+    OptionalFieldsAlertDialog(final android.app.Activity activity)
+    { super(activity); this.activity = activity; }
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
@@ -109,17 +74,20 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
                     {
-                        assert null != dialog; dialog.cancel();
-                        org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.
-                            this.addOptionalField();
+                        org.wheatgenetics.coordinate.ui.
+                            OptionalFieldsAlertDialog.this.addOptionalField();
                     }
                 });
         return this.setOKPositiveButton();
     }
 
-    void show(final java.lang.CharSequence items[], final boolean checkedItems[])
+    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.oldName = this.oldDefault = "";
-        this.show(items, checkedItems, this.onMultiChoiceClickListener());
+        if (null != templateModel)
+        {
+            this.templateModel = templateModel;
+            this.show(this.templateModel.optionalFieldNames(),
+                this.templateModel.optionalFieldschecks(), this.onMultiChoiceClickListener());
+        }
     }
 }

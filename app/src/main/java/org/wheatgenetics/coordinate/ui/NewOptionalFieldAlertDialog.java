@@ -3,10 +3,10 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
+ * android.app.AlertDialog
  * android.app.AlertDialog.Builder
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
  * android.view.View
+ * android.view.View.OnClickListener
  * android.widget.EditText
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -17,42 +17,30 @@ package org.wheatgenetics.coordinate.ui;
  */
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
-    interface Handler
-    {
-        public abstract void retry(int errorMsgResId, java.lang.String oldName,
-          java.lang.String newDefault);
-        public abstract void addOptionalField(java.lang.String newName,
-            java.lang.String newDefault);
-    }
-
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler;
-
-    private java.lang.String        oldName                                    ;
-    private android.widget.EditText nameEditText = null, defaultEditText = null;
+    private android.widget.EditText              nameEditText = null, defaultEditText = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
+    private boolean                                          onClickListenerReplaced = false;
     // endregion
 
-    private void handlePositiveButtonClick(final android.content.DialogInterface dialog)
+    private void handlePositiveButtonClick()
     {
         final java.lang.String newName =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
         final java.lang.String newDefault =
             org.wheatgenetics.androidlibrary.Utils.getText(this.defaultEditText);
 
-        assert null != this.handler;
         if (0 == newName.length())
-            this.handler.retry(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name,
-                this.oldName, newDefault);
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name);
         else
         {
-            assert null != dialog; dialog.cancel();
-            this.handler.addOptionalField(newName, newDefault);
+            assert null != this.templateModel;
+            this.templateModel.addOptionalField(/* name => */ newName, /* value => */ newDefault);
+            assert null != this.alertDialog; this.alertDialog.cancel();
         }
     }
 
-    NewOptionalFieldAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
+    NewOptionalFieldAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
@@ -72,26 +60,35 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
             this.setView(view);
         }
 
-        this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.
-                        this.handlePositiveButtonClick(dialog);
-                }
-            });
-
+        this.setOKPositiveButton(null);
         return this.setNegativeButton();
     }
 
-    void show(final java.lang.String oldName, final java.lang.String oldDefault)
+    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.configure(org.wheatgenetics.coordinate.R.string.new_optional_field);
+        if (null != templateModel)
+        {
+            this.configure(org.wheatgenetics.coordinate.R.string.new_optional_field);
 
-        this.oldName = oldName;
-        assert null != this.nameEditText   ; this.nameEditText.setText   (oldName   );
-        assert null != this.defaultEditText; this.defaultEditText.setText(oldDefault);
-        this.show();
+            assert null != this.nameEditText   ; this.nameEditText.setText   ("");
+            assert null != this.defaultEditText; this.defaultEditText.setText("");
+            this.templateModel = templateModel; this.show();
+
+            if (!this.onClickListenerReplaced)
+            {
+                assert null != this.alertDialog; this.alertDialog.getButton(
+                    android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+                        new android.view.View.OnClickListener()
+                        {
+                            @java.lang.Override
+                            public void onClick(final android.view.View view)
+                            {
+                                org.wheatgenetics.coordinate.ui.
+                                    NewOptionalFieldAlertDialog.this.handlePositiveButtonClick();
+                            }
+                        });
+                this.onClickListenerReplaced = true;
+            }
+        }
     }
 }

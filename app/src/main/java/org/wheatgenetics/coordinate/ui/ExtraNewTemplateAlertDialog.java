@@ -12,21 +12,36 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
+ * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
     interface Handler
     {
-        public abstract void addOptionalFields(); public abstract void addExcludes               ();
-        public abstract void addNaming        (); public abstract void handleExtraNewTemplateNext();
+        public abstract void addExcludes               ();
+        public abstract void addNaming                 ();
+        public abstract void handleExtraNewTemplateNext();
     }
 
-    private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler;
+    // region Fields
+    private final android.app.Activity                                                activity;
+    private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler ;
+
+    private org.wheatgenetics.coordinate.model.TemplateModel          templateModel;
+    private org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
+        optionalFieldsAlertDialog = null;
+    // endregion
 
     // region Private Methods
     private void addOptionalFields()
-    { assert null != this.handler; this.handler.addOptionalFields(); }
+    {
+        if (null == this.optionalFieldsAlertDialog) this.optionalFieldsAlertDialog =
+            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this.activity);
+        this.optionalFieldsAlertDialog.show(this.templateModel);
+    }
 
     private void addExcludes() { assert null != this.handler; this.handler.addExcludes(); }
     private void addNaming  () { assert null != this.handler; this.handler.addNaming  (); }
@@ -37,7 +52,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
+    { super(activity); this.activity = activity; this.handler = handler; }
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
@@ -104,7 +119,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    assert null != dialog; dialog.cancel();
+//                    assert null != dialog; dialog.cancel();  // TODO: Remove?
                     org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext();
                 }
             });
@@ -112,6 +127,12 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
         return this.setNegativeButton();
     }
 
-    void show()
-    { this.configure(org.wheatgenetics.coordinate.R.string.template_new); super.show(); }
+    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel)
+        {
+            this.configure(org.wheatgenetics.coordinate.R.string.template_new);
+            this.templateModel = templateModel; this.show();
+        }
+    }
 }
