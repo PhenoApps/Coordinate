@@ -35,7 +35,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
         int i = 1;
         assert null != checkedItems; assert null != this.templateModel;
         for (final boolean checkedItem: checkedItems)
-            if (checkedItem) this.templateModel.addExcludeRow(i++); // TODO: Are they cleared first?
+            if (checkedItem) this.templateModel.addExcludeRow(i++);
     }
 
     private void processExcludeCols(final boolean checkedItems[])
@@ -43,7 +43,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
         int i = 1;
         assert null != checkedItems; assert null != this.templateModel;
         for (final boolean checkedItem: checkedItems)
-            if (checkedItem) this.templateModel.addExcludeCol(i++); // TODO: Are they cleared first?
+            if (checkedItem) this.templateModel.addExcludeCol(i++);
     }
     // endregion
 
@@ -90,10 +90,9 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
                 break;
 
             case 2:
-                if (null == this.excludeCellsAlertDialog)this.excludeCellsAlertDialog =
+                if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
                     new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this.activity);
-                this.excludeCellsAlertDialog.show(this.templateModel);
-                break;
+                this.excludeCellsAlertDialog.show(this.templateModel); break;
         }
     }
     // endregion
@@ -104,7 +103,6 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
         this.activity = activity;
     }
 
-    // region Overridden Methods
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
@@ -120,7 +118,6 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
             });
         return this.setNegativeButton();
     }
-    // endregion
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {

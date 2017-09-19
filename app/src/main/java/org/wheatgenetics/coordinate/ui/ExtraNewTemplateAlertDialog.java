@@ -18,8 +18,8 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 {
     interface Handler
     {
-        public abstract void addOptionalFields(); public abstract void addExcludes();
-        public abstract void addNaming        (); public abstract void handleNext ();
+        public abstract void addOptionalFields(); public abstract void addExcludes               ();
+        public abstract void addNaming        (); public abstract void handleExtraNewTemplateNext();
     }
 
     private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler;
@@ -30,7 +30,9 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 
     private void addExcludes() { assert null != this.handler; this.handler.addExcludes(); }
     private void addNaming  () { assert null != this.handler; this.handler.addNaming  (); }
-    private void handleNext () { assert null != this.handler; this.handler.handleNext (); }
+
+    private void handleNext()
+    { assert null != this.handler; this.handler.handleExtraNewTemplateNext(); }
     // endregion
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,

@@ -7,6 +7,8 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.LayoutInflater
  * android.view.View
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.ui.AlertDialog
  */
 abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
@@ -28,6 +30,7 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
     // endregion
 
     // region Package Methods
+    // region Inflater Package Methods
     android.view.LayoutInflater layoutInflater()
     {
         if (null == this.layoutInflaterInstance)
@@ -45,5 +48,14 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
             /* root         => */ new android.widget.LinearLayout(this.activity),
             /* attachToRoot => */ false                                         );
     }
+    // endregion
+
+    // region showLongToast() Package Methods
+    void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
+
+    void showLongToast(final int text)
+    { assert null != this.activity; this.showLongToast(this.activity.getString(text)); }
+    // endregion
     // endregion
 }

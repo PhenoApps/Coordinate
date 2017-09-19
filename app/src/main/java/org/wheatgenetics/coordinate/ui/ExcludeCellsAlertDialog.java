@@ -81,6 +81,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             }
 
             this.templateModel = templateModel; this.alertDialog.show();
+
             if (!this.onClickListenerReplaced)
             {
                 this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)

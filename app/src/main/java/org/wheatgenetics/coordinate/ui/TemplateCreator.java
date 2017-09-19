@@ -24,7 +24,7 @@ org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
 {
-    interface Handler { public abstract void handleNext(); }
+    interface Handler { public abstract void handleTemplateCreated(); }
 
     // region Fields
     private final android.app.Activity                                    activity;
@@ -62,26 +62,9 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     final org.wheatgenetics.coordinate.ui.TemplateCreator.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
-    // region org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler Overridden Method
     @java.lang.Override
-    public void handleEmptyName(final java.lang.String message)
-    { this.showLongToast(message); this.create(this.templateModel); }
-
-    @java.lang.Override
-    public void handleUnspecifiedRows(final java.lang.String message)
-    { this.showLongToast(message); this.create(this.templateModel); }
-
-    @java.lang.Override
-    public void handleUnspecifiedCols(final java.lang.String message)
-    { this.showLongToast(message); this.create(this.templateModel); }
-
-    @java.lang.Override
-    public void createNewTemplate(final java.lang.String name, final int rows, final int cols)
-    {
-        assert null != this.templateModel;
-        this.templateModel.assign(/* title => */ name, /* rows => */ rows, /* cols => */ cols);
-        this.performStep2();
-    }
+    public void handleNewTemplateNext() { this.performStep2(); }
     // endregion
 
     // region org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog Overridden Methods
@@ -113,7 +96,8 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     }
 
     @java.lang.Override
-    public void handleNext() { assert null != this.handler; this.handler.handleNext(); }
+    public void handleExtraNewTemplateNext()
+    { assert null != this.handler; this.handler.handleTemplateCreated(); }
     // endregion
 
     // region org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler Overridden Methods
@@ -154,8 +138,7 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
             if (null == this.newTemplateAlertDialog) this.newTemplateAlertDialog =
                 new org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog(this.activity, this);
             this.templateModel = templateModel; this.templateModel.clearExcludesAndOptionalFields();
-            this.newTemplateAlertDialog.show(
-                this.templateModel.getRows(), this.templateModel.getCols());
+            this.newTemplateAlertDialog.show(this.templateModel);
         }
     }
 }

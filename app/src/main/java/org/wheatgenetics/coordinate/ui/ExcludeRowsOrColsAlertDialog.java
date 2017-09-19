@@ -18,7 +18,7 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     interface Handler { public abstract void process(boolean checkedItems[]); }
 
     // region Fields
-    private final int                                                                  label  ;
+    private final java.lang.String                                                     label  ;
     private final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler;
     // endregion
 
@@ -27,15 +27,15 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
 
     ExcludeRowsOrColsAlertDialog(final android.content.Context context, final int label,
     final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler)
-    { super(context); this.label = label; this.handler = handler; }
+    { super(context); this.label = this.getString(label); this.handler = handler; }
 
     // region Overridden Methods
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder()
     {
         return super.makeBuilder().setTitle(
-            this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) + " - " +
-            this.getString(this.label                                         )          );
+            this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
+            " - " + this.label                                                   );
     }
 
     @java.lang.Override

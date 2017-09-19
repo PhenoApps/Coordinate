@@ -1505,7 +1505,7 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.TemplateCreator.Handler()
                 {
                     @java.lang.Override
-                    public void handleNext()
+                    public void handleTemplateCreated()
                     {
                         org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(
                             org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
