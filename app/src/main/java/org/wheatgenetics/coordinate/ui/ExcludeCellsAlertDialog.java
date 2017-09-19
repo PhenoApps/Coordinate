@@ -17,13 +17,14 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
  */
-class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
 {
     // region Fields
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
     private android.widget.EditText                          editText                = null ;
+    private android.app.AlertDialog                          alertDialog             = null ;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
     private boolean                                          onClickListenerReplaced = false;
     // endregion
 
@@ -40,7 +41,6 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
 
     ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
-    // region Overridden Methods
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
     {
@@ -65,22 +65,36 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAle
         return this.setNegativeButton();
     }
 
-    @java.lang.Override
-    void show()
+    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.configure(org.wheatgenetics.coordinate.R.string.random); super.show();
-        if (!this.onClickListenerReplaced)
+        if (null != templateModel)
         {
-            assert null != this.alertDialog;
-            this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-                new android.view.View.OnClickListener()
+            if (null == this.alertDialog)
+            {
+                if (null == this.builder)
                 {
-                    @java.lang.Override
-                    public void onClick(final android.view.View view)
-                    { org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells(); }
-                });
-            this.onClickListenerReplaced = true;
+                    this.builder = this.makeBuilder(org.wheatgenetics.coordinate.R.string.random);
+                    assert null != this.builder;
+                }
+                this.alertDialog = this.builder.create();
+                assert null != this.alertDialog;
+            }
+
+            this.templateModel = templateModel; this.alertDialog.show();
+            if (!this.onClickListenerReplaced)
+            {
+                this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setOnClickListener(new android.view.View.OnClickListener()
+                        {
+                            @java.lang.Override
+                            public void onClick(final android.view.View view)
+                            {
+                                org.wheatgenetics.coordinate.ui.
+                                    ExcludeCellsAlertDialog.this.excludeCells();
+                            }
+                        });
+                this.onClickListenerReplaced = true;
+            }
         }
     }
-    // endregion
 }

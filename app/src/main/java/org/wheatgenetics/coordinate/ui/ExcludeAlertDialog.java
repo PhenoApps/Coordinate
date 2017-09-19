@@ -92,7 +92,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
             case 2:
                 if (null == this.excludeCellsAlertDialog)this.excludeCellsAlertDialog =
                     new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this.activity);
-                this.excludeCellsAlertDialog.show();
+                this.excludeCellsAlertDialog.show(this.templateModel);
                 break;
         }
     }

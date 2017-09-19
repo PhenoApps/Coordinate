@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 abstract class ShowingAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
 {
-    android.app.AlertDialog alertDialog = null;
+    private android.app.AlertDialog alertDialog = null;
 
     ShowingAlertDialog(final android.app.Activity activity) { super(activity); }
 
