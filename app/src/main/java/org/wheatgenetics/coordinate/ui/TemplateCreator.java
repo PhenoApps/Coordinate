@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
@@ -30,7 +29,6 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     private org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog newTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog
         extraNewTemplateAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.NamingAlertDialog  namingAlertDialog  = null;
     // endregion
 
@@ -53,14 +51,6 @@ org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler
     // endregion
 
     // region org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog Overridden Methods
-    @java.lang.Override
-    public void addExcludes()
-    {
-        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity);
-        this.excludeAlertDialog.show(this.templateModel);
-    }
-
     @java.lang.Override
     public void addNaming()
     {

@@ -14,17 +14,14 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
     interface Handler
-    {
-        public abstract void addExcludes               ();
-        public abstract void addNaming                 ();
-        public abstract void handleExtraNewTemplateNext();
-    }
+    { public abstract void addNaming(); public abstract void handleExtraNewTemplateNext(); }
 
     // region Fields
     private final android.app.Activity                                                activity;
@@ -33,6 +30,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     private org.wheatgenetics.coordinate.model.TemplateModel          templateModel;
     private org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
         optionalFieldsAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -43,8 +41,14 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
         this.optionalFieldsAlertDialog.show(this.templateModel);
     }
 
-    private void addExcludes() { assert null != this.handler; this.handler.addExcludes(); }
-    private void addNaming  () { assert null != this.handler; this.handler.addNaming  (); }
+    private void addExcludes()
+    {
+        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
+            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity);
+        this.excludeAlertDialog.show(this.templateModel);
+    }
+
+    private void addNaming() { assert null != this.handler; this.handler.addNaming(); }
 
     private void handleNext()
     { assert null != this.handler; this.handler.handleExtraNewTemplateNext(); }

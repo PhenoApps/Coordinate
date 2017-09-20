@@ -25,7 +25,7 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
         onMultiChoiceClickListenerInstance = null;
     private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
         newOptionalFieldAlertDialog = null;
-    private boolean onClickListenerReplaced = false;
+    private boolean onClickListenerReplaced = false;                                         // TODO
     // endregion
 
     // region Private Methods
