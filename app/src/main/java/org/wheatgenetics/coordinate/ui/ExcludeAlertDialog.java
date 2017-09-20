@@ -29,8 +29,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
     // endregion
 
     // region Private Methods
-    // region processExclude(Rows|Cols)() Private Methods
-    private void processExcludeRows(final boolean checkedItems[])
+    // region exclude(Rows|Cols)() Private Methods
+    private void excludeRows(final boolean checkedItems[])
     {
         int i = 1;
         assert null != checkedItems; assert null != this.templateModel;
@@ -38,7 +38,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
             if (checkedItem) this.templateModel.addExcludeRow(i++);
     }
 
-    private void processExcludeCols(final boolean checkedItems[])
+    private void excludeCols(final boolean checkedItems[])
     {
         int i = 1;
         assert null != checkedItems; assert null != this.templateModel;
@@ -61,7 +61,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
                             public void process(final boolean checkedItems[])
                             {
                                 org.wheatgenetics.coordinate.ui.
-                                    ExcludeAlertDialog.this.processExcludeRows(checkedItems);
+                                    ExcludeAlertDialog.this.excludeRows(checkedItems);
                             }
                         });
                 assert null != this.templateModel; this.excludeRowsAlertDialog.show(
@@ -80,7 +80,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.InternalItemsAl
                             public void process(final boolean[] checkedItems)
                             {
                                 org.wheatgenetics.coordinate.ui.
-                                    ExcludeAlertDialog.this.processExcludeCols(checkedItems);
+                                    ExcludeAlertDialog.this.excludeCols(checkedItems);
                             }
                         });
                 assert null != this.templateModel; this.excludeColsAlertDialog.show(

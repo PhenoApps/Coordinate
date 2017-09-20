@@ -28,14 +28,6 @@ org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
         extraNewTemplateAlertDialog = null;
     // endregion
 
-    private void performStep2()
-    {
-        if (null == this.extraNewTemplateAlertDialog) this.extraNewTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog(this.activity, this);
-//        this.extraNewTemplateAlertDialog.show();  // TODO: Prevent!
-        this.extraNewTemplateAlertDialog.show(this.templateModel);
-    }
-
     TemplateCreator(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.TemplateCreator.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
@@ -43,10 +35,16 @@ org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler Overridden Method
     @java.lang.Override
-    public void handleNewTemplateNext() { this.performStep2(); }
+    public void handleNewTemplateNext()
+    {
+        if (null == this.extraNewTemplateAlertDialog) this.extraNewTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog(this.activity, this);
+        // this.extraNewTemplateAlertDialog.show();                                // TODO: Prevent!
+        this.extraNewTemplateAlertDialog.show(this.templateModel);
+    }
     // endregion
 
-    // region org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog Overridden Methods
+    // region org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog Overridden Method
     @java.lang.Override
     public void handleExtraNewTemplateNext()
     { assert null != this.handler; this.handler.handleTemplateCreated(); }

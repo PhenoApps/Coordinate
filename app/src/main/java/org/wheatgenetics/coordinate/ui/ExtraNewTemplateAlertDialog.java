@@ -27,7 +27,8 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     private final android.app.Activity                                                activity;
     private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler ;
 
-    private org.wheatgenetics.coordinate.model.TemplateModel          templateModel;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+
     private org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
         optionalFieldsAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExcludeAlertDialog excludeAlertDialog = null;
@@ -129,7 +130,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-//                    assert null != dialog; dialog.cancel();  // TODO: Remove?
+                    // assert null != dialog; dialog.cancel();                      // TODO: Remove?
                     org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext();
                 }
             });

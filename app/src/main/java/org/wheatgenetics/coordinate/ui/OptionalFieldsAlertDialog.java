@@ -20,7 +20,8 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     // region Fields
     private final android.app.Activity activity;
 
-    private org.wheatgenetics.coordinate.model.TemplateModel           templateModel;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+
     private android.content.DialogInterface.OnMultiChoiceClickListener
         onMultiChoiceClickListenerInstance = null;
     private org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog

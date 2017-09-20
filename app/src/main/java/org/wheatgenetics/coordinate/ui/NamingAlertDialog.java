@@ -57,7 +57,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
-//                    assert null != dialog; dialog.cancel();  // TODO: Remove?
+                    // assert null != dialog; dialog.cancel();                      // TODO: Remove?
                 }
             });
 
@@ -71,10 +71,13 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
             this.configure(org.wheatgenetics.coordinate.R.string.naming);
 
             this.templateModel = templateModel;
+
             assert null != this.rowSpinner;
             this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+
             assert null != this.colSpinner;
             this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+
             this.show();
         }
     }

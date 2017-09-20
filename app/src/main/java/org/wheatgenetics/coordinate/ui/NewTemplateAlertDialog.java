@@ -53,14 +53,13 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
     }
     // endregion
 
-    private void createTemplate()
+    private void assignTemplate()
     {
         final java.lang.String name =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameTextEdit);
         if (0 == name.length())
             this.showLongToast(org.wheatgenetics.coordinate.R.string.template_no_name);
         else
-        {
             try
             {
                 final int rows = org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.convert(
@@ -80,7 +79,6 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
             }
             catch (final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Unspecified e)
             { this.showLongToast(org.wheatgenetics.coordinate.R.string.no_rows); }
-        }
     }
     // endregion
 
@@ -140,7 +138,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
                             public void onClick(final android.view.View view)
                             {
                                 org.wheatgenetics.coordinate.ui.
-                                    NewTemplateAlertDialog.this.createTemplate();
+                                    NewTemplateAlertDialog.this.assignTemplate();
                             }
                         });
                 this.onClickListenerReplaced = true;

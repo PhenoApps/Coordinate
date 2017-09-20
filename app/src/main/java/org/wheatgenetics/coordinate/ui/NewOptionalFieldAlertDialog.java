@@ -13,6 +13,8 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
