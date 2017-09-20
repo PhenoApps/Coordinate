@@ -11,29 +11,27 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
  * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
 class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
 {
-    interface Handler
-    { public abstract void setNumbering(boolean rowNumbering, boolean colNumbering); }
-
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler handler;
-    private       android.widget.Spinner       rowSpinner = null, colSpinner = null;
+    private android.widget.Spinner                           rowSpinner = null, colSpinner = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                       ;
     // endregion
 
     private void setNumbering()
     {
-        assert null != this.rowSpinner; assert null != this.colSpinner; assert null != this.handler;
-        this.handler.setNumbering(
-            this.rowSpinner.getSelectedItemPosition() == 0,
-            this.colSpinner.getSelectedItemPosition() == 0);
+        assert null != this.rowSpinner; assert null != this.templateModel;
+        this.templateModel.setRowNumbering(this.rowSpinner.getSelectedItemPosition() == 0);
+
+        assert null != this.colSpinner;
+        this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
     }
 
-    NamingAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.NamingAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
+    NamingAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
     android.app.AlertDialog.Builder makeBuilder(final int titleId)
@@ -59,19 +57,25 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
-                    assert null != dialog; dialog.cancel();
+//                    assert null != dialog; dialog.cancel();  // TODO: Remove?
                 }
             });
 
         return this.setNegativeButton();
     }
 
-    void show(final boolean rowNumbering, final boolean colNumbering)
+    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.configure(org.wheatgenetics.coordinate.R.string.naming);
+        if (null != templateModel)
+        {
+            this.configure(org.wheatgenetics.coordinate.R.string.naming);
 
-        assert null != this.rowSpinner; this.rowSpinner.setSelection(rowNumbering ? 0 : 1);
-        assert null != this.colSpinner; this.colSpinner.setSelection(colNumbering ? 0 : 1);
-        this.show();
+            this.templateModel = templateModel;
+            assert null != this.rowSpinner;
+            this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+            assert null != this.colSpinner;
+            this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+            this.show();
+        }
     }
 }
