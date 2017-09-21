@@ -54,7 +54,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             {
                 assert null != view; this.editText = (android.widget.EditText)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.cellsEdit);
-                assert null != editText;
+                assert null != this.editText;
             }
             this.editText.setText("1");
 

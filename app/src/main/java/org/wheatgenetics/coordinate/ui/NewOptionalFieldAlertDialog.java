@@ -38,7 +38,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
         {
             assert null != this.templateModel;
             this.templateModel.addOptionalField(/* name => */ newName, /* value => */ newDefault);
-            assert null != this.alertDialog; this.alertDialog.cancel();
+            assert null != this.alertDialog; this.alertDialog.cancel();   // TODO: Make into method?
         }
     }
 

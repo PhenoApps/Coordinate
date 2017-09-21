@@ -51,10 +51,10 @@ abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
     // endregion
 
     // region showLongToast() Package Methods
-    void showLongToast(final java.lang.String text)
+    void showLongToast(final java.lang.String text)                                 // TODO: Rename.
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
-    void showLongToast(final int text)
+    void showLongToast(final int text)                                              // TODO: Rename.
     { assert null != this.activity; this.showLongToast(this.activity.getString(text)); }
     // endregion
     // endregion

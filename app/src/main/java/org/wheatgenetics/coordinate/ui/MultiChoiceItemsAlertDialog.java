@@ -17,7 +17,7 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
     { super.makeBuilder(); return this.setNegativeButton(); }
 
     // region Package Methods
-    android.app.AlertDialog.Builder configureBuilder(final java.lang.CharSequence items[],
+    android.app.AlertDialog.Builder configureBuilder(final java.lang.CharSequence items[], // TODO: Rename.
     final boolean checkedItems[],
     final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
@@ -28,7 +28,7 @@ extends org.wheatgenetics.coordinate.ui.ContextAlertDialog
     void show(final java.lang.CharSequence items[], final boolean checkedItems[],
     final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
-        if (null == this.builder)
+        if (null == this.builder)  // TODO: Move to configure().
         {
             this.builder = this.makeBuilder();
             assert null != this.builder;

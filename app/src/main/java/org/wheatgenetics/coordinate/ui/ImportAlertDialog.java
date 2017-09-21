@@ -32,7 +32,7 @@ class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ExternalItemsAle
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.ImportAlertDialog.this.importGrid(which);
-                    assert null != dialog; dialog.cancel();
+                    // assert null != dialog; dialog.cancel(); // TODO: Remove?
                 }
             };
     }

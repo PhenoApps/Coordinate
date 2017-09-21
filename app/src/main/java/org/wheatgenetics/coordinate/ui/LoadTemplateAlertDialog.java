@@ -91,7 +91,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
                         final int which)
                         {
                             org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
-                            assert null != dialog; dialog.cancel();
+                            // assert null != dialog; dialog.cancel(); // TODO: Remove?
                         }
                     });
             this.setNegativeButton();

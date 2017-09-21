@@ -57,7 +57,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    assert null != dialog; dialog.cancel();
+                    // assert null != dialog; dialog.cancel(); // TODO: Remove?
                     org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid();
                 }
             });
