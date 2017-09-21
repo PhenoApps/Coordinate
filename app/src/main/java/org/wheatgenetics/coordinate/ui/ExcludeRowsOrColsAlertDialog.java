@@ -12,7 +12,8 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  */
-class ExcludeRowsOrColsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class ExcludeRowsOrColsAlertDialog
+extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
 {
     interface Handler { public abstract void process(boolean checkedItems[]); }
 
@@ -31,35 +32,32 @@ class ExcludeRowsOrColsAlertDialog extends org.wheatgenetics.coordinate.ui.Alert
     @java.lang.Override
     void configureAfterConstruction()
     {
-        this.setNegativeButton(); // TODO: Put in common superclass.
-        this.setTitle(
-            this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
-            " - " + this.label                                                   );
+        super.configureAfterConstruction();
+        this.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
+            " - " + this.label);
     }
 
     void show(final java.lang.String items[], final boolean checkedItems[])
     {
         if (null != items && null != checkedItems)
         {
-            this.setMultiChoiceItems(items, checkedItems,
-                    new android.content.DialogInterface.OnMultiChoiceClickListener()
+            this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which)
                     {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which, final boolean isChecked)
-                        { checkedItems[which] = isChecked; }
-                    })
-                .setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            org.wheatgenetics.coordinate.ui.
-                                ExcludeRowsOrColsAlertDialog.this.process(checkedItems);
-                        }
-                    });
-            this.builder().create().show();
+                        org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.this.process(
+                            checkedItems);
+                    }
+                });
+            this.show(items, checkedItems,
+                new android.content.DialogInterface.OnMultiChoiceClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.content.DialogInterface dialog,
+                    final int which, final boolean isChecked) { checkedItems[which] = isChecked; }
+                });
         }
     }
 }
