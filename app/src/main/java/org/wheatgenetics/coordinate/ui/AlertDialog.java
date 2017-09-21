@@ -15,8 +15,9 @@ abstract class AlertDialog extends java.lang.Object
     // region Fields
     private final android.app.Activity activityInstance;
 
-    private android.app.AlertDialog.Builder builderInstance = null;
-    private android.app.AlertDialog         alertDialog     = null;
+    private android.app.AlertDialog.Builder                 builderInstance = null;
+    private android.content.DialogInterface.OnClickListener onClickListener = null;
+    private android.app.AlertDialog                         alertDialog     = null;
     // endregion
 
     private android.app.AlertDialog.Builder builder()
@@ -43,6 +44,14 @@ abstract class AlertDialog extends java.lang.Object
     org.wheatgenetics.coordinate.ui.AlertDialog setTitleId(final int titleId)
     { this.builder().setTitle(titleId); return this; }
 
+    org.wheatgenetics.coordinate.ui.AlertDialog setOnClickListener(
+    final android.content.DialogInterface.OnClickListener onClickListener)
+    { this.onClickListener = onClickListener; return this; }
+
+    org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[],
+    final android.content.DialogInterface.OnClickListener onClickListener)
+    { if (null != items) this.builder().setItems(items, onClickListener); return this; }
+
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final int itemResIds[],
     final android.content.DialogInterface.OnClickListener onClickListener)
     {
@@ -54,10 +63,13 @@ abstract class AlertDialog extends java.lang.Object
                 arrayList.add(this.getString(itemResId));
 
             final java.lang.String items[] = new java.lang.String[arrayList.size()];
-            this.builder().setItems(arrayList.toArray(items), onClickListener);
+            this.setItems(arrayList.toArray(items), onClickListener);
         }
         return this;
     }
+
+    org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[])
+    { this.setItems(items, this.onClickListener); return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setNegativeButton()
     {
@@ -77,5 +89,7 @@ abstract class AlertDialog extends java.lang.Object
         }
         this.alertDialog.show();
     }
+
+    void configureAndShow() { this.configureBeforeShow(); this.builder().create().show(); }
     // endregion
 }
