@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
  */
-abstract class AlertDialog extends java.lang.Object
+abstract class OldAlertDialog extends java.lang.Object
 {
     android.app.AlertDialog.Builder builder = null;
 
@@ -30,7 +30,7 @@ abstract class AlertDialog extends java.lang.Object
     // endregion
 
     // region set() Package Methods
-    org.wheatgenetics.coordinate.ui.AlertDialog setView(final android.view.View view)
+    org.wheatgenetics.coordinate.ui.OldAlertDialog setView(final android.view.View view)
     { assert null != this.builder; this.builder.setView(view); return this; }
 
     android.app.AlertDialog.Builder setOKPositiveButton(

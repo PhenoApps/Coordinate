@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-abstract class ContextAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+abstract class ContextAlertDialog extends org.wheatgenetics.coordinate.ui.OldAlertDialog
 {
     private final android.content.Context context;
 

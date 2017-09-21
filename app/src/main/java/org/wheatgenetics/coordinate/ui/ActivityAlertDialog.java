@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+abstract class ActivityAlertDialog extends org.wheatgenetics.coordinate.ui.OldAlertDialog
 {
     // region Fields
     private final android.app.Activity        activity                     ;
