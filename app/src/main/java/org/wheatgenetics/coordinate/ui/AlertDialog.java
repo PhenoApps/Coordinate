@@ -15,24 +15,15 @@ abstract class AlertDialog extends java.lang.Object
     // region Fields
     private final android.app.Activity activityInstance;
 
-    private android.app.AlertDialog.Builder                 builderInstance = null;
-    private android.content.DialogInterface.OnClickListener onClickListener = null;
-    private android.app.AlertDialog                         alertDialog     = null;
+    private android.app.AlertDialog.Builder builderInstance = null;
+    private android.app.AlertDialog         alertDialog     = null;
     // endregion
-
-    private android.app.AlertDialog.Builder builder()
-    {
-        if (null == this.builderInstance)
-            this.builderInstance = new android.app.AlertDialog.Builder(this.activityInstance);
-        return this.builderInstance;
-    }
 
     AlertDialog(final android.app.Activity activity)
     { super(); this.activityInstance = activity; this.configureAfterConstruction(); }
 
     // region Package Methods
     void configureAfterConstruction() {}
-    void configureBeforeShow       () {}
 
 
     android.app.Activity activity()
@@ -40,13 +31,19 @@ abstract class AlertDialog extends java.lang.Object
 
     java.lang.String getString(final int resId) { return this.activity().getString(resId); }
 
+    android.app.AlertDialog.Builder builder()
+    {
+        if (null == this.builderInstance)
+            this.builderInstance = new android.app.AlertDialog.Builder(this.activityInstance);
+        return this.builderInstance;
+    }
 
+    // region set() Package Methods
     org.wheatgenetics.coordinate.ui.AlertDialog setTitleId(final int titleId)
     { this.builder().setTitle(titleId); return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setOnClickListener(
-    final android.content.DialogInterface.OnClickListener onClickListener)
-    { this.onClickListener = onClickListener; return this; }
+    final android.content.DialogInterface.OnClickListener onClickListener) { return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[],
     final android.content.DialogInterface.OnClickListener onClickListener)
@@ -68,9 +65,6 @@ abstract class AlertDialog extends java.lang.Object
         return this;
     }
 
-    org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[])
-    { this.setItems(items, this.onClickListener); return this; }
-
     org.wheatgenetics.coordinate.ui.AlertDialog setNegativeButton()
     {
         this.builder().setNegativeButton(
@@ -78,7 +72,7 @@ abstract class AlertDialog extends java.lang.Object
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener());
         return this;
     }
-
+    // endregion
 
     void show()
     {
@@ -89,7 +83,5 @@ abstract class AlertDialog extends java.lang.Object
         }
         this.alertDialog.show();
     }
-
-    void configureAndShow() { this.configureBeforeShow(); this.builder().create().show(); }
     // endregion
 }

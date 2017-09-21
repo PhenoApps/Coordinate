@@ -8,9 +8,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.ui.AlertDialog
+ * org.wheatgenetics.coordinate.ui.ItemsAlertDialog
  */
-class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
 {
     interface Handler { public abstract void importGrid(int which); }
 
