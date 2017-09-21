@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.app.AlertDialog
  * android.app.AlertDialog.Builder
  * android.content.DialogInterface.OnClickListener
+ * android.content.DialogInterface.OnMultiChoiceClickListener
  *
  * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
@@ -60,6 +61,11 @@ abstract class AlertDialog extends java.lang.Object
         }
         return this;
     }
+
+    org.wheatgenetics.coordinate.ui.AlertDialog setMultiChoiceItems(
+    final java.lang.CharSequence items[], final boolean checkedItems[],
+    final android.content.DialogInterface.OnMultiChoiceClickListener listener)
+    { this.builder().setMultiChoiceItems(items, checkedItems, listener); return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setOKPositiveButton(
     final android.content.DialogInterface.OnClickListener onClickListener)

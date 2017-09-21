@@ -12,14 +12,12 @@ package org.wheatgenetics.coordinate.ui;                     // TODO: Make this 
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
  */
-class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Fields
-    private final android.app.Activity activity;
-
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private android.content.DialogInterface.OnMultiChoiceClickListener
@@ -56,18 +54,18 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     private void addOptionalField()
     {
         if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity);
+            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity());
         this.newOptionalFieldAlertDialog.show(this.templateModel);
     }
     // endregion
 
-    OptionalFieldsAlertDialog(final android.app.Activity activity)
-    { super(activity); this.activity = activity; }
+    OptionalFieldsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder()
+    void configureAfterConstruction()
     {
-        super.makeBuilder().setTitle(org.wheatgenetics.coordinate.R.string.optional_fields)
+        this.setNegativeButton(); // TODO: Put in common superclass.
+        this.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields).setOKPositiveButton()
             .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
                 new android.content.DialogInterface.OnClickListener()
                 {
@@ -79,7 +77,6 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                             OptionalFieldsAlertDialog.this.addOptionalField();
                     }
                 });
-        return this.setOKPositiveButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
@@ -87,8 +84,9 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
         if (null != templateModel)
         {
             this.templateModel = templateModel;
-            this.show(this.templateModel.optionalFieldNames(),
+            this.setMultiChoiceItems(this.templateModel.optionalFieldNames(),
                 this.templateModel.optionalFieldschecks(), this.onMultiChoiceClickListener());
+            this.builder().create().show();
         }
     }
 }
