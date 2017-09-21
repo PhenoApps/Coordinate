@@ -40,6 +40,9 @@ abstract class AlertDialog extends java.lang.Object
     }
 
     // region set() Package Methods
+    org.wheatgenetics.coordinate.ui.AlertDialog setTitle(final java.lang.String title)
+    { this.builder().setTitle(title); return this;}
+
     org.wheatgenetics.coordinate.ui.AlertDialog setTitle(final int titleId)
     { this.builder().setTitle(titleId); return this; }
 
