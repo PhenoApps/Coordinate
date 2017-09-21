@@ -1173,7 +1173,7 @@ android.view.View.OnKeyListener
                     { org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(); }
 
                     @java.lang.Override
-                    public void createNewTemplate()
+                    public void createTemplate()
                     { org.wheatgenetics.coordinate.ui.Main.this.createTemplate(); }
                 });
         this.templateOptionsAlertDialog.show();
