@@ -106,7 +106,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     @java.lang.Override
     void configureAfterConstruction()
     {
-        this.setTitleId(org.wheatgenetics.coordinate.R.string.exclude_title)
+        this.setTitle(org.wheatgenetics.coordinate.R.string.exclude_title)
             .setItems(new int[] {
                     org.wheatgenetics.coordinate.R.string.rows   ,
                     org.wheatgenetics.coordinate.R.string.cols   ,

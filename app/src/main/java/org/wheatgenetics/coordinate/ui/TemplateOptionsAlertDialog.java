@@ -33,7 +33,7 @@ class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDi
     @java.lang.Override
     void configureAfterConstruction()
     {
-        this.setTitleId(org.wheatgenetics.coordinate.R.string.template_options)
+        this.setTitle(org.wheatgenetics.coordinate.R.string.template_options)
             .setItems(new int[] {
                     org.wheatgenetics.coordinate.R.string.template_load,
                     org.wheatgenetics.coordinate.R.string.template_new },

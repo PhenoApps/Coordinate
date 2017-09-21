@@ -26,7 +26,7 @@ class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
     @java.lang.Override
     void configureAfterConstruction()
     {
-        this.setTitleId(org.wheatgenetics.coordinate.R.string.import_grid);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.import_grid);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
