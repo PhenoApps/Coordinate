@@ -2,16 +2,15 @@ package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
- * android.content.Context
+ * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
+ * org.wheatgenetics.coordinate.ui.ItemsAlertDialog
  */
-class LoadExistingTemplateAlertDialog
-extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
+class LoadExistingTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
 {
     interface Handler { public abstract void loadTemplate(int which); }
 
@@ -20,14 +19,15 @@ extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
     private void loadTemplate(final int which)
     { assert null != this.handler; this.handler.loadTemplate(which); }
 
-    LoadExistingTemplateAlertDialog(final android.content.Context context,
+    LoadExistingTemplateAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler handler)
-    { super(context, org.wheatgenetics.coordinate.R.string.template_load); this.handler = handler; }
+    { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.content.DialogInterface.OnClickListener makeOnClickListener()
+    void configureAfterConstruction()
     {
-        return new android.content.DialogInterface.OnClickListener()
+        this.setTitleId(org.wheatgenetics.coordinate.R.string.template_load);
+        this.setOnClickListener(new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -35,6 +35,6 @@ extends org.wheatgenetics.coordinate.ui.ExternalItemsAlertDialog
                     org.wheatgenetics.coordinate.ui.
                         LoadExistingTemplateAlertDialog.this.loadTemplate(which);
                 }
-            };
+            });
     }
 }

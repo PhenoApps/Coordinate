@@ -24,7 +24,7 @@ abstract class AlertDialog extends java.lang.Object
 
     // region Package Methods
     void configureAfterConstruction() {}
-
+    void configureBeforeShow       () {}
 
     android.app.Activity activity()
     { assert null != this.activityInstance; return this.activityInstance; }
@@ -41,9 +41,6 @@ abstract class AlertDialog extends java.lang.Object
     // region set() Package Methods
     org.wheatgenetics.coordinate.ui.AlertDialog setTitleId(final int titleId)
     { this.builder().setTitle(titleId); return this; }
-
-    org.wheatgenetics.coordinate.ui.AlertDialog setOnClickListener(
-    final android.content.DialogInterface.OnClickListener onClickListener) { return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[],
     final android.content.DialogInterface.OnClickListener onClickListener)

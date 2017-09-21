@@ -9,21 +9,21 @@ package org.wheatgenetics.coordinate.ui;
  */
 abstract class ItemsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
-    private android.content.DialogInterface.OnClickListener onClickListener = null;
+    private android.content.DialogInterface.OnClickListener onClickListener;
 
     ItemsAlertDialog(final android.app.Activity activity) { super(activity); }
 
-    @java.lang.Override
-    org.wheatgenetics.coordinate.ui.AlertDialog setOnClickListener(
-    final android.content.DialogInterface.OnClickListener onClickListener)
-    { this.onClickListener = onClickListener; return this; }
-
     // region Package Methods
-    void configureBeforeShow() {}
+    void setOnClickListener(final android.content.DialogInterface.OnClickListener onClickListener)
+    { this.onClickListener = onClickListener; }
 
-    org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[])
-    { this.setItems(items, this.onClickListener); return this; }
-
-    void configureAndShow() { this.configureBeforeShow(); this.builder().create().show(); }
+    void show(final java.lang.String items[])
+    {
+        if (null != items)
+        {
+            this.setItems(items, this.onClickListener);
+            this.builder().create().show();
+        }
+    }
     // endregion
 }
