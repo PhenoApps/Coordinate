@@ -165,7 +165,7 @@ abstract class AlertDialog extends java.lang.Object
     boolean positiveOnClickListenerHasBeenReplaced()
     { return this.positiveOnClickListenerReplaced; }
 
-    void replaceOnClickListener(final android.view.View.OnClickListener onClickListener)
+    void replacePositiveOnClickListener(final android.view.View.OnClickListener onClickListener)
     {
         if (null != this.alertDialog)
         {
