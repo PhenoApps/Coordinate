@@ -59,9 +59,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
                         this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
 
                 optionalField.setValue(value);
-
-                if (optionalField.namesAreEqual("Person") || optionalField.namesAreEqual("Name"))  // TODO: Should be done in OptionalField.
-                    this.handler.processPerson(optionalField.getValue());
+                if (optionalField.isAPerson()) this.handler.processPerson(optionalField.getValue());
 
                 i++;
             }

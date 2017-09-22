@@ -125,5 +125,8 @@ public abstract class OptionalField extends java.lang.Object
 
     public boolean namesAreEqual(final java.lang.String name)
     { return this.getName().equalsIgnoreCase(name); }
+
+    public boolean isAPerson()
+    { return this.namesAreEqual("Person") || this.namesAreEqual("Name"); }
     // endregion
 }
