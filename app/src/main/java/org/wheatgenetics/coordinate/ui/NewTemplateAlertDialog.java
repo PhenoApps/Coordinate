@@ -15,9 +15,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Types
                    interface Handler     { public abstract void handleNewTemplateNext(); }
@@ -27,9 +27,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
     // region Fields
     private final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Handler handler;
 
-    private android.widget.EditText nameTextEdit = null, rowsTextEdit = null, colsTextEdit = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
-    private boolean                                          onClickListenerReplaced = false;
+    private android.widget.EditText nameTextEdit, rowsTextEdit, colsTextEdit;
+    private org.wheatgenetics.coordinate.model.TemplateModel   templateModel;
     // endregion
 
     // region Private Methods
@@ -58,7 +57,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
         final java.lang.String name =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameTextEdit);
         if (0 == name.length())
-            this.showLongToast(org.wheatgenetics.coordinate.R.string.template_no_name);
+            this.showToast(org.wheatgenetics.coordinate.R.string.template_no_name);
         else
             try
             {
@@ -71,14 +70,14 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
 
                     assert null != this.templateModel; this.templateModel.assign(
                         /* title => */ name, /* rows => */ rows, /* cols => */ cols);
-                    assert null != this.alertDialog; this.alertDialog.cancel()           ;
-                    assert null != this.handler    ; this.handler.handleNewTemplateNext();
+                    this.cancelAlertDialog();
+                    assert null != this.handler; this.handler.handleNewTemplateNext();
                 }
                 catch (final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Unspecified e)
-                { this.showLongToast(org.wheatgenetics.coordinate.R.string.no_cols); }
+                { this.showToast(org.wheatgenetics.coordinate.R.string.no_cols); }
             }
             catch (final org.wheatgenetics.coordinate.ui.NewTemplateAlertDialog.Unspecified e)
-            { this.showLongToast(org.wheatgenetics.coordinate.R.string.no_rows); }
+            { this.showToast(org.wheatgenetics.coordinate.R.string.no_rows); }
     }
     // endregion
 
@@ -87,9 +86,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    void configureAfterConstruction()
     {
-        super.makeBuilder(titleId);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.template_new);
 
         {
             final android.view.View view =
@@ -106,18 +105,13 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
             this.setView(view);
         }
 
-        assert null != this.builder;
-        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next, null);
-
-        return this.setNegativeButton();
+        this.setPositiveButton(org.wheatgenetics.coordinate.R.string.next).setNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)
         {
-            this.configure(org.wheatgenetics.coordinate.R.string.template_new);
-
             this.templateModel = templateModel;
             assert null != this.nameTextEdit; this.nameTextEdit.setText("");
             assert null != this.rowsTextEdit; this.rowsTextEdit.setText(
@@ -128,21 +122,16 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAler
                     this.templateModel.getCols()));
             this.show();
 
-            if (!this.onClickListenerReplaced)
-            {
-                assert null != this.alertDialog; this.alertDialog.getButton(
-                    android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.view.View view)
-                            {
-                                org.wheatgenetics.coordinate.ui.
-                                    NewTemplateAlertDialog.this.assignTemplate();
-                            }
-                        });
-                this.onClickListenerReplaced = true;
-            }
+            if (!this.getOnClickListenerReplace()) this.replaceClickListener(
+                new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View view)
+                    {
+                        org.wheatgenetics.coordinate.ui.
+                            NewTemplateAlertDialog.this.assignTemplate();
+                    }
+                });
         }
     }
 }
