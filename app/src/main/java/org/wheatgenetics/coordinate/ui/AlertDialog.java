@@ -156,7 +156,7 @@ abstract class AlertDialog extends java.lang.Object
     void showToast(final int textId) { this.showToast(this.getString(textId)); }
     // endregion
 
-    boolean getOnClickListenerReplaced() { return this.onClickListenerReplaced; } // TODO: onClickListenerHasBeenReplaced
+    boolean onClickListenerHasBeenReplaced() { return this.onClickListenerReplaced; }
 
     void replaceClickListener(final android.view.View.OnClickListener onClickListener) // TODO: replaceOnClickListener
     {
