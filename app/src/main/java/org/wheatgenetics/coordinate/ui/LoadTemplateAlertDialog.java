@@ -147,6 +147,6 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
         }
 
         this.checkedOptionalFields = checkedOptionalFields; this.cannotBeEmpty = cannotBeEmpty;
-        this.createAndShow();
+        this.createModifiyShow();
     }
 }
