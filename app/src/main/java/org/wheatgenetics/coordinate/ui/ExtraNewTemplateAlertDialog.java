@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.view.View
@@ -14,18 +13,17 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
  */
-class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     interface Handler { public abstract void handleExtraNewTemplateNext(); }
 
     // region Fields
-    private final android.app.Activity                                                activity;
-    private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler ;
+    private final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
@@ -39,21 +37,21 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
     private void addOptionalFields()
     {
         if (null == this.optionalFieldsAlertDialog) this.optionalFieldsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this.activity);
+            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this.activity());
         this.optionalFieldsAlertDialog.show(this.templateModel);
     }
 
     private void addExcludes()
     {
         if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity);
+            new org.wheatgenetics.coordinate.ui.ExcludeAlertDialog(this.activity());
         this.excludeAlertDialog.show(this.templateModel);
     }
 
     private void addNaming()
     {
         if (null == this.namingAlertDialog) this.namingAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NamingAlertDialog(this.activity);
+            new org.wheatgenetics.coordinate.ui.NamingAlertDialog(this.activity());
         assert null != this.templateModel; this.namingAlertDialog.show(this.templateModel);
     }
 
@@ -63,12 +61,12 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
 
     ExtraNewTemplateAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler)
-    { super(activity); this.activity = activity; this.handler = handler; }
+    { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    void configureAfterConstruction()
     {
-        super.makeBuilder(titleId);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.template_new);
 
         {
             final android.view.View view =
@@ -123,8 +121,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
             this.setView(view);
         }
 
-        assert null != this.builder;
-        this.builder.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
+        this.setPositiveButton(org.wheatgenetics.coordinate.R.string.next,
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
@@ -133,17 +130,9 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.Showin
                     // assert null != dialog; dialog.cancel();                      // TODO: Remove?
                     org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext();
                 }
-            });
-
-        return this.setNegativeButton();
+            }).setNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel)
-        {
-            this.configure(org.wheatgenetics.coordinate.R.string.template_new);
-            this.templateModel = templateModel; this.show();
-        }
-    }
+    { if (null != templateModel) { this.templateModel = templateModel; this.show(); } }
 }

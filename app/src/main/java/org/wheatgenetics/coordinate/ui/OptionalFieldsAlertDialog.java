@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;                     // TODO: Make this 
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener

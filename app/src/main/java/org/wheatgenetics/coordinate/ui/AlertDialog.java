@@ -26,10 +26,6 @@ abstract class AlertDialog extends java.lang.Object
     private boolean                         onClickListenerReplaced = false;
     // endregion
 
-    private org.wheatgenetics.coordinate.ui.AlertDialog setPositiveButton(final int textId,
-    final android.content.DialogInterface.OnClickListener onClickListener)
-    { this.builder().setPositiveButton(textId, onClickListener); return this; }
-
     AlertDialog(final android.app.Activity activity)
     { super(); this.activityInstance = activity; this.configureAfterConstruction(); }
 
@@ -98,6 +94,10 @@ abstract class AlertDialog extends java.lang.Object
 
     org.wheatgenetics.coordinate.ui.AlertDialog setView(final android.view.View view)
     { this.builder().setView(view); return this; }
+
+    org.wheatgenetics.coordinate.ui.AlertDialog setPositiveButton(final int textId,
+    final android.content.DialogInterface.OnClickListener onClickListener)
+    { this.builder().setPositiveButton(textId, onClickListener); return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setPositiveButton(final int textId)
     { return this.setPositiveButton(textId, null); }
