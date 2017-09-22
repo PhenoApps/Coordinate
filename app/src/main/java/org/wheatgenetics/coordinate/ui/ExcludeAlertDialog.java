@@ -121,11 +121,5 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel)
-        {
-            this.templateModel = templateModel;
-            this.show();
-        }
-    }
+    { if (null != templateModel) { this.templateModel = templateModel; this.show(); } }
 }

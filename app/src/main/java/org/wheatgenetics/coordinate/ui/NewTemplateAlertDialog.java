@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText

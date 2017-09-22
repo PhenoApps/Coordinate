@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
@@ -19,8 +18,8 @@ package org.wheatgenetics.coordinate.ui;
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Fields
-    private android.widget.EditText              nameEditText = null, defaultEditText = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
+    private android.widget.EditText                          nameEditText, defaultEditText;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                ;
     // endregion
 
     private void handlePositiveButtonClick()

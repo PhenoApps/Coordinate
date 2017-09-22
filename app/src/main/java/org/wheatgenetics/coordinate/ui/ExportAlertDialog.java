@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.view.View
@@ -20,8 +19,8 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     interface Handler { public abstract void exportGrid(java.lang.String fileName); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler handler        ;
-    private       android.widget.EditText                                   editText = null;
+    private final org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler handler ;
+    private       android.widget.EditText                                   editText;
     // endregion
 
     private void exportGrid()
@@ -56,16 +55,10 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    // assert null != dialog; dialog.cancel(); // TODO: Remove?
-                    org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid();
-                }
+                { org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid(); }
             }).setNegativeButton();
     }
 
     void show(final java.lang.String datedFirstValue)
-    {
-        assert null != this.editText; this.editText.setText(datedFirstValue);
-        this.show();
-    }
+    { assert null != this.editText; this.editText.setText(datedFirstValue); this.show(); }
 }

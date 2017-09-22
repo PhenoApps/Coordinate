@@ -34,7 +34,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
 
     private java.util.ArrayList<android.widget.EditText>                  editTextArrayList = null;
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields;
-    private boolean                                                          cannotBeEmpty        ;
+    private boolean                                                          firstCannotBeEmpty   ;
     // endregion
 
     private void process()
@@ -54,7 +54,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
                         org.wheatgenetics.androidlibrary.Utils.getText(editText);
                 }
 
-                if (this.cannotBeEmpty && 0 == i)
+                if (this.firstCannotBeEmpty && 0 == i)
                     if (0 == value.length()) this.handler.processError(optionalField.getHint() +
                         this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
 
@@ -82,16 +82,13 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
-                    // assert null != dialog; dialog.cancel(); // TODO: Remove?
-                }
+                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process(); }
             }).setNegativeButton();
     }
 
     void show(final java.lang.String title,
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
-    final boolean cannotBeEmpty)
+    final boolean firstCannotBeEmpty)
     {
         this.setTitle(title);
 
@@ -146,7 +143,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
             this.setView(view);
         }
 
-        this.checkedOptionalFields = checkedOptionalFields; this.cannotBeEmpty = cannotBeEmpty;
+        this.checkedOptionalFields = checkedOptionalFields;
+        this.firstCannotBeEmpty    = firstCannotBeEmpty   ;
         this.createModifiyShow();
     }
 }

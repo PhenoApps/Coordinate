@@ -126,10 +126,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    // assert null != dialog; dialog.cancel();                      // TODO: Remove?
-                    org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext();
-                }
+                { org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext(); }
             }).setNegativeButton();
     }
 

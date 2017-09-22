@@ -17,8 +17,8 @@ package org.wheatgenetics.coordinate.ui;
 class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Fields
-    private android.widget.Spinner                           rowSpinner = null, colSpinner = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                       ;
+    private android.widget.Spinner                           rowSpinner, colSpinner;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel         ;
     // endregion
 
     private void setNumbering()
@@ -54,10 +54,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                {
-                    org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
-                    // assert null != dialog; dialog.cancel();                      // TODO: Remove?
-                }
+                { org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering(); }
             }).setNegativeButton();
     }
 

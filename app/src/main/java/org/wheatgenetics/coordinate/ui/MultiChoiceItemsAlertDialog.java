@@ -15,11 +15,11 @@ abstract class MultiChoiceItemsAlertDialog extends org.wheatgenetics.coordinate.
     void configure() { this.setNegativeButton(); }
 
     void show(final java.lang.String items[], final boolean checkedItems[],
-    final android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener)
+    final android.content.DialogInterface.OnMultiChoiceClickListener listener)
     {
         if (null != items && null != checkedItems)
         {
-            this.setMultiChoiceItems(items, checkedItems, onMultiChoiceClickListener);
+            this.setMultiChoiceItems(items, checkedItems, listener);
             this.createShow();
         }
     }
