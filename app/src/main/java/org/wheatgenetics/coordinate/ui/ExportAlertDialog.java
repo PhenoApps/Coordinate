@@ -13,9 +13,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     interface Handler { public abstract void exportGrid(java.lang.String fileName); }
 
@@ -35,9 +35,9 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    void configureAfterConstruction()
     {
-        super.makeBuilder(titleId);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.filename_set);
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -60,14 +60,11 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                     // assert null != dialog; dialog.cancel(); // TODO: Remove?
                     org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid();
                 }
-            });
-
-        return this.setNegativeButton();
+            }).setNegativeButton();
     }
 
     void show(final java.lang.String datedFirstValue)
     {
-        this.configure(org.wheatgenetics.coordinate.R.string.filename_set);
         assert null != this.editText; this.editText.setText(datedFirstValue);
         this.show();
     }
