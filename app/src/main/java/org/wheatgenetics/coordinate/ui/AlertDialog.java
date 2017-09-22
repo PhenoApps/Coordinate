@@ -68,6 +68,9 @@ abstract class AlertDialog extends java.lang.Object
     org.wheatgenetics.coordinate.ui.AlertDialog setTitle(final int titleId)
     { this.builder().setTitle(titleId); return this; }
 
+    org.wheatgenetics.coordinate.ui.AlertDialog setCancelableToFalse()
+    { this.builder().setCancelable(false); return this; }
+
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[],
     final android.content.DialogInterface.OnClickListener onClickListener)
     { if (null != items) this.builder().setItems(items, onClickListener); return this; }
@@ -145,7 +148,7 @@ abstract class AlertDialog extends java.lang.Object
     void showToast(final int textId) { this.showToast(this.getString(textId)); }
     // endregion
 
-    boolean getOnClickListenerReplace() { return this.onClickListenerReplaced; }
+    boolean getOnClickListenerReplaced() { return this.onClickListenerReplaced; }
 
     void replaceClickListener(final android.view.View.OnClickListener onClickListener)
     {
