@@ -10,6 +10,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.LayoutInflater
  * android.view.View
  * android.view.View.OnClickListener
+ * android.view.WindowManager.LayoutParams
  * android.widget.LinearLayout
  *
  * org.wheatgenetics.androidlibrary.R
@@ -25,6 +26,12 @@ abstract class AlertDialog extends java.lang.Object
     private android.app.AlertDialog         alertDialog             = null ;
     private boolean                         onClickListenerReplaced = false;
     // endregion
+
+    private void createAlertDialog()
+    {
+        this.alertDialog = this.builder().create();
+        assert null != this.alertDialog;
+    }
 
     AlertDialog(final android.app.Activity activity)
     { super(); this.activityInstance = activity; this.configureAfterConstruction(); }
@@ -133,11 +140,15 @@ abstract class AlertDialog extends java.lang.Object
 
     void show()
     {
-        if (null == this.alertDialog)
-        {
-            this.alertDialog = this.builder().create();
-            assert null != this.alertDialog;
-        }
+        if (null == this.alertDialog) this.createAlertDialog();
+        this.alertDialog.show();
+    }
+
+    void createAndShow()
+    {
+        this.createAlertDialog();
+        this.alertDialog.getWindow().setSoftInputMode(
+            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         this.alertDialog.show();
     }
 
@@ -148,9 +159,9 @@ abstract class AlertDialog extends java.lang.Object
     void showToast(final int textId) { this.showToast(this.getString(textId)); }
     // endregion
 
-    boolean getOnClickListenerReplaced() { return this.onClickListenerReplaced; }
+    boolean getOnClickListenerReplaced() { return this.onClickListenerReplaced; } // TODO: onClickListenerHasBeenReplaced
 
-    void replaceClickListener(final android.view.View.OnClickListener onClickListener)
+    void replaceClickListener(final android.view.View.OnClickListener onClickListener) // TODO: replaceOnClickListener
     {
         if (null != this.alertDialog)
         {

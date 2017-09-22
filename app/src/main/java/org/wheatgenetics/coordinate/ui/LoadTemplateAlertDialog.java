@@ -3,12 +3,10 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.view.LayoutInflater
  * android.view.View
- * android.view.WindowManager.LayoutParams
  * android.widget.EditText
  * android.widget.LinearLayout
  * android.widget.TextView
@@ -20,9 +18,9 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  *
- * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
+class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     interface Handler
     {
@@ -76,29 +74,26 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
     final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    void show(final java.lang.CharSequence title,
+    @java.lang.Override
+    void configureAfterConstruction()
+    {
+        this.setCancelableToFalse().setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
+            new android.content.DialogInterface.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.content.DialogInterface dialog, final int which)
+                {
+                    org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
+                    // assert null != dialog; dialog.cancel(); // TODO: Remove?
+                }
+            }).setNegativeButton();
+    }
+
+    void show(final java.lang.String title,
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
     final boolean cannotBeEmpty)
     {
-        if (null == this.builder)
-        {
-            this.builder = this.makeBuilder().setCancelable(false)
-                .setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
-                    new android.content.DialogInterface.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.content.DialogInterface dialog,
-                        final int which)
-                        {
-                            org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process();
-                            // assert null != dialog; dialog.cancel(); // TODO: Remove?
-                        }
-                    });
-            this.setNegativeButton();
-            assert null != this.builder;
-        }
-
-        this.builder.setTitle(title);
+        this.setTitle(title);
 
         if (null == this.editTextArrayList)
             this.editTextArrayList = new java.util.ArrayList<android.widget.EditText>();
@@ -152,10 +147,6 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
         }
 
         this.checkedOptionalFields = checkedOptionalFields; this.cannotBeEmpty = cannotBeEmpty;
-
-        final android.app.AlertDialog alertDialog = this.builder.create();
-        assert null != alertDialog; alertDialog.getWindow().setSoftInputMode(
-            android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        alertDialog.show();
+        this.createAndShow();
     }
 }
