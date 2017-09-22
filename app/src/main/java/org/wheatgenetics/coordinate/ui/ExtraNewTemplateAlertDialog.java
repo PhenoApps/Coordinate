@@ -17,8 +17,10 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.NamingAlertDialog
  * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog
+ * org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler
  */
 class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+implements org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler
 {
     interface Handler { public abstract void handleExtraNewTemplateNext(); }
 
@@ -37,7 +39,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     private void addOptionalFields()
     {
         if (null == this.optionalFieldsAlertDialog) this.optionalFieldsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this.activity());
+            new org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog(this.activity(), this);
         this.optionalFieldsAlertDialog.show(this.templateModel);
     }
 
@@ -63,6 +65,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     final org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
+    // region Overridden Methods
     @java.lang.Override
     void configure()
     {
@@ -129,6 +132,13 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
                 { org.wheatgenetics.coordinate.ui.ExtraNewTemplateAlertDialog.this.handleNext(); }
             }).setNegativeButton();
     }
+
+    // region org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.HandlerOverridden Method
+    @java.lang.Override
+    public void showOptionalFieldsAlertDialog()
+    { this.optionalFieldsAlertDialog.show(this.templateModel); }
+    // endregion
+    // endregion
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { if (null != templateModel) { this.templateModel = templateModel; this.show(); } }

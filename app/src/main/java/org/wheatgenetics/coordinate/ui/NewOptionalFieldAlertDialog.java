@@ -17,7 +17,11 @@ package org.wheatgenetics.coordinate.ui;
  */
 class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
+    interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
+
     // region Fields
+    private final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler;
+
     private android.widget.EditText                          nameEditText, defaultEditText;
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel                ;
     // endregion
@@ -36,10 +40,13 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
             assert null != this.templateModel;
             this.templateModel.addOptionalField(/* name => */ newName, /* value => */ newDefault);
             this.cancelAlertDialog();
+            assert null != this.handler; this.handler.showOptionalFieldsAlertDialog();
         }
     }
 
-    NewOptionalFieldAlertDialog(final android.app.Activity activity) { super(activity); }
+    NewOptionalFieldAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler handler)
+    { super(activity); this.handler = handler; }
 
     @java.lang.Override
     void configure()

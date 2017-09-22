@@ -13,10 +13,16 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
+ * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
  */
 class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+implements org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
 {
+    interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
+
     // region Fields
+    private final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler;
+
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private android.content.DialogInterface.OnMultiChoiceClickListener
@@ -52,13 +58,16 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     private void addOptionalField()
     {
         if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity());
+            new org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog(this.activity(), this);
         this.newOptionalFieldAlertDialog.show(this.templateModel);
     }
     // endregion
 
-    OptionalFieldsAlertDialog(final android.app.Activity activity) { super(activity); }
+    OptionalFieldsAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.OptionalFieldsAlertDialog.Handler handler)
+    { super(activity); this.handler = handler; }
 
+    // region Overridden Methods
     @java.lang.Override
     void configure()
     {
@@ -76,6 +85,13 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
                     }
                 });
     }
+
+    // region org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler Overridden Method
+    @java.lang.Override
+    public void showOptionalFieldsAlertDialog()
+    { assert null != this.handler; this.handler.showOptionalFieldsAlertDialog(); }
+    // endregion
+    // endregion
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
