@@ -7,15 +7,14 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View.OnClickListener
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
 
@@ -49,7 +48,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.new_optional_field)
             .setCancelableToFalse();

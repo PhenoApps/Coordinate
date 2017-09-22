@@ -11,16 +11,15 @@ package org.wheatgenetics.coordinate.ui;
  * android.widget.LinearLayout
  * android.widget.TextView
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler
     {
@@ -73,7 +72,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setCancelableToFalse().setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
             new android.content.DialogInterface.OnClickListener()

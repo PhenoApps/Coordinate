@@ -6,11 +6,11 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
- * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.androidlibrary.ItemsAlertDialog
  *
- * org.wheatgenetics.coordinate.ui.ItemsAlertDialog
+ * org.wheatgenetics.coordinate.R
  */
-class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
+class ImportAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
     interface Handler { public abstract void importGrid(int which); }
 
@@ -24,7 +24,7 @@ class ImportAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.import_grid);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()

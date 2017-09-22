@@ -7,15 +7,14 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View.OnClickListener
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
                    interface Handler     { public abstract void handleNewTemplateNext(); }
@@ -84,7 +83,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.template_new);
 

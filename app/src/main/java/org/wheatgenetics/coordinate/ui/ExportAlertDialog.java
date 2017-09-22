@@ -8,13 +8,12 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler { public abstract void exportGrid(java.lang.String fileName); }
 
@@ -34,7 +33,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.filename_set);
 

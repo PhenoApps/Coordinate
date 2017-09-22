@@ -6,11 +6,11 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
- * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.androidlibrary.AlertDialog
  *
- * org.wheatgenetics.coordinate.ui.AlertDialog
+ * org.wheatgenetics.coordinate.R
  */
-class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class TemplateOptionsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler
     { public abstract void loadExistingTemplate(); public abstract void createTemplate(); }
@@ -31,7 +31,7 @@ class TemplateOptionsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDi
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.template_options)
             .setItems(new int[] {

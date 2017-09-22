@@ -8,13 +8,13 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View
  * android.widget.Spinner
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
+ *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class NamingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private android.widget.Spinner                           rowSpinner, colSpinner;
@@ -33,7 +33,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     NamingAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.naming).setCancelableToFalse();
 

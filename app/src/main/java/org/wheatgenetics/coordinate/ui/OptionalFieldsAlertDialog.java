@@ -7,15 +7,16 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
+ * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
+ *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
  */
-class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+class OptionalFieldsAlertDialog extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 implements org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
 {
     interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
@@ -69,7 +70,7 @@ implements org.wheatgenetics.coordinate.ui.NewOptionalFieldAlertDialog.Handler
 
     // region Overridden Methods
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         super.configure();
         this.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields).setOKPositiveButton()

@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.View.OnClickListener
  * android.widget.EditText
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
@@ -14,10 +15,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.utils.Utils
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private android.widget.EditText                          editText     ;
@@ -38,7 +37,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
     ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.random).setCancelableToFalse();
 

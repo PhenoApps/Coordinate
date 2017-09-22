@@ -6,16 +6,17 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
+ * org.wheatgenetics.androidlibrary.AlertDialog
+ *
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.AlertDialog
  * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog
  * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler
  */
-class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
+class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
@@ -103,7 +104,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     ExcludeAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.exclude_title)
             .setItems(new int[] {

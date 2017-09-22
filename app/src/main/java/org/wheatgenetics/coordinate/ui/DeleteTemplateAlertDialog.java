@@ -6,11 +6,11 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
- * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.androidlibrary.ItemsAlertDialog
  *
- * org.wheatgenetics.coordinate.ui.ItemsAlertDialog
+ * org.wheatgenetics.coordinate.R
  */
-class DeleteTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAlertDialog
+class DeleteTemplateAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
     interface Handler { public abstract void deleteTemplate(int which); }
 
@@ -24,7 +24,7 @@ class DeleteTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAle
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.delete_template);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()

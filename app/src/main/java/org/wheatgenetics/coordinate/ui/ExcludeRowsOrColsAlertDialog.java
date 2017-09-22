@@ -7,12 +7,12 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
  *
- * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
  *
- * org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+ * org.wheatgenetics.coordinate.R
  */
 class ExcludeRowsOrColsAlertDialog
-extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
+extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 {
     interface Handler { public abstract void process(boolean checkedItems[]); }
 
@@ -29,7 +29,7 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     @java.lang.Override
-    void configure()
+    public void configure()
     {
         super.configure();
         this.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
