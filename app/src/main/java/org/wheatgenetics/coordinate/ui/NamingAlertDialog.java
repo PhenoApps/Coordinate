@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog.Builder
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.view.View
@@ -13,9 +12,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDialog
+class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Fields
     private android.widget.Spinner                           rowSpinner = null, colSpinner = null;
@@ -34,9 +33,9 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
     NamingAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    void configureAfterConstruction()
     {
-        super.makeBuilder(titleId).setCancelable(false);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.naming).setCancelableToFalse();
 
         {
             final android.view.View view = this.layoutInflater().inflate(
@@ -59,17 +58,13 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.ShowingAlertDial
                     org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering();
                     // assert null != dialog; dialog.cancel();                      // TODO: Remove?
                 }
-            });
-
-        return this.setNegativeButton();
+            }).setNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)
         {
-            this.configure(org.wheatgenetics.coordinate.R.string.naming);
-
             this.templateModel = templateModel;
 
             assert null != this.rowSpinner;
