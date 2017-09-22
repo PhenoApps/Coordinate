@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;                     // TODO: Make this stay open after add.
+package org.wheatgenetics.coordinate.ui;
 
 /**
  * Uses:
@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.ui;                     // TODO: Make this 
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.view.View
+ * android.view.View.OnClickListener
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -64,17 +66,7 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     {
         super.configure();
         this.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields).setOKPositiveButton()
-            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.
-                            OptionalFieldsAlertDialog.this.addOptionalField();
-                    }
-                });
+            .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new);
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
@@ -84,6 +76,15 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
             this.templateModel = templateModel;
             this.show(this.templateModel.optionalFieldNames(),
                 this.templateModel.optionalFieldschecks(), this.onMultiChoiceClickListener());
+            this.replaceNeutralOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View view)
+                    {
+                        org.wheatgenetics.coordinate.ui.
+                            OptionalFieldsAlertDialog.this.addOptionalField();
+                    }
+                });
         }
     }
 }

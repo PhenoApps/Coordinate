@@ -37,6 +37,13 @@ abstract class AlertDialog extends java.lang.Object
 
     private void createAlertDialog()
     { this.alertDialog = this.builder().create(); assert null != this.alertDialog; }
+
+    private void replaceOnClickListener(final int whichButton,
+    final android.view.View.OnClickListener onClickListener)
+    {
+        if (null != this.alertDialog)
+            this.alertDialog.getButton(whichButton).setOnClickListener(onClickListener);
+    }
     // endregion
 
     AlertDialog(final android.app.Activity activity)
@@ -119,9 +126,8 @@ abstract class AlertDialog extends java.lang.Object
         return this;
     }
 
-    org.wheatgenetics.coordinate.ui.AlertDialog setNeutralButton(final int textId,
-    final android.content.DialogInterface.OnClickListener onClickListener)
-    { this.builder().setNeutralButton(textId, onClickListener); return this; }
+    org.wheatgenetics.coordinate.ui.AlertDialog setNeutralButton(final int textId)
+    { this.builder().setNeutralButton(textId, null); return this; }
     // endregion
 
     // region Inflater Package Methods
@@ -169,11 +175,13 @@ abstract class AlertDialog extends java.lang.Object
     {
         if (null != this.alertDialog)
         {
-            this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-                onClickListener);
+            this.replaceOnClickListener(android.app.AlertDialog.BUTTON_POSITIVE, onClickListener);
             this.positiveOnClickListenerReplaced = true;
         }
     }
+
+    void replaceNeutralOnClickListener(final android.view.View.OnClickListener onClickListener)
+    { this.replaceOnClickListener(android.app.AlertDialog.BUTTON_NEUTRAL, onClickListener); }
 
     void cancelAlertDialog() { if (null != this.alertDialog) this.alertDialog.cancel(); }
     // endregion
