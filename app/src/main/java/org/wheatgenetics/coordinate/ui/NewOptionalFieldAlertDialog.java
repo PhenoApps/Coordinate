@@ -71,7 +71,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
             assert null != this.defaultEditText; this.defaultEditText.setText("");
             this.templateModel = templateModel; this.show();
 
-            if (!this.onClickListenerHasBeenReplaced()) this.replaceOnClickListener(
+            if (!this.positiveOnClickListenerHasBeenReplaced()) this.replaceOnClickListener(
                 new android.view.View.OnClickListener()
                 {
                     @java.lang.Override

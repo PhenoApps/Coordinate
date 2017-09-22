@@ -66,7 +66,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
         {
             this.templateModel = templateModel; this.show();
 
-            if (!this.onClickListenerHasBeenReplaced()) this.replaceOnClickListener(
+            if (!this.positiveOnClickListenerHasBeenReplaced()) this.replaceOnClickListener(
                 new android.view.View.OnClickListener()
                 {
                     @java.lang.Override

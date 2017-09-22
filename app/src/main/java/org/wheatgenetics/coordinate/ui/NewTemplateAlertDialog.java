@@ -120,7 +120,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
                     this.templateModel.getCols()));
             this.show();
 
-            if (!this.onClickListenerHasBeenReplaced()) this.replaceOnClickListener(
+            if (!this.positiveOnClickListenerHasBeenReplaced()) this.replaceOnClickListener(
                 new android.view.View.OnClickListener()
                 {
                     @java.lang.Override

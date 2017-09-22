@@ -21,14 +21,23 @@ abstract class AlertDialog extends java.lang.Object
     // region Fields
     private final android.app.Activity activityInstance;
 
-    private android.app.AlertDialog.Builder builderInstance         = null ;
-    private android.view.LayoutInflater     layoutInflaterInstance  = null ;
-    private android.app.AlertDialog         alertDialog             = null ;
-    private boolean                         onClickListenerReplaced = false;
+    private android.app.AlertDialog.Builder builderInstance                 = null ;
+    private android.view.LayoutInflater     layoutInflaterInstance          = null ;
+    private android.app.AlertDialog         alertDialog                     = null ;
+    private boolean                         positiveOnClickListenerReplaced = false;
     // endregion
+
+    // region Private Methods
+    private android.app.AlertDialog.Builder builder()
+    {
+        if (null == this.builderInstance)
+            this.builderInstance = new android.app.AlertDialog.Builder(this.activityInstance);
+        return this.builderInstance;
+    }
 
     private void createAlertDialog()
     { this.alertDialog = this.builder().create(); assert null != this.alertDialog; }
+    // endregion
 
     AlertDialog(final android.app.Activity activity)
     { super(); this.activityInstance = activity; this.configure(); }
@@ -40,13 +49,6 @@ abstract class AlertDialog extends java.lang.Object
     { assert null != this.activityInstance; return this.activityInstance; }
 
     java.lang.String getString(final int stringId) { return this.activity().getString(stringId); }
-
-    android.app.AlertDialog.Builder builder()
-    {
-        if (null == this.builderInstance)
-            this.builderInstance = new android.app.AlertDialog.Builder(this.activityInstance);
-        return this.builderInstance;
-    }
 
     // region set() Package Methods
     org.wheatgenetics.coordinate.ui.AlertDialog setTitle(final java.lang.String title)
@@ -160,7 +162,8 @@ abstract class AlertDialog extends java.lang.Object
     void showToast(final int textId) { this.showToast(this.getString(textId)); }
     // endregion
 
-    boolean onClickListenerHasBeenReplaced() { return this.onClickListenerReplaced; }
+    boolean positiveOnClickListenerHasBeenReplaced()
+    { return this.positiveOnClickListenerReplaced; }
 
     void replaceOnClickListener(final android.view.View.OnClickListener onClickListener)
     {
@@ -168,7 +171,7 @@ abstract class AlertDialog extends java.lang.Object
         {
             this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(
                 onClickListener);
-            this.onClickListenerReplaced = true;
+            this.positiveOnClickListenerReplaced = true;
         }
     }
 
