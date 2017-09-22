@@ -3,8 +3,6 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.app.AlertDialog
- * android.app.AlertDialog.Builder
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
@@ -17,15 +15,13 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ActivityAlertDialog
+ * org.wheatgenetics.coordinate.ui.AlertDialog
  */
-class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAlertDialog
+class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
 {
     // region Fields
-    private android.widget.EditText                          editText                = null ;
-    private android.app.AlertDialog                          alertDialog             = null ;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
-    private boolean                                          onClickListenerReplaced = false;
+    private android.widget.EditText                          editText     ;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
     // endregion
 
     private void excludeCells()
@@ -35,16 +31,16 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
         if (amount > 0)
         {
             assert null != this.templateModel; this.templateModel.makeRandomCells(amount);
-            assert null != this.alertDialog  ; this.alertDialog.cancel()                 ;
+            this.cancelAlertDialog();
         }
     }
 
     ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    android.app.AlertDialog.Builder makeBuilder(final int titleId)
+    void configureAfterConstruction()
     {
-        super.makeBuilder(titleId).setCancelable(false);
+        this.setTitle(org.wheatgenetics.coordinate.R.string.random).setCancelableToFalse();
 
         {
             final android.view.View view =
@@ -61,41 +57,22 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.ActivityAl
             this.setView(view);
         }
 
-        this.setOKPositiveButton(null);
-        return this.setNegativeButton();
+        this.setOKPositiveButton(null).setNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)
         {
-            if (null == this.alertDialog)
-            {
-                if (null == this.builder)
+            this.templateModel = templateModel; this.show();
+
+            if (!this.getOnClickListenerReplaced()) this.replaceClickListener(
+                new android.view.View.OnClickListener()
                 {
-                    this.builder = this.makeBuilder(org.wheatgenetics.coordinate.R.string.random);
-                    assert null != this.builder;
-                }
-                this.alertDialog = this.builder.create();
-                assert null != this.alertDialog;
-            }
-
-            this.templateModel = templateModel; this.alertDialog.show();
-
-            if (!this.onClickListenerReplaced)
-            {
-                this.alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                    .setOnClickListener(new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.view.View view)
-                            {
-                                org.wheatgenetics.coordinate.ui.
-                                    ExcludeCellsAlertDialog.this.excludeCells();
-                            }
-                        });
-                this.onClickListenerReplaced = true;
-            }
+                    @java.lang.Override
+                    public void onClick(final android.view.View view)
+                    { org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells(); }
+                });
         }
     }
 }
