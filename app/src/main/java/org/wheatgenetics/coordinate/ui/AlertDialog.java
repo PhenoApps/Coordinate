@@ -139,7 +139,10 @@ abstract class AlertDialog extends java.lang.Object
     }
     // endregion
 
+    // region show() Package Methods
     void show() { if (null == this.alertDialog) this.createAlertDialog(); this.alertDialog.show(); }
+
+    void createShow() { this.createAlertDialog(); this.alertDialog.show(); }
 
     void createModifiyShow()
     {
@@ -148,6 +151,7 @@ abstract class AlertDialog extends java.lang.Object
             android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         this.alertDialog.show();
     }
+    // endregion
 
     // region showToast() Package Methods
     void showToast(final java.lang.String text)

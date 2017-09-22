@@ -20,7 +20,7 @@ abstract class MultiChoiceItemsAlertDialog extends org.wheatgenetics.coordinate.
         if (null != items && null != checkedItems)
         {
             this.setMultiChoiceItems(items, checkedItems, onMultiChoiceClickListener);
-            this.builder().create().show();
+            this.createShow();
         }
     }
 }

@@ -18,12 +18,6 @@ abstract class ItemsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDia
     { this.onClickListener = onClickListener; }
 
     void show(final java.lang.String items[])
-    {
-        if (null != items)
-        {
-            this.setItems(items, this.onClickListener);
-            this.builder().create().show();
-        }
-    }
+    { if (null != items) { this.setItems(items, this.onClickListener); this.createShow(); } }
     // endregion
 }
