@@ -126,8 +126,12 @@ abstract class AlertDialog extends java.lang.Object
         return this;
     }
 
+    org.wheatgenetics.coordinate.ui.AlertDialog setNeutralButton(final int textId,
+    final android.content.DialogInterface.OnClickListener onClickListener)
+    { this.builder().setNeutralButton(textId, onClickListener); return this; }
+
     org.wheatgenetics.coordinate.ui.AlertDialog setNeutralButton(final int textId)
-    { this.builder().setNeutralButton(textId, null); return this; }
+    { return this.setNeutralButton(textId, null); }
     // endregion
 
     // region Inflater Package Methods
