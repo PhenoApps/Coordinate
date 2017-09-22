@@ -64,7 +64,7 @@ class ExtraNewTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.template_new);
 

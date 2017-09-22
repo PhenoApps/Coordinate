@@ -24,7 +24,7 @@ class LoadExistingTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.It
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.template_load);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()

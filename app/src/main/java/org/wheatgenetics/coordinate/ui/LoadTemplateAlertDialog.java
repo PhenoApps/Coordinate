@@ -75,7 +75,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setCancelableToFalse().setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
             new android.content.DialogInterface.OnClickListener()

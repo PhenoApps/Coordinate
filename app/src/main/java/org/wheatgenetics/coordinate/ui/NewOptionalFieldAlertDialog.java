@@ -43,7 +43,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.coordinate.ui.AlertD
     NewOptionalFieldAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.new_optional_field)
             .setCancelableToFalse();

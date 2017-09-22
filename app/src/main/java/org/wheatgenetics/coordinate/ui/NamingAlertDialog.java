@@ -33,7 +33,7 @@ class NamingAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     NamingAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.naming).setCancelableToFalse();
 

@@ -61,9 +61,9 @@ class OptionalFieldsAlertDialog extends org.wheatgenetics.coordinate.ui.MultiCho
     OptionalFieldsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
-        super.configureAfterConstruction();
+        super.configure();
         this.setTitle(org.wheatgenetics.coordinate.R.string.optional_fields).setOKPositiveButton()
             .setNeutralButton(org.wheatgenetics.coordinate.R.string.add_new,
                 new android.content.DialogInterface.OnClickListener()

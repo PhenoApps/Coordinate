@@ -28,16 +28,13 @@ abstract class AlertDialog extends java.lang.Object
     // endregion
 
     private void createAlertDialog()
-    {
-        this.alertDialog = this.builder().create();
-        assert null != this.alertDialog;
-    }
+    { this.alertDialog = this.builder().create(); assert null != this.alertDialog; }
 
     AlertDialog(final android.app.Activity activity)
-    { super(); this.activityInstance = activity; this.configureAfterConstruction(); }
+    { super(); this.activityInstance = activity; this.configure(); }
 
     // region Package Methods
-    abstract void configureAfterConstruction();  // TODO: Rename?
+    abstract void configure();
 
     android.app.Activity activity()
     { assert null != this.activityInstance; return this.activityInstance; }
@@ -51,23 +48,6 @@ abstract class AlertDialog extends java.lang.Object
         return this.builderInstance;
     }
 
-    // region Inflater Package Methods
-    android.view.LayoutInflater layoutInflater()
-    {
-        if (null == this.layoutInflaterInstance)
-            this.layoutInflaterInstance = this.activity().getLayoutInflater();
-        return this.layoutInflaterInstance;
-    }
-
-    android.view.View inflate(final int resource)
-    {
-        return this.layoutInflater().inflate(
-            /* resource     => */ resource,
-            /* root         => */ new android.widget.LinearLayout(this.activity()),
-            /* attachToRoot => */ false);
-    }
-    // endregion
-
     // region set() Package Methods
     org.wheatgenetics.coordinate.ui.AlertDialog setTitle(final java.lang.String title)
     { this.builder().setTitle(title); return this; }
@@ -80,19 +60,23 @@ abstract class AlertDialog extends java.lang.Object
 
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final java.lang.String items[],
     final android.content.DialogInterface.OnClickListener onClickListener)
-    { if (null != items) this.builder().setItems(items, onClickListener); return this; }
+    { this.builder().setItems(items, onClickListener); return this; }
 
     org.wheatgenetics.coordinate.ui.AlertDialog setItems(final int itemIds[],
     final android.content.DialogInterface.OnClickListener onClickListener)
     {
         if (null != itemIds)
         {
-            final java.util.ArrayList<java.lang.String> arrayList =
-                new java.util.ArrayList<java.lang.String>(itemIds.length);
-            for (final java.lang.Integer itemId: itemIds) arrayList.add(this.getString(itemId));
+            final int itemIdsLength = itemIds.length;
+            if (itemIdsLength > 0)
+            {
+                final java.util.ArrayList<java.lang.String> arrayList =
+                    new java.util.ArrayList<java.lang.String>(itemIdsLength);
+                for (final java.lang.Integer itemId: itemIds) arrayList.add(this.getString(itemId));
 
-            final java.lang.String items[] = new java.lang.String[arrayList.size()];
-            this.setItems(arrayList.toArray(items), onClickListener);
+                final java.lang.String items[] = new java.lang.String[arrayList.size()];
+                this.setItems(arrayList.toArray(items), onClickListener);
+            }
         }
         return this;
     }
@@ -138,11 +122,24 @@ abstract class AlertDialog extends java.lang.Object
     { this.builder().setNeutralButton(textId, onClickListener); return this; }
     // endregion
 
-    void show()
+    // region Inflater Package Methods
+    android.view.LayoutInflater layoutInflater()
     {
-        if (null == this.alertDialog) this.createAlertDialog();
-        this.alertDialog.show();
+        if (null == this.layoutInflaterInstance)
+            this.layoutInflaterInstance = this.activity().getLayoutInflater();
+        return this.layoutInflaterInstance;
     }
+
+    android.view.View inflate(final int resource)
+    {
+        return this.layoutInflater().inflate(
+            /* resource     => */ resource,
+            /* root         => */ new android.widget.LinearLayout(this.activity()),
+            /* attachToRoot => */ false);
+    }
+    // endregion
+
+    void show() { if (null == this.alertDialog) this.createAlertDialog(); this.alertDialog.show(); }
 
     void createAndShow()
     {

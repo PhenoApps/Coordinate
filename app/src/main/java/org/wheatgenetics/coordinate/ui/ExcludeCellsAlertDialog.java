@@ -38,7 +38,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialo
     ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.random).setCancelableToFalse();
 

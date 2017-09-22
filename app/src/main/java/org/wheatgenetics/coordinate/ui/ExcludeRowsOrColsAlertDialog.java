@@ -29,9 +29,9 @@ extends org.wheatgenetics.coordinate.ui.MultiChoiceItemsAlertDialog
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
-        super.configureAfterConstruction();
+        super.configure();
         this.setTitle(this.getString(org.wheatgenetics.coordinate.R.string.exclude_title) +
             " - " + this.label);
     }

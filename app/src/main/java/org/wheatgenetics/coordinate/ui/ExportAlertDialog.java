@@ -35,7 +35,7 @@ class ExportAlertDialog extends org.wheatgenetics.coordinate.ui.AlertDialog
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.filename_set);
 

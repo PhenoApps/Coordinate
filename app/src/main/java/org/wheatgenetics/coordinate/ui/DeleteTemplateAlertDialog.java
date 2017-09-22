@@ -24,7 +24,7 @@ class DeleteTemplateAlertDialog extends org.wheatgenetics.coordinate.ui.ItemsAle
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
-    void configureAfterConstruction()
+    void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.delete_template);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()
