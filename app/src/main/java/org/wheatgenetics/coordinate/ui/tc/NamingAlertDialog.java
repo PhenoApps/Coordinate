@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;
+package org.wheatgenetics.coordinate.ui.tc;
 
 /**
  * Uses:
@@ -54,7 +54,7 @@ class NamingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.NamingAlertDialog.this.setNumbering(); }
+                { org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog.this.setNumbering(); }
             }).setNegativeButton();
     }
 

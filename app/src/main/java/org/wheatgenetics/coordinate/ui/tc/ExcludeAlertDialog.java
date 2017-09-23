@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;
+package org.wheatgenetics.coordinate.ui.tc;
 
 /**
  * Uses:
@@ -12,18 +12,19 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.tc.ExcludeCellsAlertDialog
+ * org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog
+ * org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog.Handler
  */
 class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog
+    private org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog excludeCellsAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.tc.ExcludeCellsAlertDialog
+        excludeCellsAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -57,14 +58,15 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         {
             case 0:
                 if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
-                    new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(
+                    new org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog(
                         this.activity(), org.wheatgenetics.coordinate.R.string.row,
-                        new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
+                        new org.wheatgenetics.coordinate.ui.tc.
+                            ExcludeRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
                             public void process(final boolean checkedItems[])
                             {
-                                org.wheatgenetics.coordinate.ui.
+                                org.wheatgenetics.coordinate.ui.tc.
                                     ExcludeAlertDialog.this.excludeRows(checkedItems);
                             }
                         });
@@ -76,14 +78,15 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
             case 1:
                 if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
-                    new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog(
+                    new org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog(
                         this.activity(), org.wheatgenetics.coordinate.R.string.col,
-                        new org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler()
+                        new org.wheatgenetics.coordinate.ui.tc.
+                            ExcludeRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
                             public void process(final boolean[] checkedItems)
                             {
-                                org.wheatgenetics.coordinate.ui.
+                                org.wheatgenetics.coordinate.ui.tc.
                                     ExcludeAlertDialog.this.excludeCols(checkedItems);
                             }
                         });
@@ -95,7 +98,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
             case 2:
                 if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
-                    new org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog(this.activity());
+                    new org.wheatgenetics.coordinate.ui.tc.ExcludeCellsAlertDialog(this.activity());
                 this.excludeCellsAlertDialog.show(this.templateModel); break;
         }
     }
@@ -116,7 +119,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                     @java.lang.Override
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
-                    { org.wheatgenetics.coordinate.ui.ExcludeAlertDialog.this.exclude(which); }
+                    { org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog.this.exclude(which); }
                 })
             .setNegativeButton();
     }

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;
+package org.wheatgenetics.coordinate.ui.tc;
 
 /**
  * Uses:
@@ -70,7 +70,10 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 {
                     @java.lang.Override
                     public void onClick(final android.view.View view)
-                    { org.wheatgenetics.coordinate.ui.ExcludeCellsAlertDialog.this.excludeCells(); }
+                    {
+                        org.wheatgenetics.coordinate.ui.tc.
+                            ExcludeCellsAlertDialog.this.excludeCells();
+                    }
                 });
         }
     }

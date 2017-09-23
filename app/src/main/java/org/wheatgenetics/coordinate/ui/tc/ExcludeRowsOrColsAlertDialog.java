@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.ui;
+package org.wheatgenetics.coordinate.ui.tc;
 
 /**
  * Uses:
@@ -17,15 +17,15 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     interface Handler { public abstract void process(boolean checkedItems[]); }
 
     // region Fields
-    private final java.lang.String                                                     label  ;
-    private final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler;
+    private final java.lang.String                                                        label  ;
+    private final org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog.Handler handler;
     // endregion
 
     private void process(final boolean checkedItems[])
     { assert null != this.handler; this.handler.process(checkedItems); }
 
     ExcludeRowsOrColsAlertDialog(final android.app.Activity activity, final int label,
-    final org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.Handler handler)
+    final org.wheatgenetics.coordinate.ui.tc.ExcludeRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     @java.lang.Override
@@ -46,8 +46,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
                     {
-                        org.wheatgenetics.coordinate.ui.ExcludeRowsOrColsAlertDialog.this.process(
-                            checkedItems);
+                        org.wheatgenetics.coordinate.ui.tc.
+                            ExcludeRowsOrColsAlertDialog.this.process(checkedItems);
                     }
                 });
             this.show(items, checkedItems,

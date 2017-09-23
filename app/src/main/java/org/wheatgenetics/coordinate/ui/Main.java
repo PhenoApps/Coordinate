@@ -67,6 +67,9 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.utils.Utils
  *
+ * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
+ * org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
+ *
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog
@@ -77,8 +80,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.TemplateCreator
- * org.wheatgenetics.coordinate.ui.TemplateCreator.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
@@ -547,7 +548,7 @@ android.view.View.OnKeyListener
     private org.wheatgenetics.coordinate.ui.Main.Exporter exporter           = null;
     private long                                          lastExportedGridId =   -1;
 
-    private org.wheatgenetics.coordinate.ui.TemplateCreator templateCreator = null;
+    private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
 
     // region AlertDialog Fields
     private org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
@@ -1501,8 +1502,8 @@ android.view.View.OnKeyListener
     private void createTemplate()
     {
         if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.ui.TemplateCreator(this,
-                new org.wheatgenetics.coordinate.ui.TemplateCreator.Handler()
+            this.templateCreator = new org.wheatgenetics.coordinate.ui.tc.TemplateCreator(this,
+                new org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler()
                 {
                     @java.lang.Override
                     public void handleTemplateCreated()
