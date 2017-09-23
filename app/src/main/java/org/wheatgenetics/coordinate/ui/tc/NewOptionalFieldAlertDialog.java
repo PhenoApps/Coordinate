@@ -66,7 +66,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             this.setView(view);
         }
 
-        this.setOKPositiveButton(null).setNegativeButton();
+        this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)

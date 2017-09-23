@@ -121,7 +121,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                     final int which)
                     { org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog.this.exclude(which); }
                 })
-            .setNegativeButton();
+            .setCancelNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)

@@ -56,7 +56,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             this.setView(view);
         }
 
-        this.setOKPositiveButton(null).setNegativeButton();
+        this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)

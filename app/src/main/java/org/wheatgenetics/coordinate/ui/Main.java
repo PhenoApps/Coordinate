@@ -1430,11 +1430,10 @@ android.view.View.OnKeyListener
     {
         if (null == this.changeLogAlertDialog)
             this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
-                /* context                => */ this,
+                /* activity               => */ this,
                 /* changeLogRawResourceId => */
                     org.wheatgenetics.coordinate.R.raw.changelog_releases);
-        try                                 { this.changeLogAlertDialog.show()       ; }
-        catch (final java.io.IOException e) { throw new java.lang.RuntimeException(e); }
+        this.changeLogAlertDialog.show();
     }
     // endregion
 

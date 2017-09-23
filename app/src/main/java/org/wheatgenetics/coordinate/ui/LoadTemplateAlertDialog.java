@@ -80,7 +80,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process(); }
-            }).setNegativeButton();
+            }).setCancelNegativeButton();
     }
 
     void show(final java.lang.String title,

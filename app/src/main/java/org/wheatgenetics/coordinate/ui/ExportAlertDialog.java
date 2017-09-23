@@ -55,7 +55,7 @@ class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 { org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid(); }
-            }).setNegativeButton();
+            }).setCancelNegativeButton();
     }
 
     void show(final java.lang.String datedFirstValue)

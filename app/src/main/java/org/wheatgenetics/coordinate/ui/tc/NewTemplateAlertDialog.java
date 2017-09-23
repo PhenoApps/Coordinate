@@ -104,7 +104,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
             this.setView(view);
         }
 
-        this.setPositiveButton(org.wheatgenetics.coordinate.R.string.next).setNegativeButton();
+        this.setPositiveButton(org.wheatgenetics.coordinate.R.string.next)
+            .setCancelNegativeButton();
     }
 
     void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)

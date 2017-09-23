@@ -134,7 +134,7 @@ implements org.wheatgenetics.coordinate.ui.tc.OptionalFieldsAlertDialog.Handler
                     org.wheatgenetics.coordinate.ui.tc.
                         ExtraNewTemplateAlertDialog.this.handleNext();
                 }
-            }).setNegativeButton();
+            }).setCancelNegativeButton();
     }
 
     // region org.wheatgenetics.coordinate.ui.tc.OptionalFieldsAlertDialog.HandlerOverridden Method
