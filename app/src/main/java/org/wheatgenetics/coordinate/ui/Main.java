@@ -1208,15 +1208,6 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void processError(final java.lang.String message)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.showLongToast       (message);
-                        org.wheatgenetics.coordinate.ui.Main.this.loadSeedTrayTemplate(
-                            templateModel);
-                        return;
-                    }
-
-                    @java.lang.Override
                     public void processPerson(final java.lang.String person)
                     {
                         assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
@@ -1246,15 +1237,6 @@ android.view.View.OnKeyListener
                 new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog(this,
                     new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
                     {
-                        @java.lang.Override
-                        public void processError(final java.lang.String message)
-                        {
-                            org.wheatgenetics.coordinate.ui.Main.this.showLongToast(message);
-                            org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(
-                                org.wheatgenetics.coordinate.ui.Main.MODE_DNA,
-                                templateModel                                );
-                        }
-
                         @java.lang.Override
                         public void processPerson(final java.lang.String person)
                         {

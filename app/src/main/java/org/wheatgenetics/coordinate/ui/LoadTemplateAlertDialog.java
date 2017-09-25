@@ -3,10 +3,9 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
  * android.view.LayoutInflater
  * android.view.View
+ * android.view.View.OnClickListener
  * android.widget.EditText
  * android.widget.LinearLayout
  * android.widget.TextView
@@ -23,9 +22,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 {
     interface Handler
     {
-        public abstract void processError (java.lang.String message);
-        public abstract void processPerson(java.lang.String person );
-        public abstract void createGrid   ()                        ;
+        public abstract void processPerson(java.lang.String person);
+        public abstract void createGrid();
     }
 
     // region Fields
@@ -41,6 +39,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         assert null != this.checkedOptionalFields; assert null != this.editTextArrayList;
         assert this.checkedOptionalFields.size() == this.editTextArrayList.size();
 
+        boolean firstWasEmpty = false;
         {
             int i = 0; assert null != this.handler;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
@@ -54,8 +53,16 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 }
 
                 if (this.firstCannotBeEmpty && 0 == i)
-                    if (0 == value.length()) this.handler.processError(optionalField.getHint() +
-                        this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
+                    if (0 == value.length())
+                    {
+                        {
+                            final java.lang.String optionalFieldHint = optionalField.getHint();
+                            this.showToast(optionalFieldHint.length() > 0 ?
+                                    optionalFieldHint : optionalField.getName() +
+                                this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
+                        }
+                        firstWasEmpty = true;
+                    }
 
                 optionalField.setValue(value);
                 if (optionalField.isAPerson()) this.handler.processPerson(optionalField.getValue());
@@ -64,7 +71,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             }
         }
 
-        this.handler.createGrid();
+        if (!firstWasEmpty) { this.cancelAlertDialog(); this.handler.createGrid(); }
     }
 
     LoadTemplateAlertDialog(final android.app.Activity activity,
@@ -74,13 +81,8 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     @java.lang.Override
     public void configure()
     {
-        this.setCancelableToFalse().setPositiveButton(org.wheatgenetics.coordinate.R.string.create,
-            new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process(); }
-            }).setCancelNegativeButton();
+        this.setCancelableToFalse().setPositiveButton(org.wheatgenetics.coordinate.R.string.create)
+            .setCancelNegativeButton();
     }
 
     void show(final java.lang.String title,
@@ -97,15 +99,15 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             final android.view.View view =
                 this.inflate(org.wheatgenetics.coordinate.R.layout.grid_new);
             {
-                final android.view.LayoutInflater layoutInflater = this.layoutInflater();
-                assert null != layoutInflater;
-
                 assert null != view;
                 final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
-                assert null != linearLayout;
+
+                final android.view.LayoutInflater layoutInflater = this.layoutInflater();
+
 
                 assert null != checkedOptionalFields;
+                assert null != layoutInflater; assert null != linearLayout;
                 for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
                 checkedOptionalFields)
                 {
@@ -143,5 +145,13 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         this.checkedOptionalFields = checkedOptionalFields;
         this.firstCannotBeEmpty    = firstCannotBeEmpty   ;
         this.createModifiyShow();
+
+        if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
+            new android.view.View.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.view.View view)
+                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process(); }
+            });
     }
 }
