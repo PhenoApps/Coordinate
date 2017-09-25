@@ -3,9 +3,8 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.app.Activity
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
  * android.view.View
+ * android.view.View.OnClickListener
  * android.widget.EditText
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
@@ -24,8 +23,15 @@ class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
     private void exportGrid()
     {
-        assert null != this.handler;
-        this.handler.exportGrid(org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
+        final java.lang.String fileName =
+            org.wheatgenetics.androidlibrary.Utils.getText(this.editText);
+        if (0 == fileName.length())
+            this.showToast(org.wheatgenetics.coordinate.R.string.filename_empty);
+        else
+        {
+            this.cancelAlertDialog();
+            assert null != this.handler; this.handler.exportGrid(fileName);
+        }
     }
 
     ExportAlertDialog(final android.app.Activity activity,
@@ -50,14 +56,18 @@ class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             this.setView(view);
         }
 
-        this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid(); }
-            }).setCancelNegativeButton();
+        this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
     void show(final java.lang.String datedFirstValue)
-    { assert null != this.editText; this.editText.setText(datedFirstValue); this.show(); }
+    {
+        assert null != this.editText; this.editText.setText(datedFirstValue); this.show();
+        if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
+            new android.view.View.OnClickListener()
+            {
+                @java.lang.Override
+                public void onClick(final android.view.View view)
+                { org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid(); }
+            });
+    }
 }

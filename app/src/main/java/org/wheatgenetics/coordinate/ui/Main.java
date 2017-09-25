@@ -1615,37 +1615,31 @@ android.view.View.OnKeyListener
                     @java.lang.Override
                     public void exportGrid(final java.lang.String fileName)
                     {
-                        if (0 == fileName.length())
-                            org.wheatgenetics.coordinate.ui.Main.this.alert(
-                                org.wheatgenetics.coordinate.R.string.filename_empty);
-                        else
+                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
+                        final long templateId =
+                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.getId();
+
+                        final org.wheatgenetics.coordinate.database.TemplatesTable
+                            templatesTable =
+                                org.wheatgenetics.coordinate.ui.Main.this.templatesTable();
+
+                        assert null != templatesTable;
+                        if (templatesTable.exists(templateId))
                         {
-                            assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                            final long templateId =
-                                org.wheatgenetics.coordinate.ui.Main.this.templateModel.getId();
-
-                            final org.wheatgenetics.coordinate.database.TemplatesTable
-                                templatesTable =
-                                    org.wheatgenetics.coordinate.ui.Main.this.templatesTable();
-
-                            assert null != templatesTable;
-                            if (templatesTable.exists(templateId))
-                            {
-                                final java.io.File exportFile =
-                                    org.wheatgenetics.coordinate.ui.Main.this.createExportFile();
-                                assert null != exportFile;
-                                org.wheatgenetics.coordinate.ui.Main.this.exporter =
-                                    new org.wheatgenetics.coordinate.ui.Main.Exporter(
-                                        /* context => */ org.wheatgenetics.coordinate.ui.Main.this,
-                                        /* progressDialogTitle => */
-                                            org.wheatgenetics.coordinate.R.string.exporting_title,
-                                        /* progressDialogMessage => */
-                                            org.wheatgenetics.coordinate.R.string.exporting_body,
-                                        /* templateModel  => */ templatesTable.get(templateId),
-                                        /* exportFileName => */ fileName                      ,
-                                        /* absolutePath   => */ exportFile.getAbsolutePath()  );
-                                org.wheatgenetics.coordinate.ui.Main.this.exporter.execute();
-                            }
+                            final java.io.File exportFile =
+                                org.wheatgenetics.coordinate.ui.Main.this.createExportFile();
+                            assert null != exportFile;
+                            org.wheatgenetics.coordinate.ui.Main.this.exporter =
+                                new org.wheatgenetics.coordinate.ui.Main.Exporter(
+                                    /* context => */ org.wheatgenetics.coordinate.ui.Main.this,
+                                    /* progressDialogTitle => */
+                                        org.wheatgenetics.coordinate.R.string.exporting_title,
+                                    /* progressDialogMessage => */
+                                        org.wheatgenetics.coordinate.R.string.exporting_body,
+                                    /* templateModel  => */ templatesTable.get(templateId),
+                                    /* exportFileName => */ fileName                      ,
+                                    /* absolutePath   => */ exportFile.getAbsolutePath()  );
+                            org.wheatgenetics.coordinate.ui.Main.this.exporter.execute();
                         }
                     }
                 });
