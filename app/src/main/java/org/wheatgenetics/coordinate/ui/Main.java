@@ -768,21 +768,29 @@ android.view.View.OnKeyListener
 
         this.templateModel.setTitle("");
 
+        try
         {
             final java.lang.String coordinateDirName = "Coordinate",
                 blankHiddenFileName = ".coordinate";
 
             new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
-                blankHiddenFileName).createIfMissing();
+                blankHiddenFileName).createIfMissing();                // throws java.io.IOException
 
             // Exported data is saved to this folder.
             this.exportDir = new org.wheatgenetics.androidlibrary.Dir(
                 this, coordinateDirName + "/Export", blankHiddenFileName);
-            this.exportDir.createIfMissing();
+            this.exportDir.createIfMissing();                          // throws java.io.IOException
 
             // This directory will be used in the future to transfer templates between devices.
             new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
-                blankHiddenFileName).createIfMissing();
+                blankHiddenFileName).createIfMissing();                // throws java.io.IOException
+        }
+        catch (final java.io.IOException e)
+        {
+            // Do nothing.  The reason I do nothing is because when an exception is thrown it does
+            // not mean there is a problem.  For example, an exception is thrown when a directory
+            // already exists.  If I try to create a directory and I fail because the directory al-
+            // ready exists then I don't have a problem.
         }
 
         if (this.sharedPreferences.currentGridIsSet())
@@ -1405,7 +1413,12 @@ android.view.View.OnKeyListener
     private java.io.File createExportFile()
     {
         assert null != this.templateModel; assert null != this.exportDir;
-        return this.exportDir.createNewFile(this.templateModel.getTitle());
+        try
+        {
+            return this.exportDir.createNewFile(                       // throws java.io.IOException
+                this.templateModel.getTitle());
+        }
+        catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); return null; }
     }
 
     private void showChangeLog()
