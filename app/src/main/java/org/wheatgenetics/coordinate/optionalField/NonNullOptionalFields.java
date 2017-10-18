@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
+ * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
  */
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
@@ -89,6 +90,7 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    // region Public Methods
     public boolean isEmpty()
     {
         final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
@@ -102,11 +104,7 @@ implements java.lang.Cloneable
         {
             final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
                 this.iterator();
-            assert null != iterator; while (iterator.hasNext())
-            {
-                size++;
-                iterator.next();
-            }
+            assert null != iterator; while (iterator.hasNext()) { size++; iterator.next(); }
         }
 
         if (index < 0 || index >= size)
@@ -143,8 +141,8 @@ implements java.lang.Cloneable
 
     public java.lang.String[] names()
     {
-        final java.util.ArrayList<java.lang.String > nameArrayList =
-            new java.util.ArrayList<java.lang.String >();
+        final java.util.ArrayList<java.lang.String> nameArrayList =
+            new java.util.ArrayList<java.lang.String>();
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
             nameArrayList.add(optionalField.getName());
         return nameArrayList.toArray(new java.lang.String[nameArrayList.size()]);
@@ -152,8 +150,8 @@ implements java.lang.Cloneable
 
     public java.lang.String[] values()
     {
-        final java.util.ArrayList<java.lang.String > valueArrayList =
-            new java.util.ArrayList<java.lang.String >();
+        final java.util.ArrayList<java.lang.String> valueArrayList =
+            new java.util.ArrayList<java.lang.String>();
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
             valueArrayList.add(optionalField.getValue());
         return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
@@ -208,15 +206,12 @@ implements java.lang.Cloneable
         return result;
     }
 
-    // region Make Methods
+    // region Make Public Methods
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeInitial()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-
-        result.add    ("Plate Id");
-        result.addDate("Date"    );
-
+        result.add("Plate Id"); result.addDate("Date");
         return result;
     }
 
@@ -224,11 +219,7 @@ implements java.lang.Cloneable
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-
-        result.add    ("Identification");
-        result.add    ("Person"        );
-        result.addDate("Date"          );
-
+        result.add("Identification"); result.add("Person"); result.addDate("Date");
         return result;
     }
 
@@ -259,5 +250,6 @@ implements java.lang.Cloneable
 
         return result;
     }
+    // endregion
     // endregion
 }

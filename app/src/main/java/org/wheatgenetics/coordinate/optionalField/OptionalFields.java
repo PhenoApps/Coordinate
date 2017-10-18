@@ -28,9 +28,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
             super();
 
             this.arrayList = arrayList;
-
-            assert null != this.arrayList;
-            this.listIterator = this.arrayList.listIterator();
+            assert null != this.arrayList; this.listIterator = this.arrayList.listIterator();
         }
 
         // region Overridden Methods
@@ -62,7 +60,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         // endregion
     }
 
-    java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
+    final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
         new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>();
 
     // region Overridden Methods
@@ -97,27 +95,26 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
     @java.lang.Override
     public int hashCode()
     {
-        java.lang.StringBuffer signatures = null;
+        java.lang.StringBuilder signatures = null;
         {
             boolean firstOptionalField = true;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
             {
-                java.lang.String signature;
+                final java.lang.String signature;
                 try { signature = optionalField.makeJSONObject().toString(); }
                 catch (final org.json.JSONException e) { continue; }
 
                 if (firstOptionalField)
-                    signatures = new java.lang.StringBuffer(signature);
+                    signatures = new java.lang.StringBuilder(signature);
                 else
                 {
-                    signatures.append('\n' + signature);
+                    signatures.append('\n').append(signature);
                     firstOptionalField = false;
                 }
             }
         }
         return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(signatures.toString()).hashCode();
     }
-    // endregion
 
     // region java.lang.Iterable<> Overridden Method
     @java.lang.Override
@@ -126,5 +123,6 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         return
             new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(this.arrayList);
     }
+    // endregion
     // endregion
 }

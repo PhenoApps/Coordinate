@@ -11,12 +11,6 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
-    static java.lang.String getCurrentDate()
-    {
-        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
-            java.lang.System.currentTimeMillis()).toString();
-    }
-
     // region Constructors
     DateOptionalField(final java.lang.String name)
     {
@@ -26,8 +20,14 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     }
 
     DateOptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    { super(jsonObject); }
+    { super(jsonObject); /* throws org.json.JSONException */ }
     // endregion
+
+    static java.lang.String getCurrentDate()
+    {
+        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
+            java.lang.System.currentTimeMillis()).toString();
+    }
 
     @java.lang.Override
     public java.lang.String getValue()

@@ -83,10 +83,19 @@ public abstract class OptionalField extends java.lang.Object
             else return false;
     }
 
+    /** Overridden just to elevate from protected to public. */
     @java.lang.Override
     public java.lang.Object clone() throws java.lang.CloneNotSupportedException
     { return super.clone(); }
     // endregion
+
+    // region Package Methods
+    boolean namesAreEqual(final java.lang.String name)
+    { return this.getName().equalsIgnoreCase(name); }
+
+    java.lang.String getSafeValue() { return this.getValue().replace(" ", "_"); }
+
+    boolean getChecked() { return this.checked; }
 
     org.json.JSONObject makeJSONObject() throws org.json.JSONException
     {
@@ -107,24 +116,20 @@ public abstract class OptionalField extends java.lang.Object
 
         return result;
     }
+    // endregion
 
     // region Public Methods
     // region Getter and Setter Public Methods
     public java.lang.String getName() { return this.name; }
 
-    public java.lang.String getValue    () { return this.value                       ; }
-    public java.lang.String getSafeValue() { return this.getValue().replace(" ", "_"); }
+    public java.lang.String getValue() { return this.value; }
     public void             setValue(final java.lang.String value)
     { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value); }
 
     public java.lang.String getHint() { return this.hint; }
 
-    public boolean getChecked()                      { return this.checked   ; }
-    public void    setChecked(final boolean checked) { this.checked = checked; }
+    public void setChecked(final boolean checked) { this.checked = checked; }
     // endregion
-
-    public boolean namesAreEqual(final java.lang.String name)
-    { return this.getName().equalsIgnoreCase(name); }
 
     public boolean isAPerson()
     { return this.namesAreEqual("Person") || this.namesAreEqual("Name"); }

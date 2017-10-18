@@ -20,12 +20,12 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     { super(name, hint); }
 
     OtherOptionalField(final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint) { super(name, hint); this.setValue(value); }
+    final java.lang.String hint) { this(name, hint); this.setValue(value); }
 
     OtherOptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException,
     org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
-        super(jsonObject);
+        super(jsonObject);                                          // throws org.json.JSONException
 
         if (org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT.equals(
         this.getHint()))
