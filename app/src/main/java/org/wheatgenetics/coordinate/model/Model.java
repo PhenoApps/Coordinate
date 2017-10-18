@@ -12,7 +12,7 @@ public abstract class Model extends java.lang.Object
 
     // region Overridden Methods
     @java.lang.Override @android.annotation.SuppressLint("DefaultLocale")
-    public java.lang.String toString() { return java.lang.String.format("id: %02d", this.id); }
+    public java.lang.String toString() { return java.lang.String.format("id: %02d", this.getId()); }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object o)

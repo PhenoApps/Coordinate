@@ -29,8 +29,8 @@ implements java.lang.Cloneable
             // region Internal Method
             private static int random(final int bound)
             {
-                return new java.util.Random(
-                    java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1;
+                return new java.util.Random(java.lang.System.currentTimeMillis())
+                    .nextInt(bound - 1) + 1;
             }
             // endregion
 
@@ -127,11 +127,7 @@ implements java.lang.Cloneable
             if (null != this.cellArrayListInstance)
                 for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
                 this.cellArrayListInstance)
-                    if (null != cell) if (cell.equals(candidateCell))
-                    {
-                        result = true;
-                        break;
-                    }
+                    if (null != cell) if (cell.equals(candidateCell)) { result = true; break; }
 
             return result;
         }
@@ -158,8 +154,7 @@ implements java.lang.Cloneable
                     { return; /* Leave cellArrayListInstance == null. */ }
                 }
 
-                assert null != jsonArray;
-                final int length = jsonArray.length();
+                assert null != jsonArray; final int length = jsonArray.length();
                 if (length > 0)
                 {
                     final int first = 0, last = length - 1;
@@ -189,11 +184,11 @@ implements java.lang.Cloneable
                     return super.toString();
                 else
                 {
-                    java.lang.StringBuffer result = new java.lang.StringBuffer();
+                    java.lang.StringBuilder result = new java.lang.StringBuilder();
                     {
                         boolean firstCell = true;
-                        for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell
-                        cell: this.cellArrayListInstance) if (null != cell)
+                        for (final org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell cell:
+                        this.cellArrayListInstance) if (null != cell)
                         {
                             if (firstCell) firstCell = false; else result.append('\n');
                             result.append(cell.toString());
@@ -393,8 +388,7 @@ implements java.lang.Cloneable
                     { return; /* Leave integerArrayListInstance == null. */ }
                 }
 
-                assert null != jsonArray;
-                final int length = jsonArray.length();
+                assert null != jsonArray; final int length = jsonArray.length();
                 if (length > 0)
                 {
                     final int first = 0, last = length - 1;
@@ -417,7 +411,7 @@ implements java.lang.Cloneable
                     return super.toString();
                 else
                 {
-                    java.lang.StringBuffer result = new java.lang.StringBuffer();
+                    java.lang.StringBuilder result = new java.lang.StringBuilder();
                     {
                         boolean firstInteger = true;
                         for (final java.lang.Integer integer: this.integerArrayListInstance)
@@ -486,8 +480,8 @@ implements java.lang.Cloneable
         @java.lang.Override
         public int hashCode() { return this.toString().hashCode(); }
 
-        @java.lang.Override @java.lang.SuppressWarnings(
-            {"CloneDoesntCallSuperClone", "UnnecessaryBoxing", "UnnecessaryUnboxing"})
+        @java.lang.Override @java.lang.SuppressWarnings({
+            "CloneDoesntCallSuperClone", "UnnecessaryBoxing", "UnnecessaryUnboxing"})
         protected java.lang.Object clone() throws java.lang.CloneNotSupportedException
         {
             final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates result =
@@ -697,11 +691,11 @@ implements java.lang.Cloneable
 
         return result;
     }
-    // endregion
 
     @java.lang.Override
     void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     { super.assign(partialTemplateModel); this.clearExcludes(); }
+    // endregion
 
     // region Public Methods
     // region excludeCells Public Methods
@@ -796,9 +790,8 @@ implements java.lang.Cloneable
         }
     }
     // endregion
-    // endregion
 
-    // region Make Methods
+    // region Make Public Methods
     public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -825,11 +818,11 @@ implements java.lang.Cloneable
                 /* rowNumbering   => */ true                                                ,
                 /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                     NonNullOptionalFields.makeSeedDefault());
-
-        final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates excludeRows =
-            result.excludeRows();
-        excludeRows.add(2); excludeRows.add(5);
-
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModel.Coordinates excludeRows =
+                result.excludeRows();
+            excludeRows.add(2); excludeRows.add(5);
+        }
         return result;
     }
 
@@ -845,5 +838,6 @@ implements java.lang.Cloneable
             /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                 NonNullOptionalFields.makeDNADefault());
     }
+    // endregion
     // endregion
 }

@@ -19,7 +19,7 @@ public enum TemplateType
                 if (org.wheatgenetics.coordinate.model.TemplateType.DEFAULT.code == code)
                     return org.wheatgenetics.coordinate.model.TemplateType.DEFAULT;
                 else
-                    throw new java.lang.IndexOutOfBoundsException();
+                    throw new java.lang.IllegalArgumentException();
     }
 
     public int getCode() { return this.code; }

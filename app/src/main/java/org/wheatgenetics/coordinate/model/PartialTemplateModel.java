@@ -76,14 +76,14 @@ implements java.lang.Cloneable
     // endregion
 
     // region Method Overview
-    // signature                                                       scope
-    // =============================================================== =======
-    // assign(title, type, rows, cols)                                 private
-    //     assign(title, type, rows, cols, colNumbering, rowNumbering) private
-    //         PartialTemplateModel(    type                )          package
-    //         PartialTemplateModel(id, type                )          private
-    //         PartialTemplateModel(id, code, optionalFields)          package
-    //         assign(partialTemplateModel)                            package
+    // signature                                                   scope
+    // =========================================================== =======
+    // assign(title, type, rows, cols, colNumbering, rowNumbering) private
+    //     PartialTemplateModel(    type, nonNullOptionalFields)   package
+    //     PartialTemplateModel(id, type                       )   private
+    //     PartialTemplateModel(id, code, optionalFields       )   package
+    //     assign(partialTemplateModel)                            package
+    // assign(title, rows, cols)                                   public
     // endregion
 
     // region Constructors
@@ -93,6 +93,7 @@ implements java.lang.Cloneable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         super();
+
         this.assign(title, type, rows, cols, colNumbering, rowNumbering);
         this.optionalFields = nonNullOptionalFields;
     }
@@ -273,7 +274,7 @@ implements java.lang.Cloneable
     public java.lang.String[] optionalFieldValues(final java.lang.String names[])
     { return null == this.optionalFields ? null : this.optionalFields.values(names); }
 
-    public boolean[] optionalFieldschecks()
+    public boolean[] optionalFieldChecks()
     { return null == this.optionalFields ? null : this.optionalFields.checks(); }
 
     public void addOptionalField(final java.lang.String name, final java.lang.String value)

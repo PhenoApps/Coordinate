@@ -101,7 +101,7 @@ implements org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handle
         {
             this.templateModel = templateModel;
             this.show(this.templateModel.optionalFieldNames(),
-                this.templateModel.optionalFieldschecks(), this.onMultiChoiceClickListener());
+                this.templateModel.optionalFieldChecks(), this.onMultiChoiceClickListener());
         }
     }
 }
