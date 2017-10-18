@@ -176,8 +176,7 @@ implements java.lang.Cloneable
                     optionalField: this)
                         if (optionalField.namesAreEqual(name))
                         {
-                            valueArrayList.add(name.equals("Person") || name.equals("person") ?
-                                optionalField.getSafeValue() : optionalField.getValue());
+                            valueArrayList.add(optionalField.getSafeValue());
                             nameFound = true;
                             break;
                         }

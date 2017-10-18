@@ -37,6 +37,8 @@ public abstract class OptionalField extends java.lang.Object
 
     private void setHint(final java.lang.String hint)
     { this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(hint); }
+
+    private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
     // endregion
 
     // region Constructors
@@ -93,7 +95,8 @@ public abstract class OptionalField extends java.lang.Object
     boolean namesAreEqual(final java.lang.String name)
     { return this.getName().equalsIgnoreCase(name); }
 
-    java.lang.String getSafeValue() { return this.getValue().replace(" ", "_"); }
+    java.lang.String getSafeValue()
+    { return this.nameIsPerson() ? this.getValue().replace(" ", "_") : this.getValue(); }
 
     boolean getChecked() { return this.checked; }
 
@@ -131,7 +134,6 @@ public abstract class OptionalField extends java.lang.Object
     public void setChecked(final boolean checked) { this.checked = checked; }
     // endregion
 
-    public boolean isAPerson()
-    { return this.namesAreEqual("Person") || this.namesAreEqual("Name"); }
+    public boolean isAPerson() { return this.nameIsPerson() || this.namesAreEqual("Name"); }
     // endregion
 }
