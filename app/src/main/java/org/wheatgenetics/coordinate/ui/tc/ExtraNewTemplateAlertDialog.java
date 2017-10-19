@@ -55,7 +55,7 @@ implements org.wheatgenetics.coordinate.ui.tc.OptionalFieldsAlertDialog.Handler
     {
         if (null == this.namingAlertDialog) this.namingAlertDialog =
             new org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog(this.activity());
-        assert null != this.templateModel; this.namingAlertDialog.show(this.templateModel);
+        this.namingAlertDialog.show(this.templateModel);
     }
 
     private void handleNext()
@@ -140,7 +140,10 @@ implements org.wheatgenetics.coordinate.ui.tc.OptionalFieldsAlertDialog.Handler
     // region org.wheatgenetics.coordinate.ui.tc.OptionalFieldsAlertDialog.HandlerOverridden Method
     @java.lang.Override
     public void showOptionalFieldsAlertDialog()
-    { this.optionalFieldsAlertDialog.show(this.templateModel); }
+    {
+        assert null != this.optionalFieldsAlertDialog;
+        this.optionalFieldsAlertDialog.show(this.templateModel);
+    }
     // endregion
     // endregion
 
