@@ -8,14 +8,13 @@ package org.wheatgenetics.coordinate.model;
  * android.content.DialogInterface.OnCancelListener
  * android.os.AsyncTask
  *
+ * org.wheatgenetics.javalib.CsvWriter
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.ProgressDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.csv.CoordinateCsvWriter
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -77,13 +76,12 @@ public class Exporter extends java.lang.Object
             boolean success = false;
             try
             {
-                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
-                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(     // throws java.-
-                        this.exportFile);                                         //  io.IOException
-                csvWriter.writeRecord(new java.lang.String[] {"tray_id", "cell_id",
-                    "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
-                {
-                    final int
+                final org.wheatgenetics.javalib.CsvWriter csvWriter =
+                    new org.wheatgenetics.javalib.CsvWriter(this.exportFile);             // throws
+                csvWriter.writeRecord(new java.lang.String[] {"tray_id", "cell_id",       //  java.-
+                    "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"}); //  io.IO-
+                {                                                                         //  Excep-
+                    final int                                                             //  tion
                         cols = this.templateModel.getCols(), rows = this.templateModel.getRows();
 
                     assert null != this.helper; assert null != this.context;
@@ -147,12 +145,11 @@ public class Exporter extends java.lang.Object
             boolean success = false;
             try
             {
-                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
-                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(     // throws java.-
-                        this.exportFile);                                         //  io.IOException
-                csvWriter.writeRecord(new java.lang.String[] {"date", "plate_id", "plate_name",
-                    "sample_id", "well_A01", "well_01A", "tissue_id", "dna_person", "notes",
-                    "tissue_type", "extraction"});
+                final org.wheatgenetics.javalib.CsvWriter csvWriter =
+                    new org.wheatgenetics.javalib.CsvWriter(this.exportFile);       // throws java.-
+                csvWriter.writeRecord(new java.lang.String[] {"date", "plate_id",   //  io.IOExcep-
+                    "plate_name", "sample_id", "well_A01", "well_01A", "tissue_id", //  tion
+                    "dna_person", "notes", "tissue_type", "extraction"});
                 {
                     final int
                         cols = this.templateModel.getCols(), rows = this.templateModel.getRows();
@@ -228,10 +225,9 @@ public class Exporter extends java.lang.Object
             boolean success = false;
             try
             {
-                final org.wheatgenetics.coordinate.csv.CoordinateCsvWriter csvWriter =
-                    new org.wheatgenetics.coordinate.csv.CoordinateCsvWriter(     // throws java.-
-                        this.exportFile);                                         //  io.IOException
-
+                final org.wheatgenetics.javalib.CsvWriter csvWriter =
+                    new org.wheatgenetics.javalib.CsvWriter(this.exportFile);    // throws java.io.-
+                                                                                 //  IOException
                 // Titles
                 csvWriter.write("Value"); csvWriter.write("Column"); csvWriter.write("Row");
 
