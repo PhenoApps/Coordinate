@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Utils extends java.lang.Object
 {
     // region AlertDialog Methods

@@ -19,13 +19,14 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class Exporter extends java.lang.Object
 {
     // region Types
     public interface Helper
     {
         public abstract java.lang.String getValue(int row, int col);
-        public abstract void             handleDone(java.lang.Boolean result,
+        public abstract void             handleExportDone(java.lang.Boolean result,
             java.lang.String message, java.io.File exportFile);
     }
 
@@ -355,7 +356,7 @@ public class Exporter extends java.lang.Object
         protected void onPostExecute(final java.lang.Boolean result)
         {
             assert null != this.progressDialog; this.progressDialog.dismiss();
-            assert null != this.helper        ; this.helper.handleDone(
+            assert null != this.helper        ; this.helper.handleExportDone(
                 result, this.message, this.exportFile);
         }
         // endregion

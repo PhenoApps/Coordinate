@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Database
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 abstract class Table extends java.lang.Object
 {
     static final java.lang.String ID_FIELD_NAME = "_id";

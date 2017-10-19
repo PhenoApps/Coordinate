@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class GridModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel>
 {

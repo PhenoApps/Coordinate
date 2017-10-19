@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.R
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase db = null;

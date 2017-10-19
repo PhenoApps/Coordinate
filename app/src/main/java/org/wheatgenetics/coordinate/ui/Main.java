@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.ui;
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * _android.content.res.Resources
- * _android.graphics.Point
+ * android.graphics.Point
  * _android.media.MediaPlayer
  * android.net.Uri
  * android.os.Bundle
@@ -21,22 +21,22 @@ package org.wheatgenetics.coordinate.ui;
  * android.support.v7.app.AppCompatActivity
  * android.support.v7.widget.Toolbar
  * android.view.KeyEvent
- * _android.view.LayoutInflater
+ * android.view.LayoutInflater
  * android.view.Menu
  * android.view.MenuInflater
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
  * android.view.View.OnKeyListener
- * _android.view.inputmethod.EditorInfo
+ * android.view.inputmethod.EditorInfo
  * android.widget.EditText
  * android.widget.LinearLayout
- * _android.widget.TableLayout
- * _android.widget.TableRow
+ * android.widget.TableLayout
+ * android.widget.TableRow
  * android.widget.TextView
  * android.widget.TextView.OnEditorActionListener
  *
- * _org.json.JSONException
+ * org.json.JSONException
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -56,17 +56,18 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.Helper
- * _org.wheatgenetics.coordinate.model.GridModel
- * _org.wheatgenetics.coordinate.model.JoinedGridModel
- * _org.wheatgenetics.coordinate.model.PartialTemplateModel
+ * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
- * _org.wheatgenetics.coordinate.optionalField.OptionalField
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  *
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
  * _org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
@@ -80,12 +81,10 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
  * _org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
- * _org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
- * _org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
- *
- * _org.wheatgenetics.coordinate.utils.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
@@ -189,6 +188,23 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
 
     private boolean isExcluded(final int row, final int col)
     { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
+
+    private boolean clearGrid()
+    {
+        try
+        {
+            if (this.entriesTable().deleteByGrid(this.gridId))
+                this.populateUI();
+            else
+                this.showLongToast(org.wheatgenetics.coordinate.R.string.clear_fail);
+            return true;
+        }
+        catch (final java.lang.Exception e)
+        {
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.clear_fail);
+            return false;
+        }
+    }
     // endregion
 
     // region Utils AlertDialog Methods
@@ -523,31 +539,30 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         }
 
         if (this.isExcluded(r, c))
+            { assert null != this.cellIDEditText; this.cellIDEditText.setText(""); }
+        else
         {
-            assert null != this.cellIDEditText; this.cellIDEditText.setText("");
-            return;
+            if (-1 != c && -1 != r)
+            {
+                mCurRow = r;
+                mCurCol = c;
+
+                java.lang.String value = this.getValue(mCurRow, mCurCol);
+
+                if (null != value && value.contains("exclude")) return;
+
+                this.setCellState(v, STATE_ACTIVE);
+
+                assert null != this.cellIDEditText;
+                this.cellIDEditText.setSelectAllOnFocus(true);
+                this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
+                this.cellIDEditText.selectAll();
+                this.cellIDEditText.requestFocus();
+            }
+
+            this.resetCurrentCell();
+            this.currentCellView = v;
         }
-
-        if (-1 != c && -1 != r)
-        {
-            mCurRow = r;
-            mCurCol = c;
-
-            java.lang.String value = this.getValue(mCurRow, mCurCol);
-
-            if (null != value && value.contains("exclude")) return;
-
-            this.setCellState(v, STATE_ACTIVE);
-
-            assert null != this.cellIDEditText;
-            this.cellIDEditText.setSelectAllOnFocus(true);
-            this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
-            this.cellIDEditText.selectAll();
-            this.cellIDEditText.requestFocus();
-        }
-
-        this.resetCurrentCell();
-        this.currentCellView = v;
     }
     // endregion
 
@@ -562,7 +577,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             if (null == event)
                 return false;
             else
-                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction ()
                 &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
                     return this.saveData();
                 else
@@ -594,13 +609,33 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
     }
 
     @java.lang.Override
-    public void handleDone(final java.lang.Boolean result, final java.lang.String message,
+    public void handleExportDone(final java.lang.Boolean result, final java.lang.String message,
     final java.io.File exportFile)
     {
         // TODO: When grid is reset, make a new one.
         if (null != result && result)
         {
             this.lastExportedGridId = this.gridId;                   // TODO: Make into Main method.
+
+            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+            class YesRunnable extends java.lang.Object implements java.lang.Runnable
+            {
+                @java.lang.Override
+                public void run()
+                {
+                    if (org.wheatgenetics.coordinate.ui.Main.this.clearGrid())
+                        org.wheatgenetics.coordinate.ui.Main.this.share(exportFile);
+                }
+            }
+
+            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+            class NoRunnable extends java.lang.Object implements java.lang.Runnable
+            {
+                @java.lang.Override
+                public void run()
+                { org.wheatgenetics.coordinate.ui.Main.this.share(exportFile); }
+            }
+
             this.alert(
                 /* message     => */ org.wheatgenetics.coordinate.R.string.export_success,
                 /* yesRunnable => */ new java.lang.Runnable()
@@ -610,43 +645,8 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
                         {
                             org.wheatgenetics.coordinate.ui.Main.this.confirm(
                                 /* message => */ org.wheatgenetics.coordinate.R.string.clear_grid,
-                                /* yesRunnable => */ new java.lang.Runnable()
-                                    {
-                                        @java.lang.Override
-                                        public void run()
-                                        {
-                                            try
-                                            {
-                                                if (org.wheatgenetics.coordinate.ui.
-                                                Main.this.entriesTable().deleteByGrid(
-                                                org.wheatgenetics.coordinate.ui.Main.this.gridId))
-                                                    org.wheatgenetics.coordinate.ui.
-                                                        Main.this.populateUI();
-                                                else
-                                                    org.wheatgenetics.coordinate.ui.Main.this.
-                                                        showLongToast(org.wheatgenetics.coordinate.
-                                                            R.string.clear_fail);
-                                            }
-                                            catch (final java.lang.Exception e)
-                                            {
-                                                org.wheatgenetics.coordinate.ui.Main.this.
-                                                    showLongToast(org.wheatgenetics.coordinate.R.
-                                                        string.clear_fail);
-                                                return;
-                                            }
-                                            org.wheatgenetics.coordinate.ui.Main.this.share(
-                                                exportFile);
-                                        }
-                                    },
-                                /* noRunnable => */ new java.lang.Runnable()
-                                    {
-                                        @java.lang.Override
-                                        public void run()
-                                        {
-                                            org.wheatgenetics.coordinate.ui.Main.this.share(
-                                                exportFile);
-                                        }
-                                    });
+                                /* yesRunnable => */ new YesRunnable(),
+                                /* noRunnable  => */ new NoRunnable ());
                         }
                     });
         }

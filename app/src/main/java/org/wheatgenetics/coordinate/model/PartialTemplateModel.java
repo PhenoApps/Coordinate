@@ -220,6 +220,12 @@ implements java.lang.Cloneable
         this.optionalFields =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
     }
+
+    java.lang.String[] optionalFieldValues()
+    { return null == this.optionalFields ? null : this.optionalFields.values(); }
+
+    java.lang.String[] optionalFieldValues(final java.lang.String names[])
+    { return null == this.optionalFields ? null : this.optionalFields.values(names); }
     // endregion
 
     // region Public Methods
@@ -267,12 +273,6 @@ implements java.lang.Cloneable
 
     public java.lang.String[] optionalFieldNames()
     { return null == this.optionalFields ? null : this.optionalFields.names(); }
-
-    public java.lang.String[] optionalFieldValues()
-    { return null == this.optionalFields ? null : this.optionalFields.values(); }
-
-    public java.lang.String[] optionalFieldValues(final java.lang.String names[])
-    { return null == this.optionalFields ? null : this.optionalFields.values(names); }
 
     public boolean[] optionalFieldChecks()
     { return null == this.optionalFields ? null : this.optionalFields.checks(); }

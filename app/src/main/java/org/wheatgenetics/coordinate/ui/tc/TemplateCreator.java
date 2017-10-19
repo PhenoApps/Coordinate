@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  * org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Handler
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class TemplateCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Handler,
 org.wheatgenetics.coordinate.ui.tc.ExtraNewTemplateAlertDialog.Handler

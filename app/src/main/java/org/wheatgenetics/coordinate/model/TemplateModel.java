@@ -20,6 +20,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTem
 implements java.lang.Cloneable
 {
     // region Types
+    @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
     private static class Cells extends java.lang.Object implements java.lang.Cloneable
     {
         private static class Cell extends java.lang.Object implements java.lang.Cloneable
@@ -351,6 +352,7 @@ implements java.lang.Cloneable
         // endregion
     }
 
+    @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
     private static class Coordinates extends java.lang.Object implements java.lang.Cloneable
     {
         private java.util.ArrayList<java.lang.Integer> integerArrayListInstance = null;

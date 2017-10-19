@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.BuildConfig
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public abstract class OptionalField extends java.lang.Object
 {
     // region Constants

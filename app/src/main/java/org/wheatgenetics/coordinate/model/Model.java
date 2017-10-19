@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.annotation.SuppressLint
  */
+@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public abstract class Model extends java.lang.Object
 {
     private long id;
