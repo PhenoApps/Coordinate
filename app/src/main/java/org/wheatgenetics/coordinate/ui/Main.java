@@ -3,54 +3,57 @@ package org.wheatgenetics.coordinate.ui;
 /**
  * Uses:
  * android.annotation.SuppressLint
- * _android.content.Intent
- * _android.content.pm.PackageInfo
- * _android.content.pm.PackageManager
+ * android.content.Intent
+ * android.content.pm.PackageInfo
+ * android.content.pm.PackageManager.NameNotFoundException
  * _android.content.res.Resources
  * _android.graphics.Point
  * _android.media.MediaPlayer
- * _android.net.Uri
- * _android.os.Bundle
- * _android.support.design.widget.NavigationView
+ * android.net.Uri
+ * android.os.Bundle
+ * android.support.design.widget.NavigationView
+ * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
  * _android.support.v4.view.GravityCompat
- * _android.support.v4.widget.DrawerLayout
- * _android.support.v7.app.ActionBarDrawerToggle
+ * android.support.v4.widget.DrawerLayout
+ * android.support.v7.app.ActionBar
+ * android.support.v7.app.ActionBarDrawerToggle
  * android.support.v7.app.AppCompatActivity
- * _android.support.v7.widget.Toolbar
- * _android.view.KeyEvent
+ * android.support.v7.widget.Toolbar
+ * android.view.KeyEvent
  * _android.view.LayoutInflater
  * _android.view.Menu
  * _android.view.MenuInflater
- * _android.view.MenuItem
- * _android.view.View
+ * android.view.MenuItem
+ * android.view.View
  * android.view.View.OnClickListener
  * android.view.View.OnKeyListener
  * _android.view.inputmethod.EditorInfo
- * _android.widget.EditText
- * _android.widget.LinearLayout
+ * android.widget.EditText
+ * android.widget.LinearLayout
  * _android.widget.TableLayout
  * _android.widget.TableRow
- * _android.widget.TextView
+ * android.widget.TextView
  * android.widget.TextView.OnEditorActionListener
  *
  * _org.json.JSONException
  *
  * org.wheatgenetics.javalib.Utils
  *
- * _org.wheatgenetics.about.AboutAlertDialog
+ * org.wheatgenetics.about.AboutAlertDialog
  * _org.wheatgenetics.about.OtherApps.Index
- * _org.wheatgenetics.androidlibrary.Dir
+ * org.wheatgenetics.androidlibrary.Dir
  * _org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
- * _org.wheatgenetics.changelog.ChangeLogAlertDialog
- * _org.wheatgenetics.sharedpreferences.SharedPreferences
- * _org.wheatgenetics.zxing.BarcodeScanner
+ * org.wheatgenetics.changelog.ChangeLogAlertDialog
+ * org.wheatgenetics.zxing.BarcodeScanner
+ *
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
  * org.wheatgenetics.coordinate.R
  *
- * _org.wheatgenetics.coordinate.database.EntriesTable
- * _org.wheatgenetics.coordinate.database.GridsTable
- * _org.wheatgenetics.coordinate.database.TemplatesTable
+ * org.wheatgenetics.coordinate.database.EntriesTable
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.Helper
@@ -58,28 +61,30 @@ package org.wheatgenetics.coordinate.ui;
  * _org.wheatgenetics.coordinate.model.JoinedGridModel
  * _org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  *
+ * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * _org.wheatgenetics.coordinate.optionalField.OptionalField
  *
- * _org.wheatgenetics.coordinate.utils.Utils
- *
- * _org.wheatgenetics.coordinate.ui.tc.TemplateCreator
+ * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
  * _org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
  *
- * _org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * _org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.ExportAlertDialog
+ * org.wheatgenetics.coordinate.ui.ExportAlertDialog
  * _org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.ImportAlertDialog
+ * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * _org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
  * _org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
  * _org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
+ * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * _org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
- * _org.wheatgenetics.coordinate.ui.Utils
+ * org.wheatgenetics.coordinate.ui.Utils
+ *
+ * _org.wheatgenetics.coordinate.utils.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
 implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
@@ -173,10 +178,8 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             new android.content.Intent(android.content.Intent.ACTION_SEND);
 
         intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
         assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
             android.net.Uri.parse(exportFile.getAbsolutePath()));
-
         intent.setType("text/plain");
 
         this.startActivity(android.content.Intent.createChooser(intent,
@@ -369,29 +372,48 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
 
         this.templateModel.setTitle("");
 
-        try
         {
             final java.lang.String coordinateDirName = "Coordinate",
                 blankHiddenFileName = ".coordinate";
 
-            new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
-                blankHiddenFileName).createIfMissing();                // throws java.io.IOException
+            try
+            {
+                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
+                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
+            }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
 
             // Exported data is saved to this folder.
             this.exportDir = new org.wheatgenetics.androidlibrary.Dir(
                 this, coordinateDirName + "/Export", blankHiddenFileName);
-            this.exportDir.createIfMissing();                          // throws java.io.IOException
+            try { this.exportDir.createIfMissing();  /* throws java.io.IOException */ }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
 
             // This directory will be used in the future to transfer templates between devices.
-            new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
-                blankHiddenFileName).createIfMissing();                // throws java.io.IOException
-        }
-        catch (final java.io.IOException e)
-        {
-            // Do nothing.  The reason I do nothing is because when an exception is thrown it does
-            // not mean there is a problem.  For example, an exception is thrown when a directory
-            // already exists.  If I try to create a directory and I fail because the directory al-
-            // ready exists then I don't have a problem.
+            try
+            {
+                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
+                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
+            }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
         }
 
         if (this.sharedPreferences.currentGridIsSet())
