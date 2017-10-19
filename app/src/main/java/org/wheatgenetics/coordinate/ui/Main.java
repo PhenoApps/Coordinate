@@ -11,9 +11,10 @@ package org.wheatgenetics.coordinate.ui;
  * _android.media.MediaPlayer
  * android.net.Uri
  * android.os.Bundle
+ * android.R
  * android.support.design.widget.NavigationView
  * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
- * _android.support.v4.view.GravityCompat
+ * android.support.v4.view.GravityCompat
  * android.support.v4.widget.DrawerLayout
  * android.support.v7.app.ActionBar
  * android.support.v7.app.ActionBarDrawerToggle
@@ -21,8 +22,8 @@ package org.wheatgenetics.coordinate.ui;
  * android.support.v7.widget.Toolbar
  * android.view.KeyEvent
  * _android.view.LayoutInflater
- * _android.view.Menu
- * _android.view.MenuInflater
+ * android.view.Menu
+ * android.view.MenuInflater
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
@@ -42,7 +43,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.about.AboutAlertDialog
  * _org.wheatgenetics.about.OtherApps.Index
  * org.wheatgenetics.androidlibrary.Dir
- * _org.wheatgenetics.androidlibrary.R
+ * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.zxing.BarcodeScanner
@@ -185,6 +186,9 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         this.startActivity(android.content.Intent.createChooser(intent,
             this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
     }
+
+    private boolean isExcluded(final int row, final int col)
+    { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
     // endregion
 
     // region Utils AlertDialog Methods
@@ -518,7 +522,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             if (obj instanceof java.lang.Integer) r = (java.lang.Integer) obj;
         }
 
-        if (this.isExcludedRow(r) || this.isExcludedCol(c) || this.isExcludedCell(r, c))
+        if (this.isExcluded(r, c))
         {
             assert null != this.cellIDEditText; this.cellIDEditText.setText("");
             return;
@@ -1467,9 +1471,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         }
 
         if (!endOfCell)
-            if (this.isExcludedRow(mCurRow) || this.isExcludedCol(mCurCol)
-            ||  this.isExcludedCell(mCurRow, mCurCol)                     )
-                if (!this.getNextFreeCell()) endOfCell = true;
+            if (this.isExcluded(mCurRow, mCurCol))if (!this.getNextFreeCell()) endOfCell = true;
 
         value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(this.getValue(mCurRow, mCurCol));
 
@@ -1482,9 +1484,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         view = this.gridTableLayout.findViewWithTag(
             org.wheatgenetics.coordinate.ui.Main.getTag(mCurRow, mCurCol));
         if (null != view)
-            if (!this.isExcludedRow(mCurRow) && !this.isExcludedCol(mCurCol)
-            &&  !this.isExcludedCell(mCurRow, mCurCol)                      )
-                this.setCellState(view, STATE_ACTIVE);
+            if (!this.isExcluded(mCurRow, mCurCol)) this.setCellState(view, STATE_ACTIVE);
 
         this.resetCurrentCell();
         this.currentCellView = view;
@@ -1527,7 +1527,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             }
 
             int state;
-            if (this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col))
+            if (this.isExcluded(row, col))
                 state = org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE;
             else
             {
