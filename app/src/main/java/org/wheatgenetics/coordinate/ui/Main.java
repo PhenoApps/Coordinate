@@ -905,7 +905,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void processPerson(final java.lang.String person)
+                    public void setPerson(final java.lang.String person)
                     {
                         assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
                         org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
@@ -935,7 +935,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
                     {
                         @java.lang.Override
-                        public void processPerson(final java.lang.String person)
+                        public void setPerson(final java.lang.String person)
                         {
                             assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
                             org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(

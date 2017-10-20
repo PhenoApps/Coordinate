@@ -22,7 +22,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 {
     interface Handler
     {
-        public abstract void processPerson(java.lang.String person);
+        public abstract void setPerson(java.lang.String person);
         public abstract void createGrid();
     }
 
@@ -34,12 +34,12 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     private boolean                                                          firstCannotBeEmpty   ;
     // endregion
 
-    private void process()
+    private void setValues()
     {
         assert null != this.checkedOptionalFields; assert null != this.editTextArrayList;
         assert this.checkedOptionalFields.size() == this.editTextArrayList.size();
 
-        boolean firstWasEmpty = false;
+        boolean firstWasEmptyWhenItWasNotSupposedToBe = false;
         {
             int i = 0; assert null != this.handler;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
@@ -57,21 +57,22 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                     {
                         {
                             final java.lang.String optionalFieldHint = optionalField.getHint();
-                            this.showToast(optionalFieldHint.length() > 0 ?
-                                    optionalFieldHint : optionalField.getName() +
-                                this.getString(org.wheatgenetics.coordinate.R.string.not_empty));
+                            this.showToast(optionalFieldHint.length() > 0 ? optionalFieldHint :
+                                optionalField.getName() + this.getString(
+                                    org.wheatgenetics.coordinate.R.string.not_empty));
                         }
-                        firstWasEmpty = true;
+                        firstWasEmptyWhenItWasNotSupposedToBe = true;
                     }
 
                 optionalField.setValue(value);
-                if (optionalField.isAPerson()) this.handler.processPerson(optionalField.getValue());
+                if (optionalField.isAPerson()) this.handler.setPerson(optionalField.getValue());
 
                 i++;
             }
         }
 
-        if (!firstWasEmpty) { this.cancelAlertDialog(); this.handler.createGrid(); }
+        if (!firstWasEmptyWhenItWasNotSupposedToBe)
+            { this.cancelAlertDialog(); this.handler.createGrid(); }
     }
 
     LoadTemplateAlertDialog(final android.app.Activity activity,
@@ -100,19 +101,21 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 this.inflate(org.wheatgenetics.coordinate.R.layout.grid_new);
             {
                 assert null != view;
-                final android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)
+                final android.widget.LinearLayout optionalFieldsLinearLayout =
+                    (android.widget.LinearLayout)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.optionalLayout);
 
                 final android.view.LayoutInflater layoutInflater = this.layoutInflater();
 
 
                 assert null != checkedOptionalFields;
-                assert null != layoutInflater; assert null != linearLayout;
+                assert null != layoutInflater; assert null != optionalFieldsLinearLayout;
                 for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
                 checkedOptionalFields)
                 {
                     final android.view.View optionalFieldView = layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.optional_edit, linearLayout, false);
+                        org.wheatgenetics.coordinate.R.layout.optional_edit,
+                        optionalFieldsLinearLayout, false);
 
                     assert null != optionalFieldView;
                     {
@@ -136,7 +139,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                         this.editTextArrayList.add(optionalFieldEditText);
                     }
 
-                    linearLayout.addView(optionalFieldView);
+                    optionalFieldsLinearLayout.addView(optionalFieldView);
                 }
             }
             this.setView(view);
@@ -151,7 +154,7 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             {
                 @java.lang.Override
                 public void onClick(final android.view.View view)
-                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.process(); }
+                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.setValues(); }
             });
     }
 }
