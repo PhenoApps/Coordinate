@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.database;
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Constants
-    static final java.lang.String TABLE_NAME = "templates";
+            static final java.lang.String TABLE_NAME = "templates";
 
             static final java.lang.String TITLE_FIELD_NAME  = "title" , TYPE_FIELD_NAME  = "type" ;
             static final java.lang.String ROWS_FIELD_NAME   = "rows"  , COLS_FIELD_NAME  = "cols" ;
@@ -32,14 +32,14 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         assert null != templateType; return this.queryDistinct(/* selection => */
-        org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + "=" +
-            templateType.getCode());
+            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " = " +
+                templateType.getCode());
     }
 
     private android.database.Cursor query(final long id)
     {
         return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + "=" + id);
+            org.wheatgenetics.coordinate.database.Table.whereClause(id));
     }
     // endregion
 
@@ -159,17 +159,18 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             if (null == cursor)
                 result = null;
             else
-            {
-                if (cursor.getCount() <= 0)
-                    result = null;
-                else
+                try
                 {
-                    result = new org.wheatgenetics.coordinate.model.TemplateModels();
-                    while (cursor.moveToNext()) result.add(
-                        (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
+                    if (cursor.getCount() <= 0)
+                        result = null;
+                    else
+                    {
+                        result = new org.wheatgenetics.coordinate.model.TemplateModels();
+                        while (cursor.moveToNext()) result.add(
+                            (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
+                    }
                 }
-                cursor.close();
-            }
+                finally { cursor.close(); }
         }
         return result;
     }

@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.model.GridModel
+ * org.wheatgenetics.coordinate.model.GridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.Model
  *
@@ -18,7 +19,8 @@ package org.wheatgenetics.coordinate.database;
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Constants
-    private static final java.lang.String TABLE_NAME      = "grids";
+    private static final java.lang.String TABLE_NAME = "grids";
+
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
         TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
     private static final java.lang.String TEMPLATETITLE_FIELD_NAME = "templateTitle",
@@ -66,14 +68,14 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
         org.wheatgenetics.coordinate.database.GridsTable.joinedQuery = "SELECT ALL " +
             org.wheatgenetics.coordinate.database.GridsTable.idFieldName + ", "      +
-            titleFieldName + ", " + stampFieldName + ", " + tempFieldName            +
-            ", " + templateTitleFieldName + " AS " +
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME +
-            ", " + templateTypeFieldName + " AS " +
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME +
-            ", " + rowsFieldName + ", " + colsFieldName + ", " + cnumbFieldName + ", " +
+            titleFieldName + ", " + stampFieldName + ", " + tempFieldName + ", " +
+            templateTitleFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME + ", " +
+            templateTypeFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME + ", " +
+            rowsFieldName + ", " + colsFieldName + ", " + cnumbFieldName + ", " +
             rnumbFieldName + ", " + optionsFieldName +
-                " FROM " + gridsTableName + ", " + templatesTableName +
+                " FROM "  + gridsTableName + ", " + templatesTableName +
                 " WHERE " + tempFieldName + " = " + templateIdFieldName;
     }
 
@@ -152,17 +154,18 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             if (null == cursor)
                 result = null;
             else
-            {
-                if (cursor.getCount() <= 0)
-                    result = null;
-                else
+                try
                 {
-                    result = new org.wheatgenetics.coordinate.model.GridModels();
-                    while (cursor.moveToNext()) result.add(
-                        (org.wheatgenetics.coordinate.model.JoinedGridModel) this.make(cursor));
+                    if (cursor.getCount() <= 0)
+                        result = null;
+                    else
+                    {
+                        result = new org.wheatgenetics.coordinate.model.GridModels();
+                        while (cursor.moveToNext()) result.add(
+                            (org.wheatgenetics.coordinate.model.JoinedGridModel) this.make(cursor));
+                    }
                 }
-                cursor.close();
-            }
+                finally { cursor.close(); }
         }
         return result;
     }

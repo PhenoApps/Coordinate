@@ -2,6 +2,7 @@ package org.wheatgenetics.sharedpreferences;
 
 /**
  * Uses:
+ * android.content.SharedPreferences
  * android.support.annotation.NonNull
  *
  * org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
@@ -11,10 +12,10 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
     private static final java.lang.String PERSON = "Person", CURRENT_GRID = "CurrentGrid";
 
-    // region Public Methods
     public SharedPreferences(@android.support.annotation.NonNull
     final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
 
+    // region Public Methods
     // region Person Public Methods
     public java.lang.String getPerson()
     { return this.getString(org.wheatgenetics.sharedpreferences.SharedPreferences.PERSON); }
@@ -28,8 +29,6 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     // endregion
 
     // region CurrentGrid Public Methods
-    public boolean currentGridIsSet() { return this.getCurrentGrid() != -1; }
-
     public long getCurrentGrid()
     { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID); }
 
@@ -38,6 +37,8 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
         this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID,
             currentGrid);
     }
+
+    public boolean currentGridIsSet() { return this.getCurrentGrid() > -1; }
     // endregion
     // endregion
 }

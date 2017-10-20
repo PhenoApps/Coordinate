@@ -69,10 +69,10 @@ class Database extends java.lang.Object
                                             /* systemId => */ null       );   //  io.IOException
                                     }
                                     catch (final org.xml.sax.SAXException | java.io.IOException e)
-                                    { return; }       // this.createSucceeded will not be made true.
+                                    { return; }           // this.createSucceeded will remain false.
                                 }
                                 catch (final javax.xml.parsers.ParserConfigurationException e)
-                                { return; }           // this.createSucceeded will not be made true.
+                                { return; }               // this.createSucceeded will remain false.
                             }
                             assert null != document;
                             statementNodeList = document.getElementsByTagName("statement");
@@ -98,9 +98,8 @@ class Database extends java.lang.Object
                 {
                     android.util.Log.w(SQLiteOpenHelper.TAG, "Upgrading database from version " +
                         oldVersion + " to " + newVersion + ", which will destroy all old data");
-                    assert null != db;
-                    db.execSQL("DROP TABLE IF EXISTS entries");        // TODO: What about templates
-                    this.onCreate(db);                                 // TODO:  and grids tables?
+                    assert null != db; db.execSQL("DROP TABLE IF EXISTS entries");
+                    this.onCreate(db);          // TODO: grids and templates tables are not dropped!
                 }
 
                 @java.lang.Override

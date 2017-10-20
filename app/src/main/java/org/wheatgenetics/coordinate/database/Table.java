@@ -32,9 +32,6 @@ abstract class Table extends java.lang.Object
     }
 
     // region Internal Operations
-    private static java.lang.String whereClause(final long id)
-    { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
-
     private int sendInfoLogMsg(final java.lang.String msg)
     { return android.util.Log.i(this.tag, msg); }
 
@@ -76,6 +73,9 @@ abstract class Table extends java.lang.Object
 
     // region External Operations
     // region Package External Operations
+    static java.lang.String whereClause(final long id)
+    { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
+
     android.database.Cursor queryAll(final java.lang.String orderBy)
     {
         return this.query(

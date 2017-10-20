@@ -82,7 +82,7 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         final java.lang.String[] selectionArgs = new java.lang.String[] {
             java.lang.String.valueOf(grid),
             java.lang.String.valueOf(col ),
-            java.lang.String.valueOf(row ) };
+            java.lang.String.valueOf(row )};
         return (org.wheatgenetics.coordinate.model.EntryModel) this.makeFromFirst(
             this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs));
     }
