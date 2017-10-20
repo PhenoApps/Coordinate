@@ -100,6 +100,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         final org.wheatgenetics.coordinate.model.TemplateModels result =
             new org.wheatgenetics.coordinate.model.TemplateModels();
 
+        // It matters that the seed tray default template is first and the DNA plate default temp-
+        // late is second.  Client code assumes the templates are present in the order just des-
+        // cribed.  If these two default templates are not present (and not present in the order
+        // just described), client code will break.
         result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
         result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ());
 

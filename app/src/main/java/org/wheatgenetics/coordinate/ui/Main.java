@@ -553,41 +553,44 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region android.view.View.OnClickListener Overridden Method
     // Enables Main to be a cell click listener.
+    /** @param v Cell in the grid. */
     @java.lang.Override
-    public void onClick(final android.view.View v)      // v is a cell.
+    public void onClick(final android.view.View v)
     {                                                   // TODO: Don't toggle already selected cell.
-        int c = -1, r = -1;
+        int row, col;
         {
-            java.lang.Object obj;
+            java.lang.Object object; assert null != v;
 
-            assert null != v;
-            obj = v.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
-            if (obj instanceof java.lang.Integer) c = (java.lang.Integer) obj;
+            object = v.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
+            row = object instanceof java.lang.Integer ? (java.lang.Integer) object : -1;
 
-            obj = v.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
-            if (obj instanceof java.lang.Integer) r = (java.lang.Integer) obj;
+            object = v.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
+            col = object instanceof java.lang.Integer ? (java.lang.Integer) object : -1;
         }
 
-        if (this.isExcluded(r, c))
-            { assert null != this.cellIDEditText; this.cellIDEditText.setText(""); }
+        assert null != this.cellIDEditText;
+        if (this.isExcluded(row, col))
+            this.cellIDEditText.setText("");
         else
         {
-            if (-1 != c && -1 != r)
+            if (-1 != row && -1 != col)
             {
-                this.currentRow = r;
-                this.currentCol = c;
+                this.currentRow = row; this.currentCol = col;
 
-                java.lang.String value = this.getValue(this.currentRow, this.currentCol);
+                final java.lang.String value = this.getValue(this.currentRow, this.currentCol);
 
-                if (null != value && value.contains("exclude")) return;
+                if (null != value && value.contains("exclude"))
+                    return;
+                else
+                {
+                    this.setCellState(v, STATE_ACTIVE);
 
-                this.setCellState(v, STATE_ACTIVE);
-
-                assert null != this.cellIDEditText;
-                this.cellIDEditText.setSelectAllOnFocus(true);
-                this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
-                this.cellIDEditText.selectAll();
-                this.cellIDEditText.requestFocus();
+                    this.cellIDEditText.setSelectAllOnFocus(true);
+                    this.cellIDEditText.setText(
+                        org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
+                    this.cellIDEditText.selectAll();
+                    this.cellIDEditText.requestFocus();
+                }
             }
 
             this.resetCurrentCell();
