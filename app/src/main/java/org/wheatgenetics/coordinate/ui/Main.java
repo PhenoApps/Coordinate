@@ -154,22 +154,10 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
     // endregion
     // endregion
 
-    public static java.lang.String getTag(final int r, final int c)
-    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", r, c); }
-
-    // region Toast Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
-
-    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
-
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
-
-    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
-    // endregion
-
     // region Private Methods
+    private static java.lang.String getTag(final int row, final int col)
+    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
+
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
@@ -181,7 +169,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
 
         intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
-            android.net.Uri.parse(exportFile.getAbsolutePath()));
+        android.net.Uri.parse(exportFile.getAbsolutePath()));
         intent.setType("text/plain");
 
         this.startActivity(android.content.Intent.createChooser(intent,
@@ -207,9 +195,24 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             return false;
         }
     }
+
+    // region Toast Private Methods
+    // region Long Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
     // endregion
 
-    // region Utils AlertDialog Methods
+    // region Short Toast Private Methods
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
+
+    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
+    // endregion
+    // endregion
+
+    // region Utils AlertDialog Private Methods
     // region alert() Utils AlertDialog Methods
     private void alert(final int message)
     { org.wheatgenetics.coordinate.ui.Utils.alert(this, message); }
@@ -240,7 +243,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
     // endregion
     // endregion
 
-    // region Table Methods
+    // region Table Private Methods
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -261,6 +264,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             new org.wheatgenetics.coordinate.database.EntriesTable(this);
         return this.entriesTableInstance;
     }
+    // endregion
     // endregion
 
     // region Overridden Methods
