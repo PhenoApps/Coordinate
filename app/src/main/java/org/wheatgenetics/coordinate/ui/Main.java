@@ -89,8 +89,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
-implements android.view.View.OnClickListener, android.widget.TextView.OnEditorActionListener,
-android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Helper
+implements android.widget.TextView.OnEditorActionListener, android.view.View.OnKeyListener,
+android.view.View.OnClickListener, org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
@@ -533,7 +533,43 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         super.onDestroy();
     }
 
+    // region android.widget.TextView.OnEditorActionListener Overridden Method
+    // Enables Main to be a this.cellIDEditText editor action listener.
+    @java.lang.Override
+    public boolean onEditorAction(final android.widget.TextView v, final int actionId,
+    final android.view.KeyEvent event)
+    {
+        if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
+            return this.saveData();
+        else
+            if (null == event)
+                return false;
+            else
+                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction ()
+                &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
+                    return this.saveData();
+                else
+                    return false;
+    }
+    // endregion
+
+    // region android.view.View.OnKeyListener Overridden Method
+    // Enables Main to be a this.cellIDEditText key listener.
+    @java.lang.Override
+    public boolean onKey(final android.view.View v, final int keyCode,
+    final android.view.KeyEvent event)
+    {
+        assert null != event;
+        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
+        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
+            return this.saveData();
+        else
+            return false;
+    }
+    // endregion
+
     // region android.view.View.OnClickListener Overridden Method
+    // Enables Main to be a cell click listener.
     @java.lang.Override
     public void onClick(final android.view.View v)      // v is a cell.
     {                                                   // TODO: Don't toggle already selected cell.
@@ -577,40 +613,8 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
     }
     // endregion
 
-    // region android.widget.TextView.OnEditorActionListener Overridden Method
-    @java.lang.Override
-    public boolean onEditorAction(final android.widget.TextView v, final int actionId,
-    final android.view.KeyEvent event)
-    {
-        if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
-            return this.saveData();
-        else
-            if (null == event)
-                return false;
-            else
-                if (android.view.KeyEvent.ACTION_DOWN   == event.getAction ()
-                &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
-                    return this.saveData();
-                else
-                    return false;
-    }
-    // endregion
-
-    // region android.view.View.OnKeyListener Overridden Method
-    @java.lang.Override
-    public boolean onKey(final android.view.View v, final int keyCode,
-    final android.view.KeyEvent event)
-    {
-        assert null != event;
-        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
-        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
-            return this.saveData();
-        else
-            return false;
-    }
-    // endregion
-
     // region org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Methods
+    // Enables Main to be a this.exporter helper.
     @java.lang.Override
     public java.lang.String getValue(final int row, final int col)
     {
