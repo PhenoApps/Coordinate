@@ -79,10 +79,10 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
+ * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
@@ -142,8 +142,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // region AlertDialog Fields
     private org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
         templateOptionsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog
-        loadExistingTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
+        selectTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
@@ -1200,12 +1200,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
-        if (null == this.loadExistingTemplateAlertDialog) this.loadExistingTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.LoadExistingTemplateAlertDialog.Handler()
+        if (null == this.selectTemplateAlertDialog) this.selectTemplateAlertDialog =
+            new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void loadTemplate(final int which)
+                    public void select(final int which)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                             templateModels.get(which);
@@ -1231,7 +1231,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         }
                     }
                 });
-        this.loadExistingTemplateAlertDialog.show(templateModels.titles());
+        this.selectTemplateAlertDialog.show(templateModels.titles());
     }
 
     private void deleteTemplateAfterConfirm(
