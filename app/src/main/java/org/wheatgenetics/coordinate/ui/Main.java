@@ -77,14 +77,14 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
+ * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
  * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
- * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
@@ -140,8 +140,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
 
     // region AlertDialog Fields
-    private org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
-        templateOptionsAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
+        getTemplateChoiceAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
         selectTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
@@ -862,19 +862,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // region Subaction Drawer Methods
     private void loadExistingTemplateOrCreateNewTemplate()
     {
-        if (null == this.templateOptionsAlertDialog) this.templateOptionsAlertDialog =
-            new org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler()
+        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void loadExistingTemplate()
+                    public void chooseOld()
                     { org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(); }
 
                     @java.lang.Override
-                    public void createTemplate()
+                    public void chooseNew()
                     { org.wheatgenetics.coordinate.ui.Main.this.createTemplate(); }
                 });
-        this.templateOptionsAlertDialog.show();
+        this.getTemplateChoiceAlertDialog.show();
     }
 
     private void newGridNow() throws org.json.JSONException
@@ -1153,7 +1153,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         });
     }
 
-    private void deleteGridAfterConfirm()         // TODO: DRY? (Compare to loadExistingTemplate().)
+    private void deleteGridAfterConfirm()         // TODO: DRY? (Compare to chooseOld().)
     {
         if (this.deleteEntriesGrid())
         {

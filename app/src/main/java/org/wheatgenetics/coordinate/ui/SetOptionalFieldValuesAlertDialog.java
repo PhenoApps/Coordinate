@@ -147,7 +147,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
 
         this.checkedOptionalFields = checkedOptionalFields;
         this.firstCannotBeEmpty    = firstCannotBeEmpty   ;
-        this.createModifiyShow();
+        this.createModifyShow();
 
         if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
             new android.view.View.OnClickListener()
