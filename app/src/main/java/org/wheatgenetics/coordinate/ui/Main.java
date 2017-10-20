@@ -79,10 +79,10 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog
  * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
+ * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog
  * org.wheatgenetics.coordinate.ui.TemplateOptionsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.Utils
@@ -148,8 +148,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ImportAlertDialog importAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog
-        loadSeedTrayTemplateAlertDialog = null, loadTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
+        setSeedTrayOptionalFieldValuesAlertDialog = null, setOptionalFieldValuesAlertDialog = null;
     // endregion
     // endregion
 
@@ -900,26 +900,28 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void loadSeedTrayTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        if (null == this.loadSeedTrayTemplateAlertDialog) this.loadSeedTrayTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void setPerson(final java.lang.String person)
+        if (null == this.setSeedTrayOptionalFieldValuesAlertDialog)
+            this.setSeedTrayOptionalFieldValuesAlertDialog =
+                new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this,
+                    new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler()
                     {
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                        org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
-                            person);
-                    }
+                        @java.lang.Override
+                        public void setPerson(final java.lang.String person)
+                        {
+                            assert
+                                null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
+                            org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
+                                person);
+                        }
 
-                    @java.lang.Override
-                    public void createGrid()
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(
-                            org.wheatgenetics.coordinate.model.TemplateType.SEED);
-                    }
-                });
-        assert null != templateModel; this.loadSeedTrayTemplateAlertDialog.show(
+                        @java.lang.Override
+                        public void handleSetValuesDone()
+                        {
+                            org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(
+                                org.wheatgenetics.coordinate.model.TemplateType.SEED);
+                        }
+                    });
+        assert null != templateModel; this.setSeedTrayOptionalFieldValuesAlertDialog.show(
             templateModel.getTitle(), this.makeCheckedOptionalFields(), true);
     }
 
@@ -930,23 +932,25 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.tempLoad(mode);
         else
         {
-            if (null == this.loadTemplateAlertDialog) this.loadTemplateAlertDialog =
-                new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog(this,
-                    new org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler()
-                    {
-                        @java.lang.Override
-                        public void setPerson(final java.lang.String person)
+            if (null == this.setOptionalFieldValuesAlertDialog)
+                this.setOptionalFieldValuesAlertDialog =
+                    new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this, new
+                        org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler()
                         {
-                            assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                            org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
-                                person);
-                        }
+                            @java.lang.Override
+                            public void setPerson(final java.lang.String person)
+                            {
+                                assert
+                                    null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
+                                org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
+                                    person);
+                            }
 
-                        @java.lang.Override
-                        public void createGrid()
-                        { org.wheatgenetics.coordinate.ui.Main.this.tempLoad(mode); }
-                    });
-            assert null != templateModel; this.loadTemplateAlertDialog.show(
+                            @java.lang.Override
+                            public void handleSetValuesDone()
+                            { org.wheatgenetics.coordinate.ui.Main.this.tempLoad(mode); }
+                        });
+            assert null != templateModel; this.setOptionalFieldValuesAlertDialog.show(
                 templateModel.getTitle(), this.makeCheckedOptionalFields(),
                 org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode);
         }

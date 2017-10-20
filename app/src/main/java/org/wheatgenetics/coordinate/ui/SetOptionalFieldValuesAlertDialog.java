@@ -18,16 +18,16 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
-class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler
     {
         public abstract void setPerson(java.lang.String person);
-        public abstract void createGrid();
+        public abstract void handleSetValuesDone();
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler;
+    private final org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler handler;
 
     private java.util.ArrayList<android.widget.EditText>                  editTextArrayList = null;
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields;
@@ -72,11 +72,11 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         }
 
         if (!firstWasEmptyWhenItWasNotSupposedToBe)
-            { this.cancelAlertDialog(); this.handler.createGrid(); }
+            { this.cancelAlertDialog(); this.handler.handleSetValuesDone(); }
     }
 
-    LoadTemplateAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.Handler handler)
+    SetOptionalFieldValuesAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -154,7 +154,10 @@ class LoadTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             {
                 @java.lang.Override
                 public void onClick(final android.view.View view)
-                { org.wheatgenetics.coordinate.ui.LoadTemplateAlertDialog.this.setValues(); }
+                {
+                    org.wheatgenetics.coordinate.ui
+                        .SetOptionalFieldValuesAlertDialog.this.setValues();
+                }
             });
     }
 }
