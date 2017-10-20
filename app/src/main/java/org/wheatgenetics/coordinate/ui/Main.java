@@ -28,7 +28,6 @@ package org.wheatgenetics.coordinate.ui;
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
- * android.view.View.OnKeyListener
  * android.view.inputmethod.EditorInfo
  * android.widget.EditText
  * android.widget.LinearLayout
@@ -89,8 +88,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.Utils
  */
 public class Main extends android.support.v7.app.AppCompatActivity
-implements android.widget.TextView.OnEditorActionListener, android.view.View.OnKeyListener,
-android.view.View.OnClickListener, org.wheatgenetics.coordinate.model.Exporter.Helper
+implements android.widget.TextView.OnEditorActionListener, android.view.View.OnClickListener,
+org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
@@ -362,7 +361,6 @@ android.view.View.OnClickListener, org.wheatgenetics.coordinate.model.Exporter.H
             this.getString(org.wheatgenetics.coordinate.R.string.keyboard_save),
             android.view.KeyEvent.KEYCODE_ENTER                               );
         this.cellIDEditText.setOnEditorActionListener(this);
-        // this.cellIDEditText.setOnKeyListener(this);
 
         this.templateTitleTextView = (android.widget.TextView)
             this.findViewById(org.wheatgenetics.coordinate.R.id.templateText);
@@ -550,21 +548,6 @@ android.view.View.OnClickListener, org.wheatgenetics.coordinate.model.Exporter.H
                     return this.saveData();
                 else
                     return false;
-    }
-    // endregion
-
-    // region android.view.View.OnKeyListener Overridden Method
-    // Enables Main to be a this.cellIDEditText key listener.
-    @java.lang.Override
-    public boolean onKey(final android.view.View v, final int keyCode,
-    final android.view.KeyEvent event)
-    {
-        assert null != event;
-        if (android.view.KeyEvent.ACTION_DOWN   == event.getAction()
-        &&  android.view.KeyEvent.KEYCODE_ENTER == keyCode          )
-            return this.saveData();
-        else
-            return false;
     }
     // endregion
 
