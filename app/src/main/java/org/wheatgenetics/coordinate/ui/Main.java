@@ -155,9 +155,6 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
     // endregion
 
     // region Private Methods
-    private static java.lang.String getTag(final int row, final int col)
-    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
-
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
@@ -195,6 +192,14 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
             return false;
         }
     }
+
+    // region getTag() Private Methods
+    private static java.lang.String getTag(final int row, final int col)
+    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
+
+    private java.lang.String getTag()
+    { return org.wheatgenetics.coordinate.ui.Main.getTag(this.currentRow, this.currentCol); }
+    // endregion
 
     // region Toast Private Methods
     // region Long Toast Private Methods
@@ -1446,8 +1451,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         }
 
         assert null != this.gridTableLayout;
-        android.view.View view = this.gridTableLayout.findViewWithTag(
-            org.wheatgenetics.coordinate.ui.Main.getTag(this.currentRow, this.currentCol));
+        android.view.View view = this.gridTableLayout.findViewWithTag(this.getTag());
 
         if (null != view) this.setCellState(view, 0 == value.length() ? STATE_NORMAL : STATE_DONE);
 
@@ -1484,8 +1488,7 @@ android.view.View.OnKeyListener, org.wheatgenetics.coordinate.model.Exporter.Hel
         this.cellIDEditText.selectAll();
         this.cellIDEditText.requestFocus();
 
-        view = this.gridTableLayout.findViewWithTag(
-            org.wheatgenetics.coordinate.ui.Main.getTag(this.currentRow, this.currentCol));
+        view = this.gridTableLayout.findViewWithTag(this.getTag());
         if (null != view) if (!this.isExcluded(this.currentRow, this.currentCol))
             this.setCellState(view, STATE_ACTIVE);
 
