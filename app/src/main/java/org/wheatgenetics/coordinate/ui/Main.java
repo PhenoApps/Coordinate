@@ -886,16 +886,16 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
             this.templateModel.getType();
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-            this.loadSeedTrayTemplate(this.templatesTable().get(templateType));
+            this.setValuesThenLoadSeedTrayTemplate(this.templatesTable().get(templateType));
         else
             if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                this.loadDNAPlateTemplate(this.templatesTable().get(templateType));
+                this.setValuesThenLoadDNAPlateTemplate(this.templatesTable().get(templateType));
             else
                 // reset options?
-                this.loadUserDefinedTemplate(this.templateModel);
+                this.setValuesThenLoadUserDefinedTemplate(this.templateModel);
     }
 
-    private void loadSeedTrayTemplate(
+    private void setValuesThenLoadSeedTrayTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null == this.setSeedTrayOptionalFieldValuesAlertDialog)
@@ -924,21 +924,21 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.makeCheckedOptionalFields(), /* firstCannotBeEmpty => */ true);
     }
 
-    private void loadDNAPlateTemplate(
+    private void setValuesThenLoadDNAPlateTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.loadDNAPlateOrUserDefinedTemplate(
+        this.setValuesThenLoadDNAPlateOrUserDefinedTemplate(
             org.wheatgenetics.coordinate.ui.Main.MODE_DNA, templateModel);
     }
 
-    private void loadUserDefinedTemplate(
+    private void setValuesThenLoadUserDefinedTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        this.loadDNAPlateOrUserDefinedTemplate(
+        this.setValuesThenLoadDNAPlateOrUserDefinedTemplate(
             org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, templateModel);
     }
 
-    private void loadDNAPlateOrUserDefinedTemplate(final int mode,
+    private void setValuesThenLoadDNAPlateOrUserDefinedTemplate(final int mode,
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
@@ -1202,9 +1202,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     @java.lang.Override
                     public void handleTemplateCreated()
                     {
-                        org.wheatgenetics.coordinate.ui.Main.this.loadDNAPlateOrUserDefinedTemplate(
-                            org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel);
+                        org.wheatgenetics.coordinate.ui.Main.this
+                            .setValuesThenLoadDNAPlateOrUserDefinedTemplate(
+                                org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
+                                org.wheatgenetics.coordinate.ui.Main.this.templateModel);
                     }
                 });
         this.templateCreator.create(this.templateModel);
@@ -1225,21 +1226,17 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             templateModels.get(which);
                         if (null != templateModel) switch (which)
                         {
-                            case 0:                                                     // seed tray
-                                org.wheatgenetics.coordinate.ui.Main.this.loadSeedTrayTemplate(
-                                    templateModel);
-                                break;
+                            case 0: org.wheatgenetics.coordinate.ui.Main.this           // seed tray
+                                .setValuesThenLoadSeedTrayTemplate(templateModel); break;
 
                             case 1:                                                     // dna plate
                                 templateModel.makeOneRandomCell();
-                                org.wheatgenetics.coordinate.ui.Main.this.loadDNAPlateTemplate(
-                                    templateModel);
+                                org.wheatgenetics.coordinate.ui.
+                                    Main.this.setValuesThenLoadDNAPlateTemplate(templateModel);
                                 break;
 
-                            default:
-                                org.wheatgenetics.coordinate.ui.Main.this.loadUserDefinedTemplate(
-                                    templateModel);
-                                break;
+                            default: org.wheatgenetics.coordinate.ui.Main.this
+                                .setValuesThenLoadUserDefinedTemplate(templateModel); break;
                         }
                     }
                 });
