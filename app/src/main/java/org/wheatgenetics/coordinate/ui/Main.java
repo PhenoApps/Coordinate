@@ -869,7 +869,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 {
                     @java.lang.Override
                     public void chooseOld()
-                    { org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(); }
+                    { org.wheatgenetics.coordinate.ui.Main.this.selectThenLoadTemplate(); }
 
                     @java.lang.Override
                     public void chooseNew()
@@ -1210,7 +1210,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.templateCreator.create(this.templateModel);
     }
 
-    private void loadExistingTemplate()
+    private void selectThenLoadTemplate()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
@@ -1395,7 +1395,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.createThenLoadTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
-                this.loadExistingTemplate(); break;
+                this.selectThenLoadTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_template:
                 this.deleteTemplate(); break;
