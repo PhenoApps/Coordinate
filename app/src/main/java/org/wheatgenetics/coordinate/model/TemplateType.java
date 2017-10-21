@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 public enum TemplateType
 {
-    SEED(0), DNA(1), DEFAULT(2);
+    SEED(0), DNA(1), USERDEFINED(2);
 
     private final int code;
 
@@ -16,8 +16,8 @@ public enum TemplateType
             if (org.wheatgenetics.coordinate.model.TemplateType.DNA.code == code)
                 return org.wheatgenetics.coordinate.model.TemplateType.DNA;
             else
-                if (org.wheatgenetics.coordinate.model.TemplateType.DEFAULT.code == code)
-                    return org.wheatgenetics.coordinate.model.TemplateType.DEFAULT;
+                if (org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.code == code)
+                    return org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
                 else
                     throw new java.lang.IllegalArgumentException();
     }

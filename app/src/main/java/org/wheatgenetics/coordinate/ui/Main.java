@@ -93,7 +93,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
-    private static final int MODE_DNA     = 0, MODE_SAVED = 1, MODE_DEFAULT = 2                    ;
+    private static final int MODE_DNA     = 0,       MODE_USERDEFINED = 1,       MODE_DEFAULT   = 2;
     // endregion
 
     // region Fields
@@ -695,7 +695,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void insertGetLoadTemplateGridPopulateUI()
     {
         assert null != this.templateModel;
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
 
         final long templateId = this.templatesTable().insert(this.templateModel);
         if (templateId > 0)
@@ -774,8 +774,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode)
             this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         else
-            if (org.wheatgenetics.coordinate.ui.Main.MODE_SAVED == mode)
-                this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DEFAULT);
+            if (org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED == mode)
+                this.loadExistingTemplate(
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
             else
                 this.insertGetLoadTemplateGridPopulateUI();
     }
@@ -894,7 +895,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             else
                 // reset options?
                 this.loadTemplate(                                  // throws org.json.JSONException
-                    org.wheatgenetics.coordinate.ui.Main.MODE_SAVED, this.templateModel);
+                    org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, this.templateModel);
     }
 
     private void loadSeedTrayTemplate(
@@ -921,8 +922,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                 org.wheatgenetics.coordinate.model.TemplateType.SEED);
                         }
                     });
-        assert null != templateModel; this.setSeedTrayOptionalFieldValuesAlertDialog.show(
-            templateModel.getTitle(), this.makeCheckedOptionalFields(), true);
+        assert null != templateModel;
+        this.setSeedTrayOptionalFieldValuesAlertDialog.show(templateModel.getTitle(),
+            this.makeCheckedOptionalFields(), /* firstCannotBeEmpty => */ true);
     }
 
     private void loadTemplate(final int mode,
@@ -952,7 +954,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         });
             assert null != templateModel; this.setOptionalFieldValuesAlertDialog.show(
                 templateModel.getTitle(), this.makeCheckedOptionalFields(),
-                org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode);
+                /* firstCannotBeEmpty => */ org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode);
         }
     }
 
@@ -1229,8 +1231,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                             default:
                                 org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(
-                                    org.wheatgenetics.coordinate.ui.Main.MODE_SAVED,
-                                    templateModel                                  );
+                                    org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED,
+                                    templateModel                                        );
                                 break;
                         }
                     }

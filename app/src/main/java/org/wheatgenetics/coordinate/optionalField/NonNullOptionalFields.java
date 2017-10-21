@@ -245,7 +245,7 @@ implements java.lang.Cloneable
         result.add("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
         result.add("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
         result.add("person"                                                      );
-        result.add("date"                                                        );
+        result.add("date"                                                        ); // TODO: addDate()?
 
         return result;
     }
