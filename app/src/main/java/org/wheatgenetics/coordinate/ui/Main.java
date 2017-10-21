@@ -878,7 +878,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.getTemplateChoiceAlertDialog.show();
     }
 
-    private void newGridNow() throws org.json.JSONException
+    private void newGridNow()
     {
         this.deleteEntriesGrid();
 
@@ -889,13 +889,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.loadSeedTrayTemplate(this.templatesTable().get(templateType));
         else
             if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                this.loadDNAPlateOrUserDefinedTemplate(             // throws org.json.JSONException
-                    org.wheatgenetics.coordinate.ui.Main.MODE_DNA,
-                    this.templatesTable().get(templateType)      );
+                this.loadDNAPlateTemplate(this.templatesTable().get(templateType));
             else
                 // reset options?
-                this.loadDNAPlateOrUserDefinedTemplate(             // throws org.json.JSONException
-                    org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, this.templateModel);
+                this.loadUserDefinedTemplate(this.templateModel);
     }
 
     private void loadSeedTrayTemplate(
@@ -925,6 +922,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != templateModel;
         this.setSeedTrayOptionalFieldValuesAlertDialog.show(templateModel.getTitle(),
             this.makeCheckedOptionalFields(), /* firstCannotBeEmpty => */ true);
+    }
+
+    private void loadDNAPlateTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        this.loadDNAPlateOrUserDefinedTemplate(
+            org.wheatgenetics.coordinate.ui.Main.MODE_DNA, templateModel);
+    }
+
+    private void loadUserDefinedTemplate(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        this.loadDNAPlateOrUserDefinedTemplate(
+            org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, templateModel);
     }
 
     private void loadDNAPlateOrUserDefinedTemplate(final int mode,
@@ -1128,13 +1139,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void createNewGrid() throws org.json.JSONException
+    private void createNewGrid()
     {
         if (0 == this.gridId)
             this.loadExistingTemplateOrCreateNewTemplate();
         else
             if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
-                this.newGridNow();                                  // throws org.json.JSONException
+                this.newGridNow();
             else
                 this.confirm(
                     /* message     => */ org.wheatgenetics.coordinate.R.string.new_grid_warning,
@@ -1148,10 +1159,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         {
                             @java.lang.Override
                             public void run()
-                            {
-                                try { org.wheatgenetics.coordinate.ui.Main.this.newGridNow(); }
-                                catch (final org.json.JSONException e) {}
-                            }
+                            { org.wheatgenetics.coordinate.ui.Main.this.newGridNow(); }
                         });
     }
 
@@ -1224,15 +1232,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                             case 1:                                                     // dna plate
                                 templateModel.makeOneRandomCell();
-                                org.wheatgenetics.coordinate.ui.Main.this.loadDNAPlateOrUserDefinedTemplate(
-                                    org.wheatgenetics.coordinate.ui.Main.MODE_DNA,
-                                    templateModel                                );
+                                org.wheatgenetics.coordinate.ui.Main.this.loadDNAPlateTemplate(
+                                    templateModel);
                                 break;
 
                             default:
-                                org.wheatgenetics.coordinate.ui.Main.this.loadDNAPlateOrUserDefinedTemplate(
-                                    org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED,
-                                    templateModel                                        );
+                                org.wheatgenetics.coordinate.ui.Main.this.loadUserDefinedTemplate(
+                                    templateModel);
                                 break;
                         }
                     }
@@ -1382,10 +1388,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         assert null != menuItem; switch (menuItem.getItemId())
         {
-            case org.wheatgenetics.coordinate.R.id.menu_new_grid:
-                try                                    { this.createNewGrid(); }
-                catch (final org.json.JSONException e) { return false        ; }
-                break;
+            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createNewGrid(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
