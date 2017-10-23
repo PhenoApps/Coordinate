@@ -77,8 +77,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog
- * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SelectAlertDialog
  * org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
@@ -148,7 +146,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         selectTemplateToDeleteAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
         getExportGridFileNameAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     // endregion
     // endregion
 
@@ -1299,18 +1297,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             final java.lang.String names  [] = gridModels.names  ();
             final long             indexes[] = gridModels.indexes();
 
-            if (null == this.importGridAlertDialog) this.importGridAlertDialog =
-                new org.wheatgenetics.coordinate.ui.ImportGridAlertDialog(this,
-                    new org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler()
+            if (null == this.selectGridToImportAlertDialog) this.selectGridToImportAlertDialog =
+                new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
+                    org.wheatgenetics.coordinate.R.string.import_grid,
+                    new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
                     {
                         @java.lang.Override
-                        public void importGrid(final int which)
+                        public void select(final int which)
                         {
                             if (which < indexes.length) org.wheatgenetics.coordinate.ui.
                                 Main.this.getLoadTemplateGridPopulateUI(indexes[which], false);
                         }
                     });
-            this.importGridAlertDialog.show(names);
+            this.selectGridToImportAlertDialog.show(names);
         }
     }
 
