@@ -692,15 +692,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void insertGetLoadTemplateGridPopulateUI()
     {
-        assert null != this.templateModel;
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
-
         final long templateId = this.templatesTable().insert(this.templateModel);
         if (templateId > 0)
         {
             // deleteUserDefinedTemplateItsGrids(this.templateModel); // TODO
 
-            this.templateModel.setId(templateId);
+            assert null != this.templateModel; this.templateModel.setId(templateId);
             final long gridId = this.insertGrid(this.templateModel);
             if (gridId > 0)
                 this.getLoadTemplateGridPopulateUI(gridId, false);

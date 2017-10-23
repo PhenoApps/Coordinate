@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  * android.app.Activity
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
  *
  * org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler
@@ -43,7 +44,9 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
             this.setExcludesOptionalFieldsNumberingAlertDialog = new
                 org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
-        assert null != this.templateModel; this.templateModel.clearExcludesAndOptionalFields();
+        assert null != this.templateModel;
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+        this.templateModel.clearExcludesAndOptionalFields();
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
