@@ -1253,6 +1253,23 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         else this.showLongToast(org.wheatgenetics.coordinate.R.string.template_not_deleted);
     }
 
+    private void deleteTemplateAfterSelect(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel) this.confirm(
+            /* title       => */ org.wheatgenetics.coordinate.R.string.delete_template        ,
+            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_template_warning,
+            /* yesRunnable => */ new java.lang.Runnable()
+                {
+                    @java.lang.Override
+                    public void run()
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterConfirm(
+                            templateModel);
+                    }
+                });
+    }
+
     private void deleteTemplate()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
@@ -1266,23 +1283,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     @java.lang.Override
                     public void select(final int which)
                     {
-                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(which);
-                        if (null != templateModel)
-                            org.wheatgenetics.coordinate.ui.Main.this.confirm(
-                                /* title => */
-                                    org.wheatgenetics.coordinate.R.string.delete_template,
-                                /* message => */
-                                    org.wheatgenetics.coordinate.R.string.delete_template_warning,
-                                /* yesRunnable => */ new java.lang.Runnable()
-                                    {
-                                        @java.lang.Override
-                                        public void run()
-                                        {
-                                            org.wheatgenetics.coordinate.ui.Main.this.
-                                                deleteTemplateAfterConfirm(templateModel);
-                                        }
-                                    });
+                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterSelect(
+                            templateModels.get(which));
                     }
                 });
         this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
