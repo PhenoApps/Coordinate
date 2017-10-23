@@ -91,7 +91,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
-    private static final int MODE_DNA     = 0,       MODE_USERDEFINED = 1,       MODE_DEFAULT   = 2;
+    private static final int MODE_DNA     = 0,  MODE_OLD_USERDEFINED = 1,  MODE_NEW_USERDEFINED = 2;
     // endregion
 
     // region Fields
@@ -772,10 +772,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode)
             this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DNA);
         else
-            if (org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED == mode)
+            if (org.wheatgenetics.coordinate.ui.Main.MODE_OLD_USERDEFINED == mode)
                 this.loadExistingTemplate(
                     org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
-            else
+            else                       // At this point mode will only ever be MODE_NEW_USERDEFINED.
                 this.insertGetLoadTemplateGridPopulateUI();
     }
 
@@ -890,7 +890,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.setValuesThenLoadDNAPlateTemplate(this.templatesTable().get(templateType));
             else
                 // reset options?
-                this.setValuesThenLoadUserDefinedTemplate(this.templateModel);
+                this.setValuesThenLoadOldUserDefinedTemplate(this.templateModel);
     }
 
     private void setValuesThenLoadSeedTrayTemplate(
@@ -929,11 +929,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             org.wheatgenetics.coordinate.ui.Main.MODE_DNA, templateModel);
     }
 
-    private void setValuesThenLoadUserDefinedTemplate(
+    private void setValuesThenLoadOldUserDefinedTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         this.setValuesThenLoadDNAPlateOrUserDefinedTemplate(
-            org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, templateModel);
+            org.wheatgenetics.coordinate.ui.Main.MODE_OLD_USERDEFINED, templateModel);
     }
 
     private void setValuesThenLoadDNAPlateOrUserDefinedTemplate(final int mode,
@@ -1202,7 +1202,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     {
                         org.wheatgenetics.coordinate.ui.Main.this
                             .setValuesThenLoadDNAPlateOrUserDefinedTemplate(
-                                org.wheatgenetics.coordinate.ui.Main.MODE_DEFAULT      ,
+                                org.wheatgenetics.coordinate.ui.Main.MODE_NEW_USERDEFINED,
                                 org.wheatgenetics.coordinate.ui.Main.this.templateModel);
                     }
                 });
@@ -1235,7 +1235,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                 break;
 
                             default: org.wheatgenetics.coordinate.ui.Main.this
-                                .setValuesThenLoadUserDefinedTemplate(templateModel); break;
+                                .setValuesThenLoadOldUserDefinedTemplate(templateModel); break;
                         }
                     }
                 });

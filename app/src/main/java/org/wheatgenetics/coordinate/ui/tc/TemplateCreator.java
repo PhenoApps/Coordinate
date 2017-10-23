@@ -43,6 +43,7 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
             this.setExcludesOptionalFieldsNumberingAlertDialog = new
                 org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
+        assert null != this.templateModel; this.templateModel.clearExcludesAndOptionalFields();
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
@@ -61,7 +62,7 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
             if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
                 new org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog(
                     this.activity, this);
-            this.templateModel = templateModel; this.templateModel.clearExcludesAndOptionalFields();
+            this.templateModel = templateModel;
             this.assignTitleRowsColsAlertDialog.show(this.templateModel);
         }
     }
