@@ -24,7 +24,7 @@ class SetExcludesOptionalFieldsNumberingAlertDialog
 extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
 {
-    interface Handler { public abstract void handleExtraNewTemplateNext(); }
+    interface Handler { public abstract void handleSetDone(); }
 
     // region Fields
     private final
@@ -64,8 +64,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
         this.setNumberingAlertDialog.show(this.templateModel);
     }
 
-    private void handleNext()
-    { assert null != this.handler; this.handler.handleExtraNewTemplateNext(); }
+    private void handleSetDone()
+    { assert null != this.handler; this.handler.handleSetDone(); }
     // endregion
 
     SetExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
@@ -142,7 +142,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.tc
-                        .SetExcludesOptionalFieldsNumberingAlertDialog.this.handleNext();
+                        .SetExcludesOptionalFieldsNumberingAlertDialog.this.handleSetDone();
                 }
             }).setCancelNegativeButton();
     }

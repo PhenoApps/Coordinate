@@ -17,7 +17,7 @@ package org.wheatgenetics.coordinate.ui.tc;
 class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
-                   interface Handler     { public abstract void handleNewTemplateNext(); }
+                   interface Handler     { public abstract void handleAssignDone(); }
     private static class     Unspecified extends java.lang.Exception {}
     // endregion
 
@@ -72,7 +72,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
                     assert null != this.templateModel; this.templateModel.assign(
                         /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();
-                    assert null != this.handler; this.handler.handleNewTemplateNext();
+                    assert null != this.handler; this.handler.handleAssignDone();
                 }
                 catch (final
                 org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified e)

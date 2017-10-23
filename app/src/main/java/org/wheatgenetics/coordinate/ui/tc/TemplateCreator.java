@@ -37,7 +37,7 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler Overridden Method
     @java.lang.Override
-    public void handleNewTemplateNext()
+    public void handleAssignDone()
     {
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog = new
@@ -49,7 +49,7 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
 
     // region org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
     @java.lang.Override
-    public void handleExtraNewTemplateNext()
+    public void handleSetDone()
     { assert null != this.handler; this.handler.handleTemplateCreated(); }
     // endregion
     // endregion
