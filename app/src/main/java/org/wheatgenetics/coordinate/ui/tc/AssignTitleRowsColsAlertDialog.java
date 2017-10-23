@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
                    interface Handler     { public abstract void handleNewTemplateNext(); }
@@ -22,7 +22,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
     // endregion
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Handler handler;
+    private final org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler handler;
 
     private android.widget.EditText titleTextEdit, rowsTextEdit, colsTextEdit;
     private org.wheatgenetics.coordinate.model.TemplateModel    templateModel;
@@ -34,15 +34,17 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
     private static int convert(final java.lang.String string)
-    throws org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Unspecified
+    throws org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified
     {
         if (0 == string.length())
-            throw new org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Unspecified();
+            throw
+                new org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified();
         else
         {
             final int i = java.lang.Integer.valueOf(string);
             if (i < 1)
-                throw new org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Unspecified();
+                throw new
+                    org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified();
             else
                 return i;
         }
@@ -58,12 +60,13 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
         else
             try
             {
-                final int rows = org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.convert(
-                    org.wheatgenetics.androidlibrary.Utils.getText(this.rowsTextEdit));
+                final int rows =
+                    org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.convert(
+                        org.wheatgenetics.androidlibrary.Utils.getText(this.rowsTextEdit));
                 try
                 {
                     final int cols =
-                        org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.convert(
+                        org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.convert(
                             org.wheatgenetics.androidlibrary.Utils.getText(this.colsTextEdit));
 
                     assert null != this.templateModel; this.templateModel.assign(
@@ -71,17 +74,18 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
                     this.cancelAlertDialog();
                     assert null != this.handler; this.handler.handleNewTemplateNext();
                 }
-                catch (
-                final org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Unspecified e)
+                catch (final
+                org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified e)
                 { this.showToast(org.wheatgenetics.coordinate.R.string.no_cols); }
             }
-            catch (final org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Unspecified e)
+            catch (
+            final org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Unspecified e)
             { this.showToast(org.wheatgenetics.coordinate.R.string.no_rows); }
     }
     // endregion
 
-    NewTemplateAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Handler handler)
+    AssignTitleRowsColsAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -115,10 +119,10 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
             this.templateModel = templateModel;
             assert null != this.titleTextEdit; this.titleTextEdit.setText("");
             assert null != this.rowsTextEdit ; this.rowsTextEdit.setText(
-                org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.convert(
+                org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.convert(
                     this.templateModel.getRows()));
             assert null != this.colsTextEdit; this.colsTextEdit.setText(
-                org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.convert(
+                org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.convert(
                     this.templateModel.getCols()));
             this.show();
 
@@ -128,8 +132,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
                     @java.lang.Override
                     public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.ui.tc.
-                            NewTemplateAlertDialog.this.assignTemplate();
+                        org.wheatgenetics.coordinate.ui.tc
+                            .AssignTitleRowsColsAlertDialog.this.assignTemplate();
                     }
                 });
         }
