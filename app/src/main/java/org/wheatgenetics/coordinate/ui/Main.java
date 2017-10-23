@@ -677,13 +677,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         return success;
     }
 
-    private long insertGrid(
-    final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    private long insertGrid()
     {
-        assert null != partialTemplateModel;
+        assert null != this.templateModel;
         return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
-            /* temp  => */ partialTemplateModel.getId                     (),
-            /* title => */ partialTemplateModel.getFirstOptionalFieldValue()));
+            /* temp  => */ this.templateModel.getId                     (),
+            /* title => */ this.templateModel.getFirstOptionalFieldValue()));
     }
 
     private void getLoadTemplateGridPopulateUI(final long gridId,
@@ -714,7 +713,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         {
             // deleteUserDefinedTemplateItsGrids(this.templateModel); // TODO
 
-            final long gridId = this.insertGrid(this.templateModel);
+            final long gridId = this.insertGrid();
             if (gridId > 0)
                 this.getLoadTemplateGridPopulateUI(gridId, false);
             else
@@ -765,7 +764,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         assert null != this.templateModel; this.templateModel.setType(templateType);
 
-        final long gridId = this.insertGrid(this.templateModel);
+        final long gridId = this.insertGrid();
         if (gridId > 0)
         {
             assert null != this.optionalFieldLayout;
@@ -883,7 +882,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                     @java.lang.Override
                     public void chooseNew()
-                    { org.wheatgenetics.coordinate.ui.Main.this.createThenLoadTemplate(); }
+                    { org.wheatgenetics.coordinate.ui.Main.this.insertThenLoadTemplate(); }
                 });
         this.getTemplateChoiceAlertDialog.show();
     }
@@ -1203,7 +1202,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 });
     }
 
-    private void createThenLoadTemplate()
+    private void insertThenLoadTemplate()
     {
         if (null == this.templateCreator)
             this.templateCreator = new org.wheatgenetics.coordinate.ui.tc.TemplateCreator(this,
@@ -1212,7 +1211,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     @java.lang.Override
                     public void handleTemplateCreated()
                     {
-                        org.wheatgenetics.coordinate.ui.Main.this
+                        if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
+                            org.wheatgenetics.coordinate.ui.Main.this
                             .setValuesThenLoadDNAPlateOrUserDefinedTemplate(
                                 org.wheatgenetics.coordinate.ui.Main.MODE_NEW_USERDEFINED,
                                 org.wheatgenetics.coordinate.ui.Main.this.templateModel);
@@ -1405,7 +1405,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.createThenLoadTemplate(); break;
+                this.insertThenLoadTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
                 this.selectThenLoadTemplate(); break;
