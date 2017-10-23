@@ -79,8 +79,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ImportAlertDialog
- * org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog
+ * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
@@ -146,8 +146,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         selectTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExportAlertDialog exportAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ImportAlertDialog importAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.ExportAlertDialog     exportAlertDialog     = null;
+    private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
         setSeedTrayOptionalFieldValuesAlertDialog = null, setOptionalFieldValuesAlertDialog = null;
     // endregion
@@ -942,8 +942,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.tempLoad(mode);
-        else
+            this.tempLoad(mode);                           // There is no need to set optional field
+        else                                               //  values since optionalFields is empty.
         {
             if (null == this.setOptionalFieldValuesAlertDialog)
                 this.setOptionalFieldValuesAlertDialog =
@@ -1231,8 +1231,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                             case 1:                                                     // dna plate
                                 templateModel.makeOneRandomCell();
-                                org.wheatgenetics.coordinate.ui.
-                                    Main.this.setValuesThenLoadDNAPlateTemplate(templateModel);
+                                org.wheatgenetics.coordinate.ui.Main.this
+                                    .setValuesThenLoadDNAPlateTemplate(templateModel);
                                 break;
 
                             default: org.wheatgenetics.coordinate.ui.Main.this
@@ -1299,9 +1299,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             final java.lang.String names  [] = gridModels.names  ();
             final long             indexes[] = gridModels.indexes();
 
-            if (null == this.importAlertDialog) this.importAlertDialog =
-                new org.wheatgenetics.coordinate.ui.ImportAlertDialog(this,
-                    new org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler()
+            if (null == this.importGridAlertDialog) this.importGridAlertDialog =
+                new org.wheatgenetics.coordinate.ui.ImportGridAlertDialog(this,
+                    new org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler()
                     {
                         @java.lang.Override
                         public void importGrid(final int which)
@@ -1310,7 +1310,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                 Main.this.getLoadTemplateGridPopulateUI(indexes[which], false);
                         }
                     });
-            this.importAlertDialog.show(names);
+            this.importGridAlertDialog.show(names);
         }
     }
 

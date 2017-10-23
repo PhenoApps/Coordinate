@@ -10,17 +10,17 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  */
-class ImportAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
+class ImportGridAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
     interface Handler { public abstract void importGrid(int which); }
 
-    private final org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler handler;
+    private final org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler handler;
 
     private void importGrid(final int which)
     { assert null != this.handler; this.handler.importGrid(which); }
 
-    ImportAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.ImportAlertDialog.Handler handler)
+    ImportGridAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -31,7 +31,7 @@ class ImportAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialo
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.ImportAlertDialog.this.importGrid(which); }
+                { org.wheatgenetics.coordinate.ui.ImportGridAlertDialog.this.importGrid(which); }
             });
     }
 }
