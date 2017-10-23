@@ -20,13 +20,16 @@ package org.wheatgenetics.coordinate.ui.tc;
  * org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog
  */
-class ExtraNewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class ExcludesOptionalFieldsNumberingAlertDialog
+extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
 {
     interface Handler { public abstract void handleExtraNewTemplateNext(); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.tc.ExtraNewTemplateAlertDialog.Handler handler;
+    private final
+        org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+        handler;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
@@ -65,8 +68,9 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
     { assert null != this.handler; this.handler.handleExtraNewTemplateNext(); }
     // endregion
 
-    ExtraNewTemplateAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.tc.ExtraNewTemplateAlertDialog.Handler handler)
+    ExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+        handler)
     { super(activity); this.handler = handler; }
 
     // region Overridden Methods
@@ -89,8 +93,9 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         @java.lang.Override
                         public void onClick(final android.view.View v)
                         {
-                            org.wheatgenetics.coordinate.ui.tc.
-                                ExtraNewTemplateAlertDialog.this.checkAndAddOptionalFields();
+                            org.wheatgenetics.coordinate.ui.tc
+                                .ExcludesOptionalFieldsNumberingAlertDialog.this
+                                .checkAndAddOptionalFields();
                         }
                     });
             }
@@ -104,8 +109,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         @java.lang.Override
                         public void onClick(final android.view.View v)
                         {
-                            org.wheatgenetics.coordinate.ui.tc.
-                                ExtraNewTemplateAlertDialog.this.addExcludes();
+                            org.wheatgenetics.coordinate.ui.tc
+                                .ExcludesOptionalFieldsNumberingAlertDialog.this.addExcludes();
                         }
                     });
             }
@@ -119,8 +124,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         @java.lang.Override
                         public void onClick(final android.view.View v)
                         {
-                            org.wheatgenetics.coordinate.ui.tc.
-                                ExtraNewTemplateAlertDialog.this.addNaming();
+                            org.wheatgenetics.coordinate.ui.tc
+                                .ExcludesOptionalFieldsNumberingAlertDialog.this.addNaming();
                         }
                     });
             }
@@ -134,8 +139,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    org.wheatgenetics.coordinate.ui.tc.
-                        ExtraNewTemplateAlertDialog.this.handleNext();
+                    org.wheatgenetics.coordinate.ui.tc
+                        .ExcludesOptionalFieldsNumberingAlertDialog.this.handleNext();
                 }
             }).setCancelNegativeButton();
     }
