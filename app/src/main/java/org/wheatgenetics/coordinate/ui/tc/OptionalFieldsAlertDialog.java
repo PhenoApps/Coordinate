@@ -90,7 +90,7 @@ implements org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handle
 
     // region org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler Overridden Method
     @java.lang.Override
-    public void showOptionalFieldsAlertDialog()
+    public void handleAddOptionalFieldDone()
     { assert null != this.handler; this.handler.showOptionalFieldsAlertDialog(); }
     // endregion
     // endregion

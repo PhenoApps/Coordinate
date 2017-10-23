@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  */
 class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
+    interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
     private final org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler handler;
@@ -25,21 +25,21 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel                     ;
     // endregion
 
-    private void handlePositiveButtonClick()
+    private void addOptionalField()
     {
-        final java.lang.String newName =
+        final java.lang.String name =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
-        final java.lang.String newDefault =
+        final java.lang.String defaultValue =
             org.wheatgenetics.androidlibrary.Utils.getText(this.defaultValueEditText);
 
-        if (0 == newName.length())
+        if (0 == name.length())
             this.showToast(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name);
         else
         {
             assert null != this.templateModel;
-            this.templateModel.addOptionalField(/* name => */ newName, /* value => */ newDefault);
+            this.templateModel.addOptionalField(/* name => */ name, /* value => */ defaultValue);
             this.cancelAlertDialog();
-            assert null != this.handler; this.handler.showOptionalFieldsAlertDialog();
+            assert null != this.handler; this.handler.handleAddOptionalFieldDone();
         }
     }
 
@@ -84,7 +84,8 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
                     @java.lang.Override
                     public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.this.handlePositiveButtonClick();
+                        org.wheatgenetics.coordinate.ui.tc
+                            .AddOptionalFieldAlertDialog.this.addOptionalField();
                     }
                 });
         }
