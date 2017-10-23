@@ -143,7 +143,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
         getTemplateChoiceAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
-        selectTemplateAlertDialog = null;
+        selectTemplateToLoadAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportGridAlertDialog exportGridAlertDialog = null;
@@ -1215,8 +1215,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
-        if (null == this.selectTemplateAlertDialog) this.selectTemplateAlertDialog =
+        if (null == this.selectTemplateToLoadAlertDialog) this.selectTemplateToLoadAlertDialog =
             new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.template_load,
                 new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
@@ -1240,7 +1241,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         }
                     }
                 });
-        this.selectTemplateAlertDialog.show(templateModels.titles());
+        this.selectTemplateToLoadAlertDialog.show(templateModels.titles());
     }
 
     private void deleteTemplateAfterConfirm(
