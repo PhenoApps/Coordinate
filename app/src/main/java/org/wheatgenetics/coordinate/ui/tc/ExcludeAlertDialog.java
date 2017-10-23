@@ -64,7 +64,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                             ExcludeRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
-                            public void process(final boolean checkedItems[])
+                            public void excludeRowsOrCols(final boolean checkedItems[])
                             {
                                 org.wheatgenetics.coordinate.ui.tc.
                                     ExcludeAlertDialog.this.excludeRows(checkedItems);
@@ -84,7 +84,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                             ExcludeRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
-                            public void process(final boolean[] checkedItems)
+                            public void excludeRowsOrCols(final boolean[] checkedItems)
                             {
                                 org.wheatgenetics.coordinate.ui.tc.
                                     ExcludeAlertDialog.this.excludeCols(checkedItems);
