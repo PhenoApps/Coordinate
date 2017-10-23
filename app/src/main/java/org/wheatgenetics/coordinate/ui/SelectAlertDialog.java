@@ -8,20 +8,20 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.androidlibrary.ItemsAlertDialog
  */
-class SelectTemplateAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
+class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
     interface Handler { public abstract void select(int which); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler handler;
-    private final int                                                               title  ;
+    private final org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler handler;
+    private final int                                                       title  ;
     // endregion
 
     private void select(final int which)
     { assert null != this.handler; this.handler.select(which); }
 
-    SelectTemplateAlertDialog(final android.app.Activity activity, final int title,
-    final org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler handler)
+    SelectAlertDialog(final android.app.Activity activity, final int title,
+    final org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler handler)
     { super(activity); this.title = title; this.handler = handler; }
 
     @java.lang.Override
@@ -32,7 +32,7 @@ class SelectTemplateAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAl
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.this.select(which); }
+                { org.wheatgenetics.coordinate.ui.SelectAlertDialog.this.select(which); }
             });
     }
 }
