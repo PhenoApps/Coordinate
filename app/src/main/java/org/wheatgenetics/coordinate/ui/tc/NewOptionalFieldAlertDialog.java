@@ -21,8 +21,8 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     // region Fields
     private final org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler handler;
 
-    private android.widget.EditText                          nameEditText, defaultEditText;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                ;
+    private android.widget.EditText                          nameEditText, defaultValueEditText;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                     ;
     // endregion
 
     private void handlePositiveButtonClick()
@@ -30,7 +30,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         final java.lang.String newName =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
         final java.lang.String newDefault =
-            org.wheatgenetics.androidlibrary.Utils.getText(this.defaultEditText);
+            org.wheatgenetics.androidlibrary.Utils.getText(this.defaultValueEditText);
 
         if (0 == newName.length())
             this.showToast(org.wheatgenetics.coordinate.R.string.new_optional_field_no_name);
@@ -60,8 +60,9 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             assert null != view;
             if (null == this.nameEditText) this.nameEditText = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.fieldEdit);
-            if (null == this.defaultEditText) this.defaultEditText = (android.widget.EditText)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
+            if (null == this.defaultValueEditText)
+                this.defaultValueEditText = (android.widget.EditText)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.valueEdit);
 
             this.setView(view);
         }
@@ -73,8 +74,8 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     {
         if (null != templateModel)
         {
-            assert null != this.nameEditText   ; this.nameEditText.setText   ("");
-            assert null != this.defaultEditText; this.defaultEditText.setText("");
+            assert null != this.nameEditText        ; this.nameEditText.setText        ("");
+            assert null != this.defaultValueEditText; this.defaultValueEditText.setText("");
             this.templateModel = templateModel; this.show();
 
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(

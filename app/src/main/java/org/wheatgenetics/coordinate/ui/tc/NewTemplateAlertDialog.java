@@ -24,8 +24,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
     // region Fields
     private final org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.Handler handler;
 
-    private android.widget.EditText nameTextEdit, rowsTextEdit, colsTextEdit;
-    private org.wheatgenetics.coordinate.model.TemplateModel   templateModel;
+    private android.widget.EditText titleTextEdit, rowsTextEdit, colsTextEdit;
+    private org.wheatgenetics.coordinate.model.TemplateModel    templateModel;
     // endregion
 
     // region Private Methods
@@ -51,9 +51,9 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
 
     private void assignTemplate()
     {
-        final java.lang.String name =
-            org.wheatgenetics.androidlibrary.Utils.getText(this.nameTextEdit);
-        if (0 == name.length())
+        final java.lang.String title =
+            org.wheatgenetics.androidlibrary.Utils.getText(this.titleTextEdit);
+        if (0 == title.length())
             this.showToast(org.wheatgenetics.coordinate.R.string.template_no_name);
         else
             try
@@ -67,7 +67,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
                             org.wheatgenetics.androidlibrary.Utils.getText(this.colsTextEdit));
 
                     assert null != this.templateModel; this.templateModel.assign(
-                        /* title => */ name, /* rows => */ rows, /* cols => */ cols);
+                        /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();
                     assert null != this.handler; this.handler.handleNewTemplateNext();
                 }
@@ -94,7 +94,7 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
                 this.inflate(org.wheatgenetics.coordinate.R.layout.template_new);
 
             assert null != view;
-            if (null == this.nameTextEdit) this.nameTextEdit = (android.widget.EditText)
+            if (null == this.titleTextEdit) this.titleTextEdit = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.nameEdit);
             if (null == this.rowsTextEdit) this.rowsTextEdit = (android.widget.EditText)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEdit);
@@ -113,8 +113,8 @@ class NewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialo
         if (null != templateModel)
         {
             this.templateModel = templateModel;
-            assert null != this.nameTextEdit; this.nameTextEdit.setText("");
-            assert null != this.rowsTextEdit; this.rowsTextEdit.setText(
+            assert null != this.titleTextEdit; this.titleTextEdit.setText("");
+            assert null != this.rowsTextEdit ; this.rowsTextEdit.setText(
                 org.wheatgenetics.coordinate.ui.tc.NewTemplateAlertDialog.convert(
                     this.templateModel.getRows()));
             assert null != this.colsTextEdit; this.colsTextEdit.setText(
