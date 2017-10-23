@@ -658,6 +658,25 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Operations
+    private boolean insertTemplate()
+    {
+        boolean success;
+        {
+            final long templateId = this.templatesTable().insert(this.templateModel);
+            if (templateId > 0)
+            {
+                assert null != this.templateModel; this.templateModel.setId(templateId);
+                success = true;
+            }
+            else
+            {
+                this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
+                success = false;
+            }
+        }
+        return success;
+    }
+
     private long insertGrid(
     final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
@@ -691,19 +710,16 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void insertGetLoadTemplateGridPopulateUI()
     {
-        final long templateId = this.templatesTable().insert(this.templateModel);
-        if (templateId > 0)
+        if (this.insertTemplate())
         {
             // deleteUserDefinedTemplateItsGrids(this.templateModel); // TODO
 
-            assert null != this.templateModel; this.templateModel.setId(templateId);
             final long gridId = this.insertGrid(this.templateModel);
             if (gridId > 0)
                 this.getLoadTemplateGridPopulateUI(gridId, false);
             else
                 this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
         }
-        else this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
     }
 
     private boolean deleteEntriesGrid()
@@ -1230,7 +1246,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                     .setValuesThenLoadDNAPlateTemplate(templateModel);
                                 break;
 
-                            default: org.wheatgenetics.coordinate.ui.Main.this
+                            default: org.wheatgenetics.coordinate.ui.Main.this       // user-defined
                                 .setValuesThenLoadOldUserDefinedTemplate(templateModel); break;
                         }
                     }
