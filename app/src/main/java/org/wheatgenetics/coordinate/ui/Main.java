@@ -75,8 +75,8 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
  * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.ExportAlertDialog
- * org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog
+ * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog
@@ -146,7 +146,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         selectTemplateAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
         deleteTemplateAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExportAlertDialog     exportAlertDialog     = null;
+    private org.wheatgenetics.coordinate.ui.ExportGridAlertDialog exportGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
         setSeedTrayOptionalFieldValuesAlertDialog = null, setOptionalFieldValuesAlertDialog = null;
@@ -1336,9 +1336,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void exportGrid()
     {
-        if (null == this.exportAlertDialog) this.exportAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExportAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler()
+        if (null == this.exportGridAlertDialog) this.exportGridAlertDialog =
+            new org.wheatgenetics.coordinate.ui.ExportGridAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void exportGrid(final java.lang.String fileName)
@@ -1348,7 +1348,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     }
                 });
         assert null != this.templateModel;
-        this.exportAlertDialog.show(this.templateModel.getFirstOptionalFieldDatedValue());
+        this.exportGridAlertDialog.show(this.templateModel.getFirstOptionalFieldDatedValue());
     }
 
     private void showAboutAlertDialog()

@@ -12,13 +12,13 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  */
-class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class ExportGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler { public abstract void exportGrid(java.lang.String fileName); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler handler ;
-    private       android.widget.EditText                                   editText;
+    private final org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler handler ;
+    private       android.widget.EditText                                       editText;
     // endregion
 
     private void exportGrid()
@@ -34,8 +34,8 @@ class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         }
     }
 
-    ExportAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.ExportAlertDialog.Handler handler)
+    ExportGridAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -67,7 +67,7 @@ class ExportAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.view.View view)
-                { org.wheatgenetics.coordinate.ui.ExportAlertDialog.this.exportGrid(); }
+                { org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.this.exportGrid(); }
             });
     }
 }
