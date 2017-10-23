@@ -14,12 +14,12 @@ package org.wheatgenetics.coordinate.ui.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler handler;
+    private final org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler handler;
 
     private android.widget.EditText                          nameEditText, defaultValueEditText;
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel                     ;
@@ -43,8 +43,8 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         }
     }
 
-    NewOptionalFieldAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler handler)
+    AddOptionalFieldAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -84,8 +84,7 @@ class NewOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
                     @java.lang.Override
                     public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.ui.tc.
-                            NewOptionalFieldAlertDialog.this.handlePositiveButtonClick();
+                        org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.this.handlePositiveButtonClick();
                     }
                 });
         }

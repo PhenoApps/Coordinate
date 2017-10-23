@@ -13,11 +13,11 @@ package org.wheatgenetics.coordinate.ui.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog
- * org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog
+ * org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler
  */
 class OptionalFieldsAlertDialog extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
-implements org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler
+implements org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler
 {
     interface Handler { public abstract void showOptionalFieldsAlertDialog(); }
 
@@ -28,8 +28,8 @@ implements org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handle
 
     private android.content.DialogInterface.OnMultiChoiceClickListener
         onMultiChoiceClickListenerInstance = null;
-    private org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog
-        newOptionalFieldAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog
+        addOptionalFieldAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -58,10 +58,10 @@ implements org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handle
 
     private void addOptionalField()
     {
-        if (null == this.newOptionalFieldAlertDialog) this.newOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog(
+        if (null == this.addOptionalFieldAlertDialog) this.addOptionalFieldAlertDialog =
+            new org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog(
                 this.activity(), this);
-        this.newOptionalFieldAlertDialog.show(this.templateModel);
+        this.addOptionalFieldAlertDialog.show(this.templateModel);
     }
     // endregion
 
@@ -88,7 +88,7 @@ implements org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handle
                 });
     }
 
-    // region org.wheatgenetics.coordinate.ui.tc.NewOptionalFieldAlertDialog.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler Overridden Method
     @java.lang.Override
     public void showOptionalFieldsAlertDialog()
     { assert null != this.handler; this.handler.showOptionalFieldsAlertDialog(); }
