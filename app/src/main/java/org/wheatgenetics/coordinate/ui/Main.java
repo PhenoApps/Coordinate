@@ -73,8 +73,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
  *
- * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
- * org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog
  * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
@@ -144,8 +142,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         getTemplateChoiceAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
         selectTemplateToLoadAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog
-        deleteTemplateAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
+        selectTemplateToDeleteAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ExportGridAlertDialog exportGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
@@ -1260,12 +1258,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
 
-        if (null == this.deleteTemplateAlertDialog) this.deleteTemplateAlertDialog =
-            new org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.DeleteTemplateAlertDialog.Handler()
+        if (null == this.selectTemplateToDeleteAlertDialog) this.selectTemplateToDeleteAlertDialog =
+            new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.delete_template,
+                new org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void deleteTemplate(final int which)
+                    public void select(final int which)
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                             templateModels.get(which);
@@ -1286,7 +1285,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                     });
                     }
                 });
-        this.deleteTemplateAlertDialog.show(templateModels.titles());
+        this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
     }
 
     @android.annotation.SuppressLint("DefaultLocale")
