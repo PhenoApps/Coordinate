@@ -18,7 +18,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  * org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog
- * org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog
+ * org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog
  */
 class ExtraNewTemplateAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
@@ -33,7 +33,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
     private org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog
         checkAndAddOptionalFieldsAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog excludeAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog  namingAlertDialog  = null;
+    private org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog
+        setNumberingAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -55,9 +56,9 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
 
     private void addNaming()
     {
-        if (null == this.namingAlertDialog) this.namingAlertDialog =
-            new org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog(this.activity());
-        this.namingAlertDialog.show(this.templateModel);
+        if (null == this.setNumberingAlertDialog) this.setNumberingAlertDialog =
+            new org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog(this.activity());
+        this.setNumberingAlertDialog.show(this.templateModel);
     }
 
     private void handleNext()

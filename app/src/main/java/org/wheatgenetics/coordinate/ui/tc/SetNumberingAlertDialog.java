@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-class NamingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private android.widget.Spinner                           rowSpinner, colSpinner;
@@ -30,7 +30,7 @@ class NamingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
     }
 
-    NamingAlertDialog(final android.app.Activity activity) { super(activity); }
+    SetNumberingAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
     public void configure()
@@ -54,7 +54,7 @@ class NamingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.ui.tc.NamingAlertDialog.this.setNumbering(); }
+                { org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog.this.setNumbering(); }
             }).setCancelNegativeButton();
     }
 
