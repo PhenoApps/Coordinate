@@ -680,9 +680,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private long insertGrid()
     {
         assert null != this.templateModel;
-        return this.gridsTable().insert(new org.wheatgenetics.coordinate.model.GridModel(
-            /* temp  => */ this.templateModel.getId                     (),
-            /* title => */ this.templateModel.getFirstOptionalFieldValue()));
+        final long gridId = this.gridsTable().insert(
+            new org.wheatgenetics.coordinate.model.GridModel(
+                /* temp  => */ this.templateModel.getId()                     ,
+                /* title => */ this.templateModel.getFirstOptionalFieldValue()));
+        if (gridId <= 0) this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
+        return gridId;
     }
 
     private void getLoadTemplateGridPopulateUI(final long gridId,
@@ -704,20 +707,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             }
 
             this.populateUI();
-        }
-    }
-
-    private void insertGetLoadTemplateGridPopulateUI()
-    {
-        if (this.insertTemplate())
-        {
-            // deleteUserDefinedTemplateItsGrids(this.templateModel); // TODO
-
-            final long gridId = this.insertGrid();
-            if (gridId > 0)
-                this.getLoadTemplateGridPopulateUI(gridId, false);
-            else
-                this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
         }
     }
 
@@ -775,7 +764,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
             this.getLoadTemplateGridPopulateUI(gridId, false);
         }
-        else this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
     }
 
     private void tempLoad(final int mode)
