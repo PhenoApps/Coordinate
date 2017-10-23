@@ -12,16 +12,16 @@ package org.wheatgenetics.coordinate.ui;
  *
  * org.wheatgenetics.coordinate.R
  */
-class ExportGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class GetExportGridFileNameAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    interface Handler { public abstract void exportGrid(java.lang.String fileName); }
+    interface Handler { public abstract void handleGetFileNameDone(java.lang.String fileName); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler handler ;
-    private       android.widget.EditText                                       editText;
+    private final org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler handler ;
+    private       android.widget.EditText                                                  editText;
     // endregion
 
-    private void exportGrid()
+    private void handleGetFileNameDone()
     {
         final java.lang.String fileName =
             org.wheatgenetics.androidlibrary.Utils.getText(this.editText);
@@ -30,12 +30,12 @@ class ExportGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         else
         {
             this.cancelAlertDialog();
-            assert null != this.handler; this.handler.exportGrid(fileName);
+            assert null != this.handler; this.handler.handleGetFileNameDone(fileName);
         }
     }
 
-    ExportGridAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler handler)
+    GetExportGridFileNameAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override
@@ -67,7 +67,10 @@ class ExportGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             {
                 @java.lang.Override
                 public void onClick(final android.view.View view)
-                { org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.this.exportGrid(); }
+                {
+                    org.wheatgenetics.coordinate.ui
+                        .GetExportGridFileNameAlertDialog.this.handleGetFileNameDone();
+                }
             });
     }
 }

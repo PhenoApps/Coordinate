@@ -73,8 +73,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
  *
- * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog
- * org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
+ * org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.ImportGridAlertDialog
@@ -142,12 +142,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         getTemplateChoiceAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
         selectTemplateToLoadAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
-        selectTemplateToDeleteAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ExportGridAlertDialog exportGridAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
         setSeedTrayOptionalFieldValuesAlertDialog = null, setOptionalFieldValuesAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SelectTemplateAlertDialog
+        selectTemplateToDeleteAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
+        getExportGridFileNameAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.ImportGridAlertDialog importGridAlertDialog = null;
     // endregion
     // endregion
 
@@ -1335,19 +1336,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void exportGrid()
     {
-        if (null == this.exportGridAlertDialog) this.exportGridAlertDialog =
-            new org.wheatgenetics.coordinate.ui.ExportGridAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.ExportGridAlertDialog.Handler()
+        if (null == this.getExportGridFileNameAlertDialog) this.getExportGridFileNameAlertDialog =
+            new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void exportGrid(final java.lang.String fileName)
+                    public void handleGetFileNameDone(final java.lang.String fileName)
                     {
                         org.wheatgenetics.coordinate.ui.Main.this.exportGridAfterGettingFileName(
                             fileName);
                     }
                 });
         assert null != this.templateModel;
-        this.exportGridAlertDialog.show(this.templateModel.getFirstOptionalFieldDatedValue());
+        this.getExportGridFileNameAlertDialog.show(
+            this.templateModel.getFirstOptionalFieldDatedValue());
     }
 
     private void showAboutAlertDialog()

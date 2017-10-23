@@ -40,12 +40,13 @@ org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
     @java.lang.Override
     public void handleAssignDone()
     {
+        assert null != this.templateModel;
+        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog = new
                 org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
-        assert null != this.templateModel;
-        this.templateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
         this.templateModel.clearExcludesAndOptionalFields();
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
