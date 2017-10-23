@@ -8,13 +8,13 @@ package org.wheatgenetics.coordinate.ui.tc;
  *
  * org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler
- * org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog
- * org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+ * org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
+ * org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class TemplateCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog.Handler,
-org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
 {
     public interface Handler { public abstract void handleTemplateCreated(); }
 
@@ -26,8 +26,8 @@ org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Ha
 
     private org.wheatgenetics.coordinate.ui.tc.AssignTitleRowsColsAlertDialog
         assignTitleRowsColsAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog
-        excludesOptionalFieldsNumberingAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog
+        setExcludesOptionalFieldsNumberingAlertDialog = null;
     // endregion
 
     public TemplateCreator(final android.app.Activity activity,
@@ -39,15 +39,15 @@ org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Ha
     @java.lang.Override
     public void handleNewTemplateNext()
     {
-        if (null == this.excludesOptionalFieldsNumberingAlertDialog)
-            this.excludesOptionalFieldsNumberingAlertDialog =
-                new org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog(
+        if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
+            this.setExcludesOptionalFieldsNumberingAlertDialog = new
+                org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
-        this.excludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
+        this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
 
-    // region org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog Overridden Method
+    // region org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
     @java.lang.Override
     public void handleExtraNewTemplateNext()
     { assert null != this.handler; this.handler.handleTemplateCreated(); }

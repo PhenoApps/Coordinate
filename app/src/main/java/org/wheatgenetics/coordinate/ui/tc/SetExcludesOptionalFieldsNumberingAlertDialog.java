@@ -20,7 +20,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  * org.wheatgenetics.coordinate.ui.tc.ExcludeAlertDialog
  * org.wheatgenetics.coordinate.ui.tc.SetNumberingAlertDialog
  */
-class ExcludesOptionalFieldsNumberingAlertDialog
+class SetExcludesOptionalFieldsNumberingAlertDialog
 extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
 {
@@ -28,7 +28,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
 
     // region Fields
     private final
-        org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+        org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
         handler;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
@@ -68,8 +68,8 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
     { assert null != this.handler; this.handler.handleExtraNewTemplateNext(); }
     // endregion
 
-    ExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.ui.tc.ExcludesOptionalFieldsNumberingAlertDialog.Handler
+    SetExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
+    final org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
         handler)
     { super(activity); this.handler = handler; }
 
@@ -96,7 +96,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         public void onClick(final android.view.View v)
                         {
                             org.wheatgenetics.coordinate.ui.tc
-                                .ExcludesOptionalFieldsNumberingAlertDialog.this
+                                .SetExcludesOptionalFieldsNumberingAlertDialog.this
                                 .checkAndAddOptionalFields();
                         }
                     });
@@ -112,7 +112,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         public void onClick(final android.view.View v)
                         {
                             org.wheatgenetics.coordinate.ui.tc
-                                .ExcludesOptionalFieldsNumberingAlertDialog.this.exclude();
+                                .SetExcludesOptionalFieldsNumberingAlertDialog.this.exclude();
                         }
                     });
             }
@@ -127,7 +127,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                         public void onClick(final android.view.View v)
                         {
                             org.wheatgenetics.coordinate.ui.tc
-                                .ExcludesOptionalFieldsNumberingAlertDialog.this.setNumbering();
+                                .SetExcludesOptionalFieldsNumberingAlertDialog.this.setNumbering();
                         }
                     });
             }
@@ -142,7 +142,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
                 public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
                     org.wheatgenetics.coordinate.ui.tc
-                        .ExcludesOptionalFieldsNumberingAlertDialog.this.handleNext();
+                        .SetExcludesOptionalFieldsNumberingAlertDialog.this.handleNext();
                 }
             }).setCancelNegativeButton();
     }
