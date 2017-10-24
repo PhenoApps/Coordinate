@@ -906,8 +906,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
+    // region deleteTemplate() Operations
     // TODO: Shouldn't this also delete entries records associated with grids records?
-    private boolean deleteUserDefinedTemplateItsGrids(
+    private boolean deleteGridsByTemplateThenDeleteTemplate(
     final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
         assert null != partialTemplateModel; final long templateId = partialTemplateModel.getId();
@@ -936,6 +937,55 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
         else return false;
     }
+
+    private void deleteTemplateAfterConfirm(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (this.deleteGridsByTemplateThenDeleteTemplate(templateModel))
+        {
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.template_deleted);
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
+        }
+        else this.showLongToast(org.wheatgenetics.coordinate.R.string.template_not_deleted);
+    }
+
+    private void deleteTemplateAfterSelect(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel) this.confirm(
+            /* title       => */ org.wheatgenetics.coordinate.R.string.delete_template        ,
+            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_template_warning,
+            /* yesRunnable => */ new java.lang.Runnable()
+                {
+                    @java.lang.Override
+                    public void run()
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterConfirm(
+                            templateModel);
+                    }
+                });
+    }
+
+    private void deleteTemplate()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            this.templatesTable().load();
+
+        if (null == this.selectTemplateToDeleteAlertDialog) this.selectTemplateToDeleteAlertDialog =
+            new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.delete_template,
+                new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void select(final int which)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterSelect(
+                            templateModels.get(which));
+                    }
+                });
+        this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
+    }
+    // endregion
     // endregion
 
     // region Drawer Methods
@@ -1185,54 +1235,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void deleteTemplateAfterConfirm(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (this.deleteUserDefinedTemplateItsGrids(templateModel))
-        {
-            this.showLongToast(org.wheatgenetics.coordinate.R.string.template_deleted);
-            this.getTemplateThenSetValuesThenInsertGridThenLoad();
-        }
-        else this.showLongToast(org.wheatgenetics.coordinate.R.string.template_not_deleted);
-    }
-
-    private void deleteTemplateAfterSelect(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel) this.confirm(
-            /* title       => */ org.wheatgenetics.coordinate.R.string.delete_template        ,
-            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_template_warning,
-            /* yesRunnable => */ new java.lang.Runnable()
-                {
-                    @java.lang.Override
-                    public void run()
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterConfirm(
-                            templateModel);
-                    }
-                });
-    }
-
-    private void deleteTemplate()
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            this.templatesTable().load();
-
-        if (null == this.selectTemplateToDeleteAlertDialog) this.selectTemplateToDeleteAlertDialog =
-            new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.delete_template,
-                new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void select(final int which)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.deleteTemplateAfterSelect(
-                            templateModels.get(which));
-                    }
-                });
-        this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
-    }
-
     @android.annotation.SuppressLint("DefaultLocale")
     private void importGrid()
     {
