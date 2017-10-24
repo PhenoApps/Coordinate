@@ -728,8 +728,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     templatesTable.get(templateId);
                 assert null != templateModel; templateType = templateModel.getType();
             }
-            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
-            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
+            if (templateType.isDefaultTemplate())
             {
                 this.showShortToast(
                     org.wheatgenetics.coordinate.R.string.template_not_deleted_default);
@@ -873,8 +872,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.templateModel;
             final org.wheatgenetics.coordinate.model.TemplateType templateType =
                 this.templateModel.getType();
-            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
-            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
+            if (templateType.isDefaultTemplate())
                 this.templateModel = this.templatesTable().get(templateType);
         }
         this.setValuesThenInsertGridThenLoad();
@@ -907,8 +905,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.templateModel;
             this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
                 this.makeCheckedOptionalFields(),
-                /* firstCannotBeEmpty => */ this.templateModel.getType() !=
-                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+                /* firstCannotBeEmpty => */ this.templateModel.getType().isDefaultTemplate());
         }
     }
 

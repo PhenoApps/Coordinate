@@ -22,5 +22,6 @@ public enum TemplateType
                     throw new java.lang.IllegalArgumentException();
     }
 
-    public int getCode() { return this.code; }
+    public int     getCode()           { return this.code                       ; }
+    public boolean isDefaultTemplate() { return this.code == 0 || this.code == 1; }
 }
