@@ -150,7 +150,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Private Methods
-    private void configureNavigationDrawer() // 348
+    private void configureNavigationDrawer()
     {
         {
             final android.widget.TextView personTextView = (android.widget.TextView)
@@ -166,7 +166,31 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    // region isExcluded() Private Methods 574
+    // region Table Private Methods
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance)
+            this.gridsTableInstance = new org.wheatgenetics.coordinate.database.GridsTable(this);
+        return this.gridsTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
+    {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+            new org.wheatgenetics.coordinate.database.EntriesTable(this);
+        return this.entriesTableInstance;
+    }
+    // endregion
+
+    // region this.templateModel Private Methods
+    // region isExcluded() this.templateModel Private Methods
     private boolean isExcludedRow(final int row)
     { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
 
@@ -180,63 +204,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
     // endregion
 
-    private boolean clearGrid() // 629
-    {
-        try
-        {
-            if (this.entriesTable().deleteByGrid(this.gridId))
-                this.populateUI();
-            else
-                this.showLongToast(org.wheatgenetics.coordinate.R.string.clear_fail);
-            return true;
-        }
-        catch (final java.lang.Exception e)
-        {
-            this.showLongToast(org.wheatgenetics.coordinate.R.string.clear_fail);
-            return false;
-        }
-    }
-
-    private void share(final java.io.File exportFile) // 630
-    {
-        final android.content.Intent intent =
-            new android.content.Intent(android.content.Intent.ACTION_SEND);
-
-        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
-            android.net.Uri.parse(exportFile.getAbsolutePath()));
-        intent.setType("text/plain");
-
-        this.startActivity(android.content.Intent.createChooser(intent,
-            this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
-    }
-
-    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields // 731
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
-
-    // region getTag() Private Methods 1362
-    private static java.lang.String getTag(final int row, final int col)
-    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
-
-    private java.lang.String getTag()
-    { return org.wheatgenetics.coordinate.ui.Main.getTag(this.row, this.col); }
-    // endregion
-
-    // region Toast Private Methods 882
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
-
-    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
-
-    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
-    // endregion
     // endregion
 
     // region Utils AlertDialog Private Methods
@@ -270,27 +240,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
     // endregion
 
-    // region Table Private Methods
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
-    }
+    // region Toast Private Methods
+    // region Long Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
-        if (null == this.gridsTableInstance)
-            this.gridsTableInstance = new org.wheatgenetics.coordinate.database.GridsTable(this);
-        return this.gridsTableInstance;
-    }
+    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+    // endregion
 
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this);
-        return this.entriesTableInstance;
-    }
+    // region Short Toast Private Methods
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
+
+    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
+    // endregion
     // endregion
     // endregion
 
@@ -626,8 +589,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 @java.lang.Override
                 public void run()
                 {
-                    if (org.wheatgenetics.coordinate.ui.Main.this.clearGrid())
-                        org.wheatgenetics.coordinate.ui.Main.this.share(exportFile);
+                    org.wheatgenetics.coordinate.ui.Main.this.clearGrid();
+                    org.wheatgenetics.coordinate.ui.Main.this.share(exportFile);
                 }
             }
 
@@ -832,8 +795,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region createGrid() Operations
+    private boolean deleteEntriesByGrid() { return this.entriesTable().deleteByGrid(this.gridId); }
+
     private boolean deleteEntriesByGridThenDeleteGrid()
-    { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
+    { this.deleteEntriesByGrid(); return this.gridsTable().delete(this.gridId); }
 
     private void createGridAfterConfirm()
     {
@@ -1066,6 +1031,28 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.getExportGridFileNameAlertDialog.show(
             this.templateModel.getFirstOptionalFieldDatedValue());
     }
+
+    private void clearGrid()
+    {
+        if (this.deleteEntriesByGrid())
+            this.populateUI();
+        else
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.clear_fail);
+    }
+
+    private void share(final java.io.File exportFile)
+    {
+        final android.content.Intent intent =
+            new android.content.Intent(android.content.Intent.ACTION_SEND);
+
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
+            android.net.Uri.parse(exportFile.getAbsolutePath()));
+        intent.setType("text/plain");
+
+        this.startActivity(android.content.Intent.createChooser(intent,
+            this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
+    }
     // endregion
     // endregion
 
@@ -1218,6 +1205,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
             this.getEntryValue(1, 1)));
     }
+
+    // region getTag() Methods
+    private static java.lang.String getTag(final int row, final int col)
+    { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
+
+    private java.lang.String getTag()
+    { return org.wheatgenetics.coordinate.ui.Main.getTag(this.row, this.col); }
+    // endregion
 
     private void populateUI()
     {
