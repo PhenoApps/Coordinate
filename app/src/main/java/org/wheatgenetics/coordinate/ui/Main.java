@@ -871,10 +871,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
                 this.templateModel = this.templatesTable().get(templateType);
         }
-        this.setValuesThenLoadTemplate();
+        this.setValuesThenInsertGridThenLoad();
     }
 
-    private void setValuesThenLoadTemplate()  // TODO: Merge this method with the one above.
+    private void setValuesThenInsertGridThenLoad()  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
             this.insertGridThenLoad();                           // There is no need to set optional field
@@ -1140,7 +1140,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     public void handleTemplateCreated()
                     {
                         if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
-                            org.wheatgenetics.coordinate.ui.Main.this.setValuesThenLoadTemplate();
+                            org.wheatgenetics.coordinate.ui.
+                                Main.this.setValuesThenInsertGridThenLoad();
                     }
                 });
         this.templateCreator.create(this.templateModel);
@@ -1166,7 +1167,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             org.wheatgenetics.coordinate.model.TemplateType.DNA)
                                 templateModel.makeOneRandomCell();       // TODO: Do in server code.
                             org.wheatgenetics.coordinate.ui.Main.this.templateModel = templateModel;
-                            org.wheatgenetics.coordinate.ui.Main.this.setValuesThenLoadTemplate();
+                            org.wheatgenetics.coordinate.ui.
+                                Main.this.setValuesThenInsertGridThenLoad();
                         }
                     }
                 });
