@@ -141,7 +141,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
         selectTemplateToLoadAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
-        setSeedTrayOptionalFieldValuesAlertDialog = null, setOptionalFieldValuesAlertDialog = null;
+        setOptionalFieldValuesAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
         selectTemplateToDeleteAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
@@ -748,11 +748,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region Drawer Methods
     // region Subsubaction Drawer Methods
-    private void loadExistingTemplate(                      // TODO: DRY? (Compare to deleteGrid().)
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    private void loadTemplate()                             // TODO: DRY? (Compare to deleteGrid().)
     {
-        assert null != this.templateModel; this.templateModel.setType(templateType);
-
         final long gridId = this.insertGrid();
         if (gridId > 0)
         {
@@ -764,16 +761,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
             this.getLoadTemplateGridPopulateUI(gridId, false);
         }
-    }
-
-    private void tempLoad(final int mode)
-    {
-        if (org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode)
-            this.loadExistingTemplate(org.wheatgenetics.coordinate.model.TemplateType.DNA);
-        else
-            if (org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED == mode)
-                this.loadExistingTemplate(
-                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
     }
 
     /** First non-excluded cell. */
@@ -877,67 +864,21 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         this.deleteEntriesGrid();
 
-        assert null != this.templateModel;
-        final org.wheatgenetics.coordinate.model.TemplateType templateType =
-            this.templateModel.getType();
-        if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-            this.setValuesThenLoadSeedTrayTemplate(this.templatesTable().get(templateType));
-        else
-            if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                this.setValuesThenLoadDNAPlateTemplate(this.templatesTable().get(templateType));
-            else
-                // reset options?
-                this.setValuesThenLoadUserDefinedTemplate(this.templateModel);
+        {
+            assert null != this.templateModel;
+            final org.wheatgenetics.coordinate.model.TemplateType templateType =
+                this.templateModel.getType();
+            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType
+            ||  org.wheatgenetics.coordinate.model.TemplateType.DNA  == templateType)
+                this.templateModel = this.templatesTable().get(templateType);
+        }
+        this.setValuesThenLoadTemplate();
     }
 
-    private void setValuesThenLoadSeedTrayTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null == this.setSeedTrayOptionalFieldValuesAlertDialog)
-            this.setSeedTrayOptionalFieldValuesAlertDialog =
-                new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this,
-                    new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler()
-                    {
-                        @java.lang.Override
-                        public void setPerson(final java.lang.String person)
-                        {
-                            assert
-                                null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                            org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
-                                person);
-                        }
-
-                        @java.lang.Override
-                        public void handleSetValuesDone()
-                        {
-                            org.wheatgenetics.coordinate.ui.Main.this.loadExistingTemplate(
-                                org.wheatgenetics.coordinate.model.TemplateType.SEED);
-                        }
-                    });
-        assert null != templateModel;
-        this.setSeedTrayOptionalFieldValuesAlertDialog.show(templateModel.getTitle(),
-            this.makeCheckedOptionalFields(), /* firstCannotBeEmpty => */ true);
-    }
-
-    private void setValuesThenLoadDNAPlateTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        this.setValuesThenLoadDNAPlateOrUserDefinedTemplate(
-            org.wheatgenetics.coordinate.ui.Main.MODE_DNA, templateModel);
-    }
-
-    private void setValuesThenLoadUserDefinedTemplate(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        this.setValuesThenLoadDNAPlateOrUserDefinedTemplate(
-            org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED, templateModel);
-    }
-
-    private void setValuesThenLoadDNAPlateOrUserDefinedTemplate(final int mode,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)  // TODO: Merge this method with the one above.
+    private void setValuesThenLoadTemplate()  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.tempLoad(mode);                           // There is no need to set optional field
+            this.loadTemplate();                           // There is no need to set optional field
         else                                               //  values since optionalFields is empty.
         {
             if (null == this.setOptionalFieldValuesAlertDialog)
@@ -956,11 +897,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                             @java.lang.Override
                             public void handleSetValuesDone()
-                            { org.wheatgenetics.coordinate.ui.Main.this.tempLoad(mode); }
+                            { org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(); }
                         });
-            assert null != templateModel; this.setOptionalFieldValuesAlertDialog.show(
-                templateModel.getTitle(), this.makeCheckedOptionalFields(),
-                /* firstCannotBeEmpty => */ org.wheatgenetics.coordinate.ui.Main.MODE_DNA == mode);
+            assert null != this.templateModel;
+            this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
+                this.makeCheckedOptionalFields(),
+                /* firstCannotBeEmpty => */ this.templateModel.getType() !=
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
         }
     }
 
@@ -1198,10 +1141,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     public void handleTemplateCreated()
                     {
                         if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
-                            org.wheatgenetics.coordinate.ui.Main.this
-                            .setValuesThenLoadDNAPlateOrUserDefinedTemplate(
-                                org.wheatgenetics.coordinate.ui.Main.MODE_USERDEFINED  ,
-                                org.wheatgenetics.coordinate.ui.Main.this.templateModel);
+                            org.wheatgenetics.coordinate.ui.Main.this.setValuesThenLoadTemplate();
                     }
                 });
         this.templateCreator.create(this.templateModel);
@@ -1221,19 +1161,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     {
                         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                             templateModels.get(which);
-                        if (null != templateModel) switch (which)
+                        if (null != templateModel)
                         {
-                            case 0: org.wheatgenetics.coordinate.ui.Main.this           // seed tray
-                                .setValuesThenLoadSeedTrayTemplate(templateModel); break;
-
-                            case 1:                                                     // dna plate
-                                templateModel.makeOneRandomCell();
-                                org.wheatgenetics.coordinate.ui.Main.this
-                                    .setValuesThenLoadDNAPlateTemplate(templateModel);
-                                break;
-
-                            default: org.wheatgenetics.coordinate.ui.Main.this       // user-defined
-                                .setValuesThenLoadUserDefinedTemplate(templateModel); break;
+                            if (templateModel.getType() ==
+                            org.wheatgenetics.coordinate.model.TemplateType.DNA)
+                                templateModel.makeOneRandomCell();       // TODO: Do in server code.
+                            org.wheatgenetics.coordinate.ui.Main.this.templateModel = templateModel;
+                            org.wheatgenetics.coordinate.ui.Main.this.setValuesThenLoadTemplate();
                         }
                     }
                 });
