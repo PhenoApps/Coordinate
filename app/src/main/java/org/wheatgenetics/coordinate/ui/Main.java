@@ -702,7 +702,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.sharedPreferences.setPerson(person);
     }
 
-    private void insertGridThenLoad()                       // TODO: DRY? (Compare to deleteGrid().)
+    private void insertGridThenLoad()
     {
         final long gridId = this.insertGrid();
         if (gridId > 0)
@@ -871,6 +871,38 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             public void run()
                             { org.wheatgenetics.coordinate.ui.Main.this.createGridAfterConfirm(); }
                         });
+    }
+    // endregion
+
+    // region deleteGrid() Operations
+    private void deleteGridAfterConfirm()                    // TODO: DRY? (Compare to chooseOld().)
+    {
+        if (this.deleteEntriesByGridThenDeleteGrid())
+        {
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_deleted);
+            this.gridId = 0;
+
+            assert null != this.optionalFieldLayout;
+            this.optionalFieldLayout.setVisibility(android.view.View.INVISIBLE);
+
+            assert null != this.gridAreaLayout;
+            this.gridAreaLayout.setVisibility(android.view.View.INVISIBLE);
+
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
+        }
+        else this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_not_deleted);
+    }
+
+    private void deleteGrid()
+    {
+        if (0 != this.gridId) this.confirm(
+            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_grid_warning,
+            /* yesRunnable => */ new java.lang.Runnable()
+                {
+                    @java.lang.Override
+                    public void run()
+                    { org.wheatgenetics.coordinate.ui.Main.this.deleteGridAfterConfirm(); }
+                });
     }
     // endregion
 
@@ -1153,36 +1185,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void deleteGridAfterConfirm()         // TODO: DRY? (Compare to chooseOld().)
-    {
-        if (this.deleteEntriesByGridThenDeleteGrid())
-        {
-            this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_deleted);
-            this.gridId = 0;
-
-            assert null != this.optionalFieldLayout;
-            this.optionalFieldLayout.setVisibility(android.view.View.INVISIBLE);
-
-            assert null != this.gridAreaLayout;
-            this.gridAreaLayout.setVisibility(android.view.View.INVISIBLE);
-
-            this.getTemplateThenSetValuesThenInsertGridThenLoad();
-        }
-        else this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_not_deleted);
-    }
-
-    private void deleteGrid()
-    {
-        if (0 != this.gridId) this.confirm(
-            /* message     => */ org.wheatgenetics.coordinate.R.string.delete_grid_warning,
-            /* yesRunnable => */ new java.lang.Runnable()
-                {
-                    @java.lang.Override
-                    public void run()
-                    { org.wheatgenetics.coordinate.ui.Main.this.deleteGridAfterConfirm(); }
-                });
-    }
-
     private void deleteTemplateAfterConfirm(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
