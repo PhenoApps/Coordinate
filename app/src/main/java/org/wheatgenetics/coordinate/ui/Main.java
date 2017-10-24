@@ -142,11 +142,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         getExportGridFileNameAlertDialog = null;
     // endregion
 
-    private java.lang.String versionName                            ;
-    private long             gridId             =  0                ;
-    private java.lang.String gridTitle          = ""                ;
-    private int              currentRow         =  1, currentCol = 1;
-    private long             lastExportedGridId = -1                ;
+    private java.lang.String versionName     ;
+    private long             gridId      =  0;
+    private java.lang.String gridTitle   = "";
+    private int              row = 1, col = 1;
+    private long             lastExportedGridId = -1;
     // endregion
 
     // region Private Methods
@@ -220,7 +220,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
 
     private java.lang.String getTag()
-    { return org.wheatgenetics.coordinate.ui.Main.getTag(this.currentRow, this.currentCol); }
+    { return org.wheatgenetics.coordinate.ui.Main.getTag(this.row, this.col); }
     // endregion
 
     // region Toast Private Methods 882
@@ -577,15 +577,15 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         {
             if (-1 != row && -1 != col)
             {
-                this.currentRow = row; this.currentCol = col;
+                this.row = row; this.col = col;
 
-                final java.lang.String value = this.getEntryValue(this.currentRow, this.currentCol);
+                final java.lang.String value = this.getEntryValue(this.row, this.col);
 
                 if (null != value && value.contains("exclude"))
                     return;
                 else
                 {
-                    this.setCellState(v, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
+                    this.setCellBackground(v, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
 
                     this.cellIDEditText.setSelectAllOnFocus(true);
                     this.cellIDEditText.setText(
@@ -1150,20 +1150,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region User Interface Methods
-    /** First non-excluded cell. */
-    private boolean getNextFreeCell()
-    {
-        {
-            assert null != this.templateModel;
-            final android.graphics.Point nextFreeCell = this.templateModel.nextFreeCell(
-                new android.graphics.Point(this.currentCol, this.currentRow));
-            assert null != nextFreeCell;
-            this.currentRow = nextFreeCell.y; this.currentCol = nextFreeCell.x;
-        }
-        return true;
-    }
-
-    private void setCellState(final android.view.View cell, final int state)
+    private void setCellBackground(final android.view.View cell, final int state)
     {
         int backgroundResourceId;
         switch (state)
@@ -1182,6 +1169,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
 
         assert null != cell; cell.setBackgroundResource(backgroundResourceId);
+    }
+
+    /** First non-excluded cell. */
+    private boolean advanceToNextFreeCell()
+    {
+        {
+            assert null != this.templateModel;
+            final android.graphics.Point nextFreeCell = this.templateModel.nextFreeCell(
+                new android.graphics.Point(this.col, this.row));
+            assert null != nextFreeCell;
+            this.row = nextFreeCell.y; this.col = nextFreeCell.x;
+        }
+        return true;
     }
 
     private void insertOrUpdateExcludedEntry(final int row, final int col)
@@ -1221,7 +1221,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void populateUI()
     {
-        this.currentRow = 1; this.currentCol = 1; this.getNextFreeCell();
+        this.row = 1; this.col = 1; this.advanceToNextFreeCell();
 
         assert null != this.optionalFieldLayout; this.optionalFieldLayout.removeAllViews();
 
@@ -1330,29 +1330,30 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 else
                 {
                     final java.lang.String value = this.getEntryValue(r, c);
-                    this.setCellState(cell_cnt, org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL);
+                    this.setCellBackground(cell_cnt,
+                        org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL);
 
                     if (null != value && 0 != value.trim().length())
-                        this.setCellState(cell_cnt,
+                        this.setCellBackground(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.STATE_DONE);
 
-                    if (r == this.currentRow && c == this.currentCol)
+                    if (r == this.row && c == this.col)
                     {
-                        this.setCellState(cell_cnt,
+                        this.setCellBackground(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
                         this.currentCellView = cell_cnt;
                     }
 
                     if (excludedRow || excludedCol || this.isExcludedCell(r, c))
                     {
-                        this.setCellState(cell_cnt,
+                        this.setCellBackground(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
                         this.insertOrUpdateExcludedEntry(r, c);
                     }
 
                     if (null != value && value.equals("exclude"))
                     {
-                        this.setCellState(cell_cnt,
+                        this.setCellBackground(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
                         this.templateModel.addExcludedCell(c, r);
                     }
@@ -1381,10 +1382,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     this.entriesTable();
                 assert null != entriesTable;
                 final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                    entriesTable.get(this.gridId, this.currentRow, this.currentCol);
+                    entriesTable.get(this.gridId, this.row, this.col);
                 if (null == entryModel)
                     success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
-                        this.gridId, this.currentRow, this.currentCol, value)) > 0;
+                        this.gridId, this.row, this.col, value)) > 0;
                 else
                 {
                     entryModel.setValue(value);
@@ -1401,36 +1402,36 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.gridTableLayout;
         android.view.View view = this.gridTableLayout.findViewWithTag(this.getTag());
 
-        if (null != view) this.setCellState(view, 0 == value.length() ?
+        if (null != view) this.setCellBackground(view, 0 == value.length() ?
             org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
             org.wheatgenetics.coordinate.ui.Main.STATE_DONE   );
 
         boolean endOfCell = false;
 
         assert null != this.templateModel;
-        this.currentRow++;
-        if (this.templateModel.getRows() < this.currentRow || (this.templateModel.getRows() == this.currentRow
-        &&  (this.isExcludedRow(this.templateModel.getRows()) || this.isExcludedCell(this.templateModel.getRows(), this.currentCol))))  // TODO: Bug?
+        this.row++;
+        if (this.templateModel.getRows() < this.row || (this.templateModel.getRows() == this.row
+        &&  (this.isExcludedRow(this.templateModel.getRows()) || this.isExcludedCell(this.templateModel.getRows(), this.col))))  // TODO: Bug?
         {
-            this.currentRow = this.templateModel.getRows();
+            this.row = this.templateModel.getRows();
 
-            this.currentCol++;
-            if (this.templateModel.getCols() < this.currentCol || (this.templateModel.getCols() == this.currentCol
-            &&  (this.isExcludedCol(this.templateModel.getCols()) || this.isExcludedCell(this.currentRow, this.templateModel.getCols()))))
+            this.col++;
+            if (this.templateModel.getCols() < this.col || (this.templateModel.getCols() == this.col
+            &&  (this.isExcludedCol(this.templateModel.getCols()) || this.isExcludedCell(this.row, this.templateModel.getCols()))))
             {
-                this.currentCol = this.templateModel.getCols();
-                this.currentCol = this.templateModel.getRows();
+                this.col = this.templateModel.getCols();
+                this.col = this.templateModel.getRows();
 
                 endOfCell = true;
             }
-            else this.currentRow = 1;
+            else this.row = 1;
         }
 
-        if (!endOfCell) if (this.isExcluded(this.currentRow, this.currentCol))
-            if (!this.getNextFreeCell()) endOfCell = true;
+        if (!endOfCell) if (this.isExcluded(this.row, this.col))
+            if (!this.advanceToNextFreeCell()) endOfCell = true;
 
         value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getEntryValue(this.currentRow, this.currentCol));
+            this.getEntryValue(this.row, this.col));
 
         assert null != this.cellIDEditText;
         this.cellIDEditText.setSelectAllOnFocus(true);
@@ -1439,8 +1440,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.cellIDEditText.requestFocus();
 
         view = this.gridTableLayout.findViewWithTag(this.getTag());
-        if (null != view) if (!this.isExcluded(this.currentRow, this.currentCol))
-            this.setCellState(view, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
+        if (null != view) if (!this.isExcluded(this.row, this.col))
+            this.setCellBackground(view, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
 
         this.resetCurrentCell();
         this.currentCellView = view;
@@ -1494,7 +1495,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
                     org.wheatgenetics.coordinate.ui.Main.STATE_DONE   ;
             }
-            this.setCellState(this.currentCellView, state);
+            this.setCellBackground(this.currentCellView, state);
         }
     }
     // endregion
