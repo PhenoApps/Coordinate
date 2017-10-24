@@ -166,6 +166,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
+    // region isExcluded() Private Methods
+    private boolean isExcludedRow(final int row)
+    { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
+
+    private boolean isExcludedCol(final int col)
+    { assert null != this.templateModel; return this.templateModel.isExcludedCol(col); }
+
+    private boolean isExcludedCell(final int row, final int col)
+    { assert null != this.templateModel; return this.templateModel.isExcludedCell(col, row); }
+
+    private boolean isExcluded(final int row, final int col)
+    { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
+    // endregion
+
     private void share(final java.io.File exportFile)
     {
         final android.content.Intent intent =
@@ -183,9 +197,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
     makeCheckedOptionalFields()
     { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
-
-    private boolean isExcluded(final int row, final int col)
-    { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
 
     private boolean clearGrid()
     {
@@ -706,7 +717,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    private void setValuesThenInsertGridThenLoad()  // TODO: Merge this method with the one above.
+    private void setValuesThenInsertGridThenLoad()
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
             this.insertGridThenLoad();                     // There is no need to set optional field
@@ -820,8 +831,48 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
-    private boolean deleteEntriesGrid()
+    // region createGrid() Operations
+    private boolean deleteEntriesByGridThenDeleteGrid()
     { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
+
+    private void createGridAfterConfirm()
+    {
+        this.deleteEntriesByGridThenDeleteGrid();
+
+        {
+            assert null != this.templateModel;
+            final org.wheatgenetics.coordinate.model.TemplateType templateType =
+                this.templateModel.getType();
+            if (templateType.isDefaultTemplate())
+                this.templateModel = this.templatesTable().get(templateType);
+        }
+        this.setValuesThenInsertGridThenLoad();
+    }
+
+    private void createGrid()
+    {
+        if (0 == this.gridId)
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
+        else
+            if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
+                this.createGridAfterConfirm();
+            else
+                this.confirm(
+                    /* message     => */ org.wheatgenetics.coordinate.R.string.new_grid_warning,
+                    /* yesRunnable => */ new java.lang.Runnable()
+                        {
+                            @java.lang.Override
+                            public void run()
+                            { org.wheatgenetics.coordinate.ui.Main.this.exportGrid(); }
+                        },
+                    /* noRunnable => */ new java.lang.Runnable()
+                        {
+                            @java.lang.Override
+                            public void run()
+                            { org.wheatgenetics.coordinate.ui.Main.this.createGridAfterConfirm(); }
+                        });
+    }
+    // endregion
 
     // TODO: Shouldn't this also delete entries records associated with grids records?
     private boolean deleteUserDefinedTemplateItsGrids(
@@ -870,12 +921,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         return true;
     }
 
-    private boolean isExcludedRow(final int row)
-    { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
-
-    private boolean isExcludedCol(final int col)
-    { assert null != this.templateModel; return this.templateModel.isExcludedCol(col); }
-
     private void setCellState(final android.view.View cell, final int state)
     {
         int backgroundResourceId;
@@ -896,9 +941,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         assert null != cell; cell.setBackgroundResource(backgroundResourceId);
     }
-
-    private boolean isExcludedCell(final int row, final int col)
-    { assert null != this.templateModel; return this.templateModel.isExcludedCell(col, row); }
 
     private void saveExcludedCell(final int row, final int col)
     {
@@ -937,20 +979,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Subaction Drawer Methods
-    private void createGridAfterConfirm()
-    {
-        this.deleteEntriesGrid();
-
-        {
-            assert null != this.templateModel;
-            final org.wheatgenetics.coordinate.model.TemplateType templateType =
-                this.templateModel.getType();
-            if (templateType.isDefaultTemplate())
-                this.templateModel = this.templatesTable().get(templateType);
-        }
-        this.setValuesThenInsertGridThenLoad();
-    }
-
     private void populateUI()
     {
         this.currentRow = 1; this.currentCol = 1; this.getNextFreeCell();
@@ -1125,33 +1153,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void createGrid()
-    {
-        if (0 == this.gridId)
-            this.getTemplateThenSetValuesThenInsertGridThenLoad();
-        else
-            if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
-                this.createGridAfterConfirm();
-            else
-                this.confirm(
-                    /* message     => */ org.wheatgenetics.coordinate.R.string.new_grid_warning,
-                    /* yesRunnable => */ new java.lang.Runnable()
-                        {
-                            @java.lang.Override
-                            public void run()
-                            { org.wheatgenetics.coordinate.ui.Main.this.exportGrid(); }
-                        },
-                    /* noRunnable => */ new java.lang.Runnable()
-                        {
-                            @java.lang.Override
-                            public void run()
-                            { org.wheatgenetics.coordinate.ui.Main.this.createGridAfterConfirm(); }
-                        });
-    }
-
     private void deleteGridAfterConfirm()         // TODO: DRY? (Compare to chooseOld().)
     {
-        if (this.deleteEntriesGrid())
+        if (this.deleteEntriesByGridThenDeleteGrid())
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_deleted);
             this.gridId = 0;
