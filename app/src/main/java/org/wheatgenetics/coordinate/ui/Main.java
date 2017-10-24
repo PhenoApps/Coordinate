@@ -445,7 +445,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (this.sharedPreferences.currentGridIsSet())
             this.load(this.sharedPreferences.getCurrentGrid(), true);
         else
-            this.loadExistingTemplateOrCreateNewTemplate();
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
 
         this.showUI();
 
@@ -842,7 +842,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Subaction Drawer Methods
-    private void loadExistingTemplateOrCreateNewTemplate()
+    private void getTemplateThenSetValuesThenInsertGridThenLoad()
     {
         if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
             new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog(this,
@@ -1085,7 +1085,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void createNewGrid()
     {
         if (0 == this.gridId)
-            this.loadExistingTemplateOrCreateNewTemplate();
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
         else
             if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
                 this.newGridNow();
@@ -1119,7 +1119,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.gridAreaLayout;
             this.gridAreaLayout.setVisibility(android.view.View.INVISIBLE);
 
-            this.loadExistingTemplateOrCreateNewTemplate();
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
         }
         else this.showLongToast(org.wheatgenetics.coordinate.R.string.grid_not_deleted);
     }
@@ -1187,7 +1187,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (this.deleteUserDefinedTemplateItsGrids(templateModel))
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.template_deleted);
-            this.loadExistingTemplateOrCreateNewTemplate();
+            this.getTemplateThenSetValuesThenInsertGridThenLoad();
         }
         else this.showLongToast(org.wheatgenetics.coordinate.R.string.template_not_deleted);
     }
