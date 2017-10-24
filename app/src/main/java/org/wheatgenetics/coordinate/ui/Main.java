@@ -87,10 +87,7 @@ public class Main extends android.support.v7.app.AppCompatActivity
 implements android.widget.TextView.OnEditorActionListener, android.view.View.OnClickListener,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
-    // region Constants
     private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
-    private static final int MODE_DNA = 0, MODE_USERDEFINED = 1;
-    // endregion
 
     // region Fields
     // region Widget Fields
@@ -110,15 +107,15 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private android.view.View currentCellView = null;
     // endregion
 
-    private long             gridId     =  0                ;
-    private java.lang.String gridTitle  = ""                ;
-    private int              currentRow =  1, currentCol = 1;
-
-    private java.lang.String                                      versionName                ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
-    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;//
+    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;//
+
+    private java.lang.String versionName                    ;
+    private long             gridId     =  0                ;
+    private java.lang.String gridTitle  = ""                ;//
+    private int              currentRow =  1, currentCol = 1;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
@@ -126,34 +123,46 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel =//
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
 
-    private org.wheatgenetics.androidlibrary.Dir        exportDir                ;
-    private org.wheatgenetics.coordinate.model.Exporter exporter           = null;
+    private org.wheatgenetics.androidlibrary.Dir        exportDir                ;//
+    private org.wheatgenetics.coordinate.model.Exporter exporter           = null;//
     private long                                        lastExportedGridId =   -1;
 
-    private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
+    private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;//
 
     // region AlertDialog Fields
     private org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
-        getTemplateChoiceAlertDialog = null;
+        getTemplateChoiceAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
-        selectTemplateToLoadAlertDialog = null;
+        selectTemplateToLoadAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
-        setOptionalFieldValuesAlertDialog = null;
+        setOptionalFieldValuesAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
-        selectTemplateToDeleteAlertDialog = null;
+        selectTemplateToDeleteAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
-        getExportGridFileNameAlertDialog = null;
+        getExportGridFileNameAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     // endregion
     // endregion
 
     // region Private Methods
-    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-    makeCheckedOptionalFields()
-    { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
+    private void configureNavigationDrawer()
+    {
+        {
+            final android.widget.TextView personTextView = (android.widget.TextView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.nameLabel);
+            assert null != this.sharedPreferences; assert null != personTextView;
+            personTextView.setText(this.sharedPreferences.getPerson());
+        }
+        {
+            final android.widget.TextView templateTitleTextView = (android.widget.TextView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.templateLabel);
+            assert null != this.templateModel; assert null != templateTitleTextView;
+            templateTitleTextView.setText(this.templateModel.getTitle());
+        }
+    }
 
     private void share(final java.io.File exportFile)
     {
@@ -162,12 +171,16 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
-        android.net.Uri.parse(exportFile.getAbsolutePath()));
+            android.net.Uri.parse(exportFile.getAbsolutePath()));
         intent.setType("text/plain");
 
         this.startActivity(android.content.Intent.createChooser(intent,
             this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
     }
+
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+    makeCheckedOptionalFields()
+    { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
 
     private boolean isExcluded(final int row, final int col)
     { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
@@ -319,26 +332,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             {
                 @java.lang.Override
                 public void onDrawerOpened(final android.view.View drawerView)
-                {
-                    {
-                        final android.widget.TextView personTextView = (android.widget.TextView)
-                            org.wheatgenetics.coordinate.ui.Main.this.findViewById(
-                                org.wheatgenetics.coordinate.R.id.nameLabel);
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                        assert null != personTextView                                             ;
-                        personTextView.setText(org.wheatgenetics.coordinate
-                            .ui.Main.this.sharedPreferences.getPerson());
-                    }
-                    {
-                        final android.widget.TextView templateTitleTextView =
-                            (android.widget.TextView)
-                                org.wheatgenetics.coordinate.ui.Main.this.findViewById(
-                                    org.wheatgenetics.coordinate.R.id.templateLabel);
-                        assert null != org.wheatgenetics.coordinate.ui.Main.this.templateModel;
-                        assert null != templateTitleTextView; templateTitleTextView.setText(
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel.getTitle());
-                    }
-                }
+                { org.wheatgenetics.coordinate.ui.Main.this.configureNavigationDrawer(); }
 
                 @java.lang.Override
                 public void onDrawerClosed(final android.view.View drawerView) {}
@@ -446,7 +440,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.load(this.sharedPreferences.getCurrentGrid(), true);
         else
             this.getTemplateThenSetValuesThenInsertGridThenLoad();
-
         this.showUI();
 
         int versionCode;
@@ -487,23 +480,22 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     public boolean onOptionsItemSelected(final android.view.MenuItem item)
     {
         assert null != this.actionBarDrawerToggle;
-        if (this.actionBarDrawerToggle.onOptionsItemSelected(item)) return true;
-
-        assert null != item;
-        switch (item.getItemId())
+        if (!this.actionBarDrawerToggle.onOptionsItemSelected(item))
         {
-            case android.R.id.home:
-                assert null != this.drawerLayout;
-                this.drawerLayout.openDrawer(android.support.v4.view.GravityCompat.START);
-                break;
+            assert null != item; switch (item.getItemId())
+            {
+                case android.R.id.home:
+                    assert null != this.drawerLayout;
+                    this.drawerLayout.openDrawer(android.support.v4.view.GravityCompat.START);
+                    break;
 
-            case org.wheatgenetics.androidlibrary.R.id.cameraOptionsMenuItem:
-                if (null == this.barcodeScanner)
-                    this.barcodeScanner = new org.wheatgenetics.zxing.BarcodeScanner(this);
-                this.barcodeScanner.scan();
-                break;
+                case org.wheatgenetics.androidlibrary.R.id.cameraOptionsMenuItem:
+                    if (null == this.barcodeScanner)
+                        this.barcodeScanner = new org.wheatgenetics.zxing.BarcodeScanner(this);
+                    this.barcodeScanner.scan();
+                    break;
+            }
         }
-
         return true;
     }
 
@@ -517,7 +509,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (null != scanResult)
         {
             assert null != this.cellIDEditText; this.cellIDEditText.setText(scanResult);
-            this.saveData();
+            this.insertOrUpdateEntry();
         }
     }
 
@@ -535,14 +527,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     final android.view.KeyEvent event)
     {
         if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
-            return this.saveData();
+            return this.insertOrUpdateEntry();
         else
             if (null == event)
                 return false;
             else
                 if (android.view.KeyEvent.ACTION_DOWN   == event.getAction ()
                 &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
-                    return this.saveData();
+                    return this.insertOrUpdateEntry();
                 else
                     return false;
     }
@@ -574,13 +566,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             {
                 this.currentRow = row; this.currentCol = col;
 
-                final java.lang.String value = this.getValue(this.currentRow, this.currentCol);
+                final java.lang.String value = this.getEntryValue(this.currentRow, this.currentCol);
 
                 if (null != value && value.contains("exclude"))
                     return;
                 else
                 {
-                    this.setCellState(v, STATE_ACTIVE);
+                    this.setCellState(v, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
 
                     this.cellIDEditText.setSelectAllOnFocus(true);
                     this.cellIDEditText.setText(
@@ -599,7 +591,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // region org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Methods
     // Enables Main to be a this.exporter helper.
     @java.lang.Override
-    public java.lang.String getValue(final int row, final int col)
+    public java.lang.String getEntryValue(final int row, final int col)
     {
         final org.wheatgenetics.coordinate.model.EntryModel entryModel =
             this.entriesTable().get(this.gridId, row, col);
@@ -836,7 +828,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         assert null != this.cellIDEditText;
         this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getValue(1, 1)));
+            this.getEntryValue(1, 1)));
     }
     // endregion
 
@@ -1019,27 +1011,31 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 }
                 else
                 {
-                    final java.lang.String value = this.getValue(r, c);
-                    this.setCellState(cell_cnt, STATE_NORMAL);
+                    final java.lang.String value = this.getEntryValue(r, c);
+                    this.setCellState(cell_cnt, org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL);
 
                     if (null != value && 0 != value.trim().length())
-                        this.setCellState(cell_cnt, STATE_DONE);
+                        this.setCellState(cell_cnt,
+                            org.wheatgenetics.coordinate.ui.Main.STATE_DONE);
 
                     if (r == this.currentRow && c == this.currentCol)
                     {
-                        this.setCellState(cell_cnt, STATE_ACTIVE);
+                        this.setCellState(cell_cnt,
+                            org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
                         this.currentCellView = cell_cnt;
                     }
 
                     if (excludedRow || excludedCol || this.isExcludedCell(r, c))
                     {
-                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.setCellState(cell_cnt,
+                            org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
                         this.saveExcludedCell(r, c);
                     }
 
                     if (null != value && value.equals("exclude"))
                     {
-                        this.setCellState(cell_cnt, STATE_INACTIVE);
+                        this.setCellState(cell_cnt,
+                            org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
                         this.templateModel.addExcludedCell(c, r);
                     }
 
@@ -1360,7 +1356,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
-    private boolean saveData()
+    private boolean insertOrUpdateEntry()
     {
         java.lang.String value =
             org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
@@ -1391,7 +1387,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.gridTableLayout;
         android.view.View view = this.gridTableLayout.findViewWithTag(this.getTag());
 
-        if (null != view) this.setCellState(view, 0 == value.length() ? STATE_NORMAL : STATE_DONE);
+        if (null != view) this.setCellState(view, 0 == value.length() ?
+            org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
+            org.wheatgenetics.coordinate.ui.Main.STATE_DONE   );
 
         boolean endOfCell = false;
 
@@ -1418,7 +1416,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             if (!this.getNextFreeCell()) endOfCell = true;
 
         value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getValue(this.currentRow, this.currentCol));
+            this.getEntryValue(this.currentRow, this.currentCol));
 
         assert null != this.cellIDEditText;
         this.cellIDEditText.setSelectAllOnFocus(true);
@@ -1428,7 +1426,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         view = this.gridTableLayout.findViewWithTag(this.getTag());
         if (null != view) if (!this.isExcluded(this.currentRow, this.currentCol))
-            this.setCellState(view, STATE_ACTIVE);
+            this.setCellState(view, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
 
         this.resetCurrentCell();
         this.currentCellView = view;
@@ -1477,7 +1475,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             else
             {
                 final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                    this.getValue(row, col));
+                    this.getEntryValue(row, col));
                 state = 0 == value.length() ?
                     org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
                     org.wheatgenetics.coordinate.ui.Main.STATE_DONE   ;
