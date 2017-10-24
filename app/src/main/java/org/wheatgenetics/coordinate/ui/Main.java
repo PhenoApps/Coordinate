@@ -864,7 +864,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.getTemplateChoiceAlertDialog.show();
     }
 
-    private void newGridNow()
+    private void createGridAfterConfirm()
     {
         this.deleteEntriesGrid();
 
@@ -1079,13 +1079,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void createNewGrid()
+    private void createGrid()
     {
         if (0 == this.gridId)
             this.getTemplateThenSetValuesThenInsertGridThenLoad();
         else
             if (this.gridId >= 0 && this.lastExportedGridId == this.gridId)
-                this.newGridNow();
+                this.createGridAfterConfirm();
             else
                 this.confirm(
                     /* message     => */ org.wheatgenetics.coordinate.R.string.new_grid_warning,
@@ -1099,7 +1099,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         {
                             @java.lang.Override
                             public void run()
-                            { org.wheatgenetics.coordinate.ui.Main.this.newGridNow(); }
+                            { org.wheatgenetics.coordinate.ui.Main.this.createGridAfterConfirm(); }
                         });
     }
 
@@ -1326,7 +1326,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         assert null != menuItem; switch (menuItem.getItemId())
         {
-            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createNewGrid(); break;
+            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createGrid(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
