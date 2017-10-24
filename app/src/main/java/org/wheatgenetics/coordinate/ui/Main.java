@@ -747,7 +747,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region Drawer Methods
     // region Subsubaction Drawer Methods
-    private void loadTemplate()                             // TODO: DRY? (Compare to deleteGrid().)
+    private void insertGridThenLoad()                       // TODO: DRY? (Compare to deleteGrid().)
     {
         final long gridId = this.insertGrid();
         if (gridId > 0)
@@ -877,7 +877,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void setValuesThenLoadTemplate()  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.loadTemplate();                           // There is no need to set optional field
+            this.insertGridThenLoad();                           // There is no need to set optional field
         else                                               //  values since optionalFields is empty.
         {
             if (null == this.setOptionalFieldValuesAlertDialog)
@@ -896,7 +896,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
                             @java.lang.Override
                             public void handleSetValuesDone()
-                            { org.wheatgenetics.coordinate.ui.Main.this.loadTemplate(); }
+                            { org.wheatgenetics.coordinate.ui.Main.this.insertGridThenLoad(); }
                         });
             assert null != this.templateModel;
             this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
