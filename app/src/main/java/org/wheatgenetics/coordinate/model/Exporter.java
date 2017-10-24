@@ -25,7 +25,7 @@ public class Exporter extends java.lang.Object
     // region Types
     public interface Helper
     {
-        public abstract java.lang.String getValue(int row, int col);
+        public abstract java.lang.String getEntryValue(int row, int col);
         public abstract void             handleExportDone(java.lang.Boolean result,
             java.lang.String message, java.io.File exportFile);
     }
@@ -99,7 +99,7 @@ public class Exporter extends java.lang.Object
                                 final java.lang.String value = this.isExcluded(row, col) ?
                                     "exclude" :
                                     org.wheatgenetics.javalib.Utils.replaceIfNull(
-                                        this.helper.getValue(row, col), "BLANK_");
+                                        this.helper.getEntryValue(row, col), "BLANK_");
                                 csvWriter.write(value);  // seed_id
                             }
                             csvWriter.write(person);  // person
@@ -185,7 +185,7 @@ public class Exporter extends java.lang.Object
                                             tissue_id = "BLANK_" + sample_id;
                                         else
                                         {
-                                            tissue_id = this.helper.getValue(row, col);
+                                            tissue_id = this.helper.getEntryValue(row, col);
                                             if (null == tissue_id || tissue_id.trim().length() == 0)
                                                 tissue_id = "BLANK_" + sample_id;
                                         }
@@ -254,7 +254,7 @@ public class Exporter extends java.lang.Object
                                 final java.lang.String value = this.isExcluded(row, col) ?
                                     "exclude" :
                                     org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                                        this.helper.getValue(row, col));
+                                        this.helper.getEntryValue(row, col));
                                 csvWriter.write(value);
                             }
                             csvWriter.write(col); csvWriter.write(row);
