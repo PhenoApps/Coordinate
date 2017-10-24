@@ -326,8 +326,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                 org.wheatgenetics.coordinate.R.id.nameLabel);
                         assert null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
                         assert null != personTextView                                             ;
-                        personTextView.setText(org.wheatgenetics.coordinate.
-                            ui.Main.this.sharedPreferences.getPerson());
+                        personTextView.setText(org.wheatgenetics.coordinate
+                            .ui.Main.this.sharedPreferences.getPerson());
                     }
                     {
                         final android.widget.TextView templateTitleTextView =
@@ -452,8 +452,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         int versionCode;
         try
         {
-            final android.content.pm.PackageInfo packageInfo = this.getPackageManager().
-                getPackageInfo(    // throws android.content.pm.PackageManager.NameNotFoundException
+            final android.content.pm.PackageInfo packageInfo = this.getPackageManager()
+                .getPackageInfo(   // throws android.content.pm.PackageManager.NameNotFoundException
                     /* packageName => */ this.getPackageName(),
                     /* flags       => */ 0                    );
             assert null != packageInfo;
@@ -850,11 +850,17 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 {
                     @java.lang.Override
                     public void chooseOld()
-                    { org.wheatgenetics.coordinate.ui.Main.this.selectThenLoadTemplate(); }
+                    {
+                        org.wheatgenetics.coordinate.ui
+                            .Main.this.selectTemplateThenSetValuesThenInsertGridThenLoad();
+                    }
 
                     @java.lang.Override
                     public void chooseNew()
-                    { org.wheatgenetics.coordinate.ui.Main.this.insertThenLoadTemplate(); }
+                    {
+                        org.wheatgenetics.coordinate.ui
+                            .Main.this.insertTemplateThenSetValuesThenInsertGridThenLoad();
+                    }
                 });
         this.getTemplateChoiceAlertDialog.show();
     }
@@ -877,7 +883,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void setValuesThenInsertGridThenLoad()  // TODO: Merge this method with the one above.
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.insertGridThenLoad();                           // There is no need to set optional field
+            this.insertGridThenLoad();                     // There is no need to set optional field
         else                                               //  values since optionalFields is empty.
         {
             if (null == this.setOptionalFieldValuesAlertDialog)
@@ -1130,7 +1136,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 });
     }
 
-    private void insertThenLoadTemplate()
+    private void insertTemplateThenSetValuesThenInsertGridThenLoad()
     {
         if (null == this.templateCreator)
             this.templateCreator = new org.wheatgenetics.coordinate.ui.tc.TemplateCreator(this,
@@ -1140,14 +1146,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     public void handleTemplateCreated()
                     {
                         if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
-                            org.wheatgenetics.coordinate.ui.
-                                Main.this.setValuesThenInsertGridThenLoad();
+                            org.wheatgenetics.coordinate.ui
+                                .Main.this.setValuesThenInsertGridThenLoad();
                     }
                 });
         this.templateCreator.create(this.templateModel);
     }
 
-    private void selectThenLoadTemplate()
+    private void selectTemplateThenSetValuesThenInsertGridThenLoad()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().load();
@@ -1167,8 +1173,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             org.wheatgenetics.coordinate.model.TemplateType.DNA)
                                 templateModel.makeOneRandomCell();       // TODO: Do in server code.
                             org.wheatgenetics.coordinate.ui.Main.this.templateModel = templateModel;
-                            org.wheatgenetics.coordinate.ui.
-                                Main.this.setValuesThenInsertGridThenLoad();
+                            org.wheatgenetics.coordinate.ui
+                                .Main.this.setValuesThenInsertGridThenLoad();
                         }
                     }
                 });
@@ -1327,10 +1333,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.insertThenLoadTemplate(); break;
+                this.insertTemplateThenSetValuesThenInsertGridThenLoad(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_load_template:
-                this.selectThenLoadTemplate(); break;
+                this.selectTemplateThenSetValuesThenInsertGridThenLoad(); break;
 
             case org.wheatgenetics.coordinate.R.id.menu_delete_template:
                 this.deleteTemplate(); break;
