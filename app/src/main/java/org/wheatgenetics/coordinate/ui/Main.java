@@ -685,6 +685,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
+    private void setPerson(final java.lang.String person)
+    {
+        assert null != this.sharedPreferences;
+        this.sharedPreferences.setPerson(person);
+    }
+
     private void insertGridThenLoad()                       // TODO: DRY? (Compare to deleteGrid().)
     {
         final long gridId = this.insertGrid();
@@ -713,12 +719,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         {
                             @java.lang.Override
                             public void setPerson(final java.lang.String person)
-                            {
-                                assert null !=
-                                    org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                                org.wheatgenetics.coordinate.ui
-                                    .Main.this.sharedPreferences.setPerson(person);
-                            }
+                            { org.wheatgenetics.coordinate.ui.Main.this.setPerson(person); }
 
                             @java.lang.Override
                             public void handleSetValuesDone()
