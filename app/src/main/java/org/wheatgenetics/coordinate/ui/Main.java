@@ -135,11 +135,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         getTemplateChoiceAlertDialog = null;
 
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
-        selectTemplateToDeleteAlertDialog = null;//
+        selectTemplateToDeleteAlertDialog = null;
 
+    private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
         getExportGridFileNameAlertDialog = null;//
-    private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     // endregion
 
     private java.lang.String versionName                    ;
@@ -986,6 +986,36 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
     }
     // endregion
+
+    // region importGrid() Operation
+    @android.annotation.SuppressLint("DefaultLocale")
+    private void importGrid()
+    {
+        final org.wheatgenetics.coordinate.model.GridModels gridModels = this.gridsTable().load();
+        if (null == gridModels)
+            this.alert(org.wheatgenetics.coordinate.R.string.no_templates);
+        else
+        {
+            final java.lang.String names  [] = gridModels.names  ();
+            final long             indexes[] = gridModels.indexes();
+
+            if (null == this.selectGridToImportAlertDialog) this.selectGridToImportAlertDialog =
+                new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
+                    org.wheatgenetics.coordinate.R.string.import_grid,
+                    new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
+                    {
+                        @java.lang.Override
+                        public void select(final int which)
+                        {
+                            if (which < indexes.length)
+                                org.wheatgenetics.coordinate.ui.Main.this.load(
+                                    indexes[which], false);
+                        }
+                    });
+            this.selectGridToImportAlertDialog.show(names);
+        }
+    }
+    // endregion
     // endregion
 
     // region Drawer Methods
@@ -1235,34 +1265,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    @android.annotation.SuppressLint("DefaultLocale")
-    private void importGrid()
-    {
-        final org.wheatgenetics.coordinate.model.GridModels gridModels = this.gridsTable().load();
-        if (null == gridModels)
-            this.alert(org.wheatgenetics.coordinate.R.string.no_templates);
-        else
-        {
-            final java.lang.String names  [] = gridModels.names  ();
-            final long             indexes[] = gridModels.indexes();
-
-            if (null == this.selectGridToImportAlertDialog) this.selectGridToImportAlertDialog =
-                new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                    org.wheatgenetics.coordinate.R.string.import_grid,
-                    new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
-                    {
-                        @java.lang.Override
-                        public void select(final int which)
-                        {
-                            if (which < indexes.length)
-                                org.wheatgenetics.coordinate.ui.Main.this.load(
-                                    indexes[which], false);
-                        }
-                    });
-            this.selectGridToImportAlertDialog.show(names);
-        }
-    }
-
     private void exportGridAfterGettingFileName(final java.lang.String fileName)
     {
         assert null != this.templateModel; final long templateId = this.templateModel.getId();
