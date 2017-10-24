@@ -150,7 +150,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Private Methods
-    private void configureNavigationDrawer()
+    private void configureNavigationDrawer() // 348
     {
         {
             final android.widget.TextView personTextView = (android.widget.TextView)
@@ -166,7 +166,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    // region isExcluded() Private Methods
+    // region isExcluded() Private Methods 574
     private boolean isExcludedRow(final int row)
     { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
 
@@ -180,25 +180,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
     // endregion
 
-    private void share(final java.io.File exportFile)
-    {
-        final android.content.Intent intent =
-            new android.content.Intent(android.content.Intent.ACTION_SEND);
-
-        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
-            android.net.Uri.parse(exportFile.getAbsolutePath()));
-        intent.setType("text/plain");
-
-        this.startActivity(android.content.Intent.createChooser(intent,
-            this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
-    }
-
-    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-    makeCheckedOptionalFields()
-    { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
-
-    private boolean clearGrid()
+    private boolean clearGrid() // 629
     {
         try
         {
@@ -215,7 +197,25 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    // region getTag() Private Methods
+    private void share(final java.io.File exportFile) // 630
+    {
+        final android.content.Intent intent =
+            new android.content.Intent(android.content.Intent.ACTION_SEND);
+
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        assert null != exportFile; intent.putExtra(android.content.Intent.EXTRA_STREAM,
+            android.net.Uri.parse(exportFile.getAbsolutePath()));
+        intent.setType("text/plain");
+
+        this.startActivity(android.content.Intent.createChooser(intent,
+            this.getString(org.wheatgenetics.coordinate.R.string.share_file)));
+    }
+
+    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields // 731
+    makeCheckedOptionalFields()
+    { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
+
+    // region getTag() Private Methods 1362
     private static java.lang.String getTag(final int row, final int col)
     { return java.lang.String.format(java.util.Locale.US, "tag_%d_%d", row, col); }
 
@@ -223,7 +223,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return org.wheatgenetics.coordinate.ui.Main.getTag(this.currentRow, this.currentCol); }
     // endregion
 
-    // region Toast Private Methods
+    // region Toast Private Methods 882
     // region Long Toast Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
@@ -1149,7 +1149,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
-    // region ? Methods
+    // region User Interface Methods
     /** First non-excluded cell. */
     private boolean getNextFreeCell()
     {
@@ -1184,7 +1184,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != cell; cell.setBackgroundResource(backgroundResourceId);
     }
 
-    private void saveExcludedCell(final int row, final int col)
+    private void insertOrUpdateExcludedEntry(final int row, final int col)
     {
         boolean success;                                                               // TODO: DRY!
         {
@@ -1218,7 +1218,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
             this.getEntryValue(1, 1)));
     }
-    // endregion
 
     private void populateUI()
     {
@@ -1348,7 +1347,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     {
                         this.setCellState(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
-                        this.saveExcludedCell(r, c);
+                        this.insertOrUpdateExcludedEntry(r, c);
                     }
 
                     if (null != value && value.equals("exclude"))
@@ -1498,4 +1497,5 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.setCellState(this.currentCellView, state);
         }
     }
+    // endregion
 }
