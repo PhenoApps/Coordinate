@@ -443,7 +443,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
 
         if (this.sharedPreferences.currentGridIsSet())
-            this.getLoadTemplateGridPopulateUI(this.sharedPreferences.getCurrentGrid(), true);
+            this.load(this.sharedPreferences.getCurrentGrid(), true);
         else
             this.loadExistingTemplateOrCreateNewTemplate();
 
@@ -688,8 +688,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         return gridId;
     }
 
-    private void getLoadTemplateGridPopulateUI(final long gridId,
-    final boolean gridIdIsfromSharedPreferences)
+    private void load(final long gridId, final boolean gridIdIsfromSharedPreferences)
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             this.gridsTable().get(gridId);
@@ -759,7 +758,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.gridAreaLayout;
             this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
 
-            this.getLoadTemplateGridPopulateUI(gridId, false);
+            this.load(gridId, false);
         }
     }
 
@@ -1241,8 +1240,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         @java.lang.Override
                         public void select(final int which)
                         {
-                            if (which < indexes.length) org.wheatgenetics.coordinate.ui.
-                                Main.this.getLoadTemplateGridPopulateUI(indexes[which], false);
+                            if (which < indexes.length)
+                                org.wheatgenetics.coordinate.ui.Main.this.load(
+                                    indexes[which], false);
                         }
                     });
             this.selectGridToImportAlertDialog.show(names);
