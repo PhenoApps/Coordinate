@@ -107,15 +107,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private android.view.View currentCellView = null;
     // endregion
 
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
-    private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;//
-    private org.wheatgenetics.about.AboutAlertDialog              aboutAlertDialog     = null;//
+    private org.wheatgenetics.androidlibrary.Dir             exportDir                  ;
+    private org.wheatgenetics.zxing.BarcodeScanner           barcodeScanner       = null;
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;//
+    private org.wheatgenetics.about.AboutAlertDialog         aboutAlertDialog     = null;//
 
-    private java.lang.String versionName                    ;
-    private long             gridId     =  0                ;
-    private java.lang.String gridTitle  = ""                ;//
-    private int              currentRow =  1, currentCol = 1;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
@@ -123,28 +120,33 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel =//
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
+    private org.wheatgenetics.coordinate.model.Exporter exporter = null;//
 
-    private org.wheatgenetics.androidlibrary.Dir        exportDir                ;//
-    private org.wheatgenetics.coordinate.model.Exporter exporter           = null;//
-    private long                                        lastExportedGridId =   -1;
-
-    private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;//
+    private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
 
     // region AlertDialog Fields
-    private org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
-        getTemplateChoiceAlertDialog = null;//
-    private org.wheatgenetics.coordinate.ui.SelectAlertDialog
-        selectTemplateToLoadAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog
-        setOptionalFieldValuesAlertDialog = null;//
+        setOptionalFieldValuesAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.SelectAlertDialog
+        selectTemplateToLoadAlertDialog = null;
+    private org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
+        getTemplateChoiceAlertDialog = null;
+
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog
         selectTemplateToDeleteAlertDialog = null;//
+
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
         getExportGridFileNameAlertDialog = null;//
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     // endregion
+
+    private java.lang.String versionName                    ;
+    private long             gridId     =  0                ;
+    private java.lang.String gridTitle  = ""                ;
+    private int              currentRow =  1, currentCol = 1;
+    private long             lastExportedGridId =   -1;
     // endregion
 
     // region Private Methods
@@ -440,7 +442,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.load(this.sharedPreferences.getCurrentGrid(), true);
         else
             this.getTemplateThenSetValuesThenInsertGridThenLoad();
-        this.showUI();
+        this.showUI();                     // TODO: Can this be deleted since populateUI() calls it?
 
         int versionCode;
         try
@@ -650,25 +652,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Operations
-    private boolean insertTemplate()
-    {
-        boolean success;
-        {
-            final long templateId = this.templatesTable().insert(this.templateModel);
-            if (templateId > 0)
-            {
-                assert null != this.templateModel; this.templateModel.setId(templateId);
-                success = true;
-            }
-            else
-            {
-                this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
-                success = false;
-            }
-        }
-        return success;
-    }
-
+    // region getTemplateThenSetValuesThenInsertGridThenLoad() Operations
     private long insertGrid()
     {
         assert null != this.templateModel;
@@ -700,6 +684,140 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.populateUI();
         }
     }
+
+    private void insertGridThenLoad()                       // TODO: DRY? (Compare to deleteGrid().)
+    {
+        final long gridId = this.insertGrid();
+        if (gridId > 0)
+        {
+            assert null != this.optionalFieldLayout;
+            this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
+
+            assert null != this.gridAreaLayout;
+            this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
+
+            this.load(gridId, false);
+        }
+    }
+
+    private void setValuesThenInsertGridThenLoad()  // TODO: Merge this method with the one above.
+    {
+        assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
+            this.insertGridThenLoad();                     // There is no need to set optional field
+        else                                               //  values since optionalFields is empty.
+        {
+            if (null == this.setOptionalFieldValuesAlertDialog)
+                this.setOptionalFieldValuesAlertDialog =
+                    new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this, new
+                        org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void setPerson(final java.lang.String person)
+                            {
+                                assert null !=
+                                    org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
+                                org.wheatgenetics.coordinate.ui
+                                    .Main.this.sharedPreferences.setPerson(person);
+                            }
+
+                            @java.lang.Override
+                            public void handleSetValuesDone()
+                            { org.wheatgenetics.coordinate.ui.Main.this.insertGridThenLoad(); }
+                        });
+            assert null != this.templateModel;
+            this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
+                this.makeCheckedOptionalFields(),
+                /* firstCannotBeEmpty => */ this.templateModel.getType().isDefaultTemplate());
+        }
+    }
+
+    private void selectTemplateThenSetValuesThenInsertGridThenLoad()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            this.templatesTable().load();
+        if (null == this.selectTemplateToLoadAlertDialog) this.selectTemplateToLoadAlertDialog =
+            new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
+                org.wheatgenetics.coordinate.R.string.template_load,
+                new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void select(final int which)
+                    {
+                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                            templateModels.get(which);
+                        if (null != templateModel)
+                        {
+                            if (templateModel.getType() ==
+                            org.wheatgenetics.coordinate.model.TemplateType.DNA)
+                                templateModel.makeOneRandomCell();       // TODO: Do in server code.
+                            org.wheatgenetics.coordinate.ui.Main.this.templateModel = templateModel;
+                            org.wheatgenetics.coordinate.ui
+                                .Main.this.setValuesThenInsertGridThenLoad();
+                        }
+                    }
+                });
+        this.selectTemplateToLoadAlertDialog.show(templateModels.titles());
+    }
+
+    private boolean insertTemplate()
+    {
+        boolean success;
+        {
+            final long templateId = this.templatesTable().insert(this.templateModel);
+            if (templateId > 0)
+            {
+                assert null != this.templateModel; this.templateModel.setId(templateId);
+                success = true;
+            }
+            else
+            {
+                this.alert(org.wheatgenetics.coordinate.R.string.create_template_fail);
+                success = false;
+            }
+        }
+        return success;
+    }
+
+    private void insertTemplateThenSetValuesThenInsertGridThenLoad()
+    {
+        if (null == this.templateCreator)
+            this.templateCreator = new org.wheatgenetics.coordinate.ui.tc.TemplateCreator(this,
+                new org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler()
+                {
+                    @java.lang.Override
+                    public void handleTemplateCreated()
+                    {
+                        if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
+                            org.wheatgenetics.coordinate.ui
+                                .Main.this.setValuesThenInsertGridThenLoad();
+                    }
+                });
+        this.templateCreator.create(this.templateModel);
+    }
+
+    private void getTemplateThenSetValuesThenInsertGridThenLoad()
+    {
+        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void chooseOld()
+                    {
+                        org.wheatgenetics.coordinate.ui
+                            .Main.this.selectTemplateThenSetValuesThenInsertGridThenLoad();
+                    }
+
+                    @java.lang.Override
+                    public void chooseNew()
+                    {
+                        org.wheatgenetics.coordinate.ui
+                            .Main.this.insertTemplateThenSetValuesThenInsertGridThenLoad();
+                    }
+                });
+        this.getTemplateChoiceAlertDialog.show();
+    }
+    // endregion
 
     private boolean deleteEntriesGrid()
     { this.entriesTable().deleteByGrid(this.gridId); return this.gridsTable().delete(this.gridId); }
@@ -738,21 +856,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region Drawer Methods
     // region Subsubaction Drawer Methods
-    private void insertGridThenLoad()                       // TODO: DRY? (Compare to deleteGrid().)
-    {
-        final long gridId = this.insertGrid();
-        if (gridId > 0)
-        {
-            assert null != this.optionalFieldLayout;
-            this.optionalFieldLayout.setVisibility(android.view.View.VISIBLE);
-
-            assert null != this.gridAreaLayout;
-            this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
-
-            this.load(gridId, false);
-        }
-    }
-
     /** First non-excluded cell. */
     private boolean getNextFreeCell()
     {
@@ -833,29 +936,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Subaction Drawer Methods
-    private void getTemplateThenSetValuesThenInsertGridThenLoad()
-    {
-        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
-            new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void chooseOld()
-                    {
-                        org.wheatgenetics.coordinate.ui
-                            .Main.this.selectTemplateThenSetValuesThenInsertGridThenLoad();
-                    }
-
-                    @java.lang.Override
-                    public void chooseNew()
-                    {
-                        org.wheatgenetics.coordinate.ui
-                            .Main.this.insertTemplateThenSetValuesThenInsertGridThenLoad();
-                    }
-                });
-        this.getTemplateChoiceAlertDialog.show();
-    }
-
     private void createGridAfterConfirm()
     {
         this.deleteEntriesGrid();
@@ -868,37 +948,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.templateModel = this.templatesTable().get(templateType);
         }
         this.setValuesThenInsertGridThenLoad();
-    }
-
-    private void setValuesThenInsertGridThenLoad()  // TODO: Merge this method with the one above.
-    {
-        assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.insertGridThenLoad();                     // There is no need to set optional field
-        else                                               //  values since optionalFields is empty.
-        {
-            if (null == this.setOptionalFieldValuesAlertDialog)
-                this.setOptionalFieldValuesAlertDialog =
-                    new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this, new
-                        org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog.Handler()
-                        {
-                            @java.lang.Override
-                            public void setPerson(final java.lang.String person)
-                            {
-                                assert
-                                    null != org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences;
-                                org.wheatgenetics.coordinate.ui.Main.this.sharedPreferences.setPerson(
-                                    person);
-                            }
-
-                            @java.lang.Override
-                            public void handleSetValuesDone()
-                            { org.wheatgenetics.coordinate.ui.Main.this.insertGridThenLoad(); }
-                        });
-            assert null != this.templateModel;
-            this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
-                this.makeCheckedOptionalFields(),
-                /* firstCannotBeEmpty => */ this.templateModel.getType().isDefaultTemplate());
-        }
     }
 
     private void populateUI()
@@ -1127,51 +1176,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     public void run()
                     { org.wheatgenetics.coordinate.ui.Main.this.deleteGridAfterConfirm(); }
                 });
-    }
-
-    private void insertTemplateThenSetValuesThenInsertGridThenLoad()
-    {
-        if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.ui.tc.TemplateCreator(this,
-                new org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler()
-                {
-                    @java.lang.Override
-                    public void handleTemplateCreated()
-                    {
-                        if (org.wheatgenetics.coordinate.ui.Main.this.insertTemplate())
-                            org.wheatgenetics.coordinate.ui
-                                .Main.this.setValuesThenInsertGridThenLoad();
-                    }
-                });
-        this.templateCreator.create(this.templateModel);
-    }
-
-    private void selectTemplateThenSetValuesThenInsertGridThenLoad()
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            this.templatesTable().load();
-        if (null == this.selectTemplateToLoadAlertDialog) this.selectTemplateToLoadAlertDialog =
-            new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.template_load,
-                new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void select(final int which)
-                    {
-                        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                            templateModels.get(which);
-                        if (null != templateModel)
-                        {
-                            if (templateModel.getType() ==
-                            org.wheatgenetics.coordinate.model.TemplateType.DNA)
-                                templateModel.makeOneRandomCell();       // TODO: Do in server code.
-                            org.wheatgenetics.coordinate.ui.Main.this.templateModel = templateModel;
-                            org.wheatgenetics.coordinate.ui
-                                .Main.this.setValuesThenInsertGridThenLoad();
-                        }
-                    }
-                });
-        this.selectTemplateToLoadAlertDialog.show(templateModels.titles());
     }
 
     private void deleteTemplateAfterConfirm(
