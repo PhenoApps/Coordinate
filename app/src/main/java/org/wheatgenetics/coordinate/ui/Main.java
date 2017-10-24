@@ -122,7 +122,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
-    private org.wheatgenetics.coordinate.model.Exporter exporter = null;//
+    private org.wheatgenetics.coordinate.model.Exporter exporter = null;
 
     private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
 
@@ -139,14 +139,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
     private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
-        getExportGridFileNameAlertDialog = null;//
+        getExportGridFileNameAlertDialog = null;
     // endregion
 
-    private java.lang.String versionName                    ;
-    private long             gridId     =  0                ;
-    private java.lang.String gridTitle  = ""                ;
-    private int              currentRow =  1, currentCol = 1;
-    private long             lastExportedGridId =   -1;
+    private java.lang.String versionName                            ;
+    private long             gridId             =  0                ;
+    private java.lang.String gridTitle          = ""                ;
+    private int              currentRow         =  1, currentCol = 1;
+    private long             lastExportedGridId = -1                ;
     // endregion
 
     // region Private Methods
@@ -1016,6 +1016,46 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
     // endregion
+
+    // region exportGrid() Operations
+    private void exportGridAfterGettingFileName(final java.lang.String fileName)
+    {
+        assert null != this.templateModel; final long templateId = this.templateModel.getId();
+        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+            this.templatesTable();
+
+        assert null != templatesTable; if (templatesTable.exists(templateId))
+        {
+            final java.io.File exportFile = this.createExportFile();
+            assert null != exportFile;
+            this.exporter = new org.wheatgenetics.coordinate.model.Exporter(
+                /* helper         => */ this                          ,
+                /* context        => */ this                          ,
+                /* templateModel  => */ templatesTable.get(templateId),
+                /* exportFileName => */ fileName                      ,
+                /* absolutePath   => */ exportFile.getAbsolutePath()  );
+            this.exporter.execute();
+        }
+    }
+
+    private void exportGrid()
+    {
+        if (null == this.getExportGridFileNameAlertDialog) this.getExportGridFileNameAlertDialog =
+            new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog(this,
+                new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void handleGetFileNameDone(final java.lang.String fileName)
+                    {
+                        org.wheatgenetics.coordinate.ui.Main.this.exportGridAfterGettingFileName(
+                            fileName);
+                    }
+                });
+        assert null != this.templateModel;
+        this.getExportGridFileNameAlertDialog.show(
+            this.templateModel.getFirstOptionalFieldDatedValue());
+    }
+    // endregion
     // endregion
 
     // region Drawer Methods
@@ -1265,44 +1305,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Action Drawer Methods
-    private void exportGridAfterGettingFileName(final java.lang.String fileName)
-    {
-        assert null != this.templateModel; final long templateId = this.templateModel.getId();
-        final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-            this.templatesTable();
-
-        assert null != templatesTable; if (templatesTable.exists(templateId))
-        {
-            final java.io.File exportFile = this.createExportFile();
-            assert null != exportFile;
-            this.exporter = new org.wheatgenetics.coordinate.model.Exporter(
-                /* helper         => */ this                          ,
-                /* context        => */ this                          ,
-                /* templateModel  => */ templatesTable.get(templateId),
-                /* exportFileName => */ fileName                      ,
-                /* absolutePath   => */ exportFile.getAbsolutePath()  );
-            this.exporter.execute();
-        }
-    }
-
-    private void exportGrid()
-    {
-        if (null == this.getExportGridFileNameAlertDialog) this.getExportGridFileNameAlertDialog =
-            new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public void handleGetFileNameDone(final java.lang.String fileName)
-                    {
-                        org.wheatgenetics.coordinate.ui.Main.this.exportGridAfterGettingFileName(
-                            fileName);
-                    }
-                });
-        assert null != this.templateModel;
-        this.getExportGridFileNameAlertDialog.show(
-            this.templateModel.getFirstOptionalFieldDatedValue());
-    }
-
     private void showAboutAlertDialog()
     {
         if (null == this.aboutAlertDialog)
