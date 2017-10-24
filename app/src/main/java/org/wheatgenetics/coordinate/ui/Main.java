@@ -109,8 +109,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private org.wheatgenetics.androidlibrary.Dir             exportDir                  ;
     private org.wheatgenetics.zxing.BarcodeScanner           barcodeScanner       = null;
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;//
-    private org.wheatgenetics.about.AboutAlertDialog         aboutAlertDialog     = null;//
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;
+    private org.wheatgenetics.about.AboutAlertDialog         aboutAlertDialog     = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences;
 
@@ -1018,6 +1018,17 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region exportGrid() Operations
+    private java.io.File createExportFile()
+    {
+        assert null != this.templateModel; assert null != this.exportDir;
+        try
+        {
+            return this.exportDir.createNewFile(                       // throws java.io.IOException
+                this.templateModel.getTitle());
+        }
+        catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); return null; }
+    }
+
     private void exportGridAfterGettingFileName(final java.lang.String fileName)
     {
         assert null != this.templateModel; final long templateId = this.templateModel.getId();
@@ -1059,7 +1070,86 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Drawer Methods
-    // region Subsubaction Drawer Methods
+    // region About Drawer Methods
+    private void showChangeLog()
+    {
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* activity               => */ this,
+                /* changeLogRawResourceId => */
+                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
+        this.changeLogAlertDialog.show();
+    }
+
+    private void showAboutAlertDialog()
+    {
+        if (null == this.aboutAlertDialog)
+        {
+            java.lang.String title, msgs[];
+            {
+                final android.content.res.Resources resources = this.getResources();
+                assert null != resources;
+                title = resources.getString(org.wheatgenetics.coordinate.R.string.about);
+                msgs  = org.wheatgenetics.javalib.Utils.stringArray(
+                    resources.getString(org.wheatgenetics.coordinate.R.string.grid_description));
+            }
+
+            this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
+                /* context                => */ this            ,
+                /* title                  => */ title           ,
+                /* versionName            => */ this.versionName,
+                /* msgs[]                 => */ msgs            ,
+                /* suppressIndex          => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
+                /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.ui.Main.this.showChangeLog(); }
+                });
+        }
+        this.aboutAlertDialog.show();
+    }
+    // endregion
+
+    private boolean selectNavigationItem(final android.view.MenuItem menuItem)
+    {
+        assert null != menuItem; switch (menuItem.getItemId())
+        {
+            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createGrid(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
+            case org.wheatgenetics.coordinate.R.id.menu_new_template:
+                this.insertTemplateThenSetValuesThenInsertGridThenLoad(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_load_template:
+                this.selectTemplateThenSetValuesThenInsertGridThenLoad(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_delete_template:
+                this.deleteTemplate(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_import: this.importGrid(); break;
+
+            case org.wheatgenetics.coordinate.R.id.menu_export:
+                assert null != this.templateModel;
+                if (this.templateModel.getTitle().equals(""))
+                    this.showShortToast(org.wheatgenetics.coordinate.R.string.grid_empty);
+                else
+                    this.exportGrid();
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.about: this.showAboutAlertDialog(); break;
+
+            // Keeping this for debugging purposes:
+            // case org.wheatgenetics.coordinate.R.id.reset_database: this.resetDatabase(); break;
+            // case org.wheatgenetics.coordinate.R.id.copy_database : this.copydb       (); break;
+        }
+
+        assert null != this.drawerLayout; this.drawerLayout.closeDrawers();
+        return true;
+    }
+    // endregion
+
+    // region ? Methods
     /** First non-excluded cell. */
     private boolean getNextFreeCell()
     {
@@ -1130,7 +1220,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
-    // region Subaction Drawer Methods
     private void populateUI()
     {
         this.currentRow = 1; this.currentCol = 1; this.getNextFreeCell();
@@ -1281,97 +1370,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         this.showUI();
     }
-
-    private java.io.File createExportFile()
-    {
-        assert null != this.templateModel; assert null != this.exportDir;
-        try
-        {
-            return this.exportDir.createNewFile(                       // throws java.io.IOException
-                this.templateModel.getTitle());
-        }
-        catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); return null; }
-    }
-
-    private void showChangeLog()
-    {
-        if (null == this.changeLogAlertDialog)
-            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
-                /* activity               => */ this,
-                /* changeLogRawResourceId => */
-                    org.wheatgenetics.coordinate.R.raw.changelog_releases);
-        this.changeLogAlertDialog.show();
-    }
-    // endregion
-
-    // region Action Drawer Methods
-    private void showAboutAlertDialog()
-    {
-        if (null == this.aboutAlertDialog)
-        {
-            java.lang.String title, msgs[];
-            {
-                final android.content.res.Resources resources = this.getResources();
-                assert null != resources;
-                title = resources.getString(org.wheatgenetics.coordinate.R.string.about);
-                msgs  = org.wheatgenetics.javalib.Utils.stringArray(
-                    resources.getString(org.wheatgenetics.coordinate.R.string.grid_description));
-            }
-
-            this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
-                /* context                => */ this            ,
-                /* title                  => */ title           ,
-                /* versionName            => */ this.versionName,
-                /* msgs[]                 => */ msgs            ,
-                /* suppressIndex          => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
-                /* versionOnClickListener => */ new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.ui.Main.this.showChangeLog(); }
-                    });
-        }
-        this.aboutAlertDialog.show();
-    }
-    // endregion
-
-    private boolean selectNavigationItem(final android.view.MenuItem menuItem)
-    {
-        assert null != menuItem; switch (menuItem.getItemId())
-        {
-            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createGrid(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
-            case org.wheatgenetics.coordinate.R.id.menu_new_template:
-                this.insertTemplateThenSetValuesThenInsertGridThenLoad(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_load_template:
-                this.selectTemplateThenSetValuesThenInsertGridThenLoad(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_delete_template:
-                this.deleteTemplate(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_import: this.importGrid(); break;
-
-            case org.wheatgenetics.coordinate.R.id.menu_export:
-                assert null != this.templateModel;
-                if (this.templateModel.getTitle().equals(""))
-                    this.showShortToast(org.wheatgenetics.coordinate.R.string.grid_empty);
-                else
-                    this.exportGrid();
-                break;
-
-            case org.wheatgenetics.coordinate.R.id.about: this.showAboutAlertDialog(); break;
-
-            // Keeping this for debugging purposes:
-            // case org.wheatgenetics.coordinate.R.id.reset_database: this.resetDatabase(); break;
-            // case org.wheatgenetics.coordinate.R.id.copy_database : this.copydb       (); break;
-        }
-
-        assert null != this.drawerLayout; this.drawerLayout.closeDrawers();
-        return true;
-    }
-    // endregion
 
     private boolean insertOrUpdateEntry()
     {
