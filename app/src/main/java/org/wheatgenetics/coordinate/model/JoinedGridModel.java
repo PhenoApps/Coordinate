@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
- * org.wheatgenetics.coordinate.model.TemplateType
+ * org.wheatgenetics.coordinate.model.TemplateModel
  */
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 {
@@ -35,12 +35,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
 
     // region Public Methods
-    public long getTemplateId()
-    { return null == this.partialTemplateModel ? 0 : this.partialTemplateModel.getId(); }
-
-    public org.wheatgenetics.coordinate.model.TemplateType getType()
-    { assert null != this.partialTemplateModel; return this.partialTemplateModel.getType(); }
-
     public int getRows()
     { return null == this.partialTemplateModel ? 0 : this.partialTemplateModel.getRows(); }
 

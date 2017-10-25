@@ -76,8 +76,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                     {
                         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                             arrayList.get(i);
-                        assert null != joinedGridModel;
-                        result[i] = joinedGridModel.name();
+                        assert null != joinedGridModel; result[i] = joinedGridModel.name();
                     }
                 }
                 return result;
@@ -106,8 +105,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                     {
                         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                             arrayList.get(i);
-                        assert null != joinedGridModel;
-                        result[i] = joinedGridModel.getId();
+                        assert null != joinedGridModel; result[i] = joinedGridModel.getId();
                     }
                 }
                 return result;

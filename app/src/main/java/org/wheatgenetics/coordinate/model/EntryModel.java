@@ -37,7 +37,7 @@ public class EntryModel extends org.wheatgenetics.coordinate.model.Model
     public int  getRow   () { return this.row   ; }
     public int  getCol   () { return this.col   ; }
 
-    public java.lang.String getValue()                             { return this.value; }
+    public java.lang.String getValue()                             { return this.value ; }
     public void             setValue(final java.lang.String value) { this.value = value; }
 
     public long getTimestamp() { return this.timestamp; }
