@@ -488,7 +488,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (null != scanResult)
         {
             assert null != this.cellIDEditText; this.cellIDEditText.setText(scanResult);
-            this.insertOrUpdateEntry();
+            this.insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout();
         }
     }
 
@@ -506,14 +506,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     final android.view.KeyEvent event)
     {
         if (android.view.inputmethod.EditorInfo.IME_ACTION_DONE == actionId)
-            return this.insertOrUpdateEntry();
+            return this.insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout();
         else
             if (null == event)
                 return false;
             else
                 if (android.view.KeyEvent.ACTION_DOWN   == event.getAction ()
                 &&  android.view.KeyEvent.KEYCODE_ENTER == event.getKeyCode())
-                    return this.insertOrUpdateEntry();
+                    return this.insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout();
                 else
                     return false;
     }
@@ -1137,21 +1137,21 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // setCellBackground()
     //     populateUI()
     //     setCellBackgroundThenChange()
-    //     insertOrUpdateEntry()
+    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     // advanceToNextFreeCell()
     //     populateUI()
-    //     insertOrUpdateEntry()
+    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     // insertOrUpdateExcludedEntry()
     //     populateUI()
     // populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText()
     //     populateUI()
     // makeTag()
     //     populateUI()
-    //     insertOrUpdateEntry()
+    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     // getTag()
     //     setCellBackgroundThenChange()
     // setCellBackgroundThenChange()
-    //     insertOrUpdateEntry()
+    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     // endregion
 
     // region Populate User Interface Methods
@@ -1458,7 +1458,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         this.cellView = cellView;
    }
 
-    private boolean insertOrUpdateEntry()
+    private boolean insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     {
         final java.lang.String cellIDEditTextValue =
             org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
