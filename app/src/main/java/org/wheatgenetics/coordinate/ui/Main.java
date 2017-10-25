@@ -555,8 +555,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     }
                 }
 
-                this.resetCellView();
-                this.cellView = v;
+                this.setCellBackgroundThenChange(v);
             }
     }
     // endregion
@@ -1138,7 +1137,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // setCellBackground()
     //     populateUI()
     //     insertOrUpdateEntry()
-    //     resetCellView()
+    //     setCellBackgroundThenChange()
     // advanceToNextFreeCell()
     //     populateUI()
     //     insertOrUpdateEntry()
@@ -1149,10 +1148,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // makeTag()
     //     populateUI()
     //     insertOrUpdateEntry()
-    //     resetCellView()
+    //     setCellBackgroundThenChange()
     // getTag()
-    //     resetCellView()
-    // resetCellView()
+    //     setCellBackgroundThenChange()
+    // setCellBackgroundThenChange()
     //     insertOrUpdateEntry()
     // endregion
 
@@ -1404,25 +1403,28 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    private void resetCellView()
+    private void setCellBackgroundThenChange(final android.view.View cellView)
     {
-        final android.graphics.Point cell =
-            org.wheatgenetics.coordinate.ui.Main.getTag(this.cellView);
-        if (null != cell)
         {
-            int state;
-            if (this.isExcluded(/* row => */ cell.y, /* col => */ cell.x))
-                state = org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL;
-            else
+            final android.graphics.Point cell =
+                org.wheatgenetics.coordinate.ui.Main.getTag(this.cellView);
+            if (null != cell)
             {
-                final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                    this.getEntryValue(/* row => */ cell.y, /* col => */ cell.x));
-                state = value.length() > 0 ?
-                    org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
-                    org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL;
+                int state;
+                if (this.isExcluded(/* row => */ cell.y, /* col => */ cell.x))
+                    state = org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL;
+                else
+                {
+                    final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+                        this.getEntryValue(/* row => */ cell.y, /* col => */ cell.x));
+                    state = value.length() > 0 ?
+                        org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
+                        org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL;
+                }
+                this.setCellBackground(this.cellView, state);
             }
-            this.setCellBackground(this.cellView, state);
         }
+        this.cellView = cellView;
    }
 
     private boolean insertOrUpdateEntry()
@@ -1497,8 +1499,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (null != view) if (!this.isExcluded(this.row, this.col))
             this.setCellBackground(view, org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
 
-        this.resetCellView();
-        this.cellView = view;
+        this.setCellBackgroundThenChange(view);
 
         if (endOfCell)
         {
