@@ -104,7 +104,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private android.widget.TextView     templateTitleTextView;                           // main.xml
     private android.widget.LinearLayout optionalFieldLayout  ;                           // main.xml
 
-    private android.view.View currentCellView = null;
+    private android.view.View cellView = null;
     // endregion
 
     private org.wheatgenetics.androidlibrary.Dir             exportDir                  ;
@@ -555,8 +555,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     }
                 }
 
-                this.resetCurrentCell();
-                this.currentCellView = v;
+                this.resetCellView();
+                this.cellView = v;
             }
     }
     // endregion
@@ -1138,7 +1138,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // setCellBackground()
     //     populateUI()
     //     insertOrUpdateEntry()
-    //     resetCurrentCell()
+    //     resetCellView()
     // advanceToNextFreeCell()
     //     populateUI()
     //     insertOrUpdateEntry()
@@ -1149,8 +1149,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // makeTag()
     //     populateUI()
     //     insertOrUpdateEntry()
-    //     resetCurrentCell()
-    // resetCurrentCell()
+    //     resetCellView()
+    // getTag()
+    //     resetCellView()
+    // resetCellView()
     //     insertOrUpdateEntry()
     // endregion
 
@@ -1354,7 +1356,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     {
                         this.setCellBackground(cell_cnt,
                             org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
-                        this.currentCellView = cell_cnt;
+                        this.cellView = cell_cnt;
                     }
 
                     if (excludedRow || excludedCol || this.isExcludedCell(r, c))
@@ -1402,10 +1404,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    private void resetCurrentCell()
+    private void resetCellView()
     {
         final android.graphics.Point cell =
-            org.wheatgenetics.coordinate.ui.Main.getTag(this.currentCellView);
+            org.wheatgenetics.coordinate.ui.Main.getTag(this.cellView);
         if (null != cell)
         {
             int state;
@@ -1419,7 +1421,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
                     org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL;
             }
-            this.setCellBackground(this.currentCellView, state);
+            this.setCellBackground(this.cellView, state);
         }
    }
 
@@ -1495,8 +1497,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (null != view) if (!this.isExcluded(this.row, this.col))
             this.setCellBackground(view, org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
 
-        this.resetCurrentCell();
-        this.currentCellView = view;
+        this.resetCellView();
+        this.cellView = view;
 
         if (endOfCell)
         {
