@@ -419,7 +419,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.load(this.sharedPreferences.getCurrentGrid(), true);
         else
             this.getTemplateThenSetValuesThenInsertGridThenLoad();
-        this.showUI();                     // TODO: Can this be deleted since populateUI() calls it?
+        this.populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText(); // TODO: Can this be deleted since populateUI() calls it?
 
         int versionCode;
         try
@@ -1143,7 +1143,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     //     insertOrUpdateEntry()
     // insertOrUpdateExcludedEntry()
     //     populateUI()
-    // showUI()
+    // populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText()
     //     populateUI()
     // makeTag()
     //     populateUI()
@@ -1154,7 +1154,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     //     insertOrUpdateEntry()
     // endregion
 
-    // region Display User Interface Methods
+    // region Populate User Interface Methods
     private static void setCellBackground(final android.view.View cell, final int state)
     {
         int backgroundResourceId;
@@ -1214,7 +1214,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
     }
 
-    private void showUI()
+    private void populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText()
     {
         assert null != this.templateModel; assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.templateModel.getTitle());
@@ -1411,7 +1411,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         // endregion
         // endregion
 
-        this.showUI();
+        this.populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText();
     }
     // endregion
 
@@ -1422,7 +1422,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             return null;
         else
         {
-            int row, col;
+            int col, row;
             {
                 java.lang.Object tag = view.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
                 col = tag instanceof java.lang.Integer ? (java.lang.Integer) tag : -1;
@@ -1460,22 +1460,24 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private boolean insertOrUpdateEntry()
     {
-        java.lang.String value =
+        final java.lang.String cellIDEditTextValue =
             org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
         {
             boolean success;                                                           // TODO: DRY!
             {
                 final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                     this.entriesTable();
+
                 assert null != entriesTable;
                 final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                     entriesTable.get(this.gridId, this.row, this.col);
+
                 if (null == entryModel)
                     success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
-                        this.gridId, this.row, this.col, value)) > 0;
+                        this.gridId, this.row, this.col, cellIDEditTextValue)) > 0;
                 else
                 {
-                    entryModel.setValue(value);
+                    entryModel.setValue(cellIDEditTextValue);
                     success = entriesTable.update(entryModel);
                 }
             }
@@ -1486,55 +1488,60 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             }
         }
 
-        assert null != this.gridTableLayout;
-        android.view.View view = this.gridTableLayout.findViewWithTag(this.makeTag());
-
-        if (null != view)
-            org.wheatgenetics.coordinate.ui.Main.setCellBackground(view, value.length() > 0 ?
-                org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
-                org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL);
-
-        boolean endOfCell = false;
-
-        assert null != this.templateModel;
-        this.row++;
-        if (this.templateModel.getRows() < this.row || (this.templateModel.getRows() == this.row
-        &&  (this.isExcludedRow(this.templateModel.getRows()) || this.isExcludedCell(this.templateModel.getRows(), this.col))))  // TODO: Bug?
+        boolean endOfGrid = false;
         {
-            this.row = this.templateModel.getRows();
-
-            this.col++;
-            if (this.templateModel.getCols() < this.col || (this.templateModel.getCols() == this.col
-            &&  (this.isExcludedCol(this.templateModel.getCols()) || this.isExcludedCell(this.row, this.templateModel.getCols()))))
             {
-                this.col = this.templateModel.getCols();
-                this.col = this.templateModel.getRows();
-
-                endOfCell = true;
+                assert null != this.gridTableLayout;
+                final android.view.View currentCell =
+                    this.gridTableLayout.findViewWithTag(this.makeTag());
+                if (null != currentCell) org.wheatgenetics.coordinate.ui.Main.setCellBackground(
+                    currentCell, cellIDEditTextValue.length() > 0 ?
+                        org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
+                        org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL);
             }
-            else this.row = 1;
+
+            {
+                assert null != this.templateModel; final int lastRow = this.templateModel.getRows();
+                this.row++;
+                if (this.row > lastRow || (lastRow == this.row &&
+                (this.isExcludedRow(this.row) || this.isExcludedCell(this.row, this.col))))
+                {
+                    this.row = lastRow;
+
+                    final int lastCol = this.templateModel.getCols();
+                    this.col++;
+                    if (this.col > lastCol || (lastCol == this.col &&
+                    (this.isExcludedCol(this.col) || this.isExcludedCell(this.row, this.col))))
+                    {
+                        this.col = lastCol;
+                        this.col = lastRow;      // TODO: Bug? This line should probably be deleted.
+
+                        endOfGrid = true;
+                    }
+                    else this.row = 1;
+                }
+            }
+            if (!endOfGrid)
+                if (this.isExcluded(this.row, this.col)) endOfGrid = !this.advanceToNextFreeCell();
+
+            {
+                final java.lang.String entryValue = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+                    this.getEntryValue(this.row, this.col));
+
+                assert null != this.cellIDEditText;
+                this.cellIDEditText.setText(entryValue);
+                this.cellIDEditText.selectAll();
+                this.cellIDEditText.requestFocus();
+            }
+
+            final android.view.View nextCell = this.gridTableLayout.findViewWithTag(this.makeTag());
+            if (null != nextCell) if (!this.isExcluded(this.row, this.col))
+                org.wheatgenetics.coordinate.ui.Main.setCellBackground(nextCell,
+                    org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
+            this.setCellBackgroundThenChange(nextCell);
         }
 
-        if (!endOfCell) if (this.isExcluded(this.row, this.col))
-            if (!this.advanceToNextFreeCell()) endOfCell = true;
-
-        value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-            this.getEntryValue(this.row, this.col));
-
-        assert null != this.cellIDEditText;
-        this.cellIDEditText.setSelectAllOnFocus(true);
-        this.cellIDEditText.setText(value);
-        this.cellIDEditText.selectAll();
-        this.cellIDEditText.requestFocus();
-
-        view = this.gridTableLayout.findViewWithTag(this.makeTag());
-        if (null != view) if (!this.isExcluded(this.row, this.col))
-            org.wheatgenetics.coordinate.ui.Main.setCellBackground(
-                view, org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
-
-        this.setCellBackgroundThenChange(view);
-
-        if (endOfCell)
+        if (endOfGrid)
         {
             this.alert(org.wheatgenetics.coordinate.R.string.grid_filled);
 
