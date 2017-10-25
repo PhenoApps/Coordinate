@@ -87,7 +87,7 @@ public class Main extends android.support.v7.app.AppCompatActivity
 implements android.widget.TextView.OnEditorActionListener, android.view.View.OnClickListener,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
-    private static final int STATE_NORMAL = 0, STATE_DONE = 1, STATE_ACTIVE = 2, STATE_INACTIVE = 3;
+    private static final int EMPTY_CELL = 0, FULL_CELL = 1, INCLUDED_CELL = 2, EXCLUDED_CELL = 3;
 
     // region Fields
     // region Widget Fields
@@ -548,7 +548,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     return;
                 else
                 {
-                    this.setCellBackground(v, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
+                    this.setCellBackground(v, org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
 
                     this.cellIDEditText.setSelectAllOnFocus(true);
                     this.cellIDEditText.setText(
@@ -1137,18 +1137,38 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region User Interface Methods
+    // region Overview of User Interface Methods
+    // setCellBackground()
+    //     populateUI()
+    //     insertOrUpdateEntry()
+    //     resetCurrentCell()
+    // advanceToNextFreeCell()
+    //     populateUI()
+    //     insertOrUpdateEntry()
+    // insertOrUpdateExcludedEntry()
+    //     populateUI()
+    // showUI()
+    //     populateUI()
+    // getTag()
+    //     populateUI()
+    //     insertOrUpdateEntry()
+    //     resetCurrentCell()
+    // resetCurrentCell()
+    //     insertOrUpdateEntry()
+    // endregion
+
     private void setCellBackground(final android.view.View cell, final int state)
     {
         int backgroundResourceId;
         switch (state)
         {
-            case org.wheatgenetics.coordinate.ui.Main.STATE_DONE: backgroundResourceId =
+            case org.wheatgenetics.coordinate.ui.Main.FULL_CELL: backgroundResourceId =
                 org.wheatgenetics.coordinate.R.drawable.table_cell_done; break;
 
-            case org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE: backgroundResourceId =
+            case org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL: backgroundResourceId =
                 org.wheatgenetics.coordinate.R.drawable.table_cell_active; break;
 
-            case org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE: backgroundResourceId =
+            case org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL: backgroundResourceId =
                 org.wheatgenetics.coordinate.R.drawable.table_cell_inactive; break;
 
             default: backgroundResourceId =
@@ -1326,30 +1346,29 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 {
                     final java.lang.String value = this.getEntryValue(r, c);
                     this.setCellBackground(cell_cnt,
-                        org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL);
+                        org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL);
 
-                    if (null != value && 0 != value.trim().length())
-                        this.setCellBackground(cell_cnt,
-                            org.wheatgenetics.coordinate.ui.Main.STATE_DONE);
+                    if (null != value && value.trim().length() > 0) this.setCellBackground(
+                        cell_cnt, org.wheatgenetics.coordinate.ui.Main.FULL_CELL);
 
                     if (r == this.row && c == this.col)
                     {
                         this.setCellBackground(cell_cnt,
-                            org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
+                            org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
                         this.currentCellView = cell_cnt;
                     }
 
                     if (excludedRow || excludedCol || this.isExcludedCell(r, c))
                     {
                         this.setCellBackground(cell_cnt,
-                            org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
+                            org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL);
                         this.insertOrUpdateExcludedEntry(r, c);
                     }
 
                     if (null != value && value.equals("exclude"))
                     {
                         this.setCellBackground(cell_cnt,
-                            org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE);
+                            org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL);
                         this.templateModel.addExcludedCell(c, r);
                     }
 
@@ -1364,6 +1383,36 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
 
         this.showUI();
+    }
+
+    private void resetCurrentCell()
+    {
+        if (null != this.currentCellView)
+        {
+            int row, col;
+
+            {
+                java.lang.Object obj =
+                    this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
+                col = obj instanceof java.lang.Integer ? (java.lang.Integer) obj : -1;
+
+                obj = this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
+                row = obj instanceof java.lang.Integer ? (java.lang.Integer) obj : -1;
+            }
+
+            int state;
+            if (this.isExcluded(row, col))
+                state = org.wheatgenetics.coordinate.ui.Main.EXCLUDED_CELL;
+            else
+            {
+                final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
+                    this.getEntryValue(row, col));
+                state = value.length() > 0 ?
+                    org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
+                    org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL;
+            }
+            this.setCellBackground(this.currentCellView, state);
+        }
     }
 
     private boolean insertOrUpdateEntry()
@@ -1397,9 +1446,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.gridTableLayout;
         android.view.View view = this.gridTableLayout.findViewWithTag(this.getTag());
 
-        if (null != view) this.setCellBackground(view, 0 == value.length() ?
-            org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
-            org.wheatgenetics.coordinate.ui.Main.STATE_DONE   );
+        if (null != view) this.setCellBackground(view, value.length() > 0 ?
+            org.wheatgenetics.coordinate.ui.Main.FULL_CELL :
+            org.wheatgenetics.coordinate.ui.Main.EMPTY_CELL);
 
         boolean endOfCell = false;
 
@@ -1436,7 +1485,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         view = this.gridTableLayout.findViewWithTag(this.getTag());
         if (null != view) if (!this.isExcluded(this.row, this.col))
-            this.setCellBackground(view, org.wheatgenetics.coordinate.ui.Main.STATE_ACTIVE);
+            this.setCellBackground(view, org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
 
         this.resetCurrentCell();
         this.currentCellView = view;
@@ -1462,36 +1511,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
 
         return true;
-    }
-
-    private void resetCurrentCell()
-    {
-        if (null != this.currentCellView)
-        {
-            int row = -1, col = -1;
-
-            {
-                java.lang.Object obj =
-                    this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_col);
-                if (obj instanceof java.lang.Integer) col = (java.lang.Integer) obj;
-
-                obj = this.currentCellView.getTag(org.wheatgenetics.coordinate.R.string.cell_row);
-                if (obj instanceof java.lang.Integer) row = (java.lang.Integer) obj;
-            }
-
-            int state;
-            if (this.isExcluded(row, col))
-                state = org.wheatgenetics.coordinate.ui.Main.STATE_INACTIVE;
-            else
-            {
-                final java.lang.String value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                    this.getEntryValue(row, col));
-                state = 0 == value.length() ?
-                    org.wheatgenetics.coordinate.ui.Main.STATE_NORMAL :
-                    org.wheatgenetics.coordinate.ui.Main.STATE_DONE   ;
-            }
-            this.setCellBackground(this.currentCellView, state);
-        }
     }
     // endregion
 }
