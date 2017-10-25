@@ -547,11 +547,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     {
                         org.wheatgenetics.coordinate.ui.Main.setCellBackground(v,
                             org.wheatgenetics.coordinate.ui.Main.INCLUDED_CELL);
-
-                        this.cellIDEditText.setText(
-                            org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value));
-                        this.cellIDEditText.selectAll();
-                        this.cellIDEditText.requestFocus();
+                        this.setCellIDEditTextText(value);
                     }
                 }
 
@@ -1148,6 +1144,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // makeTag()
     //     populateUI()
     //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
+    // setCellIDEditTextText()
+    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
     // getTag()
     //     setCellBackgroundThenChange()
     // setCellBackgroundThenChange()
@@ -1416,6 +1414,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region Change User Interface Methods
+    private void setCellIDEditTextText(final java.lang.String text)
+    {
+        assert null != this.cellIDEditText;
+        this.cellIDEditText.setText(org.wheatgenetics.javalib.Utils.makeEmptyIfNull(text));
+        this.cellIDEditText.selectAll();
+        this.cellIDEditText.requestFocus();
+    }
+
     private static android.graphics.Point getTag(final android.view.View view)
     {
         if (null == view)
@@ -1527,11 +1533,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             {
                 final java.lang.String entryValue = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
                     this.getEntryValue(this.row, this.col));
-
-                assert null != this.cellIDEditText;
-                this.cellIDEditText.setText(entryValue);
-                this.cellIDEditText.selectAll();
-                this.cellIDEditText.requestFocus();
+                this.setCellIDEditTextText(entryValue);
             }
 
             final android.view.View nextCell = this.gridTableLayout.findViewWithTag(this.makeTag());
