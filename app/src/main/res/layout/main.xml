@@ -51,7 +51,7 @@
                             android:id="@+id/dataTable"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"></TableLayout>
+                            android:layout_weight="1" />
                     </HorizontalScrollView>
                 </ScrollView>
             </LinearLayout>

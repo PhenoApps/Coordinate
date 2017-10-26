@@ -141,6 +141,7 @@ implements java.lang.Cloneable
 
     public java.lang.String[] names()
     {
+        @java.lang.SuppressWarnings("Convert2Diamond")
         final java.util.ArrayList<java.lang.String> nameArrayList =
             new java.util.ArrayList<java.lang.String>();
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
@@ -150,6 +151,7 @@ implements java.lang.Cloneable
 
     public java.lang.String[] values()
     {
+        @java.lang.SuppressWarnings("Convert2Diamond")
         final java.util.ArrayList<java.lang.String> valueArrayList =
             new java.util.ArrayList<java.lang.String>();
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
@@ -166,6 +168,7 @@ implements java.lang.Cloneable
                 return null;
             else
             {
+                @java.lang.SuppressWarnings("Convert2Diamond")
                 final java.util.ArrayList<java.lang.String> valueArrayList =
                     new java.util.ArrayList<java.lang.String>();
 
@@ -191,6 +194,7 @@ implements java.lang.Cloneable
     {
         boolean result[];
         {
+            @java.lang.SuppressWarnings("Convert2Diamond")
             final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
                 new java.util.ArrayList<java.lang.Boolean>();
 

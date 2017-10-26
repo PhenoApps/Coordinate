@@ -14,6 +14,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
     // region Private Methods
+    @java.lang.SuppressWarnings("Convert2Diamond")
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList()
     {
         if (null == this.arrayListInstance) this.arrayListInstance =

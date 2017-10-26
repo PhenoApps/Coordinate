@@ -88,6 +88,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
             .setCancelNegativeButton();
     }
 
+    @java.lang.SuppressWarnings("Convert2Diamond")
     void show(final java.lang.String title,
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
     final boolean firstCannotBeEmpty)

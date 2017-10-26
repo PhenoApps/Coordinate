@@ -105,6 +105,7 @@ implements java.lang.Cloneable
             cellArrayListInstance = null;
 
         // region Internal Methods
+        @java.lang.SuppressWarnings("Convert2Diamond")
         private static
         java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel.Cells.Cell> make()
         {
@@ -358,6 +359,7 @@ implements java.lang.Cloneable
         private java.util.ArrayList<java.lang.Integer> integerArrayListInstance = null;
 
         // region Internal Methods
+        @java.lang.SuppressWarnings("Convert2Diamond")
         private static java.util.ArrayList<java.lang.Integer> make()
         { return new java.util.ArrayList<java.lang.Integer>(); }
 

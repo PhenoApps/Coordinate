@@ -501,6 +501,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region android.widget.TextView.OnEditorActionListener Overridden Method
     // Enables Main to be a this.cellIDEditText editor action listener.
+    @java.lang.SuppressWarnings("SimplifiableIfStatement")
     @java.lang.Override
     public boolean onEditorAction(final android.widget.TextView v, final int actionId,
     final android.view.KeyEvent event)

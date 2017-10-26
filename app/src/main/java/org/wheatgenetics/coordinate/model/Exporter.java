@@ -66,7 +66,7 @@ public class Exporter extends java.lang.Object
 
         private boolean exportSeed()
         {
-            java.lang.String tray_id = "", person = "", date = "";
+            java.lang.String tray_id, person, date;
             {
                 assert null != this.templateModel;
                 final java.lang.String values[] = this.templateModel.optionalFieldValues(
@@ -131,8 +131,7 @@ public class Exporter extends java.lang.Object
         @android.annotation.SuppressLint("DefaultLocale")
         private boolean exportDna()
         {
-            java.lang.String date       = "", plate_id = "", plate_name  = ""                 ;
-            java.lang.String dna_person = "", notes    = "", tissue_type = "", extraction = "";
+            java.lang.String date, plate_id, plate_name, dna_person, notes, tissue_type, extraction;
             {
                 assert null != this.templateModel;
                 final java.lang.String values[] = this.templateModel.optionalFieldValues(

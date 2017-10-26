@@ -13,6 +13,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel>
         arrayListInstance = null;
 
+    @java.lang.SuppressWarnings("Convert2Diamond")
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList()
     {
         if (null == this.arrayListInstance) this.arrayListInstance =

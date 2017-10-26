@@ -60,6 +60,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
         // endregion
     }
 
+    @java.lang.SuppressWarnings("Convert2Diamond")
     final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField> arrayList =
         new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.OptionalField>();
 
