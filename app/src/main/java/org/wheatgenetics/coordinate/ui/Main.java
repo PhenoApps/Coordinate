@@ -340,6 +340,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.templateModel; assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.templateModel.getTitle());
 
+        // region Default Templates
         // Adds default templates to database if they aren't there already.  If they are there then
         // they are updated to their default values.
         {
@@ -368,9 +369,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 }
             }
         }
+        // endregion
 
         this.templateModel.setTitle("");
 
+        // region Directories
         {
             final java.lang.String coordinateDirName = "Coordinate",
                 blankHiddenFileName = ".coordinate";
@@ -414,6 +417,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 // directory already exists then I don't have a problem.
             }
         }
+        // endregion
 
         if (this.sharedPreferences.currentGridIsSet())
             this.load(this.sharedPreferences.getCurrentGrid(), true);
@@ -707,7 +711,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.templatesTable().load();
         if (null == this.selectTemplateToLoadAlertDialog) this.selectTemplateToLoadAlertDialog =
             new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.template_load,
                 new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
                 {
                     @java.lang.Override
@@ -726,7 +729,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         }
                     }
                 });
-        this.selectTemplateToLoadAlertDialog.show(templateModels.titles());
+        this.selectTemplateToLoadAlertDialog.show(
+            org.wheatgenetics.coordinate.R.string.template_load, templateModels.titles());
     }
 
     private boolean insertTemplate()
@@ -933,7 +937,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         if (null == this.selectTemplateToDeleteAlertDialog) this.selectTemplateToDeleteAlertDialog =
             new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                org.wheatgenetics.coordinate.R.string.delete_template,
                 new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
                 {
                     @java.lang.Override
@@ -943,7 +946,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             templateModels.get(which));
                     }
                 });
-        this.selectTemplateToDeleteAlertDialog.show(templateModels.titles());
+        this.selectTemplateToDeleteAlertDialog.show(
+            org.wheatgenetics.coordinate.R.string.delete_template, templateModels.titles());
     }
     // endregion
 
@@ -961,7 +965,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
             if (null == this.selectGridToImportAlertDialog) this.selectGridToImportAlertDialog =
                 new org.wheatgenetics.coordinate.ui.SelectAlertDialog(this,
-                    org.wheatgenetics.coordinate.R.string.import_grid,
                     new org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler()
                     {
                         @java.lang.Override
@@ -972,7 +975,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                     indexes[which], false);
                         }
                     });
-            this.selectGridToImportAlertDialog.show(names);
+            this.selectGridToImportAlertDialog.show(
+                org.wheatgenetics.coordinate.R.string.import_grid, names);
         }
     }
     // endregion

@@ -13,22 +13,18 @@ class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialo
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void select(int which); }
 
-    // region Fields
     private final org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler handler;
-    private final int                                                       title  ;
-    // endregion
 
     private void select(final int which)
     { assert null != this.handler; this.handler.select(which); }
 
-    SelectAlertDialog(final android.app.Activity activity, final int title,
+    SelectAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.SelectAlertDialog.Handler handler)
-    { super(activity); this.title = title; this.handler = handler; }
+    { super(activity); this.handler = handler; }
 
     @java.lang.Override
     public void configure()
     {
-        this.setTitle(this.title);
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
@@ -36,4 +32,7 @@ class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialo
                 { org.wheatgenetics.coordinate.ui.SelectAlertDialog.this.select(which); }
             });
     }
+
+    public void show(final int title, final java.lang.String items[])
+    { this.setTitle(title); this.show(items); }
 }
