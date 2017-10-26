@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate.ui.tc;
  */
 class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields

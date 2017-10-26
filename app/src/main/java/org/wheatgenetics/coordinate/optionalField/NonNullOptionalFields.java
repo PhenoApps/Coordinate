@@ -83,10 +83,10 @@ implements java.lang.Cloneable
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, value, hint));
     }
 
-    private boolean addDate(final java.lang.String name)
+    private boolean addDate()
     {
         assert null != this.arrayList; return this.arrayList.add(
-            new org.wheatgenetics.coordinate.optionalField.DateOptionalField(name));
+            new org.wheatgenetics.coordinate.optionalField.DateOptionalField());
     }
     // endregion
 
@@ -210,7 +210,7 @@ implements java.lang.Cloneable
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        result.add("Plate Id"); result.addDate("Date");
+        result.add("Plate Id"); result.addDate();
         return result;
     }
 
@@ -218,7 +218,7 @@ implements java.lang.Cloneable
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        result.add("Identification"); result.add("Person"); result.addDate("Date");
+        result.add("Identification"); result.add("Person"); result.addDate();
         return result;
     }
 
@@ -229,7 +229,7 @@ implements java.lang.Cloneable
 
         result.add    ("Tray"  , /* hint => */ "Tray ID"    );
         result.add    ("Person", /* hint => */ "Person name");
-        result.addDate("Date"                               );
+        result.addDate(                                     );
 
         return result;
     }

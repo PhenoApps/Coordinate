@@ -20,6 +20,7 @@ class CheckAndAddOptionalFieldsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.AddOptionalFieldAlertDialog.Handler
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields

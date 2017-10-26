@@ -12,10 +12,10 @@ package org.wheatgenetics.coordinate.optionalField;
 class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     // region Constructors
-    DateOptionalField(final java.lang.String name)
+    DateOptionalField()
     {
         super(
-            /* name => */ name                                                              ,
+            /* name => */ "Date"                                                            ,
             /* hint => */ org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT);
     }
 

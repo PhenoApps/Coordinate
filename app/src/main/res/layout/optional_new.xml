@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Field name"
-                android:singleLine="true" >
+                android:maxLines="1" >
             </EditText>
         </LinearLayout>
 
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Default text"
                 android:inputType="text"
-                android:singleLine="true" >
+                android:maxLines="1" >
             </EditText>
         </LinearLayout>
     </LinearLayout>

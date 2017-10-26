@@ -7,10 +7,10 @@ package org.wheatgenetics.coordinate.model;
 public class EntryModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private long             gridId   ;
-    private int              row, col ;
-    private java.lang.String value    ;
-    private long             timestamp;
+    final private long             gridId   ;
+    final private int              row, col ;
+          private java.lang.String value    ;
+    final private long             timestamp;
     // endregion
 
     // region Constructors

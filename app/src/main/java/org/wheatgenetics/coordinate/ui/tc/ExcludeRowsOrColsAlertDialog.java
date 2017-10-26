@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.ui.tc;
 class ExcludeRowsOrColsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void excludeRowsOrCols(boolean checkedItems[]); }
 
     // region Fields

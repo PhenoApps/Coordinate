@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".Main">
+    tools:context=".ui.Main">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".85"
             android:text="@string/random_body"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:labelFor="@+id/cellsEdit" />
 
         <EditText
             android:id="@+id/cellsEdit"

@@ -17,6 +17,7 @@ package org.wheatgenetics.coordinate.ui.tc;
 class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
                    interface Handler     { public abstract void handleAssignDone(); }
     private static class     Unspecified extends java.lang.Exception {}
     // endregion

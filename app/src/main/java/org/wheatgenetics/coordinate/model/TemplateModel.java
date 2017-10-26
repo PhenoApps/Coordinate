@@ -494,7 +494,8 @@ implements java.lang.Cloneable
                 result.integerArrayListInstance =
                     org.wheatgenetics.coordinate.model.TemplateModel.Coordinates.make();
                 for (final java.lang.Integer integer: this.integerArrayListInstance)
-                    result.integerArrayListInstance.add(new java.lang.Integer(integer.intValue()));
+                    result.integerArrayListInstance.add(
+                        java.lang.Integer.valueOf(integer.intValue()));
             }
 
             return result;

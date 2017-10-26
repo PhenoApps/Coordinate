@@ -23,6 +23,7 @@ package org.wheatgenetics.coordinate.model;
 public class Exporter extends java.lang.Object
 {
     // region Types
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Helper
     {
         public abstract java.lang.String getEntryValue(int row, int col);
@@ -290,8 +291,7 @@ public class Exporter extends java.lang.Object
         // endregion
 
         private AsyncTask(final org.wheatgenetics.coordinate.model.Exporter.Helper helper,
-        final android.content.Context context, final int progressDialogTitle,
-        final int progressDialogMessage,
+        final android.content.Context context,
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
         final java.lang.String exportFileName, final java.lang.String absolutePath)
         {
@@ -299,7 +299,8 @@ public class Exporter extends java.lang.Object
 
             this.helper = helper; this.context = context;
             this.progressDialog = new org.wheatgenetics.androidlibrary.ProgressDialog(this.context,
-                progressDialogTitle, progressDialogMessage,
+                org.wheatgenetics.coordinate.R.string.exporting_title,
+                org.wheatgenetics.coordinate.R.string.exporting_body ,
                 new android.content.DialogInterface.OnCancelListener()
                 {
                     @java.lang.Override
@@ -371,10 +372,8 @@ public class Exporter extends java.lang.Object
     final java.lang.String exportFileName, final java.lang.String absolutePath)
     {
         super();
-        this.asyncTask = new org.wheatgenetics.coordinate.model.Exporter.AsyncTask(helper, context,
-            /* progressDialogTitle   => */ org.wheatgenetics.coordinate.R.string.exporting_title,
-            /* progressDialogMessage => */ org.wheatgenetics.coordinate.R.string.exporting_body ,
-            templateModel, exportFileName, absolutePath);
+        this.asyncTask = new org.wheatgenetics.coordinate.model.Exporter.AsyncTask(
+            helper, context, templateModel, exportFileName, absolutePath);
     }
 
     // region Public Methods

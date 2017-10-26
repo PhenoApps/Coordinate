@@ -24,6 +24,7 @@ class SetExcludesOptionalFieldsNumberingAlertDialog
 extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDialog.Handler
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void handleSetDone(); }
 
     // region Fields

@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 class GetExportGridFileNameAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void handleGetFileNameDone(java.lang.String fileName); }
 
     // region Fields

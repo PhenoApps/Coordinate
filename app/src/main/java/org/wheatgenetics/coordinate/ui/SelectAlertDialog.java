@@ -10,6 +10,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void select(int which); }
 
     // region Fields

@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate.ui;
  */
 class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
         public abstract void setPerson(java.lang.String person);
@@ -37,7 +38,8 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     private void setValues()
     {
         assert null != this.checkedOptionalFields; assert null != this.editTextArrayList;
-        assert this.checkedOptionalFields.size() == this.editTextArrayList.size();
+        if (this.checkedOptionalFields.size() != this.editTextArrayList.size())
+            throw new java.lang.AssertionError();
 
         boolean firstWasEmptyWhenItWasNotSupposedToBe = false;
         {

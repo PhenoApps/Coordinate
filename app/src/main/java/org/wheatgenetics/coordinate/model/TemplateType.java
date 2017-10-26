@@ -6,6 +6,7 @@ public enum TemplateType
 
     private final int code;
 
+    @java.lang.SuppressWarnings("UnnecessaryEnumModifier")
     private TemplateType(final int code) { this.code = code; }
 
     static org.wheatgenetics.coordinate.model.TemplateType get(final int code)

@@ -11,8 +11,8 @@
         android:layout_margin="5dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp" 
-        android:layout_gravity="right"
-        android:gravity="right"
+        android:layout_gravity="end"
+        android:gravity="end"
         android:textColor="#000"/>
     
 </LinearLayout>
