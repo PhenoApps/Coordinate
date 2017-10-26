@@ -98,8 +98,14 @@ class Database extends java.lang.Object
                 {
                     android.util.Log.w(SQLiteOpenHelper.TAG, "Upgrading database from version " +
                         oldVersion + " to " + newVersion + ", which will destroy all old data");
-                    assert null != db; db.execSQL("DROP TABLE IF EXISTS entries");
-                    this.onCreate(db);          // TODO: grids and templates tables are not dropped!
+                    {
+                        final java.lang.String format = "DROP %s IF EXISTS entries";
+                        assert null != db;
+                        db.execSQL(java.lang.String.format(format, "entries"  ));
+                        db.execSQL(java.lang.String.format(format, "grids"    ));
+                        db.execSQL(java.lang.String.format(format, "templates"));
+                    }
+                    this.onCreate(db);
                 }
 
                 @java.lang.Override

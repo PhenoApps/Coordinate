@@ -535,14 +535,16 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.cellIDEditText.setText("");
             else
             {
-                if (-1 != cell.y && -1 != cell.x)
+                if (!cell.equals(-1, -1))
                 {
                     this.row = cell.y; this.col = cell.x;
 
                     final java.lang.String value = this.getEntryValue(this.row, this.col);
-
                     if (null != value && value.contains("exclude"))
-                        return;                                 // TODO: cellIDEditText.setText("")?
+                    {
+                        this.cellIDEditText.setText("");
+                        return;
+                    }
                     else
                     {
                         org.wheatgenetics.coordinate.ui.Main.setCellBackground(v,
@@ -573,7 +575,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         // TODO: When grid is reset, make a new one.
         if (null != result && result)
         {
-            this.lastExportedGridId = this.gridId;                   // TODO: Make into Main method.
+            this.lastExportedGridId = this.gridId;
 
             @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
             class YesRunnable extends java.lang.Object implements java.lang.Runnable
@@ -832,7 +834,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region deleteGrid() Operations
-    private void deleteGridAfterConfirm()                    // TODO: DRY? (Compare to chooseOld().)
+    private void deleteGridAfterConfirm()
     {
         if (this.deleteEntriesByGridThenDeleteGrid())
         {
@@ -1195,6 +1197,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
+
             assert null != entriesTable;
             final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                 entriesTable.get(this.gridId, row, col);
@@ -1243,7 +1246,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 checkedOptionalFields = this.makeCheckedOptionalFields();
             boolean first = true;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
-            checkedOptionalFields)                                                     // TODO: DRY!
+            checkedOptionalFields)
             {
                 final android.view.View view = layoutInflater.inflate(
                     org.wheatgenetics.coordinate.R.layout.optional_line,
