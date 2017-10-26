@@ -1131,29 +1131,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region User Interface Methods
-    // region Overview of User Interface Methods
-    // setCellBackground()
-    //     populateUI()
-    //     setCellBackgroundThenChange()
-    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
-    // advanceToNextFreeCell()
-    //     populateUI()
-    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
-    // insertOrUpdateExcludedEntry()
-    //     populateUI()
-    // populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText()
-    //     populateUI()
-    // makeTag()
-    //     populateUI()
-    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
-    // setCellIDEditTextText()
-    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
-    // getTag()
-    //     setCellBackgroundThenChange()
-    // setCellBackgroundThenChange()
-    //     insertOrUpdateEntryThenPopulateCellIDEditTextAndGridTableLayout()
-    // endregion
-
     // region Populate User Interface Methods
     private static void setCellBackground(final android.view.View cell, final int state)
     {
@@ -1191,9 +1168,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
     }
 
-    private void insertOrUpdateExcludedEntry(final int row, final int col)
+    private boolean insertOrUpdateEntry(final int row, final int col, final java.lang.String value)
     {
-        boolean success;                                                               // TODO: DRY!
+        boolean success;
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
@@ -1204,16 +1181,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             if (null == entryModel)
             {
                 success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
-                    this.gridId, row, col, "exclude")) > 0;
+                    this.gridId, row, col, value)) > 0;
             }
             else
             {
-                entryModel.setValue("exclude");
+                entryModel.setValue(value);
                 success = entriesTable.update(entryModel);
             }
         }
         if (!success) this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
+        return success;
     }
+
+    private void insertOrUpdateExcludedEntry(final int row, final int col)
+    { this.insertOrUpdateEntry(row, col, "exclude"); }
 
     private void populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText()
     {
@@ -1471,31 +1452,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         final java.lang.String cellIDEditTextValue =
             org.wheatgenetics.androidlibrary.Utils.getText(this.cellIDEditText);
-        {
-            boolean success;                                                           // TODO: DRY!
-            {
-                final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                    this.entriesTable();
-
-                assert null != entriesTable;
-                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                    entriesTable.get(this.gridId, this.row, this.col);
-
-                if (null == entryModel)
-                    success = entriesTable.insert(new org.wheatgenetics.coordinate.model.EntryModel(
-                        this.gridId, this.row, this.col, cellIDEditTextValue)) > 0;
-                else
-                {
-                    entryModel.setValue(cellIDEditTextValue);
-                    success = entriesTable.update(entryModel);
-                }
-            }
-            if (!success)
-            {
-                this.showShortToast(org.wheatgenetics.coordinate.R.string.update_failed);
-                return true;
-            }
-        }
+        if (!this.insertOrUpdateEntry(this.row, this.col, cellIDEditTextValue)) return true;
 
         boolean endOfGrid = false;
         {
