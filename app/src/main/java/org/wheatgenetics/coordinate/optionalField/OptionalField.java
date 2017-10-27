@@ -23,9 +23,9 @@ public abstract class OptionalField extends java.lang.Object
     // endregion
 
     // region Fields
-    private final java.lang.String name                 ;
-    private       java.lang.String value = "", hint = "";
-    private       boolean          checked = true       ;
+    private final java.lang.String name, hint    ;
+    private       java.lang.String value   = ""  ;
+    private       boolean          checked = true;
     // endregion
 
     // region Private Methods
@@ -37,18 +37,19 @@ public abstract class OptionalField extends java.lang.Object
         return s;
     }
 
-    private void setHint(final java.lang.String hint)
-    { this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(hint); }
-
     private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
     // endregion
 
     // region Constructors
-    OptionalField(final java.lang.String name)
-    { super(); this.name = org.wheatgenetics.coordinate.optionalField.OptionalField.valid(name); }
-
     OptionalField(final java.lang.String name, final java.lang.String hint)
-    { this(name); this.setHint(hint); }
+    {
+        super();
+
+        this.name = org.wheatgenetics.coordinate.optionalField.OptionalField.valid(name);
+        this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull               (hint);
+    }
+
+    OptionalField(final java.lang.String name) { this(name, ""); }
 
     OptionalField(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
@@ -60,7 +61,7 @@ public abstract class OptionalField extends java.lang.Object
                 org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
         this.setValue(jsonObject.optString(
             org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME));
-        this.setHint(jsonObject.optString(
+        this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(jsonObject.optString(
             org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME));
         this.setChecked(jsonObject.getBoolean(                      // throws org.json.JSONException
             org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME));
