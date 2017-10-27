@@ -23,17 +23,18 @@ public abstract class OptionalField extends java.lang.Object
     // endregion
 
     // region Fields
-    private java.lang.String name, value = "", hint = "";
-    private boolean          checked = true             ;
+    private final java.lang.String name                 ;
+    private       java.lang.String value = "", hint = "";
+    private       boolean          checked = true       ;
     // endregion
 
     // region Private Methods
-    private void setName(final java.lang.String name)
+    private static java.lang.String valid(final java.lang.String s)
     {
-        assert null != name;
-        if (org.wheatgenetics.coordinate.BuildConfig.DEBUG && name.length() <= 0)
+        assert null != s;
+        if (org.wheatgenetics.coordinate.BuildConfig.DEBUG && s.length() <= 0)
             throw new java.lang.AssertionError();
-        this.name = name;
+        return s;
     }
 
     private void setHint(final java.lang.String hint)
@@ -43,7 +44,8 @@ public abstract class OptionalField extends java.lang.Object
     // endregion
 
     // region Constructors
-    OptionalField(final java.lang.String name) { super(); this.setName(name); }
+    OptionalField(final java.lang.String name)
+    { super(); this.name = org.wheatgenetics.coordinate.optionalField.OptionalField.valid(name); }
 
     OptionalField(final java.lang.String name, final java.lang.String hint)
     { this(name); this.setHint(hint); }
@@ -53,8 +55,9 @@ public abstract class OptionalField extends java.lang.Object
         super();
 
         assert null != jsonObject;
-        this.setName(jsonObject.optString(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
+        this.name = org.wheatgenetics.coordinate.optionalField.OptionalField.valid(
+            jsonObject.optString(
+                org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
         this.setValue(jsonObject.optString(
             org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME));
         this.setHint(jsonObject.optString(
