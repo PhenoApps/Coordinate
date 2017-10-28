@@ -1248,13 +1248,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         // region Populate this.optionalFieldLayout.
         assert null != this.optionalFieldLayout; this.optionalFieldLayout.removeAllViews();
-        if (null != this.gridOptionalFields)
+        if (null != this.gridOptionalFields) if (!this.gridOptionalFields.isEmpty())
         {
             final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
                 checkedOptionalFields =
                     new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
                         this.gridOptionalFields);
-            boolean first = true;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
             checkedOptionalFields)
             {
@@ -1268,17 +1267,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     assert null != nameTextView; nameTextView.setText(optionalField.getName());
                 }
                 {
-                    java.lang.String text;
-                    if (first)
-                    {
-                        text  = this.gridTitle;
-                        first = false         ;
-                    }
-                    else text = optionalField.getValue();
-
                     final android.widget.TextView valueTextView = (android.widget.TextView)
                         view.findViewById(org.wheatgenetics.coordinate.R.id.valueText);
-                    assert null != valueTextView; valueTextView.setText(text);
+                    assert null != valueTextView; valueTextView.setText(optionalField.getValue());
                 }
                 this.optionalFieldLayout.addView(view);
             }
