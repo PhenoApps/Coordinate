@@ -255,8 +255,19 @@ implements java.lang.Cloneable
         catch (final org.json.JSONException e) { return null; }                           //  org.-
     }                                                                                     //  json.-
                                                                                           //  JSON-
-                                                                                          //  Excep-
-    public void assign(final java.lang.String title, final int rows, final int cols)      //  tion
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields               //  Excep-
+    optionalFieldsClone()                                                                 //  tion
+    {
+        try
+        {
+            return null == this.optionalFields ? null :
+                (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
+                    this.optionalFields.clone();
+        }
+        catch (final java.lang.CloneNotSupportedException e) { return null; }
+    }
+
+    public void assign(final java.lang.String title, final int rows, final int cols)
     { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
 
 

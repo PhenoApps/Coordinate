@@ -68,6 +68,7 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.model.TemplateType
  *
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  *
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
@@ -122,7 +123,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel =
         org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
-    private org.wheatgenetics.coordinate.model.Exporter exporter = null;
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields gridOptionalFields;
+    private org.wheatgenetics.coordinate.model.Exporter                      exporter = null   ;
 
     private org.wheatgenetics.coordinate.ui.tc.TemplateCreator templateCreator = null;
 
@@ -420,7 +422,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         // endregion
 
         if (this.sharedPreferences.currentGridIsSet())
-            this.load(this.sharedPreferences.getCurrentGrid(), true);
+            this.load(this.sharedPreferences.getCurrentGrid(),
+                /* templateNeedsToBeLoaded       => */ true,
+                /* gridIdIsfromSharedPreferences => */ true);
         else
             this.getTemplateThenSetValuesThenInsertGridThenLoad();
         this.populateTemplateTitleTextViewAndMainLayoutAndCellIDEditText(); // TODO: Can this be deleted since populateUI() calls it?
@@ -631,13 +635,15 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.templateModel;
         final long gridId = this.gridsTable().insert(
             new org.wheatgenetics.coordinate.model.GridModel(
-                /* temp  => */ this.templateModel.getId()                     ,
-                /* title => */ this.templateModel.getFirstOptionalFieldValue()));
+                /* temp           => */ this.templateModel.getId()                       ,
+                /* title          => */ this.templateModel.getFirstOptionalFieldValue()//,   // TODO
+                /* optionalFields => */ /* this.gridOptionalFields */                    ));
         if (gridId <= 0) this.alert(org.wheatgenetics.coordinate.R.string.create_grid_fail);
         return gridId;
     }
 
-    private void load(final long gridId, final boolean gridIdIsfromSharedPreferences)
+    private void load(final long gridId, final boolean templateNeedsToBeLoaded,
+    final boolean gridIdIsfromSharedPreferences)
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             this.gridsTable().get(gridId);
@@ -645,7 +651,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.alert(org.wheatgenetics.coordinate.R.string.import_grid_failed);
         else
         {
-            joinedGridModel.populate(this.templateModel);
+            if (templateNeedsToBeLoaded)
+            {
+                joinedGridModel.populate(this.templateModel);
+                // joinedGridModel.populate(this.gridOptionalFields);
+                assert null != this.templateModel;
+                this.gridOptionalFields = this.templateModel.optionalFieldsIsEmpty() ?
+                    null : this.templateModel.optionalFieldsClone();
+            }
             this.gridId = joinedGridModel.getId(); this.gridTitle = joinedGridModel.getTitle();
 
             if (!gridIdIsfromSharedPreferences)
@@ -675,16 +688,23 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.gridAreaLayout;
             this.gridAreaLayout.setVisibility(android.view.View.VISIBLE);
 
-            this.load(gridId, false);
+            this.load(gridId,
+                /* templateNeedsToBeLoaded       => */ false,
+                /* gridIdIsfromSharedPreferences => */ false);
         }
     }
 
     private void setValuesThenInsertGridThenLoad()
     {
         assert null != this.templateModel; if (this.templateModel.optionalFieldsIsEmpty())
-            this.insertGridThenLoad();                     // There is no need to set optional field
-        else                                               //  values since optionalFields is empty.
         {
+            this.gridOptionalFields = null;
+            this.insertGridThenLoad();                     // There is no need to set optional field
+        }                                                  //  values since optionalFields is empty.
+        else
+        {
+            this.gridOptionalFields = this.templateModel.optionalFieldsClone();
+
             if (null == this.setOptionalFieldValuesAlertDialog)
                 this.setOptionalFieldValuesAlertDialog =
                     new org.wheatgenetics.coordinate.ui.SetOptionalFieldValuesAlertDialog(this, new
@@ -698,9 +718,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                             public void handleSetValuesDone()
                             { org.wheatgenetics.coordinate.ui.Main.this.insertGridThenLoad(); }
                         });
-            assert null != this.templateModel;
             this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
-                this.makeCheckedOptionalFields(),
+                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                    this.gridOptionalFields),
                 /* firstCannotBeEmpty => */ this.templateModel.getType().isDefaultTemplate());
         }
     }
@@ -971,8 +991,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         public void select(final int which)
                         {
                             if (which < indexes.length)
-                                org.wheatgenetics.coordinate.ui.Main.this.load(
-                                    indexes[which], false);
+                                org.wheatgenetics.coordinate.ui.Main.this.load(indexes[which],
+                                    /* templateNeedsToBeLoaded       => */ true ,
+                                    /* gridIdIsfromSharedPreferences => */ false);
                         }
                     });
             this.selectGridToImportAlertDialog.show(
@@ -1227,9 +1248,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         // region Populate this.optionalFieldLayout.
         assert null != this.optionalFieldLayout; this.optionalFieldLayout.removeAllViews();
+        if (null != this.gridOptionalFields)
         {
             final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-                checkedOptionalFields = this.makeCheckedOptionalFields();
+                checkedOptionalFields =
+                    new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                        this.gridOptionalFields);
             boolean first = true;
             for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField:
             checkedOptionalFields)
