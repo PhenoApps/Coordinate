@@ -31,7 +31,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.Optiona
             assert null != this.arrayList; this.listIterator = this.arrayList.listIterator();
         }
 
-        // region Overridden Methods
+        // region java.util.Iterator<> Overridden Methods
         @java.lang.Override
         public boolean hasNext()
         {

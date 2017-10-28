@@ -23,13 +23,24 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     { super(jsonObject); /* throws org.json.JSONException */ }
     // endregion
 
-    static java.lang.String getCurrentDate()
+    // region Overridden Methods
+    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    public java.lang.Object clone()
     {
-        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
-            java.lang.System.currentTimeMillis()).toString();
+        final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
+            new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
+        result.setValue(this.getValue()); result.setChecked(this.getChecked());
+        return result;
     }
 
     @java.lang.Override
     public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
+    // endregion
+
+    static java.lang.String getCurrentDate()
+    {
+        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
+            java.lang.System.currentTimeMillis()).toString();
+    }
 }

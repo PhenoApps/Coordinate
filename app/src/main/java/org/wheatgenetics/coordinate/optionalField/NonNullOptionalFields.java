@@ -28,8 +28,10 @@ implements java.lang.Cloneable
             final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
             jsonArray = (org.json.JSONArray) jsonTokener.nextValue();           // throws org.json.-
         }                                                                       //  JSONException
-        assert null != jsonArray; assert null != this.arrayList;
-        for (int i = 0; i < jsonArray.length(); i++)
+
+        assert null != jsonArray; final int last = jsonArray.length() - 1;
+        assert null != this.arrayList;
+        for (int i = 0; i <= last; i++)
         {
             org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
             {
@@ -57,9 +59,32 @@ implements java.lang.Cloneable
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+
+        assert null != result.arrayList;
         for (final org.wheatgenetics.coordinate.optionalField.OptionalField optionalField: this)
-            result.arrayList.add(
-                (org.wheatgenetics.coordinate.optionalField.OptionalField) optionalField.clone());
+            if (optionalField instanceof
+            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+            {
+                final org.wheatgenetics.coordinate.optionalField.DateOptionalField
+                    dateOptionalField =
+                        (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+                            optionalField;
+                result.arrayList.add((org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+                    dateOptionalField.clone());
+            }
+            else
+                if (optionalField instanceof
+                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                {
+                    final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
+                        otherOptionalField =
+                            (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                                optionalField;
+                    result.arrayList.add(
+                        (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                            otherOptionalField.clone());
+                }
+
         return result;
     }
 
@@ -249,7 +274,7 @@ implements java.lang.Cloneable
         result.add("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
         result.add("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
         result.add("person"                                                      );
-        result.add("date"                                                        ); // TODO: addDate()?
+        result.add("date"                                                        );
 
         return result;
     }

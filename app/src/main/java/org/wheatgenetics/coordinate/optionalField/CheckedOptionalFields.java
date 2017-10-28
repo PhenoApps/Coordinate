@@ -19,7 +19,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
     @java.lang.Override
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
-        // Iterates over checked optional fields.
+        // Only iterates over checked optional fields.
         class Iterator extends org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
         {
             private Iterator(final java.util.ArrayList<
