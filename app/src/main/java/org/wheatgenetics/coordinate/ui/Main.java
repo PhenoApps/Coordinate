@@ -144,10 +144,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         getExportGridFileNameAlertDialog = null;
     // endregion
 
-    private java.lang.String versionName     ;
-    private long             gridId      =  0;
-    private java.lang.String gridTitle   = "";
-    private int              row = 1, col = 1;
+    private java.lang.String versionName            ;
+    private long             gridId             =  0;
+    private int              row = 1,       col =  1;
     private long             lastExportedGridId = -1;
     // endregion
 
@@ -191,8 +190,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
-    // region this.templateModel Private Methods
-    // region isExcluded() this.templateModel Private Methods
+    // region isExcluded() Private Methods
     private boolean isExcludedRow(final int row)
     { assert null != this.templateModel; return this.templateModel.isExcludedRow(row); }
 
@@ -204,11 +202,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private boolean isExcluded(final int row, final int col)
     { return this.isExcludedRow(row) || this.isExcludedCol(col) || this.isExcludedCell(row, col); }
-    // endregion
-
-    private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-    makeCheckedOptionalFields()
-    { assert null != this.templateModel; return this.templateModel.makeCheckedOptionalFields(); }
     // endregion
 
     // region Utils AlertDialog Private Methods
@@ -530,7 +523,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region android.view.View.OnClickListener Overridden Method
     // Enables Main to be a cell click listener.
-    /** @param v Cell in the grid. */
+    /**
+     * Sets this.cellIDEditText text and cell background.
+     * @param v Cell in the grid.
+     */
     @java.lang.Override
     public void onClick(final android.view.View v)
     {                                                   // TODO: Don't toggle already selected cell.
@@ -659,7 +655,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.gridOptionalFields = this.templateModel.optionalFieldsIsEmpty() ?
                     null : this.templateModel.optionalFieldsClone();
             }
-            this.gridId = joinedGridModel.getId(); this.gridTitle = joinedGridModel.getTitle();
+            this.gridId = joinedGridModel.getId();
 
             if (!gridIdIsfromSharedPreferences)
             {
@@ -1122,8 +1118,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         assert null != menuItem; switch (menuItem.getItemId())
         {
-            case org.wheatgenetics.coordinate.R.id.menu_new_grid: this.createGrid(); break;
-
+            case org.wheatgenetics.coordinate.R.id.menu_new_grid    : this.createGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_delete_grid : this.deleteGrid(); break;
             case org.wheatgenetics.coordinate.R.id.menu_new_template:
                 this.insertTemplateThenSetValuesThenInsertGridThenLoad(); break;
