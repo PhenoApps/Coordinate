@@ -7,6 +7,8 @@ package org.wheatgenetics.coordinate.ui.tc;
  * android.view.View.OnClickListener
  * android.widget.EditText
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -25,7 +27,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 
     private void excludeCells()
     {
-        final int amount = org.wheatgenetics.coordinate.utils.Utils.convert(
+        final int amount = org.wheatgenetics.javalib.Utils.convert(
             org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
         if (amount > 0)
         {
