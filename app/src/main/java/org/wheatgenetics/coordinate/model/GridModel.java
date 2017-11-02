@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * org.wheatgenetics.coordinate.utils.Utils
+ * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.model.Model
  */
@@ -26,7 +26,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     java.lang.CharSequence getFormattedTimestamp()
-    { return org.wheatgenetics.coordinate.utils.Utils.formatDate(this.getTimestamp()); }
+    { return org.wheatgenetics.androidlibrary.Utils.formatDate(this.getTimestamp()); }
 
     // region Public Methods
     public long             getTemp     () { return this.temp     ; }

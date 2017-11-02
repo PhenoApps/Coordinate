@@ -5,7 +5,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONException
  * org.json.JSONObject
  *
- * org.wheatgenetics.coordinate.utils.Utils
+ * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
@@ -40,7 +40,7 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
 
     static java.lang.String getCurrentDate()
     {
-        return org.wheatgenetics.coordinate.utils.Utils.formatDate(
+        return org.wheatgenetics.androidlibrary.Utils.formatDate(
             java.lang.System.currentTimeMillis()).toString();
     }
 }
