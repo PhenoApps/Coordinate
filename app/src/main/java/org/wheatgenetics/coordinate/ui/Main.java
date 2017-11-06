@@ -43,6 +43,8 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  * org.wheatgenetics.androidlibrary.Dir
+ * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
+ * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
  * org.wheatgenetics.androidlibrary.R
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
@@ -74,8 +76,6 @@ package org.wheatgenetics.coordinate.ui;
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator
  * org.wheatgenetics.coordinate.ui.tc.TemplateCreator.Handler
  *
- * org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
- * org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog
  * org.wheatgenetics.coordinate.ui.GetTemplateChoiceAlertDialog.Handler
  * org.wheatgenetics.coordinate.ui.SelectAlertDialog
@@ -140,8 +140,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         selectTemplateToDeleteAlertDialog = null;
 
     private org.wheatgenetics.coordinate.ui.SelectAlertDialog selectGridToImportAlertDialog = null;
-    private org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog
-        getExportGridFileNameAlertDialog = null;
+    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
+        getExportFileNameAlertDialog = null;
     // endregion
 
     private java.lang.String versionName            ;
@@ -1032,9 +1032,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void exportGrid()
     {
-        if (null == this.getExportGridFileNameAlertDialog) this.getExportGridFileNameAlertDialog =
-            new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog(this,
-                new org.wheatgenetics.coordinate.ui.GetExportGridFileNameAlertDialog.Handler()
+        if (null == this.getExportFileNameAlertDialog) this.getExportFileNameAlertDialog =
+            new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this,
+                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void handleGetFileNameDone(final java.lang.String fileName)
@@ -1044,7 +1044,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     }
                 });
         assert null != this.templateModel;
-        this.getExportGridFileNameAlertDialog.show(
+        this.getExportFileNameAlertDialog.show(
             this.templateModel.getFirstOptionalFieldDatedValue());
     }
 

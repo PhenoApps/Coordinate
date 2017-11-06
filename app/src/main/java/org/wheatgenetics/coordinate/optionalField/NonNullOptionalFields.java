@@ -4,8 +4,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * org.json.JSONArray
  * org.json.JSONException
- * org.json.JSONTokener
  * org.json.JSONObject
+ * org.json.JSONTokener
  *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField

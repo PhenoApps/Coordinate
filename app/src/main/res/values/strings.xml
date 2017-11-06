@@ -68,9 +68,6 @@
     <string name="create_template_fail">Unable to create template.</string>
     <string name="create_grid_fail">Unable to create grid.</string>
 
-    <string name="filename_set">Set Filename</string>
-    <string name="filename_empty">Filename cannot be empty.</string>
-
     <string name="clear_grid">Do you want to clear the data from the current grid?</string>
     <string name="clear_fail">Unable to clear grid.</string>
 

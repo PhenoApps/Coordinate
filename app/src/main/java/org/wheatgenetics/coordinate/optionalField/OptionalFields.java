@@ -11,7 +11,6 @@ abstract class OptionalFields extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.OptionalField>
 {
     /** Iterates over non-null optional fields. */
-    @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
     static class Iterator extends java.lang.Object
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.OptionalField>
     {
