@@ -71,8 +71,7 @@ implements org.wheatgenetics.coordinate.ui.tc.CheckAndAddOptionalFieldsAlertDial
 
     SetExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.ui.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
-        handler)
-    { super(activity); this.handler = handler; }
+        handler) { super(activity); this.handler = handler; }
 
     // region Overridden Methods
     @java.lang.Override
