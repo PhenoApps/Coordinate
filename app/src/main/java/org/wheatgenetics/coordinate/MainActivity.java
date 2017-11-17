@@ -1,8 +1,5 @@
 package org.wheatgenetics.coordinate;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 /**
  * Uses:
  * android.os.Bundle
@@ -37,18 +34,6 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
             final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
                 this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);   // From layout/app_-
             this.setSupportActionBar(toolbar);                                  //  bar_main.xml.
-
-            final FloatingActionButton fab =
-                (FloatingActionButton) this.findViewById(org.wheatgenetics.coordinate.R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final View view)
-                    {
-                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    }
-                });
 
             final android.support.v7.app.ActionBarDrawerToggle toggle =
                 new android.support.v7.app.ActionBarDrawerToggle(this, this.drawerLayout, toolbar,
