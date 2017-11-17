@@ -1,0 +1,5 @@
+<resources>
+    <!-- nav_header_main.xml: -->
+    <dimen name="medium_text_size">25sp</dimen>
+    <dimen name="large_text_size">30sp</dimen>
+</resources>
