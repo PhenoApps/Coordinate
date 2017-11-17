@@ -84,13 +84,15 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
             return super.onOptionsItemSelected(item);
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings("StatementWithEmptyBody")
+    @java.lang.Override
     public boolean onNavigationItemSelected(
     @android.support.annotation.NonNull final android.view.MenuItem item)
     {
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
+            // The following six ids that have names that start with "nav_" come from
+            // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_camera   : break;
             case org.wheatgenetics.coordinate.R.id.nav_gallery  : break;
             case org.wheatgenetics.coordinate.R.id.nav_slideshow: break;
