@@ -1,6 +1,12 @@
 package org.wheatgenetics.coordinate.optionalField;
 
 /**
+ * BaseOptionalField and OptionalField used to be one class that used org.json.JSONException and
+ * org.json.JSONObject.  The one class was split into two in order to do as much local unit testing
+ * as possible (BaseOptionalFieldTest) and as little instrumented testing as possible
+ * (OptionalFieldTest).  (BaseOptionalField does not use org.json.JSONException or
+ * org.json.JSONObject while OptionalField does.)
+ *
  * Uses:
  * org.wheatgenetics.javalib.Utils
  */
