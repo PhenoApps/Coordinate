@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate;
  * android.support.design.widget.NavigationView
  * android.support.v4.view.GravityCompat
  * android.support.v4.widget.DrawerLayout
+ * android.support.v7.app.ActionBar
  * android.support.v7.app.ActionBarDrawerToggle
  * android.support.v7.app.AppCompatActivity
  * android.support.v7.widget.Toolbar
@@ -34,6 +35,12 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
             final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)
                 this.findViewById(org.wheatgenetics.coordinate.R.id.toolbar);   // From layout/app_-
             this.setSupportActionBar(toolbar);                                  //  bar_main.xml.
+
+            {
+                final android.support.v7.app.ActionBar supportActionBar =
+                    this.getSupportActionBar();
+                if (null != supportActionBar) supportActionBar.setTitle(null);
+            }
 
             final android.support.v7.app.ActionBarDrawerToggle toggle =
                 new android.support.v7.app.ActionBarDrawerToggle(this, this.drawerLayout, toolbar,
