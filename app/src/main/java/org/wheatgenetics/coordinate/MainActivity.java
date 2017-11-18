@@ -28,7 +28,7 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
 
         this.drawerLayout = (android.support.v4.widget.DrawerLayout) this.findViewById(
-            org.wheatgenetics.coordinate.R.id.drawer_layout);       // From layout/activity_main.xml.
+            org.wheatgenetics.coordinate.R.id.drawer_layout);      // From layout/activity_main.xml.
 
         // region Configure action bar.
         {
@@ -100,12 +100,14 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         {
             // The following six ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
-            case org.wheatgenetics.coordinate.R.id.nav_camera   : break;
-            case org.wheatgenetics.coordinate.R.id.nav_gallery  : break;
-            case org.wheatgenetics.coordinate.R.id.nav_slideshow: break;
-            case org.wheatgenetics.coordinate.R.id.nav_manage   : break;
-            case org.wheatgenetics.coordinate.R.id.nav_share    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_send     : break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_grid    : break;
+            case org.wheatgenetics.coordinate.R.id.nav_delete_grid    : break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_template: break;
+            case org.wheatgenetics.coordinate.R.id.nav_load_template  : break;
+            case org.wheatgenetics.coordinate.R.id.nav_delete_template: break;
+            case org.wheatgenetics.coordinate.R.id.nav_import_grid    : break;
+            case org.wheatgenetics.coordinate.R.id.nav_export_grid    : break;
+            case org.wheatgenetics.coordinate.R.id.nav_show_about     : break;
         }
 
         assert null != this.drawerLayout;
