@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="225dp"
         android:maxLines="3"
         android:textAlignment="center" />
 
@@ -27,8 +27,32 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="75dp"
+        android:layout_marginBottom="75dp"
         android:text="Add Optional Field"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/checkAndAddOptionalFieldButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="75dp"
+        android:text="Check and Add Optional Field"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/refreshTextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="225dp"
+        android:text="Refresh Text"
         android:textAllCaps="false" />
 
 </android.support.constraint.ConstraintLayout>
