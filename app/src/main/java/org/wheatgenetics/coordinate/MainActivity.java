@@ -13,14 +13,20 @@ package org.wheatgenetics.coordinate;
  * android.support.v7.widget.Toolbar
  * android.view.Menu
  * android.view.MenuItem
+ * android.view.View
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.TestAlertDialog
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity
 implements android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
 {
-    private android.support.v4.widget.DrawerLayout drawerLayout = null;
+    // region Fields
+    private android.support.v4.widget.DrawerLayout       drawerLayout    = null;
+    private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
+    // endregion
 
+    // region Overridden Methods
     @java.lang.Override
     protected void onCreate(final android.os.Bundle savedInstanceState)
     {
@@ -113,5 +119,12 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         assert null != this.drawerLayout;
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
         return true;
+    }
+    // endregion
+
+    public void onTestCoordinateButtonClick(final android.view.View view)
+    {
+        if (null == this.testAlertDialog) this.testAlertDialog = new TestAlertDialog(this);
+        this.testAlertDialog.show();
     }
 }

@@ -16,6 +16,8 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="TestAlertDialogTitle">Test Coordinate</string>
+
     <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
     <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
 </resources>
