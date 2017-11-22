@@ -48,6 +48,19 @@ public class CellTest extends java.lang.Object
     }
     // endregion
 
+    // region Package Method Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void randomZeroXFails() { org.wheatgenetics.coordinate.model.Cell.random(0, 9); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void randomNegativeXFails() { org.wheatgenetics.coordinate.model.Cell.random(-5, 9); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void randomZeroYFails() { org.wheatgenetics.coordinate.model.Cell.random(5, 0); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void randomNegativeYFails() { org.wheatgenetics.coordinate.model.Cell.random(5, -9); }
+
     @org.junit.Test
     public void jsonSucceeds() throws org.json.JSONException
     {
@@ -61,4 +74,5 @@ public class CellTest extends java.lang.Object
 
         org.junit.Assert.assertEquals(cell.json().toString(), jsonObject.toString());
     }
+    // endregion
 }
