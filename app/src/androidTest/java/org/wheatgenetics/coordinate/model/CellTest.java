@@ -14,6 +14,21 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class CellTest extends java.lang.Object
 {
+    @org.junit.Test
+    public void secondConstructorSucceeds() throws org.json.JSONException
+    {
+        final int x = 1, y = 2;
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(x, y);
+
+        final org.json.JSONObject jsonObject = new org.json.JSONObject();
+        jsonObject.put("row", y);                                   // throws org.json.JSONException
+        jsonObject.put("col", x);                                   // throws org.json.JSONException
+
+        org.junit.Assert.assertTrue(cell.equals(
+            new org.wheatgenetics.coordinate.model.Cell(jsonObject)));
+    }
+
     // region Overridden Method Tests
     @org.junit.Test
     public void toStringAndHashCodeSucceed()

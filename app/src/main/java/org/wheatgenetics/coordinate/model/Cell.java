@@ -15,7 +15,12 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     private static int random(final int bound)
     { return new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1; }
 
+    // region Constructors
     Cell(final int x, final int y) { super(); this.point = new android.graphics.Point(x, y); }
+
+    Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
+    { this(/* x => */ jsonObject.getInt("col"), /* y => */ jsonObject.getInt("row")); }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override
