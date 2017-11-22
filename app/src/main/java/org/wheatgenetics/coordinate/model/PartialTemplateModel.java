@@ -109,8 +109,8 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
         else return false;
     }
 
-    @java.lang.Override
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone", "RedundantStringConstructorCall"})
+    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
+        "CloneDoesntDeclareCloneNotSupportedException", "RedundantStringConstructorCall"})
     protected java.lang.Object clone()
     {
         return new org.wheatgenetics.coordinate.model.PartialTemplateModel(

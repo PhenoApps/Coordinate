@@ -14,21 +14,27 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class CellTest extends java.lang.Object
 {
+    static org.json.JSONObject makeJSONObject(final int x, final int y)
+    throws org.json.JSONException
+    {
+        final org.json.JSONObject result = new org.json.JSONObject();
+
+        result.put("row", y);                                       // throws org.json.JSONException
+        result.put("col", x);                                       // throws org.json.JSONException
+
+        return result;
+    }
+
     @org.junit.Test
     public void secondConstructorSucceeds() throws org.json.JSONException
     {
         final int x = 1, y = 2;
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(x, y);
-
-        final org.json.JSONObject jsonObject = new org.json.JSONObject();
-        jsonObject.put("row", y);                                   // throws org.json.JSONException
-        jsonObject.put("col", x);                                   // throws org.json.JSONException
-
-        org.junit.Assert.assertTrue(cell.equals(
-            new org.wheatgenetics.coordinate.model.Cell(jsonObject)));
-    }
-
+        org.junit.Assert.assertTrue(cell.equals(new org.wheatgenetics.coordinate.model.Cell(
+            org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(x, y))));     // throws org.-
+    }                                                                                //  json.JSON-
+                                                                                     //  Exception
     // region Overridden Method Tests
     @org.junit.Test
     public void toStringAndHashCodeSucceed()
@@ -83,10 +89,10 @@ public class CellTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(x, y);
 
-        final org.json.JSONObject jsonObject = new org.json.JSONObject();
-        jsonObject.put("row", y);                                   // throws org.json.JSONException
-        jsonObject.put("col", x);                                   // throws org.json.JSONException
+        final org.json.JSONObject jsonObject =
+            org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(x, y);   // throws org.json.-
 
+        assert null != jsonObject;                                              //  JSONException
         org.junit.Assert.assertEquals(cell.json().toString(), jsonObject.toString());
     }
     // endregion

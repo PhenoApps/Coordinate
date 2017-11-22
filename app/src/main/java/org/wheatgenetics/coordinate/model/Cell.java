@@ -10,6 +10,8 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Cell extends java.lang.Object implements java.lang.Cloneable
 {
+    private static final java.lang.String COL_NAME = "col", ROW_NAME = "row";
+
     private final android.graphics.Point point;
 
     private static int random(final int bound)
@@ -19,7 +21,11 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     Cell(final int x, final int y) { super(); this.point = new android.graphics.Point(x, y); }
 
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
-    { this(/* x => */ jsonObject.getInt("col"), /* y => */ jsonObject.getInt("row")); }
+    {
+        this(
+            /* x => */ jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.COL_NAME),
+            /* y => */ jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_NAME));
+    }
     // endregion
 
     // region Overridden Methods
@@ -62,8 +68,10 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     {
         final org.json.JSONObject result = new org.json.JSONObject();
 
-        result.put("row", this.point.y);                            // throws org.json.JSONException
-        result.put("col", this.point.x);                            // throws org.json.JSONException
+        result.put(                                                 // throws org.json.JSONException
+            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.point.y);
+        result.put(                                                 // throws org.json.JSONException
+            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.point.x);
 
         return result;
     }
