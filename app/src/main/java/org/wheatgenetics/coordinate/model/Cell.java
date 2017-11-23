@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.graphics.Point
+ * android.support.annotation.IntRange
  *
  * org.json.JSONException
  * org.json.JSONObject
@@ -14,11 +15,27 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
 
     private final android.graphics.Point point;
 
+    // region Private Methods
+    private static int valid(final int i)
+    {
+        if (i < 1) throw new java.lang.IllegalArgumentException("value must be > 0");
+        return i;
+    }
+
     private static int random(final int bound)
     { return new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1; }
+    // endregion
 
     // region Constructors
-    Cell(final int x, final int y) { super(); this.point = new android.graphics.Point(x, y); }
+    Cell(
+    @android.support.annotation.IntRange(from = 1) final int x,
+    @android.support.annotation.IntRange(from = 1) final int y)
+    {
+        super();
+        this.point = new android.graphics.Point(
+            org.wheatgenetics.coordinate.model.Cell.valid(x),
+            org.wheatgenetics.coordinate.model.Cell.valid(y));
+    }
 
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
@@ -57,7 +74,9 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    static org.wheatgenetics.coordinate.model.Cell random(final int xBound, final int yBound)
+    static org.wheatgenetics.coordinate.model.Cell random(
+    @android.support.annotation.IntRange(from = 2) final int xBound,
+    @android.support.annotation.IntRange(from = 2) final int yBound)
     {
         return new org.wheatgenetics.coordinate.model.Cell(
             org.wheatgenetics.coordinate.model.Cell.random(xBound),

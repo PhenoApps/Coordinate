@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
  * org.json.JSONArray
  * org.json.JSONException
  * org.json.JSONObject
@@ -137,7 +139,8 @@ implements java.lang.Cloneable
     }
     // endregion
 
-    void setChecked(final int index, final boolean checked) { this.get(index).setChecked(checked); }
+    void setChecked(@android.support.annotation.IntRange(from = 0) final int index,
+    final boolean checked) { this.get(index).setChecked(checked); }
 
     // region Public Methods
     public boolean isEmpty()
@@ -147,7 +150,8 @@ implements java.lang.Cloneable
         assert null != iterator; return !iterator.hasNext();
     }
 
-    public org.wheatgenetics.coordinate.optionalField.BaseOptionalField get(final int index)
+    public org.wheatgenetics.coordinate.optionalField.BaseOptionalField get(
+    @android.support.annotation.IntRange(from = 0) final int index)
     {
         int size = 0;
         {
@@ -256,52 +260,54 @@ implements java.lang.Cloneable
         if (null == names)
             return null;
         else
-        if (names.length <= 0)
-            return null;
-        else
-        {
-            @java.lang.SuppressWarnings("Convert2Diamond")
-            final java.util.ArrayList<java.lang.String> valueArrayList =
-                new java.util.ArrayList<java.lang.String>();
-
-            for (final java.lang.String name: names)
+            if (names.length <= 0)
+                return null;
+            else
             {
-                boolean nameFound = false;
-                for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                baseOptionalField: this)
-                    if (baseOptionalField.namesAreEqual(name))
-                    {
-                        java.lang.String safeValue;
-                        {
-                            if (baseOptionalField instanceof
-                            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                            {
-                                final org.wheatgenetics.coordinate.optionalField.DateOptionalField
-                                    dateOptionalField = (org.wheatgenetics.coordinate.optionalField
-                                        .DateOptionalField) baseOptionalField;
-                                safeValue = dateOptionalField.getSafeValue();
-                            }
-                            else
-                                if (baseOptionalField instanceof
-                                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                                {
-                                    final org.wheatgenetics.coordinate.optionalField
-                                        .OtherOptionalField otherOptionalField =
-                                            (org.wheatgenetics.coordinate.optionalField
-                                                .OtherOptionalField) baseOptionalField;
-                                    safeValue = otherOptionalField.getSafeValue();
-                                }
-                                else safeValue = null;
-                        }
-                        valueArrayList.add(safeValue);
-                        nameFound = true;
-                        break;
-                    }
-                if (!nameFound) valueArrayList.add("");
-            }
+                @java.lang.SuppressWarnings("Convert2Diamond")
+                final java.util.ArrayList<java.lang.String> valueArrayList =
+                    new java.util.ArrayList<java.lang.String>();
 
-            return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
-        }
+                for (final java.lang.String name: names)
+                {
+                    boolean nameFound = false;
+                    for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+                    baseOptionalField: this)
+                        if (baseOptionalField.namesAreEqual(name))
+                        {
+                            java.lang.String safeValue;
+                            {
+                                if (baseOptionalField instanceof
+                                org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+                                {
+                                    final
+                                        org.wheatgenetics.coordinate.optionalField.DateOptionalField
+                                            dateOptionalField =
+                                                (org.wheatgenetics.coordinate.optionalField
+                                                    .DateOptionalField) baseOptionalField;
+                                    safeValue = dateOptionalField.getSafeValue();
+                                }
+                                else
+                                    if (baseOptionalField instanceof
+                                    org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                                    {
+                                        final org.wheatgenetics.coordinate.optionalField
+                                            .OtherOptionalField otherOptionalField =
+                                                (org.wheatgenetics.coordinate.optionalField
+                                                    .OtherOptionalField) baseOptionalField;
+                                        safeValue = otherOptionalField.getSafeValue();
+                                    }
+                                    else safeValue = null;
+                            }
+                            valueArrayList.add(safeValue);
+                            nameFound = true;
+                            break;
+                        }
+                    if (!nameFound) valueArrayList.add("");
+                }
+
+                return valueArrayList.toArray(new java.lang.String[valueArrayList.size()]);
+            }
     }
 
     public boolean[] checks()

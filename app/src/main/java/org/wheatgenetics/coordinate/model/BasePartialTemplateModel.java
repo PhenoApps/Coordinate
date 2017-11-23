@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.model;
  * PartialTemplateModel does.)
  *
  * Uses:
+ * android.support.annotation.RestrictTo
+ *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  */
@@ -111,6 +113,7 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     // region Package Methods
     @java.lang.SuppressWarnings("DefaultLocale")
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
     {
         return "%s" + java.lang.String.format(
@@ -119,6 +122,7 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
             this.getCols(), this.getColNumbering(), this.getRowNumbering());
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void assign(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
     final boolean colNumbering, final boolean rowNumbering)

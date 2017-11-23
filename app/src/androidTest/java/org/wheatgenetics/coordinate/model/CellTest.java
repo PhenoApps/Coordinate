@@ -25,6 +25,21 @@ public class CellTest extends java.lang.Object
         return result;
     }
 
+    // region Constructor Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void zeroXfirstConstructorFails() { new org.wheatgenetics.coordinate.model.Cell(0, 5); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void negativeXfirstConstructorFails()
+    { new org.wheatgenetics.coordinate.model.Cell(-10, 5); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void zeroYfirstConstructorFails() { new org.wheatgenetics.coordinate.model.Cell(8, 0); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void negativeYfirstConstructorFails()
+    { new org.wheatgenetics.coordinate.model.Cell(8, -5); }
+
     @org.junit.Test
     public void secondConstructorSucceeds() throws org.json.JSONException
     {
@@ -71,16 +86,22 @@ public class CellTest extends java.lang.Object
 
     // region Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void randomZeroXFails() { org.wheatgenetics.coordinate.model.Cell.random(0, 9); }
+    public void zeroXRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(0, 9); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void randomNegativeXFails() { org.wheatgenetics.coordinate.model.Cell.random(-5, 9); }
+    public void negativeXRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(-5, 9); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void randomZeroYFails() { org.wheatgenetics.coordinate.model.Cell.random(5, 0); }
+    public void oneXRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(1, 9); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void randomNegativeYFails() { org.wheatgenetics.coordinate.model.Cell.random(5, -9); }
+    public void zeroYRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(5, 0); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void negativeYRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(5, -9); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void oneYRandomFails() { org.wheatgenetics.coordinate.model.Cell.random(5, 1); }
 
     @org.junit.Test
     public void jsonSucceeds() throws org.json.JSONException

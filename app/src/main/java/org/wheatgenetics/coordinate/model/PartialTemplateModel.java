@@ -15,6 +15,8 @@ package org.wheatgenetics.coordinate.model;
  * JoinedGridModel.
  *
  * Uses:
+ * android.support.annotation.RestrictTo
+ *
  * org.wheatgenetics.coordinate.model.BasePartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  *
@@ -78,6 +80,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
 
     // region Overridden Methods
     @java.lang.Override
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
     {
         return java.lang.String.format(super.formatString() + ", options=%s", "%s",

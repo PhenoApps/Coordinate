@@ -1,5 +1,9 @@
 package org.wheatgenetics.coordinate.model;
 
+/**
+ * Uses:
+ * android.support.annotation.IntRange
+ */
 public enum TemplateType
 {
     SEED(0), DNA(1), USERDEFINED(2);
@@ -7,9 +11,11 @@ public enum TemplateType
     private final int code;
 
     @java.lang.SuppressWarnings("UnnecessaryEnumModifier")
-    private TemplateType(final int code) { this.code = code; }
+    private TemplateType(@android.support.annotation.IntRange(from = 0, to = 2) final int code)
+    { this.code = code; }
 
-    static org.wheatgenetics.coordinate.model.TemplateType get(final int code)
+    static org.wheatgenetics.coordinate.model.TemplateType get(
+    @android.support.annotation.IntRange(from = 0, to = 2) final int code)
     {
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED.code == code)
             return org.wheatgenetics.coordinate.model.TemplateType.SEED;
