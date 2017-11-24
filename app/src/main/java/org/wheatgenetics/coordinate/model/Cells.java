@@ -27,7 +27,6 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 final org.wheatgenetics.coordinate.model.Cell cell =
                     new org.wheatgenetics.coordinate.model.Cell(jsonObject);    // throws org.json.-
                 this.cellArrayList().add(cell);                                 //  JSONException
-
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
@@ -63,7 +62,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     {
         this();
 
-        if (null != json) if (json.length() > 0)
+        if (null != json) if (json.trim().length() > 0)
         {
             org.json.JSONArray jsonArray;
             {
@@ -84,7 +83,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                     try
                     {
                         this.add((org.json.JSONObject)
-                            jsonArray.get(i));                      // throws org.json.JSONException
+                            jsonArray.get(i) /* throws org.json.JSONException */);
                     }
                     catch (final org.json.JSONException e) { /* Skip ith jsonObject. */ }
             }
@@ -192,6 +191,10 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 2) final int xBound,
     @android.support.annotation.IntRange(from = 2) final int yBound)
     {
+        // Creating the cell before clearing cellArrayList is intentional.  This is done so that if
+        // an exception is thrown when attempting to create the cell execution will leave this
+        // method before the method can clear the cellArrayList.  It is better to do all of the work
+        // or none of the work than to do half of the work.
         final org.wheatgenetics.coordinate.model.Cell cell =
             org.wheatgenetics.coordinate.model.Cell.random(xBound, yBound);
 

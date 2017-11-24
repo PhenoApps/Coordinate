@@ -15,8 +15,9 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class CellsTest extends java.lang.Object
 {
+    // region Constructor Tests
     @org.junit.Test
-    public void secondConstructorAndJSONSucceeds() throws org.json.JSONException
+    public void secondConstructorAndJSONSucceed() throws org.json.JSONException
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
         jsonArray.put(org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(1, 2));   // throws
@@ -27,6 +28,19 @@ public class CellsTest extends java.lang.Object
 
         org.junit.Assert.assertEquals(cells.json(), jsonArray.toString());
     }
+
+    @org.junit.Test
+    public void nullInputSecondConstructorSucceeds()
+    { new org.wheatgenetics.coordinate.model.Cells(null); }
+
+    @org.junit.Test
+    public void emptyInputSecondConstructorSucceeds()
+    { new org.wheatgenetics.coordinate.model.Cells(""); }
+
+    @org.junit.Test
+    public void spacesInputSecondConstructorSucceeds()
+    { new org.wheatgenetics.coordinate.model.Cells("   "); }
+    // endregion
 
     // region Overridden Method Tests
     @org.junit.Test
@@ -59,6 +73,9 @@ public class CellsTest extends java.lang.Object
 
         secondCells.clear();
         org.junit.Assert.assertFalse(firstCells.equals(secondCells));
+
+        secondCells.add(7, 999);
+        org.junit.Assert.assertFalse(firstCells.equals(secondCells));
     }
 
     @org.junit.Test
@@ -75,7 +92,10 @@ public class CellsTest extends java.lang.Object
         org.junit.Assert.assertEquals(firstCells.hashCode(), secondCells.hashCode());
 
         secondCells.clear();
-        org.junit.Assert.assertFalse(firstCells.equals(secondCells));
+        org.junit.Assert.assertNotEquals(firstCells.hashCode(), secondCells.hashCode());
+
+        secondCells.add(7, 999);
+        org.junit.Assert.assertNotEquals(firstCells.hashCode(), secondCells.hashCode());
     }
 
     @org.junit.Test
@@ -83,6 +103,9 @@ public class CellsTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells();
+        org.junit.Assert.assertTrue(cells.equals(cells.clone()));
+
+        cells.add(78, 78);
         org.junit.Assert.assertTrue(cells.equals(cells.clone()));
     }
     // endregion
