@@ -1,11 +1,22 @@
 package org.wheatgenetics.coordinate.model;
 
+/**
+ * Uses:
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
+ */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 abstract class Model extends java.lang.Object
 {
     private long id;
 
-    Model() { super(); } Model(final long id) { this(); this.setId(id); }
+    // region Constructors
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    Model() { super(); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    Model(final long id) { this(); this.setId(id); }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override @java.lang.SuppressWarnings("DefaultLocale")

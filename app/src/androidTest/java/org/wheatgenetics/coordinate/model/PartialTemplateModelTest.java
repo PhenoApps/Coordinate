@@ -219,36 +219,49 @@ public class PartialTemplateModelTest extends java.lang.Object
                 /* colNumbering   => */ true                                               ,
                 /* rowNumbering   => */ false                                              ,
                 /* optionalFields => */ null                                               );
-        final org.wheatgenetics.coordinate.model.PartialTemplateModel secondPartialTemplateModel =
-            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* title          => */ "testTitle"                                        ,
-                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
-                /* rows           => */ 5                                                  ,
-                /* cols           => */ 2                                                  ,
-                /* colNumbering   => */ true                                               ,
-                /* rowNumbering   => */ false                                              ,
-                /* optionalFields => */ null                                               );
-        org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(secondPartialTemplateModel));
+        {
+            final org.wheatgenetics.coordinate.model.PartialTemplateModel
+                secondPartialTemplateModel =
+                    new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                        /* title          => */ "testTitle"                                        ,
+                        /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                        /* rows           => */ 5    ,
+                        /* cols           => */ 2    ,
+                        /* colNumbering   => */ true ,
+                        /* rowNumbering   => */ false,
+                        /* optionalFields => */ null );
+            org.junit.Assert.assertTrue(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
 
-        secondPartialTemplateModel.setTitle("different");
-        org.junit.Assert.assertFalse(firstPartialTemplateModel.equals(secondPartialTemplateModel));
-        secondPartialTemplateModel.setTitle("testTitle");
-        org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setTitle("different");
+            org.junit.Assert.assertFalse(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setTitle("testTitle");
+            org.junit.Assert.assertTrue(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
 
-        secondPartialTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
-        org.junit.Assert.assertFalse(firstPartialTemplateModel.equals(secondPartialTemplateModel));
-        secondPartialTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
-        org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setType(
+                org.wheatgenetics.coordinate.model.TemplateType.SEED);
+            org.junit.Assert.assertFalse(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
+            org.junit.Assert.assertTrue(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
 
-        secondPartialTemplateModel.setColNumbering(false);
-        org.junit.Assert.assertFalse(firstPartialTemplateModel.equals(secondPartialTemplateModel));
-        secondPartialTemplateModel.setColNumbering(true);
-        org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setColNumbering(false);
+            org.junit.Assert.assertFalse(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setColNumbering(true);
+            org.junit.Assert.assertTrue(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
 
-        secondPartialTemplateModel.setRowNumbering(true);
-        org.junit.Assert.assertFalse(firstPartialTemplateModel.equals(secondPartialTemplateModel));
-        secondPartialTemplateModel.setRowNumbering(false);
-        org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setRowNumbering(true);
+            org.junit.Assert.assertFalse(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
+            secondPartialTemplateModel.setRowNumbering(false);
+            org.junit.Assert.assertTrue(
+                firstPartialTemplateModel.equals(secondPartialTemplateModel));
+        }
 
         org.wheatgenetics.coordinate.model.PartialTemplateModel thirdPartialTemplateModel =
             new org.wheatgenetics.coordinate.model.PartialTemplateModel(

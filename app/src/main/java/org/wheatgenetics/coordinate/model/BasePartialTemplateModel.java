@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -54,6 +55,7 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     // endregion
 
     // region Constructors
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BasePartialTemplateModel(final long id, final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
@@ -61,6 +63,7 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     final boolean rowNumbering)
     { super(id); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BasePartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,

@@ -48,6 +48,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Constructors
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     PartialTemplateModel(final long id, final java.lang.String title,
     @android.support.annotation.IntRange(from = 0, to = 2) final int code        ,
     @android.support.annotation.IntRange(from = 1        ) final int rows        ,
@@ -66,7 +67,8 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
     }
 
-    private PartialTemplateModel(final long id, final java.lang.String title,
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    PartialTemplateModel(final long id, final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
@@ -77,6 +79,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
         this.optionalFieldsInstance = optionalFields;
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
