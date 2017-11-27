@@ -15,12 +15,14 @@ package org.wheatgenetics.coordinate.model;
  * JoinedGridModel.
  *
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
+ *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.BasePartialTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
- *
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  */
 public class PartialTemplateModel
 extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements java.lang.Cloneable
@@ -28,6 +30,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsInstance;
 
     // region Private Methods
+    /** 0 means false and 1 means true. */
     private static boolean valid(final int numbering)
     {
         if (numbering < 0 || numbering > 1)
@@ -45,8 +48,12 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Constructors
-    PartialTemplateModel(final long id, final java.lang.String title, final int code,
-    final int rows, final int cols, final int colNumbering, final int rowNumbering,
+    PartialTemplateModel(final long id, final java.lang.String title,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int code        ,
+    @android.support.annotation.IntRange(from = 1        ) final int rows        ,
+    @android.support.annotation.IntRange(from = 1        ) final int cols        ,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
     java.lang.String optionalFields)
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
@@ -60,8 +67,10 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     }
 
     private PartialTemplateModel(final long id, final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
+    final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(id, title, type, rows, cols, colNumbering, rowNumbering);
@@ -69,8 +78,10 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     }
 
     PartialTemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
+    final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(title, type, rows, cols, colNumbering, rowNumbering);
@@ -131,6 +142,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Package Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     {
         assert null != partialTemplateModel;
@@ -140,15 +152,18 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
         this.optionalFieldsInstance = partialTemplateModel.optionalFieldsInstance; // TODO: Assign or clone?
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void makeOptionalFieldsNew()
     {
         this.optionalFieldsInstance =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String[] optionalFieldValues()
     { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.values(); }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String[] optionalFieldValues(final java.lang.String names[])
     {
         return null == this.optionalFieldsInstance ? null :
@@ -180,13 +195,23 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     public void addOptionalField(final java.lang.String name, final java.lang.String value)
     { this.optionalFields().add(/* name => */ name, /* value => */ value, /* hint => */ ""); }
 
-    public void setOptionalFieldChecked(final int index, final boolean checked)
-    { assert null != this.optionalFieldsInstance; this.optionalFieldsInstance.get(index).setChecked(checked); }
+    public void setOptionalFieldChecked(
+    @android.support.annotation.IntRange(from = 0) final int index, final boolean checked)
+    {
+        assert null != this.optionalFieldsInstance;
+        this.optionalFieldsInstance.get(index).setChecked(checked);
+    }
 
     public java.lang.String getFirstOptionalFieldValue()
-    { assert null != this.optionalFieldsInstance; return this.optionalFieldsInstance.getFirstValue(); }
+    {
+        assert null != this.optionalFieldsInstance;
+        return this.optionalFieldsInstance.getFirstValue();
+    }
 
     public java.lang.String getFirstOptionalFieldDatedValue()
-    { assert null != this.optionalFieldsInstance; return this.optionalFieldsInstance.getDatedFirstValue(); }
+    {
+        assert null != this.optionalFieldsInstance;
+        return this.optionalFieldsInstance.getDatedFirstValue();
+    }
     // endregion
 }

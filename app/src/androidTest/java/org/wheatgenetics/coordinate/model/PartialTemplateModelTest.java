@@ -16,9 +16,52 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class PartialTemplateModelTest extends java.lang.Object
 {
+    // region Constructor Tests
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void firstConstructorInvalidColNumberingFails()
+    public void invalidCodeFirstConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 3          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidRowsFirstConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 0          ,
+            /* cols           => */ 2          ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidColsFirstConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */  1         ,
+            /* rows           => */  5         ,
+            /* cols           => */ -2         ,
+            /* colNumbering   => */  1         ,
+            /* rowNumbering   => */  0         ,
+            /* optionalFields => */ null       );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidColNumberingFirstConstructorFails()
     {
         new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             /* id             => */ 5          ,
@@ -32,7 +75,7 @@ public class PartialTemplateModelTest extends java.lang.Object
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void firstConstructorInvalidRowNumberingFails()
+    public void invalidRowNumberingFirstConstructorFails()
     {
         new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             /* id             => */ 5          ,
@@ -58,6 +101,48 @@ public class PartialTemplateModelTest extends java.lang.Object
             /* rowNumbering   => */ 0          ,
             /* optionalFields => */ null       );
     }
+    // endregion
+
+    // region Third Constructor Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidRowsThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* title          => */ "testTitle"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */ 0                                                  ,
+            /* cols           => */ 2                                                  ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ null                                               );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidColsThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* title          => */ "testTitle"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */  5                                                 ,
+            /* cols           => */ -2                                                 ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ null                                               );
+    }
+
+    @org.junit.Test
+    public void thirdConstructorSucceeds()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* title          => */ "testTitle"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */ 5                                                  ,
+            /* cols           => */ 2                                                  ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ null                                               );
+    }
+    // endregion
     // endregion
 
     // region Overridden Method Tests

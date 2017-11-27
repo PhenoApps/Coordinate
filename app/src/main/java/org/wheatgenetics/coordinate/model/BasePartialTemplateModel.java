@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.model;
  * PartialTemplateModel does.)
  *
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  *
  * org.wheatgenetics.coordinate.model.Model
@@ -29,15 +30,16 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     { if (i <= 0) throw new java.lang.IllegalArgumentException(); else return i; }
 
 
-    private void setRows(final int rows)
+    private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
     { this.rows = org.wheatgenetics.coordinate.model.BasePartialTemplateModel.validate(rows); }
 
-    private void setCols(final int cols)
+    private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
     { this.cols = org.wheatgenetics.coordinate.model.BasePartialTemplateModel.validate(cols); }
 
 
     @java.lang.SuppressWarnings("DefaultLocale")
-    private static java.lang.String[] items(final int length, final java.lang.String label)
+    private static java.lang.String[] items(
+    @android.support.annotation.IntRange(from = 1) final int length, final java.lang.String label)
     {
         if (length <= 0)
             return null;
@@ -53,13 +55,17 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     // region Constructors
     BasePartialTemplateModel(final long id, final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering)
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
+    final boolean rowNumbering)
     { super(id); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
 
     BasePartialTemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering)
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
+    final boolean rowNumbering)
     { super(); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
     // endregion
 
@@ -124,8 +130,10 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void assign(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
-    final boolean colNumbering, final boolean rowNumbering)
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
+    final boolean rowNumbering)
     {
         this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
         this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
