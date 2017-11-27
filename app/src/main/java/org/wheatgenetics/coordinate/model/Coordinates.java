@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
  * org.json.JSONArray
  * org.json.JSONException
  * org.json.JSONTokener
@@ -155,7 +157,7 @@ class Coordinates extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    void add(final int integer)
+    void add(@android.support.annotation.IntRange(from = 1) final int integer)
     { this.integerArrayList().add(org.wheatgenetics.coordinate.model.Coordinates.valid(integer)); }
 
     java.lang.String json()
@@ -184,7 +186,7 @@ class Coordinates extends java.lang.Object implements java.lang.Cloneable
     void clear() { if (null != this.integerArrayListInstance) this.integerArrayList().clear(); }
 
     @java.lang.SuppressWarnings("UnnecessaryUnboxing")
-    boolean isPresent(final int candidateInteger)
+    boolean isPresent(@android.support.annotation.IntRange(from = 1) final int candidateInteger)
     {
         boolean result = false;
 

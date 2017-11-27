@@ -135,9 +135,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
             /* cols           => */ this.getCols()                       ,
             /* colNumbering   => */ this.getColNumbering()               ,
             /* rowNumbering   => */ this.getRowNumbering()               ,
-            /* optionalFields => */ null == this.optionalFieldsInstance ? null :
-                (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
-                    this.optionalFieldsInstance.clone());
+            /* optionalFields => */ this.optionalFieldsClone()           );
     }
     // endregion
 
