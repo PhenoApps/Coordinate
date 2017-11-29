@@ -254,7 +254,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    void clear() { if (null != this.cellArrayListInstance) this.cellArrayList().clear(); }
+    void clear() { if (null != this.cellArrayListInstance) this.cellArrayListInstance.clear(); }
 
     boolean isPresent(
     @android.support.annotation.IntRange(from = 1) final int x,

@@ -183,7 +183,8 @@ class Coordinates extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    void clear() { if (null != this.integerArrayListInstance) this.integerArrayList().clear(); }
+    void clear()
+    { if (null != this.integerArrayListInstance) this.integerArrayListInstance.clear(); }
 
     @java.lang.SuppressWarnings("UnnecessaryUnboxing")
     boolean isPresent(@android.support.annotation.IntRange(from = 1) final int candidateInteger)
