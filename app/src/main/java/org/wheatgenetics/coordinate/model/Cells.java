@@ -19,14 +19,15 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         cellArrayListInstance = null;
 
     // region Private Methods
-    private void add(final org.json.JSONObject jsonObject)
+    private void add(final java.lang.Object object)
     {
-        if (null != jsonObject)
+        if (null != object)
             try
             {
                 final org.wheatgenetics.coordinate.model.Cell cell =
-                    new org.wheatgenetics.coordinate.model.Cell(jsonObject);    // throws org.json.-
-                this.cellArrayList().add(cell);                                 //  JSONException
+                    new org.wheatgenetics.coordinate.model.Cell(    // throws org.json.JSONException
+                        (org.json.JSONObject) object);
+                this.cellArrayList().add(cell);
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
@@ -80,11 +81,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             {
                 final int first = 0, last = length - 1;
                 for (int i = first; i <= last; i++)
-                    try
-                    {
-                        this.add((org.json.JSONObject)
-                            jsonArray.get(i) /* throws org.json.JSONException */);
-                    }
+                    try { this.add(jsonArray.get(i) /* throws org.json.JSONException */); }
                     catch (final org.json.JSONException e) { /* Skip ith jsonObject. */ }
             }
         }
@@ -193,8 +190,8 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     {
         // Creating the cell before clearing cellArrayList is intentional.  This is done so that if
         // an exception is thrown when attempting to create the cell execution will leave this
-        // method before the method can clear the cellArrayList.  It is better to do all of the work
-        // or none of the work than to do half of the work.
+        // method before the method can clear the cellArrayList.  (It is better to do all of the
+        // work or none of the work than to do half of the work.)
         final org.wheatgenetics.coordinate.model.Cell cell =
             org.wheatgenetics.coordinate.model.Cell.random(xBound, yBound);
 
@@ -235,16 +232,13 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             return null;
         else
         {
-            final java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList =
-                this.cellArrayList();
-
-            if (cellArrayList.size() <= 0)
+            if (this.cellArrayListInstance.size() <= 0)
                 return null;
             else
             {
                 final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-                for (final org.wheatgenetics.coordinate.model.Cell cell: cellArrayList)
+                for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
                     if (null != cell)
                         try                                    { jsonArray.put(cell.json()); }
                         catch (final org.json.JSONException e) { /* Skip this JSONObject. */ }
