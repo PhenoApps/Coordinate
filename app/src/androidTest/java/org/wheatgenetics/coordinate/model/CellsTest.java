@@ -50,10 +50,10 @@ public class CellsTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cells();
         org.junit.Assert.assertEquals(cells.toString(), "null");
 
-        cells.add(34, 56); org.junit.Assert.assertEquals(cells.toString(), "Point(34, 56)");
+        cells.add(34, 56); org.junit.Assert.assertEquals(cells.toString(), "Cell(34, 56)");
 
         cells.add(11, 61);
-        org.junit.Assert.assertEquals(cells.toString(), "Point(34, 56), Point(11, 61)");
+        org.junit.Assert.assertEquals(cells.toString(), "Cell(34, 56), Cell(11, 61)");
 
         cells.clear(); org.junit.Assert.assertEquals(cells.toString(), "empty");
     }
@@ -67,8 +67,8 @@ public class CellsTest extends java.lang.Object
         org.junit.Assert.assertTrue (firstCells.equals(secondCells));
         org.junit.Assert.assertFalse(firstCells.equals("nonsense" ));
 
-        final int x = 123, y = 456;
-        firstCells.add(x, y); secondCells.add(x, y);
+        final int row = 123, col = 456;
+        firstCells.add(row, col); secondCells.add(row, col);
         org.junit.Assert.assertTrue(firstCells.equals(secondCells));
 
         secondCells.clear();
@@ -87,8 +87,8 @@ public class CellsTest extends java.lang.Object
         org.junit.Assert.assertEquals   (firstCells.hashCode(), secondCells.hashCode());
         org.junit.Assert.assertNotEquals(firstCells.hashCode(), 123                   );
 
-        final int x = 123, y = 456;
-        firstCells.add(x, y); secondCells.add(x, y);
+        final int row = 123, col = 456;
+        firstCells.add(row, col); secondCells.add(row, col);
         org.junit.Assert.assertEquals(firstCells.hashCode(), secondCells.hashCode());
 
         secondCells.clear();
@@ -113,23 +113,22 @@ public class CellsTest extends java.lang.Object
     // region Package Method Tests
     // region makeOneRandomCell() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void xBoundMakeOneRandomCellFails()
-    { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(1, 3); }
+    public void tooSmallMaxRowMakeOneRandomCellFails()
+    { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(0, 3); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void yBoundMakeOneRandomCellFails()
+    public void tooSmallMaxColMakeOneRandomCellFails()
     { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(100, -3); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void xBoundAndYBoundMakeOneRandomCellFails()
-    { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(1, 0); }
+    public void tooSmallMaxRowAndTooSmallMaxColMakeOneRandomCellFails()
+    { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(-1, 0); }
 
     @org.junit.Test
     public void makeOneRandomCellSucceeds()
     { new org.wheatgenetics.coordinate.model.Cells().makeOneRandomCell(23, 45); }
     // endregion
 
-    // region makeRandomCells() Package Method Tests
     @org.junit.Test
     public void makeRandomCellsSucceeds()
     {
@@ -139,16 +138,15 @@ public class CellsTest extends java.lang.Object
         cells.makeRandomCells(-5, 3, 3); org.junit.Assert.assertEquals   (cells.toString(), "null");
         cells.makeRandomCells( 2, 3, 3); org.junit.Assert.assertNotEquals(cells.toString(), "null");
     }
-    // endregion
 
     @org.junit.Test
     public void isPresentAndAddSucceed()
     {
-        final int x = 123, y = 456;
+        final int row = 123, col = 456;
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells();
-        cells.add(x, y);
-        org.junit.Assert.assertTrue(cells.isPresent(x, y));
+        cells.add(row, col);
+        org.junit.Assert.assertTrue(cells.isPresent(row, col));
     }
     // endregion
 }

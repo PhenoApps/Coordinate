@@ -19,6 +19,10 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         cellArrayListInstance = null;
 
     // region Private Methods
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
+    { return null == cell ? false : this.cellArrayList().add(cell); }
+
     private void add(final java.lang.Object object)
     {
         if (null != object)
@@ -27,7 +31,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 final org.wheatgenetics.coordinate.model.Cell cell =
                     new org.wheatgenetics.coordinate.model.Cell(    // throws org.json.JSONException
                         (org.json.JSONObject) object);
-                this.cellArrayList().add(cell);
+                this.add(cell);
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
@@ -185,42 +189,40 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
 
     // region Package Methods
     void makeOneRandomCell(
-    @android.support.annotation.IntRange(from = 2) final int xBound,
-    @android.support.annotation.IntRange(from = 2) final int yBound)
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
         // Creating the cell before clearing cellArrayList is intentional.  This is done so that if
         // an exception is thrown when attempting to create the cell execution will leave this
         // method before the method can clear the cellArrayList.  (It is better to do all of the
         // work or none of the work than to do half of the work.)
         final org.wheatgenetics.coordinate.model.Cell cell =
-            org.wheatgenetics.coordinate.model.Cell.random(xBound, yBound);
+            org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(maxRow, maxCol);
 
-        final java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList =
-            this.cellArrayList();
-        cellArrayList.clear(); cellArrayList.add(cell);
+        this.clear(); this.add(cell);
     }
 
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
-    @android.support.annotation.IntRange(from = 2) final int xBound,
-    @android.support.annotation.IntRange(from = 2) final int yBound)
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
         if (1 == amount)
-            this.makeOneRandomCell(xBound, yBound);
+            this.makeOneRandomCell(maxRow, maxCol);
         else
             if (amount > 1)
             {
-                final java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList =
-                    this.cellArrayList();
-                cellArrayList.clear();
+                this.clear();
 
                 do
                 {
                     org.wheatgenetics.coordinate.model.Cell cell;
                     do
-                        cell = org.wheatgenetics.coordinate.model.Cell.random(xBound, yBound);
+                        cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
+                            maxRow, maxCol);
                     while (this.isPresent(cell));
-                    cellArrayList.add(cell);
+
+                    this.add(cell);
                 }
                 while (--amount > 0);
             }
@@ -251,13 +253,13 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     void clear() { if (null != this.cellArrayListInstance) this.cellArrayListInstance.clear(); }
 
     boolean isPresent(
-    @android.support.annotation.IntRange(from = 1) final int x,
-    @android.support.annotation.IntRange(from = 1) final int y)
-    { return this.isPresent( new org.wheatgenetics.coordinate.model.Cell(x, y)); }
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { return this.isPresent(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
     void add(
-    @android.support.annotation.IntRange(from = 1) final int x,
-    @android.support.annotation.IntRange(from = 1) final int y)
-    { this.cellArrayList().add(new org.wheatgenetics.coordinate.model.Cell(x, y)); }
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
     // endregion
 }

@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.graphics.Point
  * android.support.annotation.IntRange
  *
  * org.json.JSONException
@@ -11,55 +10,49 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Cell extends java.lang.Object implements java.lang.Cloneable
 {
-    private static final java.lang.String COL_NAME = "col", ROW_NAME = "row";
+    private static final java.lang.String ROW_NAME = "row", COL_NAME = "col";
 
-    private final android.graphics.Point point;
-
-    // region Private Methods
-    private static int valid(final int i)
-    {
-        if (i < 1) throw new java.lang.IllegalArgumentException("value must be > 0");
-        return i;
-    }
-
-    private static int random(final int bound)
-    { return new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(bound - 1) + 1; }
-    // endregion
+    private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
     // region Constructors
+    private Cell(
+    final org.wheatgenetics.coordinate.model.RowOrCol row,
+    final org.wheatgenetics.coordinate.model.RowOrCol col)
+    { super(); this.row = row; this.col = col; }
+
     Cell(
-    @android.support.annotation.IntRange(from = 1) final int x,
-    @android.support.annotation.IntRange(from = 1) final int y)
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
     {
-        super();
-        this.point = new android.graphics.Point(
-            org.wheatgenetics.coordinate.model.Cell.valid(x),
-            org.wheatgenetics.coordinate.model.Cell.valid(y));
+        this(
+            new org.wheatgenetics.coordinate.model.RowOrCol(row),
+            new org.wheatgenetics.coordinate.model.RowOrCol(col));
     }
 
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
         this(
-            /* x => */ jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.COL_NAME),
-            /* y => */ jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_NAME));
+            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_NAME),           // throws
+            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.COL_NAME));          // throws
     }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString() { return this.point.toString(); }
+    @java.lang.Override @java.lang.SuppressWarnings("DefaultLocale")
+    public java.lang.String toString()
+    { return java.lang.String.format("Cell(%s, %s)", this.row.toString(), this.col.toString()); }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object obj)
     {
-        if (null == o)
+        if (null == obj)
             return false;
         else
-            if  (o instanceof org.wheatgenetics.coordinate.model.Cell)
+            if (obj instanceof org.wheatgenetics.coordinate.model.Cell)
             {
-                final org.wheatgenetics.coordinate.model.Cell c =
-                    (org.wheatgenetics.coordinate.model.Cell) o;
-                return this.point.equals(c.point.x, c.point.y);
+                final org.wheatgenetics.coordinate.model.Cell cell =
+                    (org.wheatgenetics.coordinate.model.Cell) obj;
+                return this.row.equals(cell.row) && this.col.equals(cell.col);
             }
             else return false;
     }
@@ -70,17 +63,21 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
-    { return new org.wheatgenetics.coordinate.model.Cell(this.point.x, this.point.y); }
+    {
+        return new org.wheatgenetics.coordinate.model.Cell(
+            new org.wheatgenetics.coordinate.model.RowOrCol(this.row),
+            new org.wheatgenetics.coordinate.model.RowOrCol(this.col));
+    }
     // endregion
 
     // region Package Methods
-    static org.wheatgenetics.coordinate.model.Cell random(
-    @android.support.annotation.IntRange(from = 2) final int xBound,
-    @android.support.annotation.IntRange(from = 2) final int yBound)
+    static org.wheatgenetics.coordinate.model.Cell makeWithRandomValues(
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
         return new org.wheatgenetics.coordinate.model.Cell(
-            org.wheatgenetics.coordinate.model.Cell.random(xBound),
-            org.wheatgenetics.coordinate.model.Cell.random(yBound));
+            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),
+            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxCol));
     }
 
     org.json.JSONObject json() throws org.json.JSONException
@@ -88,9 +85,9 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
         final org.json.JSONObject result = new org.json.JSONObject();
 
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.point.y);
+            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.row.getValue());
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.point.x);
+            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.col.getValue());
 
         return result;
     }
