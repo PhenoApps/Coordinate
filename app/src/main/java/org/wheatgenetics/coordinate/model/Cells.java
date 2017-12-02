@@ -15,13 +15,19 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Cells extends java.lang.Object implements java.lang.Cloneable
 {
-    private java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>
+    // region Fields
+    private final org.wheatgenetics.coordinate.model.Cell                      maxCell;
+    private       java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>
         cellArrayListInstance = null;
+    // endregion
 
     // region Private Methods
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
-    { return null == cell ? false : this.cellArrayList().add(cell); }
+    {
+        return null == cell ? false : this.cellArrayList().add(
+            cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */ );
+    }
 
     private void add(final java.lang.Object object)
     {
@@ -52,6 +58,15 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     {
         boolean result = false;
 
+        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
+        // that it can't be present so isPresent() returns false.  (The check is actually not
+        // necessary: the code that follows the following code will traverse the list and also
+        // return false since an out-of-range candidateCell will not be found.  The purpose of the
+        // check is not to be necessary but to (potentially) save time.)
+        assert null != candidateCell;
+        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgementException */ }
+        catch (final java.lang.IllegalArgumentException e) { return result; }
+
         if (null != this.cellArrayListInstance)
             for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
                 if (null != cell) if (cell.equals(candidateCell)) { result = true; break; }
@@ -61,11 +76,19 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Constructors
-    Cells() { super(); }
+    private Cells(final org.wheatgenetics.coordinate.model.Cell maxCell)
+    { super(); this.maxCell = maxCell; }
 
-    Cells(final java.lang.String json)
+    Cells(
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    { this(new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
+
+    Cells(                                         final java.lang.String json  ,
+    @android.support.annotation.IntRange(from = 1) final int              maxRow,
+    @android.support.annotation.IntRange(from = 1) final int              maxCol)
     {
-        this();
+        this(maxRow, maxCol);
 
         if (null != json) if (json.trim().length() > 0)
         {
@@ -173,7 +196,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
-            new org.wheatgenetics.coordinate.model.Cells();
+            new org.wheatgenetics.coordinate.model.Cells(this.maxCell);
 
         if (null != this.cellArrayListInstance)
         {
@@ -192,10 +215,16 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
-        // Creating the cell before clearing cellArrayList is intentional.  This is done so that if
-        // an exception is thrown when attempting to create the cell execution will leave this
-        // method before the method can clear the cellArrayList.  (It is better to do all of the
-        // work or none of the work than to do half of the work.)
+        // Checking maxRow and maxCol before clear()ing is intentional.  This is done so that if an
+        // exception is thrown execution will leave this method before the method can clear().  (It
+        // is better to do all of the work or none of the work than to do half of the work.)
+        new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
+            .inRange(this.maxCell);                     // throws java.lang.IllegalArgumentException
+
+        // Creating the cell before clear()ing  is intentional.  This is done so that if an
+        // exception is thrown when attempting to create the cell execution will leave this method
+        // before the method can clear().  (It is better to do all of the work or none of the work
+        // than to do half of the work.)
         final org.wheatgenetics.coordinate.model.Cell cell =
             org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(maxRow, maxCol);
 
@@ -212,6 +241,13 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         else
             if (amount > 1)
             {
+                // Checking maxRow and maxCol before clear()ing is intentional.  This is done so
+                // that if an exception is thrown execution will leave this method before the method
+                // can clear().  (It is better to do all of the work or none of the work than to do
+                // half of the work.)
+                new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
+                    .inRange(this.maxCell);                     // throws java.lang.IllegalArgumentException
+
                 this.clear();
 
                 do

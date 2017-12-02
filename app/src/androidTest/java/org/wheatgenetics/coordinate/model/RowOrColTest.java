@@ -82,6 +82,26 @@ public class RowOrColTest extends java.lang.Object
         org.junit.Assert.assertNotEquals(rowOrCol.getValue(), 77   );
     }
 
+    // region inRange() Package Method Tests
+    @org.junit.Test(expected = java.lang.NullPointerException.class)
+    public void nullMaxRowOrColInRangeFails()
+    { new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(null); }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void tooSmallMaxRowOrColInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(
+            new org.wheatgenetics.coordinate.model.RowOrCol(3));
+    }
+
+    @org.junit.Test
+    public void inRangeSucceeds()
+    {
+        new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(
+            new org.wheatgenetics.coordinate.model.RowOrCol(30));
+    }
+    // endregion
+
     // region makeWithRandomValue() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void zeroMaxValueMakeWithRandomValueFails()

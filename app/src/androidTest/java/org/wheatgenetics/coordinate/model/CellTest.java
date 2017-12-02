@@ -128,6 +128,58 @@ public class CellTest extends java.lang.Object
     // endregion
 
     // region Package Method Tests
+    // region inRange() Package Method Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void bigXInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(9, 1).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void smallXInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(0, 1).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void bigYInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(1, 9).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void smallYInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(1, -1).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void bigXbigYInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(9, 9).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void smallXsmallYInRangeFails()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(-9, 0).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+
+    @org.junit.Test
+    public void inRangeSucceeds()
+    {
+        new org.wheatgenetics.coordinate.model.Cell(1, 1).inRange(
+            new org.wheatgenetics.coordinate.model.Cell(5, 5));
+    }
+    // endregion
+
+    // region makeWithRandomValues() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void zeroMaxRowMakeWithRandomValuesFails()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(0, 9); }
@@ -151,6 +203,7 @@ public class CellTest extends java.lang.Object
     @org.junit.Test
     public void oneMaxColMakeWithRandomValuesSucceeds()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(5, 1); }
+    // endregion
 
     @org.junit.Test
     public void jsonSucceeds() throws org.json.JSONException

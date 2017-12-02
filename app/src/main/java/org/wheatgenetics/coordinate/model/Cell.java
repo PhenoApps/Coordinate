@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.json.JSONException
  * org.json.JSONObject
+ *
+ * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Cell extends java.lang.Object implements java.lang.Cloneable
@@ -43,15 +45,15 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     { return java.lang.String.format("Cell(%s, %s)", this.row.toString(), this.col.toString()); }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean equals(final java.lang.Object obj)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == obj)
+        if (null == object)
             return false;
         else
-            if (obj instanceof org.wheatgenetics.coordinate.model.Cell)
+            if (object instanceof org.wheatgenetics.coordinate.model.Cell)
             {
                 final org.wheatgenetics.coordinate.model.Cell cell =
-                    (org.wheatgenetics.coordinate.model.Cell) obj;
+                    (org.wheatgenetics.coordinate.model.Cell) object;
                 return this.row.equals(cell.row) && this.col.equals(cell.col);
             }
             else return false;
@@ -71,13 +73,14 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    static org.wheatgenetics.coordinate.model.Cell makeWithRandomValues(
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    org.wheatgenetics.coordinate.model.Cell inRange(
+    final org.wheatgenetics.coordinate.model.Cell maxCell)
     {
-        return new org.wheatgenetics.coordinate.model.Cell(
-            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),
-            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxCol));
+        assert null != maxCell;
+        this.row.inRange(maxCell.row);                  // throws java.lang.IllegalArgumentException
+        this.col.inRange(maxCell.col);                  // throws java.lang.IllegalArgumentException
+
+        return this;
     }
 
     org.json.JSONObject json() throws org.json.JSONException
@@ -90,6 +93,15 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
             org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.col.getValue());
 
         return result;
+    }
+
+    static org.wheatgenetics.coordinate.model.Cell makeWithRandomValues(
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    {
+        return new org.wheatgenetics.coordinate.model.Cell(
+            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),
+            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxCol));
     }
     // endregion
 }

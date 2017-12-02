@@ -9,15 +9,14 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable
 {
     private final int value;
 
-    private static int valid(final int value)
-    {
-        if (value < 1) throw new java.lang.IllegalArgumentException("value must be > 0");
-        return value;
-    }
-
     // region Constructors
     RowOrCol(@android.support.annotation.IntRange(from = 1) final int value)
-    { super(); this.value = org.wheatgenetics.coordinate.model.RowOrCol.valid(value); }
+    {
+        super();
+
+        if (value < 1) throw new java.lang.IllegalArgumentException("value must be > 0");
+        this.value = value;
+    }
 
     RowOrCol(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol) { this(rowOrCol.value); }
     // endregion
@@ -27,15 +26,15 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable
     public java.lang.String toString() { return java.lang.Integer.toString(this.value); }
 
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == obj)
+        if (null == object)
             return false;
         else
-            if (obj instanceof org.wheatgenetics.coordinate.model.RowOrCol)
+            if (object instanceof org.wheatgenetics.coordinate.model.RowOrCol)
             {
                 final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
-                    (org.wheatgenetics.coordinate.model.RowOrCol) obj;
+                    (org.wheatgenetics.coordinate.model.RowOrCol) object;
                 return this.value == rowOrCol.value;
             }
             else return false;
@@ -52,6 +51,14 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable
 
     // Package Methods
     int getValue() { return this.value; }
+
+    org.wheatgenetics.coordinate.model.RowOrCol inRange(
+    final org.wheatgenetics.coordinate.model.RowOrCol maxRowOrCol)
+    {
+        assert null != maxRowOrCol;
+        if (this.value > maxRowOrCol.value) throw new java.lang.IllegalArgumentException();
+        return this;
+    }
 
     static org.wheatgenetics.coordinate.model.RowOrCol makeWithRandomValue(
     @android.support.annotation.IntRange(from = 1) final int maxValue)
