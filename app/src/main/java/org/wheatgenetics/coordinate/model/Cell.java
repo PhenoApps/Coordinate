@@ -73,6 +73,9 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
+    org.wheatgenetics.coordinate.model.RowOrCol getRow() { return this.row; }
+    org.wheatgenetics.coordinate.model.RowOrCol getCol() { return this.col; }
+
     org.wheatgenetics.coordinate.model.Cell inRange(
     final org.wheatgenetics.coordinate.model.Cell maxCell)
     {

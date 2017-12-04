@@ -128,6 +128,18 @@ public class CellTest extends java.lang.Object
     // endregion
 
     // region Package Method Tests
+    @org.junit.Test
+    public void getRowAndGetColFailAndSucceed()
+    {
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(4, 5);
+        org.junit.Assert.assertNotEquals(cell.getRow().getValue(), 1);
+        org.junit.Assert.assertNotEquals(cell.getCol().getValue(), 1);
+
+        org.junit.Assert.assertEquals(cell.getRow().getValue(), 4);
+        org.junit.Assert.assertEquals(cell.getCol().getValue(), 5);
+    }
+
     // region inRange() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void bigXInRangeFails()
