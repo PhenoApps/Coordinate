@@ -76,7 +76,7 @@ public class CellsTest extends java.lang.Object
         cells.add(34, 56); org.junit.Assert.assertEquals(cells.toString(), "Cell(34, 56)");
 
         cells.add(11, 61);
-        org.junit.Assert.assertEquals(cells.toString(), "Cell(34, 56), Cell(11, 61)");
+        org.junit.Assert.assertEquals(cells.toString(), "Cell(11, 61), Cell(34, 56)");     // sorts!
 
         cells.clear(); org.junit.Assert.assertEquals(cells.toString(), "empty");
     }
@@ -257,6 +257,19 @@ public class CellsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells(25, 50);
         cells.add(5, 100);
+    }
+
+    @org.junit.Test
+    public void duplicateAddFails()
+    {
+        final org.wheatgenetics.coordinate.model.Cells cells =
+            new org.wheatgenetics.coordinate.model.Cells(5, 5);
+        {
+            final int row = 1, col = 2;
+            cells.add(row, col);
+            cells.add(row, col);          // Does not add() but does not throw an exception, either.
+        }
+        org.junit.Assert.assertEquals(cells.toString(), "Cell(1, 2)");
     }
     // endregion
     // endregion

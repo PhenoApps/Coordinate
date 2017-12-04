@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  *
  * org.json.JSONException
  * org.json.JSONObject
@@ -10,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Cell extends java.lang.Object implements java.lang.Cloneable
+class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
 {
     private static final java.lang.String ROW_NAME = "row", COL_NAME = "col";
 
@@ -70,6 +71,17 @@ class Cell extends java.lang.Object implements java.lang.Cloneable
             new org.wheatgenetics.coordinate.model.RowOrCol(this.row),
             new org.wheatgenetics.coordinate.model.RowOrCol(this.col));
     }
+
+    // region java.lang.Comparable Overridden Method
+    @java.lang.Override
+    public int compareTo(@android.support.annotation.NonNull final java.lang.Object object)
+    {
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            (org.wheatgenetics.coordinate.model.Cell) object;
+        final int rowResult = this.row.compareTo(cell.row);
+        return 0 == rowResult ? this.col.compareTo(cell.col) : rowResult;
+    }
+    // endregion
     // endregion
 
     // region Package Methods

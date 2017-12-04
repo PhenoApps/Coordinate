@@ -78,9 +78,9 @@ public class RowOrColTest extends java.lang.Object
             smallRowOrCol  = new org.wheatgenetics.coordinate.model.RowOrCol(1),
             mediumRowOrCol = new org.wheatgenetics.coordinate.model.RowOrCol(5),
             largeRowOrCol  = new org.wheatgenetics.coordinate.model.RowOrCol(9);
-        org.junit.Assert.assertTrue(rowOrCol.compareTo(smallRowOrCol ) >  0);
-        org.junit.Assert.assertTrue(rowOrCol.compareTo(mediumRowOrCol) == 0);
-        org.junit.Assert.assertTrue(rowOrCol.compareTo(largeRowOrCol ) <  0);
+        org.junit.Assert.assertTrue  (rowOrCol.compareTo(smallRowOrCol ) > 0);
+        org.junit.Assert.assertEquals(rowOrCol.compareTo(mediumRowOrCol),  0);
+        org.junit.Assert.assertTrue  (rowOrCol.compareTo(largeRowOrCol ) < 0);
     }
     // endregion
 

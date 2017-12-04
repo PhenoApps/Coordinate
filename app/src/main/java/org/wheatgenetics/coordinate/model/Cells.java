@@ -15,27 +15,24 @@ package org.wheatgenetics.coordinate.model;
 class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Fields
-    private final org.wheatgenetics.coordinate.model.Cell                      maxCell;
-    private       java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>
-        cellArrayListInstance = null;
+    private final org.wheatgenetics.coordinate.model.Cell                    maxCell;
+    private       java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>
+        cellTreeSetInstance = null;
     // endregion
 
     // region Private Methods
     @java.lang.SuppressWarnings("Convert2Diamond")
-    private static java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> make()
-    { return new java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>(); }
-
-    private java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList()
+    private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
     {
-        if (null == this.cellArrayListInstance)
-            this.cellArrayListInstance = org.wheatgenetics.coordinate.model.Cells.make();
-        return this.cellArrayListInstance;
+        if (null == this.cellTreeSetInstance) this.cellTreeSetInstance =
+            new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>();
+        return this.cellTreeSetInstance;
     }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
     {
-        return null == cell ? false : this.cellArrayList().add(
+        return null == cell ? false : this.cellTreeSet().add(
             cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */ );
     }
 
@@ -52,6 +49,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
     {
         // The following code checks to see if candidateCell is inRange().  If it isn't then we know
@@ -60,15 +58,11 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         // out-of-range candidateCell will not be found.  The purpose of the check is not to be
         // necessary but to (potentially) save time.)
         assert null != candidateCell;
-        try
-        { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArguementException */ }
+        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
         catch (final java.lang.IllegalArgumentException e) { return false; }
 
-        boolean result = false;
-        if (null != this.cellArrayListInstance)
-            for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
-                if (null != cell) if (cell.equals(candidateCell)) { result = true; break; }
-        return result;
+        return null == this.cellTreeSetInstance ? false :
+            this.cellTreeSetInstance.contains(candidateCell);
     }
     // endregion
 
@@ -97,7 +91,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                     jsonArray = (org.json.JSONArray) jsonTokener.nextValue();   // throws org.json.-
                 }                                                               //  JSONException
                 catch (final org.json.JSONException e)
-                { return; /* Leave cellArrayListInstance == null. */ }
+                { return; /* Leave cellTreeSetInstance == null. */ }
             }
 
             assert null != jsonArray; final int length = jsonArray.length();
@@ -116,10 +110,10 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     @java.lang.Override
     public java.lang.String toString()
     {
-        if (null == this.cellArrayListInstance)
+        if (null == this.cellTreeSetInstance)
             return "null";
         else
-            if (this.cellArrayListInstance.size() <= 0)
+            if (this.cellTreeSetInstance.isEmpty())
                 return "empty";
             else
             {
@@ -127,7 +121,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 {
                     boolean firstCell = true;
                     for (final org.wheatgenetics.coordinate.model.Cell cell:
-                    this.cellArrayListInstance) if (null != cell)
+                    this.cellTreeSetInstance) if (null != cell)
                     {
                         if (firstCell) firstCell = false; else result.append(", ");
                         result.append(cell.toString());
@@ -137,7 +131,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             }
     }
 
-    @java.lang.Override
+    @java.lang.Override  @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -148,39 +142,16 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 final org.wheatgenetics.coordinate.model.Cells cells =
                     (org.wheatgenetics.coordinate.model.Cells) object;
     
-                if (null == this.cellArrayListInstance && null != cells.cellArrayListInstance)
+                if (null == this.cellTreeSetInstance && null != cells.cellTreeSetInstance)
                     return false;
                 else
-                    if (null != this.cellArrayListInstance && null == cells.cellArrayListInstance)
+                    if (null != this.cellTreeSetInstance && null == cells.cellTreeSetInstance)
                         return false;
     
-                if (null == this.cellArrayListInstance)
+                if (null == this.cellTreeSetInstance)
                     return true;
                 else
-                    if (this.cellArrayListInstance.size() != cells.cellArrayListInstance.size())
-                        return false;
-                    else
-                    {
-                        {
-                            int i = 0;
-
-                            for (final org.wheatgenetics.coordinate.model.Cell cell:
-                            this.cellArrayListInstance)
-                            {
-                                final org.wheatgenetics.coordinate.model.Cell c =
-                                    cells.cellArrayListInstance.get(i++);
-
-                                if (null == cell && null != c)
-                                    return false;
-                                else
-                                    if (null != cell && null == c)
-                                        return false;
-                                    else
-                                        if (null != cell) if (!cell.equals(c)) return false;
-                            }
-                        }
-                        return true;
-                    }
+                    return this.cellTreeSetInstance.equals(cells.cellTreeSetInstance);
             }
             else return false;
     }
@@ -195,13 +166,9 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(this.maxCell);
 
-        if (null != this.cellArrayListInstance)
-        {
-            result.cellArrayListInstance = org.wheatgenetics.coordinate.model.Cells.make();
-            for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
-                if (null != cell) result.cellArrayListInstance.add(
-                    (org.wheatgenetics.coordinate.model.Cell) cell.clone());
-        }
+        if (null != this.cellTreeSetInstance) result.cellTreeSetInstance =
+            new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>(
+                this.cellTreeSetInstance);
 
         return result;
     }
@@ -263,17 +230,17 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
 
     java.lang.String json()
     {
-        if (null == this.cellArrayListInstance)
+        if (null == this.cellTreeSetInstance)
             return null;
         else
         {
-            if (this.cellArrayListInstance.size() <= 0)
+            if (this.cellTreeSetInstance.isEmpty())
                 return null;
             else
             {
                 final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-                for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
+                for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellTreeSetInstance)
                     if (null != cell)
                         try                                    { jsonArray.put(cell.json()); }
                         catch (final org.json.JSONException e) { /* Skip this JSONObject. */ }
@@ -283,7 +250,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    void clear() { if (null != this.cellArrayListInstance) this.cellArrayListInstance.clear(); }
+    void clear() { if (null != this.cellTreeSetInstance) this.cellTreeSetInstance.clear(); }
 
     boolean contains(
     @android.support.annotation.IntRange(from = 1) final int row,

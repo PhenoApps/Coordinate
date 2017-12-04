@@ -125,6 +125,35 @@ public class CellTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cell(23, 999);
         org.junit.Assert.assertTrue(cell.equals(cell.clone()));
     }
+
+    @org.junit.Test
+    public void compareToSucceeds()
+    {
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(5, 5);
+
+        // Same col:
+        org.junit.Assert.assertEquals(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5)),  0);
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(1, 5)) > 0);
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(9, 5)) < 0);
+
+        // Same row:
+        org.junit.Assert.assertEquals(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5)),  0);
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 1)) > 0);
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 9)) < 0);
+
+        // Different row and different col:
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(1, 1)) > 0);
+        org.junit.Assert.assertTrue(
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(9, 9)) < 0);
+    }
     // endregion
 
     // region Package Method Tests
