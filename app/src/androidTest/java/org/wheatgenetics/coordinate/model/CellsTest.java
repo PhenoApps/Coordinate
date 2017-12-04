@@ -165,23 +165,65 @@ public class CellsTest extends java.lang.Object
     // endregion
 
     @org.junit.Test
-    public void makeRandomCellsSucceeds()
+    public void makeRandomCellsFailsAndSucceeds()
+    {
+        final int                                      maxRow = 2, maxCol = 2;
+        final org.wheatgenetics.coordinate.model.Cells cells  =
+            new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+
+        cells.makeRandomCells(0, maxRow, maxCol);
+        org.junit.Assert.assertEquals(cells.toString(), "null");
+
+        cells.makeRandomCells(-5, maxRow, maxCol);
+        org.junit.Assert.assertEquals(cells.toString(), "null");
+
+        cells.makeRandomCells( 2, maxRow, maxCol);
+        org.junit.Assert.assertNotEquals(cells.toString(), "null");
+    }
+
+    // region contains() Package Method Tests
+    @org.junit.Test
+    public void rowTooBigContainsFails()
     {
         final org.wheatgenetics.coordinate.model.Cells cells =
-            new org.wheatgenetics.coordinate.model.Cells(3, 3);
-        cells.makeRandomCells( 0, 3, 3); org.junit.Assert.assertEquals   (cells.toString(), "null");
-        cells.makeRandomCells(-5, 3, 3); org.junit.Assert.assertEquals   (cells.toString(), "null");
-        cells.makeRandomCells( 2, 3, 3); org.junit.Assert.assertNotEquals(cells.toString(), "null");
+            new org.wheatgenetics.coordinate.model.Cells(2, 2);
+        final int col = 1;
+        cells.add(1, col);
+        org.junit.Assert.assertFalse(cells.contains(100, col));
     }
 
     @org.junit.Test
-    public void isPresentAndAddSucceed()
+    public void colTooBigContainsFails()
+    {
+        final org.wheatgenetics.coordinate.model.Cells cells =
+            new org.wheatgenetics.coordinate.model.Cells(2, 2);
+        final int row = 1;
+        cells.add(row, 1);
+        org.junit.Assert.assertFalse(cells.contains(row, 100));
+    }
+
+    @org.junit.Test
+    public void containsFailsAndSucceeds()
+    {
+        final org.wheatgenetics.coordinate.model.Cells cells =
+            new org.wheatgenetics.coordinate.model.Cells(2, 2);
+        {
+            final int row = 1, col = 1;
+            cells.add(row, col);
+            org.junit.Assert.assertTrue(cells.contains(row, col));
+        }
+        org.junit.Assert.assertFalse(cells.contains(2, 2));
+    }
+    // endregion
+
+    @org.junit.Test
+    public void containsAndAddSucceed()
     {
         final int row = 123, col = 456;
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells(250, 500);
         cells.add(row, col);
-        org.junit.Assert.assertTrue(cells.isPresent(row, col));
+        org.junit.Assert.assertTrue(cells.contains(row, col));
     }
 
     // region add() Package Method Tests

@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
- * android.support.annotation.NonNull
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -22,6 +21,17 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Private Methods
+    @java.lang.SuppressWarnings("Convert2Diamond")
+    private static java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> make()
+    { return new java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>(); }
+
+    private java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList()
+    {
+        if (null == this.cellArrayListInstance)
+            this.cellArrayListInstance = org.wheatgenetics.coordinate.model.Cells.make();
+        return this.cellArrayListInstance;
+    }
+
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
     {
@@ -42,35 +52,22 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
 
-    @java.lang.SuppressWarnings("Convert2Diamond")
-    private static java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> make()
-    { return new java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell>(); }
-
-    private java.util.ArrayList<org.wheatgenetics.coordinate.model.Cell> cellArrayList()
+    private boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
     {
-        if (null == this.cellArrayListInstance)
-            this.cellArrayListInstance = org.wheatgenetics.coordinate.model.Cells.make();
-        return this.cellArrayListInstance;
-    }
-
-    private boolean isPresent(@android.support.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.Cell candidateCell)
-    {
-        boolean result = false;
-
         // The following code checks to see if candidateCell is inRange().  If it isn't then we know
-        // that it can't be present so isPresent() returns false.  (The check is actually not
-        // necessary: the code that follows the following code will traverse the list and also
-        // return false since an out-of-range candidateCell will not be found.  The purpose of the
-        // check is not to be necessary but to (potentially) save time.)
+        // that it can't be present so contains() returns false.  (The check is actually not
+        // necessary: the code that follows the following code will also return false since an
+        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
+        // necessary but to (potentially) save time.)
         assert null != candidateCell;
-        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgementException */ }
-        catch (final java.lang.IllegalArgumentException e) { return result; }
+        try
+        { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArguementException */ }
+        catch (final java.lang.IllegalArgumentException e) { return false; }
 
+        boolean result = false;
         if (null != this.cellArrayListInstance)
             for (final org.wheatgenetics.coordinate.model.Cell cell: this.cellArrayListInstance)
                 if (null != cell) if (cell.equals(candidateCell)) { result = true; break; }
-
         return result;
     }
     // endregion
@@ -246,7 +243,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 // can clear().  (It is better to do all of the work or none of the work than to do
                 // half of the work.)
                 new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
-                    .inRange(this.maxCell);                     // throws java.lang.IllegalArgumentException
+                    .inRange(this.maxCell);             // throws java.lang.IllegalArgumentException
 
                 this.clear();
 
@@ -256,7 +253,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                     do
                         cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
                             maxRow, maxCol);
-                    while (this.isPresent(cell));
+                    while (this.contains(cell));
 
                     this.add(cell);
                 }
@@ -288,10 +285,10 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
 
     void clear() { if (null != this.cellArrayListInstance) this.cellArrayListInstance.clear(); }
 
-    boolean isPresent(
+    boolean contains(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { return this.isPresent(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+    { return this.contains(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
     void add(
     @android.support.annotation.IntRange(from = 1) final int row,
