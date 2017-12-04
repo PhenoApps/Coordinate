@@ -164,6 +164,7 @@ public class CellsTest extends java.lang.Object
     { new org.wheatgenetics.coordinate.model.Cells(100, 100).makeOneRandomCell(23, 45); }
     // endregion
 
+    // region makeRandomCells() Package Method Tests
     @org.junit.Test
     public void makeRandomCellsFailsAndSucceeds()
     {
@@ -180,6 +181,16 @@ public class CellsTest extends java.lang.Object
         cells.makeRandomCells( 2, maxRow, maxCol);
         org.junit.Assert.assertNotEquals(cells.toString(), "null");
     }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void tooBigAmountFails()
+    {
+        final int                                      maxRow = 2, maxCol = 2;
+        final org.wheatgenetics.coordinate.model.Cells cells  =
+            new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+        cells.makeRandomCells(200, maxRow, maxCol);
+    }
+    // endregion
 
     // region contains() Package Method Tests
     @org.junit.Test

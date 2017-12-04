@@ -195,6 +195,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         this.clear(); this.add(cell);
     }
 
+    @java.lang.SuppressWarnings("DefaultLocale")
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
@@ -211,6 +212,12 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 // half of the work.)
                 new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
                     .inRange(this.maxCell);             // throws java.lang.IllegalArgumentException
+
+                {
+                    final int maxAmount = maxRow * maxCol;
+                    if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
+                        java.lang.String.format("amount must be <= %d", maxAmount));
+                }
 
                 this.clear();
 
