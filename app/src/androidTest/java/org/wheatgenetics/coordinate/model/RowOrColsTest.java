@@ -17,7 +17,7 @@ public class RowOrColsTest extends java.lang.Object
     @org.junit.Test
     public void secondConstructorAndJSONSucceed() throws org.json.JSONException
     {
-        final int                firstValue = 123, secondValue = 27;
+        final int                firstValue = 27, secondValue = 123;
         final org.json.JSONArray jsonArray  = new org.json.JSONArray();
         jsonArray.put(firstValue); jsonArray.put(secondValue);
 
@@ -80,7 +80,7 @@ public class RowOrColsTest extends java.lang.Object
         org.junit.Assert.assertEquals(rowOrCols.toString(), "null");
 
         rowOrCols.add(34); org.junit.Assert.assertEquals(rowOrCols.toString(), "34"    );
-        rowOrCols.add(11); org.junit.Assert.assertEquals(rowOrCols.toString(), "34, 11");
+        rowOrCols.add(11); org.junit.Assert.assertEquals(rowOrCols.toString(), "11, 34");  // sorts!
         rowOrCols.clear(); org.junit.Assert.assertEquals(rowOrCols.toString(), "empty" );
     }
 
@@ -138,13 +138,31 @@ public class RowOrColsTest extends java.lang.Object
     }
     // endregion
 
+    // region Package Method Tests
     @org.junit.Test
-    public void addAndIsPresentSucceed()
+    public void addAndContainsFailAndSucceed()
     {
-        final int value = 123;
         final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
             new org.wheatgenetics.coordinate.model.RowOrCols();
-        rowOrCols.add(value);
-        org.junit.Assert.assertTrue(rowOrCols.isPresent(value));
+        {
+            final int value = 123;
+            rowOrCols.add(value);
+            org.junit.Assert.assertTrue(rowOrCols.contains(value));
+        }
+        org.junit.Assert.assertFalse(rowOrCols.contains(456));
     }
+
+    @org.junit.Test
+    public void duplicateAddFails()
+    {
+        final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
+            new org.wheatgenetics.coordinate.model.RowOrCols();
+        {
+            final int value = 123;
+            rowOrCols.add(value);
+            rowOrCols.add(value);         // Does not add() but does not throw an exception, either.
+        }
+        org.junit.Assert.assertEquals(rowOrCols.toString(), "123");// Note: value add()ed only once.
+    }
+    // endregion
 }

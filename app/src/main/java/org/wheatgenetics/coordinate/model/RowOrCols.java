@@ -13,21 +13,16 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class RowOrCols extends java.lang.Object
 {
-    private java.util.ArrayList<org.wheatgenetics.coordinate.model.RowOrCol>
-        rowOrColArrayListInstance = null;
+    private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>
+        rowOrColTreeSetInstance = null;
 
-    // region Private Methods
     @java.lang.SuppressWarnings("Convert2Diamond")
-    private static java.util.ArrayList<org.wheatgenetics.coordinate.model.RowOrCol> make()
-    { return new java.util.ArrayList<org.wheatgenetics.coordinate.model.RowOrCol>(); }
-
-    private java.util.ArrayList<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColArrayList()
+    private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColTreeSet()
     {
-        if (null == this.rowOrColArrayListInstance)
-            this.rowOrColArrayListInstance = org.wheatgenetics.coordinate.model.RowOrCols.make();
-        return this.rowOrColArrayListInstance;
+        if (null == this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance =
+            new java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>();
+        return this.rowOrColTreeSetInstance;
     }
-    // endregion
 
     // region Constructors
     RowOrCols() { super(); }
@@ -46,7 +41,7 @@ class RowOrCols extends java.lang.Object
                     jsonArray = (org.json.JSONArray) jsonTokener.nextValue();   // throws org.json.-
                 }                                                               //  JSONException
                 catch (final org.json.JSONException e)
-                { return; /* Leave rowOrColArrayListInstance == null. */ }
+                { return; /* Leave rowOrColTreeSetInstance == null. */ }
             }
 
             assert null != jsonArray; final int length = jsonArray.length();
@@ -65,10 +60,10 @@ class RowOrCols extends java.lang.Object
     @java.lang.Override
     public java.lang.String toString()
     {
-        if (null == this.rowOrColArrayListInstance)
+        if (null == this.rowOrColTreeSetInstance)
             return "null";
         else
-            if (this.rowOrColArrayListInstance.size() <= 0)
+            if (this.rowOrColTreeSetInstance.isEmpty())
                 return "empty";
             else
             {
@@ -76,7 +71,7 @@ class RowOrCols extends java.lang.Object
                 {
                     boolean firstValue = true;
                     for (final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol:
-                    this.rowOrColArrayListInstance)
+                    this.rowOrColTreeSetInstance)
                         if (null != rowOrCol)
                         {
                             if (firstValue) firstValue = false; else result.append(", ");
@@ -87,7 +82,7 @@ class RowOrCols extends java.lang.Object
             }
     }
 
-    @java.lang.Override
+    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -98,42 +93,17 @@ class RowOrCols extends java.lang.Object
                 final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
                     (org.wheatgenetics.coordinate.model.RowOrCols) object;
 
-                if (null == this.rowOrColArrayListInstance
-                &&  null != rowOrCols.rowOrColArrayListInstance)
+                if (null == this.rowOrColTreeSetInstance
+                &&  null != rowOrCols.rowOrColTreeSetInstance)
                     return false;
                 else
-                    if (null != this.rowOrColArrayListInstance
-                    &&  null == rowOrCols.rowOrColArrayListInstance) return false;
+                    if (null != this.rowOrColTreeSetInstance
+                    &&  null == rowOrCols.rowOrColTreeSetInstance) return false;
 
-                if (null == this.rowOrColArrayListInstance)
+                if (null == this.rowOrColTreeSetInstance)
                     return true;
                 else
-                    if (this.rowOrColArrayListInstance.size()
-                    != rowOrCols.rowOrColArrayListInstance.size())
-                        return false;
-                    else
-                    {
-                        {
-                            int i = 0;
-
-                            for (final org.wheatgenetics.coordinate.model.RowOrCol myRowOrCol:
-                            this.rowOrColArrayListInstance)
-                            {
-                                final org.wheatgenetics.coordinate.model.RowOrCol yourRowOrCol =
-                                    rowOrCols.rowOrColArrayListInstance.get(i++);
-
-                                if (null == myRowOrCol && null != yourRowOrCol)
-                                    return false;
-                                else
-                                    if (null != myRowOrCol && null == yourRowOrCol)
-                                        return false;
-                                    else
-                                        if (null != myRowOrCol)
-                                            if (!myRowOrCol.equals(yourRowOrCol)) return false;
-                            }
-                        }
-                        return true;
-                    }
+                    return this.rowOrColTreeSetInstance.equals(rowOrCols.rowOrColTreeSetInstance);
             }
             else return false;
     }
@@ -148,14 +118,9 @@ class RowOrCols extends java.lang.Object
         final org.wheatgenetics.coordinate.model.RowOrCols result =
             new org.wheatgenetics.coordinate.model.RowOrCols();
 
-        if (null != this.rowOrColArrayListInstance)
-        {
-            result.rowOrColArrayListInstance = org.wheatgenetics.coordinate.model.RowOrCols.make();
-            for (final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol:
-            this.rowOrColArrayListInstance)
-                result.rowOrColArrayListInstance.add(
-                    new org.wheatgenetics.coordinate.model.RowOrCol(rowOrCol));
-        }
+        if (null != this.rowOrColTreeSetInstance) result.rowOrColTreeSetInstance =
+            new java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>(
+                this.rowOrColTreeSetInstance);
 
         return result;
     }
@@ -163,24 +128,24 @@ class RowOrCols extends java.lang.Object
 
     // region Package Methods
     void add(@android.support.annotation.IntRange(from = 1) final int value)
-    { this.rowOrColArrayList().add(new org.wheatgenetics.coordinate.model.RowOrCol(value)); }
+    { this.rowOrColTreeSet().add(new org.wheatgenetics.coordinate.model.RowOrCol(value)); }
 
     java.lang.String json()
     {
-        if (null == this.rowOrColArrayListInstance)
+        if (null == this.rowOrColTreeSetInstance)
             return null;
         else
         {
-            final java.util.ArrayList<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColArrayList =
-                this.rowOrColArrayList();
+            final java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColTreeSet =
+                this.rowOrColTreeSet();
 
-            if (rowOrColArrayList.size() <= 0)
+            if (rowOrColTreeSet.isEmpty())
                 return null;
             else
             {
                 final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
-                for (final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol: rowOrColArrayList)
+                for (final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol: rowOrColTreeSet)
                     if (null != rowOrCol) jsonArray.put(rowOrCol.getValue());
 
                 return jsonArray.toString();
@@ -188,24 +153,16 @@ class RowOrCols extends java.lang.Object
         }
     }
 
-    void clear()
-    { if (null != this.rowOrColArrayListInstance) this.rowOrColArrayListInstance.clear(); }
+    void clear() { if (null != this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance.clear(); }
 
-    @java.lang.SuppressWarnings("UnnecessaryUnboxing")
-    boolean isPresent(@android.support.annotation.IntRange(from = 1) final int candidateValue)
+    @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    boolean contains(@android.support.annotation.IntRange(from = 1) final int candidateValue)
     {
-        boolean result = false;
-
-        if (null != this.rowOrColArrayListInstance)
-            for (final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol:
-            this.rowOrColArrayListInstance)
-                if (null != rowOrCol) if (rowOrCol.getValue() == candidateValue)
-                {
-                    result = true;
-                    break;
-                }
-
-        return result;
+        if (null == this.rowOrColTreeSetInstance)
+            return false;
+        else
+            return this.rowOrColTreeSetInstance.contains(
+                new org.wheatgenetics.coordinate.model.RowOrCol(candidateValue));
     }
     // endregion
 }

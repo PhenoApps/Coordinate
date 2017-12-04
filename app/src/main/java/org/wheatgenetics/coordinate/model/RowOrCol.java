@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class RowOrCol extends java.lang.Object implements java.lang.Cloneable
+class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
 {
     private final int value;
 
@@ -47,9 +48,18 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
     { return new org.wheatgenetics.coordinate.model.RowOrCol(this.value); }
+
+    // region java.lang.Comparable Overridden Method
+    @java.lang.Override
+    public int compareTo(@android.support.annotation.NonNull final java.lang.Object object)
+    {
+        return java.lang.Integer.valueOf(this.getValue()).compareTo(
+            ((org.wheatgenetics.coordinate.model.RowOrCol) object).getValue());
+    }
+    // endregion
     // endregion
 
-    // Package Methods
+    // region Package Methods
     int getValue() { return this.value; }
 
     org.wheatgenetics.coordinate.model.RowOrCol inRange(
