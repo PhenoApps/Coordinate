@@ -2,6 +2,9 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -58,6 +61,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     }
 
     @java.lang.SuppressWarnings("Convert2Diamond")
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
         arrayList =
             new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
@@ -87,18 +91,18 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     }
 
     @java.lang.Override
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == o)
+        if (null == object)
             return false;
         else
-            if (o instanceof org.wheatgenetics.coordinate.optionalField.OptionalFields)
+            if (object instanceof org.wheatgenetics.coordinate.optionalField.OptionalFields)
             {
-                final org.wheatgenetics.coordinate.optionalField.OptionalFields f =
-                    (org.wheatgenetics.coordinate.optionalField.OptionalFields) o;
+                final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields =
+                    (org.wheatgenetics.coordinate.optionalField.OptionalFields) object;
 
-                assert null != this.arrayList; assert null != f.arrayList;
-                if (this.arrayList.size() != f.arrayList.size())
+                assert null != this.arrayList; assert null != optionalFields.arrayList;
+                if (this.arrayList.size() != optionalFields.arrayList.size())
                     return false;
                 else
                 {
@@ -106,7 +110,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
                         int i = 0;
                         for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
                         baseOptionalField: this)
-                            if (!baseOptionalField.equals(f.arrayList.get(i++))) return false;
+                            if (!baseOptionalField.equals(optionalFields.arrayList.get(i++)))
+                                return false;
                     }
                     return true;
                 }

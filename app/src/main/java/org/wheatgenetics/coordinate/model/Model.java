@@ -23,13 +23,13 @@ abstract class Model extends java.lang.Object
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.getId()); }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == o)
+        if (null == object)
             return false;
         else
-            if (o instanceof org.wheatgenetics.coordinate.model.Model)
-                return this.getId() == ((org.wheatgenetics.coordinate.model.Model) o).getId();
+            if (object instanceof org.wheatgenetics.coordinate.model.Model)
+                return this.getId() == ((org.wheatgenetics.coordinate.model.Model) object).getId();
             else
                 return false;
     }

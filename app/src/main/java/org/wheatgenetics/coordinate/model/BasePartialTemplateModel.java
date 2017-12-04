@@ -78,16 +78,18 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     { return java.lang.String.format(this.formatString(), "BasePartialTemplateModel") + "]"; }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (super.equals(o))
-            if (o instanceof org.wheatgenetics.coordinate.model.BasePartialTemplateModel)
+        if (super.equals(object))
+            if (object instanceof org.wheatgenetics.coordinate.model.BasePartialTemplateModel)
             {
-                final org.wheatgenetics.coordinate.model.BasePartialTemplateModel b =
-                    (org.wheatgenetics.coordinate.model.BasePartialTemplateModel) o;
+                final org.wheatgenetics.coordinate.model.BasePartialTemplateModel
+                    basePartialTemplateModel =
+                        (org.wheatgenetics.coordinate.model.BasePartialTemplateModel) object;
 
                 {
-                    final java.lang.String myTitle = this.getTitle(), yourTitle = b.getTitle();
+                    final java.lang.String myTitle = this.getTitle(),
+                        yourTitle = basePartialTemplateModel.getTitle();
                     if (null == myTitle && null != yourTitle)
                         return false;
                     else
@@ -98,7 +100,8 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
                 {
                     final org.wheatgenetics.coordinate.model.TemplateType
-                        myTemplateType = this.getType(), yourTemplateType = b.getType();
+                        myTemplateType   = this.getType()                    ,
+                        yourTemplateType = basePartialTemplateModel.getType();
                     if (null == myTemplateType && null != yourTemplateType)
                         return false;
                     else
@@ -110,10 +113,12 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
                                     return false;
                 }
 
-                if (this.getRows() != b.getRows() || this.getCols() != b.getCols()) return false;
+                if (this.getRows() != basePartialTemplateModel.getRows()
+                ||  this.getCols() != basePartialTemplateModel.getCols()) return false;
 
-                if (this.getColNumbering() != b.getColNumbering()) return false;
-                return this.getRowNumbering() == b.getRowNumbering();
+                if (this.getColNumbering() != basePartialTemplateModel.getColNumbering())
+                    return false;
+                return this.getRowNumbering() == basePartialTemplateModel.getRowNumbering();
             }
             else return false;
         else return false;

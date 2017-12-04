@@ -106,21 +106,23 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     { return java.lang.String.format(this.formatString(), "PartialTemplateModel") + "]"; }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (super.equals(o))
-            if (o instanceof org.wheatgenetics.coordinate.model.PartialTemplateModel)
+        if (super.equals(object))
+            if (object instanceof org.wheatgenetics.coordinate.model.PartialTemplateModel)
             {
-                final org.wheatgenetics.coordinate.model.PartialTemplateModel p =
-                    (org.wheatgenetics.coordinate.model.PartialTemplateModel) o;
+                final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
+                    (org.wheatgenetics.coordinate.model.PartialTemplateModel) object;
 
-                if (null == this.optionalFieldsInstance && null != p.optionalFieldsInstance)
+                if (null == this.optionalFieldsInstance
+                &&  null != partialTemplateModel.optionalFieldsInstance)
                     return false;
                 else
-                    if (null != this.optionalFieldsInstance && null == p.optionalFieldsInstance)
+                    if (null != this.optionalFieldsInstance
+                    &&  null == partialTemplateModel.optionalFieldsInstance)
                         return false;
                 return  null == this.optionalFieldsInstance ? true :
-                    this.optionalFieldsInstance.equals(p.optionalFieldsInstance);
+                    this.optionalFieldsInstance.equals(partialTemplateModel.optionalFieldsInstance);
             }
             else return false;
         else return false;

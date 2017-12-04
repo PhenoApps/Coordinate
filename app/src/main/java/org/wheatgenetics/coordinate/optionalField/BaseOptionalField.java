@@ -52,18 +52,21 @@ public abstract class BaseOptionalField extends java.lang.Object
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getName(), super.toString()); }
 
     @java.lang.Override
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == o)
+        if (null == object)
             return false;
         else
-            if (o instanceof org.wheatgenetics.coordinate.optionalField.BaseOptionalField)
+            if (object instanceof org.wheatgenetics.coordinate.optionalField.BaseOptionalField)
             {
-                final org.wheatgenetics.coordinate.optionalField.BaseOptionalField f =
-                    (org.wheatgenetics.coordinate.optionalField.BaseOptionalField) o;
+                final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+                    baseOptionalField =
+                        (org.wheatgenetics.coordinate.optionalField.BaseOptionalField) object;
                 return
-                    this.getName().equals(f.getName()) && this.getValue().equals(f.getValue()) &&
-                    this.getHint().equals(f.getHint()) && this.getChecked() == f.getChecked()   ;
+                    this.getName   ().equals(baseOptionalField.getName   ()) &&
+                    this.getValue  ().equals(baseOptionalField.getValue  ()) &&
+                    this.getHint   ().equals(baseOptionalField.getHint   ()) &&
+                    this.getChecked()   ==   baseOptionalField.getChecked()   ;
             }
             else return false;
     }

@@ -141,26 +141,26 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     }
 
     @java.lang.Override
-    public boolean equals(final java.lang.Object o)
+    public boolean equals(final java.lang.Object object)
     {
-        if (null == o)
+        if (null == object)
             return false;
         else
-            if (o instanceof org.wheatgenetics.coordinate.model.Cells)
+            if (object instanceof org.wheatgenetics.coordinate.model.Cells)
             {
-                final org.wheatgenetics.coordinate.model.Cells cs =
-                    (org.wheatgenetics.coordinate.model.Cells) o;
+                final org.wheatgenetics.coordinate.model.Cells cells =
+                    (org.wheatgenetics.coordinate.model.Cells) object;
     
-                if (null == this.cellArrayListInstance && null != cs.cellArrayListInstance)
+                if (null == this.cellArrayListInstance && null != cells.cellArrayListInstance)
                     return false;
                 else
-                    if (null != this.cellArrayListInstance && null == cs.cellArrayListInstance)
+                    if (null != this.cellArrayListInstance && null == cells.cellArrayListInstance)
                         return false;
     
                 if (null == this.cellArrayListInstance)
                     return true;
                 else
-                    if (this.cellArrayListInstance.size() != cs.cellArrayListInstance.size())
+                    if (this.cellArrayListInstance.size() != cells.cellArrayListInstance.size())
                         return false;
                     else
                     {
@@ -171,7 +171,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                             this.cellArrayListInstance)
                             {
                                 final org.wheatgenetics.coordinate.model.Cell c =
-                                    cs.cellArrayListInstance.get(i++);
+                                    cells.cellArrayListInstance.get(i++);
 
                                 if (null == cell && null != c)
                                     return false;
