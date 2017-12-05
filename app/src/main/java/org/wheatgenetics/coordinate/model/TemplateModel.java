@@ -1,0 +1,359 @@
+package org.wheatgenetics.coordinate.model;
+
+/**
+ * Uses:
+ * android.support.annotation.IntRange
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
+ *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
+ * org.wheatgenetics.coordinate.model.Cell
+ * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.PartialTemplateModel
+ * org.wheatgenetics.coordinate.model.RowOrCols
+ * org.wheatgenetics.coordinate.model.TemplateType
+ */
+public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
+implements java.lang.Cloneable
+{
+    // region Fields
+    private org.wheatgenetics.coordinate.model.Cells     excludeCellsInstance = null;
+    private org.wheatgenetics.coordinate.model.RowOrCols excludeRowsInstance  = null,
+        excludeColsInstance = null;
+
+    private long timestamp;
+    // endregion
+
+    // region Private Methods
+    private org.wheatgenetics.coordinate.model.Cells excludeCells()
+    {
+        if (null == this.excludeCellsInstance) this.excludeCellsInstance =
+            new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols());
+        return this.excludeCellsInstance;
+    }
+
+    private org.wheatgenetics.coordinate.model.RowOrCols excludeRows()
+    {
+        if (null == this.excludeRowsInstance) this.excludeRowsInstance =
+            new org.wheatgenetics.coordinate.model.RowOrCols(this.getRows());
+        return this.excludeRowsInstance;
+    }
+
+    private org.wheatgenetics.coordinate.model.RowOrCols excludeCols()
+    {
+        if (null == this.excludeColsInstance) this.excludeColsInstance =
+            new org.wheatgenetics.coordinate.model.RowOrCols(this.getCols());
+        return this.excludeColsInstance;
+    }
+
+    private void clearExcludes()
+    {
+        if (null != this.excludeCellsInstance) this.excludeCellsInstance.clear();
+        if (null != this.excludeRowsInstance ) this.excludeRowsInstance.clear ();
+        if (null != this.excludeColsInstance ) this.excludeColsInstance.clear ();
+    }
+    // endregion
+
+    // region Constructors
+    private TemplateModel(final long id, final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    { super(id, title, type, rows, cols, colNumbering, rowNumbering, optionalFields); }
+
+    private TemplateModel(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
+    { super(title, type, rows, cols, colNumbering, rowNumbering, nonNullOptionalFields); }
+
+    public TemplateModel(final long id, final java.lang.String title,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int code,
+    @android.support.annotation.IntRange(from = 1        ) final int rows,
+    @android.support.annotation.IntRange(from = 1        ) final int cols,
+    java.lang.String excludeCells, java.lang.String excludeRows, java.lang.String excludeCols,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
+    final java.lang.String optionalFields, final long timestamp)
+    {
+        super(id, title, code, rows, cols, colNumbering, rowNumbering, optionalFields);
+
+        if (null != excludeCells)
+        {
+            excludeCells = excludeCells.trim();
+            if (excludeCells.length() > 0) this.excludeCellsInstance =
+                new org.wheatgenetics.coordinate.model.Cells(
+                    excludeCells, this.getRows(), this.getCols());
+        }
+
+        if (null != excludeRows)
+        {
+            excludeRows = excludeRows.trim();
+            if (excludeRows.length() > 0) this.excludeRowsInstance =
+                new org.wheatgenetics.coordinate.model.RowOrCols(excludeRows, this.getRows());
+        }
+
+        if (null != excludeCols)
+        {
+            excludeCols = excludeCols.trim();
+            if (excludeCols.length() > 0) this.excludeColsInstance =
+                new org.wheatgenetics.coordinate.model.RowOrCols(excludeCols, this.getCols());
+        }
+
+        this.timestamp = timestamp;
+    }
+    // endregion
+
+    // region Overridden Methods
+    // region toString() Overridden Methods
+    @java.lang.Override
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    java.lang.String formatString()
+    {
+        return super.formatString() +
+            ", excludeCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
+    }
+
+    @java.lang.Override
+    public java.lang.String toString()
+    {
+        return java.lang.String.format(this.formatString(), "TemplateModel",
+            this.excludeCellsInstance, this.excludeRowsInstance, this.excludeColsInstance,
+            this.getTimestamp());
+    }
+    // endregion
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object object)
+    {
+        if (super.equals(object))
+            if (object instanceof org.wheatgenetics.coordinate.model.TemplateModel)
+            {
+                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                    (org.wheatgenetics.coordinate.model.TemplateModel) object;
+
+                if (null == this.excludeCellsInstance && null != templateModel.excludeCellsInstance)
+                    return false;
+                else
+                    if (null != this.excludeCellsInstance
+                    &&  null == templateModel.excludeCellsInstance)
+                        return false;
+                if (null != this.excludeCellsInstance)
+                    if (!this.excludeCellsInstance.equals(templateModel.excludeCellsInstance))
+                        return false;
+
+                if (null == this.excludeRowsInstance && null != templateModel.excludeRowsInstance)
+                    return false;
+                else
+                    if (null != this.excludeRowsInstance
+                    &&  null == templateModel.excludeRowsInstance)
+                        return false;
+                if (null != this.excludeRowsInstance)
+                    if (!this.excludeRowsInstance.equals(templateModel.excludeRowsInstance))
+                        return false;
+
+                if (null == this.excludeColsInstance && null != templateModel.excludeColsInstance)
+                    return false;
+                else
+                    if (null != this.excludeColsInstance
+                    &&  null == templateModel.excludeColsInstance)
+                        return false;
+                if (null != this.excludeColsInstance)
+                    if (!this.excludeColsInstance.equals(templateModel.excludeColsInstance))
+                        return false;
+
+                return this.getTimestamp() == templateModel.getTimestamp();
+            }
+            else return false;
+        else return false;
+    }
+
+    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    protected java.lang.Object clone()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            new org.wheatgenetics.coordinate.model.TemplateModel(this.getId(), this.getTitle(),
+                this.getType(), this.getRows(), this.getCols(), this.getColNumbering(),
+                this.getRowNumbering(), this.optionalFieldsClone());
+
+        if (null != this.excludeCellsInstance) result.excludeCellsInstance =
+            (org.wheatgenetics.coordinate.model.Cells) this.excludeCellsInstance.clone();
+
+        if (null != this.excludeRowsInstance) result.excludeRowsInstance =
+            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludeRowsInstance.clone();
+        if (null != this.excludeColsInstance) result.excludeColsInstance =
+            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludeColsInstance.clone();
+
+        result.timestamp = this.getTimestamp();
+
+        return result;
+    }
+
+    @java.lang.Override
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
+    { super.assign(partialTemplateModel); this.clearExcludes(); }
+    // endregion
+
+    // region Public Methods
+    // region excludeCells Public Methods
+    public void addExcludedCell(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { this.excludeCells().add(row, col); }
+
+    public void makeOneRandomCell()
+    { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
+
+    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
+    { this.excludeCells().makeRandomCells(amount, this.getCols(), this.getRows()); }
+
+    public java.lang.String getExcludeCellsAsJson()
+    { return null == this.excludeCellsInstance ? null : this.excludeCellsInstance.json(); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedCell(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    {
+        return null == this.excludeCellsInstance ? false :
+            this.excludeCellsInstance.contains(row, col);
+    }
+    // endregion
+
+    // region excludeRows, excludeCols Public Methods
+    public void addExcludeRow(@android.support.annotation.IntRange(from = 1) final int row)
+    { this.excludeRows().add(row); }
+
+    public void addExcludeCol(@android.support.annotation.IntRange(from = 1) final int col)
+    { this.excludeCols().add(col); }
+
+    public java.lang.String getExcludeRowsAsJson()
+    { return null == this.excludeRowsInstance ? null : this.excludeRowsInstance.json(); }
+
+    public java.lang.String getExcludeColsAsJson()
+    { return null == this.excludeColsInstance ? null : this.excludeColsInstance.json(); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
+    { return null == this.excludeRowsInstance ? false : this.excludeRowsInstance.contains(row); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
+    { return null == this.excludeColsInstance ? false : this.excludeColsInstance.contains(col); }
+    // endregion
+
+    public long getTimestamp() { return this.timestamp; }
+
+    public void clearExcludesAndOptionalFields()
+    { this.clearExcludes(); this.makeOptionalFieldsNew(); }
+
+    public org.wheatgenetics.coordinate.model.Cell nextFreeCell(
+    final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)
+    {
+        if (null == candidateFreeCell)
+            return null;
+        else
+        {
+            {
+                final int lastRow = this.getRows(), lastCol = this.getCols();
+                candidateFreeCell.inRange(              // throws java.lang.IllegalArgumentException
+                    new org.wheatgenetics.coordinate.model.Cell(lastRow, lastCol));
+
+                boolean currentCol = true;
+                for (int col = candidateFreeCell.getCol().getValue(); col <= lastCol; col++)
+                {
+                    if (!this.isExcludedCol(col))
+                        for (int row = currentCol ? candidateFreeCell.getRow().getValue() : 1;
+                        row <= lastRow; row++)
+                            if (!this.isExcludedRow(row)) if (!this.isExcludedCell(row, col))
+                                return new org.wheatgenetics.coordinate.model.Cell(row, col);
+                    currentCol = false;
+                }
+            }
+            return null;
+        }
+    }
+
+    // region checkedItems Public Methods
+    public boolean[] rowCheckedItems()
+    {
+        final int rows = this.getRows();
+        if (rows <= 0)
+            return null;
+        else
+        {
+            final boolean result[] = new boolean[rows];
+            for (int i = 0; i < rows; i++) result[i] = this.isExcludedRow(i + 1);
+            return result;
+        }
+    }
+
+    public boolean[] colCheckedItems()
+    {
+        final int cols = this.getCols();
+        if (cols <= 0)
+            return null;
+        else
+        {
+            final boolean result[] = new boolean[cols];
+            for (int i = 0; i < cols; i++) result[i] = this.isExcludedCol(i + 1);
+            return result;
+        }
+    }
+    // endregion
+
+    // region Make Public Methods
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
+    {
+        return new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title          => */ ""                                                  ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows           => */ 20                                                  ,
+            /* cols           => */ 10                                                  ,
+            /* colNumbering   => */ true                                                ,
+            /* rowNumbering   => */ false                                               ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                NonNullOptionalFields.makeInitial());
+
+    }
+
+    static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* title          => */ "Seed Tray"                                         ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                /* rows           => */  6                                                  ,
+                /* cols           => */ 20                                                  ,
+                /* colNumbering   => */ true                                                ,
+                /* rowNumbering   => */ true                                                ,
+                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                    NonNullOptionalFields.makeSeedDefault());
+        {
+            final org.wheatgenetics.coordinate.model.RowOrCols excludeRows = result.excludeRows();
+            excludeRows.add(2); excludeRows.add(5);
+        }
+        return result;
+    }
+
+    static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
+    {
+        return new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title          => */ "DNA Plate"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */  8                                                 ,
+            /* cols           => */ 12                                                 ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                NonNullOptionalFields.makeDNADefault());
+    }
+    // endregion
+    // endregion
+}
