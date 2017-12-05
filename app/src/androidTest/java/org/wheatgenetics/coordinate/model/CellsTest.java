@@ -178,7 +178,7 @@ public class CellsTest extends java.lang.Object
         cells.makeRandomCells(-5, maxRow, maxCol);
         org.junit.Assert.assertEquals(cells.toString(), "null");
 
-        cells.makeRandomCells( 2, maxRow, maxCol);
+        cells.makeRandomCells(2, maxRow, maxCol);
         org.junit.Assert.assertNotEquals(cells.toString(), "null");
     }
 
