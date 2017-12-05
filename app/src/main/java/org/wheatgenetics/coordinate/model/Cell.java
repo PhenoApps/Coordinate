@@ -18,11 +18,21 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
     // region Constructors
+    /** Assigns. */
     private Cell(
     final org.wheatgenetics.coordinate.model.RowOrCol row,
     final org.wheatgenetics.coordinate.model.RowOrCol col)
     { super(); this.row = row; this.col = col; }
 
+    /** Creates. */
+    Cell(final org.wheatgenetics.coordinate.model.Cell cell)
+    {
+        this(
+            new org.wheatgenetics.coordinate.model.RowOrCol(cell.getRow()),
+            new org.wheatgenetics.coordinate.model.RowOrCol(cell.getCol()));
+    }
+
+    /** Creates. */
     Cell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
@@ -65,12 +75,7 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
-    protected java.lang.Object clone()
-    {
-        return new org.wheatgenetics.coordinate.model.Cell(
-            new org.wheatgenetics.coordinate.model.RowOrCol(this.row),
-            new org.wheatgenetics.coordinate.model.RowOrCol(this.col));
-    }
+    protected java.lang.Object clone() { return new org.wheatgenetics.coordinate.model.Cell(this); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override

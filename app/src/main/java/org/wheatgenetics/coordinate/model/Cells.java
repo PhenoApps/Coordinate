@@ -33,7 +33,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
     {
         return null == cell ? false : this.cellTreeSet().add(
-            cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */ );
+            cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */);
     }
 
     private void add(final java.lang.Object object)
@@ -67,9 +67,15 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Constructors
+    /** Assigns. */
     private Cells(final org.wheatgenetics.coordinate.model.Cell maxCell)
     { super(); this.maxCell = maxCell; }
 
+    /** Creates. */
+    private Cells(final org.wheatgenetics.coordinate.model.Cells cells)
+    { this(new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
+
+    /** Creates. */
     Cells(
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
@@ -164,7 +170,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
-            new org.wheatgenetics.coordinate.model.Cells(this.maxCell);
+            new org.wheatgenetics.coordinate.model.Cells(this);
 
         if (null != this.cellTreeSetInstance) result.cellTreeSetInstance =
             new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>(
