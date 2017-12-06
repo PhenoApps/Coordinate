@@ -211,7 +211,7 @@ implements java.lang.Cloneable
     { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
 
     public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
-    { this.excludeCells().makeRandomCells(amount, this.getCols(), this.getRows()); }
+    { this.excludeCells().makeRandomCells(amount, this.getRows(), this.getCols()); }
 
     public java.lang.String getExcludeCellsAsJson()
     { return null == this.excludeCellsInstance ? null : this.excludeCellsInstance.json(); }
