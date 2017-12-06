@@ -17,6 +17,10 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ *
+ * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
  */
 class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog implements
 org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler,
@@ -25,9 +29,7 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
     private static enum AlertDialogUnderTest { NEITHER, ADD, CHECK_AND_ADD }
 
     // region Fields
-    private android.widget.TextView textView              ;
-    private android.widget.Button   addOptionalFieldButton,
-        checkAndAddOptionalFieldButton, refreshTextButton;
+    private android.widget.TextView textView;
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance = null;
@@ -37,6 +39,10 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
         checkAndAddOptionalFieldsAlertDialog = null;
     private org.wheatgenetics.coordinate.TestAlertDialog.AlertDialogUnderTest alertDialogUnderTest =
         org.wheatgenetics.coordinate.TestAlertDialog.AlertDialogUnderTest.NEITHER;
+
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModelInstance = null;
+    private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
+        excludeRowsOrColsAlertDialogTesterInstance = null;
     // endregion
 
     // region Private Methods
@@ -74,6 +80,29 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
             org.wheatgenetics.coordinate.TestAlertDialog.AlertDialogUnderTest.CHECK_AND_ADD;
         this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
     }
+
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
+    {
+        if (null == this.templateModelInstance) this.templateModelInstance =
+            org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
+        return this.templateModelInstance;
+    }
+
+    private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
+    excludeRowsOrColsAlertDialogTester()
+    {
+        if (null == this.excludeRowsOrColsAlertDialogTesterInstance)
+            this.excludeRowsOrColsAlertDialogTesterInstance =
+                new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester(
+                    this.activity());
+        return this.excludeRowsOrColsAlertDialogTesterInstance;
+    };
+
+    private void excludeRows()
+    { this.excludeRowsOrColsAlertDialogTester().testExcludeRows(this.templateModel()); }
+
+    private void excludeCols()
+    { this.excludeRowsOrColsAlertDialogTester().testExcludeCols(this.templateModel()); }
     // endregion
 
     TestAlertDialog(final android.app.Activity activity) { super(activity);}
@@ -91,39 +120,72 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
             this.textView = (android.widget.TextView)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.textView);
 
-            this.addOptionalFieldButton = (android.widget.Button)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.addOptionalFieldButton);
-            assert null != this.addOptionalFieldButton;
-            this.addOptionalFieldButton.setOnClickListener(new android.view.View.OnClickListener()
+            {
+                final android.widget.Button addOptionalFieldButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.addOptionalFieldButton);
+                assert null != addOptionalFieldButton;
+                addOptionalFieldButton.setOnClickListener(new android.view.View.OnClickListener()
                 {
                     @java.lang.Override
                     public void onClick(final android.view.View v)
                     { org.wheatgenetics.coordinate.TestAlertDialog.this.addOptionalField(); }
                 });
+            }
 
-            this.checkAndAddOptionalFieldButton = (android.widget.Button)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.checkAndAddOptionalFieldButton);
-            assert null != this.checkAndAddOptionalFieldButton;
-            this.checkAndAddOptionalFieldButton.setOnClickListener(
-                new android.view.View.OnClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.view.View v)
+            {
+                final android.widget.Button checkAndAddOptionalFieldButton = (android.widget.Button)
+                    view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.checkAndAddOptionalFieldButton);
+                assert null != checkAndAddOptionalFieldButton;
+                checkAndAddOptionalFieldButton.setOnClickListener(
+                    new android.view.View.OnClickListener()
                     {
-                        org.wheatgenetics.coordinate
-                            .TestAlertDialog.this.checkAndAddOptionalField();
-                    }
-                });
+                        @java.lang.Override
+                        public void onClick(final android.view.View v)
+                        {
+                            org.wheatgenetics.coordinate
+                                .TestAlertDialog.this.checkAndAddOptionalField();
+                        }
+                    });
+            }
 
-            this.refreshTextButton = (android.widget.Button)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.refreshTextButton);
-            assert null != this.refreshTextButton;
-            this.refreshTextButton.setOnClickListener(new android.view.View.OnClickListener()
+            {
+                final android.widget.Button refreshTextButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.refreshTextButton);
+                assert null != refreshTextButton;
+                refreshTextButton.setOnClickListener(new android.view.View.OnClickListener()
                 {
                     @java.lang.Override
                     public void onClick(final android.view.View v)
                     { org.wheatgenetics.coordinate.TestAlertDialog.this.refreshText(); }
                 });
+            }
+
+            {
+                final android.widget.Button excludeRowsButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeRowsButton);
+                assert null != excludeRowsButton;
+                excludeRowsButton.setOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeRows(); }
+                });
+
+            }
+
+            {
+                final android.widget.Button excludeColsButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeColsButton);
+                assert null != excludeColsButton;
+                excludeColsButton.setOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeCols(); }
+                });
+
+            }
 
             this.setView(view);
         }

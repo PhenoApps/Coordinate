@@ -23,4 +23,8 @@
 
     <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
     <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
+
+    <string name="ExcludeRowsOrColsAlertDialogTitle">Exclude</string>
+    <string name="ExcludeRowsOrColsAlertDialogRowLabel">Row</string>
+    <string name="ExcludeRowsOrColsAlertDialogColumnLabel">Column</string>
 </resources>
