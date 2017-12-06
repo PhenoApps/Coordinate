@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
  */
 class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog implements
@@ -43,6 +44,8 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
     private org.wheatgenetics.coordinate.model.TemplateModel templateModelInstance = null;
     private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
         excludeRowsOrColsAlertDialogTesterInstance = null;
+    private org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
+        excludeCellsAlertDialogTester = null;
     // endregion
 
     // region Private Methods
@@ -101,6 +104,14 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
 
     private void excludeRows() { this.excludeRowsOrColsAlertDialogTester().testExcludeRows(); }
     private void excludeCols() { this.excludeRowsOrColsAlertDialogTester().testExcludeCols(); }
+
+    private void excludeCells()
+    {
+        if (null == this.excludeCellsAlertDialogTester) this.excludeCellsAlertDialogTester =
+            new org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester(
+                this.activity(), this.templateModel());
+        this.excludeCellsAlertDialogTester.testExcludeCells();
+    }
     // endregion
 
     TestAlertDialog(final android.app.Activity activity) { super(activity);}
@@ -110,14 +121,12 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
     public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.TestAlertDialogTitle);
-
         {
             final android.view.View view = this.inflate(org.wheatgenetics.coordinate.R.layout.test);
 
             assert null != view;
             this.textView = (android.widget.TextView)
                 view.findViewById(org.wheatgenetics.coordinate.R.id.textView);
-
             {
                 final android.widget.Button addOptionalFieldButton = (android.widget.Button)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.addOptionalFieldButton);
@@ -129,7 +138,6 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                     { org.wheatgenetics.coordinate.TestAlertDialog.this.addOptionalField(); }
                 });
             }
-
             {
                 final android.widget.Button checkAndAddOptionalFieldButton = (android.widget.Button)
                     view.findViewById(
@@ -146,7 +154,6 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                         }
                     });
             }
-
             {
                 final android.widget.Button refreshTextButton = (android.widget.Button)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.refreshTextButton);
@@ -158,7 +165,6 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                     { org.wheatgenetics.coordinate.TestAlertDialog.this.refreshText(); }
                 });
             }
-
             {
                 final android.widget.Button excludeRowsButton = (android.widget.Button)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.excludeRowsButton);
@@ -171,7 +177,6 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                 });
 
             }
-
             {
                 final android.widget.Button excludeColsButton = (android.widget.Button)
                     view.findViewById(org.wheatgenetics.coordinate.R.id.excludeColsButton);
@@ -184,10 +189,19 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                 });
 
             }
-
+            {
+                final android.widget.Button excludeCellsButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeCellsButton);
+                assert null != excludeCellsButton;
+                excludeCellsButton.setOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeCells(); }
+                });
+            }
             this.setView(view);
         }
-
         this.setOKPositiveButton();
     }
 
