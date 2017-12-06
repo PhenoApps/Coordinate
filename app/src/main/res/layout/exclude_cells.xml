@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".85"
-            android:text="@string/ExcludeCellsTextViewText"
+            android:text="@string/ExcludeCellsLabelTextViewText"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:labelFor="@+id/excludeCellsEditText" />
 
@@ -31,5 +31,13 @@
             android:inputType="numberDecimal" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/excludeCellsExceptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAlignment="center"
+        android:visibility="invisible" />
 
 </LinearLayout>

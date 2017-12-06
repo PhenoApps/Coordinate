@@ -51,9 +51,25 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
     // region Private Methods
     private void refreshText()
     {
-        final java.lang.String text = null == this.nonNullOptionalFieldsInstance ?
-            "" : this.nonNullOptionalFieldsInstance.toJson();
-        assert null != this.textView; this.textView.setText(text);
+        final java.lang.StringBuilder textBuilder = new java.lang.StringBuilder("");
+        {
+            final boolean nonNullOptionalFieldsInstanceIsNotNull =
+                null != this.nonNullOptionalFieldsInstance;
+            if (nonNullOptionalFieldsInstanceIsNotNull)
+                textBuilder.append(this.nonNullOptionalFieldsInstance.toJson());
+
+            if (null != this.templateModelInstance)
+            {
+                final java.lang.String excludeCellsAsJson =
+                    this.templateModelInstance.getExcludeCellsAsJson();
+                if (null != excludeCellsAsJson)
+                {
+                    if (nonNullOptionalFieldsInstanceIsNotNull) textBuilder.append('\n');
+                    textBuilder.append(excludeCellsAsJson);
+                }
+            }
+        }
+        assert null != this.textView; this.textView.setText(textBuilder.toString());
     }
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
