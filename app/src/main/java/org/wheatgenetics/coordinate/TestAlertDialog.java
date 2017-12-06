@@ -81,6 +81,7 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
         this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
     }
 
+
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
     {
         if (null == this.templateModelInstance) this.templateModelInstance =
@@ -94,15 +95,12 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
         if (null == this.excludeRowsOrColsAlertDialogTesterInstance)
             this.excludeRowsOrColsAlertDialogTesterInstance =
                 new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester(
-                    this.activity());
+                    this.activity(), this.templateModel());
         return this.excludeRowsOrColsAlertDialogTesterInstance;
-    };
+    }
 
-    private void excludeRows()
-    { this.excludeRowsOrColsAlertDialogTester().testExcludeRows(this.templateModel()); }
-
-    private void excludeCols()
-    { this.excludeRowsOrColsAlertDialogTester().testExcludeCols(this.templateModel()); }
+    private void excludeRows() { this.excludeRowsOrColsAlertDialogTester().testExcludeRows(); }
+    private void excludeCols() { this.excludeRowsOrColsAlertDialogTester().testExcludeCols(); }
     // endregion
 
     TestAlertDialog(final android.app.Activity activity) { super(activity);}
