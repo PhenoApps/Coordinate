@@ -35,4 +35,12 @@
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
     <string name="ExcludeAlertDialogColsItem">Columns</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
+
+    <string name="SetNumberingAlertDialogTitle">Naming</string>
+    <string name="SetNumberingAlertDialogRowSpinnerLabel">Rows</string>
+    <string name="SetNumberingAlertDialogColSpinnerLabel">Columns</string>
+    <string-array name="SetNumberingAlertDialogSpinnerEntries">
+        <item>1,2,3</item>
+        <item>A,B,C</item>
+    </string-array>
 </resources>
