@@ -175,6 +175,9 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Public Methods
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
+    { return this.optionalFieldsInstance; }
+
     public java.lang.String getOptionalFields()
     { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.toJson(); }
 
@@ -207,14 +210,14 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
 
     public java.lang.String getFirstOptionalFieldValue()
     {
-        assert null != this.optionalFieldsInstance;
-        return this.optionalFieldsInstance.getFirstValue();
+        return null == this.optionalFieldsInstance ? null :
+            this.optionalFieldsInstance.getFirstValue();
     }
 
     public java.lang.String getFirstOptionalFieldDatedValue()
     {
-        assert null != this.optionalFieldsInstance;
-        return this.optionalFieldsInstance.getDatedFirstValue();
+        return null == this.optionalFieldsInstance ? null :
+            this.optionalFieldsInstance.getDatedFirstValue();
     }
     // endregion
 }

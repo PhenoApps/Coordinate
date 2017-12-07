@@ -475,6 +475,24 @@ public class PartialTemplateModelTest extends java.lang.Object
 
     // region Public Method Tests
     @org.junit.Test
+    public void nonNullOptionalFieldsSucceeds()
+    {
+        final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* title          => */ "testTitle"                                        ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                /* rows           => */ 5                                                  ,
+                /* cols           => */ 2                                                  ,
+                /* colNumbering   => */ true                                               ,
+                /* rowNumbering   => */ false                                              ,
+                /* optionalFields => */ null                                               );
+        org.junit.Assert.assertNull(partialTemplateModel.nonNullOptionalFields());
+
+        partialTemplateModel.addOptionalField("name", "value");
+        org.junit.Assert.assertNotNull(partialTemplateModel.nonNullOptionalFields());
+    }
+
+    @org.junit.Test
     public void getOptionalFieldsSucceeds()
     {
         org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
@@ -628,6 +646,62 @@ public class PartialTemplateModelTest extends java.lang.Object
         partialTemplateModel.addOptionalField("name", testValue);
         org.junit.Assert.assertArrayEquals(partialTemplateModel.optionalFieldValues(),
             org.wheatgenetics.javalib.Utils.stringArray(testValue));
+    }
+
+    @org.junit.Test
+    public void getFirstOptionalFieldValueSucceeds()
+    {
+        org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* title          => */ "testTitle"                                        ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                /* rows           => */ 5                                                  ,
+                /* cols           => */ 2                                                  ,
+                /* colNumbering   => */ true                                               ,
+                /* rowNumbering   => */ false                                              ,
+                /* optionalFields => */ null                                               );
+        org.junit.Assert.assertNull(partialTemplateModel.getFirstOptionalFieldValue());
+
+        partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* title          => */ "testTitle"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */ 5                                                  ,
+            /* cols           => */ 2                                                  ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField
+            .NonNullOptionalFieldsTest.makeNonNullOptionalFields());
+        org.junit.Assert.assertEquals(partialTemplateModel.getFirstOptionalFieldValue(),
+            org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields().getFirstValue());
+    }
+
+    @org.junit.Test
+    public void getFirstOptionalFieldDatedValueSucceeds()
+    {
+        org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* title          => */ "testTitle"                                        ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                /* rows           => */ 5                                                  ,
+                /* cols           => */ 2                                                  ,
+                /* colNumbering   => */ true                                               ,
+                /* rowNumbering   => */ false                                              ,
+                /* optionalFields => */ null                                               );
+        org.junit.Assert.assertNull(partialTemplateModel.getFirstOptionalFieldDatedValue());
+
+        partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* title          => */ "testTitle"                                        ,
+            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows           => */ 5                                                  ,
+            /* cols           => */ 2                                                  ,
+            /* colNumbering   => */ true                                               ,
+            /* rowNumbering   => */ false                                              ,
+            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField
+            .NonNullOptionalFieldsTest.makeNonNullOptionalFields());
+        org.junit.Assert.assertEquals(partialTemplateModel.getFirstOptionalFieldDatedValue(),
+            org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields().getDatedFirstValue());
     }
     // endregion
 }
