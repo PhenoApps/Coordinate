@@ -30,4 +30,9 @@
 
     <string name="ExcludeCellsAlertDialogTitle">Random</string>
     <string name="ExcludeCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
+
+    <string name="ExcludeAlertDialogTitle">Exclude</string>
+    <string name="ExcludeAlertDialogRowsItem">Rows</string>
+    <string name="ExcludeAlertDialogColsItem">Columns</string>
+    <string name="ExcludeAlertDialogRandomItem">Random</string>
 </resources>

@@ -10,10 +10,9 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONTokener
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- * org.wheatgenetics.coordinate.optionalField.OptionalFields
- *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
+ * org.wheatgenetics.coordinate.optionalField.OptionalFields
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
  */

@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
  * org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
  */
@@ -46,6 +47,8 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
         excludeRowsOrColsAlertDialogTesterInstance = null;
     private org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
         excludeCellsAlertDialogTester = null;
+    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
+        excludeAlertDialogTester = null;
     // endregion
 
     // region Private Methods
@@ -127,6 +130,14 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
             new org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester(
                 this.activity(), this.templateModel());
         this.excludeCellsAlertDialogTester.testExcludeCells();
+    }
+
+    private void exclude()
+    {
+        if (null == this.excludeAlertDialogTester) this.excludeAlertDialogTester =
+            new org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester(
+                this.activity(), this.templateModel());
+        this.excludeAlertDialogTester.testExclude();
     }
     // endregion
 
@@ -214,6 +225,17 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
                     @java.lang.Override
                     public void onClick(final android.view.View v)
                     { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeCells(); }
+                });
+            }
+            {
+                final android.widget.Button excludeButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton);
+                assert null != excludeButton;
+                excludeButton.setOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.TestAlertDialog.this.exclude(); }
                 });
             }
             this.setView(view);
