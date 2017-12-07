@@ -5,32 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="10dp"
 
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".85"
+        android:text="@string/ExcludeCellsLabelTextViewText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:labelFor="@+id/excludeCellsEditText" />
+
+    <EditText
+        android:id="@+id/excludeCellsEditText"
+        android:layout_weight=".15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".85"
-            android:text="@string/ExcludeCellsLabelTextViewText"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:labelFor="@+id/excludeCellsEditText" />
-
-        <EditText
-            android:id="@+id/excludeCellsEditText"
-            android:layout_weight=".15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="numberDecimal" />
-
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/excludeCellsExceptionTextView"
