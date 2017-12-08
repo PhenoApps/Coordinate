@@ -43,4 +43,10 @@
         <item>1,2,3</item>
         <item>A,B,C</item>
     </string-array>
+
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
 </resources>

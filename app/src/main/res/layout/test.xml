@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="400dp"
+        android:layout_marginBottom="450dp"
         android:textAlignment="center" />
 
     <Button
@@ -26,7 +26,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="350dp"
         android:text="Add Optional Field"
         android:textAllCaps="false" />
 
@@ -38,7 +38,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="250dp"
         android:text="Check and Add Optional Field"
         android:textAllCaps="false" />
 
@@ -50,7 +50,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="150dp"
         android:text="Refresh Text"
         android:textAllCaps="false" />
 
@@ -62,6 +62,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="50dp"
         android:text="Exclude Rows"
         android:textAllCaps="false" />
 
@@ -73,7 +74,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:text="Exclude Cols"
         android:textAllCaps="false" />
 
@@ -85,7 +86,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:text="Exclude Cells"
         android:textAllCaps="false" />
 
@@ -97,7 +98,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="250dp"
         android:text="Exclude"
         android:textAllCaps="false" />
 
@@ -109,8 +110,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="350dp"
         android:text="Set Numbering"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/setExcludesOptionalFieldsNumberingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="450dp"
+        android:text="Set Excludes, Optional Fields, Numbering"
         android:textAllCaps="false" />
 
 </android.support.constraint.ConstraintLayout>
