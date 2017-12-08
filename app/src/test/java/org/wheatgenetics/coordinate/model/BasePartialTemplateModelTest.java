@@ -33,6 +33,7 @@ public class BasePartialTemplateModelTest extends java.lang.Object
         { super(title, type, rows, cols, colNumbering, rowNumbering); }
     }
 
+    // region Constructor Tests
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void firstConstructorRowsParameterCausesFail()
@@ -146,6 +147,7 @@ public class BasePartialTemplateModelTest extends java.lang.Object
                         /* rowNumbering => */ false                                               );
         org.junit.Assert.assertEquals(concreteBasePartialTemplateModel.getId(), 0);
     }
+    // endregion
     // endregion
 
     // region Getter and Setter Public Method Tests
@@ -408,7 +410,7 @@ public class BasePartialTemplateModelTest extends java.lang.Object
     }
 
     @org.junit.Test
-    public void assignSucceedsAndFails()
+    public void packageAssignSucceedsAndFails()
     {
         final long                                            testId           = 67         ;
         final java.lang.String                                testTitle        = "testTitle";
@@ -418,27 +420,27 @@ public class BasePartialTemplateModelTest extends java.lang.Object
         final boolean testColNumbering = true, testRowNumbering = false;
 
         final org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
-            .ConcreteBasePartialTemplateModel firstConcreteBasePartialTemplateModel =
-            new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
-                .ConcreteBasePartialTemplateModel(
-                        /* id           => */ testId          ,
-                        /* title        => */ testTitle       ,
-                        /* type         => */ testTemplateType,
-                        /* rows         => */ testRows        ,
-                        /* cols         => */ testCols        ,
-                        /* colNumbering => */ testColNumbering,
-                        /* rowNumbering => */ testRowNumbering);
-        final org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
-            .ConcreteBasePartialTemplateModel secondConcreteBasePartialTemplateModel =
-            new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
-                .ConcreteBasePartialTemplateModel(
-                        /* id           => */ testId                                              ,
-                        /* title        => */ "different"                                         ,
-                        /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                        /* rows         => */ 3                                                   ,
-                        /* cols         => */ 9                                                   ,
-                        /* colNumbering => */ false                                               ,
-                        /* rowNumbering => */ true                                                );
+            .ConcreteBasePartialTemplateModel
+                firstConcreteBasePartialTemplateModel =
+                    new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+                        .ConcreteBasePartialTemplateModel(
+                            /* id           => */ testId          ,
+                            /* title        => */ testTitle       ,
+                            /* type         => */ testTemplateType,
+                            /* rows         => */ testRows        ,
+                            /* cols         => */ testCols        ,
+                            /* colNumbering => */ testColNumbering,
+                            /* rowNumbering => */ testRowNumbering),
+                secondConcreteBasePartialTemplateModel =
+                    new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+                        .ConcreteBasePartialTemplateModel(
+                            /* id    => */ testId                                              ,
+                            /* title => */ "different"                                         ,
+                            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                            /* rows  => */ 3                                                   ,
+                            /* cols  => */ 9                                                   ,
+                            /* colNumbering => */ false                                        ,
+                            /* rowNumbering => */ true                                         );
 
         org.junit.Assert.assertFalse(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
@@ -456,6 +458,50 @@ public class BasePartialTemplateModelTest extends java.lang.Object
     // endregion
 
     // region Other Public Method Tests
+    @org.junit.Test
+    public void publicAssignSucceeds()
+    {
+        final long                                            testId           = 67         ;
+        final java.lang.String                                testTitle        = "testTitle";
+        final org.wheatgenetics.coordinate.model.TemplateType testTemplateType =
+            org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
+        final int     testRows         = 15  , testCols         = 1    ;
+        final boolean testColNumbering = true, testRowNumbering = false;
+
+        final org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+            .ConcreteBasePartialTemplateModel
+                firstConcreteBasePartialTemplateModel =
+                    new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+                        .ConcreteBasePartialTemplateModel(
+                            /* id           => */ testId          ,
+                            /* title        => */ testTitle       ,
+                            /* type         => */ testTemplateType,
+                            /* rows         => */ testRows        ,
+                            /* cols         => */ testCols        ,
+                            /* colNumbering => */ testColNumbering,
+                            /* rowNumbering => */ testRowNumbering),
+                secondConcreteBasePartialTemplateModel =
+                    new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+                        .ConcreteBasePartialTemplateModel(
+                            /* id           => */ testId          ,
+                            /* title        => */ "different"     ,
+                            /* type         => */ testTemplateType,
+                            /* rows         => */ 3               ,
+                            /* cols         => */ 9               ,
+                            /* colNumbering => */ testColNumbering,
+                            /* rowNumbering => */ testRowNumbering);
+
+        org.junit.Assert.assertFalse(
+            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
+
+        secondConcreteBasePartialTemplateModel.assign(
+            /* title => */ testTitle,
+            /* rows  => */ testRows ,
+            /* cols  => */ testCols );
+        org.junit.Assert.assertTrue(
+            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
+    }
+
     @org.junit.Test
     public void rowItemsSucceeds()
     {

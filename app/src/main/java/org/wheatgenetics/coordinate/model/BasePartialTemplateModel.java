@@ -169,6 +169,10 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
 
 
+    public void assign(final java.lang.String title, final int rows, final int cols)
+    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+
+
     public java.lang.String[] rowItems(final java.lang.String label)
     {
         return org.wheatgenetics.coordinate.model.BasePartialTemplateModel.items(
