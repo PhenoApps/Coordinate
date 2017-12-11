@@ -27,11 +27,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
+ * org.wheatgenetics.coordinate.tc.TemplateCreator
+ * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  */
 class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog implements
 org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler,
 org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler,
-org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
+org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler,
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     private static enum OptionalFieldAlertDialogUnderTest { NEITHER, ADD, CHECK_AND_ADD }
 
@@ -61,6 +64,8 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
         setExcludesOptionalFieldsNumberingAlertDialogTester = null;
     private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
         assignTitleRowsColsAlertDialogTester = null;
+
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;
     // endregion
 
     // region Private Methods
@@ -203,6 +208,14 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
                     this.activity(), this.templateModel(), this);
         this.assignTitleRowsColsAlertDialogTester.testAssignTitleRowsCols();
     }
+
+
+    private void createTemplate()
+    {
+        if (null == this.templateCreator) this.templateCreator =
+            new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity(), this);
+        this.templateCreator.create(this.templateModel());
+    }
     // endregion
 
     TestAlertDialog(final android.app.Activity activity) { super(activity);}
@@ -315,8 +328,8 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
             }
             {
                 final android.widget.Button setExcludesOptionalFieldsNumberingButton =
-                    (android.widget.Button)
-                        view.findViewById(R.id.setExcludesOptionalFieldsNumberingButton);
+                    (android.widget.Button) view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.setExcludesOptionalFieldsNumberingButton);
                 assert null != setExcludesOptionalFieldsNumberingButton;
                 setExcludesOptionalFieldsNumberingButton.setOnClickListener(
                     new android.view.View.OnClickListener()
@@ -330,8 +343,8 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
                     });
             }
             {
-                final android.widget.Button assignTitleRowsColsButton =
-                    (android.widget.Button) view.findViewById(R.id.assignTitleRowsColsButton);
+                final android.widget.Button assignTitleRowsColsButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.assignTitleRowsColsButton);
                 assert null != assignTitleRowsColsButton;
                 assignTitleRowsColsButton.setOnClickListener(new android.view.View.OnClickListener()
                     {
@@ -342,6 +355,17 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
                                 .this.assignTitleRowsCols();
                         }
                     });
+            }
+            {
+                final android.widget.Button createTemplateButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.createTemplateButton);
+                assert null != createTemplateButton;
+                createTemplateButton.setOnClickListener(new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override
+                    public void onClick(final android.view.View v)
+                    { org.wheatgenetics.coordinate.TestAlertDialog.this.createTemplate(); }
+                });
             }
             this.setView(view);
         }
@@ -368,6 +392,11 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
     // region org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler Overridden Method
     @java.lang.Override
     public void handleAssignDone() { this.refreshText(); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
+    @java.lang.Override
+    public void handleTemplateCreated() { this.refreshText(); }
     // endregion
     // endregion
 }
