@@ -81,7 +81,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             {
                 {
                     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                        nonNullOptionalFields = this.templateModelInstance.nonNullOptionalFields();
+                        nonNullOptionalFields = this.templateModelInstance.optionalFields();
                     if (null != nonNullOptionalFields)
                     {
                         if (textBuilder.length() > 0) textBuilder.append('\n');
@@ -121,7 +121,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 this.nonNullOptionalFieldsInstance =
                     new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields() :
                 this.nonNullOptionalFieldsInstance                                         :
-            this.templateModelInstance.nonNullOptionalFields()                             ;
+            this.templateModelInstance.optionalFields()                                    ;
     }
 
     private void addOptionalField()

@@ -49,7 +49,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
                 new org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog(
                     this.activity(), this);
         assert null != this.templateModel;
-        this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.nonNullOptionalFields());
+        this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.optionalFields());
     }
 
     private void exclude()
@@ -155,7 +155,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     public void handleAddOptionalFieldDone()
     {
         assert null != this.templateModel; assert null != this.checkAndAddOptionalFieldsAlertDialog;
-        this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.nonNullOptionalFields());
+        this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.optionalFields());
     }
     // endregion
     // endregion

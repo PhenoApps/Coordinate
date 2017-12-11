@@ -40,7 +40,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
             return 1 == numbering;
     }
 
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
     {
         if (null == this.nonNullOptionalFieldsInstance) this.nonNullOptionalFieldsInstance =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -181,7 +181,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Public Methods
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 
     public java.lang.String optionalFieldsAsJson()
@@ -217,7 +217,10 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     }
 
     public void addOptionalField(final java.lang.String name, final java.lang.String value)
-    { this.optionalFields().add(/* name => */ name, /* value => */ value, /* hint => */ ""); }
+    {
+        this.nonNullOptionalFields().add(
+            /* name => */ name, /* value => */ value, /* hint => */ "");
+    }
 
     public void setOptionalFieldChecked(
     @android.support.annotation.IntRange(from = 0) final int index, final boolean checked)

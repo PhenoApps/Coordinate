@@ -486,10 +486,10 @@ public class PartialTemplateModelTest extends java.lang.Object
                 /* colNumbering   => */ true                                               ,
                 /* rowNumbering   => */ false                                              ,
                 /* optionalFields => */ null                                               );
-        org.junit.Assert.assertNull(partialTemplateModel.nonNullOptionalFields());
+        org.junit.Assert.assertNull(partialTemplateModel.optionalFields());
 
         partialTemplateModel.addOptionalField("name", "value");
-        org.junit.Assert.assertNotNull(partialTemplateModel.nonNullOptionalFields());
+        org.junit.Assert.assertNotNull(partialTemplateModel.optionalFields());
     }
 
     @org.junit.Test
