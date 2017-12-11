@@ -483,11 +483,11 @@ public class BasePartialTemplateModelTest extends java.lang.Object
                 secondConcreteBasePartialTemplateModel =
                     new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
                         .ConcreteBasePartialTemplateModel(
-                            /* id           => */ testId          ,
-                            /* title        => */ "different"     ,
-                            /* type         => */ testTemplateType,
-                            /* rows         => */ 3               ,
-                            /* cols         => */ 9               ,
+                            /* id    => */ testId                                             ,
+                            /* title => */ "different"                                        ,
+                            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                            /* rows  => */ 3                                                  ,
+                            /* cols  => */ 9                                                  ,
                             /* colNumbering => */ testColNumbering,
                             /* rowNumbering => */ testRowNumbering);
 

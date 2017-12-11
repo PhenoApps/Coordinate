@@ -170,7 +170,10 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
 
     public void assign(final java.lang.String title, final int rows, final int cols)
-    { this.setTitle(title); this.setRows(rows); this.setCols(cols); }
+    {
+        this.setTitle(title); this.setRows(rows); this.setCols(cols);
+        this.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+    }
 
 
     public java.lang.String[] rowItems(final java.lang.String label)
