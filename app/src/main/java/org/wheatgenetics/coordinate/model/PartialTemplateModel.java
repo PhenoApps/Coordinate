@@ -178,7 +178,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
     { return this.optionalFieldsInstance; }
 
-    public java.lang.String getOptionalFields()
+    public java.lang.String optionalFieldsAsJson()
     { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.toJson(); }
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsClone()

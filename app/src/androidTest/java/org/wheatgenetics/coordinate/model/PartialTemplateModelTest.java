@@ -504,7 +504,7 @@ public class PartialTemplateModelTest extends java.lang.Object
                 /* colNumbering   => */ true                                               ,
                 /* rowNumbering   => */ false                                              ,
                 /* optionalFields => */ null                                               );
-        org.junit.Assert.assertNull(partialTemplateModel.getOptionalFields());
+        org.junit.Assert.assertNull(partialTemplateModel.optionalFieldsAsJson());
 
         partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
             /* title          => */ "testTitle"                                        ,
@@ -515,7 +515,7 @@ public class PartialTemplateModelTest extends java.lang.Object
             /* rowNumbering   => */ false                                              ,
             /* optionalFields => */ org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields());
-        org.junit.Assert.assertEquals(partialTemplateModel.getOptionalFields(),
+        org.junit.Assert.assertEquals(partialTemplateModel.optionalFieldsAsJson(),
             org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields().toJson());
     }

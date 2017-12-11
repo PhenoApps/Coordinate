@@ -599,7 +599,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
         templateModel.clearExcludesAndOptionalFields();
-        org.junit.Assert.assertEquals(templateModel.getOptionalFields(),
+        org.junit.Assert.assertEquals(templateModel.optionalFieldsAsJson(),
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew().toJson());
     }
 
