@@ -27,7 +27,8 @@ package org.wheatgenetics.coordinate.model;
 public class PartialTemplateModel
 extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements java.lang.Cloneable
 {
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsInstance;
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+        nonNullOptionalFieldsInstance;
 
     // region Private Methods
     /** 0 means false and 1 means true. */
@@ -41,9 +42,9 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     {
-        if (null == this.optionalFieldsInstance) this.optionalFieldsInstance =
+        if (null == this.nonNullOptionalFieldsInstance) this.nonNullOptionalFieldsInstance =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        return this.optionalFieldsInstance;
+        return this.nonNullOptionalFieldsInstance;
     }
     // endregion
 
@@ -62,7 +63,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
             org.wheatgenetics.coordinate.model.PartialTemplateModel.valid(rowNumbering));
 
         if (null != optionalFields) optionalFields = optionalFields.trim();
-        this.optionalFieldsInstance = null == optionalFields ? null :
+        this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
             optionalFields.equals("") ? null : new
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
     }
@@ -76,7 +77,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(id, title, type, rows, cols, colNumbering, rowNumbering);
-        this.optionalFieldsInstance = optionalFields;
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -88,7 +89,7 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(title, type, rows, cols, colNumbering, rowNumbering);
-        this.optionalFieldsInstance = optionalFields;
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
     // endregion
 
@@ -98,7 +99,8 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     java.lang.String formatString()
     {
         return java.lang.String.format(super.formatString() + ", options=%s", "%s",
-            null == this.optionalFieldsInstance ? "" : this.optionalFieldsInstance.toString());
+            null == this.nonNullOptionalFieldsInstance ? "" :
+                this.nonNullOptionalFieldsInstance.toString());
     }
 
     @java.lang.Override
@@ -114,15 +116,16 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
                 final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
                     (org.wheatgenetics.coordinate.model.PartialTemplateModel) object;
 
-                if (null == this.optionalFieldsInstance
-                &&  null != partialTemplateModel.optionalFieldsInstance)
+                if (null == this.nonNullOptionalFieldsInstance
+                &&  null != partialTemplateModel.nonNullOptionalFieldsInstance)
                     return false;
                 else
-                    if (null != this.optionalFieldsInstance
-                    &&  null == partialTemplateModel.optionalFieldsInstance)
+                    if (null != this.nonNullOptionalFieldsInstance
+                    &&  null == partialTemplateModel.nonNullOptionalFieldsInstance)
                         return false;
-                return  null == this.optionalFieldsInstance ? true :
-                    this.optionalFieldsInstance.equals(partialTemplateModel.optionalFieldsInstance);
+                return  null == this.nonNullOptionalFieldsInstance ? true :
+                    this.nonNullOptionalFieldsInstance.equals(
+                        partialTemplateModel.nonNullOptionalFieldsInstance);
             }
             else return false;
         else return false;
@@ -152,51 +155,66 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
         super.assign(partialTemplateModel.getTitle(), partialTemplateModel.getType(),
             partialTemplateModel.getRows(), partialTemplateModel.getCols(),
             partialTemplateModel.getColNumbering(), partialTemplateModel.getRowNumbering());
-        this.optionalFieldsInstance = partialTemplateModel.optionalFieldsInstance; // TODO: Assign or clone?
+        this.nonNullOptionalFieldsInstance = partialTemplateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void makeOptionalFieldsNew()
     {
-        this.optionalFieldsInstance =
+        this.nonNullOptionalFieldsInstance =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String[] optionalFieldValues()
-    { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.values(); }
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.values();
+    }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String[] optionalFieldValues(final java.lang.String names[])
     {
-        return null == this.optionalFieldsInstance ? null :
-            this.optionalFieldsInstance.values(names);
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.values(names);
     }
     // endregion
 
     // region Public Methods
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
-    { return this.optionalFieldsInstance; }
+    { return this.nonNullOptionalFieldsInstance; }
 
     public java.lang.String optionalFieldsAsJson()
-    { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.toJson(); }
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.toJson();
+    }
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsClone()
     {
-        return null == this.optionalFieldsInstance ? null :
+        return null == this.nonNullOptionalFieldsInstance ? null :
             (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
-                this.optionalFieldsInstance.clone();
+                this.nonNullOptionalFieldsInstance.clone();
     }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean optionalFieldsIsEmpty()
-    { return null == this.optionalFieldsInstance ? true : this.optionalFieldsInstance.isEmpty(); }
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            true : this.nonNullOptionalFieldsInstance.isEmpty();
+    }
 
     public java.lang.String[] optionalFieldNames()
-    { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.names(); }
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.names();
+    }
 
     public boolean[] optionalFieldChecks()
-    { return null == this.optionalFieldsInstance ? null : this.optionalFieldsInstance.checks(); }
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.checks();
+    }
 
     public void addOptionalField(final java.lang.String name, final java.lang.String value)
     { this.optionalFields().add(/* name => */ name, /* value => */ value, /* hint => */ ""); }
@@ -204,20 +222,20 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     public void setOptionalFieldChecked(
     @android.support.annotation.IntRange(from = 0) final int index, final boolean checked)
     {
-        assert null != this.optionalFieldsInstance;
-        this.optionalFieldsInstance.get(index).setChecked(checked);
+        assert null != this.nonNullOptionalFieldsInstance;
+        this.nonNullOptionalFieldsInstance.get(index).setChecked(checked);
     }
 
     public java.lang.String getFirstOptionalFieldValue()
     {
-        return null == this.optionalFieldsInstance ? null :
-            this.optionalFieldsInstance.getFirstValue();
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.getFirstValue();
     }
 
     public java.lang.String getFirstOptionalFieldDatedValue()
     {
-        return null == this.optionalFieldsInstance ? null :
-            this.optionalFieldsInstance.getDatedFirstValue();
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.getDatedFirstValue();
     }
     // endregion
 }
