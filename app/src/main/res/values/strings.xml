@@ -49,4 +49,13 @@
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
+
+    <string name="AssignTitleRowsColsAlertDialogTitle">New Template</string>
+    <string name="AssignTitleRowsColsAlertDialogTitleEditTextHint">Template name</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsEditTextHint">Number of rows</string>
+    <string name="AssignTitleRowsColsAlertDialogColsEditTextHint">Number of columns</string>
+    <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Next</string>
+    <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
+    <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
 </resources>
