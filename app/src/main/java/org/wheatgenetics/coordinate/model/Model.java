@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo.Scope
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-abstract class Model extends java.lang.Object
+public abstract class Model extends java.lang.Object
 {
     private long id;
 

@@ -22,16 +22,6 @@ public class TemplateModelsTest extends java.lang.Object
         org.junit.Assert.assertEquals(templateModels.size(), count);
     }
 
-    // region add() Tests
-    @org.junit.Test
-    public void duplicateAddFails()
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-        templateModels.add(org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault());
-        org.junit.Assert.assertEquals(templateModels.size(), 2);
-    }
-
     @org.junit.Test
     public void addSucceeds()
     {
@@ -52,7 +42,6 @@ public class TemplateModelsTest extends java.lang.Object
             /* timestamp      => */ 0          ));
         org.junit.Assert.assertEquals(templateModels.size(), 3);
     }
-    // endregion
 
     @org.junit.Test
     public void makeDefaultAndSizeSucceed()
