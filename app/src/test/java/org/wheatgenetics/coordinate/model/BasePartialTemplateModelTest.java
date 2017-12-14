@@ -36,6 +36,20 @@ public class BasePartialTemplateModelTest extends java.lang.Object
     // region Constructor Tests
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void firstConstructorIdParameterCausesFail()
+    {
+        new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest
+            .ConcreteBasePartialTemplateModel(
+                /* id           => */ 0                                                          ,
+                /* title        => */ "testTitle"                                                ,
+                /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
+                /* rows         => */ 2                                                          ,
+                /* cols         => */ 2                                                          ,
+                /* colNumbering => */ false                                                      ,
+                /* rowNumbering => */ true                                                       );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void firstConstructorRowsParameterCausesFail()
     {
         new org.wheatgenetics.coordinate.model.BasePartialTemplateModelTest

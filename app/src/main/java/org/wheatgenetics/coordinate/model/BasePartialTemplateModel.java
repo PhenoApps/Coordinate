@@ -56,8 +56,8 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    BasePartialTemplateModel(final long id, final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type,
+    BasePartialTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
+    final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
     final boolean rowNumbering)
