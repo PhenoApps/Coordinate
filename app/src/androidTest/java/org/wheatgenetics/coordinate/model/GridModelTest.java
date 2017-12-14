@@ -13,6 +13,11 @@ package org.wheatgenetics.coordinate.model;
 public class GridModelTest extends java.lang.Object
 {
     // region Constructor Tests
+    // region First Constructor Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void firstConstructorFails()
+    { new org.wheatgenetics.coordinate.model.GridModel(0, "title"); }
+
     @org.junit.Test
     public void firstConstructorAndGettersSucceed()
     {
@@ -23,6 +28,12 @@ public class GridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(gridModel.getTemplateId(), templateId);
         org.junit.Assert.assertEquals(gridModel.getTitle     (), title     );
     }
+    // endregion
+
+    // region Second Constructor Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void secondConstructorFails()
+    { new org.wheatgenetics.coordinate.model.GridModel(-1, "abc", 888); }
 
     @org.junit.Test
     public void secondConstructorAndGettersSucceed()
@@ -34,6 +45,7 @@ public class GridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(gridModel.getTitle    (), title    );
         org.junit.Assert.assertEquals(gridModel.getTimestamp(), timestamp);
     }
+    // endregion
     // endregion
 
     @org.junit.Test

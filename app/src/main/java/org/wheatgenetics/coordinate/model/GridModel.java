@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -12,15 +13,18 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-          private long             templateId;
+    private       long             templateId;
     private final java.lang.String title     ;
     private final long             timestamp ;
     // endregion
 
     // region Constructors
-    public GridModel(final long templateId, final java.lang.String title)
+    public GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
+    final java.lang.String title)
     {
         super();
+
+        if (templateId < 1) throw new java.lang.IllegalArgumentException();
 
         this.templateId = templateId                          ;
         this.title      = title                               ;
@@ -28,7 +32,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    GridModel(final long id, final java.lang.String title, final long timestamp)
+    GridModel(@android.support.annotation.IntRange(from = 1) final long id,
+    final java.lang.String title, final long timestamp)
     { super(id); this.title = title; this.timestamp = timestamp; }
     // endregion
 
