@@ -19,12 +19,15 @@ package org.wheatgenetics.coordinate.database;
 public class DatabaseTest extends java.lang.Object
 {
     // region Constants
-    private static final java.lang.String
-        PARENT_PATH = "/data/data/org.wheatgenetics.coordinate/databases/", FILE_NAME = "test";
+    private static final java.lang.String PARENT_PATH =
+        "/data/data/org.wheatgenetics.coordinate/databases/";
+    static final java.lang.String FILE_NAME = "test";
+
     private static final java.lang.String
         FILE_PATH = org.wheatgenetics.coordinate.database.DatabaseTest.PARENT_PATH +
             org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME,
         DATABASE_EXTENSION_NAME = ".db";
+
     private static final java.lang.String DATABASE_FILE_NAME =
         org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME              +
         org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME;
@@ -38,19 +41,6 @@ public class DatabaseTest extends java.lang.Object
             org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH + ".db-journal");
 
     // region Private Methods
-    private void cleanFilesystem()
-    {
-        final java.io.File parent = this.databaseFile.getParentFile();
-
-        assert null != parent;
-        if (parent.exists())
-        {
-            if (this.databaseFile.exists()) this.databaseFile.delete();
-            if (this.journalFile.exists ()) this.journalFile.delete ();
-            if (parent.list().length <= 0) parent.delete();
-        }
-    }
-
     private static int logInfo(final int a, final int e)
     { return android.util.Log.i("DatabaseTest", java.lang.String.format("'%c'|'%c'", a, e)); }
 
@@ -96,7 +86,21 @@ public class DatabaseTest extends java.lang.Object
     }
     // endregion
 
-    @org.junit.Before @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
+    @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
+    void cleanFilesystem()
+    {
+        final java.io.File parent = this.databaseFile.getParentFile();
+
+        org.junit.Assert.assertNotNull(parent);
+        if (parent.exists())
+        {
+            if (this.databaseFile.exists()) this.databaseFile.delete();
+            if (this.journalFile.exists ()) this.journalFile.delete ();
+            if (parent.list().length <= 0) parent.delete();
+        }
+    }
+
+    @org.junit.Before
     public void setUp() { this.cleanFilesystem(); }
 
     /** nullContextGetDb() must be run before nonNullContextGetDb(). */
@@ -105,10 +109,6 @@ public class DatabaseTest extends java.lang.Object
     {
         org.junit.Assert.assertFalse(this.databaseFile.exists());
         org.junit.Assert.assertFalse(this.journalFile.exists ());
-        {
-            final java.io.File parent = this.databaseFile.getParentFile();
-            org.junit.Assert.assertNotNull(parent); org.junit.Assert.assertFalse(parent.exists());
-        }
         org.wheatgenetics.coordinate.database.Database.db(
             /* context  => */ null,
             /* fileName => */

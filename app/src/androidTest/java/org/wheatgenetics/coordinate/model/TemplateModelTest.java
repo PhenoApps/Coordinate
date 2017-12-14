@@ -12,17 +12,35 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class TemplateModelTest extends java.lang.Object
 {
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void badIdThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ -9         ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+
     // region Overridden Method Tests
     // region toString() Overridden Method Tests
     @org.junit.Test
     public void formatStringSucceeds()
     {
         final java.lang.String expectedFormatString =
-            "%s [id: 00, title=testTitle, type=1, rows=5, cols=2, colNumbering=true, rowNumb" +
+            "%s [id: 09, title=testTitle, type=1, rows=5, cols=2, colNumbering=true, rowNumb" +
             "ering=false, options=, excludeCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ 9          ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -40,12 +58,12 @@ public class TemplateModelTest extends java.lang.Object
     @org.junit.Test
     public void toStringSucceeds()
     {
-        final java.lang.String expectedString = "TemplateModel [id: 00, title=testTitle, type=1, " +
+        final java.lang.String expectedString = "TemplateModel [id: 03, title=testTitle, type=1, " +
             "rows=5, cols=2, colNumbering=true, rowNumbering=false, options=, excludeCells=null, " +
             "excludeRows=null, excludeCols=null, stamp=0]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ 3          ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -64,9 +82,10 @@ public class TemplateModelTest extends java.lang.Object
     @org.junit.Test
     public void equalsSucceedsAndFails()
     {
+        final long id = 44;
         final org.wheatgenetics.coordinate.model.TemplateModel firstTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ 44         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -81,18 +100,18 @@ public class TemplateModelTest extends java.lang.Object
         {
             final org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
                 new org.wheatgenetics.coordinate.model.TemplateModel(
-                    /* id             => */ 0,
+                    /* id             => */ 44         ,
                     /* title          => */ "testTitle",
-                    /* code           => */ 1,
-                    /* rows           => */ 5,
-                    /* cols           => */ 2,
-                    /* excludeCells   => */ null,
-                    /* excludeRows    => */ null,
-                    /* excludeCols    => */ null,
-                    /* colNumbering   => */ 1,
-                    /* rowNumbering   => */ 0,
-                    /* optionalFields => */ null,
-                    /* timestamp      => */ 0);
+                    /* code           => */ 1          ,
+                    /* rows           => */ 5          ,
+                    /* cols           => */ 2          ,
+                    /* excludeCells   => */ null       ,
+                    /* excludeRows    => */ null       ,
+                    /* excludeCols    => */ null       ,
+                    /* colNumbering   => */ 1          ,
+                    /* rowNumbering   => */ 0          ,
+                    /* optionalFields => */ null       ,
+                    /* timestamp      => */ 0          );
             org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
 
             {
@@ -124,7 +143,7 @@ public class TemplateModelTest extends java.lang.Object
 
         final org.wheatgenetics.coordinate.model.TemplateModel thirdTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -142,9 +161,10 @@ public class TemplateModelTest extends java.lang.Object
     @org.junit.Test
     public void hashCodeSucceedsAndFails()
     {
+        final long id = 78;
         final org.wheatgenetics.coordinate.model.TemplateModel firstTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -159,7 +179,7 @@ public class TemplateModelTest extends java.lang.Object
         {
             final org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
                 new org.wheatgenetics.coordinate.model.TemplateModel(
-                    /* id             => */ 0          ,
+                    /* id             => */ id         ,
                     /* title          => */ "testTitle",
                     /* code           => */ 1          ,
                     /* rows           => */ 5          ,
@@ -209,7 +229,7 @@ public class TemplateModelTest extends java.lang.Object
 
         final org.wheatgenetics.coordinate.model.TemplateModel thirdTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -230,7 +250,7 @@ public class TemplateModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ 12         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,

@@ -10,6 +10,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -56,8 +57,8 @@ implements java.lang.Cloneable
     // endregion
 
     // region Constructors
-    private TemplateModel(final long id, final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type,
+    private TemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
+    final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols,
     final boolean colNumbering, final boolean rowNumbering,
@@ -72,10 +73,12 @@ implements java.lang.Cloneable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     { super(title, type, rows, cols, colNumbering, rowNumbering, nonNullOptionalFields); }
 
-    public TemplateModel(final long id, final java.lang.String title,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int code,
-    @android.support.annotation.IntRange(from = 1        ) final int rows,
-    @android.support.annotation.IntRange(from = 1        ) final int cols,
+    public TemplateModel(
+    @android.support.annotation.IntRange(from = 1)         final long             id   ,
+                                                           final java.lang.String title,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int              code ,
+    @android.support.annotation.IntRange(from = 1        ) final int              rows ,
+    @android.support.annotation.IntRange(from = 1        ) final int              cols ,
     java.lang.String excludeCells, java.lang.String excludeRows, java.lang.String excludeCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
@@ -176,8 +179,13 @@ implements java.lang.Cloneable
     @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
     protected java.lang.Object clone()
     {
+        final long id = this.getId();
         final org.wheatgenetics.coordinate.model.TemplateModel result =
-            new org.wheatgenetics.coordinate.model.TemplateModel(this.getId(), this.getTitle(),
+            org.wheatgenetics.coordinate.model.Model.illegal(id) ?
+            new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(), this.getType(),
+                this.getRows(), this.getCols(), this.getColNumbering(), this.getRowNumbering(),
+                this.optionalFieldsClone()) :
+            new org.wheatgenetics.coordinate.model.TemplateModel(id, this.getTitle(),
                 this.getType(), this.getRows(), this.getCols(), this.getColNumbering(),
                 this.getRowNumbering(), this.optionalFieldsClone());
 

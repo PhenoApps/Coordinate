@@ -28,7 +28,7 @@ public class TemplateModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
         templateModels.add(new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* id             => */ 0          ,
+            /* id             => */ 0004       ,
             /* title          => */ "testTitle",
             /* code           => */ 1          ,
             /* rows           => */ 5          ,
