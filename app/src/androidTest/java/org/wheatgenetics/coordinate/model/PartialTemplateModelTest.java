@@ -19,6 +19,20 @@ public class PartialTemplateModelTest extends java.lang.Object
     // region Constructor Tests
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidIdFirstConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            /* id             => */ 0          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void invalidCodeFirstConstructorFails()
     {
         new org.wheatgenetics.coordinate.model.PartialTemplateModel(
@@ -149,24 +163,24 @@ public class PartialTemplateModelTest extends java.lang.Object
     @org.junit.Test
     public void formatStringSucceeds()
     {
-        final java.lang.String expectedFormatString = "%s [id: 00, title=testTitle, " +
+        final java.lang.String expectedFormatString = "%s [id: 99, title=testTitle, " +
             "type=1, rows=5, cols=2, colNumbering=true, rowNumbering=false, options=";
+        org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel;
         {
-            final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
-                new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                    /* id             => */ 0          ,
-                    /* title          => */ "testTitle",
-                    /* code           => */ 1          ,
-                    /* rows           => */ 5          ,
-                    /* cols           => */ 2          ,
-                    /* colNumbering   => */ 1          ,
-                    /* rowNumbering   => */ 0          ,
-                    /* optionalFields => */ null       );
-            org.junit.Assert.assertEquals(
-                partialTemplateModel.formatString(), expectedFormatString);
-        }
-        final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
-            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            final long id = 99;
+            partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* id             => */ id         ,
+                /* title          => */ "testTitle",
+                /* code           => */ 1          ,
+                /* rows           => */ 5          ,
+                /* cols           => */ 2          ,
+                /* colNumbering   => */ 1          ,
+                /* rowNumbering   => */ 0          ,
+                /* optionalFields => */ null       );
+            org.junit.Assert.assertEquals(expectedFormatString,
+                partialTemplateModel.formatString());
+
+            partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
                 /* title          => */ "testTitle"                                        ,
                 /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
                 /* rows           => */ 5                                                  ,
@@ -174,29 +188,31 @@ public class PartialTemplateModelTest extends java.lang.Object
                 /* colNumbering   => */ true                                               ,
                 /* rowNumbering   => */ false                                              ,
                 /* optionalFields => */ null                                               );
-        org.junit.Assert.assertEquals(partialTemplateModel.formatString(), expectedFormatString);
+            partialTemplateModel.setId(id);
+        }
+        org.junit.Assert.assertEquals(expectedFormatString, partialTemplateModel.formatString());
     }
 
     @org.junit.Test
     public void toStringSucceeds()
     {
-        final java.lang.String expectedString = "PartialTemplateModel [id: 00, title=testTitle, " +
+        final java.lang.String expectedString = "PartialTemplateModel [id: 09, title=testTitle, " +
             "type=1, rows=5, cols=2, colNumbering=true, rowNumbering=false, options=]";
+        org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel;
         {
-            final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
-                new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                    /* id             => */ 0          ,
-                    /* title          => */ "testTitle",
-                    /* code           => */ 1          ,
-                    /* rows           => */ 5          ,
-                    /* cols           => */ 2          ,
-                    /* colNumbering   => */ 1          ,
-                    /* rowNumbering   => */ 0          ,
-                    /* optionalFields => */ ""         );
-            org.junit.Assert.assertEquals(partialTemplateModel.toString(), expectedString);
-        }
-        final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel =
-            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+            final long id = 9;
+            partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* id             => */ id         ,
+                /* title          => */ "testTitle",
+                /* code           => */ 1          ,
+                /* rows           => */ 5          ,
+                /* cols           => */ 2          ,
+                /* colNumbering   => */ 1          ,
+                /* rowNumbering   => */ 0          ,
+                /* optionalFields => */ ""         );
+            org.junit.Assert.assertEquals(expectedString, partialTemplateModel.toString());
+
+            partialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
                 /* title          => */ "testTitle"                                        ,
                 /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
                 /* rows           => */ 5                                                  ,
@@ -204,7 +220,9 @@ public class PartialTemplateModelTest extends java.lang.Object
                 /* colNumbering   => */ true                                               ,
                 /* rowNumbering   => */ false                                              ,
                 /* optionalFields => */ null                                               );
-        org.junit.Assert.assertEquals(partialTemplateModel.toString(), expectedString);
+            partialTemplateModel.setId(id);
+        }
+        org.junit.Assert.assertEquals(expectedString, partialTemplateModel.toString());
     }
 
     @org.junit.Test
@@ -263,9 +281,11 @@ public class PartialTemplateModelTest extends java.lang.Object
                 firstPartialTemplateModel.equals(secondPartialTemplateModel));
         }
 
+        final long id = 6;
+        firstPartialTemplateModel.setId(id);
         org.wheatgenetics.coordinate.model.PartialTemplateModel thirdPartialTemplateModel =
             new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -276,7 +296,7 @@ public class PartialTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(thirdPartialTemplateModel));
 
         thirdPartialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -287,7 +307,7 @@ public class PartialTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertTrue(firstPartialTemplateModel.equals(thirdPartialTemplateModel));
 
         thirdPartialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,
@@ -325,9 +345,11 @@ public class PartialTemplateModelTest extends java.lang.Object
                 firstPartialTemplateModel.hashCode(), secondPartialTemplateModel.hashCode());
         }
 
+        final long id = 11111;
+        firstPartialTemplateModel.setId(id);
         final org.wheatgenetics.coordinate.model.PartialTemplateModel thirdPartialTemplateModel =
             new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* id             => */ 0          ,
+                /* id             => */ id         ,
                 /* title          => */ "testTitle",
                 /* code           => */ 1          ,
                 /* rows           => */ 5          ,

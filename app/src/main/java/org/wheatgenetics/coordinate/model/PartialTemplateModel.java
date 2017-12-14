@@ -22,6 +22,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.BasePartialTemplateModel
+ * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 public class PartialTemplateModel
@@ -50,12 +51,14 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
 
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    PartialTemplateModel(final long id, final java.lang.String title,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int code        ,
-    @android.support.annotation.IntRange(from = 1        ) final int rows        ,
-    @android.support.annotation.IntRange(from = 1        ) final int cols        ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
+    PartialTemplateModel(
+    @android.support.annotation.IntRange(from = 1)         final long             id          ,
+                                                           final java.lang.String title       ,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int              code        ,
+    @android.support.annotation.IntRange(from = 1        ) final int              rows        ,
+    @android.support.annotation.IntRange(from = 1        ) final int              cols        ,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int              colNumbering,
+    @android.support.annotation.IntRange(from = 0, to = 1) final int              rowNumbering,
     java.lang.String optionalFields)
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
@@ -69,7 +72,9 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    PartialTemplateModel(final long id, final java.lang.String title,
+    PartialTemplateModel(
+    @android.support.annotation.IntRange(from = 1) final long             id   ,
+                                                   final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
@@ -135,15 +140,25 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
         "CloneDoesntDeclareCloneNotSupportedException", "RedundantStringConstructorCall"})
     protected java.lang.Object clone()
     {
-        return new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-            /* id             => */ this.getId()                         ,
-            /* title          => */ new java.lang.String(this.getTitle()),
-            /* type           => */ this.getType()                       ,
-            /* rows           => */ this.getRows()                       ,
-            /* cols           => */ this.getCols()                       ,
-            /* colNumbering   => */ this.getColNumbering()               ,
-            /* rowNumbering   => */ this.getRowNumbering()               ,
-            /* optionalFields => */ this.optionalFieldsClone()           );
+        final long id = this.getId();
+        return org.wheatgenetics.coordinate.model.Model.illegal(id) ?
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* title          => */ new java.lang.String(this.getTitle()),
+                /* type           => */ this.getType()                       ,
+                /* rows           => */ this.getRows()                       ,
+                /* cols           => */ this.getCols()                       ,
+                /* colNumbering   => */ this.getColNumbering()               ,
+                /* rowNumbering   => */ this.getRowNumbering()               ,
+                /* optionalFields => */ this.optionalFieldsClone()           ) :
+            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                /* id             => */ id                                   ,
+                /* title          => */ new java.lang.String(this.getTitle()),
+                /* type           => */ this.getType()                       ,
+                /* rows           => */ this.getRows()                       ,
+                /* cols           => */ this.getCols()                       ,
+                /* colNumbering   => */ this.getColNumbering()               ,
+                /* rowNumbering   => */ this.getRowNumbering()               ,
+                /* optionalFields => */ this.optionalFieldsClone()           );
     }
     // endregion
 
