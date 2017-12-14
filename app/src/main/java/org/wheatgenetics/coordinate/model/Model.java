@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  */
@@ -15,7 +16,7 @@ public abstract class Model extends java.lang.Object
     Model() { super(); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model(final long id) { this(); this.setId(id); }
+    Model(@android.support.annotation.IntRange(from = 1) final long id) { this(); this.setId(id); }
     // endregion
 
     // region Overridden Methods
@@ -38,5 +39,11 @@ public abstract class Model extends java.lang.Object
     public int hashCode() { return this.toString().hashCode(); }
     // endregion
 
-    public long getId() { return this.id; } public void setId(final long id) { this.id = id; }
+    public long getId() { return this.id; }
+
+    public void setId(@android.support.annotation.IntRange(from = 1) final long id)
+    {
+        if (id < 1) throw new java.lang.IllegalArgumentException("id must be > 0");
+        this.id = id;
+    }
 }

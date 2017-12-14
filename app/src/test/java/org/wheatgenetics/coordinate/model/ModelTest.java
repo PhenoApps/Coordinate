@@ -35,6 +35,10 @@ public class ModelTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
         org.junit.Assert.assertEquals(concreteModel.getId(), testId);
     }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void secondConstructorFails()
+    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(0); }
     // endregion
 
     // region Overridden Method Tests
@@ -82,5 +86,13 @@ public class ModelTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
         org.junit.Assert.assertEquals   (concreteModel.getId(), testId);
         org.junit.Assert.assertNotEquals(concreteModel.getId(), 3     );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void setIdFails()
+    {
+        final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel();
+        concreteModel.setId(-9);
     }
 }
