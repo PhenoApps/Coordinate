@@ -8,7 +8,7 @@ package org.wheatgenetics.coordinate.model;
  * does not use org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields while
  * PartialTemplateModel does.)
  *
- * PartialTemplateModel implements part of a template.  To get a full template implementation  use
+ * PartialTemplateModel implements part of a template.  To get a full template implementation use
  * TemplateModel.  What purpose does PartialTemplateModel serve?  What criteria was used to
  * determine which parts of a template should go in PartialTemplateModel and which parts should go
  * in TemplateModel?  Answer: PartialTemplateModel contains those parts of a template needed by
@@ -50,7 +50,6 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     // endregion
 
     // region Constructors
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     PartialTemplateModel(
     @android.support.annotation.IntRange(from = 1)         final long             id          ,
                                                            final java.lang.String title       ,

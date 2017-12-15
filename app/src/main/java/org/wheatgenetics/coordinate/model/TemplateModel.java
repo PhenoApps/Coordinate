@@ -208,7 +208,6 @@ implements java.lang.Cloneable
     }
 
     @java.lang.Override
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
     { super.assign(partialTemplateModel); this.clearExcludes(); }
     // endregion
