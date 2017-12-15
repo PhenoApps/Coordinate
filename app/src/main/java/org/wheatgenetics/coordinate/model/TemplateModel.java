@@ -29,22 +29,23 @@ implements java.lang.Cloneable
     // region Private Methods
     private org.wheatgenetics.coordinate.model.Cells excludeCells()
     {
-        if (null == this.excludeCellsInstance) this.excludeCellsInstance =
-            new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols());
+        if (null == this.excludeCellsInstance)
+            this.excludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+                /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
         return this.excludeCellsInstance;
     }
 
     private org.wheatgenetics.coordinate.model.RowOrCols excludeRows()
     {
         if (null == this.excludeRowsInstance) this.excludeRowsInstance =
-            new org.wheatgenetics.coordinate.model.RowOrCols(this.getRows());
+            new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getRows());
         return this.excludeRowsInstance;
     }
 
     private org.wheatgenetics.coordinate.model.RowOrCols excludeCols()
     {
         if (null == this.excludeColsInstance) this.excludeColsInstance =
-            new org.wheatgenetics.coordinate.model.RowOrCols(this.getCols());
+            new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getCols());
         return this.excludeColsInstance;
     }
 
@@ -89,23 +90,27 @@ implements java.lang.Cloneable
         if (null != excludeCells)
         {
             excludeCells = excludeCells.trim();
-            if (excludeCells.length() > 0) this.excludeCellsInstance =
-                new org.wheatgenetics.coordinate.model.Cells(
-                    excludeCells, this.getRows(), this.getCols());
+            if (excludeCells.length() > 0)
+                this.excludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+                    /* json   => */ excludeCells  ,
+                    /* maxRow => */ this.getRows(),
+                    /* maxCol => */ this.getCols());
         }
 
         if (null != excludeRows)
         {
             excludeRows = excludeRows.trim();
-            if (excludeRows.length() > 0) this.excludeRowsInstance =
-                new org.wheatgenetics.coordinate.model.RowOrCols(excludeRows, this.getRows());
+            if (excludeRows.length() > 0)
+                this.excludeRowsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                    /* json => */ excludeRows, /* maxValue => */ this.getRows());
         }
 
         if (null != excludeCols)
         {
             excludeCols = excludeCols.trim();
-            if (excludeCols.length() > 0) this.excludeColsInstance =
-                new org.wheatgenetics.coordinate.model.RowOrCols(excludeCols, this.getCols());
+            if (excludeCols.length() > 0)
+                this.excludeColsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                    /* json => */ excludeCols, /* maxValue => */ this.getCols());
         }
 
         this.timestamp = timestamp;
@@ -216,10 +221,16 @@ implements java.lang.Cloneable
     { this.excludeCells().add(row, col); }
 
     public void makeOneRandomCell()
-    { this.excludeCells().makeOneRandomCell(this.getCols(), this.getRows()); }
+    {
+        this.excludeCells().makeOneRandomCell(
+            /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
+    }
 
     public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
-    { this.excludeCells().makeRandomCells(amount, this.getRows(), this.getCols()); }
+    {
+        this.excludeCells().makeRandomCells(
+            amount, /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
+    }
 
     public java.lang.String getExcludeCellsAsJson()
     { return null == this.excludeCellsInstance ? null : this.excludeCellsInstance.json(); }
@@ -271,17 +282,17 @@ implements java.lang.Cloneable
             {
                 final int lastRow = this.getRows(), lastCol = this.getCols();
                 candidateFreeCell.inRange(              // throws java.lang.IllegalArgumentException
-                    new org.wheatgenetics.coordinate.model.Cell(lastRow, lastCol));
+                    /* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(lastRow, lastCol));
 
-                boolean currentCol = true;
+                boolean candidateCol = true;
                 for (int col = candidateFreeCell.getCol().getValue(); col <= lastCol; col++)
                 {
                     if (!this.isExcludedCol(col))
-                        for (int row = currentCol ? candidateFreeCell.getRow().getValue() : 1;
+                        for (int row = candidateCol ? candidateFreeCell.getRow().getValue() : 1;
                         row <= lastRow; row++)
                             if (!this.isExcludedRow(row)) if (!this.isExcludedCell(row, col))
                                 return new org.wheatgenetics.coordinate.model.Cell(row, col);
-                    currentCol = false;
+                    candidateCol = false;
                 }
             }
             return null;
