@@ -90,7 +90,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 }
                 {
                     final java.lang.String excludeCellsAsJson =
-                        this.templateModelInstance.getExcludeCellsAsJson();
+                        this.templateModelInstance.getInitialExcludedCellsAsJson();
                     if (null != excludeCellsAsJson)
                     {
                         if (textBuilder.length() > 0) textBuilder.append('\n');

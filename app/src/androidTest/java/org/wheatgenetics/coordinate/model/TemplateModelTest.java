@@ -129,7 +129,7 @@ public class TemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedFormatString =
             "%s [id: 09, title=testTitle, type=1, rows=5, cols=2, colNumbering=true, rowNumb" +
-            "ering=false, options=, excludeCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
+            "ering=false, options=, initialExcludedCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id             => */ 9          ,
@@ -151,8 +151,8 @@ public class TemplateModelTest extends java.lang.Object
     public void toStringSucceeds()
     {
         final java.lang.String expectedString = "TemplateModel [id: 03, title=testTitle, type=1, " +
-            "rows=5, cols=2, colNumbering=true, rowNumbering=false, options=, excludeCells=null, " +
-            "excludeRows=null, excludeCols=null, stamp=0]";
+            "rows=5, cols=2, colNumbering=true, rowNumbering=false, options=, " +
+            "initialExcludedCells=null, excludeRows=null, excludeCols=null, stamp=0]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id             => */ 3          ,
@@ -252,12 +252,12 @@ public class TemplateModelTest extends java.lang.Object
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
 
-            firstTemplateModel.addExcludedCell(row, col);
+            firstTemplateModel.addInitialExcludedCell(row, col);
             org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertNotEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-            secondTemplateModel.addExcludedCell(row, col);
+            secondTemplateModel.addInitialExcludedCell(row, col);
             org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -299,7 +299,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ rowNumbering,
                 /* optionalFields => */ null        ,                                     // Notice.
                 /* timestamp      => */ timestamp   );
-        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addInitialExcludedCell(row, col);
         thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -317,7 +317,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering   => */ rowNumbering,
             /* optionalFields => */ ""          ,                                         // Notice.
             /* timestamp      => */ timestamp   );
-        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addInitialExcludedCell(row, col);
         thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -335,7 +335,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering   => */ rowNumbering,
             /* optionalFields => */ "  "        ,                                         // Notice.
             /* timestamp      => */ timestamp   );
-        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addInitialExcludedCell(row, col);
         thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -353,7 +353,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering   => */ rowNumbering,
             /* optionalFields => */ null       ,
             /* timestamp      => */ 5087       );                                         // Notice.
-        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addInitialExcludedCell(row, col);
         thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
         org.junit.Assert.assertFalse    (firstTemplateModel.equals(thirdTemplateModel));
         org.junit.Assert.assertNotEquals(
@@ -431,7 +431,7 @@ public class TemplateModelTest extends java.lang.Object
                 final int excludeRow = 3;
                 {
                     final int excludedCellCol = 1, excludedCellRow = 1;
-                    secondTemplateModel.addExcludedCell(excludedCellCol, excludedCellRow);
+                    secondTemplateModel.addInitialExcludedCell(excludedCellCol, excludedCellRow);
                     secondTemplateModel.addExcludeRow(excludeRow);
                     secondTemplateModel.addExcludeCol(excludeCol);
                     org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
@@ -458,7 +458,7 @@ public class TemplateModelTest extends java.lang.Object
                     // initializing them.  This means secondTemplateModel's optional fields are
                     // initialized while firstTemplateModel's is still null.
 
-                    firstTemplateModel.addExcludedCell(excludedCellCol, excludedCellRow);
+                    firstTemplateModel.addInitialExcludedCell(excludedCellCol, excludedCellRow);
                 }
                 firstTemplateModel.addExcludeRow(excludeRow);
             }
@@ -470,9 +470,9 @@ public class TemplateModelTest extends java.lang.Object
 
     // region Public Method Tests
     // region excludeCells Public Method Tests
-    // region addExcludedCell() excludeCells Public Method Tests
+    // region addInitialExcludedCell() excludeCells Public Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void tooSmallRowAddExcludedCellFails()
+    public void tooSmallRowAddInitialExcludedCellFails()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -488,11 +488,11 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        templateModel.addExcludedCell(0, 1);
+        templateModel.addInitialExcludedCell(0, 1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void tooBigRowAddExcludedCellFails()
+    public void tooBigRowAddInitialExcludedCellFails()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -508,11 +508,11 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        templateModel.addExcludedCell(10, 1);
+        templateModel.addInitialExcludedCell(10, 1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void tooSmallColAddExcludedCellFails()
+    public void tooSmallColAddInitialExcludedCellFails()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -528,11 +528,11 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        templateModel.addExcludedCell(1, -1);
+        templateModel.addInitialExcludedCell(1, -1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void tooBigColAddExcludedCellFails()
+    public void tooBigColAddInitialExcludedCellFails()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -548,11 +548,11 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        templateModel.addExcludedCell(1, 111);
+        templateModel.addInitialExcludedCell(1, 111);
     }
 
     @org.junit.Test
-    public void addExcludedCellSucceeds()
+    public void addInitialExcludedCellSucceeds()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -568,12 +568,12 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        templateModel.addExcludedCell(1, 1);
+        templateModel.addInitialExcludedCell(1, 1);
     }
     // endregion
 
     @org.junit.Test
-    public void getExcludeCellsAsJsonSucceeds()
+    public void getInitialExcludedCellsAsJsonSucceeds()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -589,11 +589,11 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        org.junit.Assert.assertNull(templateModel.getExcludeCellsAsJson());
+        org.junit.Assert.assertNull(templateModel.getInitialExcludedCellsAsJson());
     }
 
     @org.junit.Test
-    public void isExcludedCellSucceeds()
+    public void isInitialExcludedCellSucceeds()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -609,7 +609,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering   => */ 0          ,
                 /* optionalFields => */ null       ,
                 /* timestamp      => */ 880        );
-        org.junit.Assert.assertFalse(templateModel.isExcludedCell(1, 1));
+        org.junit.Assert.assertFalse(templateModel.isInitialExcludedCell(1, 1));
     }
     // endregion
 
@@ -809,7 +809,7 @@ public class TemplateModelTest extends java.lang.Object
                 expectedNextCell.equals(templateModel.nextFreeCell(currentCell)));
         }
 
-        templateModel.addExcludedCell(4, 4);
+        templateModel.addInitialExcludedCell(4, 4);
         {
             final org.wheatgenetics.coordinate.model.Cell
                 currentCell      = new org.wheatgenetics.coordinate.model.Cell(4, 4),
@@ -818,7 +818,7 @@ public class TemplateModelTest extends java.lang.Object
                 expectedNextCell.equals(templateModel.nextFreeCell(currentCell)));
         }
 
-        templateModel.addExcludedCell(5, 4);
+        templateModel.addInitialExcludedCell(5, 4);
         {
             final org.wheatgenetics.coordinate.model.Cell
                 currentCell      = new org.wheatgenetics.coordinate.model.Cell(5, 4),
@@ -827,7 +827,7 @@ public class TemplateModelTest extends java.lang.Object
                 expectedNextCell.equals(templateModel.nextFreeCell(currentCell)));
         }
 
-        templateModel.addExcludedCell(5, 5);
+        templateModel.addInitialExcludedCell(5, 5);
         {
             final org.wheatgenetics.coordinate.model.Cell currentCell =
                 new org.wheatgenetics.coordinate.model.Cell(5, 5);
