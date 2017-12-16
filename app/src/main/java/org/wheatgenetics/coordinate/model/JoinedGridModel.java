@@ -5,20 +5,40 @@ package org.wheatgenetics.coordinate.model;
  * android.annotation.SuppressLint
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.model.Cell
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 {
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
+    // region Fields
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel        = null;
+    private org.wheatgenetics.coordinate.model.Cells         excludeCellsInstance = null;
+    // endregion
 
     // region Private Methods
     private java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
 
     private int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
-
     private int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean isExcludedCol(final int col)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean isExcludedRow(final int row)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
+
+    private org.wheatgenetics.coordinate.model.Cells excludeCells()
+    {
+        if (null == this.excludeCellsInstance)
+            this.excludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+                /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
+        return this.excludeCellsInstance;
+    }
     // endregion
 
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
@@ -49,6 +69,61 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             this.getFormattedTimestamp());
     }
 
+    // region Public Methods
     public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { assert null != templateModel; templateModel.assign(this.templateModel); }
+
+    public void addExcludedCell(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { this.excludeCells().add(row, col); }
+
+    public void makeOneRandomCell()
+    {
+        this.excludeCells().makeOneRandomCell(                              // TODO: clear()s first!
+            /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
+    }
+
+    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
+    {
+        this.excludeCells().makeRandomCells(amount,                         // TODO: clear()s first!
+            /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
+    }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedCell(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    {
+        return null == this.excludeCellsInstance ? false :
+            this.excludeCellsInstance.contains(row, col);
+    }
+
+    public org.wheatgenetics.coordinate.model.Cell nextFreeCell(
+    final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)
+    {
+        if (null == candidateFreeCell)
+            return null;
+        else
+        {
+            {
+                final int lastRow = this.getRows(), lastCol = this.getCols();
+                candidateFreeCell.inRange(              // throws java.lang.IllegalArgumentException
+                    /* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(lastRow, lastCol));
+
+                boolean candidateCol = true;
+                for (int col = candidateFreeCell.getCol().getValue(); col <= lastCol; col++)
+                {
+                    if (!this.isExcludedCol(col))
+                        for (int row = candidateCol ? candidateFreeCell.getRow().getValue() : 1;
+                        row <= lastRow; row++)
+                            if (!this.isExcludedRow(row)) if (!this.isExcludedCell(row, col))
+                                return new org.wheatgenetics.coordinate.model.Cell(row, col);
+                    candidateCol = false;
+                }
+            }
+            return null;
+        }
+    }
+    // endregion
 }
