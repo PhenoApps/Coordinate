@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class TemplateModelTest extends java.lang.Object
 {
+    // region Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badIdThirdConstructorFails()
     {
@@ -29,6 +30,97 @@ public class TemplateModelTest extends java.lang.Object
             /* optionalFields => */ null       ,
             /* timestamp      => */ 0          );
     }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidCodeThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 3          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidRowsThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 0          ,
+            /* cols           => */ 2          ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidColsThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */  1         ,
+            /* rows           => */  5         ,
+            /* cols           => */ -2         ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidColNumberingThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 3          ,
+            /* rowNumbering   => */ 0          ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void invalidRowNumberingThirdConstructorFails()
+    {
+        new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ 5          ,
+            /* title          => */ "testTitle",
+            /* code           => */ 1          ,
+            /* rows           => */ 5          ,
+            /* cols           => */ 2          ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ 1          ,
+            /* rowNumbering   => */ 56         ,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 0          );
+    }
+    // endregion
 
     // region Overridden Method Tests
     // region toString() Overridden Method Tests
@@ -80,167 +172,190 @@ public class TemplateModelTest extends java.lang.Object
     // endregion
 
     @org.junit.Test
-    public void equalsSucceedsAndFails()
+    public void equalsAndHashCodeSucceedAndFail()
     {
-        final long id = 44;
+        final long             id    = 44                                                       ;
+        final java.lang.String title = "testTitle"                                              ;
+        final int              code  = 1, rows = 5, cols = 2, colNumbering = 1, rowNumbering = 0;
+        final long             timestamp = 0                                                    ;
+
         final org.wheatgenetics.coordinate.model.TemplateModel firstTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ 44         ,
-                /* title          => */ "testTitle",
-                /* code           => */ 1          ,
-                /* rows           => */ 5          ,
-                /* cols           => */ 2          ,
-                /* excludeCells   => */ null       ,
-                /* excludeRows    => */ null       ,
-                /* excludeCols    => */ null       ,
-                /* colNumbering   => */ 1          ,
-                /* rowNumbering   => */ 0          ,
-                /* optionalFields => */ null       ,
-                /* timestamp      => */ 0          );
+                /* id             => */ id          ,
+                /* title          => */ title       ,
+                /* code           => */ code        ,
+                /* rows           => */ rows        ,
+                /* cols           => */ cols        ,
+                /* excludeCells   => */ null        ,
+                /* excludeRows    => */ null        ,
+                /* excludeCols    => */ null        ,
+                /* colNumbering   => */ colNumbering,
+                /* rowNumbering   => */ rowNumbering,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ timestamp   );
+
+        final int row = 5, col = 1;
+
         {
             final org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
                 new org.wheatgenetics.coordinate.model.TemplateModel(
-                    /* id             => */ 44         ,
-                    /* title          => */ "testTitle",
-                    /* code           => */ 1          ,
-                    /* rows           => */ 5          ,
-                    /* cols           => */ 2          ,
-                    /* excludeCells   => */ null       ,
-                    /* excludeRows    => */ null       ,
-                    /* excludeCols    => */ null       ,
-                    /* colNumbering   => */ 1          ,
-                    /* rowNumbering   => */ 0          ,
-                    /* optionalFields => */ null       ,
-                    /* timestamp      => */ 0          );
-            org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
-
-            {
-                final int row = 5;
-                {
-                    final int col = 1;
-                    firstTemplateModel.addExcludedCell(row, col);
-                    org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
-
-                    secondTemplateModel.addExcludedCell(row, col);
-                    org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
-
-
-                    firstTemplateModel.addExcludeCol(col);
-                    org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
-
-                    secondTemplateModel.addExcludeCol(col);
-                }
-                org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
-
-
-                firstTemplateModel.addExcludeRow(row);
-                org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
-
-                secondTemplateModel.addExcludeRow(row);
-            }
-            org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
-        }
-
-        final org.wheatgenetics.coordinate.model.TemplateModel thirdTemplateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ id         ,
-                /* title          => */ "testTitle",
-                /* code           => */ 1          ,
-                /* rows           => */ 5          ,
-                /* cols           => */ 2          ,
-                /* excludeCells   => */ null       ,
-                /* excludeRows    => */ null       ,
-                /* excludeCols    => */ null       ,
-                /* colNumbering   => */ 1          ,
-                /* rowNumbering   => */ 0          ,
-                /* optionalFields => */ null       ,
-                /* timestamp      => */ 5087       );
-        org.junit.Assert.assertFalse(firstTemplateModel.equals(thirdTemplateModel));
-    }
-
-    @org.junit.Test
-    public void hashCodeSucceedsAndFails()
-    {
-        final long id = 78;
-        final org.wheatgenetics.coordinate.model.TemplateModel firstTemplateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ id         ,
-                /* title          => */ "testTitle",
-                /* code           => */ 1          ,
-                /* rows           => */ 5          ,
-                /* cols           => */ 2          ,
-                /* excludeCells   => */ null       ,
-                /* excludeRows    => */ null       ,
-                /* excludeCols    => */ null       ,
-                /* colNumbering   => */ 1          ,
-                /* rowNumbering   => */ 0          ,
-                /* optionalFields => */ null       ,
-                /* timestamp      => */ 0          );
-        {
-            final org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
-                new org.wheatgenetics.coordinate.model.TemplateModel(
-                    /* id             => */ id         ,
-                    /* title          => */ "testTitle",
-                    /* code           => */ 1          ,
-                    /* rows           => */ 5          ,
-                    /* cols           => */ 2          ,
-                    /* excludeCells   => */ null       ,
-                    /* excludeRows    => */ null       ,
-                    /* excludeCols    => */ null       ,
-                    /* colNumbering   => */ 1          ,
-                    /* rowNumbering   => */ 0          ,
-                    /* optionalFields => */ null       ,
-                    /* timestamp      => */ 0          );
+                    /* id             => */ id          ,
+                    /* title          => */ title       ,
+                    /* code           => */ code        ,
+                    /* rows           => */ rows        ,
+                    /* cols           => */ cols        ,
+                    /* excludeCells   => */ null        ,
+                    /* excludeRows    => */ null        ,
+                    /* excludeCols    => */ null        ,
+                    /* colNumbering   => */ colNumbering,
+                    /* rowNumbering   => */ rowNumbering,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ timestamp   );
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-            {
-                final int row = 5;
-                {
-                    final int col = 2;
-                    firstTemplateModel.addExcludedCell(row, col);
-                    org.junit.Assert.assertNotEquals(
-                        firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setTitle("different");
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setTitle(title);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-                    secondTemplateModel.addExcludedCell(row, col);
-                    org.junit.Assert.assertEquals(
-                        firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+
+            secondTemplateModel.setColNumbering(false);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setColNumbering(true);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+
+            secondTemplateModel.setRowNumbering(true);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.setRowNumbering(false);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
 
-                    firstTemplateModel.addExcludeCol(col);
-                    org.junit.Assert.assertNotEquals(
-                        firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            firstTemplateModel.addExcludedCell(row, col);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-                    secondTemplateModel.addExcludeCol(col);
-                }
-                org.junit.Assert.assertEquals(
-                    firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            secondTemplateModel.addExcludedCell(row, col);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
 
-                firstTemplateModel.addExcludeRow(row);
-                org.junit.Assert.assertNotEquals(
-                    firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+            firstTemplateModel.addExcludeCol(col);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-                secondTemplateModel.addExcludeRow(row);
-            }
+            secondTemplateModel.addExcludeCol(col);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+
+
+            firstTemplateModel.addExcludeRow(row);
+            org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
+
+            secondTemplateModel.addExcludeRow(row);
+            org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
         }
 
-        final org.wheatgenetics.coordinate.model.TemplateModel thirdTemplateModel =
+        org.wheatgenetics.coordinate.model.TemplateModel thirdTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id             => */ id         ,
-                /* title          => */ "testTitle",
-                /* code           => */ 1          ,
-                /* rows           => */ 5          ,
-                /* cols           => */ 2          ,
-                /* excludeCells   => */ null       ,
-                /* excludeRows    => */ null       ,
-                /* excludeCols    => */ null       ,
-                /* colNumbering   => */ 1          ,
-                /* rowNumbering   => */ 0          ,
-                /* optionalFields => */ null       ,
-                /* timestamp      => */ 5087       );
+                /* id             => */ id          ,
+                /* title          => */ title       ,
+                /* code           => */ code        ,
+                /* rows           => */ rows        ,
+                /* cols           => */ cols        ,
+                /* excludeCells   => */ null        ,
+                /* excludeRows    => */ null        ,
+                /* excludeCols    => */ null        ,
+                /* colNumbering   => */ colNumbering,
+                /* rowNumbering   => */ rowNumbering,
+                /* optionalFields => */ null        ,                                     // Notice.
+                /* timestamp      => */ timestamp   );
+        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
+        org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
+        org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
+
+        thirdTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ id          ,
+            /* title          => */ title       ,
+            /* code           => */ code        ,
+            /* rows           => */ rows        ,
+            /* cols           => */ cols        ,
+            /* excludeCells   => */ null        ,
+            /* excludeRows    => */ null        ,
+            /* excludeCols    => */ null        ,
+            /* colNumbering   => */ colNumbering,
+            /* rowNumbering   => */ rowNumbering,
+            /* optionalFields => */ ""          ,                                         // Notice.
+            /* timestamp      => */ timestamp   );
+        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
+        org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
+        org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
+
+        thirdTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ id          ,
+            /* title          => */ title       ,
+            /* code           => */ code        ,
+            /* rows           => */ rows        ,
+            /* cols           => */ cols        ,
+            /* excludeCells   => */ null        ,
+            /* excludeRows    => */ null        ,
+            /* excludeCols    => */ null        ,
+            /* colNumbering   => */ colNumbering,
+            /* rowNumbering   => */ rowNumbering,
+            /* optionalFields => */ "  "        ,                                         // Notice.
+            /* timestamp      => */ timestamp   );
+        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
+        org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
+        org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
+
+        thirdTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* id             => */ id         ,
+            /* title          => */ title,
+            /* code           => */ code       ,
+            /* rows           => */ rows       ,
+            /* cols           => */ cols       ,
+            /* excludeCells   => */ null       ,
+            /* excludeRows    => */ null       ,
+            /* excludeCols    => */ null       ,
+            /* colNumbering   => */ colNumbering,
+            /* rowNumbering   => */ rowNumbering,
+            /* optionalFields => */ null       ,
+            /* timestamp      => */ 5087       );                                         // Notice.
+        thirdTemplateModel.addExcludedCell(row, col);
+        thirdTemplateModel.addExcludeCol(col); thirdTemplateModel.addExcludeRow(row);
+        org.junit.Assert.assertFalse    (firstTemplateModel.equals(thirdTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
     }
@@ -266,9 +381,10 @@ public class TemplateModelTest extends java.lang.Object
             (org.wheatgenetics.coordinate.model.TemplateModel) templateModel.clone();
         org.junit.Assert.assertTrue(templateModel.equals(clonedTemplateModel));
     }
+    // endregion
 
     @org.junit.Test
-    public void assignFailsAndSucceeds()
+    public void assignSucceedsAndFails()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel
             firstTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -314,8 +430,8 @@ public class TemplateModelTest extends java.lang.Object
             {
                 final int excludeRow = 3;
                 {
-                    final int cellCol = 1, cellRow = 1;
-                    secondTemplateModel.addExcludedCell(cellCol, cellRow);
+                    final int excludedCellCol = 1, excludedCellRow = 1;
+                    secondTemplateModel.addExcludedCell(excludedCellCol, excludedCellRow);
                     secondTemplateModel.addExcludeRow(excludeRow);
                     secondTemplateModel.addExcludeCol(excludeCol);
                     org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
@@ -342,7 +458,7 @@ public class TemplateModelTest extends java.lang.Object
                     // initializing them.  This means secondTemplateModel's optional fields are
                     // initialized while firstTemplateModel's is still null.
 
-                    firstTemplateModel.addExcludedCell(cellCol, cellRow);
+                    firstTemplateModel.addExcludedCell(excludedCellCol, excludedCellRow);
                 }
                 firstTemplateModel.addExcludeRow(excludeRow);
             }
@@ -351,7 +467,6 @@ public class TemplateModelTest extends java.lang.Object
         firstTemplateModel.clearExcludesAndOptionalFields();
         org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
     }
-    // endregion
 
     // region Public Method Tests
     // region excludeCells Public Method Tests

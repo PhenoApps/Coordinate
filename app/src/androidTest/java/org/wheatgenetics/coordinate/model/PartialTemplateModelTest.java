@@ -7,9 +7,8 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.coordinate.model.TemplateType
- *
  * org.wheatgenetics.coordinate.model.PartialTemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateType
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest
  */
@@ -382,7 +381,7 @@ public class PartialTemplateModelTest extends java.lang.Object
 
     // region Package Methods Tests
     @org.junit.Test
-    public void assignSucceedsAndFails()
+    public void assignFailsAndSucceeds()
     {
         final java.lang.String                                testTitle        = "testTitle";
         final org.wheatgenetics.coordinate.model.TemplateType testTemplateType =
@@ -390,25 +389,25 @@ public class PartialTemplateModelTest extends java.lang.Object
         final int     testRows         = 15  , testCols         = 1    ;
         final boolean testColNumbering = true, testRowNumbering = false;
 
-        final org.wheatgenetics.coordinate.model.PartialTemplateModel firstPartialTemplateModel =
-            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+        final org.wheatgenetics.coordinate.model.PartialTemplateModel
+            firstPartialTemplateModel = new org.wheatgenetics.coordinate.model.PartialTemplateModel(
                 /* title          => */ testTitle       ,
                 /* type           => */ testTemplateType,
                 /* rows           => */ testRows        ,
                 /* cols           => */ testCols        ,
                 /* colNumbering   => */ testColNumbering,
                 /* rowNumbering   => */ testRowNumbering,
-                /* optionalFields => */ null            );
-        final org.wheatgenetics.coordinate.model.PartialTemplateModel secondPartialTemplateModel =
-            new org.wheatgenetics.coordinate.model.PartialTemplateModel(
-                /* title          => */ testTitle       ,
-                /* type           => */ testTemplateType,
-                /* rows           => */ testRows        ,
-                /* cols           => */ testCols        ,
-                /* colNumbering   => */ testColNumbering,
-                /* rowNumbering   => */ testRowNumbering,
-                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField
-                    .NonNullOptionalFieldsTest.makeNonNullOptionalFields());
+                /* optionalFields => */ null            ),
+            secondPartialTemplateModel =
+                new org.wheatgenetics.coordinate.model.PartialTemplateModel(
+                    /* title          => */ testTitle       ,
+                    /* type           => */ testTemplateType,
+                    /* rows           => */ testRows        ,
+                    /* cols           => */ testCols        ,
+                    /* colNumbering   => */ testColNumbering,
+                    /* rowNumbering   => */ testRowNumbering,
+                    /* optionalFields => */ org.wheatgenetics.coordinate.optionalField
+                        .NonNullOptionalFieldsTest.makeNonNullOptionalFields());
 
         org.junit.Assert.assertFalse(firstPartialTemplateModel.equals(secondPartialTemplateModel));
 

@@ -76,8 +76,8 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
                                                    final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
-    final boolean rowNumbering,
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(id, title, type, rows, cols, colNumbering, rowNumbering);
@@ -88,8 +88,8 @@ extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel implements j
     PartialTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
-    final boolean rowNumbering,
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super(title, type, rows, cols, colNumbering, rowNumbering);

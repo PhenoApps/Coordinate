@@ -27,17 +27,21 @@ public class JoinedGridModelTest extends java.lang.Object
             cols, rows, org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp));
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id             => */ 5            ,
-                /* title          => */ gridTitle    ,
-                /* timestamp      => */ timestamp    ,
-                /* templateId     => */ 6            ,
-                /* templateTitle  => */ templateTitle,
-                /* code           => */ 1            ,
-                /* rows           => */ rows         ,
-                /* cols           => */ cols         ,
-                /* colNumbering   => */ 1            ,
-                /* rowNumbering   => */ 0            ,
-                /* optionalFields => */ null         );
+                /* id                => */ 5            ,
+                /* title             => */ gridTitle    ,
+                /* timestamp         => */ timestamp    ,
+                /* templateId        => */ 6            ,
+                /* templateTitle     => */ templateTitle,
+                /* code              => */ 1            ,
+                /* rows              => */ rows         ,
+                /* cols              => */ cols         ,
+                /* excludeCells      => */ null         ,
+                /* excludeRows       => */ null         ,
+                /* excludeCols       => */ null         ,
+                /* colNumbering      => */ 1            ,
+                /* rowNumbering      => */ 0            ,
+                /* optionalFields    => */ null         ,
+                /* templateTimestamp => */ 333          );
         org.junit.Assert.assertEquals(expectedName, joinedGridModel.name());
     }
 
@@ -81,17 +85,21 @@ public class JoinedGridModelTest extends java.lang.Object
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                 new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id             => */ 5            ,
-                    /* title          => */ "gridTitle"  ,
-                    /* timestamp      => */ 456          ,
-                    /* templateId     => */ templateId   ,
-                    /* templateTitle  => */ templateTitle,
-                    /* code           => */ code         ,
-                    /* rows           => */ rows         ,
-                    /* cols           => */ cols         ,
-                    /* colNumbering   => */ colNumbering ,
-                    /* rowNumbering   => */ rowNumbering ,
-                    /* optionalFields => */ null         );
+                    /* id                => */ 5            ,
+                    /* title             => */ "gridTitle"  ,
+                    /* timestamp         => */ 456          ,
+                    /* templateId        => */ templateId   ,
+                    /* templateTitle     => */ templateTitle,
+                    /* code              => */ code         ,
+                    /* rows              => */ rows         ,
+                    /* cols              => */ cols         ,
+                    /* excludeCells      => */ null         ,
+                    /* excludeRows       => */ null         ,
+                    /* excludeCols       => */ null         ,
+                    /* colNumbering      => */ colNumbering ,
+                    /* rowNumbering      => */ rowNumbering ,
+                    /* optionalFields    => */ null         ,
+                    /* templateTimestamp => */ 333          );
             joinedGridModel.populate(actualTemplateModel);
         }
         org.junit.Assert.assertTrue(expectedTemplateModel.equals(actualTemplateModel));

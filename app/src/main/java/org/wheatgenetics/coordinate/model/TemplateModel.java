@@ -8,14 +8,14 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
+ * org.wheatgenetics.coordinate.model.BasePartialTemplateModel
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.PartialTemplateModel
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-public class TemplateModel extends org.wheatgenetics.coordinate.model.PartialTemplateModel
+public class TemplateModel extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel
 implements java.lang.Cloneable
 {
     // region Fields
@@ -23,10 +23,21 @@ implements java.lang.Cloneable
     private org.wheatgenetics.coordinate.model.RowOrCols excludeRowsInstance  = null,
         excludeColsInstance = null;
 
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+        nonNullOptionalFieldsInstance;
     private long timestamp;
     // endregion
 
     // region Private Methods
+    /** 0 means false and 1 means true. */
+    private static boolean valid(final int numbering)
+    {
+        if (numbering < 0 || numbering > 1)
+            throw new java.lang.IllegalArgumentException();
+        else
+            return 1 == numbering;
+    }
+
     private org.wheatgenetics.coordinate.model.Cells excludeCells()
     {
         if (null == this.excludeCellsInstance)
@@ -64,15 +75,21 @@ implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int cols,
     final boolean colNumbering, final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-    { super(id, title, type, rows, cols, colNumbering, rowNumbering, optionalFields); }
+    {
+        super(id, title, type, rows, cols, colNumbering, rowNumbering);
+        this.nonNullOptionalFieldsInstance = optionalFields;
+    }
 
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols,
     final boolean colNumbering, final boolean rowNumbering,
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
-    { super(title, type, rows, cols, colNumbering, rowNumbering, nonNullOptionalFields); }
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    {
+        super(title, type, rows, cols, colNumbering, rowNumbering);
+        this.nonNullOptionalFieldsInstance = optionalFields;
+    }
 
     public TemplateModel(
     @android.support.annotation.IntRange(from = 1)         final long             id   ,
@@ -83,9 +100,11 @@ implements java.lang.Cloneable
     java.lang.String excludeCells, java.lang.String excludeRows, java.lang.String excludeCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    final java.lang.String optionalFields, final long timestamp)
+    java.lang.String optionalFields, final long timestamp)
     {
-        super(id, title, code, rows, cols, colNumbering, rowNumbering, optionalFields);
+        super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
+            org.wheatgenetics.coordinate.model.TemplateModel.valid(colNumbering),
+            org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering));
 
         if (null != excludeCells)
         {
@@ -113,6 +132,11 @@ implements java.lang.Cloneable
                     /* json => */ excludeCols, /* maxValue => */ this.getCols());
         }
 
+        if (null != optionalFields) optionalFields = optionalFields.trim();
+        this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
+            optionalFields.equals("") ? null : new
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+
         this.timestamp = timestamp;
     }
     // endregion
@@ -123,7 +147,9 @@ implements java.lang.Cloneable
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
     {
-        return super.formatString() +
+        return java.lang.String.format(super.formatString() + ", options=%s", "%s",
+                null == this.nonNullOptionalFieldsInstance ? "" :
+                    this.nonNullOptionalFieldsInstance.toString()) +
             ", excludeCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
     }
 
@@ -175,24 +201,41 @@ implements java.lang.Cloneable
                     if (!this.excludeColsInstance.equals(templateModel.excludeColsInstance))
                         return false;
 
+                if (null == this.nonNullOptionalFieldsInstance
+                &&  null != templateModel.nonNullOptionalFieldsInstance)
+                    return false;
+                else
+                    if (null != this.nonNullOptionalFieldsInstance
+                    &&  null == templateModel.nonNullOptionalFieldsInstance)
+                        return false;
+                if (null != this.nonNullOptionalFieldsInstance)
+                    if (!this.nonNullOptionalFieldsInstance.equals(
+                    templateModel.nonNullOptionalFieldsInstance)) return false;
+
                 return this.getTimestamp() == templateModel.getTimestamp();
             }
             else return false;
         else return false;
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
+        "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
     {
-        final long id = this.getId();
+        final long                                                             id = this.getId();
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
+            null == this.nonNullOptionalFieldsInstance ? null :
+                (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
+                    this.nonNullOptionalFieldsInstance.clone();
+
         final org.wheatgenetics.coordinate.model.TemplateModel result =
             org.wheatgenetics.coordinate.model.Model.illegal(id) ?
             new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(), this.getType(),
                 this.getRows(), this.getCols(), this.getColNumbering(), this.getRowNumbering(),
-                this.optionalFieldsClone()) :
+                optionalFields) :
             new org.wheatgenetics.coordinate.model.TemplateModel(id, this.getTitle(),
                 this.getType(), this.getRows(), this.getCols(), this.getColNumbering(),
-                this.getRowNumbering(), this.optionalFieldsClone());
+                this.getRowNumbering(), optionalFields);
 
         if (null != this.excludeCellsInstance) result.excludeCellsInstance =
             (org.wheatgenetics.coordinate.model.Cells) this.excludeCellsInstance.clone();
@@ -206,11 +249,19 @@ implements java.lang.Cloneable
 
         return result;
     }
-
-    @java.lang.Override
-    void assign(final org.wheatgenetics.coordinate.model.PartialTemplateModel partialTemplateModel)
-    { super.assign(partialTemplateModel); this.clearExcludes(); }
     // endregion
+
+    void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        assert null != templateModel;
+        super.assign(templateModel.getTitle(), templateModel.getType(),
+            templateModel.getRows(), templateModel.getCols(),
+            templateModel.getColNumbering(), templateModel.getRowNumbering());
+
+        this.nonNullOptionalFieldsInstance = templateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
+
+        this.clearExcludes();
+    }
 
     // region Public Methods
     // region excludeCells Public Methods
@@ -266,10 +317,25 @@ implements java.lang.Cloneable
     { return null == this.excludeColsInstance ? false : this.excludeColsInstance.contains(col); }
     // endregion
 
+    // region optionalFields Public Methods
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
+    { return this.nonNullOptionalFieldsInstance; }
+
+    public java.lang.String optionalFieldsAsJson()
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.toJson();
+    }
+    // endregion
+
     public long getTimestamp() { return this.timestamp; }
 
     public void clearExcludesAndOptionalFields()
-    { this.clearExcludes(); this.makeOptionalFieldsNew(); }
+    {
+        this.clearExcludes();
+        this.nonNullOptionalFieldsInstance =
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
+    }
 
     public org.wheatgenetics.coordinate.model.Cell nextFreeCell(
     final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)
