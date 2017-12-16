@@ -8,14 +8,14 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
- * org.wheatgenetics.coordinate.model.BasePartialTemplateModel
+ * org.wheatgenetics.coordinate.model.BaseTemplateModel
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-public class TemplateModel extends org.wheatgenetics.coordinate.model.BasePartialTemplateModel
+public class TemplateModel extends org.wheatgenetics.coordinate.model.BaseTemplateModel
 implements java.lang.Cloneable
 {
     // region Fields

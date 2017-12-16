@@ -1,12 +1,11 @@
 package org.wheatgenetics.coordinate.model;
 
 /**
- * BasePartialTemplateModel and PartialTemplateModel used to be one class that used
+ * BaseTemplateModel and TemplateModel used to be one class that used
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.  The one class was split into
- * two in order to do as much local unit testing as possible (BasePartialTemplateModelTest) and as
- * little instrumented testing as possible (PartialTemplateModelTest).  (BasePartialTemplateModel
- * does not use org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields while
- * PartialTemplateModel does.)
+ * two in order to do as much local unit testing as possible (BaseTemplateModelTest) and as little
+ * instrumented testing as possible (TemplateModelTest).  (BaseTemplateModel does not use
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields while TemplateModel does.)
  *
  * Uses:
  * android.support.annotation.IntRange
@@ -16,7 +15,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.model.Model
+abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
     private java.lang.String                                title     ;
@@ -32,10 +31,10 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
 
     private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
-    { this.rows = org.wheatgenetics.coordinate.model.BasePartialTemplateModel.validate(rows); }
+    { this.rows = org.wheatgenetics.coordinate.model.BaseTemplateModel.validate(rows); }
 
     private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
-    { this.cols = org.wheatgenetics.coordinate.model.BasePartialTemplateModel.validate(cols); }
+    { this.cols = org.wheatgenetics.coordinate.model.BaseTemplateModel.validate(cols); }
 
 
     @java.lang.SuppressWarnings("DefaultLocale")
@@ -56,40 +55,39 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    BasePartialTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
+    BaseTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
-    final boolean rowNumbering)
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
     { super(id); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    BasePartialTemplateModel(final java.lang.String title,
+    BaseTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
-    final boolean rowNumbering)
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
     { super(); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
     // endregion
 
     // region Overridden Methods
     @java.lang.Override
     public java.lang.String toString()
-    { return java.lang.String.format(this.formatString(), "BasePartialTemplateModel") + "]"; }
+    { return java.lang.String.format(this.formatString(), "BaseTemplateModel") + "]"; }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean equals(final java.lang.Object object)
     {
         if (super.equals(object))
-            if (object instanceof org.wheatgenetics.coordinate.model.BasePartialTemplateModel)
+            if (object instanceof org.wheatgenetics.coordinate.model.BaseTemplateModel)
             {
-                final org.wheatgenetics.coordinate.model.BasePartialTemplateModel
-                    basePartialTemplateModel =
-                        (org.wheatgenetics.coordinate.model.BasePartialTemplateModel) object;
+                final org.wheatgenetics.coordinate.model.BaseTemplateModel baseTemplateModel =
+                    (org.wheatgenetics.coordinate.model.BaseTemplateModel) object;
 
                 {
                     final java.lang.String myTitle = this.getTitle(),
-                        yourTitle = basePartialTemplateModel.getTitle();
+                        yourTitle = baseTemplateModel.getTitle();
                     if (null == myTitle && null != yourTitle)
                         return false;
                     else
@@ -100,8 +98,8 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
                 {
                     final org.wheatgenetics.coordinate.model.TemplateType
-                        myTemplateType   = this.getType()                    ,
-                        yourTemplateType = basePartialTemplateModel.getType();
+                        myTemplateType   = this.getType()             ,
+                        yourTemplateType = baseTemplateModel.getType();
                     if (null == myTemplateType && null != yourTemplateType)
                         return false;
                     else
@@ -113,12 +111,11 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
                                     return false;
                 }
 
-                if (this.getRows() != basePartialTemplateModel.getRows()
-                ||  this.getCols() != basePartialTemplateModel.getCols()) return false;
+                if (this.getRows() != baseTemplateModel.getRows()
+                ||  this.getCols() != baseTemplateModel.getCols()) return false;
 
-                if (this.getColNumbering() != basePartialTemplateModel.getColNumbering())
-                    return false;
-                return this.getRowNumbering() == basePartialTemplateModel.getRowNumbering();
+                if (this.getColNumbering() != baseTemplateModel.getColNumbering()) return false;
+                return this.getRowNumbering() == baseTemplateModel.getRowNumbering();
             }
             else return false;
         else return false;
@@ -140,8 +137,8 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
     void assign(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols, final boolean colNumbering,
-    final boolean rowNumbering)
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final boolean colNumbering, final boolean rowNumbering)
     {
         this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
         this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
@@ -178,13 +175,13 @@ abstract class BasePartialTemplateModel extends org.wheatgenetics.coordinate.mod
 
     public java.lang.String[] rowItems(final java.lang.String label)
     {
-        return org.wheatgenetics.coordinate.model.BasePartialTemplateModel.items(
+        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(
             this.getRows(), label);
     }
 
     public java.lang.String[] colItems(final java.lang.String label)
     {
-        return org.wheatgenetics.coordinate.model.BasePartialTemplateModel.items(
+        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(
             this.getCols(), label);
     }
     // endregion
