@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight=".85"
-        android:text="@string/ExcludeCellsLabelTextViewText"
+        android:text="@string/GeneratedExcludedCellsLabelTextViewText"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:labelFor="@+id/generatedExcludedCellsEditText" />
 

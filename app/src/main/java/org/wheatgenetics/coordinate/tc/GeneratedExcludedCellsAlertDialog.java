@@ -51,7 +51,7 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
     @java.lang.Override
     public void configure()
     {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.ExcludeCellsAlertDialogTitle)
+        this.setTitle(org.wheatgenetics.coordinate.R.string.GeneratedExcludedCellsAlertDialogTitle)
             .setCancelableToFalse();
 
         {

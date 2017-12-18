@@ -28,8 +28,8 @@
     <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
     <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
 
-    <string name="ExcludeCellsAlertDialogTitle">Random</string>
-    <string name="ExcludeCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
+    <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
+    <string name="GeneratedExcludedCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
 
     <string name="ExcludeAlertDialogTitle">Exclude</string>
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
