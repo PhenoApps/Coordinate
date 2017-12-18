@@ -44,12 +44,13 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final long timestamp,
 
-    @android.support.annotation.IntRange(from = 1        ) final long             templateId   ,
-                                                           final java.lang.String templateTitle,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int code                      ,
-    @android.support.annotation.IntRange(from = 1        ) final int rows                      ,
-    @android.support.annotation.IntRange(from = 1        ) final int cols                      ,
-    final java.lang.String excludeCells,
+    @android.support.annotation.IntRange(from = 1        ) final long             templateId     ,
+                                                           final java.lang.String templateTitle  ,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
+    @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
+    @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
+    @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
+    final java.lang.String initialExcludeCells,
     final java.lang.String excludeRows, final java.lang.String excludeCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
@@ -57,8 +58,9 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     {
         super(id, title, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
-            templateTitle, code, rows, cols, excludeCells, excludeRows, excludeCols, colNumbering,
-            rowNumbering, optionalFields, templateTimestamp);
+            templateTitle, code, rows, cols, generatedExcludedCellsAmount, initialExcludeCells,
+            excludeRows, excludeCols, colNumbering, rowNumbering, optionalFields,
+            templateTimestamp);
     }
 
     @android.annotation.SuppressLint("DefaultLocale")

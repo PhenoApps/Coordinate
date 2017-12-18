@@ -71,12 +71,14 @@ implements java.lang.Cloneable
     // region Constructors
     private TemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols,
+    @android.support.annotation.IntRange(from = 1) final int rows                        ,
+    @android.support.annotation.IntRange(from = 1) final int cols                        ,
+    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
-        super(id, title, type, rows, cols, colNumbering, rowNumbering);
+        super(id, title, type, rows, cols,
+            generatedExcludedCellsAmount, colNumbering, rowNumbering);
         this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
@@ -92,11 +94,12 @@ implements java.lang.Cloneable
     }
 
     public TemplateModel(
-    @android.support.annotation.IntRange(from = 1)         final long             id   ,
-                                                           final java.lang.String title,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int              code ,
-    @android.support.annotation.IntRange(from = 1        ) final int              rows ,
-    @android.support.annotation.IntRange(from = 1        ) final int              cols ,
+    @android.support.annotation.IntRange(from = 1)         final long             id             ,
+                                                           final java.lang.String title          ,
+    @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
+    @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
+    @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
+    @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
     java.lang.String initialExcludeCells,
     java.lang.String excludeRows, java.lang.String excludeCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
@@ -104,6 +107,7 @@ implements java.lang.Cloneable
     java.lang.String optionalFields, final long timestamp)
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
+            generatedExcludedCellsAmount,
             org.wheatgenetics.coordinate.model.TemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering));
 
@@ -230,13 +234,18 @@ implements java.lang.Cloneable
                 (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
                     this.nonNullOptionalFieldsInstance.clone();
 
-        final org.wheatgenetics.coordinate.model.TemplateModel result =
-            org.wheatgenetics.coordinate.model.Model.illegal(id) ?
-            new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(), this.getType(),
-                this.getRows(), this.getCols(), this.getColNumbering(), this.getRowNumbering(),
-                optionalFields) :
-            new org.wheatgenetics.coordinate.model.TemplateModel(id, this.getTitle(),
+        org.wheatgenetics.coordinate.model.TemplateModel result;
+        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+        {
+            result = new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(),
                 this.getType(), this.getRows(), this.getCols(), this.getColNumbering(),
+                this.getRowNumbering(), optionalFields);
+            result.setGeneratedExcludedCellsAmount(this.getGeneratedExcludedCellsAmount());
+        }
+        else
+            result = new org.wheatgenetics.coordinate.model.TemplateModel(id, this.getTitle(),
+                this.getType(), this.getRows(), this.getCols(),
+                this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
                 this.getRowNumbering(), optionalFields);
 
         if (null != this.initialExcludeCellsInstance) result.initialExcludeCellsInstance =
@@ -259,7 +268,7 @@ implements java.lang.Cloneable
         super.assign(templateModel.getTitle(), templateModel.getType(),
             templateModel.getRows(), templateModel.getCols(),
             templateModel.getColNumbering(), templateModel.getRowNumbering());
-
+        this.setGeneratedExcludedCellsAmount(templateModel.getGeneratedExcludedCellsAmount());
         this.nonNullOptionalFieldsInstance = templateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
 
         this.clearExcludes();

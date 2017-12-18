@@ -28,18 +28,19 @@ public class TemplateModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
         templateModels.add(new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* id             => */ 0004       ,
-            /* title          => */ "testTitle",
-            /* code           => */ 1          ,
-            /* rows           => */ 5          ,
-            /* cols           => */ 2          ,
-            /* excludeCells   => */ null       ,
-            /* excludeRows    => */ null       ,
-            /* excludeCols    => */ null       ,
-            /* colNumbering   => */ 1          ,
-            /* rowNumbering   => */ 0          ,
-            /* optionalFields => */ null       ,
-            /* timestamp      => */ 0          ));
+            /* id                           => */ 4          ,
+            /* title                        => */ "testTitle",
+            /* code                         => */ 1          ,
+            /* rows                         => */ 5          ,
+            /* cols                         => */ 2          ,
+            /* generatedExcludedCellsAmount => */ 0          ,
+            /* initialExcludeCells          => */ null       ,
+            /* excludeRows                  => */ null       ,
+            /* excludeCols                  => */ null       ,
+            /* colNumbering                 => */ 1          ,
+            /* rowNumbering                 => */ 0          ,
+            /* optionalFields               => */ null       ,
+            /* timestamp                    => */ 0          ));
         org.junit.Assert.assertEquals(templateModels.size(), 3);
     }
 

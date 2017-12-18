@@ -18,11 +18,11 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private java.lang.String                                title     ;
-    private org.wheatgenetics.coordinate.model.TemplateType type      ;
-    private int                                             rows, cols;
-
-    private boolean colNumbering, rowNumbering;
+    private java.lang.String                                title                       ;
+    private org.wheatgenetics.coordinate.model.TemplateType type                        ;
+    private int                                             rows, cols                  ;
+    private int                                             generatedExcludedCellsAmount;
+    private boolean                                         colNumbering, rowNumbering  ;
     // endregion
 
     // region Private Methods
@@ -57,10 +57,16 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols,
+    @android.support.annotation.IntRange(from = 1) final int rows                        ,
+    @android.support.annotation.IntRange(from = 1) final int cols                        ,
+    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering)
-    { super(id); this.assign(title, type, rows, cols, colNumbering, rowNumbering); }
+    {
+        super(id);
+
+        this.assign(title, type, rows, cols, colNumbering, rowNumbering);
+        this.setGeneratedExcludedCellsAmount(generatedExcludedCellsAmount);
+    }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(final java.lang.String title,
@@ -76,7 +82,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "BaseTemplateModel") + "]"; }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object object)
     {
         if (super.equals(object))
@@ -114,6 +120,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
                 if (this.getRows() != baseTemplateModel.getRows()
                 ||  this.getCols() != baseTemplateModel.getCols()) return false;
 
+                if (this.generatedExcludedCellsAmount
+                !=  baseTemplateModel.generatedExcludedCellsAmount)
+                    return false;
+
                 if (this.getColNumbering() != baseTemplateModel.getColNumbering()) return false;
                 return this.getRowNumbering() == baseTemplateModel.getRowNumbering();
             }
@@ -123,14 +133,17 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
+    int getGeneratedExcludedCellsAmount() { return this.generatedExcludedCellsAmount; }
+
     @java.lang.SuppressWarnings("DefaultLocale")
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
     {
-        return "%s" + java.lang.String.format(
-            " [%s, title=%s, type=%d, rows=%d, cols=%d, colNumbering=%b, rowNumbering=%b",
-            super.toString(), this.getTitle(), this.getType().getCode(), this.getRows(),
-            this.getCols(), this.getColNumbering(), this.getRowNumbering());
+        return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d, " +
+            "generatedExcludedCellsAmount=%d, colNumbering=%b, rowNumbering=%b", super.toString(),
+            this.getTitle(), this.getType().getCode(), this.getRows(), this.getCols(),
+            this.getGeneratedExcludedCellsAmount(),
+            this.getColNumbering(), this.getRowNumbering());
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -141,7 +154,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     final boolean colNumbering, final boolean rowNumbering)
     {
         this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
-        this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
+        this.setColNumbering(colNumbering);           this.setRowNumbering(rowNumbering);
     }
     // endregion
 
@@ -159,6 +172,14 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     public int getRows() { return this.rows; } public int getCols() { return this.cols; }
 
 
+    public void setGeneratedExcludedCellsAmount(
+    @android.support.annotation.IntRange(from = 0) final int amount)
+    {
+        if (amount < 0) throw new java.lang.IllegalArgumentException();
+        this.generatedExcludedCellsAmount = amount;
+    }
+
+
     public boolean getColNumbering()                           { return this.colNumbering        ; }
     public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
 
@@ -168,7 +189,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     public void assign(final java.lang.String title, final int rows, final int cols)
     {
-        this.setTitle(title); this.setRows(rows); this.setCols(cols);
+        this.setTitle(title);       this.setRows(rows);       this.setCols(cols);
         this.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
     }
 
