@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.os.Bundle
- * android.support.annotation.NonNull
  * android.support.design.widget.NavigationView
  * android.support.v4.view.GravityCompat
  * android.support.v4.widget.DrawerLayout
@@ -15,16 +14,24 @@ package org.wheatgenetics.coordinate;
  * android.view.MenuItem
  * android.view.View
  *
+ * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
+ * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TestAlertDialog
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity
-implements android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout       drawerLayout    = null;
     private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
     // endregion
+
+    private void closeDrawer()
+    {
+        assert null != this.drawerLayout;
+        this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
+    }
 
     // region Overridden Methods
     @java.lang.Override
@@ -61,7 +68,14 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         final android.support.design.widget.NavigationView navigationView =
             (android.support.design.widget.NavigationView) this.findViewById(
                 org.wheatgenetics.coordinate.R.id.nav_view);       // From layout/activity_main.xml.
-        assert null != navigationView; navigationView.setNavigationItemSelectedListener(this);
+        assert null != navigationView; navigationView.setNavigationItemSelectedListener(
+            new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
+                new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler()
+                {
+                    @java.lang.Override
+                    public void closeDrawer()
+                    { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+                }));
         // endregion
     }
 
@@ -70,7 +84,7 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
     {
         assert null != this.drawerLayout;
         if (this.drawerLayout.isDrawerOpen(android.support.v4.view.GravityCompat.START))
-            this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
+            this.closeDrawer();
         else
             super.onBackPressed();
     }
@@ -95,30 +109,6 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
             return true;
         else
             return super.onOptionsItemSelected(item);
-    }
-
-    @java.lang.Override
-    public boolean onNavigationItemSelected(
-    @android.support.annotation.NonNull final android.view.MenuItem item)
-    {
-        // Handle navigation view item clicks here.
-        switch (item.getItemId())
-        {
-            // The following six ids that have names that start with "nav_" come from
-            // menu/activity_main_drawer.xml.
-            case org.wheatgenetics.coordinate.R.id.nav_create_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_delete_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_create_template: break;
-            case org.wheatgenetics.coordinate.R.id.nav_load_template  : break;
-            case org.wheatgenetics.coordinate.R.id.nav_delete_template: break;
-            case org.wheatgenetics.coordinate.R.id.nav_import_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_export_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_show_about     : break;
-        }
-
-        assert null != this.drawerLayout;
-        this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
-        return true;
     }
     // endregion
 
