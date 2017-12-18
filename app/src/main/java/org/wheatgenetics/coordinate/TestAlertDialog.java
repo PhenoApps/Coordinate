@@ -23,8 +23,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
  * org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
- * org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
+ * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
  * org.wheatgenetics.coordinate.tc.TemplateCreator
@@ -54,8 +54,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.model.TemplateModel templateModelInstance = null;
     private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialogTester
         excludeRowsOrColsAlertDialogTesterInstance = null;
-    private org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester
-        excludeCellsAlertDialogTester = null;
+    private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
+        generatedExcludedCellsAlertDialogTester = null;
     private org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
         excludeAlertDialogTester = null;
     private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
@@ -169,12 +169,13 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void excludeRows() { this.excludeRowsOrColsAlertDialogTester().testExcludeRows(); }
     private void excludeCols() { this.excludeRowsOrColsAlertDialogTester().testExcludeCols(); }
 
-    private void excludeCells()
+    private void setGeneratedAmount()
     {
-        if (null == this.excludeCellsAlertDialogTester) this.excludeCellsAlertDialogTester =
-            new org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialogTester(
-                this.activity(), this.templateModel());
-        this.excludeCellsAlertDialogTester.testExcludeCells();
+        if (null == this.generatedExcludedCellsAlertDialogTester)
+            this.generatedExcludedCellsAlertDialogTester =
+                new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester(
+                    this.activity(), this.templateModel());
+        this.generatedExcludedCellsAlertDialogTester.testGeneratedExcludedCells();
     }
 
     private void exclude()
@@ -297,14 +298,14 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
             }
             {
-                final android.widget.Button excludeCellsButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeCellsButton);
-                assert null != excludeCellsButton;
-                excludeCellsButton.setOnClickListener(new android.view.View.OnClickListener()
+                final android.widget.Button setGeneratedAmountButton = (android.widget.Button)
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.setGeneratedAmountButton);
+                assert null != setGeneratedAmountButton;
+                setGeneratedAmountButton.setOnClickListener(new android.view.View.OnClickListener()
                     {
                         @java.lang.Override
                         public void onClick(final android.view.View v)
-                        { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeCells(); }
+                        { org.wheatgenetics.coordinate.TestAlertDialog.this.setGeneratedAmount(); }
                     });
             }
             {

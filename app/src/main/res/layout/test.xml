@@ -94,10 +94,10 @@
         android:layout_marginTop="100dp">
 
         <Button
-            android:id="@+id/excludeCellsButton"
+            android:id="@+id/setGeneratedAmountButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exclude Cells"
+            android:text="Set Generated Amount"
             android:textAllCaps="false" />
 
         <Button

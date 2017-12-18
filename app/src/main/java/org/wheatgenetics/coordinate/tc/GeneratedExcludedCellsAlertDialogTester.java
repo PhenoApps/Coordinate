@@ -9,7 +9,7 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public class ExcludeCellsAlertDialogTester extends java.lang.Object
+public class GeneratedExcludedCellsAlertDialogTester extends java.lang.Object
 {
     // region Fields
     private final android.app.Activity                             activity     ;
@@ -19,11 +19,11 @@ public class ExcludeCellsAlertDialogTester extends java.lang.Object
         generatedExcludedCellsAlertDialog = null;
     // endregion
 
-    public ExcludeCellsAlertDialogTester(final android.app.Activity activity,
+    public GeneratedExcludedCellsAlertDialogTester(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { super(); this.activity = activity; this.templateModel = templateModel; }
 
-    public void testExcludeCells()
+    public void testGeneratedExcludedCells()
     {
         if (null == this.generatedExcludedCellsAlertDialog) this.generatedExcludedCellsAlertDialog =
             new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog(this.activity);

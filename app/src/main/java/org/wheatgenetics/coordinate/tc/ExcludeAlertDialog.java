@@ -80,7 +80,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                 if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
                     new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog(
                         this.activity(),
-                        org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogColumnLabel,
+                        org.wheatgenetics.coordinate
+                            .R.string.ExcludeRowsOrColsAlertDialogColumnLabel,
                         new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
