@@ -33,8 +33,8 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         assert null != this.templateModel;
         try
         {
-            this.templateModel.makeRandomCells(amount); // throws java.lang.IllegalArgumentException
-            this.cancelAlertDialog();
+            this.templateModel.setGeneratedExcludedCellsAmount(amount);    // throws java.lang.Ille-
+            this.cancelAlertDialog();                                      //  galArgumentException
         }
         catch (final java.lang.IllegalArgumentException e)
         {

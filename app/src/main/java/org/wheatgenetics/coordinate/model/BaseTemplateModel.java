@@ -133,8 +133,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
-    int getGeneratedExcludedCellsAmount() { return this.generatedExcludedCellsAmount; }
-
     @java.lang.SuppressWarnings("DefaultLocale")
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
@@ -171,6 +169,8 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     public int getRows() { return this.rows; } public int getCols() { return this.cols; }
 
+
+    public int getGeneratedExcludedCellsAmount() { return this.generatedExcludedCellsAmount; }
 
     public void setGeneratedExcludedCellsAmount(
     @android.support.annotation.IntRange(from = 0) final int amount)

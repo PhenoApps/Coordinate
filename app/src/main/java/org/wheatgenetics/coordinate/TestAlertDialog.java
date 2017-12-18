@@ -88,6 +88,9 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                         textBuilder.append(nonNullOptionalFields.toJson());
                     }
                 }
+                if (textBuilder.length() > 0) textBuilder.append('\n');
+                textBuilder.append("generatedExcludedCellsAmount=")
+                    .append(this.templateModelInstance.getGeneratedExcludedCellsAmount());
                 {
                     final java.lang.String excludeCellsAsJson =
                         this.templateModelInstance.getInitialExcludedCellsAsJson();
