@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
+public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
 {
     // region Fields
     private final android.app.Activity                             activity     ;
@@ -47,12 +47,12 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
     }
     // endregion
 
-    public ExcludeRowsOrColsAlertDialogTester(final android.app.Activity activity,
+    public ExcludedRowsOrColsAlertDialogTester(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { super(); this.activity = activity; this.templateModel = templateModel; }
 
     // region Public Methods
-    public void testExcludeRows()
+    public void testExcludedRows()
     {
         if (null == this.excludedRowsAlertDialog) this.excludedRowsAlertDialog =
             new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
@@ -63,7 +63,7 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
                     public void excludeRowsOrCols(final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
-                            .ExcludeRowsOrColsAlertDialogTester.this.excludeRows(checkedItems);
+                            .ExcludedRowsOrColsAlertDialogTester.this.excludeRows(checkedItems);
                     }
                 });
 
@@ -79,7 +79,7 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
             this.templateModel.rowCheckedItems()             );
     }
 
-    public void testExcludeCols()
+    public void testExcludedCols()
     {
         if (null == this.excludedColsAlertDialog) this.excludedColsAlertDialog =
             new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
@@ -90,7 +90,7 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
                     public void excludeRowsOrCols(final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
-                            .ExcludeRowsOrColsAlertDialogTester.this.excludeCols(checkedItems);
+                            .ExcludedRowsOrColsAlertDialogTester.this.excludeCols(checkedItems);
                     }
                 });
 
