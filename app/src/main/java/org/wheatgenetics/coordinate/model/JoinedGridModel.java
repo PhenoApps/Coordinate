@@ -13,8 +13,8 @@ package org.wheatgenetics.coordinate.model;
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 {
     // region Fields
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel        = null;
-    private org.wheatgenetics.coordinate.model.Cells         excludeCellsInstance = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel         = null;
+    private org.wheatgenetics.coordinate.model.Cells         excludedCellsInstance = null;
     // endregion
 
     // region Private Methods
@@ -32,12 +32,12 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     private boolean isExcludedRow(final int row)
     { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
 
-    private org.wheatgenetics.coordinate.model.Cells excludeCells()
+    private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
-        if (null == this.excludeCellsInstance)
-            this.excludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+        if (null == this.excludedCellsInstance)
+            this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
                 /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
-        return this.excludeCellsInstance;
+        return this.excludedCellsInstance;
     }
     // endregion
 
@@ -50,16 +50,16 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
     @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
     @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    final java.lang.String initialExcludeCells,
-    final java.lang.String excludeRows, final java.lang.String excludeCols,
+    final java.lang.String initialExcludedCells,
+    final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
     final java.lang.String optionalFields, final long templateTimestamp)
     {
         super(id, title, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
-            templateTitle, code, rows, cols, generatedExcludedCellsAmount, initialExcludeCells,
-            excludeRows, excludeCols, colNumbering, rowNumbering, optionalFields,
+            templateTitle, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
+            excludedRows, excludedCols, colNumbering, rowNumbering, optionalFields,
             templateTimestamp);
     }
 
@@ -78,17 +78,17 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     public void addExcludedCell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { this.excludeCells().add(row, col); }
+    { this.excludedCells().add(row, col); }
 
     public void makeOneRandomCell()
     {
-        this.excludeCells().makeOneRandomCell(                              // TODO: clear()s first!
+        this.excludedCells().makeOneRandomCell(                             // TODO: clear()s first!
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 
     public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
     {
-        this.excludeCells().makeRandomCells(amount,                         // TODO: clear()s first!
+        this.excludedCells().makeRandomCells(amount,                        // TODO: clear()s first!
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 
@@ -97,8 +97,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     {
-        return null == this.excludeCellsInstance ? false :
-            this.excludeCellsInstance.contains(row, col);
+        return null == this.excludedCellsInstance ? false :
+            this.excludedCellsInstance.contains(row, col);
     }
 
     public org.wheatgenetics.coordinate.model.Cell nextFreeCell(

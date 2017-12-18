@@ -30,7 +30,7 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
         assert null != checkedItems; assert null != this.templateModel;
         for (final boolean checkedItem: checkedItems)
         {
-            if (checkedItem) this.templateModel.addExcludeRow(i);
+            if (checkedItem) this.templateModel.addExcludedRow(i);
             i++;
         }
     }
@@ -41,7 +41,7 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
         assert null != checkedItems; assert null != this.templateModel;
         for (final boolean checkedItem: checkedItems)
         {
-            if (checkedItem) this.templateModel.addExcludeCol(i);
+            if (checkedItem) this.templateModel.addExcludedCol(i);
             i++;
         }
     }

@@ -45,7 +45,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
             this.setExcludesOptionalFieldsNumberingAlertDialog =
                 new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
-        assert null != this.templateModel; this.templateModel.clearExcludesAndOptionalFields();
+        assert null != this.templateModel; this.templateModel.clearExcludedsAndOptionalFields();
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion

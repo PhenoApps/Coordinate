@@ -19,9 +19,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.BaseTempla
 implements java.lang.Cloneable
 {
     // region Fields
-    private org.wheatgenetics.coordinate.model.Cells     initialExcludeCellsInstance = null;
-    private org.wheatgenetics.coordinate.model.RowOrCols excludeRowsInstance         = null,
-        excludeColsInstance = null;
+    private org.wheatgenetics.coordinate.model.Cells     initialExcludedCellsInstance = null;
+    private org.wheatgenetics.coordinate.model.RowOrCols excludedRowsInstance         = null,
+        excludedColsInstance = null;
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
@@ -38,33 +38,33 @@ implements java.lang.Cloneable
             return 1 == numbering;
     }
 
-    private org.wheatgenetics.coordinate.model.Cells initialExcludeCells()
+    private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
     {
-        if (null == this.initialExcludeCellsInstance)
-            this.initialExcludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+        if (null == this.initialExcludedCellsInstance)
+            this.initialExcludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
                 /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
-        return this.initialExcludeCellsInstance;
+        return this.initialExcludedCellsInstance;
     }
 
-    private org.wheatgenetics.coordinate.model.RowOrCols excludeRows()
+    private org.wheatgenetics.coordinate.model.RowOrCols excludedRows()
     {
-        if (null == this.excludeRowsInstance) this.excludeRowsInstance =
+        if (null == this.excludedRowsInstance) this.excludedRowsInstance =
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getRows());
-        return this.excludeRowsInstance;
+        return this.excludedRowsInstance;
     }
 
-    private org.wheatgenetics.coordinate.model.RowOrCols excludeCols()
+    private org.wheatgenetics.coordinate.model.RowOrCols excludedCols()
     {
-        if (null == this.excludeColsInstance) this.excludeColsInstance =
+        if (null == this.excludedColsInstance) this.excludedColsInstance =
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getCols());
-        return this.excludeColsInstance;
+        return this.excludedColsInstance;
     }
 
-    private void clearExcludes()
+    private void clearExcludeds()
     {
-        if (null != this.initialExcludeCellsInstance) this.initialExcludeCellsInstance.clear();
-        if (null != this.excludeRowsInstance        ) this.excludeRowsInstance.clear        ();
-        if (null != this.excludeColsInstance        ) this.excludeColsInstance.clear        ();
+        if (null != this.initialExcludedCellsInstance) this.initialExcludedCellsInstance.clear();
+        if (null != this.excludedRowsInstance        ) this.excludedRowsInstance.clear        ();
+        if (null != this.excludedColsInstance        ) this.excludedColsInstance.clear        ();
     }
     // endregion
 
@@ -100,8 +100,8 @@ implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
     @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
     @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    java.lang.String initialExcludeCells,
-    java.lang.String excludeRows, java.lang.String excludeCols,
+    java.lang.String initialExcludedCells,
+    java.lang.String excludedRows, java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
     java.lang.String optionalFields, final long timestamp)
@@ -111,30 +111,30 @@ implements java.lang.Cloneable
             org.wheatgenetics.coordinate.model.TemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering));
 
-        if (null != initialExcludeCells)
+        if (null != initialExcludedCells)
         {
-            initialExcludeCells = initialExcludeCells.trim();
-            if (initialExcludeCells.length() > 0)
-                this.initialExcludeCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
-                    /* json   => */ initialExcludeCells,
-                    /* maxRow => */ this.getRows()     ,
-                    /* maxCol => */ this.getCols()     );
+            initialExcludedCells = initialExcludedCells.trim();
+            if (initialExcludedCells.length() > 0)
+                this.initialExcludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+                    /* json   => */ initialExcludedCells,
+                    /* maxRow => */ this.getRows()      ,
+                    /* maxCol => */ this.getCols()      );
         }
 
-        if (null != excludeRows)
+        if (null != excludedRows)
         {
-            excludeRows = excludeRows.trim();
-            if (excludeRows.length() > 0)
-                this.excludeRowsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
-                    /* json => */ excludeRows, /* maxValue => */ this.getRows());
+            excludedRows = excludedRows.trim();
+            if (excludedRows.length() > 0)
+                this.excludedRowsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                    /* json => */ excludedRows, /* maxValue => */ this.getRows());
         }
 
-        if (null != excludeCols)
+        if (null != excludedCols)
         {
-            excludeCols = excludeCols.trim();
-            if (excludeCols.length() > 0)
-                this.excludeColsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
-                    /* json => */ excludeCols, /* maxValue => */ this.getCols());
+            excludedCols = excludedCols.trim();
+            if (excludedCols.length() > 0)
+                this.excludedColsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                    /* json => */ excludedCols, /* maxValue => */ this.getCols());
         }
 
         if (null != optionalFields) optionalFields = optionalFields.trim();
@@ -155,14 +155,14 @@ implements java.lang.Cloneable
         return java.lang.String.format(super.formatString() + ", options=%s", "%s",
                 null == this.nonNullOptionalFieldsInstance ? "" :
                     this.nonNullOptionalFieldsInstance.toString()) +
-            ", initialExcludedCells=%s, excludeRows=%s, excludeCols=%s, stamp=%d]";
+            ", initialExcludedCells=%s, excludedRows=%s, excludedCols=%s, stamp=%d]";
     }
 
     @java.lang.Override
     public java.lang.String toString()
     {
         return java.lang.String.format(this.formatString(), "TemplateModel",
-            this.initialExcludeCellsInstance, this.excludeRowsInstance, this.excludeColsInstance,
+            this.initialExcludedCellsInstance, this.excludedRowsInstance, this.excludedColsInstance,
             this.getTimestamp());
     }
     // endregion
@@ -176,35 +176,35 @@ implements java.lang.Cloneable
                 final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                     (org.wheatgenetics.coordinate.model.TemplateModel) object;
 
-                if (null == this.initialExcludeCellsInstance
-                &&  null != templateModel.initialExcludeCellsInstance)
+                if (null == this.initialExcludedCellsInstance
+                &&  null != templateModel.initialExcludedCellsInstance)
                     return false;
                 else
-                    if (null != this.initialExcludeCellsInstance
-                    &&  null == templateModel.initialExcludeCellsInstance)
+                    if (null != this.initialExcludedCellsInstance
+                    &&  null == templateModel.initialExcludedCellsInstance)
                         return false;
-                if (null != this.initialExcludeCellsInstance)
-                    if (!this.initialExcludeCellsInstance.equals(
-                    templateModel.initialExcludeCellsInstance)) return false;
+                if (null != this.initialExcludedCellsInstance)
+                    if (!this.initialExcludedCellsInstance.equals(
+                    templateModel.initialExcludedCellsInstance)) return false;
 
-                if (null == this.excludeRowsInstance && null != templateModel.excludeRowsInstance)
+                if (null == this.excludedRowsInstance && null != templateModel.excludedRowsInstance)
                     return false;
                 else
-                    if (null != this.excludeRowsInstance
-                    &&  null == templateModel.excludeRowsInstance)
+                    if (null != this.excludedRowsInstance
+                    &&  null == templateModel.excludedRowsInstance)
                         return false;
-                if (null != this.excludeRowsInstance)
-                    if (!this.excludeRowsInstance.equals(templateModel.excludeRowsInstance))
+                if (null != this.excludedRowsInstance)
+                    if (!this.excludedRowsInstance.equals(templateModel.excludedRowsInstance))
                         return false;
 
-                if (null == this.excludeColsInstance && null != templateModel.excludeColsInstance)
+                if (null == this.excludedColsInstance && null != templateModel.excludedColsInstance)
                     return false;
                 else
-                    if (null != this.excludeColsInstance
-                    &&  null == templateModel.excludeColsInstance)
+                    if (null != this.excludedColsInstance
+                    &&  null == templateModel.excludedColsInstance)
                         return false;
-                if (null != this.excludeColsInstance)
-                    if (!this.excludeColsInstance.equals(templateModel.excludeColsInstance))
+                if (null != this.excludedColsInstance)
+                    if (!this.excludedColsInstance.equals(templateModel.excludedColsInstance))
                         return false;
 
                 if (null == this.nonNullOptionalFieldsInstance
@@ -248,13 +248,13 @@ implements java.lang.Cloneable
                 this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
                 this.getRowNumbering(), optionalFields);
 
-        if (null != this.initialExcludeCellsInstance) result.initialExcludeCellsInstance =
-            (org.wheatgenetics.coordinate.model.Cells) this.initialExcludeCellsInstance.clone();
+        if (null != this.initialExcludedCellsInstance) result.initialExcludedCellsInstance =
+            (org.wheatgenetics.coordinate.model.Cells) this.initialExcludedCellsInstance.clone();
 
-        if (null != this.excludeRowsInstance) result.excludeRowsInstance =
-            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludeRowsInstance.clone();
-        if (null != this.excludeColsInstance) result.excludeColsInstance =
-            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludeColsInstance.clone();
+        if (null != this.excludedRowsInstance) result.excludedRowsInstance =
+            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedRowsInstance.clone();
+        if (null != this.excludedColsInstance) result.excludedColsInstance =
+            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedColsInstance.clone();
 
         result.timestamp = this.getTimestamp();
 
@@ -271,32 +271,32 @@ implements java.lang.Cloneable
         this.setGeneratedExcludedCellsAmount(templateModel.getGeneratedExcludedCellsAmount());
         this.nonNullOptionalFieldsInstance = templateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
 
-        this.clearExcludes();
+        this.clearExcludeds();
     }
 
     // region Public Methods
-    // region initialExcludeCells Public Methods
+    // region initialExcludedCells Public Methods
     public void addInitialExcludedCell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { this.initialExcludeCells().add(row, col); }
+    { this.initialExcludedCells().add(row, col); }
 
     public void makeOneRandomCell()
     {
-        this.initialExcludeCells().makeOneRandomCell(
+        this.initialExcludedCells().makeOneRandomCell(
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 
     public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
     {
-        this.initialExcludeCells().makeRandomCells(
+        this.initialExcludedCells().makeRandomCells(
             amount, /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 
     public java.lang.String getInitialExcludedCellsAsJson()
     {
-        return null == this.initialExcludeCellsInstance ?
-            null : this.initialExcludeCellsInstance.json();
+        return null == this.initialExcludedCellsInstance ?
+            null : this.initialExcludedCellsInstance.json();
     }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
@@ -304,31 +304,31 @@ implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     {
-        return null == this.initialExcludeCellsInstance ? false :
-            this.initialExcludeCellsInstance.contains(row, col);
+        return null == this.initialExcludedCellsInstance ? false :
+            this.initialExcludedCellsInstance.contains(row, col);
     }
     // endregion
 
-    // region excludeRows, excludeCols Public Methods
-    public void addExcludeRow(@android.support.annotation.IntRange(from = 1) final int row)
-    { this.excludeRows().add(row); }
+    // region excludedRows, excludedCols Public Methods
+    public void addExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
+    { this.excludedRows().add(row); }
 
-    public void addExcludeCol(@android.support.annotation.IntRange(from = 1) final int col)
-    { this.excludeCols().add(col); }
+    public void addExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
+    { this.excludedCols().add(col); }
 
-    public java.lang.String getExcludeRowsAsJson()
-    { return null == this.excludeRowsInstance ? null : this.excludeRowsInstance.json(); }
+    public java.lang.String getExcludedRowsAsJson()
+    { return null == this.excludedRowsInstance ? null : this.excludedRowsInstance.json(); }
 
-    public java.lang.String getExcludeColsAsJson()
-    { return null == this.excludeColsInstance ? null : this.excludeColsInstance.json(); }
+    public java.lang.String getExcludedColsAsJson()
+    { return null == this.excludedColsInstance ? null : this.excludedColsInstance.json(); }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
-    { return null == this.excludeRowsInstance ? false : this.excludeRowsInstance.contains(row); }
+    { return null == this.excludedRowsInstance ? false : this.excludedRowsInstance.contains(row); }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
-    { return null == this.excludeColsInstance ? false : this.excludeColsInstance.contains(col); }
+    { return null == this.excludedColsInstance ? false : this.excludedColsInstance.contains(col); }
     // endregion
 
     // region optionalFields Public Methods
@@ -344,9 +344,9 @@ implements java.lang.Cloneable
 
     public long getTimestamp() { return this.timestamp; }
 
-    public void clearExcludesAndOptionalFields()
+    public void clearExcludedsAndOptionalFields()
     {
-        this.clearExcludes();
+        this.clearExcludeds();
         this.nonNullOptionalFieldsInstance =
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
     }
@@ -434,8 +434,8 @@ implements java.lang.Cloneable
                 /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
                     NonNullOptionalFields.makeSeedDefault());
         {
-            final org.wheatgenetics.coordinate.model.RowOrCols excludeRows = result.excludeRows();
-            excludeRows.add(2); excludeRows.add(5);
+            final org.wheatgenetics.coordinate.model.RowOrCols excludedRows = result.excludedRows();
+            excludedRows.add(2); excludedRows.add(5);
         }
         return result;
     }
