@@ -17,7 +17,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
     private android.widget.EditText                          editText         ;
@@ -46,7 +46,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         }
     }
 
-    ExcludeCellsAlertDialog(final android.app.Activity activity) { super(activity); }
+    GeneratedExcludedCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override
     public void configure()
@@ -56,18 +56,19 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 
         {
             final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.exclude_cells, null);
+                org.wheatgenetics.coordinate.R.layout.generated_excluded_cells, null);
 
             if (null == this.editText)
             {
-                assert null != view; this.editText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeCellsEditText);
+                assert null != view; this.editText = (android.widget.EditText) view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.generatedExcludedCellsEditText);
                 assert null != this.editText;
             }
             this.editText.setText("1");
 
-            if (null == this.exceptionTextView) this.exceptionTextView = (android.widget.TextView)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.excludeCellsExceptionTextView);
+            if (null == this.exceptionTextView)
+                this.exceptionTextView = (android.widget.TextView) view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.generatedExcludedCellsExceptionTextView);
 
             this.setView(view);
         }
@@ -94,7 +95,7 @@ class ExcludeCellsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                     public void onClick(final android.view.View view)
                     {
                         org.wheatgenetics.coordinate.tc
-                            .ExcludeCellsAlertDialog.this.excludeCells();
+                            .GeneratedExcludedCellsAlertDialog.this.excludeCells();
                     }
                 });
         }

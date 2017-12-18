@@ -15,10 +15,10 @@
         android:layout_weight=".85"
         android:text="@string/ExcludeCellsLabelTextViewText"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:labelFor="@+id/excludeCellsEditText" />
+        android:labelFor="@+id/generatedExcludedCellsEditText" />
 
     <EditText
-        android:id="@+id/excludeCellsEditText"
+        android:id="@+id/generatedExcludedCellsEditText"
         android:layout_weight=".15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:inputType="numberDecimal" />
 
     <TextView
-        android:id="@+id/excludeCellsExceptionTextView"
+        android:id="@+id/generatedExcludedCellsExceptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"

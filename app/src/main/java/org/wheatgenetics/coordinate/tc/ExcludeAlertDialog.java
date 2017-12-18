@@ -12,9 +12,9 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
  */
 class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
@@ -23,7 +23,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
     private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
-    private org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog excludeCellsAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
+        generatedExcludedCellsAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -96,9 +97,11 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                 break;
 
             case 2:
-                if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
-                    new org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog(this.activity());
-                this.excludeCellsAlertDialog.show(this.templateModel); break;
+                if (null == this.generatedExcludedCellsAlertDialog)
+                    this.generatedExcludedCellsAlertDialog =
+                        new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog(
+                            this.activity());
+                this.generatedExcludedCellsAlertDialog.show(this.templateModel); break;
         }
     }
     // endregion

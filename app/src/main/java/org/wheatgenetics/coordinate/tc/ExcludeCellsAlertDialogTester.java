@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog
+ * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class ExcludeCellsAlertDialogTester extends java.lang.Object
@@ -15,7 +15,8 @@ public class ExcludeCellsAlertDialogTester extends java.lang.Object
     private final android.app.Activity                             activity     ;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog excludeCellsAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
+        generatedExcludedCellsAlertDialog = null;
     // endregion
 
     public ExcludeCellsAlertDialogTester(final android.app.Activity activity,
@@ -24,8 +25,8 @@ public class ExcludeCellsAlertDialogTester extends java.lang.Object
 
     public void testExcludeCells()
     {
-        if (null == this.excludeCellsAlertDialog) this.excludeCellsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludeCellsAlertDialog(this.activity);
-        this.excludeCellsAlertDialog.show(this.templateModel);
+        if (null == this.generatedExcludedCellsAlertDialog) this.generatedExcludedCellsAlertDialog =
+            new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog(this.activity);
+        this.generatedExcludedCellsAlertDialog.show(this.templateModel);
     }
 }
