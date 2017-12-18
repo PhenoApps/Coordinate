@@ -24,9 +24,9 @@
     <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
     <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
 
-    <string name="ExcludeRowsOrColsAlertDialogTitle">Exclude</string>
-    <string name="ExcludeRowsOrColsAlertDialogRowLabel">Row</string>
-    <string name="ExcludeRowsOrColsAlertDialogColumnLabel">Column</string>
+    <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
+    <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
+    <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
 
     <string name="ExcludeCellsAlertDialogTitle">Random</string>
     <string name="ExcludeCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>

@@ -8,8 +8,8 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
+ * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
@@ -19,8 +19,8 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private java.lang.String rowLabel = null, colLabel = null;
-    private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
-        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
+        excludedRowsAlertDialog = null, excludedColsAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -54,10 +54,10 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
     // region Public Methods
     public void testExcludeRows()
     {
-        if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogRowLabel,
-                new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler()
+        if (null == this.excludedRowsAlertDialog) this.excludedRowsAlertDialog =
+            new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
+                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
+                new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void excludeRowsOrCols(final boolean checkedItems[])
@@ -71,20 +71,20 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
         {
             assert null != this.activity;
             this.rowLabel = this.activity.getString(
-                org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogRowLabel);
+                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel);
         }
 
-        assert null != this.templateModel; this.excludeRowsAlertDialog.show(
+        assert null != this.templateModel; this.excludedRowsAlertDialog.show(
             this.templateModel.rowItems       (this.rowLabel),
             this.templateModel.rowCheckedItems()             );
     }
 
     public void testExcludeCols()
     {
-        if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogColumnLabel,
-                new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler()
+        if (null == this.excludedColsAlertDialog) this.excludedColsAlertDialog =
+            new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
+                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
+                new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                 {
                     @java.lang.Override
                     public void excludeRowsOrCols(final boolean checkedItems[])
@@ -98,10 +98,10 @@ public class ExcludeRowsOrColsAlertDialogTester extends java.lang.Object
         {
             assert null != this.activity;
             this.colLabel = this.activity.getString(
-                org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogColumnLabel);
+                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel);
         }
 
-        assert null != this.templateModel; this.excludeColsAlertDialog.show(
+        assert null != this.templateModel; this.excludedColsAlertDialog.show(
             this.templateModel.colItems       (this.colLabel),
             this.templateModel.colCheckedItems()             );
     }

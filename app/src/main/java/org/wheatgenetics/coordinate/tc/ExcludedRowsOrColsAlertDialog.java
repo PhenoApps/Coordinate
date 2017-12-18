@@ -11,15 +11,15 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.R
  */
-class ExcludeRowsOrColsAlertDialog
+class ExcludedRowsOrColsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler { public abstract void excludeRowsOrCols(boolean checkedItems[]); }
 
     // region Fields
-    private final java.lang.String                                                     label  ;
-    private final org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler handler;
+    private final java.lang.String                                                      label  ;
+    private final org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler;
 
     private boolean titleHasBeenSet = false;
     // endregion
@@ -27,8 +27,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     private void excludeRowsOrCols(final boolean checkedItems[])
     { assert null != this.handler; this.handler.excludeRowsOrCols(checkedItems); }
 
-    ExcludeRowsOrColsAlertDialog(final android.app.Activity activity, final int label,
-    final org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler handler)
+    ExcludedRowsOrColsAlertDialog(final android.app.Activity activity, final int label,
+    final org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     void show(final java.lang.String items[], final boolean checkedItems[])
@@ -38,7 +38,7 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
             if (!this.titleHasBeenSet)
             {
                 this.setTitle(this.getString(
-                    org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogTitle) +
+                    org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogTitle) +
                     " - " + this.label + 's');
                 this.titleHasBeenSet = true;
             }
@@ -49,8 +49,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
                     {
-                        org.wheatgenetics.coordinate.tc.
-                            ExcludeRowsOrColsAlertDialog.this.excludeRowsOrCols(checkedItems);
+                        org.wheatgenetics.coordinate.tc
+                            .ExcludedRowsOrColsAlertDialog.this.excludeRowsOrCols(checkedItems);
                     }
                 });
             this.show(items, checkedItems,

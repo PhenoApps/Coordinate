@@ -12,8 +12,8 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
+ * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
  */
 class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
@@ -21,7 +21,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     // region Fields
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog
+    private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
         generatedExcludedCellsAlertDialog = null;
@@ -58,10 +58,10 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         {
             case 0:
                 if (null == this.excludeRowsAlertDialog) this.excludeRowsAlertDialog =
-                    new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog(
+                    new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(
                         this.activity(),
-                        org.wheatgenetics.coordinate.R.string.ExcludeRowsOrColsAlertDialogRowLabel,
-                        new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler()
+                        org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
+                        new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
                             public void excludeRowsOrCols(final boolean checkedItems[])
@@ -72,17 +72,17 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                         });
                 assert null != this.templateModel; this.excludeRowsAlertDialog.show(
                     this.templateModel.rowItems(this.getString(org.wheatgenetics.coordinate
-                        .R.string.ExcludeRowsOrColsAlertDialogRowLabel)),
-                    this.templateModel.rowCheckedItems()                );
+                        .R.string.ExcludedRowsOrColsAlertDialogRowLabel)),
+                    this.templateModel.rowCheckedItems()                 );
                 break;
 
             case 1:
                 if (null == this.excludeColsAlertDialog) this.excludeColsAlertDialog =
-                    new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog(
+                    new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(
                         this.activity(),
                         org.wheatgenetics.coordinate
-                            .R.string.ExcludeRowsOrColsAlertDialogColumnLabel,
-                        new org.wheatgenetics.coordinate.tc.ExcludeRowsOrColsAlertDialog.Handler()
+                            .R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
+                        new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                         {
                             @java.lang.Override
                             public void excludeRowsOrCols(final boolean[] checkedItems)
@@ -93,8 +93,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                         });
                 assert null != this.templateModel; this.excludeColsAlertDialog.show(
                     this.templateModel.colItems(this.getString(org.wheatgenetics.coordinate
-                        .R.string.ExcludeRowsOrColsAlertDialogColumnLabel)),
-                    this.templateModel.colCheckedItems()                   );
+                        .R.string.ExcludedRowsOrColsAlertDialogColumnLabel)),
+                    this.templateModel.colCheckedItems()                    );
                 break;
 
             case 2:
