@@ -14,6 +14,8 @@ package org.wheatgenetics.coordinate;
  * android.view.MenuItem
  * android.view.View
  *
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
+ *
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
  *
@@ -23,8 +25,9 @@ package org.wheatgenetics.coordinate;
 public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
     // region Fields
-    private android.support.v4.widget.DrawerLayout       drawerLayout    = null;
-    private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
+    private android.support.v4.widget.DrawerLayout                drawerLayout    = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences     ;
+    private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog = null;
     // endregion
 
     private void closeDrawer()
@@ -77,6 +80,9 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                     { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
                 }));
         // endregion
+
+        this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
+            this.getSharedPreferences("Settings", /* mode => */ 0));
     }
 
     @java.lang.Override
