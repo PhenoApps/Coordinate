@@ -7,8 +7,9 @@
 		type			INTEGER,
 		rows		 	INTEGER,
 		cols			INTEGER,
-		
-		ecells			TEXT,		
+
+		erand           INTEGER CHECK(erand >= 0),
+		ecells			TEXT,
 		erows			TEXT,
 		ecols			TEXT,		
 		

@@ -1,0 +1,5 @@
+<sql>
+    <statement>
+    ALTER TABLE templates ADD COLUMN erand INTEGER CHECK(erand >= 0)
+    </statement>
+</sql>

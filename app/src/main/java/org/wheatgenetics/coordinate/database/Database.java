@@ -34,8 +34,52 @@ class Database extends java.lang.Object
                 private       boolean                 createNeeded = false, createSucceeded = false;
                 // endregion
 
+                // region Private Methods
                 private int logWarning(final java.lang.String msg)
                 { return android.util.Log.w("SQLiteOpenHelper", msg); }
+
+                private org.w3c.dom.NodeList statementNodeList(final int id)
+                {
+                    org.w3c.dom.Document document;
+                    {
+                        assert null != this.context;
+                        final java.io.InputStream inputStream =
+                            this.context.getResources().openRawResource(id);
+                        try
+                        {
+                            final javax.xml.parsers.DocumentBuilder documentBuilder =
+                                javax.xml.parsers.DocumentBuilderFactory.newInstance()
+                                    .newDocumentBuilder();           // throws java.xml.parsers.Par-
+                            assert null != documentBuilder;          //  serConfigurationException
+                            try
+                            {
+                                document = documentBuilder.parse(         // throws org.xml.sax.SAX-
+                                    /* is       => */ inputStream,        //  Exception, java.-
+                                    /* systemId => */ null       );       //  io.IOException
+                            }
+                            catch (final org.xml.sax.SAXException | java.io.IOException e)
+                            { return null; }
+                        }
+                        catch (final javax.xml.parsers.ParserConfigurationException e)
+                        { return null; }
+                    }
+                    assert null != document; return document.getElementsByTagName("statement");
+                }
+
+                private void executeStatments(final org.w3c.dom.NodeList statementNodeList,
+                final android.database.sqlite.SQLiteDatabase db)
+                {
+                    assert null != statementNodeList; assert null != db;
+                    final int length = statementNodeList.getLength();
+                    for (int i = 0; i < length; i++)
+                    {
+                        final java.lang.String statement = statementNodeList.item(i)
+                            .getChildNodes().item(0).getNodeValue();
+                        this.logWarning("statement: " + statement);
+                        db.execSQL(statement);
+                    }
+                }
+                // endregion
 
                 private SQLiteOpenHelper(final android.content.Context context,
                 final java.lang.String fileName)
@@ -44,7 +88,7 @@ class Database extends java.lang.Object
                         /* context => */ context ,
                         /* name    => */ fileName,
                         /* factory => */ null    ,
-                        /* version => */ 1       );
+                        /* version => */ 2       );
                     this.context = context;
                 }
 
@@ -54,46 +98,12 @@ class Database extends java.lang.Object
                 {
                     this.createNeeded = true;
                     {
-                        org.w3c.dom.NodeList statementNodeList;
-                        {
-                            org.w3c.dom.Document document;
-                            {
-                                assert null != this.context;
-                                final java.io.InputStream inputStream =
-                                    this.context.getResources().openRawResource(org.wheatgenetics
-                                        .coordinate.R.raw.create_database_sql_statements);
-                                try
-                                {
-                                    final javax.xml.parsers.DocumentBuilder documentBuilder =
-                                        javax.xml.parsers.DocumentBuilderFactory.newInstance()
-                                            .newDocumentBuilder();   // throws java.xml.parsers.Par-
-                                    assert null != documentBuilder;  //  serConfigurationException
-                                    try
-                                    {
-                                        document = documentBuilder.parse( // throws org.xml.sax.SAX-
-                                            /* is       => */ inputStream,    //  Exception, java.-
-                                            /* systemId => */ null       );   //  io.IOException
-                                    }
-                                    catch (final org.xml.sax.SAXException | java.io.IOException e)
-                                    { return; }           // this.createSucceeded will remain false.
-                                }
-                                catch (final javax.xml.parsers.ParserConfigurationException e)
-                                { return; }               // this.createSucceeded will remain false.
-                            }
-                            assert null != document;
-                            statementNodeList = document.getElementsByTagName("statement");
-                        }
-                        assert null != statementNodeList; assert null != db;
-                        {
-                            final int length = statementNodeList.getLength();
-                            for (int i = 0; i < length; i++)
-                            {
-                                final java.lang.String statement = statementNodeList.item(i)
-                                    .getChildNodes().item(0).getNodeValue();
-                                this.logWarning("statement: " + statement);
-                                db.execSQL(statement);
-                            }
-                        }
+                        final org.w3c.dom.NodeList statementNodeList = this.statementNodeList(
+                            org.wheatgenetics.coordinate.R.raw.create_database_sql_statements);
+                        if (null == statementNodeList)
+                            return;                       // this.createSucceeded will remain false.
+                        else
+                            this.executeStatments(statementNodeList, db);
                     }
                     this.createSucceeded = true;
                 }
@@ -102,16 +112,18 @@ class Database extends java.lang.Object
                 public void onUpgrade(final android.database.sqlite.SQLiteDatabase db,
                 final int oldVersion, final int newVersion)
                 {
-                    this.logWarning("Upgrading database from version " + oldVersion +
-                        " to " + newVersion + ", which will destroy all old data");
+                    final org.w3c.dom.NodeList statementNodeList = this.statementNodeList(
+                        org.wheatgenetics.coordinate.R.raw.upgrade_database_sql_statements);
+                    if (null != statementNodeList)
                     {
-                        final java.lang.String format = "DROP %s IF EXISTS %s";
-                        assert null != db;
-                        db.execSQL(java.lang.String.format(format, "entries"  , "entries"  ));
-                        db.execSQL(java.lang.String.format(format, "grids"    , "grids"    ));
-                        db.execSQL(java.lang.String.format(format, "templates", "templates"));
+                        final int length = statementNodeList.getLength();
+                        if (length > 0)
+                        {
+                            this.logWarning("Upgrading database from version " +
+                                oldVersion + " to version " + newVersion + ".");
+                            this.executeStatments(statementNodeList, db);
+                        }
                     }
-                    this.onCreate(db);
                 }
 
                 @java.lang.Override

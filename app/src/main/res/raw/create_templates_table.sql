@@ -6,6 +6,7 @@ CREATE TABLE templates
         rows		 	INTEGER,
         cols			INTEGER,
 
+		erand           INTEGER CHECK(erand >= 0),
         ecells			TEXT,
         erows			TEXT,
         ecols			TEXT,

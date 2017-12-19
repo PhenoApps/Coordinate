@@ -66,6 +66,7 @@ public class DatabaseTest extends java.lang.Object
             android.support.test.InstrumentationRegistry.getTargetContext()
                 .getResources().openRawResource(id));
 
+        // 'a' is for actual and 'e' is for expected.
         org.wheatgenetics.coordinate.database.DatabaseTest.logInfo('a', 'e');
         do
         {
@@ -96,7 +97,7 @@ public class DatabaseTest extends java.lang.Object
         {
             if (this.databaseFile.exists()) this.databaseFile.delete();
             if (this.journalFile.exists ()) this.journalFile.delete ();
-            if (parent.list().length <= 0) parent.delete();
+            if (parent.list().length <= 0 ) parent.delete           ();
         }
     }
 
@@ -109,13 +110,13 @@ public class DatabaseTest extends java.lang.Object
     {
         org.junit.Assert.assertFalse(this.databaseFile.exists());
         org.junit.Assert.assertFalse(this.journalFile.exists ());
-        org.wheatgenetics.coordinate.database.Database.db(
+        org.wheatgenetics.coordinate.database.Database.db(  // throws java.lang.NullPointerException
             /* context  => */ null,
             /* fileName => */
                 org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
     }
 
-    /** nullContextGetDb() must be run before nonNullContextGetDb(). */
+    /** nonNullContextGetDb() must be run after nullContextGetDb(). */
     @org.junit.Test
     public void nonNullContextGetDb() throws java.io.IOException
     {
