@@ -61,7 +61,7 @@ class Database extends java.lang.Object
                                 assert null != this.context;
                                 final java.io.InputStream inputStream =
                                     this.context.getResources().openRawResource(org.wheatgenetics
-                                        .coordinate.R.raw.create_table_sql_statements);
+                                        .coordinate.R.raw.create_database_sql_statements);
                                 try
                                 {
                                     final javax.xml.parsers.DocumentBuilder documentBuilder =
