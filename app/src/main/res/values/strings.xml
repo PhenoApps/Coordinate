@@ -58,4 +58,8 @@
     <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
     <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
     <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
+
+    <string name="GetTemplateChoiceAlertDialogTitle">Template Options</string>
+    <string name="GetTemplateChoiceAlertDialogOldItem">Load Template</string>
+    <string name="GetTemplateChoiceAlertDialogNewItem">New Template</string>
 </resources>
