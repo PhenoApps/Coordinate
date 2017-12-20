@@ -442,15 +442,18 @@ implements java.lang.Cloneable
 
     static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
-        return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title          => */ "DNA Plate"                                        ,
-            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
-            /* rows           => */  8                                                 ,
-            /* cols           => */ 12                                                 ,
-            /* colNumbering   => */ true                                               ,
-            /* rowNumbering   => */ false                                              ,
-            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
-                NonNullOptionalFields.makeDNADefault());
+        final org.wheatgenetics.coordinate.model.TemplateModel result =
+            new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* title          => */ "DNA Plate"                                        ,
+                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                /* rows           => */  8                                                 ,
+                /* cols           => */ 12                                                 ,
+                /* colNumbering   => */ true                                               ,
+                /* rowNumbering   => */ false                                              ,
+                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
+                    NonNullOptionalFields.makeDNADefault());
+        result.setGeneratedExcludedCellsAmount(1);
+        return result;
     }
     // endregion
     // endregion

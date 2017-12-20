@@ -16,6 +16,11 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModels
+ *
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
  *
@@ -25,16 +30,26 @@ package org.wheatgenetics.coordinate;
 public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
     // region Fields
-    private android.support.v4.widget.DrawerLayout                drawerLayout    = null;
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences     ;
-    private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog = null;
+    private android.support.v4.widget.DrawerLayout                drawerLayout           = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
+    private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
+    private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog        = null;
     // endregion
 
+    // region Private Methods
     private void closeDrawer()
     {
         assert null != this.drawerLayout;
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
     }
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override
@@ -79,6 +94,37 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                     public void closeDrawer()
                     { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
                 }));
+        // endregion
+
+        // region Default Templates
+        // Adds default templates to database if they aren't there already.  If they are there then
+        // they are updated to their default values.
+        {
+            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
+                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+            assert null != defaultTemplateModels; if (defaultTemplateModels.size() > 0)
+            {
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    this.templatesTable();
+                assert null != templatesTable;
+                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
+                defaultTemplateModels)
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
+                        defaultTemplateModel.getType();
+                    if (templatesTable.exists(defaultTemplateType))
+                    {
+                        {
+                            final org.wheatgenetics.coordinate.model.TemplateModel
+                                existingTemplateModel = templatesTable.get(defaultTemplateType);
+                            defaultTemplateModel.setId(existingTemplateModel.getId());
+                        }
+                        templatesTable.update(defaultTemplateModel);
+                    }
+                    else templatesTable.insert(defaultTemplateModel);
+                }
+            }
+        }
         // endregion
 
         this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
