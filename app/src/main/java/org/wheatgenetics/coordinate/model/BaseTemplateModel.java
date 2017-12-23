@@ -23,6 +23,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     private int                                             rows, cols                  ;
     private int                                             generatedExcludedCellsAmount;
     private boolean                                         colNumbering, rowNumbering  ;
+    private long                                            timestamp                   ;
     // endregion
 
     // region Private Methods
@@ -61,11 +62,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.IntRange(from = 1) final int rows                        ,
     @android.support.annotation.IntRange(from = 1) final int cols                        ,
     @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    final boolean colNumbering, final boolean rowNumbering)
+    final boolean colNumbering, final boolean rowNumbering, final long timestamp)
     {
         super(id);
         this.assign(title, type, rows, cols,
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        this.timestamp = timestamp;
     }
 
     /** Called by second TemplateModel constructor. */
@@ -75,11 +77,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.IntRange(from = 1) final int rows                        ,
     @android.support.annotation.IntRange(from = 1) final int cols                        ,
     @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    final boolean colNumbering, final boolean rowNumbering)
+    final boolean colNumbering, final boolean rowNumbering, final long timestamp)
     {
         super();
         this.assign(title, type, rows, cols,
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        this.timestamp = timestamp;
     }
     // endregion
 
@@ -131,7 +134,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
                     return false;
 
                 if (this.getColNumbering() != baseTemplateModel.getColNumbering()) return false;
-                return this.getRowNumbering() == baseTemplateModel.getRowNumbering();
+                if (this.getRowNumbering() != baseTemplateModel.getRowNumbering()) return false;
+
+                return this.getTimestamp() == baseTemplateModel.getTimestamp();
             }
             else return false;
         else return false;
@@ -158,9 +163,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     java.lang.String formatString()
     {
         return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d, " +
-            "generatedExcludedCellsAmount=%d, colNumbering=%b, rowNumbering=%b", super.toString(),
-            this.getTitle(), this.getType().getCode(), this.getRows(), this.getCols(),
-            this.getGeneratedExcludedCellsAmount(), this.getColNumbering(), this.getRowNumbering());
+            "generatedExcludedCellsAmount=%d, colNumbering=%b, rowNumbering=%b, stamp=%d",
+            super.toString(), this.getTitle(), this.getType().getCode(), this.getRows(),
+            this.getCols(), this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
+            this.getRowNumbering(), this.getTimestamp());
     }
     // endregion
 
@@ -193,6 +199,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+
+
+    public long getTimestamp() { return this.timestamp; }
 
 
     public void assign(final java.lang.String title, final int rows, final int cols)

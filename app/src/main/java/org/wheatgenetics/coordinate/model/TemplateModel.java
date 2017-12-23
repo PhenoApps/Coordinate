@@ -25,7 +25,6 @@ implements java.lang.Cloneable
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
-    private long timestamp;                                      // TODO: Move to BaseTemplateModel.
     // endregion
 
     // region Private Methods
@@ -82,13 +81,12 @@ implements java.lang.Cloneable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     final long timestamp)
     {
-        super(id, title, type, rows, cols,
-            generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        super(id, title, type, rows, cols, generatedExcludedCellsAmount,
+            colNumbering, rowNumbering, timestamp);
         this.initialExcludedCellsInstance  = initialExcludedCells;
         this.excludedRowsInstance          = excludedRows        ;
         this.excludedColsInstance          = excludedCols        ;
         this.nonNullOptionalFieldsInstance = optionalFields      ;
-        this.timestamp                     = timestamp           ;
     }
 
     /** Called by clone() and third constructor. */
@@ -104,12 +102,12 @@ implements java.lang.Cloneable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     final long timestamp)
     {
-        super(title, type, rows, cols, generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        super(title, type, rows, cols, generatedExcludedCellsAmount,
+            colNumbering, rowNumbering, timestamp);
         this.initialExcludedCellsInstance  = initialExcludedCells;
         this.excludedRowsInstance          = excludedRows        ;
         this.excludedColsInstance          = excludedCols        ;
         this.nonNullOptionalFieldsInstance = optionalFields      ;
-        this.timestamp                     = timestamp           ;
     }
 
     /** Called by makeSeedDefault(), makeDNADefault(), and makeUserDefined(). */
@@ -142,7 +140,7 @@ implements java.lang.Cloneable
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
             generatedExcludedCellsAmount,
             org.wheatgenetics.coordinate.model.TemplateModel.valid(colNumbering),
-            org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering));
+            org.wheatgenetics.coordinate.model.TemplateModel.valid(rowNumbering), timestamp);
 
         if (null != initialExcludedCells)
         {
@@ -174,8 +172,6 @@ implements java.lang.Cloneable
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
             optionalFields.equals("") ? null : new
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
-
-        this.timestamp = timestamp;
     }
     // endregion
 
@@ -188,15 +184,15 @@ implements java.lang.Cloneable
         return java.lang.String.format(super.formatString() + ", options=%s", "%s",
                 null == this.nonNullOptionalFieldsInstance ? "" :
                     this.nonNullOptionalFieldsInstance.toString()) +
-            ", initialExcludedCells=%s, excludedRows=%s, excludedCols=%s, stamp=%d]";
+            ", initialExcludedCells=%s, excludedRows=%s, excludedCols=%s]";
     }
 
     @java.lang.Override
     public java.lang.String toString()
     {
         return java.lang.String.format(this.formatString(), "TemplateModel",
-            this.initialExcludedCellsInstance, this.excludedRowsInstance, this.excludedColsInstance,
-            this.getTimestamp());
+            this.initialExcludedCellsInstance, this.excludedRowsInstance,
+            this.excludedColsInstance);
     }
     // endregion
 
@@ -247,11 +243,11 @@ implements java.lang.Cloneable
                     if (null != this.nonNullOptionalFieldsInstance
                     &&  null == templateModel.nonNullOptionalFieldsInstance)
                         return false;
-                if (null != this.nonNullOptionalFieldsInstance)
-                    if (!this.nonNullOptionalFieldsInstance.equals(
-                    templateModel.nonNullOptionalFieldsInstance)) return false;
-
-                return this.getTimestamp() == templateModel.getTimestamp();
+                if (null == this.nonNullOptionalFieldsInstance)
+                    return true;
+                else
+                    return this.nonNullOptionalFieldsInstance.equals(
+                        templateModel.nonNullOptionalFieldsInstance);
             }
             else return false;
         else return false;
@@ -387,8 +383,6 @@ implements java.lang.Cloneable
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
     // endregion
-
-    public long getTimestamp() { return this.timestamp; }
 
     public org.wheatgenetics.coordinate.model.Cell nextFreeCell(              // TODO: Remove later.
     final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)

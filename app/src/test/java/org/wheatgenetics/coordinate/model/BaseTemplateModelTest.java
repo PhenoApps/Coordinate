@@ -27,10 +27,10 @@ public class BaseTemplateModelTest extends java.lang.Object
         @android.support.annotation.IntRange(from = 1) final int rows                        ,
         @android.support.annotation.IntRange(from = 1) final int cols                        ,
         @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-        final boolean colNumbering, final boolean rowNumbering)
+        final boolean colNumbering, final boolean rowNumbering, final long timestamp)
         {
-            super(id, title, type, rows, cols,
-                generatedExcludedCellsAmount, colNumbering, rowNumbering);
+            super(id, title, type, rows, cols, generatedExcludedCellsAmount,
+                colNumbering, rowNumbering, timestamp);
         }
 
         private ConcreteBaseTemplateModel(final java.lang.String title,
@@ -38,10 +38,10 @@ public class BaseTemplateModelTest extends java.lang.Object
         @android.support.annotation.IntRange(from = 1) final int rows                        ,
         @android.support.annotation.IntRange(from = 1) final int cols                        ,
         @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-        final boolean colNumbering, final boolean rowNumbering)
+        final boolean colNumbering, final boolean rowNumbering, final long timestamp)
         {
-            super(title, type, rows, cols,
-                generatedExcludedCellsAmount, colNumbering, rowNumbering);
+            super(title, type, rows, cols, generatedExcludedCellsAmount,
+                colNumbering, rowNumbering, timestamp);
         }
     }
 
@@ -58,7 +58,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */ 2                                                          ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ true );
+            /* rowNumbering                 => */ true ,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -72,7 +73,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */ 2                                                          ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ true );
+            /* rowNumbering                 => */ true ,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -86,7 +88,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */ -5                                                         ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ false);
+            /* rowNumbering                 => */ false,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -100,7 +103,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */    0                                               ,
             /* generatedExcludedCellsAmount => */ 0   ,
             /* colNumbering                 => */ true,
-            /* rowNumbering                 => */ true);
+            /* rowNumbering                 => */ true,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -114,7 +118,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */ 2                                                          ,
             /* generatedExcludedCellsAmount => */ -90  ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ false);
+            /* rowNumbering                 => */ false,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test
@@ -128,7 +133,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols  => */  4                                                  ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ true ,
-            /* rowNumbering                 => */ false);
+            /* rowNumbering                 => */ false,
+            /* timestamp                    => */ 0    );
     }
     // endregion
 
@@ -143,7 +149,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols         => */ 2                                                          ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ true );
+            /* rowNumbering                 => */ true ,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -156,7 +163,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols         => */ -5                                                         ,
             /* generatedExcludedCellsAmount => */ 0    ,
             /* colNumbering                 => */ false,
-            /* rowNumbering                 => */ false);
+            /* rowNumbering                 => */ false,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -169,7 +177,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* cols         => */    0                                               ,
             /* generatedExcludedCellsAmount => */ 0   ,
             /* colNumbering                 => */ true,
-            /* rowNumbering                 => */ true);
+            /* rowNumbering                 => */ true,
+            /* timestamp                    => */ 0    );
     }
 
     @org.junit.Test
@@ -184,7 +193,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols         => */  4                                                  ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ true ,
-                    /* rowNumbering                 => */ false);
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getId(), 0);
     }
     // endregion
@@ -205,7 +215,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                 ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ true );
+                    /* rowNumbering                 => */ true ,
+                    /* timestamp                    => */ 0    );
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getTitle(), firstTestTitle);
 
         final java.lang.String secondTestTitle = "secondTestTitle";
@@ -229,7 +240,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols                         => */ 20               ,
                     /* generatedExcludedCellsAmount => */  0               ,
                     /* colNumbering                 => */ false            ,
-                    /* rowNumbering                 => */ true             );
+                    /* rowNumbering                 => */ true             ,
+                    /* timestamp                    => */ 0                );
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getType(), firstTemplateType);
 
         final org.wheatgenetics.coordinate.model.TemplateType secondTemplateType =
@@ -252,7 +264,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ true );
+                    /* rowNumbering                 => */ true ,
+                    /* timestamp                    => */ 0    );
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getRows(),  9);
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getCols(), 20);
     }
@@ -271,7 +284,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ firstGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ false                            ,
-                    /* rowNumbering                 => */ true                             );
+                    /* rowNumbering                 => */ true                             ,
+                    /* timestamp                    => */ 0                                );
         org.junit.Assert.assertEquals(firstGeneratedExcludedCellsAmount,
             concreteBaseTemplateModel.getGeneratedExcludedCellsAmount());
 
@@ -297,7 +311,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ true );
+                    /* rowNumbering                 => */ true ,
+                    /* timestamp                    => */ 0    );
         concreteBaseTemplateModel.setGeneratedExcludedCellsAmount(-7);
     }
 
@@ -315,7 +330,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0                ,
                     /* colNumbering                 => */ firstColNumbering,
-                    /* rowNumbering                 => */ true             );
+                    /* rowNumbering                 => */ true             ,
+                    /* timestamp                    => */ 0                );
         org.junit.Assert.assertEquals(
             concreteBaseTemplateModel.getColNumbering(), firstColNumbering);
 
@@ -341,7 +357,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0                ,
                     /* colNumbering                 => */ false            ,
-                    /* rowNumbering                 => */ firstRowNumbering);
+                    /* rowNumbering                 => */ firstRowNumbering,
+                    /* timestamp                    => */ 0                );
         org.junit.Assert.assertEquals(
             concreteBaseTemplateModel.getRowNumbering(), firstRowNumbering);
 
@@ -368,10 +385,11 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 9    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ false);
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
         final java.lang.String expectedString =
-            "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, g" +
-            "eneratedExcludedCellsAmount=9, colNumbering=false, rowNumbering=false]";
+            "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, gener" +
+            "atedExcludedCellsAmount=9, colNumbering=false, rowNumbering=false, stamp=0]";
         org.junit.Assert.assertEquals(expectedString, concreteBaseTemplateModel.toString());
     }
 
@@ -395,7 +413,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols                         => */ testCols                        ,
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
-                    /* rowNumbering                 => */ testRowNumbering                ),
+                    /* rowNumbering                 => */ testRowNumbering                ,
+                    /* timestamp                    => */ 0                               ),
             secondConcreteBasePartialTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id                           => */ testId                          ,
@@ -405,7 +424,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols                         => */ testCols                        ,
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
-                    /* rowNumbering                 => */ testRowNumbering                );
+                    /* rowNumbering                 => */ testRowNumbering                ,
+                    /* timestamp                    => */ 0                               );
 
         org.junit.Assert.assertTrue(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
@@ -496,9 +516,11 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ false);
-        final java.lang.String expectedFormatString = "%s [id: 05, title=testTitle, type=0, rows" +
-            "=9, cols=20, generatedExcludedCellsAmount=0, colNumbering=false, rowNumbering=false";
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
+        final java.lang.String expectedFormatString =
+            "%s [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExc" +
+            "ludedCellsAmount=0, colNumbering=false, rowNumbering=false, stamp=0";
         org.junit.Assert.assertEquals(expectedFormatString,
             concreteBaseTemplateModel.formatString());
     }
@@ -512,6 +534,7 @@ public class BaseTemplateModelTest extends java.lang.Object
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
         final int     testRows = 15, testCols = 1, testGeneratedExcludedCellsAmount = 0;
         final boolean testColNumbering = true, testRowNumbering = false                ;
+        final long    testTimestamp = 0                                                ;
 
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             firstConcreteBasePartialTemplateModel = new
@@ -523,7 +546,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                         /* cols                         => */ testCols                        ,
                         /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                         /* colNumbering                 => */ testColNumbering                ,
-                        /* rowNumbering                 => */ testRowNumbering                ),
+                        /* rowNumbering                 => */ testRowNumbering                ,
+                        /* timestamp                    => */ testTimestamp                   ),
             secondConcreteBasePartialTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                         /* id    => */ testId                                              ,
@@ -531,9 +555,10 @@ public class BaseTemplateModelTest extends java.lang.Object
                         /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
                         /* rows  => */ 3                                                   ,
                         /* cols  => */ 9                                                   ,
-                        /* generatedExcludedCellsAmount => */ 3    ,
-                        /* colNumbering                 => */ false,
-                        /* rowNumbering                 => */ true );
+                        /* generatedExcludedCellsAmount => */ 3            ,
+                        /* colNumbering                 => */ false        ,
+                        /* rowNumbering                 => */ true         ,
+                        /* timestamp                    => */ testTimestamp);                // same
 
         org.junit.Assert.assertFalse(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
@@ -561,6 +586,7 @@ public class BaseTemplateModelTest extends java.lang.Object
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
         final int     testRows = 15, testCols = 1, testGeneratedExcludedCellsAmount = 5;
         final boolean testColNumbering = true, testRowNumbering = false                ;
+        final long    testTimestamp = 0;
 
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             firstConcreteBasePartialTemplateModel = new
@@ -572,7 +598,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols                         => */ testCols                        ,
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
-                    /* rowNumbering                 => */ testRowNumbering                ),
+                    /* rowNumbering                 => */ testRowNumbering                ,
+                    /* timestamp                    => */ testTimestamp                   ),
             secondConcreteBasePartialTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id    => */ testId                                             ,
@@ -582,7 +609,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 9                                                  ,
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
-                    /* rowNumbering                 => */ testRowNumbering                );
+                    /* rowNumbering                 => */ testRowNumbering                ,
+                    /* timestamp                    => */ testTimestamp                   ); // same
 
         org.junit.Assert.assertFalse(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
@@ -608,7 +636,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 20                                                  ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ false);
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
         org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.rowItems("Row"),
             org.wheatgenetics.javalib.Utils.stringArray("Row 1"));
 
@@ -621,7 +650,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* cols  => */ 20                                                  ,
                 /* generatedExcludedCellsAmount => */ 0    ,
                 /* colNumbering                 => */ false,
-                /* rowNumbering                 => */ false);
+                /* rowNumbering                 => */ false,
+                /* timestamp                    => */ 0    );
         org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.rowItems("Row"),
             new java.lang.String[] {"Row 1", "Row 2", "Row 3"} );
     }
@@ -639,7 +669,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* cols  => */ 1                                                   ,
                     /* generatedExcludedCellsAmount => */ 0    ,
                     /* colNumbering                 => */ false,
-                    /* rowNumbering                 => */ false);
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
         org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.colItems("Column"),
             org.wheatgenetics.javalib.Utils.stringArray("Column 1"));
 
@@ -652,7 +683,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* cols  => */ 3                                                   ,
                 /* generatedExcludedCellsAmount => */ 0    ,
                 /* colNumbering                 => */ false,
-                /* rowNumbering                 => */ false);
+                /* rowNumbering                 => */ false,
+                /* timestamp                    => */ 0    );
         org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.colItems("Column"),
             new java.lang.String[] {"Column 1", "Column 2", "Column 3"} );
     }

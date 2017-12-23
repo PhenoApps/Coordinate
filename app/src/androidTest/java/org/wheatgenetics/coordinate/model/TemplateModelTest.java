@@ -135,7 +135,7 @@ public class TemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedFormatString = "%s [id: 09, title=testTitle, type=1, ro" +
             "ws=5, cols=2, generatedExcludedCellsAmount=0, colNumbering=true, rowNumbering=fal" +
-            "se, options=, initialExcludedCells=%s, excludedRows=%s, excludedCols=%s, stamp=%d]";
+            "se, stamp=0, options=, initialExcludedCells=%s, excludedRows=%s, excludedCols=%s]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 9          ,
@@ -159,8 +159,8 @@ public class TemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedString =
             "TemplateModel [id: 03, title=testTitle, type=1, rows=5, cols=2, generatedExcludedCel" +
-            "lsAmount=0, colNumbering=true, rowNumbering=false, options=, initialExcludedCells=nu" +
-            "ll, excludedRows=null, excludedCols=null, stamp=0]";
+            "lsAmount=0, colNumbering=true, rowNumbering=false, stamp=0, options=, initialExclude" +
+            "dCells=null, excludedRows=null, excludedCols=null]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 3          ,
