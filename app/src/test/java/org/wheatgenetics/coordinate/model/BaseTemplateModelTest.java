@@ -34,9 +34,15 @@ public class BaseTemplateModelTest extends java.lang.Object
         }
 
         private ConcreteBaseTemplateModel(final java.lang.String title,
-        final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+        final org.wheatgenetics.coordinate.model.TemplateType type,
+        @android.support.annotation.IntRange(from = 1) final int rows                        ,
+        @android.support.annotation.IntRange(from = 1) final int cols                        ,
+        @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
         final boolean colNumbering, final boolean rowNumbering)
-        { super(title, type, rows, cols, colNumbering, rowNumbering); }
+        {
+            super(title, type, rows, cols,
+                generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        }
     }
 
     // region Constructor Tests
@@ -135,8 +141,9 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
             /* rows         => */ 0                                                          ,
             /* cols         => */ 2                                                          ,
-            /* colNumbering => */ false                                                      ,
-            /* rowNumbering => */ true                                                       );
+            /* generatedExcludedCellsAmount => */ 0    ,
+            /* colNumbering                 => */ false,
+            /* rowNumbering                 => */ true );
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -145,10 +152,11 @@ public class BaseTemplateModelTest extends java.lang.Object
         new org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
             /* title        => */ "testTitle"                                                ,
             /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
-            /* rows         => */ 2                                                          ,
+            /* rows         => */  2                                                         ,
             /* cols         => */ -5                                                         ,
-            /* colNumbering => */ false                                                      ,
-            /* rowNumbering => */ false                                                      );
+            /* generatedExcludedCellsAmount => */ 0    ,
+            /* colNumbering                 => */ false,
+            /* rowNumbering                 => */ false);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -158,9 +166,10 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* title        => */ "testTitle"                                        ,
             /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
             /* rows         => */ -999                                               ,
-            /* cols         => */ 0                                                  ,
-            /* colNumbering => */ true                                               ,
-            /* rowNumbering => */ true                                               );
+            /* cols         => */    0                                               ,
+            /* generatedExcludedCellsAmount => */ 0   ,
+            /* colNumbering                 => */ true,
+            /* rowNumbering                 => */ true);
     }
 
     @org.junit.Test
@@ -172,9 +181,10 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* title        => */ "testTitle"                                         ,
                     /* type         => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
                     /* rows         => */ 99                                                  ,
-                    /* cols         => */ 4                                                   ,
-                    /* colNumbering => */ true                                                ,
-                    /* rowNumbering => */ false                                               );
+                    /* cols         => */  4                                                  ,
+                    /* generatedExcludedCellsAmount => */ 0    ,
+                    /* colNumbering                 => */ true ,
+                    /* rowNumbering                 => */ false);
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getId(), 0);
     }
     // endregion
@@ -521,20 +531,21 @@ public class BaseTemplateModelTest extends java.lang.Object
                         /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
                         /* rows  => */ 3                                                   ,
                         /* cols  => */ 9                                                   ,
-                        /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
-                        /* colNumbering                 => */ false                           ,
-                        /* rowNumbering                 => */ true                            );
+                        /* generatedExcludedCellsAmount => */ 3    ,
+                        /* colNumbering                 => */ false,
+                        /* rowNumbering                 => */ true );
 
         org.junit.Assert.assertFalse(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
 
         secondConcreteBasePartialTemplateModel.assign(
-            /* title        => */ testTitle       ,
-            /* type         => */ testTemplateType,
-            /* rows         => */ testRows        ,
-            /* cols         => */ testCols        ,
-            /* colNumbering => */ testColNumbering,
-            /* rowNumbering => */ testRowNumbering);
+            /* title                        => */ testTitle                       ,
+            /* type                         => */ testTemplateType                ,
+            /* rows                         => */ testRows                        ,
+            /* cols                         => */ testCols                        ,
+            /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
+            /* colNumbering                 => */ testColNumbering                ,
+            /* rowNumbering                 => */ testRowNumbering                );
         org.junit.Assert.assertTrue(
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
     }

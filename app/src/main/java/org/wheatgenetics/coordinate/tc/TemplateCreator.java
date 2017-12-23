@@ -17,7 +17,11 @@ org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler { public abstract void handleTemplateCreated(); }
+    public interface Handler
+    {
+        public abstract void handleTemplateCreated(
+            org.wheatgenetics.coordinate.model.TemplateModel templateModel);
+    }
 
     // region Fields
     private final android.app.Activity                                    activity;
@@ -45,7 +49,6 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
             this.setExcludesOptionalFieldsNumberingAlertDialog =
                 new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
                     this.activity, this);
-        assert null != this.templateModel; this.templateModel.clearExcludedsAndOptionalFields();
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
@@ -53,19 +56,16 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
     @java.lang.Override
     public void handleSetDone()
-    { assert null != this.handler; this.handler.handleTemplateCreated(); }
+    { assert null != this.handler; this.handler.handleTemplateCreated(this.templateModel); }
     // endregion
     // endregion
 
-    public void create(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    public void create()
     {
-        if (null != templateModel)
-        {
-            if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
-                new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
-                    this.activity, this);
-            this.templateModel = templateModel;
-            this.assignTitleRowsColsAlertDialog.show(this.templateModel);
-        }
+        if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
+            new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
+                this.activity, this);
+        this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined();
+        this.assignTitleRowsColsAlertDialog.show(this.templateModel);
     }
 }

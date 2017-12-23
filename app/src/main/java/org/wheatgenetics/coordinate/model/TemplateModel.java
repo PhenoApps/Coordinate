@@ -25,7 +25,7 @@ implements java.lang.Cloneable
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
-    private long timestamp;
+    private long timestamp;                                      // TODO: Move to BaseTemplateModel.
     // endregion
 
     // region Private Methods
@@ -69,30 +69,63 @@ implements java.lang.Cloneable
     // endregion
 
     // region Constructors
+    /** Called by clone(). */
     private TemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int rows                        ,
     @android.support.annotation.IntRange(from = 1) final int cols                        ,
     @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    final org.wheatgenetics.coordinate.model.Cells     initialExcludedCells,
+    final org.wheatgenetics.coordinate.model.RowOrCols excludedRows        ,
+    final org.wheatgenetics.coordinate.model.RowOrCols excludedCols        ,
     final boolean colNumbering, final boolean rowNumbering,
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
+    final long timestamp)
     {
         super(id, title, type, rows, cols,
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
-        this.nonNullOptionalFieldsInstance = optionalFields;
+        this.initialExcludedCellsInstance  = initialExcludedCells;
+        this.excludedRowsInstance          = excludedRows        ;
+        this.excludedColsInstance          = excludedCols        ;
+        this.nonNullOptionalFieldsInstance = optionalFields      ;
+        this.timestamp                     = timestamp           ;
     }
 
+    /** Called by clone() and third constructor. */
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols,
+    @android.support.annotation.IntRange(from = 1) final int rows                        ,
+    @android.support.annotation.IntRange(from = 1) final int cols                        ,
+    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    final org.wheatgenetics.coordinate.model.Cells     initialExcludedCells,
+    final org.wheatgenetics.coordinate.model.RowOrCols excludedRows        ,
+    final org.wheatgenetics.coordinate.model.RowOrCols excludedCols        ,
     final boolean colNumbering, final boolean rowNumbering,
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
+    final long timestamp)
     {
-        super(title, type, rows, cols, colNumbering, rowNumbering);
-        this.nonNullOptionalFieldsInstance = optionalFields;
+        super(title, type, rows, cols, generatedExcludedCellsAmount, colNumbering, rowNumbering);
+        this.initialExcludedCellsInstance  = initialExcludedCells;
+        this.excludedRowsInstance          = excludedRows        ;
+        this.excludedColsInstance          = excludedCols        ;
+        this.nonNullOptionalFieldsInstance = optionalFields      ;
+        this.timestamp                     = timestamp           ;
     }
 
+    /** Called by makeSeedDefault(), makeDNADefault(), and makeUserDefined(). */
+    private TemplateModel(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type,
+    @android.support.annotation.IntRange(from = 1) final int rows                        ,
+    @android.support.annotation.IntRange(from = 1) final int cols                        ,
+    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    final boolean rowNumbering,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    {
+        this(title, type, rows, cols, generatedExcludedCellsAmount,
+            null, null, null, true, rowNumbering, optionalFields, 0);
+    }
+
+    /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
     public TemplateModel(
     @android.support.annotation.IntRange(from = 1)         final long             id             ,
                                                            final java.lang.String title          ,
@@ -228,50 +261,63 @@ implements java.lang.Cloneable
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
     {
-        final long                                                             id = this.getId();
+        final long                                     id                   = this.getId();
+        final org.wheatgenetics.coordinate.model.Cells initialExcludedCells =
+            null == this.initialExcludedCellsInstance ? null :
+                (org.wheatgenetics.coordinate.model.Cells)
+                    this.initialExcludedCellsInstance.clone();
+        final org.wheatgenetics.coordinate.model.RowOrCols
+            excludedRows = null == this.excludedRowsInstance ? null :
+                (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedRowsInstance.clone(),
+            excludedCols = null == this.excludedColsInstance ? null :
+                (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedColsInstance.clone();
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
             null == this.nonNullOptionalFieldsInstance ? null :
                 (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
                     this.nonNullOptionalFieldsInstance.clone();
 
-        org.wheatgenetics.coordinate.model.TemplateModel result;
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-        {
-            result = new org.wheatgenetics.coordinate.model.TemplateModel(this.getTitle(),
-                this.getType(), this.getRows(), this.getCols(), this.getColNumbering(),
-                this.getRowNumbering(), optionalFields);
-            result.setGeneratedExcludedCellsAmount(this.getGeneratedExcludedCellsAmount());
-        }
+            return  new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* title                        => */ this.getTitle()                       ,
+                /* type                         => */ this.getType()                        ,
+                /* rows                         => */ this.getRows()                        ,
+                /* cols                         => */ this.getCols()                        ,
+                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                /* initialExcludedCells         => */ initialExcludedCells                  ,
+                /* excludedRows                 => */ excludedRows                          ,
+                /* excludedCols                 => */ excludedCols                          ,
+                /* colNumbering                 => */ this.getColNumbering()                ,
+                /* rowNumbering                 => */ this.getRowNumbering()                ,
+                /* optionalFields               => */ optionalFields                        ,
+                /* timestamp                    => */ this.getTimestamp()                   );
         else
-            result = new org.wheatgenetics.coordinate.model.TemplateModel(id, this.getTitle(),
-                this.getType(), this.getRows(), this.getCols(),
-                this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
-                this.getRowNumbering(), optionalFields);
-
-        if (null != this.initialExcludedCellsInstance) result.initialExcludedCellsInstance =
-            (org.wheatgenetics.coordinate.model.Cells) this.initialExcludedCellsInstance.clone();
-
-        if (null != this.excludedRowsInstance) result.excludedRowsInstance =
-            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedRowsInstance.clone();
-        if (null != this.excludedColsInstance) result.excludedColsInstance =
-            (org.wheatgenetics.coordinate.model.RowOrCols) this.excludedColsInstance.clone();
-
-        result.timestamp = this.getTimestamp();
-
-        return result;
+            return new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* id                           => */ id,
+                /* title                        => */ this.getTitle()                       ,
+                /* type                         => */ this.getType()                        ,
+                /* rows                         => */ this.getRows()                        ,
+                /* cols                         => */ this.getCols()                        ,
+                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                /* initialExcludedCells         => */ initialExcludedCells                  ,
+                /* excludedRows                 => */ excludedRows                          ,
+                /* excludedCols                 => */ excludedCols                          ,
+                /* colNumbering                 => */ this.getColNumbering()                ,
+                /* rowNumbering                 => */ this.getRowNumbering()                ,
+                /* optionalFields               => */ optionalFields                        ,
+                /* timestamp                    => */ this.getTimestamp()                   );
     }
     // endregion
 
+    /** Called by JoinedGridModel.populate(). */
     void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         assert null != templateModel;
-        super.assign(templateModel.getTitle(), templateModel.getType(),
-            templateModel.getRows(), templateModel.getCols(),
+        super.assign(templateModel.getTitle(), templateModel.getType(), templateModel.getRows(),
+            templateModel.getCols(), templateModel.getGeneratedExcludedCellsAmount(),
             templateModel.getColNumbering(), templateModel.getRowNumbering());
-        this.setGeneratedExcludedCellsAmount(templateModel.getGeneratedExcludedCellsAmount());
         this.nonNullOptionalFieldsInstance = templateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
 
-        this.clearExcludeds();
+        this.clearExcludeds();                                             // TODO: Still necessary?
     }
 
     // region Public Methods
@@ -281,13 +327,13 @@ implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.initialExcludedCells().add(row, col); }
 
-    public void makeOneRandomCell()
+    public void makeOneRandomCell()                                           // TODO: Remove later.
     {
         this.initialExcludedCells().makeOneRandomCell(
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 
-    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
+    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)  // TODO: Remove later.
     {
         this.initialExcludedCells().makeRandomCells(
             amount, /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
@@ -344,14 +390,7 @@ implements java.lang.Cloneable
 
     public long getTimestamp() { return this.timestamp; }
 
-    public void clearExcludedsAndOptionalFields()
-    {
-        this.clearExcludeds();
-        this.nonNullOptionalFieldsInstance =
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
-    }
-
-    public org.wheatgenetics.coordinate.model.Cell nextFreeCell(
+    public org.wheatgenetics.coordinate.model.Cell nextFreeCell(              // TODO: Remove later.
     final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)
     {
         if (null == candidateFreeCell)
@@ -407,32 +446,18 @@ implements java.lang.Cloneable
     // endregion
 
     // region Make Public Methods
-    public static org.wheatgenetics.coordinate.model.TemplateModel makeInitial()
-    {
-        return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title          => */ ""                                                  ,
-            /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-            /* rows           => */ 20                                                  ,
-            /* cols           => */ 10                                                  ,
-            /* colNumbering   => */ true                                                ,
-            /* rowNumbering   => */ false                                               ,
-            /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
-                NonNullOptionalFields.makeInitial());
-
-    }
-
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* title          => */ "Seed Tray"                                         ,
-                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                /* rows           => */  6                                                  ,
-                /* cols           => */ 20                                                  ,
-                /* colNumbering   => */ true                                                ,
-                /* rowNumbering   => */ true                                                ,
-                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
-                    NonNullOptionalFields.makeSeedDefault());
+                /* title => */ "Seed Tray"                                         ,
+                /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                /* rows  => */  6                                                  ,
+                /* cols  => */ 20                                                  ,
+                /* generatedExcludedCellsAmount => */ 0                            ,
+                /* rowNumbering                 => */ true                         ,
+                /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
+                    .NonNullOptionalFields.makeSeedDefault());
         {
             final org.wheatgenetics.coordinate.model.RowOrCols excludedRows = result.excludedRows();
             excludedRows.add(2); excludedRows.add(5);
@@ -442,18 +467,28 @@ implements java.lang.Cloneable
 
     static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModel result =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* title          => */ "DNA Plate"                                        ,
-                /* type           => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
-                /* rows           => */  8                                                 ,
-                /* cols           => */ 12                                                 ,
-                /* colNumbering   => */ true                                               ,
-                /* rowNumbering   => */ false                                              ,
-                /* optionalFields => */ org.wheatgenetics.coordinate.optionalField.
-                    NonNullOptionalFields.makeDNADefault());
-        result.setGeneratedExcludedCellsAmount(1);
-        return result;
+        return new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title => */ "DNA Plate"                                        ,
+            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows  => */  8                                                 ,
+            /* cols  => */ 12                                                 ,
+            /* generatedExcludedCellsAmount => */ 1                           ,
+            /* rowNumbering                 => */ false                       ,
+            /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFields.makeDNADefault());
+    }
+
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
+    {
+        return new org.wheatgenetics.coordinate.model.TemplateModel(
+            /* title => */ ""                                                         ,
+            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
+            /* rows  => */ 20                                                         ,
+            /* cols  => */ 10                                                         ,
+            /* generatedExcludedCellsAmount => */ 1                                   ,
+            /* rowNumbering                 => */ false                               ,
+            /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFields.makeNew());
     }
     // endregion
     // endregion

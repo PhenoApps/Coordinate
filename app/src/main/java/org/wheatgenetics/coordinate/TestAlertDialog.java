@@ -51,7 +51,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         optionalFieldAlertDialogUnderTest =
             org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest.NEITHER;
 
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModelInstance = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
         excludedRowsOrColsAlertDialogTesterInstance = null;
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
@@ -77,11 +77,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             if (null != this.nonNullOptionalFieldsInstance)
                 textBuilder.append(this.nonNullOptionalFieldsInstance.toJson());
 
-            if (null != this.templateModelInstance)
+            if (null != this.templateModel)
             {
                 {
                     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                        nonNullOptionalFields = this.templateModelInstance.optionalFields();
+                        nonNullOptionalFields = this.templateModel.optionalFields();
                     if (null != nonNullOptionalFields)
                     {
                         if (textBuilder.length() > 0) textBuilder.append('\n');
@@ -89,11 +89,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                     }
                 }
                 if (textBuilder.length() > 0) textBuilder.append('\n');
-                textBuilder.append("generatedExcludedCellsAmount=")
-                    .append(this.templateModelInstance.getGeneratedExcludedCellsAmount());
+                textBuilder.append("generatedExcludedCellsAmount=").append(
+                    this.templateModel.getGeneratedExcludedCellsAmount());
                 {
                     final java.lang.String excludeCellsAsJson =
-                        this.templateModelInstance.getInitialExcludedCellsAsJson();
+                        this.templateModel.getInitialExcludedCellsAsJson();
                     if (null != excludeCellsAsJson)
                     {
                         if (textBuilder.length() > 0) textBuilder.append('\n');
@@ -103,15 +103,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
                 if (textBuilder.length() > 0) textBuilder.append('\n');
                 textBuilder.append(java.lang.String.format("colNumbering=%b, rowNumbering=%b",
-                    this.templateModelInstance.getColNumbering(),
-                    this.templateModelInstance.getRowNumbering()));
+                    this.templateModel.getColNumbering(), this.templateModel.getRowNumbering()));
 
                 if (textBuilder.length() > 0) textBuilder.append('\n');
                 textBuilder.append(java.lang.String.format("title=%s, type=%d, rows=%d, cols=%d",
-                    this.templateModelInstance.getTitle()         ,
-                    this.templateModelInstance.getType().getCode(),
-                    this.templateModelInstance.getRows()          ,
-                    this.templateModelInstance.getCols()          ));
+                    this.templateModel.getTitle(), this.templateModel.getType().getCode(),
+                    this.templateModel.getRows (), this.templateModel.getCols()          ));
             }
         }
         assert null != this.textView; this.textView.setText(textBuilder.toString());
@@ -119,12 +116,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
     {
-        return null == this.templateModelInstance                                          ?
+        return null == this.templateModel                                                  ?
             null == this.nonNullOptionalFieldsInstance                                     ?
                 this.nonNullOptionalFieldsInstance =
                     new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields() :
                 this.nonNullOptionalFieldsInstance                                         :
-            this.templateModelInstance.optionalFields()                                    ;
+            this.templateModel.optionalFields()                                            ;
     }
 
     private void addOptionalField()
@@ -149,20 +146,13 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
 
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
-    {
-        if (null == this.templateModelInstance) this.templateModelInstance =
-            org.wheatgenetics.coordinate.model.TemplateModel.makeInitial();
-        return this.templateModelInstance;
-    }
-
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
     excludedRowsOrColsAlertDialogTester()
     {
         if (null == this.excludedRowsOrColsAlertDialogTesterInstance)
             this.excludedRowsOrColsAlertDialogTesterInstance =
                 new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester(
-                    this.activity(), this.templateModel());
+                    this.activity(), this.templateModel);
         return this.excludedRowsOrColsAlertDialogTesterInstance;
     }
 
@@ -174,7 +164,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.generatedExcludedCellsAlertDialogTester)
             this.generatedExcludedCellsAlertDialogTester =
                 new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester(
-                    this.activity(), this.templateModel());
+                    this.activity(), this.templateModel);
         this.generatedExcludedCellsAlertDialogTester.testGeneratedExcludedCells();
     }
 
@@ -182,7 +172,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.excludeAlertDialogTester) this.excludeAlertDialogTester =
             new org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester(
-                this.activity(), this.templateModel());
+                this.activity(), this.templateModel);
         this.excludeAlertDialogTester.testExclude();
     }
 
@@ -190,7 +180,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.setNumberingAlertDialogTester) this.setNumberingAlertDialogTester =
             new org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester(
-                this.activity(), this.templateModel());
+                this.activity(), this.templateModel);
         this.setNumberingAlertDialogTester.testSetNumbering();
     }
 
@@ -199,7 +189,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialogTester)
             this.setExcludesOptionalFieldsNumberingAlertDialogTester = new
                 org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester(
-                    this.activity(), this.templateModel());
+                    this.activity(), this.templateModel);
         this.setExcludesOptionalFieldsNumberingAlertDialogTester
             .testSetExcludesOptionalFieldsNumbering();
     }
@@ -209,7 +199,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.assignTitleRowsColsAlertDialogTester)
             this.assignTitleRowsColsAlertDialogTester =
                 new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester(
-                    this.activity(), this.templateModel(), this);
+                    this.activity(), this.templateModel, this);
         this.assignTitleRowsColsAlertDialogTester.testAssignTitleRowsCols();
     }
 
@@ -218,7 +208,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.templateCreator) this.templateCreator =
             new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity(), this);
-        this.templateCreator.create(this.templateModel());
+        this.templateCreator.create();
     }
     // endregion
 
@@ -400,7 +390,9 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
     @java.lang.Override
-    public void handleTemplateCreated() { this.refreshText(); }
+    public void handleTemplateCreated(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    { this.templateModel = templateModel; this.refreshText(); }
     // endregion
     // endregion
 }

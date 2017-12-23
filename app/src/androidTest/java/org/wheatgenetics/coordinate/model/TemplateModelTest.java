@@ -417,7 +417,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        ),
-        secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+            secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 10          ,               // same on purpose
                 /* title                        => */ "qwertyasdf",
                 /* code                         => */ 2           ,
@@ -462,27 +462,12 @@ public class TemplateModelTest extends java.lang.Object
                     // assign() does *not* assign the excludeds.  (In fact, it clears them.)
 
 
-                    secondTemplateModel.clearExcludedsAndOptionalFields();
-                    org.junit.Assert.assertFalse(firstTemplateModel.equals(secondTemplateModel));
-                    // The two templateModels are *still* not equal even though
-                    // clearExcludedsAndOptionalFields() was called to make secondTemplateModel have
-                    // 0 excluded cells, 0 excluded rows, and 0 excluded columns just like
-                    // firstTemplateModel.  They are not equal for two reasons: 1) clearing empties
-                    // the data structures used to hold the excludeds but does not deallocate the
-                    // data structures or assign null to them.  Thus, firstTemplateModel's data
-                    // structure references still point to null while secondTemplateModel's data
-                    // structure references point to allocated memory.
-                    // 2) clearExcludedsAndOptionalFields() "clears" the optional fields by
-                    // initializing them.  This means secondTemplateModel's optional fields are
-                    // initialized while firstTemplateModel's is still null.
-
                     firstTemplateModel.addInitialExcludedCell(excludedCellCol, excludedCellRow);
                 }
                 firstTemplateModel.addExcludedRow(excludedRow);
             }
             firstTemplateModel.addExcludedCol(excludedCol);
         }
-        firstTemplateModel.clearExcludedsAndOptionalFields();
         org.junit.Assert.assertTrue(firstTemplateModel.equals(secondTemplateModel));
     }
 
@@ -744,29 +729,6 @@ public class TemplateModelTest extends java.lang.Object
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ timestamp  );
         org.junit.Assert.assertEquals(templateModel.getTimestamp(), timestamp);
-    }
-
-    @org.junit.Test
-    public void clearExcludedsAndOptionalFieldsSucceeds()
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ 10         ,
-                /* title                        => */ "testTitle",
-                /* code                         => */ 1          ,
-                /* rows                         => */ 5          ,
-                /* cols                         => */ 2          ,
-                /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
-                /* excludedRows                 => */ null       ,
-                /* excludedCols                 => */ null       ,
-                /* colNumbering                 => */ 1          ,
-                /* rowNumbering                 => */ 0          ,
-                /* optionalFields               => */ null       ,
-                /* timestamp                    => */ 880        );
-        templateModel.clearExcludedsAndOptionalFields();
-        org.junit.Assert.assertEquals(templateModel.optionalFieldsAsJson(),
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew().toJson());
     }
 
     // region nextFreeCell() Public Method Tests
