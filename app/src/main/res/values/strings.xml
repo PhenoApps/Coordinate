@@ -62,4 +62,7 @@
     <string name="GetTemplateChoiceAlertDialogTitle">Template Options</string>
     <string name="GetTemplateChoiceAlertDialogOldItem">Load Template</string>
     <string name="GetTemplateChoiceAlertDialogNewItem">New Template</string>
+
+    <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
+    <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
 </resources>
