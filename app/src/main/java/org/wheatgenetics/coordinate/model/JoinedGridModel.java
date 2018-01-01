@@ -42,7 +42,10 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     // endregion
 
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
-    final java.lang.String title, final long timestamp,
+    final java.lang.String title, final java.lang.String excludedCells,
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol,
+    final java.lang.String optionalFields, final long timestamp,
 
     @android.support.annotation.IntRange(from = 1        ) final long             templateId     ,
                                                            final java.lang.String templateTitle  ,
@@ -54,12 +57,12 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    final java.lang.String optionalFields, final long templateTimestamp)
+    final java.lang.String templateOptionalFields, final long templateTimestamp)
     {
-        super(id, title, timestamp);
+        super(id, title, excludedCells, maxRow, maxCol, optionalFields, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             templateTitle, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, optionalFields,
+            excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
             templateTimestamp);
     }
 

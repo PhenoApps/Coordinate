@@ -8,33 +8,70 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
  */
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private       long             templateId;
-    private final java.lang.String title     ;
-    private final long             timestamp ;
+    private       long                                     templateId   ;
+    private final java.lang.String                         title        ;
+    private final org.wheatgenetics.coordinate.model.Cells excludedCells;
+    private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+        nonNullOptionalFieldsInstance;
+    private final long timestamp;
     // endregion
 
     // region Constructors
     public GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String title)
+    final java.lang.String title, final org.wheatgenetics.coordinate.model.Cells excludedCells,
+    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
         if (templateId < 1) throw new java.lang.IllegalArgumentException();
 
-        this.templateId = templateId                          ;
-        this.title      = title                               ;
-        this.timestamp  = java.lang.System.currentTimeMillis();
+        this.templateId                    = templateId                          ;
+        this.title                         = title                               ;
+        this.excludedCells                 = excludedCells                       ;
+        this.nonNullOptionalFieldsInstance = optionalFields                      ;
+        this.timestamp                     = java.lang.System.currentTimeMillis();
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long id,
-    final java.lang.String title, final long timestamp)
-    { super(id); this.title = title; this.timestamp = timestamp; }
+    final java.lang.String title, java.lang.String excludedCells,
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol,
+    java.lang.String optionalFields, final long timestamp)
+    {
+        super(id);
+
+        this.title = title;
+
+        if (null == excludedCells)
+            this.excludedCells = null;
+        else
+        {
+            excludedCells = excludedCells.trim();
+            if (excludedCells.length() <= 0)
+                this.excludedCells = null;
+            else
+                this.excludedCells = new org.wheatgenetics.coordinate.model.Cells(
+                    /* json   => */ excludedCells,
+                    /* maxRow => */ maxRow       ,
+                    /* maxCol => */ maxCol       );
+        }
+
+        if (null != optionalFields) optionalFields = optionalFields.trim();
+        this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
+            optionalFields.equals("") ? null : new
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+
+        this.timestamp = timestamp;
+    }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -45,5 +82,14 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     public long             getTemplateId() { return this.templateId; }
     public java.lang.String getTitle     () { return this.title     ; }
     public long             getTimestamp () { return this.timestamp ; }
+
+    public java.lang.String excludedCellsAsJson()
+    { return null == this.excludedCells ? null : this.excludedCells.json(); }
+
+    public java.lang.String optionalFieldsAsJson()
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            null : this.nonNullOptionalFieldsInstance.toJson();
+    }
     // endregion
 }

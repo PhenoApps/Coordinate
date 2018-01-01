@@ -22,9 +22,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String TABLE_NAME = "grids";
 
     private static final java.lang.String TEMP_FIELD_NAME = "temp",
-        TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
+        TITLE_FIELD_NAME = "title", ECELLS_FIELD_NAME = "ecells", OPTIONS_FIELD_NAME = "options",
+        STAMP_FIELD_NAME = "stamp";
     private static final java.lang.String TEMPLATETITLE_FIELD_NAME = "templateTitle",
-        TEMPLATETYPE_FIELD_NAME = "templateType", TEMPLATESTAMP_FIELD_NAME = "templateStamp";
+        TEMPLATETYPE_FIELD_NAME = "templateType", TEMPLATEECELLS_FIELD_NAME = "templateEcells",
+        TEMPLATEOPTIONS_FIELD_NAME = "templateOptions", TEMPLATESTAMP_FIELD_NAME = "templateStamp";
     // endregion
 
     private static java.lang.String idFieldName, joinedQuery;
@@ -46,10 +48,15 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         final java.lang.String
             titleFieldName = gridsQualifier +
                 org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
+            ecellsFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.ECELLS_FIELD_NAME,
+            optionsFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.OPTIONS_FIELD_NAME,
             stampFieldName = gridsQualifier +
                 org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
             tempFieldName = gridsQualifier +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
+
             templateTitleFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
             templateTypeFieldName = templatesQualifier +
@@ -60,7 +67,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
             erandFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME,
-            ecellsFieldName = templatesQualifier +
+            templateEcellsFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
             erowsFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
@@ -70,7 +77,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
             rnumbFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
-            optionsFieldName = templatesQualifier +
+            templateOptionsFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
             templateStampFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
@@ -78,14 +85,20 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
         org.wheatgenetics.coordinate.database.GridsTable.joinedQuery = "SELECT ALL " +
             org.wheatgenetics.coordinate.database.GridsTable.idFieldName + ", " +
-            titleFieldName + ", " + stampFieldName + ", " + tempFieldName + ", " +
+            titleFieldName + ", " + ecellsFieldName + ", " + optionsFieldName + ", " +
+            stampFieldName + ", " + tempFieldName + ", " +
+
             templateTitleFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME + ", " +
             templateTypeFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME + ", " +
             rowsFieldName + ", " + colsFieldName + ", " + erandFieldName + ", " +
-            ecellsFieldName + ", " + erowsFieldName + ", " + ecolsFieldName + ", " +
-            cnumbFieldName + ", " + rnumbFieldName + ", " + optionsFieldName + ", " +
+            templateEcellsFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATEECELLS_FIELD_NAME + ", " +
+            erowsFieldName + ", " + ecolsFieldName + ", " +
+            cnumbFieldName + ", " + rnumbFieldName + ", " +
+            templateOptionsFieldName + " AS " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATEOPTIONS_FIELD_NAME + ", " +
             templateStampFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATESTAMP_FIELD_NAME +
                     " FROM "  + gridsTableName + ", " + templatesTableName +
@@ -96,39 +109,54 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @java.lang.Override
     org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
     {
-        return null == cursor ? null : new org.wheatgenetics.coordinate.model.JoinedGridModel(
-            /* id => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-            /* title => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
-            /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
-            /* templateId => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
-            /* templateTitle => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME)),
-            /* code => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME)),
-            /* rows => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
-            /* cols => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME)),
-            /* generatedExcludedCellsAmount => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME)),
-            /* initialExcludedCells => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME)),
-            /* excludedRows => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME)),
-            /* excludedCols => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME)),
-            /* colNumbering => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
-            /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
-            /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
-            /* templateTimestamp => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.GridsTable.TEMPLATESTAMP_FIELD_NAME)));
+        if (null == cursor)
+            return null;
+        else
+        {
+            final int
+                rows = cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME)),
+                cols = cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
+            return new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+                /* title => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME)),
+                /* excludedCells => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.ECELLS_FIELD_NAME)),
+                /* maxRow         => */ rows,
+                /* maxCol         => */ cols,
+                /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.OPTIONS_FIELD_NAME)),
+                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME)),
+
+                /* templateId => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME)),
+                /* templateTitle => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETITLE_FIELD_NAME)),
+                /* code => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMPLATETYPE_FIELD_NAME)),
+                /* rows                         => */ rows,
+                /* cols                         => */ cols,
+                /* generatedExcludedCellsAmount => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME)),
+                /* initialExcludedCells => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME)),
+                /* excludedRows => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME)),
+                /* excludedCols => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME)),
+                /* colNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
+                /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
+                /* templateOptionalFields => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
+                /* templateTimestamp => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.TEMPLATESTAMP_FIELD_NAME)));
+        }
     }
 
     @java.lang.Override
@@ -145,6 +173,10 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 gridModel.getTemplateId());
             result.put(org.wheatgenetics.coordinate.database.GridsTable.TITLE_FIELD_NAME,
                 gridModel.getTitle());
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.ECELLS_FIELD_NAME,
+                gridModel.excludedCellsAsJson());
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.OPTIONS_FIELD_NAME,
+                gridModel.optionalFieldsAsJson());
             result.put(org.wheatgenetics.coordinate.database.GridsTable.STAMP_FIELD_NAME,
                 gridModel.getTimestamp());
         }
