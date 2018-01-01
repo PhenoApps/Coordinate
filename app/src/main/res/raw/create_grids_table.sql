@@ -4,5 +4,6 @@ CREATE TABLE grids
 		temp		INTEGER,
 		title		TEXT,
 		ecells		TEXT,
+		options		TEXT,
 		stamp		INTEGER
 	)
