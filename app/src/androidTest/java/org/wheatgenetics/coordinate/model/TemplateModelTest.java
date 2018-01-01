@@ -709,28 +709,6 @@ public class TemplateModelTest extends java.lang.Object
     }
     // endregion
 
-    @org.junit.Test
-    public void getTimestampSucceeds()
-    {
-        final long timestamp = 880;
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ 10         ,
-                /* title                        => */ "testTitle",
-                /* code                         => */ 1          ,
-                /* rows                         => */ 5          ,
-                /* cols                         => */ 2          ,
-                /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
-                /* excludedRows                 => */ null       ,
-                /* excludedCols                 => */ null       ,
-                /* colNumbering                 => */ 1          ,
-                /* rowNumbering                 => */ 0          ,
-                /* optionalFields               => */ null       ,
-                /* timestamp                    => */ timestamp  );
-        org.junit.Assert.assertEquals(templateModel.getTimestamp(), timestamp);
-    }
-
     // region nextFreeCell() Public Method Tests
     @org.junit.Test
     public void nextFreeCellFailsAndSucceeds()

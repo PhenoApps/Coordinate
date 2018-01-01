@@ -369,6 +369,25 @@ public class BaseTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(
             concreteBaseTemplateModel.getRowNumbering(), secondRowNumbering);
     }
+
+    @org.junit.Test
+    public void getTimestampSucceeds()
+    {
+        final long timestamp = 880;
+        final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
+            concreteBaseTemplateModel = new
+                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
+                    /* id    => */ 10                                                  ,
+                    /* title => */ "testTitle"                                         ,
+                    /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                    /* rows  => */ 5                                                   ,
+                    /* cols  => */ 2                                                   ,
+                    /* generatedExcludedCellsAmount => */ 0        ,
+                    /* colNumbering                 => */ true     ,
+                    /* rowNumbering                 => */ false    ,
+                    /* timestamp                    => */ timestamp);
+        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getTimestamp(), timestamp);
+    }
     // endregion
 
     // region Overridden Method Tests
