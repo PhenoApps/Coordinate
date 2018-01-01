@@ -16,15 +16,15 @@ package org.wheatgenetics.coordinate.database;
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Constants
-            static final java.lang.String TABLE_NAME = "templates";
+    static final java.lang.String TABLE_NAME = "templates";
 
-            static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME   = "type"  ;
-            static final java.lang.String ROWS_FIELD_NAME  = "rows" , COLS_FIELD_NAME   = "cols"  ;
-    private static final java.lang.String ERAND_FIELD_NAME = "erand", ECELLS_FIELD_NAME = "ecells",
+    static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME   = "type"  ;
+    static final java.lang.String ROWS_FIELD_NAME  = "rows" , COLS_FIELD_NAME   = "cols"  ;
+    static final java.lang.String ERAND_FIELD_NAME = "erand", ECELLS_FIELD_NAME = "ecells",
         EROWS_FIELD_NAME = "erows", ECOLS_FIELD_NAME = "ecols";
-            static final java.lang.String CNUMB_FIELD_NAME   = "cnumb", RNUMB_FIELD_NAME = "rnumb";
-            static final java.lang.String OPTIONS_FIELD_NAME = "options";
-    private static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
+    static final java.lang.String CNUMB_FIELD_NAME   = "cnumb"  , RNUMB_FIELD_NAME = "rnumb";
+    static final java.lang.String OPTIONS_FIELD_NAME = "options";
+    static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
     // endregion
 
     // region Private Methods
