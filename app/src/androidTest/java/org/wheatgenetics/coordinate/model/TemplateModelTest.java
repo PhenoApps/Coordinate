@@ -472,8 +472,8 @@ public class TemplateModelTest extends java.lang.Object
     }
 
     // region Public Method Tests
-    // region excludedCells Public Method Tests
-    // region addInitialExcludedCell() excludedCells Public Method Tests
+    // region initialExcludedCells Public Method Tests
+    // region addInitialExcludedCell() initialExcludedCells Public Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void tooSmallRowAddInitialExcludedCellFails()
     {
@@ -706,6 +706,31 @@ public class TemplateModelTest extends java.lang.Object
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertFalse(templateModel.isExcludedCol(1));
+    }
+    // endregion
+
+    // region optionalFields Public Method Tests
+    @org.junit.Test
+    public void optionalFieldsMethodsSucceed()
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+            new org.wheatgenetics.coordinate.model.TemplateModel(
+                /* id                           => */ 10         ,
+                /* title                        => */ "testTitle",
+                /* code                         => */ 1          ,
+                /* rows                         => */ 5          ,
+                /* cols                         => */ 5          ,
+                /* generatedExcludedCellsAmount => */ 0          ,
+                /* initialExcludedCells         => */ null       ,
+                /* excludedRows                 => */ null       ,
+                /* excludedCols                 => */ null       ,
+                /* colNumbering                 => */ 1          ,
+                /* rowNumbering                 => */ 0          ,
+                /* optionalFields               => */ null       ,
+                /* timestamp                    => */ 880        );
+        org.junit.Assert.assertNull(templateModel.optionalFields       ());
+        org.junit.Assert.assertTrue(templateModel.optionalFieldsIsEmpty());
+        org.junit.Assert.assertNull(templateModel.optionalFieldsClone  ());
     }
     // endregion
 

@@ -377,6 +377,20 @@ implements java.lang.Cloneable
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean optionalFieldsIsEmpty()
+    {
+        return null == this.nonNullOptionalFieldsInstance ?
+            true : this.nonNullOptionalFieldsInstance.isEmpty();
+    }
+
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsClone()
+    {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+            (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
+                this.nonNullOptionalFieldsInstance.clone();
+    }
+
     public java.lang.String optionalFieldsAsJson()
     {
         return null == this.nonNullOptionalFieldsInstance ?
