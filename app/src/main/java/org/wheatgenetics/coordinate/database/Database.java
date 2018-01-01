@@ -73,8 +73,8 @@ class Database extends java.lang.Object
                     final int length = statementNodeList.getLength();
                     for (int i = 0; i < length; i++)
                     {
-                        final java.lang.String statement = statementNodeList.item(i)
-                            .getChildNodes().item(0).getNodeValue();
+                        final java.lang.String statement =
+                            statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
                         this.logWarning("statement: " + statement);
                         db.execSQL(statement);
                     }
