@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.content.Intent
+ * android.content.pm.PackageInfo
+ * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
  * android.support.design.widget.NavigationView
  * android.support.v4.view.GravityCompat
@@ -15,6 +17,8 @@ package org.wheatgenetics.coordinate;
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
+ *
+ * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.R
  *
@@ -90,27 +94,48 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
         }
         // endregion
 
-        // region Configure navigation menu.
-        final android.support.design.widget.NavigationView navigationView =
-            (android.support.design.widget.NavigationView) this.findViewById(
-                org.wheatgenetics.coordinate.R.id.nav_view);       // From layout/activity_main.xml.
-        assert null != navigationView; navigationView.setNavigationItemSelectedListener(
-            new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
-                /* activity    => */ this,
-                /* versionName => */ "versionName",                                                 // TODO
-                /* handler     => */ new org.wheatgenetics.coordinate.navigation
-                    .NavigationItemSelectedListener.Handler()
-                    {
-                        @java.lang.Override
-                        public void closeDrawer()
-                        { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
-                    },
-                /* versionOnClickListener => */ new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override
-                        public void onClick(final android.view.View v) {}                           // TODO
-                    }));
-        // endregion
+        {
+            // region Set version, part 1.
+            // Why are there two "Set version" regions ("part 1" and "part 2")?  So that versionName
+            // would be set earlier.  Why should versionName be set earlier?  So that its value
+            // could be passed to NavigationItemSelectedListener() in the "Configure navigation
+            // menu." region, below.
+            int versionCode; java.lang.String versionName;
+            try
+            {
+                final android.content.pm.PackageInfo packageInfo =
+                    this.getPackageManager().getPackageInfo(
+                        this.getPackageName(), /* flags => */ 0);
+                assert null != packageInfo;
+                versionCode = packageInfo.versionCode; versionName = packageInfo.versionName;
+            }
+            catch (final android.content.pm.PackageManager.NameNotFoundException e)
+            { versionCode = 0; versionName = org.wheatgenetics.javalib.Utils.adjust(null); }
+            // endregion
+
+            // region Configure navigation menu.
+            final android.support.design.widget.NavigationView navigationView =
+                (android.support.design.widget.NavigationView) this.findViewById(
+                    org.wheatgenetics.coordinate.R.id.nav_view);   // From layout/activity_main.xml.
+            assert null != navigationView;
+            navigationView.setNavigationItemSelectedListener(
+                new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
+                    /* activity    => */ this       ,
+                    /* versionName => */ versionName,
+                    /* handler     => */ new org.wheatgenetics.coordinate.navigation
+                        .NavigationItemSelectedListener.Handler()
+                        {
+                            @java.lang.Override
+                            public void closeDrawer()
+                            { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+                        },
+                    /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                        {
+                            @java.lang.Override
+                            public void onClick(final android.view.View v) {}                       // TODO
+                        }));
+            // endregion
+        }
 
         // region Default Templates
         // Adds default templates to database if they aren't there already.  If they are there then
