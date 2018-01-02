@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.content.Intent
  * android.os.Bundle
  * android.support.design.widget.NavigationView
  * android.support.v4.view.GravityCompat
@@ -14,7 +15,11 @@ package org.wheatgenetics.coordinate;
  * android.view.MenuItem
  * android.view.View
  *
+ * org.wheatgenetics.androidlibrary.R
+ *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
+ *
+ * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
@@ -34,6 +39,7 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     private android.support.v4.widget.DrawerLayout                drawerLayout           = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
+    private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
     private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog        = null;
     // endregion
 
@@ -145,8 +151,8 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     @java.lang.Override
     public boolean onCreateOptionsMenu(final android.view.Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.main, menu);
+        new android.view.MenuInflater(this).inflate(
+            org.wheatgenetics.androidlibrary.R.menu.camera_options_menu, menu);
         return true;
     }
 
@@ -158,11 +164,19 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
         assert null != item; final int itemId = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (org.wheatgenetics.coordinate.R.id.action_settings == itemId)
-            return true;
-        else
-            return super.onOptionsItemSelected(item);
+        if (org.wheatgenetics.androidlibrary.R.id.cameraOptionsMenuItem == itemId)
+        {
+            if (null == this.barcodeScanner)
+                this.barcodeScanner = new org.wheatgenetics.zxing.BarcodeScanner(this);
+            this.barcodeScanner.scan(); return true;
+        }
+        else return super.onOptionsItemSelected(item);
     }
+
+    @java.lang.Override
+    protected void onActivityResult(final int requestCode, final int resultCode,
+    final android.content.Intent data)
+    { org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(requestCode, resultCode, data); }  // TODO
     // endregion
 
     public void onTestCoordinateButtonClick(final android.view.View view)
