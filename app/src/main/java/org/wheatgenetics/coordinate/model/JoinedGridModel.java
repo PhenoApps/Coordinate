@@ -44,7 +44,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     final org.wheatgenetics.coordinate.model.TemplateModel                 templateModel )
     {
         super(templateModel.getId(), templateModel.getFirstOptionalFieldValue(), optionalFields);
-        this.makeRandomCells(templateModel.getGeneratedExcludedCellsAmount());
+        this.templateModel = templateModel;
+        this.makeRandomCells();
     }
 
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
@@ -90,9 +91,10 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.excludedCells().add(row, col); }
 
-    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)
+    public void makeRandomCells()                                           // TODO: clear()s first!
     {
-        this.excludedCells().makeRandomCells(amount,                        // TODO: clear()s first!
+        assert null != this.templateModel;
+        this.excludedCells().makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
 

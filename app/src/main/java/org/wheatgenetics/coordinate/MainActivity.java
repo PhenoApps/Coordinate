@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
+ * org.wheatgenetics.coordinate.model.TemplateType
  *
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
@@ -31,8 +32,8 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout                drawerLayout           = null;
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
     private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog        = null;
     // endregion
 
@@ -166,7 +167,8 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
 
     public void onTestCoordinateButtonClick(final android.view.View view)
     {
-        if (null == this.testAlertDialog) this.testAlertDialog = new TestAlertDialog(this);
+        if (null == this.testAlertDialog)
+            this.testAlertDialog = new org.wheatgenetics.coordinate.TestAlertDialog(this);
         this.testAlertDialog.show();
     }
 }
