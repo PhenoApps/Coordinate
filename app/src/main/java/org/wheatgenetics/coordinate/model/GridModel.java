@@ -26,7 +26,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 
     // region Constructors
     public GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String title, final org.wheatgenetics.coordinate.model.Cells excludedCells,
+    final java.lang.String title,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
@@ -35,7 +35,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 
         this.templateId                    = templateId                          ;
         this.title                         = title                               ;
-        this.excludedCellsInstance         = excludedCells                       ;
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }

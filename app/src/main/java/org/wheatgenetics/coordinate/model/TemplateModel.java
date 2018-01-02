@@ -396,6 +396,12 @@ implements java.lang.Cloneable
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
+
+    public java.lang.String getFirstOptionalFieldValue()
+    {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+            this.nonNullOptionalFieldsInstance.getFirstValue();
+    }
     // endregion
 
     public org.wheatgenetics.coordinate.model.Cell nextFreeCell(              // TODO: Remove later.

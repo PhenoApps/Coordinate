@@ -16,7 +16,7 @@ public class GridModelTest extends java.lang.Object
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badTemplateIdFirstConstructorFails()
-    { new org.wheatgenetics.coordinate.model.GridModel(0, "title", null, null); }
+    { new org.wheatgenetics.coordinate.model.GridModel(0, "title", null); }
 
     @org.junit.Test
     public void firstConstructorAndGettersSucceed()
@@ -24,7 +24,7 @@ public class GridModelTest extends java.lang.Object
         final long             templateId = 67   ;
         final java.lang.String title      = "abc";
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(templateId, title, null, null);
+            new org.wheatgenetics.coordinate.model.GridModel(templateId, title, null);
         org.junit.Assert.assertEquals(gridModel.getTemplateId(), templateId);
         org.junit.Assert.assertEquals(gridModel.getTitle     (), title     );
     }
