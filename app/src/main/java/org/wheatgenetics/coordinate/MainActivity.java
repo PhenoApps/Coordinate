@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.androidlibrary.Dir
  * org.wheatgenetics.androidlibrary.R
  *
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
@@ -46,6 +47,7 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog   = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
+    private org.wheatgenetics.androidlibrary.Dir                  exportDir                    ;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
 
     private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
@@ -187,6 +189,52 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                     }
                     else templatesTable.insert(defaultTemplateModel);
                 }
+            }
+        }
+        // endregion
+
+        // region Directories
+        {
+            final java.lang.String coordinateDirName = "Coordinate",
+                blankHiddenFileName = ".coordinate";
+
+            try
+            {
+                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName,
+                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
+            }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
+
+            // Exported data is saved to this folder.
+            this.exportDir = new org.wheatgenetics.androidlibrary.Dir(
+                this, coordinateDirName + "/Export", blankHiddenFileName);
+            try { this.exportDir.createIfMissing();  /* throws java.io.IOException */ }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
+
+            // This directory will be used in the future to transfer templates between devices.
+            try
+            {
+                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
+                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
+            }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
             }
         }
         // endregion
