@@ -41,7 +41,7 @@ package org.wheatgenetics.coordinate;
 public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
     // region Fields
-    private android.support.v4.widget.DrawerLayout                drawerLayout           = null;
+    private android.support.v4.widget.DrawerLayout drawerLayout = null;
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog   = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
@@ -148,6 +148,16 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                             { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
                         }));
             // endregion
+
+            // region Set version, part 2.
+            this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
+                this.getSharedPreferences("Settings", /* mode => */ 0));
+            if (!this.sharedPreferences.updateVersionIsSet(versionCode))
+            {
+                this.sharedPreferences.setUpdateVersion(versionCode);
+                this.showChangeLog();
+            }
+            // endregion
         }
 
         // region Default Templates
@@ -180,9 +190,6 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
             }
         }
         // endregion
-
-        this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
-            this.getSharedPreferences("Settings", /* mode => */ 0));
     }
 
     @java.lang.Override
