@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate;
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
+ * android.view.View.OnClickListener
  *
  * org.wheatgenetics.androidlibrary.R
  *
@@ -95,12 +96,20 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                 org.wheatgenetics.coordinate.R.id.nav_view);       // From layout/activity_main.xml.
         assert null != navigationView; navigationView.setNavigationItemSelectedListener(
             new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
-                new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler()
-                {
-                    @java.lang.Override
-                    public void closeDrawer()
-                    { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
-                }));
+                /* activity    => */ this,
+                /* versionName => */ "versionName",                                                 // TODO
+                /* handler     => */ new org.wheatgenetics.coordinate.navigation
+                    .NavigationItemSelectedListener.Handler()
+                    {
+                        @java.lang.Override
+                        public void closeDrawer()
+                        { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+                    },
+                /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override
+                        public void onClick(final android.view.View v) {}                           // TODO
+                    }));
         // endregion
 
         // region Default Templates
