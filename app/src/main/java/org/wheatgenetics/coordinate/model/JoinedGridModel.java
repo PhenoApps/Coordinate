@@ -12,10 +12,7 @@ package org.wheatgenetics.coordinate.model;
  */
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 {
-    // region Fields
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel         = null;
-    private org.wheatgenetics.coordinate.model.Cells         excludedCellsInstance = null;
-    // endregion
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
 
     // region Private Methods
     private java.lang.String getTemplateTitle()

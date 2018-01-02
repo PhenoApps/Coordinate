@@ -16,9 +16,9 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private       long                                     templateId   ;
-    private final java.lang.String                         title        ;
-    private final org.wheatgenetics.coordinate.model.Cells excludedCells;
+    private       long                                     templateId           ;
+    private final java.lang.String                         title                ;
+                  org.wheatgenetics.coordinate.model.Cells excludedCellsInstance;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     private final long timestamp;
@@ -35,7 +35,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 
         this.templateId                    = templateId                          ;
         this.title                         = title                               ;
-        this.excludedCells                 = excludedCells                       ;
+        this.excludedCellsInstance         = excludedCells                       ;
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
@@ -52,14 +52,14 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         this.title = title;
 
         if (null == excludedCells)
-            this.excludedCells = null;
+            this.excludedCellsInstance = null;
         else
         {
             excludedCells = excludedCells.trim();
             if (excludedCells.length() <= 0)
-                this.excludedCells = null;
+                this.excludedCellsInstance = null;
             else
-                this.excludedCells = new org.wheatgenetics.coordinate.model.Cells(
+                this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
                     /* json   => */ excludedCells,
                     /* maxRow => */ maxRow       ,
                     /* maxCol => */ maxCol       );
@@ -84,7 +84,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     public long             getTimestamp () { return this.timestamp ; }
 
     public java.lang.String excludedCellsAsJson()
-    { return null == this.excludedCells ? null : this.excludedCells.json(); }
+    { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }
 
     public java.lang.String optionalFieldsAsJson()
     {
