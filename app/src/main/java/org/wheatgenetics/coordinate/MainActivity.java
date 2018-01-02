@@ -22,8 +22,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.androidlibrary.R
  *
+ * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
- *
  * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
@@ -42,10 +42,13 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout                drawerLayout           = null;
+
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog   = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
-    private org.wheatgenetics.coordinate.TestAlertDialog          testAlertDialog        = null;
+
+    private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -53,6 +56,15 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     {
         assert null != this.drawerLayout;
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
+    }
+
+    private void showChangeLog()
+    {
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* activity               => */ this                                        ,
+                /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
+        this.changeLogAlertDialog.show();
     }
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
@@ -132,7 +144,8 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                     /* versionOnClickListener => */ new android.view.View.OnClickListener()
                         {
                             @java.lang.Override
-                            public void onClick(final android.view.View v) {}                       // TODO
+                            public void onClick(final android.view.View v)
+                            { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
                         }));
             // endregion
         }
