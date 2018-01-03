@@ -109,11 +109,7 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
         // endregion
 
         {
-            // region Set version, part 1.
-            // Why are there two "Set version" regions ("part 1" and "part 2")?  So that versionName
-            // would be set earlier.  Why should versionName be set earlier?  So that its value
-            // could be passed to NavigationItemSelectedListener() in the "Configure navigation
-            // menu." region, below.
+            // region Get version.
             int versionCode; java.lang.String versionName;
             try
             {
@@ -151,7 +147,7 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
                         }));
             // endregion
 
-            // region Set version, part 2.
+            // region Set version.
             this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
                 this.getSharedPreferences("Settings", /* mode => */ 0));
             if (!this.sharedPreferences.updateVersionIsSet(versionCode))
