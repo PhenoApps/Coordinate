@@ -37,7 +37,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
  *
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.TestAlertDialog
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity
 {
@@ -49,8 +48,6 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                    ;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
-
-    private org.wheatgenetics.coordinate.TestAlertDialog testAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -276,11 +273,4 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     final android.content.Intent data)
     { org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(requestCode, resultCode, data); }  // TODO
     // endregion
-
-    public void onTestCoordinateButtonClick(final android.view.View view)
-    {
-        if (null == this.testAlertDialog)
-            this.testAlertDialog = new org.wheatgenetics.coordinate.TestAlertDialog(this);
-        this.testAlertDialog.show();
-    }
 }
