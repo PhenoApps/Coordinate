@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate;
  * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
  * android.support.design.widget.NavigationView
+ * android.support.v4.app.FragmentManager
  * android.support.v4.view.GravityCompat
  * android.support.v4.widget.DrawerLayout
  * android.support.v7.app.ActionBar
@@ -36,9 +37,13 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
  *
+ * org.wheatgenetics.coordinate.DataEntryFragment
+ * org.wheatgenetics.coordinate.DataEntryFragment.Handler
+ * org.wheatgenetics.coordinate.DisplayFragment
  * org.wheatgenetics.coordinate.R
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity
+implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout = null;
@@ -48,6 +53,9 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                    ;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
+
+    private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
+    private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
     // endregion
 
     // region Private Methods
@@ -231,6 +239,20 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
             }
         }
         // endregion
+
+        // region Configure fragments.
+        {
+            final android.support.v4.app.FragmentManager fragmentManager =
+                this.getSupportFragmentManager();
+            assert null != fragmentManager;
+
+            this.displayFragment = (org.wheatgenetics.coordinate.DisplayFragment)
+                fragmentManager.findFragmentById(org.wheatgenetics.coordinate.R.id.displayFragment);
+            this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
+                fragmentManager.findFragmentById(
+                    org.wheatgenetics.coordinate.R.id.dataEntryFragment);
+        }
+        // endregion
     }
 
     @java.lang.Override
@@ -271,6 +293,20 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity
     @java.lang.Override
     protected void onActivityResult(final int requestCode, final int resultCode,
     final android.content.Intent data)
-    { org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(requestCode, resultCode, data); }  // TODO
+    {
+        assert null != this.dataEntryFragment; this.dataEntryFragment.setEntry(
+            org.wheatgenetics.javalib.Utils.replaceIfNull(
+                org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
+                    requestCode, resultCode, data),
+                "null"));
+    }
+
+    // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
+    @java.lang.Override
+    public java.lang.String getTemplateTitle() { return "template title"; }                         // TODO
+
+    @java.lang.Override
+    public void addEntry(final java.lang.String entry) {}                                           // TODO
+    // endregion
     // endregion
 }
