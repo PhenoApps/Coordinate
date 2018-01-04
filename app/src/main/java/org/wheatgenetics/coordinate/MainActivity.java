@@ -72,16 +72,37 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler
     private void configureNavigationDrawer()
     {
         {
-            final android.widget.TextView personTextView = (android.widget.TextView)
-                this.findViewById(org.wheatgenetics.coordinate.R.id.personTextView);
-            assert null != personTextView; personTextView.setText(
-                null == this.sharedPreferences ? "" : this.sharedPreferences.getPerson());
+            final java.lang.String person =
+                null == this.sharedPreferences ? "" : this.sharedPreferences.getPerson();
+            {
+                final android.widget.TextView personTextView =
+                    (android.widget.TextView) this.findViewById(
+                        org.wheatgenetics.coordinate.R.id.personTextView);         // From nav_hea-
+                if (null != personTextView) personTextView.setText(person);        //  der_main.xml.
+            }
+            {
+                final android.widget.TextView personTextView =
+                    (android.widget.TextView) this.findViewById(
+                        org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView);  // From nav_hea-
+                if (null != personTextView) personTextView.setText(person);        //  der_main.xml.
+            }
+        }
+
+        final java.lang.String templateTitle =
+            null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
+        {
+            final android.widget.TextView templateTitleTextView =
+                (android.widget.TextView) this.findViewById(
+                    org.wheatgenetics.coordinate.R.id.templateTitleTextView);          // From nav_-
+            if (null != templateTitleTextView)                                         //  header_-
+                templateTitleTextView.setText(templateTitle);                          //  main.xml.
         }
         {
-            final android.widget.TextView templateTitleTextView = (android.widget.TextView)
-                this.findViewById(org.wheatgenetics.coordinate.R.id.templateTitleTextView);
-            assert null != templateTitleTextView; templateTitleTextView.setText(
-                null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle());
+            final android.widget.TextView templateTitleTextView =
+                (android.widget.TextView) this.findViewById(
+                    org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView);   // From nav_-
+            if (null != templateTitleTextView)                                         //  header_-
+                templateTitleTextView.setText(templateTitle);                          //  main.xml.
         }
     }
 
@@ -357,7 +378,14 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler
 
     @java.lang.Override
     public void handleGridCreated(final long gridId)
-    { this.joinedGridModel = gridId <= 0 ? null : this.gridsTable().get(gridId); }
+    {
+        this.joinedGridModel = gridId <= 0 ? null : this.gridsTable().get(gridId);
+        if (null != this.joinedGridModel)
+        {
+            assert null != this.sharedPreferences;
+            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
+        }
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods

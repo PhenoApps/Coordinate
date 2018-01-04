@@ -20,7 +20,7 @@
             android:src="@drawable/ic_account_white" />
 
         <TextView
-            android:id="@+id/personTextView"
+            android:id="@+id/sw600dpPersonTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -45,7 +45,7 @@
             android:src="@drawable/ic_template" />
 
         <TextView
-            android:id="@+id/templateTitleTextView"
+            android:id="@+id/sw600dpTemplateTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="25dp"
