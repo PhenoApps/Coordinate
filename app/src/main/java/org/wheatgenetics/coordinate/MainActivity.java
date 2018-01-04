@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate;
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
+ * android.widget.TextView
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -28,8 +29,12 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  * org.wheatgenetics.zxing.BarcodeScanner
  *
+ * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.gc.GridCreator
+ *
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -42,23 +47,44 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.DisplayFragment
  * org.wheatgenetics.coordinate.R
  */
-public class MainActivity extends android.support.v7.app.AppCompatActivity
-implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
+public class MainActivity extends android.support.v7.app.AppCompatActivity implements
+org.wheatgenetics.coordinate.gc.GridCreator.Handler,
+org.wheatgenetics.coordinate.DataEntryFragment.Handler
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout = null;
 
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog   = null;
-    private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences            ;
-    private org.wheatgenetics.androidlibrary.Dir                  exportDir                    ;
-    private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner         = null;
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
+    private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
+    private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
+
+    private org.wheatgenetics.coordinate.model.JoinedGridModel   joinedGridModel        = null;
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
+    private org.wheatgenetics.coordinate.gc.GridCreator          gridCreator            = null;
 
     private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
     // endregion
 
     // region Private Methods
+    private void configureNavigationDrawer()
+    {
+        {
+            final android.widget.TextView personTextView = (android.widget.TextView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.personTextView);
+            assert null != personTextView; personTextView.setText(
+                null == this.sharedPreferences ? "" : this.sharedPreferences.getPerson());
+        }
+        {
+            final android.widget.TextView templateTitleTextView = (android.widget.TextView)
+                this.findViewById(org.wheatgenetics.coordinate.R.id.templateTitleTextView);
+            assert null != templateTitleTextView; templateTitleTextView.setText(
+                null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle());
+        }
+    }
+
     private void closeDrawer()
     {
         assert null != this.drawerLayout;
@@ -79,6 +105,13 @@ implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        return this.gridsTableInstance;
     }
     // endregion
 
@@ -107,7 +140,15 @@ implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
             final android.support.v7.app.ActionBarDrawerToggle toggle =
                 new android.support.v7.app.ActionBarDrawerToggle(this, this.drawerLayout, toolbar,
                     org.wheatgenetics.coordinate.R.string.navigation_drawer_open ,
-                    org.wheatgenetics.coordinate.R.string.navigation_drawer_close);
+                    org.wheatgenetics.coordinate.R.string.navigation_drawer_close)
+                    {
+                        @java.lang.Override
+                        public void onDrawerOpened(final android.view.View drawerView)
+                        {
+                            org.wheatgenetics.coordinate
+                                .MainActivity.this.configureNavigationDrawer();
+                        }
+                    };
             assert null != this.drawerLayout; this.drawerLayout.setDrawerListener(toggle);
             toggle.syncState();
         }
@@ -253,6 +294,14 @@ implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
                     org.wheatgenetics.coordinate.R.id.dataEntryFragment);
         }
         // endregion
+
+        if (this.sharedPreferences.currentGridIsSet())
+            this.handleGridCreated(this.sharedPreferences.getCurrentGrid());
+        else
+        {
+            this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
+            this.gridCreator.create();
+        }
     }
 
     @java.lang.Override
@@ -301,9 +350,20 @@ implements org.wheatgenetics.coordinate.DataEntryFragment.Handler
                 "null"));
     }
 
+    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
+    @java.lang.Override
+    public void setPerson(final java.lang.String person)
+    { assert null != this.sharedPreferences; this.sharedPreferences.setPerson(person); }
+
+    @java.lang.Override
+    public void handleGridCreated(final long gridId)
+    { this.joinedGridModel = gridId <= 0 ? null : this.gridsTable().get(gridId); }
+    // endregion
+
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override
-    public java.lang.String getTemplateTitle() { return "template title"; }                         // TODO
+    public java.lang.String getTemplateTitle()
+    { return null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle(); }
 
     @java.lang.Override
     public void addEntry(final java.lang.String entry) {}                                           // TODO

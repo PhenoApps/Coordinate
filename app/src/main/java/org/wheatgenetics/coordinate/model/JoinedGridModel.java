@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.model;
  * android.annotation.SuppressLint
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.GridModel
@@ -15,19 +17,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
 
     // region Private Methods
-    private java.lang.String getTemplateTitle()
-    { return null == this.templateModel ? null : this.templateModel.getTitle(); }
-
     private int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
     private int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean isExcludedCol(final int col)
-    { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean isExcludedRow(final int row)
-    { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
 
     private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
@@ -36,6 +27,14 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                 /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
         return this.excludedCellsInstance;
     }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean isExcludedCol(final int col)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean isExcludedRow(final int row)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
     // endregion
 
     // region Constructors
@@ -83,6 +82,9 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
 
     // region Public Methods
+    public java.lang.String getTemplateTitle()
+    { return null == this.templateModel ? null : this.templateModel.getTitle(); }
+
     public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { assert null != templateModel; templateModel.assign(this.templateModel); }
 
