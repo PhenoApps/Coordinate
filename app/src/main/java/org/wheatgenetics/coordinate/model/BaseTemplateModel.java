@@ -211,6 +211,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
+    public boolean isDefaultTemplate() { return this.getType().isDefaultTemplate(); }
+
+
     public java.lang.String[] rowItems(final java.lang.String label)
     {
         return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(

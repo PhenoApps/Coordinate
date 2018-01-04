@@ -35,7 +35,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    interface Handler
+    public interface Handler
     {
         public abstract void setPerson        (java.lang.String person);
         public abstract void handleGridCreated(
@@ -90,7 +90,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
                 new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
                     this.optionalFields),
-                /* firstCannotBeEmpty => */ this.templateModel.getType().isDefaultTemplate()); // TODO: Hardcode?
+                /* firstCannotBeEmpty => */ this.templateModel.isDefaultTemplate());
         }
     }
 
@@ -120,7 +120,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             final long gridId = this.gridsTable().insert(
                 new org.wheatgenetics.coordinate.model.JoinedGridModel(
                     /* optionalFields => */ this.optionalFields,
-                    /* templateModel  => */ this.templateModel));
+                    /* templateModel  => */ this.templateModel ));
             this.optionalFields = null; this.templateModel = null;
 
             if (gridId <= 0)
