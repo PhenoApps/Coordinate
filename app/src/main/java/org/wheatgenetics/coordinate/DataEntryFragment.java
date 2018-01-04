@@ -40,9 +40,8 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     // region Fields
     private org.wheatgenetics.coordinate.DataEntryFragment.Handler handler;
 
-    private android.widget.EditText     entryEditText        ;
-    private android.widget.TextView     templateTitleTextView;
-    private android.widget.LinearLayout optionalFieldsLayout ;
+    private android.widget.EditText entryEditText        ;
+    private android.widget.TextView templateTitleTextView;
     // endregion
 
     public DataEntryFragment() { /* Required empty public constructor. */ }
@@ -93,9 +92,9 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         this.templateTitleTextView.setText(this.handler.getTemplateTitle());
 
 
-        this.optionalFieldsLayout = (android.widget.LinearLayout)
+        final android.widget.LinearLayout optionalFieldsLayout = (android.widget.LinearLayout)
             activity.findViewById(org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
-        assert null != this.optionalFieldsLayout; this.optionalFieldsLayout.removeAllViews();
+        assert null != optionalFieldsLayout; optionalFieldsLayout.removeAllViews();
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = this.handler.getOptionalFields();
         if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty())
@@ -125,7 +124,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
                     assert null != valueTextView;
                     valueTextView.setText(baseOptionalField.getValue());
                 }
-                this.optionalFieldsLayout.addView(view);
+                optionalFieldsLayout.addView(view);
             }
         }
     }

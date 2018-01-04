@@ -17,9 +17,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
 
     // region Private Methods
-    private int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
-    private int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
-
     private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
         if (null == this.excludedCellsInstance)
@@ -84,6 +81,15 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     // region Public Methods
     public java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
+
+    public int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
+    public int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
+
+    public boolean getColNumbering()
+    { assert null != this.templateModel; return this.templateModel.getColNumbering(); }
+
+    public boolean getRowNumbering()
+    { assert null != this.templateModel; return this.templateModel.getRowNumbering(); }
 
     public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { assert null != templateModel; templateModel.assign(this.templateModel); }

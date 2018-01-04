@@ -47,11 +47,13 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.DisplayFragment
+ * org.wheatgenetics.coordinate.DisplayFragment.Handler
  * org.wheatgenetics.coordinate.R
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.gc.GridCreator.Handler,
-org.wheatgenetics.coordinate.DataEntryFragment.Handler
+org.wheatgenetics.coordinate.DataEntryFragment.Handler,
+org.wheatgenetics.coordinate.DisplayFragment.Handler
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout = null;
@@ -401,6 +403,12 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler
 
     @java.lang.Override
     public void addEntry(final java.lang.String entry) {}                                           // TODO
+    // endregion
+
+    // region org.wheatgenetics.coordinate.DisplayFragment.Handler Overridden Method
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
+    { return this.joinedGridModel; }
     // endregion
     // endregion
 }
