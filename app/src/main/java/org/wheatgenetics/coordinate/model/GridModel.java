@@ -85,6 +85,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     public java.lang.String excludedCellsAsJson()
     { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }
 
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
+    { return this.nonNullOptionalFieldsInstance; }
+
     public java.lang.String optionalFieldsAsJson()
     {
         return null == this.nonNullOptionalFieldsInstance ?

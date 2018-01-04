@@ -42,6 +42,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
  *
+ * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.DisplayFragment
@@ -392,6 +394,10 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler
     @java.lang.Override
     public java.lang.String getTemplateTitle()
     { return null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle(); }
+
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
+    { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
     public void addEntry(final java.lang.String entry) {}                                           // TODO
