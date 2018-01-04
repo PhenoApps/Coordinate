@@ -38,8 +38,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     public interface Handler
     {
         public abstract void setPerson        (java.lang.String person);
-        public abstract void handleGridCreated(
-            org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
+        public abstract void handleGridCreated(long             gridId);
     }
 
     // region Fields
@@ -115,24 +114,16 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.Override
     public void handleSetValuesDone()
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
-        {
-            final long gridId = this.gridsTable().insert(
-                new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* optionalFields => */ this.optionalFields,
-                    /* templateModel  => */ this.templateModel ));
-            this.optionalFields = null; this.templateModel = null;
+        final long gridId = this.gridsTable().insert(
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* optionalFields => */ this.optionalFields,
+                /* templateModel  => */ this.templateModel ));
+        this.optionalFields = null; this.templateModel = null;
 
-            if (gridId <= 0)
-            {
-                joinedGridModel = null;
-                org.wheatgenetics.coordinate.Utils.alert(this.activity,
-                    org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
-            }
-            else joinedGridModel = this.gridsTable().get(gridId);
-        }
-        assert null != this.handler; this.handler.handleGridCreated(joinedGridModel);
-
+        if (gridId <= 0)
+            org.wheatgenetics.coordinate.Utils.alert(this.activity,
+                org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
+        assert null != this.handler; this.handler.handleGridCreated(gridId);
     }
     // endregion
 
@@ -172,7 +163,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (inserted)
             this.setValues();
         else
-            { assert null != this.handler; this.handler.handleGridCreated(null); }
+            { assert null != this.handler; this.handler.handleGridCreated(0); }
     }
     // endregion
 
