@@ -7,9 +7,15 @@
 
     tools:context="org.wheatgenetics.coordinate.DisplayFragment">
 
-    <TableLayout
-        android:id="@+id/entriesTableLayout"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/entriesTableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </HorizontalScrollView>
 
 </android.support.v4.widget.NestedScrollView>
