@@ -20,6 +20,9 @@
             android:id="@+id/displayFragment"
             android:name="org.wheatgenetics.coordinate.DisplayFragment"
 
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+
             tools:layout="@layout/fragment_display" />
 
         <View
