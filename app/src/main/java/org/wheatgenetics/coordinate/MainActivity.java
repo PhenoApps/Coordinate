@@ -368,8 +368,8 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     protected void onActivityResult(final int requestCode, final int resultCode,
     final android.content.Intent data)
     {
-        assert null != this.dataEntryFragment; this.dataEntryFragment.setEntry(
-            org.wheatgenetics.javalib.Utils.replaceIfNull(
+        if (null != this.dataEntryFragment)
+            this.dataEntryFragment.setEntry(org.wheatgenetics.javalib.Utils.replaceIfNull(
                 org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
                     requestCode, resultCode, data),
                 "null"));
@@ -383,12 +383,16 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     @java.lang.Override
     public void handleGridCreated(final long gridId)
     {
-        this.joinedGridModel = gridId <= 0 ? null : this.gridsTable().get(gridId);
-        if (null != this.joinedGridModel)
+        if (gridId > 0)
         {
+            this.joinedGridModel = this.gridsTable().get(gridId);
+
             assert null != this.sharedPreferences;
             this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
         }
+        else this.joinedGridModel = null;
+
+        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
     }
     // endregion
 

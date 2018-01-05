@@ -28,7 +28,7 @@ public class DataEntryFragment extends android.support.v4.app.Fragment
 implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler
+    interface Handler
     {
         public abstract java.lang.String getTemplateTitle();
         public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -40,8 +40,9 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     // region Fields
     private org.wheatgenetics.coordinate.DataEntryFragment.Handler handler;
 
-    private android.widget.EditText entryEditText        ;
-    private android.widget.TextView templateTitleTextView;
+    private android.widget.EditText     entryEditText        ;
+    private android.widget.TextView     templateTitleTextView;
+    private android.widget.LinearLayout optionalFieldsLayout ;
     // endregion
 
     public DataEntryFragment() { /* Required empty public constructor. */ }
@@ -84,29 +85,50 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
             new org.wheatgenetics.androidlibrary.EditorActionListener(
                 this.entryEditText, this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
 
-
         this.templateTitleTextView = (android.widget.TextView)
             activity.findViewById(org.wheatgenetics.coordinate.R.id.templateTitleTextView);
+
+        this.optionalFieldsLayout = (android.widget.LinearLayout)
+            activity.findViewById(org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
+
+
+        this.populate();
+    }
+
+    @java.lang.Override
+    public void onDetach() { this.handler = null; super.onDetach(); }
+
+    // region org.wheatgenetics.androidlibrary.EditorActionListener.ReceiverOverridden Method
+    @Override
+    public void receiveText(final java.lang.String text)
+    { assert null != this.handler; this.handler.addEntry(text); }
+    // endregion
+    // endregion
+
+    // region Package Methods
+    void populate()
+    {
         assert null != this.handler; assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.handler.getTemplateTitle());
 
 
-        final android.widget.LinearLayout optionalFieldsLayout = (android.widget.LinearLayout)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
-        assert null != optionalFieldsLayout; optionalFieldsLayout.removeAllViews();
+        assert null != this.optionalFieldsLayout; this.optionalFieldsLayout.removeAllViews();
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = this.handler.getOptionalFields();
         if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty())
         {
             final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
                 checkedOptionalFields =
-                    new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
-                        nonNullOptionalFields);
+                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                    nonNullOptionalFields);
 
+            final android.app.Activity activity = this.getActivity();
+
+            assert null != activity;
             final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
 
             for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-            baseOptionalField: checkedOptionalFields)
+                baseOptionalField: checkedOptionalFields)
             {
                 final android.view.View view = layoutInflater.inflate(
                     org.wheatgenetics.coordinate.R.layout.optional_field_show,
@@ -123,33 +145,14 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
                     assert null != valueTextView;
                     valueTextView.setText(baseOptionalField.getValue());
                 }
-                optionalFieldsLayout.addView(view);
+                this.optionalFieldsLayout.addView(view);
             }
         }
     }
 
-    @java.lang.Override
-    public void onDetach() { this.handler = null; super.onDetach(); }
-
-    // region org.wheatgenetics.androidlibrary.EditorActionListener.ReceiverOverridden Method
-    @Override
-    public void receiveText(final java.lang.String text)
-    { assert null != this.handler; this.handler.addEntry(text); }
-    // endregion
-    // endregion
-
-    // region Package Methods
     void setEntry(final java.lang.String entry)
     { assert null != this.entryEditText; this.entryEditText.setText(entry); }
 
     void clearEntry() { this.setEntry(""); }
-
-    void setTemplateTitle(final java.lang.String templateTitle)
-    {
-        assert null != this.templateTitleTextView;
-        this.templateTitleTextView.setText(templateTitle);
-    }
-
-    void clearTemplateTitle() { this.setTemplateTitle(""); }
     // endregion
 }

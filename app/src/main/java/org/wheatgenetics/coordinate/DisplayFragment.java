@@ -22,7 +22,7 @@ package org.wheatgenetics.coordinate;
 public class DisplayFragment extends android.support.v4.app.Fragment
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler
+    interface Handler
     { public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel(); }
 
     private org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
