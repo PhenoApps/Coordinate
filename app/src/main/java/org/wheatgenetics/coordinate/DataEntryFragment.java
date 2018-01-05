@@ -119,8 +119,8 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         {
             final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
                 checkedOptionalFields =
-                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
-                    nonNullOptionalFields);
+                    new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                        nonNullOptionalFields);
 
             final android.app.Activity activity = this.getActivity();
 
@@ -128,7 +128,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
             final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
 
             for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                baseOptionalField: checkedOptionalFields)
+            baseOptionalField: checkedOptionalFields)
             {
                 final android.view.View view = layoutInflater.inflate(
                     org.wheatgenetics.coordinate.R.layout.optional_field_show,
