@@ -25,7 +25,10 @@ public class DisplayFragment extends android.support.v4.app.Fragment
     interface Handler
     { public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel(); }
 
-    private org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
+    // region Fields
+    private org.wheatgenetics.coordinate.DisplayFragment.Handler handler           ;
+    private android.widget.TableLayout                           entriesTableLayout;
+    // endregion
 
     public DisplayFragment() { /* Required empty public constructor. */ }
 
@@ -59,59 +62,71 @@ public class DisplayFragment extends android.support.v4.app.Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-
         final android.app.Activity activity = this.getActivity();
-
-        assert null != activity;
-        final android.widget.TableLayout entriesTableLayout = (android.widget.TableLayout)
+        assert null != activity; this.entriesTableLayout = (android.widget.TableLayout)
             activity.findViewById(org.wheatgenetics.coordinate.R.id.entriesTableLayout);
 
-        assert null != entriesTableLayout; entriesTableLayout.removeAllViews();
+        this.populate();
+    }
 
+    @java.lang.Override
+    public void onDetach() { this.handler = null; super.onDetach(); }
+    // endregion
+
+    void populate()
+    {
+        assert null != this.entriesTableLayout; this.entriesTableLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             null == this.handler ? null : this.handler.getJoinedGridModel();
         if (null != joinedGridModel)
         {
-            final int                         lastCol        = joinedGridModel.getCols()   ;
-            final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
+            final int                         lastCol = joinedGridModel.getCols();
+            final android.view.LayoutInflater layoutInflater;
+            {
+                final android.app.Activity activity = this.getActivity();
+                assert null != activity; layoutInflater = activity.getLayoutInflater();
+            }
 
             // region Populate header row.
             {
-                final boolean colNumbering = joinedGridModel.getColNumbering();
-                      byte    offsetFromA  = 0                                ;
                 @android.annotation.SuppressLint("InflateParams")
                 final android.widget.TableRow tableRow = (android.widget.TableRow)
                     layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.entries_table_row, null);
-                assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                 {
-                    @android.annotation.SuppressLint("InflateParams")
-                    final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
-                        layoutInflater.inflate(
-                            org.wheatgenetics.coordinate.R.layout.top_entries_table_cell, null);
+                    final boolean colNumbering = joinedGridModel.getColNumbering();
+                          byte    offsetFromA  = 0                                ;
+                    assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     {
-                        assert null != tableCell;
-                        final android.widget.TextView textView = (android.widget.TextView)
-                            tableCell.findViewById(
-                                org.wheatgenetics.coordinate.R.id.topEntryTextView);
+                        @android.annotation.SuppressLint("InflateParams")
+                        final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
+                            layoutInflater.inflate(
+                                org.wheatgenetics.coordinate.R.layout.top_entries_table_cell, null);
+                        {
+                            assert null != tableCell;
+                            final android.widget.TextView textView = (android.widget.TextView)
+                                tableCell.findViewById(
+                                    org.wheatgenetics.coordinate.R.id.topEntryTextView);
 
-                        final java.lang.String text;
-                        if (0 == col)
-                            text = "";
-                        else
-                            if (colNumbering)
-                                text = "" + col;
+                            final java.lang.String text;
+                            if (0 == col)
+                                text = "";
                             else
-                            {
-                                text = java.lang.Character.toString((char) ('A' + offsetFromA++));
-                                if (offsetFromA >= 26) offsetFromA = 0;
-                            }
-                        assert null != textView; textView.setText(text);
+                                if (colNumbering)
+                                    text = "" + col;
+                                else
+                                {
+                                    text =
+                                        java.lang.Character.toString((char) ('A' + offsetFromA++));
+                                    if (offsetFromA >= 26) offsetFromA = 0;
+                                }
+                            assert null != textView; textView.setText(text);
+                        }
+                        tableRow.addView(tableCell);
                     }
-                    tableRow.addView(tableCell);
                 }
-                entriesTableLayout.addView(tableRow);
+                this.entriesTableLayout.addView(tableRow);
             }
             // endregion
 
@@ -125,35 +140,33 @@ public class DisplayFragment extends android.support.v4.app.Fragment
                 final android.widget.TableRow tableRow = (android.widget.TableRow)
                     layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.entries_table_row, null);
-                assert null != tableRow;
-                @android.annotation.SuppressLint("InflateParams")
-                final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
-                    layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.left_entries_table_cell, null);
                 {
-                    assert null != tableCell;
-                    final android.widget.TextView textView = (android.widget.TextView)
-                        tableCell.findViewById(
-                            org.wheatgenetics.coordinate.R.id.leftEntryTextView);
-
-                    final java.lang.String text;
-                    if (rowNumbering)
-                        text = "" + row;
-                    else
+                    assert null != tableRow;
+                    @android.annotation.SuppressLint("InflateParams")
+                    final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
+                        layoutInflater.inflate(
+                            org.wheatgenetics.coordinate.R.layout.left_entries_table_cell, null);
                     {
-                        text = java.lang.Character.toString((char) ('A' + offsetFromA++));
-                        if (offsetFromA >= 26) offsetFromA = 0;
+                        assert null != tableCell;
+                        final android.widget.TextView textView = (android.widget.TextView)
+                            tableCell.findViewById(
+                                org.wheatgenetics.coordinate.R.id.leftEntryTextView);
+
+                        final java.lang.String text;
+                        if (rowNumbering)
+                            text = "" + row;
+                        else
+                        {
+                            text = java.lang.Character.toString((char) ('A' + offsetFromA++));
+                            if (offsetFromA >= 26) offsetFromA = 0;
+                        }
+                        assert null != textView; textView.setText(text);
                     }
-                    assert null != textView; textView.setText(text);
+                    tableRow.addView(tableCell);
                 }
-                tableRow.addView(tableCell);
-                entriesTableLayout.addView(tableRow);
+                this.entriesTableLayout.addView(tableRow);
             }
             // endregion
         }
     }
-
-    @java.lang.Override
-    public void onDetach() { this.handler = null; super.onDetach(); }
-    // endregion
 }

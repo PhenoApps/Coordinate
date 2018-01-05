@@ -336,7 +336,12 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
 
     @java.lang.Override
     protected void onStart()
-    { super.onStart(); assert null != this.dataEntryFragment; this.dataEntryFragment.populate(); }
+    {
+        super.onStart();
+
+        assert null != this.displayFragment  ; this.displayFragment.populate  ();
+        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+    }
 
     @java.lang.Override
     public void onBackPressed()
