@@ -415,6 +415,9 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override
+    public java.lang.String getEntry() { return "entry"; }                                   // TODO
+
+    @java.lang.Override
     public java.lang.String getTemplateTitle()
     { return null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle(); }
 
@@ -423,11 +426,7 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
-    public void addEntry(final java.lang.String entry)                                       // TODO
-    {
-        org.wheatgenetics.coordinate.Utils.alert(this,
-            org.wheatgenetics.coordinate.R.string.app_name, entry);
-    }
+    public void addEntry(final java.lang.String entry) {}                                    // TODO
     // endregion
     // endregion
 }

@@ -30,6 +30,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
+        public abstract java.lang.String getEntry        ();
         public abstract java.lang.String getTemplateTitle();
         public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             getOptionalFields();
@@ -108,7 +109,10 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     // region Package Methods
     void populate()
     {
-        assert null != this.handler; assert null != this.templateTitleTextView;
+        assert null != this.handler; assert null != this.entryEditText;
+        this.entryEditText.setText(this.handler.getEntry());
+
+        assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.handler.getTemplateTitle());
 
 
