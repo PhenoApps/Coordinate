@@ -152,5 +152,8 @@ public class DisplayFragment extends android.support.v4.app.Fragment
             // endregion
         }
     }
+
+    @java.lang.Override
+    public void onDetach() { this.handler = null; super.onDetach(); }
     // endregion
 }

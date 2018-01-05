@@ -83,7 +83,6 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         assert null != this.entryEditText; this.entryEditText.setOnEditorActionListener(
             new org.wheatgenetics.androidlibrary.EditorActionListener(
                 this.entryEditText, this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
-        this.entryEditText.setSelectAllOnFocus(true);
 
 
         this.templateTitleTextView = (android.widget.TextView)
@@ -128,6 +127,9 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
             }
         }
     }
+
+    @java.lang.Override
+    public void onDetach() { this.handler = null; super.onDetach(); }
 
     // region org.wheatgenetics.androidlibrary.EditorActionListener.ReceiverOverridden Method
     @Override

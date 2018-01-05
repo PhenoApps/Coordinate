@@ -28,14 +28,18 @@
 
             <EditText
                 android:id="@+id/entryEditText"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="Cell ID"
-                android:inputType="text|textNoSuggestions"
-                android:minEms="8"
-                android:maxLines="1"
+                android:imeActionId="100"
+                android:imeActionLabel="@string/DataEntryFragmentCellIDEditTextActionLabel"
                 android:imeOptions="actionDone"
-                android:imeActionLabel="@string/DataEntryFragmentCellIDEditTextActionLabel" />
+                android:inputType="text|textNoSuggestions"
+                android:lines="1"
+                android:minEms="8"
+                android:selectAllOnFocus="true" />
 
         </LinearLayout>
 

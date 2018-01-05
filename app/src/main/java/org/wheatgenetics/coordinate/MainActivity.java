@@ -402,7 +402,11 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
-    public void addEntry(final java.lang.String entry) {}                                           // TODO
+    public void addEntry(final java.lang.String entry)                                       // TODO
+    {
+        org.wheatgenetics.coordinate.Utils.alert(this,
+            org.wheatgenetics.coordinate.R.string.app_name, entry);
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.DisplayFragment.Handler Overridden Method
