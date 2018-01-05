@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/headerEntryTextView"
+        android:id="@+id/topEntryTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
