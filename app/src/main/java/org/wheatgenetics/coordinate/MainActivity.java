@@ -138,6 +138,9 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
             new org.wheatgenetics.coordinate.database.GridsTable(this);
         return this.gridsTableInstance;
     }
+
+    private void loadJoinedGridModel(final long gridId)
+    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
     // endregion
 
     // region Overridden Methods
@@ -321,13 +324,19 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
         // endregion
 
         if (this.sharedPreferences.currentGridIsSet())
-            this.handleGridCreated(this.sharedPreferences.getCurrentGrid());
+            this.loadJoinedGridModel(this.sharedPreferences.getCurrentGrid());
         else
         {
+            this.loadJoinedGridModel(0);
+
             this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
             this.gridCreator.create();
         }
     }
+
+    @java.lang.Override
+    protected void onStart()
+    { super.onStart(); assert null != this.dataEntryFragment; this.dataEntryFragment.populate(); }
 
     @java.lang.Override
     public void onBackPressed()
@@ -383,16 +392,13 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     @java.lang.Override
     public void handleGridCreated(final long gridId)
     {
-        if (gridId > 0)
+        this.loadJoinedGridModel(gridId);
+        if (null != this.joinedGridModel)
         {
-            this.joinedGridModel = this.gridsTable().get(gridId);
-
             assert null != this.sharedPreferences;
             this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
         }
-        else this.joinedGridModel = null;
-
-        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+        this.onStart();
     }
     // endregion
 
