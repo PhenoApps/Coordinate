@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:shrinkColumns="0"
+    android:stretchColumns="0"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
     tools:context="org.wheatgenetics.coordinate.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <fragment
-        android:id="@+id/displayFragment"
-        android:name="org.wheatgenetics.coordinate.DisplayFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+    <TableRow>
 
-        tools:layout="@layout/fragment_display" />
+        <fragment
+            android:id="@+id/displayFragment"
+            android:name="org.wheatgenetics.coordinate.DisplayFragment"
 
-    <View
-        android:layout_width="2dp"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent" />
+            tools:layout="@layout/fragment_display" />
 
-    <fragment
-        android:id="@+id/dataEntryFragment"
-        android:name="org.wheatgenetics.coordinate.DataEntryFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        <View
+            android:layout_width="2dp"
+            android:background="@color/colorAccent" />
 
-        tools:layout="@layout/fragment_data_entry" />
+        <fragment
+            android:id="@+id/dataEntryFragment"
+            android:name="org.wheatgenetics.coordinate.DataEntryFragment"
 
-</LinearLayout>
+            tools:layout="@layout/fragment_data_entry" />
+
+    </TableRow>
+
+</TableLayout>
