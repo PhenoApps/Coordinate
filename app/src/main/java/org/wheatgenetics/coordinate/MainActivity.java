@@ -57,6 +57,11 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler  ,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
+    private static final java.lang.String
+        ENABLE_DELETE_GRID_MENU_ITEM     = "ENABLE_DELETE_GRID_MENU_ITEM"    ,
+        ENABLE_DELETE_TEMPLATE_MENU_ITEM = "ENABLE_DELETE_TEMPLATE_MENU_ITEM",
+        ENABLE_EXPORT_GRID_MENU_ITEM     = "ENABLE_EXPORT_GRID_MENU_ITEM"    ;
+
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout       = null;
     private android.view.MenuItem                  deleteGridMenuItem = null,
@@ -106,6 +111,18 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
     // endregion
 
+    private void configureMenuItems()
+    {
+        assert null != this.deleteGridMenuItem;
+        this.deleteGridMenuItem.setEnabled(this.enableDeleteGridMenuItem);
+
+        assert null != this.deleteTemplateMenuItem;
+        this.deleteTemplateMenuItem.setEnabled(this.enableDeleteTemplateMenuItem);
+
+        assert null != this.exportGridMenuItem;
+        this.exportGridMenuItem.setEnabled(this.enableExportGridMenuItem);
+    }
+
     // region configureNavigationDrawer() Private Methods
     private void setTextViewText(final int textViewId, final java.lang.String text)
     {
@@ -138,14 +155,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 templateTitle);                                                    //  der_main.xml.
         }
 
-        assert null != this.deleteGridMenuItem;
-        this.deleteGridMenuItem.setEnabled(this.enableDeleteGridMenuItem);
-
-        assert null != this.deleteTemplateMenuItem;
-        this.deleteTemplateMenuItem.setEnabled(this.enableDeleteTemplateMenuItem);
-
-        assert null != this.exportGridMenuItem;
-        this.exportGridMenuItem.setEnabled(this.enableExportGridMenuItem);
+        this.configureMenuItems();
     }
     // endregion
 
@@ -338,41 +348,70 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             // endregion
 
             // region Configure navigation menu.
-            final android.view.Menu menu;
             {
-                final android.support.design.widget.NavigationView navigationView =
-                    (android.support.design.widget.NavigationView) this.findViewById(
-                        org.wheatgenetics.coordinate.R.id.nav_view);            // From layout/ac-
-                assert null != navigationView;                                  //  tivity_main.xml.
-                navigationView.setNavigationItemSelectedListener(
-                    new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
-                        /* activity    => */ this       ,
-                        /* versionName => */ versionName,
-                        /* handler     => */ new org.wheatgenetics.coordinate.navigation
-                            .NavigationItemSelectedListener.Handler()
-                            {
-                                @java.lang.Override
-                                public void closeDrawer()
-                                { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+                final android.view.Menu menu;
+                {
+                    final android.support.design.widget.NavigationView navigationView =
+                        (android.support.design.widget.NavigationView) this.findViewById(
+                            org.wheatgenetics.coordinate.R.id.nav_view);        // From layout/ac-
+                                                                                //  tivity_main.xml.
+                    assert null != navigationView;
+                    navigationView.setNavigationItemSelectedListener(
+                        new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
+                            /* activity    => */ this       ,
+                            /* versionName => */ versionName,
+                            /* handler     => */ new org.wheatgenetics.coordinate.navigation
+                                .NavigationItemSelectedListener.Handler()
+                                {
+                                    @java.lang.Override
+                                    public void closeDrawer()
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.closeDrawer();
+                                    }
 
-                                @java.lang.Override
-                                public void deleteGrid()
-                                { org.wheatgenetics.coordinate.MainActivity.this.deleteGrid(); }
-                            },
-                        /* versionOnClickListener => */ new android.view.View.OnClickListener()
-                            {
-                                @java.lang.Override
-                                public void onClick(final android.view.View v)
-                                { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
-                            }));
-                menu = navigationView.getMenu();
+                                    @java.lang.Override
+                                    public void deleteGrid()
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.deleteGrid();
+                                    }
+                                },
+                            /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                                {
+                                    @java.lang.Override
+                                    public void onClick(final android.view.View v)
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.showChangeLog();
+                                    }
+                                }));
+
+                    menu = navigationView.getMenu();
+                }
+
+                assert null != menu;
+                this.deleteGridMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
+                this.deleteTemplateMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
+                this.exportGridMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
             }
-            assert null != menu; this.deleteGridMenuItem =
-                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
-            this.deleteTemplateMenuItem =
-                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
-            this.exportGridMenuItem =
-                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
+
+            if (null == savedInstanceState)
+                this.enableDeleteGridMenuItem = this.enableDeleteTemplateMenuItem =
+                    this.enableExportGridMenuItem = false;
+            else
+            {
+                this.enableDeleteGridMenuItem = savedInstanceState.getBoolean(
+                    org.wheatgenetics.coordinate.MainActivity.ENABLE_DELETE_GRID_MENU_ITEM);
+                this.enableDeleteTemplateMenuItem = savedInstanceState.getBoolean(
+                    org.wheatgenetics.coordinate.MainActivity.ENABLE_DELETE_TEMPLATE_MENU_ITEM);
+                this.enableExportGridMenuItem = savedInstanceState.getBoolean(
+                    org.wheatgenetics.coordinate.MainActivity.ENABLE_EXPORT_GRID_MENU_ITEM);
+            }
+            this.configureMenuItems();
             // endregion
 
             // region Load joinedGridModel.
@@ -452,6 +491,23 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
                     requestCode, resultCode, data),
                 "null"));
+    }
+
+    @Override
+    protected void onSaveInstanceState(final android.os.Bundle outState)
+    {
+        assert null != outState;
+        outState.putBoolean(
+            org.wheatgenetics.coordinate.MainActivity.ENABLE_DELETE_GRID_MENU_ITEM,
+            this.enableDeleteGridMenuItem                                         );
+        outState.putBoolean(
+            org.wheatgenetics.coordinate.MainActivity.ENABLE_DELETE_TEMPLATE_MENU_ITEM,
+            this.enableDeleteTemplateMenuItem                                         );
+        outState.putBoolean(
+            org.wheatgenetics.coordinate.MainActivity.ENABLE_EXPORT_GRID_MENU_ITEM,
+            this.enableExportGridMenuItem                                         );
+
+        super.onSaveInstanceState(outState);
     }
 
     // region org.wheatgenetics.coordinate.DisplayFragment.Handler Overridden Method
