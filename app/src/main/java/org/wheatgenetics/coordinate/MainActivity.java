@@ -57,7 +57,9 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
     // region Fields
-    private android.support.v4.widget.DrawerLayout drawerLayout = null;
+    private android.support.v4.widget.DrawerLayout drawerLayout       = null;
+    private android.view.MenuItem                  deleteGridMenuItem = null,
+        deleteTemplateMenuItem = null, exportGridMenuItem = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
@@ -94,14 +96,28 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 person                                                 );
         }
 
-        final java.lang.String templateTitle =
-            null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.templateTitleTextView,    // From nav_header_main.xml.
-            templateTitle                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,        // From nav_hea-
-            templateTitle                                                 );       //  der_main.xml.
+        {
+            final java.lang.String templateTitle =
+                null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
+            this.setTextViewText(
+                org.wheatgenetics.coordinate.R.id.templateTitleTextView,// From nav_header_main.xml.
+                templateTitle);
+            this.setTextViewText(
+                org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,    // From nav_hea-
+                templateTitle);                                                    //  der_main.xml.
+        }
+
+        final boolean enableExportGridMenuItem;
+        if (null == this.joinedGridModel)
+            enableExportGridMenuItem = false;
+        else
+        {
+            assert null != this.deleteGridMenuItem; this.deleteGridMenuItem.setEnabled(true);
+            enableExportGridMenuItem = true;
+        }
+
+        assert null != this.exportGridMenuItem;
+        this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
     }
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
@@ -283,27 +299,37 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             // endregion
 
             // region Configure navigation menu.
-            final android.support.design.widget.NavigationView navigationView =
-                (android.support.design.widget.NavigationView) this.findViewById(
-                    org.wheatgenetics.coordinate.R.id.nav_view);   // From layout/activity_main.xml.
-            assert null != navigationView;
-            navigationView.setNavigationItemSelectedListener(
-                new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
-                    /* activity    => */ this       ,
-                    /* versionName => */ versionName,
-                    /* handler     => */ new org.wheatgenetics.coordinate.navigation
-                        .NavigationItemSelectedListener.Handler()
-                        {
-                            @java.lang.Override
-                            public void closeDrawer()
-                            { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
-                        },
-                    /* versionOnClickListener => */ new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override
-                            public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
-                        }));
+            final android.view.Menu menu;
+            {
+                final android.support.design.widget.NavigationView navigationView =
+                    (android.support.design.widget.NavigationView) this.findViewById(
+                        org.wheatgenetics.coordinate.R.id.nav_view);            // From layout/ac-
+                assert null != navigationView;                                  //  tivity_main.xml.
+                navigationView.setNavigationItemSelectedListener(
+                    new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
+                        /* activity    => */ this       ,
+                        /* versionName => */ versionName,
+                        /* handler     => */ new org.wheatgenetics.coordinate.navigation
+                            .NavigationItemSelectedListener.Handler()
+                            {
+                                @java.lang.Override
+                                public void closeDrawer()
+                                { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+                            },
+                        /* versionOnClickListener => */ new android.view.View.OnClickListener()
+                            {
+                                @java.lang.Override
+                                public void onClick(final android.view.View v)
+                                { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
+                            }));
+                menu = navigationView.getMenu();
+            }
+            assert null != menu; this.deleteGridMenuItem =
+                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
+            this.deleteTemplateMenuItem =
+                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
+            this.exportGridMenuItem =
+                menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
             // endregion
 
             // region Load joinedGridModel.
