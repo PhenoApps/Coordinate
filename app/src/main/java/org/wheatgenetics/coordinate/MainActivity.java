@@ -77,6 +77,9 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
     private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
+
+    private boolean
+        enableDeleteGridMenuItem, enableDeleteTemplateMenuItem, enableExportGridMenuItem;
     // endregion
 
     // region Private Methods
@@ -135,19 +138,14 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 templateTitle);                                                    //  der_main.xml.
         }
 
-        final boolean enableDeleteGridMenuItem, enableExportGridMenuItem;
-        if (null == this.joinedGridModel)
-            enableDeleteGridMenuItem = enableExportGridMenuItem = false;
-        else
-            enableDeleteGridMenuItem = enableExportGridMenuItem = true;
-
         assert null != this.deleteGridMenuItem;
-        this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
+        this.deleteGridMenuItem.setEnabled(this.enableDeleteGridMenuItem);
 
-        // TODO: deleteTemplateMenuItem
+        assert null != this.deleteTemplateMenuItem;
+        this.deleteTemplateMenuItem.setEnabled(this.enableDeleteTemplateMenuItem);
 
         assert null != this.exportGridMenuItem;
-        this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
+        this.exportGridMenuItem.setEnabled(this.enableExportGridMenuItem);
     }
     // endregion
 
@@ -158,7 +156,14 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     }
 
     private void loadJoinedGridModel(final long gridId)
-    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
+    {
+        this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
+
+        if (null == this.joinedGridModel)
+            this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = false;
+        else
+            this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = true;
+    }
 
     private void clearJoinedGridModel() { this.loadJoinedGridModel(0); }
 
