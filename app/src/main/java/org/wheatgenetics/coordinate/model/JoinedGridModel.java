@@ -16,7 +16,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 {
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
 
-    // region Private Methods
     private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
         if (null == this.excludedCellsInstance)
@@ -24,15 +23,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                 /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
         return this.excludedCellsInstance;
     }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean isExcludedCol(final int col)
-    { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean isExcludedRow(final int row)
-    { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
-    // endregion
 
     // region Constructors
     public JoinedGridModel(
@@ -105,6 +95,14 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
         this.excludedCells().makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
             /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
     }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedRow(final int row)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean isExcludedCol(final int col)
+    { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedCell(
