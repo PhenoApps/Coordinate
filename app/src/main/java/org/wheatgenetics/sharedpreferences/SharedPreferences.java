@@ -13,6 +13,12 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
     private static final java.lang.String PERSON = "Person", CURRENT_GRID = "CurrentGrid";
 
+    void uncheckSetCurrentGrid(final long currentGrid)
+    {
+        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID,
+            currentGrid);
+    }
+
     public SharedPreferences(@android.support.annotation.NonNull
     final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
 
@@ -38,9 +44,10 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     {
         if (currentGrid < 1)
             throw new java.lang.IllegalArgumentException("currentGrid must be > 0");
-        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID,
-            currentGrid);
+        this.uncheckSetCurrentGrid(currentGrid);
     }
+
+    public void clearCurrentGrid() { this.uncheckSetCurrentGrid(-1); }
 
     public boolean currentGridIsSet() { return this.getCurrentGrid() > -1; }
     // endregion

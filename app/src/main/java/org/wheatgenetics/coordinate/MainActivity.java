@@ -24,6 +24,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.androidlibrary.Dir
  * org.wheatgenetics.androidlibrary.R
+ * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
@@ -66,16 +67,43 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
 
-    private org.wheatgenetics.coordinate.model.JoinedGridModel   joinedGridModel        = null;
+    // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
-    private org.wheatgenetics.coordinate.gc.GridCreator          gridCreator            = null;
+    // endregion
+
+    private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel = null;
+    private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator     = null;
 
     private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
     // endregion
 
     // region Private Methods
+    // region Table Private Methods
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this);
+        return this.gridsTableInstance;
+    }
+    // endregion
+
+    // region Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+    // endregion
+
+    // region configureNavigationDrawer() Private Methods
     private void setTextViewText(final int textViewId, final java.lang.String text)
     {
         final android.widget.TextView textView =
@@ -107,30 +135,46 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 templateTitle);                                                    //  der_main.xml.
         }
 
-        final boolean enableExportGridMenuItem;
+        final boolean enableDeleteGridMenuItem, enableExportGridMenuItem;
         if (null == this.joinedGridModel)
-            enableExportGridMenuItem = false;
+            enableDeleteGridMenuItem = enableExportGridMenuItem = false;
         else
-        {
-            assert null != this.deleteGridMenuItem; this.deleteGridMenuItem.setEnabled(true);
-            enableExportGridMenuItem = true;
-        }
+            enableDeleteGridMenuItem = enableExportGridMenuItem = true;
+
+        assert null != this.deleteGridMenuItem;
+        this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
+
+        // TODO: deleteTemplateMenuItem
 
         assert null != this.exportGridMenuItem;
         this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
     }
-
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
-    }
+    // endregion
 
     private void closeDrawer()
     {
         assert null != this.drawerLayout;
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
+    }
+
+    private void loadJoinedGridModel(final long gridId)
+    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
+
+    private void clearJoinedGridModel() { this.loadJoinedGridModel(0); }
+
+    private void deleteGrid()
+    {
+        // TODO: Delete entries.
+        assert null != this.joinedGridModel;
+        if (this.gridsTable().delete(this.joinedGridModel.getId()))
+        {
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
+            assert null != this.sharedPreferences; this.sharedPreferences.clearCurrentGrid();
+            this.clearJoinedGridModel(); this.onStart();
+        }
+        else
+            this.showLongToast(
+                org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
     }
 
     private void showChangeLog()
@@ -141,16 +185,6 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
         this.changeLogAlertDialog.show();
     }
-
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
-        if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this);
-        return this.gridsTableInstance;
-    }
-
-    private void loadJoinedGridModel(final long gridId)
-    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
     // endregion
 
     // region Overridden Methods
@@ -315,6 +349,10 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                                 @java.lang.Override
                                 public void closeDrawer()
                                 { org.wheatgenetics.coordinate.MainActivity.this.closeDrawer(); }
+
+                                @java.lang.Override
+                                public void deleteGrid()
+                                { org.wheatgenetics.coordinate.MainActivity.this.deleteGrid(); }
                             },
                         /* versionOnClickListener => */ new android.view.View.OnClickListener()
                             {
@@ -339,7 +377,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 this.loadJoinedGridModel(this.sharedPreferences.getCurrentGrid());
             else
             {
-                this.loadJoinedGridModel(0);
+                this.clearJoinedGridModel();
 
                 this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
                 this.gridCreator.create();

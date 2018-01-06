@@ -15,13 +15,15 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.about.OtherApps.Index
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class NavigationItemSelectedListener extends java.lang.Object
 implements android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler { public abstract void closeDrawer(); }
+    public interface Handler
+    { public abstract void closeDrawer(); public abstract void deleteGrid(); }
 
     // region Fields
     private final android.app.Activity activity   ;
@@ -32,6 +34,8 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
 
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
+
+    private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
 
     public NavigationItemSelectedListener(final android.app.Activity activity,
     final java.lang.String versionName,
@@ -54,8 +58,24 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         {
             // The following six ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
-            case org.wheatgenetics.coordinate.R.id.nav_create_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_delete_grid    : break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_grid : break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_delete_grid :
+                org.wheatgenetics.coordinate.Utils.confirm(
+                    /* context => */ this.activity,
+                    /* message => */ org.wheatgenetics.coordinate
+                        .R.string.NavigationItemSelectedListenerDeleteGridConfirmation,
+                    /* yesRunnable => */ new java.lang.Runnable()
+                        {
+                            @java.lang.Override
+                            public void run()
+                            {
+                                org.wheatgenetics.coordinate.navigation
+                                    .NavigationItemSelectedListener.this.deleteGrid();
+                            }
+                        });
+                break;
+
             case org.wheatgenetics.coordinate.R.id.nav_create_template: break;
             case org.wheatgenetics.coordinate.R.id.nav_load_template  : break;
             case org.wheatgenetics.coordinate.R.id.nav_delete_template: break;

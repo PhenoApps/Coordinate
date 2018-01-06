@@ -4,6 +4,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
+    <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
+
     <!-- activity_main_drawer.xml: -->
     <string name="create_grid">Create grid</string>
     <string name="delete_grid">Delete grid</string>
@@ -13,6 +16,8 @@
     <string name="import_grid">Import</string>
     <string name="export_grid">Export</string>
     <string name="show_about">About</string>
+
+    <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
 
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
