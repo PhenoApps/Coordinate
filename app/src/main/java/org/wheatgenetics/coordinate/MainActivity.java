@@ -33,6 +33,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
+ * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -51,9 +52,9 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
-org.wheatgenetics.coordinate.gc.GridCreator.Handler,
+org.wheatgenetics.coordinate.DisplayFragment.Handler  ,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler,
-org.wheatgenetics.coordinate.DisplayFragment.Handler
+org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout = null;
@@ -73,41 +74,34 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
     // endregion
 
     // region Private Methods
+    private void setTextViewText(final int textViewId, final java.lang.String text)
+    {
+        final android.widget.TextView textView =
+            (android.widget.TextView) this.findViewById(textViewId);
+        if (null != textView) textView.setText(text);
+    }
+
     private void configureNavigationDrawer()
     {
         {
             final java.lang.String person =
                 null == this.sharedPreferences ? "" : this.sharedPreferences.getPerson();
-            {
-                final android.widget.TextView personTextView =
-                    (android.widget.TextView) this.findViewById(
-                        org.wheatgenetics.coordinate.R.id.personTextView);         // From nav_hea-
-                if (null != personTextView) personTextView.setText(person);        //  der_main.xml.
-            }
-            {
-                final android.widget.TextView personTextView =
-                    (android.widget.TextView) this.findViewById(
-                        org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView);  // From nav_hea-
-                if (null != personTextView) personTextView.setText(person);        //  der_main.xml.
-            }
+            this.setTextViewText(
+                org.wheatgenetics.coordinate.R.id.personTextView,       // From nav_header_main.xml.
+                person                                          );
+            this.setTextViewText(
+                org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,// From nav_header_main.xml.
+                person                                                 );
         }
 
         final java.lang.String templateTitle =
             null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
-        {
-            final android.widget.TextView templateTitleTextView =
-                (android.widget.TextView) this.findViewById(
-                    org.wheatgenetics.coordinate.R.id.templateTitleTextView);          // From nav_-
-            if (null != templateTitleTextView)                                         //  header_-
-                templateTitleTextView.setText(templateTitle);                          //  main.xml.
-        }
-        {
-            final android.widget.TextView templateTitleTextView =
-                (android.widget.TextView) this.findViewById(
-                    org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView);   // From nav_-
-            if (null != templateTitleTextView)                                         //  header_-
-                templateTitleTextView.setText(templateTitle);                          //  main.xml.
-        }
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.templateTitleTextView,    // From nav_header_main.xml.
+            templateTitle                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,        // From nav_hea-
+            templateTitle                                                 );       //  der_main.xml.
     }
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
@@ -312,6 +306,7 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
                         }));
             // endregion
 
+            // region Load joinedGridModel.
             this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
                 this.getSharedPreferences("Settings", /* mode => */ 0));
             if (this.sharedPreferences.currentGridIsSet())
@@ -323,6 +318,7 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
                 this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
                 this.gridCreator.create();
             }
+            // endregion
 
             // region Set version.
             if (!this.sharedPreferences.updateVersionIsSet(versionCode))
@@ -389,24 +385,6 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
                 "null"));
     }
 
-    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
-    @java.lang.Override
-    public void setPerson(final java.lang.String person)
-    { assert null != this.sharedPreferences; this.sharedPreferences.setPerson(person); }
-
-    @java.lang.Override
-    public void handleGridCreated(final long gridId)
-    {
-        this.loadJoinedGridModel(gridId);
-        if (null != this.joinedGridModel)
-        {
-            assert null != this.sharedPreferences;
-            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
-        }
-        this.onStart();
-    }
-    // endregion
-
     // region org.wheatgenetics.coordinate.DisplayFragment.Handler Overridden Method
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
@@ -427,6 +405,24 @@ org.wheatgenetics.coordinate.DisplayFragment.Handler
 
     @java.lang.Override
     public void addEntry(final java.lang.String entry) {}                                    // TODO
+    // endregion
+
+    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
+    @java.lang.Override
+    public void setPerson(final java.lang.String person)
+    { assert null != this.sharedPreferences; this.sharedPreferences.setPerson(person); }
+
+    @java.lang.Override
+    public void handleGridCreated(final long gridId)
+    {
+        this.loadJoinedGridModel(gridId);
+        if (null != this.joinedGridModel)
+        {
+            assert null != this.sharedPreferences;
+            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
+        }
+        this.onStart();
+    }
     // endregion
     // endregion
 }
