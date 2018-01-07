@@ -33,6 +33,8 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
             /* oldValue => */ this.getPerson(),
             /* newValue => */ person          );
     }
+
+    public void clearPerson() { this.setPerson(null); }
     // endregion
 
     // region CurrentGrid Public Methods

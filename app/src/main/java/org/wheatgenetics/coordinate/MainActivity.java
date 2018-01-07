@@ -149,10 +149,10 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
             this.setTextViewText(
                 org.wheatgenetics.coordinate.R.id.templateTitleTextView,// From nav_header_main.xml.
-                templateTitle);
+                templateTitle                                          );
             this.setTextViewText(
                 org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,    // From nav_hea-
-                templateTitle);                                                    //  der_main.xml.
+                templateTitle                                                 );   //  der_main.xml.
         }
 
         this.configureMenuItems();
@@ -170,7 +170,10 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
 
         if (null == this.joinedGridModel)
+        {
+            assert null != this.sharedPreferences; this.sharedPreferences.clearPerson();
             this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = false;
+        }
         else
             this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = true;
     }
@@ -347,7 +350,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             { versionCode = 0; versionName = org.wheatgenetics.javalib.Utils.adjust(null); }
             // endregion
 
-            // region Configure navigation menu.
+            // region Configure navigation view.
             {
                 final android.view.Menu menu;
                 {
@@ -496,8 +499,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     @Override
     protected void onSaveInstanceState(final android.os.Bundle outState)
     {
-        assert null != outState;
-        outState.putBoolean(
+        assert null != outState; outState.putBoolean(
             org.wheatgenetics.coordinate.MainActivity.ENABLE_DELETE_GRID_MENU_ITEM,
             this.enableDeleteGridMenuItem                                         );
         outState.putBoolean(
