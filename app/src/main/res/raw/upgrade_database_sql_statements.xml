@@ -4,6 +4,10 @@
     </statement>
 
     <statement>
+    ALTER TABLE grids ADD COLUMN person TEXT
+    </statement>
+
+    <statement>
     ALTER TABLE grids ADD COLUMN ecells TEXT
     </statement>
 

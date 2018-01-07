@@ -16,17 +16,15 @@ public class GridModelTest extends java.lang.Object
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badTemplateIdFirstConstructorFails()
-    { new org.wheatgenetics.coordinate.model.GridModel(0, "title", null); }
+    { new org.wheatgenetics.coordinate.model.GridModel(0, null); }
 
     @org.junit.Test
     public void firstConstructorAndGettersSucceed()
     {
-        final long             templateId = 67   ;
-        final java.lang.String title      = "abc";
+        final long             templateId = 67;
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(templateId, title, null);
+            new org.wheatgenetics.coordinate.model.GridModel(templateId, null);
         org.junit.Assert.assertEquals(gridModel.getTemplateId(), templateId);
-        org.junit.Assert.assertEquals(gridModel.getTitle     (), title     );
     }
     // endregion
 
@@ -42,7 +40,7 @@ public class GridModelTest extends java.lang.Object
         final long             timestamp = 888  ;
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
             new org.wheatgenetics.coordinate.model.GridModel(1, title, null, 5, 5, null, timestamp);
-        org.junit.Assert.assertEquals(gridModel.getTitle    (), title    );
+        org.junit.Assert.assertEquals(gridModel.getPerson(), title    );
         org.junit.Assert.assertEquals(gridModel.getTimestamp(), timestamp);
     }
     // endregion

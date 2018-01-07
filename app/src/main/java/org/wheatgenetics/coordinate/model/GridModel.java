@@ -17,7 +17,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
     private       long                                     templateId           ;
-    private final java.lang.String                         title                ;
+    private       java.lang.String                         person               ;
                   org.wheatgenetics.coordinate.model.Cells excludedCellsInstance;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
@@ -25,8 +25,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Constructors
-    public GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String title,
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
@@ -34,21 +34,20 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         if (templateId < 1) throw new java.lang.IllegalArgumentException();
 
         this.templateId                    = templateId                          ;
-        this.title                         = title                               ;
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long id,
-    final java.lang.String title, java.lang.String excludedCells,
+    final java.lang.String person, java.lang.String excludedCells,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol,
     java.lang.String optionalFields, final long timestamp)
     {
         super(id);
 
-        this.title = title;
+        this.person = person;
 
         if (null == excludedCells)
             this.excludedCellsInstance = null;
@@ -78,12 +77,22 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     { return org.wheatgenetics.androidlibrary.Utils.formatDate(this.getTimestamp()); }
 
     // region Public Methods
-    public long             getTemplateId() { return this.templateId; }
-    public java.lang.String getTitle     () { return this.title     ; }
-    public long             getTimestamp () { return this.timestamp ; }
+    public long getTemplateId() { return this.templateId; }
+
+    public java.lang.String getPerson()                              { return this.person  ; }
+    public void             setPerson(final java.lang.String person) { this.person = person; }
+
+    public long getTimestamp () { return this.timestamp; }
 
     public java.lang.String excludedCellsAsJson()
     { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }
+
+    // region OptionalFields Public Methods
+    public java.lang.String getTitle()
+    {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+            this.nonNullOptionalFieldsInstance.getFirstValue();
+    }
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
@@ -93,5 +102,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
+    // endregion
     // endregion
 }

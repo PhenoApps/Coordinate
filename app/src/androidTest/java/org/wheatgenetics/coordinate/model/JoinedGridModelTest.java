@@ -20,25 +20,23 @@ public class JoinedGridModelTest extends java.lang.Object
     @org.junit.Test @android.annotation.SuppressLint("DefaultLocale")
     public void nameSucceeds()
     {
-        final java.lang.String gridTitle = "testGridTitle", templateTitle = "testTemplateTitle";
-        final int              rows      = 5              , cols          = 2                  ;
-        final long             timestamp = 123                                                 ;
+        final java.lang.String person    = "testPerson", title = "testTitle";
+        final int              rows      = 5           , cols  = 2          ;
+        final long             timestamp = 123                              ;
 
         final java.lang.String expectedName = java.lang.String.format(
-            "Grid: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", gridTitle, templateTitle,
+            "Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", person, title,
             cols, rows, org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp));
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */ 5            ,
-                /* title                        => */ gridTitle    ,
+                /* person                       => */ person    ,
                 /* excludedCells                => */ null         ,
-                /* maxRow                       => */ 5            ,
-                /* maxRow                       => */ 5            ,
                 /* optionalFields               => */ null         ,
                 /* timestamp                    => */ timestamp    ,
 
                 /* templateId                   => */ 6            ,
-                /* templateTitle                => */ templateTitle,
+                /* title                        => */ title        ,
                 /* code                         => */ 1            ,
                 /* rows                         => */ rows         ,
                 /* cols                         => */ cols         ,
@@ -57,8 +55,8 @@ public class JoinedGridModelTest extends java.lang.Object
     @org.junit.Test
     public void populateSucceeds()
     {
-        final long             templateId    = 55555              ;
-        final java.lang.String templateTitle = "testTemplateTitle";
+        final long             templateId = 55555      ;
+        final java.lang.String title      = "testTitle";
         final int code = 0, rows = 5, cols = 2, generatedExcludedCellsAmount = 0,
             colNumbering = 1, rowNumbering = 0;
         final long timestamp = 123;
@@ -66,7 +64,7 @@ public class JoinedGridModelTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.TemplateModel
             expectedTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ templateId                  ,
-                /* title                        => */ templateTitle               ,
+                /* title                        => */ title                       ,
                 /* code                         => */ code                        ,
                 /* rows                         => */ rows                        ,
                 /* cols                         => */ cols                        ,
@@ -98,15 +96,13 @@ public class JoinedGridModelTest extends java.lang.Object
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                 new org.wheatgenetics.coordinate.model.JoinedGridModel(
                     /* id                           => */ 5                           ,
-                    /* title                        => */ "gridTitle"                 ,
+                    /* person                       => */ "person"                 ,
                     /* excludedCells                => */ null                        ,
-                    /* maxRow                       => */ 5                           ,
-                    /* maxRow                       => */ 5                           ,
                     /* optionalFields               => */ null                        ,
                     /* timestamp                    => */ 456                         ,
 
                     /* templateId                   => */ templateId                  ,
-                    /* templateTitle                => */ templateTitle               ,
+                    /* title                        => */ title                       ,
                     /* code                         => */ code                        ,
                     /* rows                         => */ rows                        ,
                     /* cols                         => */ cols                        ,
@@ -129,27 +125,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         joinedGridModel.addExcludedCell(0, 1);
     }
 
@@ -158,27 +152,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         joinedGridModel.addExcludedCell(10, 1);
     }
 
@@ -187,27 +179,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         joinedGridModel.addExcludedCell(1, -1);
     }
 
@@ -216,27 +206,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         joinedGridModel.addExcludedCell(1, 111);
     }
 
@@ -245,27 +233,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         joinedGridModel.addExcludedCell(1, 1);
     }
     // endregion
@@ -275,27 +261,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* id                           => */ 5                  ,
-                    /* title                        => */ "gridTitle"        ,
-                    /* excludedCells                => */ null               ,
-                    /* maxRow                       => */ 5                  ,
-                    /* maxRow                       => */ 5                  ,
-                    /* optionalFields               => */ null               ,
-                    /* timestamp                    => */ 456                ,
+                    /* id                           => */ 5          ,
+                    /* person                       => */ "person"   ,
+                    /* excludedCells                => */ null       ,
+                    /* optionalFields               => */ null       ,
+                    /* timestamp                    => */ 456        ,
 
-                    /* templateId                   => */ 55555              ,
-                    /* templateTitle                => */ "testTemplateTitle",
-                    /* code                         => */ 0                  ,
-                    /* rows                         => */ 5                  ,
-                    /* cols                         => */ 2                  ,
-                    /* generatedExcludedCellsAmount => */ 0                  ,
-                    /* initialExcludedCells         => */ null               ,
-                    /* excludedRows                 => */ null               ,
-                    /* excludedCols                 => */ null               ,
-                    /* colNumbering                 => */ 1                  ,
-                    /* rowNumbering                 => */ 0                  ,
-                    /* templateOptionalFields       => */ null               ,
-                    /* templateTimestamp            => */ 333                );
+                    /* templateId                   => */ 55555      ,
+                    /* title                        => */ "testTitle",
+                    /* code                         => */ 0          ,
+                    /* rows                         => */ 5          ,
+                    /* cols                         => */ 2          ,
+                    /* generatedExcludedCellsAmount => */ 0          ,
+                    /* initialExcludedCells         => */ null       ,
+                    /* excludedRows                 => */ null       ,
+                    /* excludedCols                 => */ null       ,
+                    /* colNumbering                 => */ 1          ,
+                    /* rowNumbering                 => */ 0          ,
+                    /* templateOptionalFields       => */ null       ,
+                    /* templateTimestamp            => */ 333        );
         org.junit.Assert.assertFalse(joinedGridModel.isExcludedCell(1, 1));
     }
 
@@ -311,15 +295,13 @@ public class JoinedGridModelTest extends java.lang.Object
             excludedRowsJSONArray.put(3); excludedColsJSONArray.put(2);
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */ 5                               ,
-                /* title                        => */ "gridTitle"                     ,
+                /* person                       => */ "person"                     ,
                 /* excludedCells                => */ null                            ,
-                /* maxRow                       => */ 5                               ,
-                /* maxRow                       => */ 5                               ,
                 /* optionalFields               => */ null                            ,
                 /* timestamp                    => */ 456                             ,
 
                 /* templateId                   => */ 55555                           ,
-                /* templateTitle                => */ "testTemplateTitle"             ,
+                /* title                        => */ "test"                          ,
                 /* code                         => */ 0                               ,
                 /* rows                         => */ 5                               ,
                 /* cols                         => */ 5                               ,
@@ -414,27 +396,25 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id                           => */ 5                  ,
-                /* title                        => */ "gridTitle"        ,
-                /* excludedCells                => */ null               ,
-                /* maxRow                       => */ 5                  ,
-                /* maxRow                       => */ 5                  ,
-                /* optionalFields               => */ null               ,
-                /* timestamp                    => */ 456                ,
+                /* id                           => */ 5          ,
+                /* person                       => */ "person"   ,
+                /* excludedCells                => */ null       ,
+                /* optionalFields               => */ null       ,
+                /* timestamp                    => */ 456        ,
 
-                /* templateId                   => */ 55555              ,
-                /* templateTitle                => */ "testTemplateTitle",
-                /* code                         => */ 0                  ,
-                /* rows                         => */ 5                  ,
-                /* cols                         => */ 5                  ,
-                /* generatedExcludedCellsAmount => */ 0                  ,
-                /* initialExcludedCells         => */ null               ,
-                /* excludedRows                 => */ null               ,
-                /* excludedCols                 => */ null               ,
-                /* colNumbering                 => */ 1                  ,
-                /* rowNumbering                 => */ 0                  ,
-                /* templateOptionalFields       => */ null               ,
-                /* templateTimestamp            => */ 333                );
+                /* templateId                   => */ 55555      ,
+                /* title                        => */ "testTitle",
+                /* code                         => */ 0          ,
+                /* rows                         => */ 5          ,
+                /* cols                         => */ 5          ,
+                /* generatedExcludedCellsAmount => */ 0          ,
+                /* initialExcludedCells         => */ null       ,
+                /* excludedRows                 => */ null       ,
+                /* excludedCols                 => */ null       ,
+                /* colNumbering                 => */ 1          ,
+                /* rowNumbering                 => */ 0          ,
+                /* templateOptionalFields       => */ null       ,
+                /* templateTimestamp            => */ 333        );
         final org.wheatgenetics.coordinate.model.Cell candidateFreeCell =
             new org.wheatgenetics.coordinate.model.Cell(6, 1);
         joinedGridModel.nextFreeCell(candidateFreeCell);
@@ -445,26 +425,24 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id                           => */ 5                  ,
-                /* title                        => */ "gridTitle"        ,
-                /* excludedCells                => */ null               ,
-                /* maxRow                       => */ 5                  ,
-                /* maxRow                       => */ 5                  ,
-                /* optionalFields               => */ null               ,
-                /* timestamp                    => */ 456                ,
+                /* id                           => */ 5          ,
+                /* person                       => */ "person"   ,
+                /* excludedCells                => */ null       ,
+                /* optionalFields               => */ null       ,
+                /* timestamp                    => */ 456        ,
 
-                /* templateId                   => */ 55555              ,
-                /* templateTitle                => */ "testTemplateTitle",
-                /* code                         => */ 0                  ,
-                /* rows                         => */ 5                  ,
-                /* cols                         => */ 5                  ,
-                /* generatedExcludedCellsAmount => */ 0                  ,
-                /* initialExcludedCells         => */ null               ,
-                /* excludedRows                 => */ null               ,
-                /* excludedCols                 => */ null               ,
-                /* colNumbering                 => */ 1                  ,
-                /* rowNumbering                 => */ 0                  ,
-                /* templateOptionalFields       => */ null               ,
+                /* templateId                   => */ 55555      ,
+                /* title                        => */ "testTitle",
+                /* code                         => */ 0          ,
+                /* rows                         => */ 5          ,
+                /* cols                         => */ 5          ,
+                /* generatedExcludedCellsAmount => */ 0          ,
+                /* initialExcludedCells         => */ null       ,
+                /* excludedRows                 => */ null       ,
+                /* excludedCols                 => */ null       ,
+                /* colNumbering                 => */ 1          ,
+                /* rowNumbering                 => */ 0          ,
+                /* templateOptionalFields       => */ null       ,
                 /* templateTimestamp + */ 333                );
         final org.wheatgenetics.coordinate.model.Cell candidateFreeCell =
             new org.wheatgenetics.coordinate.model.Cell(1, 6);
