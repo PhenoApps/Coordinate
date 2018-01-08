@@ -58,9 +58,9 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         {
             // The following six ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
-            case org.wheatgenetics.coordinate.R.id.nav_create_grid : break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_grid: break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_delete_grid :
+            case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
                 org.wheatgenetics.coordinate.Utils.confirm(
                     /* context => */ this.activity,
                     /* message => */ org.wheatgenetics.coordinate

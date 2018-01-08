@@ -160,9 +160,22 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     }
 
     private void loadJoinedGridModel(final long gridId)
-    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
+    {
+        this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
 
-    private void clearJoinedGridModel() { this.loadJoinedGridModel(0); }
+        assert null != this.sharedPreferences;
+        if (null == this.joinedGridModel)
+            this.sharedPreferences.clearCurrentGrid();
+        else
+            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
+    }
+
+    private void createGrid()
+    {
+        if (null == this.gridCreator)
+            this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
+        this.gridCreator.create();
+    }
 
     private void deleteGrid()
     {
@@ -171,8 +184,8 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         if (this.gridsTable().delete(this.joinedGridModel.getId()))
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
-            assert null != this.sharedPreferences; this.sharedPreferences.clearCurrentGrid();
-            this.clearJoinedGridModel(); this.onStart();
+            this.loadJoinedGridModel(0); this.onStart();
+            //this.createGrid();
         }
         else
             this.showLongToast(
@@ -393,13 +406,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             if (this.sharedPreferences.currentGridIsSet())
                 this.loadJoinedGridModel(this.sharedPreferences.getCurrentGrid());
             else
-                if (null == savedInstanceState)
-                {
-                    this.clearJoinedGridModel();
-
-                    this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
-                    this.gridCreator.create();
-                }
+                if (null == savedInstanceState) this.createGrid();
             // endregion
 
             // region Set version.
@@ -496,15 +503,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
     @java.lang.Override
     public void handleGridCreated(final long gridId)
-    {
-        this.loadJoinedGridModel(gridId);
-        if (null != this.joinedGridModel)
-        {
-            assert null != this.sharedPreferences;
-            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
-        }
-        this.onStart();
-    }
+    { this.loadJoinedGridModel(gridId); this.onStart(); }
     // endregion
     // endregion
 }
