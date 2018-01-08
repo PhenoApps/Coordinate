@@ -76,9 +76,6 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
     private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
-
-    private boolean
-        enableDeleteGridMenuItem, enableDeleteTemplateMenuItem, enableExportGridMenuItem;
     // endregion
 
     // region Private Methods
@@ -105,18 +102,6 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
     // endregion
 
-    private void configureMenuItems()
-    {
-        assert null != this.deleteGridMenuItem;
-        this.deleteGridMenuItem.setEnabled(this.enableDeleteGridMenuItem);
-
-        assert null != this.deleteTemplateMenuItem;
-        this.deleteTemplateMenuItem.setEnabled(this.enableDeleteTemplateMenuItem);
-
-        assert null != this.exportGridMenuItem;
-        this.exportGridMenuItem.setEnabled(this.enableExportGridMenuItem);
-    }
-
     // region configureNavigationDrawer() Private Methods
     private void setTextViewText(final int textViewId, final java.lang.String text)
     {
@@ -127,29 +112,44 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
     private void configureNavigationDrawer()
     {
+        final java.lang.String person                  , templateTitle           ;
+        final boolean          enableDeleteGridMenuItem, enableExportGridMenuItem;
+        if (null == this.joinedGridModel)
         {
-            final java.lang.String person =
-                null == this.joinedGridModel ? "" : this.joinedGridModel.getPerson();
-            this.setTextViewText(
-                org.wheatgenetics.coordinate.R.id.personTextView,       // From nav_header_main.xml.
-                person                                          );
-            this.setTextViewText(
-                org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,// From nav_header_main.xml.
-                person                                                 );
+            person                   = templateTitle            = ""   ;
+            enableDeleteGridMenuItem = enableExportGridMenuItem = false;
+        }
+        else
+        {
+            person        = this.joinedGridModel.getPerson       ();
+            templateTitle = this.joinedGridModel.getTemplateTitle();
+            enableDeleteGridMenuItem = enableExportGridMenuItem = true;
         }
 
-        {
-            final java.lang.String templateTitle =
-                null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle();
-            this.setTextViewText(
-                org.wheatgenetics.coordinate.R.id.templateTitleTextView,// From nav_header_main.xml.
-                templateTitle                                          );
-            this.setTextViewText(
-                org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,    // From nav_hea-
-                templateTitle                                                 );   //  der_main.xml.
-        }
 
-        this.configureMenuItems();
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.personTextView,           // From nav_header_main.xml.
+            person                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,    // From nav_header_main.xml.
+            person                                                 );
+
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.templateTitleTextView,    // From nav_header_main.xml.
+            templateTitle                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,        // From nav_hea-
+            templateTitle                                                 );       //  der_main.xml.
+
+
+        assert null != this.deleteGridMenuItem;
+        this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
+
+        // assert null != this.deleteTemplateMenuItem;
+        // this.deleteTemplateMenuItem.setEnabled(enableDeleteTemplateMenuItem);             // TODO
+
+        assert null != this.exportGridMenuItem;
+        this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
     }
     // endregion
 
@@ -160,14 +160,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     }
 
     private void loadJoinedGridModel(final long gridId)
-    {
-        this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
-
-        if (null == this.joinedGridModel)
-            this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = false;
-        else
-            this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = true;
-    }
+    { this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null; }
 
     private void clearJoinedGridModel() { this.loadJoinedGridModel(0); }
 
@@ -359,17 +352,17 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                                 .NavigationItemSelectedListener.Handler()
                                 {
                                     @java.lang.Override
-                                    public void closeDrawer()
-                                    {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.closeDrawer();
-                                    }
-
-                                    @java.lang.Override
                                     public void deleteGrid()
                                     {
                                         org.wheatgenetics.coordinate
                                             .MainActivity.this.deleteGrid();
+                                    }
+
+                                    @java.lang.Override
+                                    public void closeDrawer()
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.closeDrawer();
                                     }
                                 },
                             /* versionOnClickListener => */ new android.view.View.OnClickListener()
@@ -385,8 +378,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                     menu = navigationView.getMenu();
                 }
 
-                assert null != menu;
-                this.deleteGridMenuItem =
+                assert null != menu; this.deleteGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
                 this.deleteTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
