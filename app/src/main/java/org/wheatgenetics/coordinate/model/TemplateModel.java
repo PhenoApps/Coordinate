@@ -9,7 +9,6 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
- * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.RowOrCols
@@ -323,31 +322,10 @@ implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.initialExcludedCells().add(row, col); }
 
-    public void makeOneRandomCell()                                           // TODO: Remove later.
-    {
-        this.initialExcludedCells().makeOneRandomCell(
-            /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
-    }
-
-    public void makeRandomCells(@android.support.annotation.IntRange(from = 1) final int amount)  // TODO: Remove later.
-    {
-        this.initialExcludedCells().makeRandomCells(
-            amount, /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
-    }
-
     public java.lang.String getInitialExcludedCellsAsJson()
     {
         return null == this.initialExcludedCellsInstance ?
             null : this.initialExcludedCellsInstance.json();
-    }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean isInitialExcludedCell(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
-    {
-        return null == this.initialExcludedCellsInstance ? false :
-            this.initialExcludedCellsInstance.contains(row, col);
     }
     // endregion
 
@@ -403,33 +381,6 @@ implements java.lang.Cloneable
             this.nonNullOptionalFieldsInstance.getFirstValue();
     }
     // endregion
-
-    public org.wheatgenetics.coordinate.model.Cell nextFreeCell(              // TODO: Remove later.
-    final org.wheatgenetics.coordinate.model.Cell candidateFreeCell)
-    {
-        if (null == candidateFreeCell)
-            return null;
-        else
-        {
-            {
-                final int lastRow = this.getRows(), lastCol = this.getCols();
-                candidateFreeCell.inRange(              // throws java.lang.IllegalArgumentException
-                    /* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(lastRow, lastCol));
-
-                boolean candidateCol = true;
-                for (int col = candidateFreeCell.getCol().getValue(); col <= lastCol; col++)
-                {
-                    if (!this.isExcludedCol(col))
-                        for (int row = candidateCol ? candidateFreeCell.getRow().getValue() : 1;
-                        row <= lastRow; row++)
-                            if (!this.isExcludedRow(row)) if (!this.isInitialExcludedCell(row, col))
-                                return new org.wheatgenetics.coordinate.model.Cell(row, col);
-                    candidateCol = false;
-                }
-            }
-            return null;
-        }
-    }
 
     // region checkedItems Public Methods
     public boolean[] rowCheckedItems()
