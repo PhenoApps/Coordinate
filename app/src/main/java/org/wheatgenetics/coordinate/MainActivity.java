@@ -166,8 +166,8 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
     private void deleteGrid()
     {
-        // TODO: Delete entries.
         assert null != this.joinedGridModel;
+        // TODO: Delete entries.
         if (this.gridsTable().delete(this.joinedGridModel.getId()))
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
@@ -393,12 +393,13 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             if (this.sharedPreferences.currentGridIsSet())
                 this.loadJoinedGridModel(this.sharedPreferences.getCurrentGrid());
             else
-            {
-                this.clearJoinedGridModel();
+                if (null == savedInstanceState)
+                {
+                    this.clearJoinedGridModel();
 
-                this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
-                this.gridCreator.create();
-            }
+                    this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
+                    this.gridCreator.create();
+                }
             // endregion
 
             // region Set version.
