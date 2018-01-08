@@ -145,8 +145,9 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         assert null != this.deleteGridMenuItem;
         this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
 
-        // assert null != this.deleteTemplateMenuItem;
-        // this.deleteTemplateMenuItem.setEnabled(enableDeleteTemplateMenuItem);             // TODO
+         assert null != this.deleteTemplateMenuItem;
+         this.deleteTemplateMenuItem.setEnabled(this.templatesTable().exists(
+             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED));
 
         assert null != this.exportGridMenuItem;
         this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
