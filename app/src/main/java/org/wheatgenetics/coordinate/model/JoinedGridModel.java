@@ -25,11 +25,11 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
 
     // region Constructors
-    public JoinedGridModel(
+    public JoinedGridModel(final java.lang.String                          person        ,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     final org.wheatgenetics.coordinate.model.TemplateModel                 templateModel )
     {
-        super(templateModel.getId(), optionalFields);
+        super(templateModel.getId(), person, optionalFields);
         this.templateModel = templateModel;
         this.makeRandomCells();
     }

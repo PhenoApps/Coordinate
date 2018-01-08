@@ -35,11 +35,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler
-    {
-        public abstract void setPerson        (java.lang.String person);
-        public abstract void handleGridCreated(long             gridId);
-    }
+    public interface Handler { public abstract void handleGridCreated(long gridId); }
 
     // region Fields
     private final android.app.Activity                                activity;
@@ -47,6 +43,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null;
 
+    private java.lang.String                                                  person        ;
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields  optionalFields;
     private org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog
         setOptionalFieldValuesAlertDialog = null;
@@ -73,6 +70,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private void setValues()
     {
+        this.person = null;
+
         assert null != this.templateModel;
         if (this.templateModel.optionalFieldsIsEmpty())
         {
@@ -108,17 +107,17 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler Overridden Methods
     @java.lang.Override
-    public void setPerson(final java.lang.String person)
-    { assert null != this.handler; this.handler.setPerson(person); }
+    public void setPerson(final java.lang.String person) { this.person = person; }
 
     @java.lang.Override
     public void handleSetValuesDone()
     {
         final long gridId = this.gridsTable().insert(
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* person         => */ this.person        ,
                 /* optionalFields => */ this.optionalFields,
                 /* templateModel  => */ this.templateModel ));
-        this.optionalFields = null; this.templateModel = null;
+        this.person = null; this.optionalFields = null; this.templateModel = null;
 
         if (gridId <= 0)
             org.wheatgenetics.coordinate.Utils.alert(this.activity,
@@ -144,7 +143,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     {
         this.templateModel = templateModel;
 
-        boolean inserted;
+        final boolean inserted;
         {
             final long templateId = this.templatesTable().insert(this.templateModel);
             if (templateId > 0)

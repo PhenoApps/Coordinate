@@ -17,7 +17,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
     private       long                                     templateId           ;
-    private       java.lang.String                         person               ;
+    private final java.lang.String                         person               ;
                   org.wheatgenetics.coordinate.model.Cells excludedCellsInstance;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
@@ -27,6 +27,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
+    final java.lang.String                                                 person        ,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
@@ -34,6 +35,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         if (templateId < 1) throw new java.lang.IllegalArgumentException();
 
         this.templateId                    = templateId                          ;
+        this.person                        = person                              ;
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
@@ -77,12 +79,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     { return org.wheatgenetics.androidlibrary.Utils.formatDate(this.getTimestamp()); }
 
     // region Public Methods
-    public long getTemplateId() { return this.templateId; }
-
-    public java.lang.String getPerson()                              { return this.person  ; }
-    public void             setPerson(final java.lang.String person) { this.person = person; }
-
-    public long getTimestamp () { return this.timestamp; }
+    public long             getTemplateId() { return this.templateId; }
+    public java.lang.String getPerson    () { return this.person    ; }
+    public long             getTimestamp () { return this.timestamp ; }
 
     public java.lang.String excludedCellsAsJson()
     { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }

@@ -129,7 +129,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     {
         {
             final java.lang.String person =
-                null == this.sharedPreferences ? "" : this.sharedPreferences.getPerson();
+                null == this.joinedGridModel ? "" : this.joinedGridModel.getPerson();
             this.setTextViewText(
                 org.wheatgenetics.coordinate.R.id.personTextView,       // From nav_header_main.xml.
                 person                                          );
@@ -164,10 +164,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
 
         if (null == this.joinedGridModel)
-        {
-            assert null != this.sharedPreferences; this.sharedPreferences.clearPerson();
             this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = false;
-        }
         else
             this.enableDeleteGridMenuItem = this.enableExportGridMenuItem = true;
     }
@@ -503,11 +500,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     public void addEntry(final java.lang.String entry) {}                                    // TODO
     // endregion
 
-    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
-    @java.lang.Override
-    public void setPerson(final java.lang.String person)
-    { assert null != this.sharedPreferences; this.sharedPreferences.setPerson(person); }
-
+    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
     @java.lang.Override
     public void handleGridCreated(final long gridId)
     {
