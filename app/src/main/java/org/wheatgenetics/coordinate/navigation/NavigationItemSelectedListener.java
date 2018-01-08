@@ -23,7 +23,11 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
-    { public abstract void closeDrawer(); public abstract void deleteGrid(); }
+    {
+        public abstract void createGrid ();
+        public abstract void deleteGrid ();
+        public abstract void closeDrawer();
+    }
 
     // region Fields
     private final android.app.Activity activity   ;
@@ -58,7 +62,8 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         {
             // The following six ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
-            case org.wheatgenetics.coordinate.R.id.nav_create_grid: break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_grid:
+                assert null != this.handler; this.handler.createGrid(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
                 org.wheatgenetics.coordinate.Utils.confirm(

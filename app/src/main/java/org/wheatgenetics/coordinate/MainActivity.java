@@ -184,8 +184,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         if (this.gridsTable().delete(this.joinedGridModel.getId()))
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
-            this.loadJoinedGridModel(0); this.onStart();
-            //this.createGrid();
+            this.loadJoinedGridModel(0); this.onStart(); this.createGrid();
         }
         else
             this.showLongToast(
@@ -364,6 +363,13 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                             /* handler     => */ new org.wheatgenetics.coordinate.navigation
                                 .NavigationItemSelectedListener.Handler()
                                 {
+                                    @java.lang.Override
+                                    public void createGrid()
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.createGrid();
+                                    }
+
                                     @java.lang.Override
                                     public void deleteGrid()
                                     {
