@@ -122,7 +122,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (gridId <= 0)
             org.wheatgenetics.coordinate.Utils.alert(this.activity,
                 org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
-        assert null != this.handler; this.handler.handleGridCreated(gridId);
+        else { assert null != this.handler; this.handler.handleGridCreated(gridId); }
     }
     // endregion
 
@@ -158,11 +158,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 inserted = false;
             }
         }
-
-        if (inserted)
-            this.setValues();
-        else
-            { assert null != this.handler; this.handler.handleGridCreated(0); }
+        if (inserted) this.setValues();
     }
     // endregion
 
