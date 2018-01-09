@@ -19,6 +19,8 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
@@ -38,8 +40,13 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
     {
-        public abstract void createGrid           (); public abstract void deleteGrid ();
-        public abstract void handleTemplateDeleted(); public abstract void closeDrawer();
+        public abstract void createGrid();
+        public abstract void loadGrid  (long gridId);
+        public abstract void deleteGrid();
+
+        public abstract void handleTemplateDeleted();
+
+        public abstract void closeDrawer();
     }
 
     // region Fields
@@ -82,6 +89,13 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void showLongToast(final int text)
     { this.showLongToast(this.activity.getString(text)); }
     // endregion
+
+    private void loadGridAfterSelect(
+    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
+    {
+        if (null != joinedGridModel)
+        { assert null != this.handler; this.handler.loadGrid(joinedGridModel.getId()); }
+    }
 
     private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
 
@@ -164,7 +178,30 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_load_grid: break;
+            case org.wheatgenetics.coordinate.R.id.nav_load_grid:
+                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+                    this.gridsTable().load();
+                if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+                {
+                    final org.wheatgenetics.coordinate.SelectAlertDialog
+                        selectGridToLoadAlertDialog =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                            new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                            {
+                                @java.lang.Override
+                                public void select(final int which)
+                                {
+                                    org.wheatgenetics.coordinate.navigation
+                                        .NavigationItemSelectedListener.this.loadGridAfterSelect(
+                                            joinedGridModels.get(which));
+                                }
+                            });
+                    selectGridToLoadAlertDialog.show(
+                        org.wheatgenetics.coordinate
+                            .R.string.NavigationItemSelectedListenerLoadGridTitle,
+                        joinedGridModels.names());
+                }
+                break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
                 org.wheatgenetics.coordinate.Utils.confirm(

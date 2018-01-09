@@ -17,6 +17,7 @@
     <string name="export_grid">Export</string>
     <string name="show_about">About</string>
 
+    <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>

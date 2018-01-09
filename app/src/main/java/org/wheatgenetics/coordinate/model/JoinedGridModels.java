@@ -22,6 +22,13 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         return this.arrayListInstance;
     }
 
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean isInRange(final int i)
+    {
+        return i < 0 ? false : null == this.arrayListInstance ?
+            false : i < this.arrayListInstance.size();
+    }
+
     private static int logInfo(final java.lang.String msg)
     { return android.util.Log.i("JoinedGridModels", msg); }
     // endregion
@@ -119,6 +126,14 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                 return result;
             }
         }
+    }
+
+    public org.wheatgenetics.coordinate.model.JoinedGridModel get(final int i)
+    {
+        if (null == this.arrayListInstance)
+            return null;
+        else
+            return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
     public void logInfo()

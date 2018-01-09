@@ -390,6 +390,13 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                                     }
 
                                     @java.lang.Override
+                                    public void loadGrid(final long gridId)
+                                    {
+                                        org.wheatgenetics.coordinate.MainActivity.this
+                                            .loadJoinedGridModelThenPopulate(gridId);
+                                    }
+
+                                    @java.lang.Override
                                     public void deleteGrid()
                                     {
                                         org.wheatgenetics.coordinate
