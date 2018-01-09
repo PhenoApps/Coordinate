@@ -59,7 +59,8 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
-    private android.view.MenuItem deleteGridMenuItem, deleteTemplateMenuItem, exportGridMenuItem;
+    private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
+        deleteTemplateMenuItem, exportGridMenuItem;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
@@ -141,6 +142,9 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
             org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,        // From nav_hea-
             templateTitle                                                 );       //  der_main.xml.
 
+
+        assert null != this.loadGridMenuItem;
+        this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
 
         assert null != this.deleteGridMenuItem;
         this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
@@ -419,7 +423,9 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                     menu = navigationView.getMenu();
                 }
 
-                assert null != menu; this.deleteGridMenuItem =
+                assert null != menu; this.loadGridMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_load_grid);
+                this.deleteGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
                 this.deleteTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);

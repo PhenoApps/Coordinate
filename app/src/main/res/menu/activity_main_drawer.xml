@@ -6,6 +6,11 @@
             android:icon="@drawable/ic_menu_create_grid"
             android:title="@string/create_grid" />
         <item
+            android:id="@+id/nav_load_grid"
+            android:icon="@drawable/ic_menu_load_grid"
+            android:title="@string/load_grid"
+            android:enabled="false" />
+        <item
             android:id="@+id/nav_delete_grid"
             android:icon="@drawable/ic_menu_delete_grid"
             android:title="@string/delete_grid"
@@ -17,10 +22,6 @@
             android:id="@+id/nav_create_template"
             android:icon="@drawable/ic_menu_create_template"
             android:title="@string/create_template" />
-        <item
-            android:id="@+id/nav_load_template"
-            android:icon="@drawable/ic_menu_load_template"
-            android:title="@string/load_template" />
         <item
             android:id="@+id/nav_delete_template"
             android:icon="@drawable/ic_menu_delete_template"

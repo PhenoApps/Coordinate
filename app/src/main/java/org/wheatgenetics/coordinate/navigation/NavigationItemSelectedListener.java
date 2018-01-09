@@ -164,6 +164,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
 
+            case org.wheatgenetics.coordinate.R.id.nav_load_grid: break;
+
             case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
                 org.wheatgenetics.coordinate.Utils.confirm(
                     /* context => */ this.activity,
@@ -183,8 +185,6 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 if (null == this.templateCreator) this.templateCreator =
                     new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity, this);
                 this.templateCreator.create(); break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_load_template: break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
                 final org.wheatgenetics.coordinate.model.TemplateModels templateModels =

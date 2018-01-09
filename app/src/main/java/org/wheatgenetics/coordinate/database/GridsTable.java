@@ -194,6 +194,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)));
     }
 
+    public boolean exists()
+    {
+        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
+            "SELECT ALL * FROM " + org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME));
+    }
+
     public boolean deleteByTemplateId(final long templateId)
     {
         return this.deleteUsingWhereClause(/* whereClause => */

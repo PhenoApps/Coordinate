@@ -9,9 +9,9 @@
 
     <!-- activity_main_drawer.xml: -->
     <string name="create_grid">Create grid</string>
+    <string name="load_grid">Load grid</string>
     <string name="delete_grid">Delete grid</string>
     <string name="create_template">Create template</string>
-    <string name="load_template">Load template</string>
     <string name="delete_template">Delete template</string>
     <string name="import_grid">Import</string>
     <string name="export_grid">Export</string>
