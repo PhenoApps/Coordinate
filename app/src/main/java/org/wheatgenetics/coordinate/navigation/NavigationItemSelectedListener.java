@@ -22,14 +22,18 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
+ * org.wheatgenetics.coordinate.tc.TemplateCreator
+ * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
+ *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public class NavigationItemSelectedListener extends java.lang.Object
-implements android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
+public class NavigationItemSelectedListener extends java.lang.Object implements
+android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -50,8 +54,8 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateToDeleteAlertDialog       ;
-    private org.wheatgenetics.about.AboutAlertDialog       aboutAlertDialog                  = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
+    private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -146,6 +150,7 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         this.handler  = handler ; this.versionOnClickListener = versionOnClickListener;
     }
 
+    // region Overridden Methods
     // region android.support.design.widget.NavigationView.OnNavigationItemSelectedListener Overridden Method
     @java.lang.Override
     public boolean onNavigationItemSelected(
@@ -174,27 +179,32 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
                             }
                         }); break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_create_template: break;
-            case org.wheatgenetics.coordinate.R.id.nav_load_template  : break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_template:
+                if (null == this.templateCreator) this.templateCreator =
+                    new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity, this);
+                this.templateCreator.create(); break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_load_template: break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
                 final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
                     this.templatesTable().loadUserDefined();
                 if (null != templateModels) if (templateModels.size() > 0)
                 {
-                    this.selectTemplateToDeleteAlertDialog =
-                        new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                            new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                            {
-                                @java.lang.Override
-                                public void select(final int which)
+                    final org.wheatgenetics.coordinate.SelectAlertDialog
+                        selectTemplateToDeleteAlertDialog =
+                            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                                 {
-                                    org.wheatgenetics.coordinate.navigation
-                                        .NavigationItemSelectedListener.this
-                                        .deleteTemplateAfterSelect(templateModels.get(which));
-                                }
-                            });
-                    this.selectTemplateToDeleteAlertDialog.show(
+                                    @java.lang.Override
+                                    public void select(final int which)
+                                    {
+                                        org.wheatgenetics.coordinate.navigation
+                                            .NavigationItemSelectedListener.this
+                                            .deleteTemplateAfterSelect(templateModels.get(which));
+                                    }
+                                });
+                    selectTemplateToDeleteAlertDialog.show(
                         org.wheatgenetics.coordinate
                             .R.string.NavigationItemSelectedListenerSelectDeleteTemplateTitle,
                         templateModels.titles());
@@ -231,5 +241,16 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         }
         assert null != this.handler; this.handler.closeDrawer(); return true;
     }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
+    @java.lang.Override
+    public void handleTemplateCreated(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel) if (this.templatesTable().insert(templateModel) > 0)
+            this.showLongToast(templateModel.getTitle() + " created");
+    }
+    // endregion
     // endregion
 }
