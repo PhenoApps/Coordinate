@@ -11,10 +11,20 @@ package org.wheatgenetics.coordinate.navigation;
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  *
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModels
+ *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.SelectAlertDialog
+ * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -24,9 +34,8 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
     {
-        public abstract void createGrid ();
-        public abstract void deleteGrid ();
-        public abstract void closeDrawer();
+        public abstract void createGrid           (); public abstract void deleteGrid ();
+        public abstract void handleTemplateDeleted(); public abstract void closeDrawer();
     }
 
     // region Fields
@@ -36,10 +45,95 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         handler;
     private final android.view.View.OnClickListener versionOnClickListener;
 
-    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
+    // region Table Fields
+    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    // endregion
+
+    private org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateToDeleteAlertDialog       ;
+    private org.wheatgenetics.about.AboutAlertDialog       aboutAlertDialog                  = null;
+    // endregion
+
+    // region Private Methods
+    // region Table Private Methods
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
+        return this.gridsTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity);
+        return this.templatesTableInstance;
+    }
+    // endregion
+
+    // region Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
+
+    private void showLongToast(final int text)
+    { this.showLongToast(this.activity.getString(text)); }
     // endregion
 
     private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
+
+    @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    private void deleteTemplateAfterConfirm(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        final boolean success;
+        if (null == templateModel)
+            success = false;
+        else
+        {
+            // TODO: Delete entries associated with grids.
+
+            final long templateId = templateModel.getId();
+
+            if (this.gridsTable().deleteByTemplateId(templateId))
+                this.showLongToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateSuccessToast);
+            else
+                this.showLongToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast);
+
+            success = templatesTable().delete(templateId);
+        }
+
+        if (success)
+        {
+            this.showLongToast(org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteTemplateSuccessToast);
+            assert null != this.handler; this.handler.handleTemplateDeleted();
+        }
+        else this.showLongToast(org.wheatgenetics.coordinate
+            .R.string.NavigationItemSelectedListenerDeleteTemplateFailToast);
+    }
+
+    private void deleteTemplateAfterSelect(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel) org.wheatgenetics.coordinate.Utils.confirm(
+            /* context => */ this.activity,
+            /* title   => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteTemplateConfirmationTitle,
+            /* message => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteTemplateConfirmationMessage,
+            /* yesRunnable => */ new java.lang.Runnable()
+                {
+                    @java.lang.Override
+                    public void run()
+                    {
+                        org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
+                            .this.deleteTemplateAfterConfirm(templateModel);
+                    }
+                });
+    }
+    // endregion
 
     public NavigationItemSelectedListener(final android.app.Activity activity,
     final java.lang.String versionName,
@@ -78,14 +172,36 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
                                 org.wheatgenetics.coordinate.navigation
                                     .NavigationItemSelectedListener.this.deleteGrid();
                             }
-                        });
-                break;
+                        }); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_create_template: break;
             case org.wheatgenetics.coordinate.R.id.nav_load_template  : break;
-            case org.wheatgenetics.coordinate.R.id.nav_delete_template: break;
-            case org.wheatgenetics.coordinate.R.id.nav_import_grid    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_export_grid    : break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_delete_template:
+                final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+                    this.templatesTable().loadUserDefined();
+                if (null != templateModels) if (templateModels.size() > 0)
+                {
+                    this.selectTemplateToDeleteAlertDialog =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                            new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                            {
+                                @java.lang.Override
+                                public void select(final int which)
+                                {
+                                    org.wheatgenetics.coordinate.navigation
+                                        .NavigationItemSelectedListener.this
+                                        .deleteTemplateAfterSelect(templateModels.get(which));
+                                }
+                            });
+                    this.selectTemplateToDeleteAlertDialog.show(
+                        org.wheatgenetics.coordinate
+                            .R.string.NavigationItemSelectedListenerSelectDeleteTemplateTitle,
+                        templateModels.titles());
+                } break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_import_grid: break;
+            case org.wheatgenetics.coordinate.R.id.nav_export_grid: break;
 
             case org.wheatgenetics.coordinate.R.id.nav_show_about :
                 if (null == this.aboutAlertDialog)

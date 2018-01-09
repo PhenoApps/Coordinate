@@ -160,6 +160,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
     }
 
+    // region loadJoinedGridModel() Private Methods
     private void loadJoinedGridModel(final long gridId)
     {
         this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
@@ -170,6 +171,12 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         else
             this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
     }
+
+    private void loadJoinedGridModelThenPopulate(final long gridId)
+    { this.loadJoinedGridModel(gridId); this.onStart(); }
+
+    private void clearJoinedGridModelThenPopulate() { this.loadJoinedGridModelThenPopulate(0); }
+    // endregion
 
     private void createGrid()
     {
@@ -185,11 +192,18 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         if (this.gridsTable().delete(this.joinedGridModel.getId()))
         {
             this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
-            this.loadJoinedGridModel(0); this.onStart(); this.createGrid();
+            this.clearJoinedGridModelThenPopulate(); this.createGrid();
         }
         else
             this.showLongToast(
                 org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
+    }
+
+    private void handleTemplateDeleted()
+    {
+        if (null != this.joinedGridModel)
+            if (!this.gridsTable().exists(this.joinedGridModel.getId()))
+                this.clearJoinedGridModelThenPopulate();
     }
 
     private void showChangeLog()
@@ -379,6 +393,13 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                                     }
 
                                     @java.lang.Override
+                                    public void handleTemplateDeleted()
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.handleTemplateDeleted();
+                                    }
+
+                                    @java.lang.Override
                                     public void closeDrawer()
                                     {
                                         org.wheatgenetics.coordinate
@@ -510,7 +531,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
     @java.lang.Override
     public void handleGridCreated(final long gridId)
-    { this.loadJoinedGridModel(gridId); this.onStart(); }
+    { this.loadJoinedGridModelThenPopulate(gridId); }
     // endregion
     // endregion
 }

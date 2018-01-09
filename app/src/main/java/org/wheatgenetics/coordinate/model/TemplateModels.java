@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.util.Log
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -26,6 +28,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         return i < 0 ? false : null == this.arrayListInstance ?
             false : i < this.arrayListInstance.size();
     }
+
+    private static int logInfo(final java.lang.String msg)
+    { return android.util.Log.i("TemplateModels", msg); }
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
@@ -89,6 +94,20 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             return null;
         else
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
+    }
+
+    public void logInfo()
+    {
+        if (null == this.arrayListInstance)
+            org.wheatgenetics.coordinate.model.TemplateModels.logInfo(
+                "null == this.arrayListInstance");
+        else
+            if (this.size() <= 0)
+                org.wheatgenetics.coordinate.model.TemplateModels.logInfo("this.size() <= 0");
+            else
+                for (final org.wheatgenetics.coordinate.model.TemplateModel templateModel: this)
+                    org.wheatgenetics.coordinate.model.TemplateModels.logInfo(
+                        templateModel.toString());
     }
 
     public static org.wheatgenetics.coordinate.model.TemplateModels makeDefault()

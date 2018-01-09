@@ -18,6 +18,13 @@
     <string name="show_about">About</string>
 
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
+    <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
+    <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
+    <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
+    <string name="NavigationItemSelectedListenerDeleteGridsOfTemplateSuccessToast">Grid(s) successfully deleted</string>
+    <string name="NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast">Grid(s) were not deleted</string>
+    <string name="NavigationItemSelectedListenerDeleteTemplateSuccessToast">Template successfully deleted</string>
+    <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
 
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>

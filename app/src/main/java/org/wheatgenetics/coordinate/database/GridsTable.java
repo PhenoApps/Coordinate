@@ -179,6 +179,12 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Operations
+    public boolean exists(final long id)
+    {
+        return org.wheatgenetics.coordinate.database.Table.exists(this.queryDistinct(
+            /* selection => */ org.wheatgenetics.coordinate.database.Table.whereClause(id)));
+    }
+
     public org.wheatgenetics.coordinate.model.JoinedGridModel get(final long id)
     {
         return (org.wheatgenetics.coordinate.model.JoinedGridModel) this.makeFromFirst(

@@ -41,6 +41,28 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         return this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.Table.whereClause(id));
     }
+
+    private org.wheatgenetics.coordinate.model.TemplateModels makeTemplateModels(
+    final android.database.Cursor cursor)
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels result;
+        if (null == cursor)
+            result = null;
+        else
+            try
+            {
+                if (cursor.getCount() <= 0)
+                    result = null;
+                else
+                {
+                    result = new org.wheatgenetics.coordinate.model.TemplateModels();
+                    while (cursor.moveToNext()) result.add(
+                        (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
+                }
+            }
+            finally { cursor.close(); }
+        return result;
+    }
     // endregion
 
     public TemplatesTable(final android.content.Context context)
@@ -149,27 +171,14 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
 
     public org.wheatgenetics.coordinate.model.TemplateModels load()
     {
-        org.wheatgenetics.coordinate.model.TemplateModels result;
-        {
-            final android.database.Cursor cursor = this.queryAll(/* orderBy => */
-                org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC");
-            if (null == cursor)
-                result = null;
-            else
-                try
-                {
-                    if (cursor.getCount() <= 0)
-                        result = null;
-                    else
-                    {
-                        result = new org.wheatgenetics.coordinate.model.TemplateModels();
-                        while (cursor.moveToNext()) result.add(
-                            (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
-                    }
-                }
-                finally { cursor.close(); }
-        }
-        return result;
+        return this.makeTemplateModels(this.queryAll(/* orderBy => */
+            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC"));
+    }
+
+    public org.wheatgenetics.coordinate.model.TemplateModels loadUserDefined()
+    {
+        return this.makeTemplateModels(this.query(
+            org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED));
     }
     // endregion
 }

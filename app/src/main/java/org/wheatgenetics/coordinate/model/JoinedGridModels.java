@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.util.Log
+ *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -11,6 +13,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel>
         arrayListInstance = null;
 
+    // region Private Methods
     @java.lang.SuppressWarnings("Convert2Diamond")
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList()
     {
@@ -18,6 +21,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
             new java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel>();
         return this.arrayListInstance;
     }
+
+    private static int logInfo(final java.lang.String msg)
+    { return android.util.Log.i("JoinedGridModels", msg); }
+    // endregion
 
     // region java.lang.Iterable<> Overridden Method
     @java.lang.Override
@@ -52,6 +59,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     public boolean add(
     final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { return null == joinedGridModel ? false : this.arrayList().add(joinedGridModel); }
+
+    public int size()
+    { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
     public java.lang.String[] names()
     {
@@ -109,6 +119,20 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                 return result;
             }
         }
+    }
+
+    public void logInfo()
+    {
+        if (null == this.arrayListInstance)
+            org.wheatgenetics.coordinate.model.JoinedGridModels.logInfo(
+                "null == this.arrayListInstance");
+        else
+            if (this.size() <= 0)
+                org.wheatgenetics.coordinate.model.JoinedGridModels.logInfo("this.size() <= 0");
+            else
+                for (final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel: this)
+                    org.wheatgenetics.coordinate.model.JoinedGridModels.logInfo(
+                        joinedGridModel.toString());
     }
     // endregion
 }
