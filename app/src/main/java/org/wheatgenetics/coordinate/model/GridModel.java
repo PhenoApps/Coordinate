@@ -32,9 +32,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     {
         super();
 
-        if (templateId < 1) throw new java.lang.IllegalArgumentException();
+        this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
 
-        this.templateId                    = templateId                          ;
         this.person                        = person                              ;
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();

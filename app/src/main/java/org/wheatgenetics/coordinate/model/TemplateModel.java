@@ -195,7 +195,7 @@ implements java.lang.Cloneable
     }
     // endregion
 
-    @java.lang.Override
+    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(final java.lang.Object object)
     {
         if (super.equals(object))
@@ -272,7 +272,7 @@ implements java.lang.Cloneable
                     this.nonNullOptionalFieldsInstance.clone();
 
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-            return  new org.wheatgenetics.coordinate.model.TemplateModel(
+            return new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* title                        => */ this.getTitle()                       ,
                 /* type                         => */ this.getType()                        ,
                 /* rows                         => */ this.getRows()                        ,

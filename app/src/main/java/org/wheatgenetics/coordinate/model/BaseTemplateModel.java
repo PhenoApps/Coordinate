@@ -18,24 +18,31 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private java.lang.String                                title                       ;
-    private org.wheatgenetics.coordinate.model.TemplateType type                        ;
-    private int                                             rows, cols                  ;
-    private int                                             generatedExcludedCellsAmount;
-    private boolean                                         colNumbering, rowNumbering  ;
-    private long                                            timestamp                   ;
+    private java      .lang.String                                title                       ;
+    private       org.wheatgenetics.coordinate.model.TemplateType type                        ;
+    private       int                                             rows, cols                  ;
+    private       int                                             generatedExcludedCellsAmount;
+    private       boolean                                         colNumbering, rowNumbering  ;
+    private final long                                            timestamp                   ;
     // endregion
 
     // region Private Methods
-    private static int validate(final int value, final int minValue)
-    { if (value < minValue) throw new java.lang.IllegalArgumentException(); else return value; }
+    @java.lang.SuppressWarnings("DefaultLocale")
+    private static int valid(final int value, final int minValue)
+    {
+        if (value < minValue)
+            throw new java.lang.IllegalArgumentException(
+                java.lang.String.format("value must be >= %d", minValue));
+        else
+            return value;
+    }
 
 
     private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
-    { this.rows = org.wheatgenetics.coordinate.model.BaseTemplateModel.validate(rows, 1); }
+    { this.rows = org.wheatgenetics.coordinate.model.BaseTemplateModel.valid(rows, 1); }
 
     private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
-    { this.cols = org.wheatgenetics.coordinate.model.BaseTemplateModel.validate(cols, 1); }
+    { this.cols = org.wheatgenetics.coordinate.model.BaseTemplateModel.valid(cols, 1); }
 
 
     @java.lang.SuppressWarnings("DefaultLocale")
@@ -190,7 +197,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.IntRange(from = 0) final int amount)
     {
         this.generatedExcludedCellsAmount =
-            org.wheatgenetics.coordinate.model.BaseTemplateModel.validate(amount, 0);
+            org.wheatgenetics.coordinate.model.BaseTemplateModel.valid(amount, 0);
     }
 
 
