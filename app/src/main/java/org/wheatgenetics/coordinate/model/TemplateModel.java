@@ -303,6 +303,7 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    // region Package Methods
     /** Called by JoinedGridModel.populate(). */
     void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
@@ -314,6 +315,10 @@ implements java.lang.Cloneable
 
         this.clearExcludeds();                                             // TODO: Still necessary?
     }
+
+    org.wheatgenetics.coordinate.model.Cells getInitialExcludedCells()
+    { return this.initialExcludedCells(); }
+    // endregion
 
     // region Public Methods
     // region initialExcludedCells Public Methods

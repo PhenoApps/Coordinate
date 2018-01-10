@@ -25,20 +25,26 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Constructors
+    /** Used by first JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
     final java.lang.String                                                 person        ,
+    final org.wheatgenetics.coordinate.model.Cells                         excludedCells ,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
+        this.person     = person                                                    ;
 
-        this.person                        = person                              ;
+        this.excludedCellsInstance = null == excludedCells ? null :
+            (org.wheatgenetics.coordinate.model.Cells) excludedCells.clone();
+
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
 
+    /** Used by second JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String person, java.lang.String excludedCells,

@@ -25,15 +25,21 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
 
     // region Constructors
+    /** Used by GridCreator. */
     public JoinedGridModel(final java.lang.String                          person        ,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     final org.wheatgenetics.coordinate.model.TemplateModel                 templateModel )
     {
-        super(templateModel.getId(), person, optionalFields);
+        super(
+            /* templateId     => */ templateModel.getId()                  ,
+            /* person         => */ person                                 ,
+            /* excludedCells  => */ templateModel.getInitialExcludedCells(),
+            /* optionalFields => */ optionalFields                         );
         this.templateModel = templateModel;
         this.makeRandomCells();
     }
 
+    /** Used by GridsTable. */
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String person, final java.lang.String excludedCells,
     final java.lang.String optionalFields, final long timestamp,
