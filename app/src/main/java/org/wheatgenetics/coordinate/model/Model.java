@@ -51,6 +51,17 @@ public abstract class Model extends java.lang.Object
         else
             return id;
     }
+
+    @java.lang.SuppressWarnings("DefaultLocale")
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    static int valid(final int value, final int minValue)
+    {
+        if (value < minValue)
+            throw new java.lang.IllegalArgumentException(
+                java.lang.String.format("value must be >= %d", minValue));
+        else
+            return value;
+    }
     // endregion
 
     // region Public Methods
