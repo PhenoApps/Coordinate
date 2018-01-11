@@ -47,7 +47,9 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* colNumbering                 => */ 1            ,
                 /* rowNumbering                 => */ 0            ,
                 /* templateOptionalFields       => */ null         ,
-                /* templateTimestamp            => */ 333          );
+                /* templateTimestamp            => */ 333          ,
+
+                /* entryModels                  => */ null         );
         org.junit.Assert.assertEquals(expectedName, joinedGridModel.name());
     }
 
@@ -113,7 +115,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ colNumbering                ,
                     /* rowNumbering                 => */ rowNumbering                ,
                     /* templateOptionalFields       => */ null                        ,
-                    /* templateTimestamp            => */ 333                         );
+                    /* templateTimestamp            => */ 333                         ,
+
+                    /* entryModels                  => */ null                        );
             joinedGridModel.populate(actualTemplateModel);
         }
         org.junit.Assert.assertTrue(expectedTemplateModel.equals(actualTemplateModel));
@@ -143,7 +147,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         joinedGridModel.addExcludedCell(0, 1);
     }
 
@@ -170,7 +176,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         joinedGridModel.addExcludedCell(10, 1);
     }
 
@@ -197,7 +205,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         joinedGridModel.addExcludedCell(1, -1);
     }
 
@@ -224,7 +234,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         joinedGridModel.addExcludedCell(1, 111);
     }
 
@@ -251,7 +263,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         joinedGridModel.addExcludedCell(1, 1);
     }
     // endregion
@@ -279,7 +293,9 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
                     /* templateOptionalFields       => */ null       ,
-                    /* templateTimestamp            => */ 333        );
+                    /* templateTimestamp            => */ 333        ,
+
+                    /* entryModels                  => */ null       );
         org.junit.Assert.assertFalse(joinedGridModel.isExcludedCell(1, 1));
     }
 
@@ -312,7 +328,9 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* colNumbering                 => */ 1                               ,
                 /* rowNumbering                 => */ 0                               ,
                 /* templateOptionalFields       => */ null                            ,
-                /* templateTimestamp            => */ 333                             );
+                /* templateTimestamp            => */ 333                             ,
+
+                /* entryModels                  => */ null                            );
         }
 
         org.junit.Assert.assertNull(joinedGridModel.nextFreeCell(null));
@@ -414,7 +432,9 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* templateOptionalFields       => */ null       ,
-                /* templateTimestamp            => */ 333        );
+                /* templateTimestamp            => */ 333        ,
+
+                /* entryModels                  => */ null       );
         final org.wheatgenetics.coordinate.model.Cell candidateFreeCell =
             new org.wheatgenetics.coordinate.model.Cell(6, 1);
         joinedGridModel.nextFreeCell(candidateFreeCell);
@@ -443,7 +463,9 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* templateOptionalFields       => */ null       ,
-                /* templateTimestamp + */ 333                );
+                /* templateTimestamp            => */ 333        ,
+
+                /* entryModels                  => */ null       );
         final org.wheatgenetics.coordinate.model.Cell candidateFreeCell =
             new org.wheatgenetics.coordinate.model.Cell(1, 6);
         joinedGridModel.nextFreeCell(candidateFreeCell);

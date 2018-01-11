@@ -75,13 +75,14 @@ abstract class Table extends java.lang.Object
     }
     // endregion
 
-    // region Query Method Dependencies
+    // region query() Dependencies
     // method                      scope   external usage
-    // =========================== ======= ===========================
+    // =========================== ======= ======================================
     // query()                     private N/A
-    //     queryAll()              package TemplatesTable
-    //     queryDistinct()         package                EntriesTable
-    //         queryDistinct()     package TemplatesTable
+    //     queryAll()              package                           EntriesTable
+    //         queryAll()          package TemplatesTable
+    //     queryDistinct()         package                           EntriesTable
+    //         queryDistinct()     package TemplatesTable GridsTable
     // endregion
 
     // region External Operations
@@ -91,10 +92,20 @@ abstract class Table extends java.lang.Object
     { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.database.Cursor queryAll(final java.lang.String orderBy)
+    android.database.Cursor queryAll(final java.lang.String selection,
+    final java.lang.String selectionArgs[], final java.lang.String orderBy)
     {
         return this.query(
-            /* distinct      => */ false  ,
+            /* distinct      => */ false        ,
+            /* selection     => */ selection    ,
+            /* selectionArgs => */ selectionArgs,
+            /* orderBy       => */ orderBy      );
+    }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    android.database.Cursor queryAll(final java.lang.String orderBy)
+    {
+        return this.queryAll(
             /* selection     => */ null   ,
             /* selectionArgs => */ null   ,
             /* orderBy       => */ orderBy);

@@ -43,7 +43,6 @@ public abstract class Model extends java.lang.Object
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     static boolean illegal(final long id) { return id < 1; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     static long valid(final long id)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))

@@ -9,13 +9,18 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 {
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
+    // region Fields
+    private       org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
+    private final org.wheatgenetics.coordinate.model.EntryModels   entryModels         ;
+    // endregion
 
+    // region Private Methods
     private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
         if (null == this.excludedCellsInstance)
@@ -23,6 +28,37 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                 /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
         return this.excludedCellsInstance;
     }
+
+    private org.wheatgenetics.coordinate.model.EntryModels makeEntryModels()
+    {
+        final int rows = this.getRows(), cols = this.getCols();
+        final org.wheatgenetics.coordinate.model.EntryModels result =
+            new org.wheatgenetics.coordinate.model.EntryModels(
+                /* gridId => */ this.getId(), rows, cols);
+
+        assert null != this.templateModel;                                  // TODO: clear()s first!
+        this.excludedCells().makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
+            /* maxRow => */ rows, /* maxCol => */ cols);
+
+        for (int row = 1; row <= cols; row++)
+        {
+            final boolean excludedRow = this.isExcludedRow(row);
+            for (int col = 1; col <= rows; col++)
+                if (excludedRow)
+                    result.makeExcludedEntry(row, col);
+                else
+                    if (this.isExcludedCol(col))
+                        result.makeExcludedEntry(row, col);
+                    else
+                        if (this.isExcludedCell(row, col))
+                            result.makeExcludedEntry(row, col);
+                        else
+                            result.makeIncludedEntry(row, col);
+        }
+
+        return result;
+    }
+    // endregion
 
     // region Constructors
     /** Used by GridCreator. */
@@ -35,8 +71,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             /* person         => */ person                                 ,
             /* excludedCells  => */ templateModel.getInitialExcludedCells(),
             /* optionalFields => */ optionalFields                         );
-        this.templateModel = templateModel;
-        this.makeRandomCells();
+        this.templateModel = templateModel         ;
+        this.entryModels   = this.makeEntryModels();
     }
 
     /** Used by GridsTable. */
@@ -54,13 +90,16 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    final java.lang.String templateOptionalFields, final long templateTimestamp)
+    final java.lang.String templateOptionalFields, final long templateTimestamp,
+
+    final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
         super(id, person, excludedCells, rows, cols, optionalFields, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
             templateTimestamp);
+        this.entryModels = entryModels;
     }
     // endregion
 
@@ -92,13 +131,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.excludedCells().add(row, col); }
-
-    public void makeRandomCells()                                           // TODO: clear()s first!
-    {
-        assert null != this.templateModel;
-        this.excludedCells().makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
-            /* maxRow => */ this.getRows(), /* maxCol => */ this.getCols());
-    }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean isExcludedRow(final int row)
