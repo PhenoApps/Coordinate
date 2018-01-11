@@ -15,8 +15,6 @@
 
         android:layout_margin="5dp"
 
-        android:background="@drawable/empty_entry"
-
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
 

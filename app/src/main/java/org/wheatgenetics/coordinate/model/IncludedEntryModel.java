@@ -31,12 +31,13 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override
     public int backgroundResource()
     {
-        final int empty_entry = org.wheatgenetics.coordinate.R.drawable.empty_entry;
+        final int empty_included_entry =
+            org.wheatgenetics.coordinate.R.drawable.empty_included_entry;
         if (null == this.value)
-            return empty_entry;
+            return empty_included_entry;
         else
             return value.length() > 0 ?
-                org.wheatgenetics.coordinate.R.drawable.full_entry : empty_entry;
+                org.wheatgenetics.coordinate.R.drawable.full_included_entry : empty_included_entry;
     }
 
     void setValue(final java.lang.String value)
