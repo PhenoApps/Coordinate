@@ -33,6 +33,9 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.display.DisplayFragment
+ * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+ *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
@@ -48,13 +51,11 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
- * org.wheatgenetics.coordinate.DisplayFragment
- * org.wheatgenetics.coordinate.DisplayFragment.Handler
  * org.wheatgenetics.coordinate.R
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
-org.wheatgenetics.coordinate.DisplayFragment.Handler  ,
-org.wheatgenetics.coordinate.DataEntryFragment.Handler,
+org.wheatgenetics.coordinate.display.DisplayFragment.Handler,
+org.wheatgenetics.coordinate.DataEntryFragment.Handler      ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
     // region Fields
@@ -75,8 +76,8 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel = null;
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator     = null;
 
-    private org.wheatgenetics.coordinate.DisplayFragment   displayFragment  ;
-    private org.wheatgenetics.coordinate.DataEntryFragment dataEntryFragment;
+    private org.wheatgenetics.coordinate.display.DisplayFragment displayFragment  ;
+    private org.wheatgenetics.coordinate.DataEntryFragment       dataEntryFragment;
     // endregion
 
     // region Private Methods
@@ -343,7 +344,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 this.getSupportFragmentManager();
             assert null != fragmentManager;
 
-            this.displayFragment = (org.wheatgenetics.coordinate.DisplayFragment)
+            this.displayFragment = (org.wheatgenetics.coordinate.display.DisplayFragment)
                 fragmentManager.findFragmentById(org.wheatgenetics.coordinate.R.id.displayFragment);
             this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
                 fragmentManager.findFragmentById(
@@ -519,7 +520,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 "null"));
     }
 
-    // region org.wheatgenetics.coordinate.DisplayFragment.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.display.DisplayFragment.Handler Overridden Method
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
     { return this.joinedGridModel; }
