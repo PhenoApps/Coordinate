@@ -112,17 +112,22 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.Override
     public void handleSetValuesDone()
     {
-        final long gridId = this.gridsTable().insert(
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* person         => */ this.person        ,
                 /* optionalFields => */ this.optionalFields,
-                /* templateModel  => */ this.templateModel ));
+                /* templateModel  => */ this.templateModel );
         this.person = null; this.optionalFields = null; this.templateModel = null;
 
+        final long gridId = this.gridsTable().insert(joinedGridModel);
         if (gridId <= 0)
             org.wheatgenetics.coordinate.Utils.alert(this.activity,
                 org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
-        else { assert null != this.handler; this.handler.handleGridCreated(gridId); }
+        else
+        {
+            joinedGridModel.setId(gridId); joinedGridModel.makeEntryModels();
+            assert null != this.handler; this.handler.handleGridCreated(gridId);
+        }
     }
     // endregion
 
