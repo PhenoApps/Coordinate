@@ -174,5 +174,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { return null == this.entryModels ? null : this.entryModels.get(row, col); }
+
+    public org.wheatgenetics.coordinate.model.EntryModels getEntryModels()
+    { return this.entryModels; }
     // endregion
 }

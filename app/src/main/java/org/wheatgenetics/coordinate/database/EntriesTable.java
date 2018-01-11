@@ -10,13 +10,15 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
+ * org.wheatgenetics.coordinate.model.EntryModels.Processor
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
  */
-class EntriesTable extends org.wheatgenetics.coordinate.database.Table
+public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
+implements org.wheatgenetics.coordinate.model.EntryModels.Processor
 {
     // region Constants
     private static final java.lang.String TABLE_NAME      = "entries";
@@ -25,7 +27,7 @@ class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String EXCLUDED_VALUE = "excluded";
     // endregion
 
-    EntriesTable(final android.content.Context context)
+    public EntriesTable(final android.content.Context context)
     {
         super(
             /* context   => */ context                                                      ,
@@ -106,6 +108,24 @@ class EntriesTable extends org.wheatgenetics.coordinate.database.Table
         }
         return result;
     }
+
+    // region org.wheatgenetics.coordinate.model.EntryModels.Processor Overridden Method
+    @java.lang.Override
+    public void process(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+        {
+            final boolean exists = org.wheatgenetics.coordinate.database.Table.exists(this.queryAll(
+                /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
+                /* selectionArgs => */
+                    org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
+            if (exists)
+                this.update(entryModel);
+            else
+                this.insert(entryModel);
+        }
+    }
+    // endregion
     // endregion
 
     // region Operations
@@ -142,6 +162,9 @@ class EntriesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Public Operations
+    public void insert(final org.wheatgenetics.coordinate.model.EntryModels entryModels)
+    { if (null != entryModels) entryModels.processAll(this); }
+
     public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
     final int col)
     {

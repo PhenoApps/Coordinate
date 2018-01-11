@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
  *
+ * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
@@ -41,7 +42,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private final android.app.Activity                                activity;
     private final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler ;
 
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null;
+    private org.wheatgenetics.coordinate.database.GridsTable   gridsTableInstance   = null;
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;
 
     private java.lang.String                                                  person        ;
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields  optionalFields;
@@ -98,6 +100,13 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
         return this.gridsTableInstance;
     }
+
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
+    {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
+        return this.entriesTableInstance;
+    }
     // endregion
 
     public GridCreator(final android.app.Activity activity,
@@ -126,6 +135,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         else
         {
             joinedGridModel.setId(gridId); joinedGridModel.makeEntryModels();
+            this.entriesTable().insert(joinedGridModel.getEntryModels());
             assert null != this.handler; this.handler.handleGridCreated(gridId);
         }
     }

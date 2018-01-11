@@ -15,6 +15,8 @@ package org.wheatgenetics.coordinate;
  * android.widget.TableRow
  * android.widget.TextView
  *
+ * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  *
  * org.wheatgenetics.coordinate.R
@@ -141,7 +143,6 @@ public class DisplayFragment extends android.support.v4.app.Fragment
                     layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.entries_table_row, null);
                 {
-                    final boolean excludedRow = joinedGridModel.isExcludedRow(row);
                     assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                         if (0 == col)
                         {
@@ -177,15 +178,21 @@ public class DisplayFragment extends android.support.v4.app.Fragment
                                 (android.widget.LinearLayout) layoutInflater.inflate(
                                     org.wheatgenetics.coordinate.R.layout.entries_table_cell,
                                     null                                                    );
-                            if (excludedRow || joinedGridModel.isExcludedCol(col))
                             {
-                                assert null != tableCell;
-                                final android.widget.TextView textView = (android.widget.TextView)
-                                    tableCell.findViewById(
-                                        org.wheatgenetics.coordinate.R.id.entryTextView);
+                                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                                    joinedGridModel.getEntryModel(row, col);
+                                assert null != entryModel;
+                                if (entryModel instanceof
+                                org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                                {
+                                    assert null != tableCell;
+                                    final android.widget.TextView textView =
+                                        (android.widget.TextView) tableCell.findViewById(
+                                            org.wheatgenetics.coordinate.R.id.entryTextView);
 
-                                assert null != textView; textView.setBackgroundResource(
-                                    org.wheatgenetics.coordinate.R.drawable.excluded_entry);
+                                    assert null != textView; textView.setBackgroundResource(
+                                        org.wheatgenetics.coordinate.R.drawable.excluded_entry);
+                                }
                             }
                             tableRow.addView(tableCell);
                         }

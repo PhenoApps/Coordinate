@@ -80,13 +80,18 @@ abstract class Table extends java.lang.Object
     // =========================== ======= ======================================
     // query()                     private N/A
     //     queryAll()              package                           EntriesTable
-    //         queryAll()          package TemplatesTable
+    //         queryAll()          package                           EntriesTable
+    //             queryAll()      package TemplatesTable
     //     queryDistinct()         package                           EntriesTable
     //         queryDistinct()     package TemplatesTable GridsTable
     // endregion
 
     // region External Operations
     // region Package External Operations
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    static java.lang.String whereClause()
+    { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = ?"; }
+
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     static java.lang.String whereClause(final long id)
     { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
@@ -103,13 +108,18 @@ abstract class Table extends java.lang.Object
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.database.Cursor queryAll(final java.lang.String orderBy)
+    android.database.Cursor queryAll(final java.lang.String selection,
+    final java.lang.String selectionArgs[])
     {
         return this.queryAll(
-            /* selection     => */ null   ,
-            /* selectionArgs => */ null   ,
-            /* orderBy       => */ orderBy);
+            /* selection     => */ selection    ,
+            /* selectionArgs => */ selectionArgs,
+            /* orderBy       => */ null         );
     }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    android.database.Cursor queryAll(final java.lang.String orderBy)
+    { return this.queryAll(/* selection => */ null, /* selectionArgs => */ null); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryDistinct(final java.lang.String selection,
