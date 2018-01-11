@@ -179,20 +179,15 @@ public class DisplayFragment extends android.support.v4.app.Fragment
                                     org.wheatgenetics.coordinate.R.layout.entries_table_cell,
                                     null                                                    );
                             {
+                                assert null != tableCell; final android.widget.TextView textView =
+                                    (android.widget.TextView) tableCell.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.entryTextView);
+
                                 final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                                     joinedGridModel.getEntryModel(row, col);
-                                assert null != entryModel;
-                                if (entryModel instanceof
-                                org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                                {
-                                    assert null != tableCell;
-                                    final android.widget.TextView textView =
-                                        (android.widget.TextView) tableCell.findViewById(
-                                            org.wheatgenetics.coordinate.R.id.entryTextView);
 
-                                    assert null != textView; textView.setBackgroundResource(
-                                        org.wheatgenetics.coordinate.R.drawable.excluded_entry);
-                                }
+                                assert null != entryModel; assert null != textView;
+                                textView.setBackgroundResource(entryModel.backgroundResource());
                             }
                             tableRow.addView(tableCell);
                         }

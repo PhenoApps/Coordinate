@@ -4,10 +4,13 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.model.EntryModel
  */
 public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
 {
+    // region Constructors
     ExcludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long gridId,
     @android.support.annotation.IntRange(from = 1) final int row    ,
@@ -20,4 +23,9 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final int col       ,
                                                    final long timestamp)
     { super(id, gridId, row, col, timestamp); }
+    // endregion
+
+    @java.lang.Override
+    public int backgroundResource()
+    { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
 }
