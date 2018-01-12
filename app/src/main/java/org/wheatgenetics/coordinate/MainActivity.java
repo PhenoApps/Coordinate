@@ -531,7 +531,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     public void displayValue(final java.lang.String value)
     {
         this.entryValue = value;
-        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+        assert null != this.dataEntryFragment; this.dataEntryFragment.setEntry(value);
     }
     // endregion
 

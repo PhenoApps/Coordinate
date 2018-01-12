@@ -22,10 +22,10 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.display.Entries
- * org.wheatgenetics.coordinate.display.Entry.Handler
+ * org.wheatgenetics.coordinate.display.Entries.Handler
  */
 public class DisplayFragment extends android.support.v4.app.Fragment
-implements org.wheatgenetics.coordinate.display.Entry.Handler
+implements org.wheatgenetics.coordinate.display.Entries.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -82,7 +82,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.display.Entries.Handler Overridden Method
     @java.lang.Override
     public void displayValue(final java.lang.String value)
     { assert null != this.handler; this.handler.displayValue(value); }
