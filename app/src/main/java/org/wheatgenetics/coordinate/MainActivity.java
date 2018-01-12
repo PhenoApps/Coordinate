@@ -78,6 +78,8 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
     private org.wheatgenetics.coordinate.display.DisplayFragment displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment       dataEntryFragment;
+
+    private java.lang.String entryValue = null;
     // endregion
 
     // region Private Methods
@@ -524,11 +526,18 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
     { return this.joinedGridModel; }
+
+    @java.lang.Override
+    public void displayValue(final java.lang.String value)
+    {
+        this.entryValue = value;
+        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override
-    public java.lang.String getEntry() { return "entry"; }                                   // TODO
+    public java.lang.String getEntry() { return this.entryValue; }
 
     @java.lang.Override
     public java.lang.String getTemplateTitle()

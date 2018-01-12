@@ -22,12 +22,17 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.display.Entries
+ * org.wheatgenetics.coordinate.display.Entry.Handler
  */
 public class DisplayFragment extends android.support.v4.app.Fragment
+implements org.wheatgenetics.coordinate.display.Entry.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
-    { public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel(); }
+    {
+        public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel();
+        public abstract void displayValue(java.lang.String value)                              ;
+    }
 
     // region Fields
     private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler           ;
@@ -76,10 +81,17 @@ public class DisplayFragment extends android.support.v4.app.Fragment
 
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
+
+    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Method
+    @java.lang.Override
+    public void displayValue(final java.lang.String value)
+    { assert null != this.handler; this.handler.displayValue(value); }
+    // endregion
     // endregion
 
     public void populate()
     {
+        if (null != this.entries) this.entries.clear();
         assert null != this.entriesTableLayout; this.entriesTableLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -139,7 +151,7 @@ public class DisplayFragment extends android.support.v4.app.Fragment
             final int lastRow = joinedGridModel.getRows();
             if (null == this.entries)
                 this.entries = new org.wheatgenetics.coordinate.display.Entries(
-                    layoutInflater, lastRow, lastCol);
+                    layoutInflater, lastRow, lastCol, this);
             else
                 this.entries.allocate(layoutInflater, lastRow, lastCol);
 

@@ -48,12 +48,12 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
     }
     // endregion
 
-    // region Package Methods
+    // region Public Methods
     public long getGridId   () { return this.gridId   ; }
     public int  getRow      () { return this.row      ; }
     public int  getCol      () { return this.col      ; }
     public long getTimestamp() { return this.timestamp; }
 
-    public abstract int backgroundResource();
+    public abstract java.lang.String getValue(); public abstract int backgroundResource();
     // endregion
 }

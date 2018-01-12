@@ -12,19 +12,25 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.display.Entry
+ * org.wheatgenetics.coordinate.display.Entry.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Entries extends java.lang.Object
 {
     // region Fields
+    private final org.wheatgenetics.coordinate.display.Entry.Handler handler;
+
     private android.view.LayoutInflater                layoutInflater;
     private org.wheatgenetics.coordinate.display.Entry entryArray[][];
     // endregion
 
-    Entries(final android.view.LayoutInflater layoutInflater, final int rows, final int cols)
-    { super(); this.allocate(layoutInflater, rows, cols); }
+    Entries(final android.view.LayoutInflater layoutInflater, final int rows, final int cols,
+    final org.wheatgenetics.coordinate.display.Entry.Handler handler)
+    { super(); this.handler = handler; this.allocate(layoutInflater, rows, cols); }
 
     // region Package Methods
+    void clear() { this.layoutInflater = null; this.entryArray = null; }
+
     void allocate(final android.view.LayoutInflater layoutInflater, final int rows, final int cols)
     {
         this.layoutInflater = layoutInflater                                            ;
@@ -47,7 +53,8 @@ class Entries extends java.lang.Object
                 final org.wheatgenetics.coordinate.display.Entry entry =
                     new org.wheatgenetics.coordinate.display.Entry(entryModel,
                         (android.widget.TextView)
-                            result.findViewById(org.wheatgenetics.coordinate.R.id.entryTextView));
+                            result.findViewById(org.wheatgenetics.coordinate.R.id.entryTextView),
+                        this.handler);
                 this.entryArray[entry.getRow()][entry.getCol()] = entry;
             }
             return result;

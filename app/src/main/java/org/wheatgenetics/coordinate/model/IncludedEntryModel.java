@@ -27,8 +27,10 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     { super(id, gridId, row, col, timestamp); this.value = value; }
     // endregion
 
-
+    // region Overridden Methods
     @java.lang.Override
+    public java.lang.String getValue() { return this.value; }
+
     public int backgroundResource()
     {
         final int empty_included_entry =
@@ -39,9 +41,8 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
             return value.length() > 0 ?
                 org.wheatgenetics.coordinate.R.drawable.full_included_entry : empty_included_entry;
     }
+    // endregion
 
     void setValue(final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
-
-    public java.lang.String getValue() { return this.value ; }
 }

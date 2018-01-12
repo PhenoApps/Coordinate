@@ -25,7 +25,12 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     { super(id, gridId, row, col, timestamp); }
     // endregion
 
+    // region Overridden Methods
+    @java.lang.Override
+    public java.lang.String getValue() { return null; }
+
     @java.lang.Override
     public int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
+    // endregion
 }
