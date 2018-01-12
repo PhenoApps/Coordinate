@@ -17,21 +17,24 @@ package org.wheatgenetics.coordinate.display;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.display.Entry.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    interface Handler { public abstract void displayValue(java.lang.String value); }
-
     // region Fields
-    private final org.wheatgenetics.coordinate.display.Entries.Handler handler;
+    private final org.wheatgenetics.coordinate.display.Entry.Handler handler       ;
+    private final android.view.LayoutInflater                        layoutInflater;
 
-    private android.view.LayoutInflater                layoutInflater;
     private org.wheatgenetics.coordinate.display.Entry entryArray[][];
 
-    private int activeRow = -1, activeCol = -1;
+    private int activeRow, activeCol;
     // endregion
 
-    Entries(final android.view.LayoutInflater layoutInflater, final int rows, final int cols,
-    final org.wheatgenetics.coordinate.display.Entries.Handler handler)
-    { super(); this.handler = handler; this.allocate(layoutInflater, rows, cols); }
+    Entries(final android.view.LayoutInflater layoutInflater,
+    final int rows, final int cols, final int activeRow, final int activeCol,
+    final org.wheatgenetics.coordinate.display.Entry.Handler handler)
+    {
+        super();
+
+        this.handler = handler; this.layoutInflater = layoutInflater;
+        this.allocate(rows, cols, activeRow, activeCol);
+    }
 
     // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Method
     @java.lang.Override
@@ -50,19 +53,20 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
 
                 this.activeRow = newActiveRow; this.activeCol = newActiveCol;
 
-                assert null != this.handler; this.handler.displayValue(entry.getValue());
+                assert null != this.handler; this.handler.activate(entry);
             }
         }
     }
     // endregion
 
     // region Package Methods
-    void clear() { this.layoutInflater = null; this.entryArray = null; }
+    void clear() { this.entryArray = null; this.activeRow = this.activeCol = -1; }
 
-    void allocate(final android.view.LayoutInflater layoutInflater, final int rows, final int cols)
+    void allocate(final int rows, final int cols, final int activeRow, final int activeCol)
     {
-        this.layoutInflater = layoutInflater                                            ;
-        this.entryArray     = new org.wheatgenetics.coordinate.display.Entry[rows][cols];
+        this.entryArray = new org.wheatgenetics.coordinate.display.Entry[rows][cols];
+        this.activeRow  = activeRow;                      this.activeCol = activeCol;
+
     }
 
     android.widget.LinearLayout add(final org.wheatgenetics.coordinate.model.EntryModel entryModel)

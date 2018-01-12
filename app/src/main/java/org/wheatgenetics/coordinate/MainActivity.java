@@ -39,6 +39,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
+ * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -58,6 +59,8 @@ org.wheatgenetics.coordinate.display.DisplayFragment.Handler,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler      ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler
 {
+    private static final java.lang.String ACTIVE_ROW = "activeRow", ACTIVE_COL = "activeCol";
+
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
@@ -79,7 +82,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private org.wheatgenetics.coordinate.display.DisplayFragment displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment       dataEntryFragment;
 
-    private java.lang.String entryValue = null;
+    private int activeRow, activeCol;
     // endregion
 
     // region Private Methods
@@ -340,6 +343,16 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         }
         // endregion
 
+        // region Restore Instance State
+        if (null != savedInstanceState)
+        {
+            this.activeRow =
+                savedInstanceState.getInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_ROW);
+            this.activeCol =
+                savedInstanceState.getInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_COL);
+        }
+        // endregion
+
         // region Configure fragments.
         {
             final android.support.v4.app.FragmentManager fragmentManager =
@@ -522,22 +535,45 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 "null"));
     }
 
+    @java.lang.Override
+    protected void onSaveInstanceState(final android.os.Bundle outState)
+    {
+        assert null != outState;
+        outState.putInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_ROW, this.activeRow);
+        outState.putInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_COL, this.activeCol);
+
+        super.onSaveInstanceState(outState);
+    }
+
     // region org.wheatgenetics.coordinate.display.DisplayFragment.Handler Overridden Method
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
     { return this.joinedGridModel; }
 
+    @java.lang.Override public int getActiveRow() { return this.activeRow; }
+    @java.lang.Override public int getActiveCol() { return this.activeCol; }
+
     @java.lang.Override
-    public void displayValue(final java.lang.String value)
+    public void activate(final int row, final int col)
     {
-        this.entryValue = value;
-        assert null != this.dataEntryFragment; this.dataEntryFragment.setEntry(this.entryValue);
+        this.activeRow = row; this.activeCol = col;
+        assert null != this.dataEntryFragment; this.dataEntryFragment.setEntry(this.getEntry());
     }
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override
-    public java.lang.String getEntry() { return this.entryValue; }
+    public java.lang.String getEntry()
+    {
+        if (null == this.joinedGridModel)
+            return null;
+        else
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
+            return null == entryModel ? null : entryModel.getValue();
+        }
+    }
 
     @java.lang.Override
     public java.lang.String getTemplateTitle()
