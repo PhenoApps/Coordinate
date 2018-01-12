@@ -41,7 +41,8 @@ class Entry extends java.lang.Object implements android.view.View.OnClickListene
 
         this.entryModel = entryModel; this.textView = textView; this.handler = handler;
 
-        if (this.getRow() == activeRow && this.getCol() == activeCol)
+        if (this.getRow() == activeRow && this.getCol() == activeCol
+        ||  -1            == activeRow && -1            == activeCol)
             this.activate();
         else
             this.inactivate();

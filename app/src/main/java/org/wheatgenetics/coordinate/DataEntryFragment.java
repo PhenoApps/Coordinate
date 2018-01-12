@@ -155,8 +155,6 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     }
 
     void setEntry(final java.lang.String entry)
-    { assert null != this.entryEditText; this.entryEditText.setText(entry); }
-
-    void clearEntry() { this.setEntry(""); }
+    { if (null != this.entryEditText) this.entryEditText.setText(entry); }
     // endregion
 }

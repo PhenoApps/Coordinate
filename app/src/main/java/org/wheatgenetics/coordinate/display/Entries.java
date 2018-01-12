@@ -26,7 +26,7 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
     private android.view.LayoutInflater                layoutInflater;
     private org.wheatgenetics.coordinate.display.Entry entryArray[][];
 
-    private int activeRow = 0, activeCol = 0;
+    private int activeRow = -1, activeCol = -1;
     // endregion
 
     Entries(final android.view.LayoutInflater layoutInflater, final int rows, final int cols,
@@ -42,8 +42,11 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
             final int newActiveRow = entry.getRow(), newActiveCol = entry.getCol();
             if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
             {
-                assert null != this.entryArray;
-                this.entryArray[this.activeRow][this.activeCol].inactivate();
+                if (this.activeRow > -1 && this.activeCol > -1)
+                {
+                    assert null != this.entryArray;
+                    this.entryArray[this.activeRow][this.activeCol].inactivate();
+                }
 
                 this.activeRow = newActiveRow; this.activeCol = newActiveCol;
 
