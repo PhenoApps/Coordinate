@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.BuildConfig
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -29,7 +30,8 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Overridden Methods
     @java.lang.Override
-    public java.lang.String getValue() { return this.value; }
+    public java.lang.String getValue()
+    { return org.wheatgenetics.coordinate.BuildConfig.DEBUG ? this.getDebugValue() : this.value; }
 
     public int backgroundResource()
     {
