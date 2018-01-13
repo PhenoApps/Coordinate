@@ -83,6 +83,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Toast Private Methods
+    // region Long Toast Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
@@ -90,15 +91,25 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     { this.showLongToast(this.activity.getString(text)); }
     // endregion
 
+    // region Short Toast Private Methods
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.activity, text); }
+
+    private void showShortToast(final int text)
+    { this.showShortToast(this.activity.getString(text)); }
+    // endregion
+    // endregion
+
     private void loadGridAfterSelect(
     final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     {
         if (null != joinedGridModel)
-        { assert null != this.handler; this.handler.loadGrid(joinedGridModel.getId()); }
+            { assert null != this.handler; this.handler.loadGrid(joinedGridModel.getId()); }
     }
 
     private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
 
+    // region deleteTemplateAfterSelect() Private Methods
     @java.lang.SuppressWarnings("SimplifiableIfStatement")
     private void deleteTemplateAfterConfirm(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
@@ -113,10 +124,10 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             final long templateId = templateModel.getId();
 
             if (this.gridsTable().deleteByTemplateId(templateId))
-                this.showLongToast(org.wheatgenetics.coordinate
+                this.showShortToast(org.wheatgenetics.coordinate
                     .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateSuccessToast);
             else
-                this.showLongToast(org.wheatgenetics.coordinate
+                this.showShortToast(org.wheatgenetics.coordinate
                     .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast);
 
             success = templatesTable().delete(templateId);
@@ -152,6 +163,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 });
     }
     // endregion
+    // endregion
 
     public NavigationItemSelectedListener(final android.app.Activity activity,
     final java.lang.String versionName,
@@ -185,17 +197,17 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 {
                     final org.wheatgenetics.coordinate.SelectAlertDialog
                         selectGridToLoadAlertDialog =
-                        new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                            new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                            {
-                                @java.lang.Override
-                                public void select(final int which)
+                            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                                 {
-                                    org.wheatgenetics.coordinate.navigation
-                                        .NavigationItemSelectedListener.this.loadGridAfterSelect(
-                                            joinedGridModels.get(which));
-                                }
-                            });
+                                    @java.lang.Override
+                                    public void select(final int which)
+                                    {
+                                        org.wheatgenetics.coordinate.navigation
+                                            .NavigationItemSelectedListener.this
+                                            .loadGridAfterSelect(joinedGridModels.get(which));
+                                    }
+                                });
                     selectGridToLoadAlertDialog.show(
                         org.wheatgenetics.coordinate
                             .R.string.NavigationItemSelectedListenerLoadGridTitle,
