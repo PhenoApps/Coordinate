@@ -48,9 +48,6 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
     }
     // endregion
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String getDebugValue() { return this.getRow() + "," + this.getCol(); }
-
     // region Public Methods
     public long getGridId   () { return this.gridId   ; }
     public int  getRow      () { return this.row      ; }

@@ -30,14 +30,14 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Overridden Methods
     @java.lang.Override
-    public java.lang.String getValue()
-    { return org.wheatgenetics.coordinate.BuildConfig.DEBUG ? this.getDebugValue() : this.value; }
+    public java.lang.String getValue() { return this.value; }
 
     public int backgroundResource()
     {
-        final int empty_included_entry =
+        final java.lang.String value                = this.getValue();
+        final int              empty_included_entry =
             org.wheatgenetics.coordinate.R.drawable.empty_included_entry;
-        if (null == this.value)
+        if (null == value)
             return empty_included_entry;
         else
             return value.length() > 0 ?
