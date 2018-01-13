@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.display;
  * android.view.View.OnClickListener
  * android.widget.TextView
  *
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  *
  * org.wheatgenetics.coordinate.R
@@ -47,7 +48,8 @@ class Entry extends java.lang.Object implements android.view.View.OnClickListene
         else
             this.inactivate();
 
-        this.textView.setOnClickListener(this);
+        if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+            this.textView.setOnClickListener(this);
     }
 
     // region android.view.View.OnClickListener Overridden Method
