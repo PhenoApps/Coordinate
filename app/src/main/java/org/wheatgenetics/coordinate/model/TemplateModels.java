@@ -14,6 +14,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
     // region Private Methods
+    private static int logInfo(final java.lang.String msg)
+    { return android.util.Log.i("TemplateModels", msg); }
+
     @java.lang.SuppressWarnings("Convert2Diamond")
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList()
     {
@@ -28,9 +31,6 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         return i < 0 ? false : null == this.arrayListInstance ?
             false : i < this.arrayListInstance.size();
     }
-
-    private static int logInfo(final java.lang.String msg)
-    { return android.util.Log.i("TemplateModels", msg); }
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
@@ -48,12 +48,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
 
             @java.lang.Override
-            public boolean hasNext()
-            { assert null != this.listIterator; return this.listIterator.hasNext(); }
+            public boolean hasNext() { return this.listIterator.hasNext(); }
 
             @java.lang.Override
             public org.wheatgenetics.coordinate.model.TemplateModel next()
-            { assert null != this.listIterator; return this.listIterator.next(); }
+            { return this.listIterator.next(); }
 
             @java.lang.Override
             public void remove() { throw new java.lang.UnsupportedOperationException(); }
@@ -81,8 +80,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             final java.lang.String result[] = new java.lang.String[size];
             {
                 final int first = 0, last = size - 1;
-                for (int i = first; i <= last; i++)
-                    result[i] = this.arrayListInstance.get(i).getTitle();
+                for (int i = first; i <= last; i++) result[i] = this.get(i).getTitle();
             }
             return result;
         }
