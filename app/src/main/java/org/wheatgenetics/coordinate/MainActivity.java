@@ -189,6 +189,12 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
     }
 
+    private void populateFragments()
+    {
+        assert null != this.displayFragment  ; this.displayFragment.populate  ();
+        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+    }
+
     // region loadJoinedGridModel() Private Methods
     private void loadJoinedGridModel(final long gridId)
     {
@@ -212,7 +218,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
-    { this.loadJoinedGridModel(gridId); this.onStart(); }
+    { this.loadJoinedGridModel(gridId); this.populateFragments(); }
 
     private void clearJoinedGridModelThenPopulate() { this.loadJoinedGridModelThenPopulate(0); }
     // endregion
@@ -519,13 +525,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     { super.onPostCreate(savedInstanceState); this.closeDrawer(); }
 
     @java.lang.Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        assert null != this.displayFragment  ; this.displayFragment.populate  ();
-        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
-    }
+    protected void onStart() { super.onStart(); this.populateFragments(); }
 
     @java.lang.Override
     public void onBackPressed()
@@ -626,12 +626,24 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     {
         if (null != this.joinedGridModel)
         {
-            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
-            if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                ((org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel).setValue(
-                    entry);
-            // TODO: Advance to next cell.
+            {
+                final org.wheatgenetics.coordinate.model.IncludedEntryModel nextEntryModel;
+                {
+                    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
+                        this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
+                    if (activeEntryModel instanceof
+                        org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                        ((org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                            activeEntryModel).setValue(entry);
+                    nextEntryModel = this.joinedGridModel.next(activeEntryModel);
+                }
+                if (null != nextEntryModel)
+                {
+                    this.activeRow = nextEntryModel.getRow() - 1;
+                    this.activeCol = nextEntryModel.getCol() - 1;
+                }
+            }
+            this.populateFragments();
         }
     }
     // endregion

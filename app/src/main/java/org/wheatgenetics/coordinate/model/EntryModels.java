@@ -53,6 +53,54 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
+
+    org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel)
+    {
+        if (null == activeEntryModel)
+            return null;
+        else
+        {
+            final int
+                lastRow      = this.entryModelArray.length    - 1,
+                lastCol      = this.entryModelArray[0].length - 1,
+                candidateRow                                     ,
+                candidateCol                                     ;
+            {
+                final int
+                    activeRow = activeEntryModel.getRow() - 1,
+                    activeCol = activeEntryModel.getCol() - 1;
+
+                if (activeRow >= lastRow)
+                {
+                    if (activeCol >= lastCol)
+                        return null;
+                    else
+                        candidateCol = activeCol + 1;
+                    candidateRow = 0;
+                }
+                else
+                {
+                    candidateCol = activeCol    ;
+                    candidateRow = activeRow + 1;
+                }
+            }
+
+            boolean onCandidateCol = true;
+            for (int col = candidateCol; col <= lastCol; col++)
+            {
+                for (int row = onCandidateCol ? candidateRow : 0; row <= lastRow; row++)
+                {
+                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                        this.entryModelArray[row][col];
+                    if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                        return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                }
+                onCandidateCol = false;
+            }
+            return null;
+        }
+    }
     // endregion
 
     // region Public Methods
