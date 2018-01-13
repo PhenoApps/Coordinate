@@ -16,11 +16,13 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  *
+ * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
+ * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
@@ -35,7 +37,8 @@ package org.wheatgenetics.coordinate.navigation;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
+org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -59,6 +62,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
@@ -79,6 +83,13 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity);
         return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
+    {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
+        return this.entriesTableInstance;
     }
     // endregion
 
@@ -119,18 +130,18 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             success = false;
         else
         {
-            // TODO: Delete entries associated with grids.
-
             final long templateId = templateModel.getId();
 
-            if (this.gridsTable().deleteByTemplateId(templateId))
+            this.gridsTable().loadByTemplateId(templateId).processAll(this);      // delete entries
+
+            if (this.gridsTable().deleteByTemplateId(templateId))                 // delete grids
                 this.showShortToast(org.wheatgenetics.coordinate
                     .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateSuccessToast);
             else
                 this.showShortToast(org.wheatgenetics.coordinate
                     .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast);
 
-            success = templatesTable().delete(templateId);
+            success = templatesTable().delete(templateId);                        // delete template
         }
 
         if (success)
@@ -300,6 +311,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null != templateModel) if (this.templatesTable().insert(templateModel) > 0)
             this.showLongToast(templateModel.getTitle() + " created");
     }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.model.JoinedGridModels.Processor Overridden Method
+    @java.lang.Override
+    public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
+    { assert null != joinedGridModel; this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
     // endregion
     // endregion
 }
