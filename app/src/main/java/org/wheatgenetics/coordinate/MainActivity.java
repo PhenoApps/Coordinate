@@ -177,9 +177,19 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
 
         assert null != this.sharedPreferences;
         if (null == this.joinedGridModel)
+        {
             this.sharedPreferences.clearCurrentGrid();
+            this.activeRow = this.activeCol = 0;
+        }
         else
+        {
             this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
+
+            this.activeRow =
+                java.lang.Math.min(this.activeRow, this.joinedGridModel.getRows() - 1);
+            this.activeCol =
+                java.lang.Math.min(this.activeCol, this.joinedGridModel.getCols() - 1);
+        }
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
@@ -344,7 +354,9 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         // endregion
 
         // region Restore Instance State
-        if (null != savedInstanceState)
+        if (null == savedInstanceState)
+            this.activeRow = this.activeCol = 0;
+        else
         {
             this.activeRow =
                 savedInstanceState.getInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_ROW);
