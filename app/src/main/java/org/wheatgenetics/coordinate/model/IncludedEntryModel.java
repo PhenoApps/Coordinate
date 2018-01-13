@@ -45,6 +45,6 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     }
     // endregion
 
-    void setValue(final java.lang.String value)
+    public void setValue(final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
 }

@@ -41,6 +41,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -621,7 +622,18 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
-    public void addEntry(final java.lang.String entry) {}                                    // TODO
+    public void addEntry(final java.lang.String entry)
+    {
+        if (null != this.joinedGridModel)
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
+            if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                ((org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel).setValue(
+                    entry);
+            // TODO: Advance to next cell.
+        }
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
