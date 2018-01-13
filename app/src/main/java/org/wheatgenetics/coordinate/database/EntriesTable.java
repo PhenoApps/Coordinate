@@ -162,9 +162,6 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     }
 
     // region Public Operations
-    public void insert(final org.wheatgenetics.coordinate.model.EntryModels entryModels)
-    { if (null != entryModels) entryModels.processAll(this); }
-
     public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
     final int col)
     {
@@ -179,6 +176,9 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
         return (org.wheatgenetics.coordinate.model.EntryModel) this.makeFromFirst(
             this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs));
     }
+
+    public void insert(final org.wheatgenetics.coordinate.model.EntryModels entryModels)
+    { if (null != entryModels) entryModels.processAll(this); }
 
     public boolean deleteByGridId(final long gridId)
     {
