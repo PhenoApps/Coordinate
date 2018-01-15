@@ -632,9 +632,15 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                     final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
                         this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
                     if (activeEntryModel instanceof
-                        org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                        ((org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                            activeEntryModel).setValue(entry);
+                    org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                    {
+                        final org.wheatgenetics.coordinate.model.IncludedEntryModel
+                            activeIncludedEntryModel =
+                                (org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                                    activeEntryModel;
+                        activeIncludedEntryModel.setValue(entry);
+                        entriesTable().insertOrUpdate(activeIncludedEntryModel);
+                    }
                     nextEntryModel = this.joinedGridModel.next(activeEntryModel);
                 }
                 if (null != nextEntryModel)

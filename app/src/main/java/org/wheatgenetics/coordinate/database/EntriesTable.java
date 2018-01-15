@@ -112,19 +112,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // region org.wheatgenetics.coordinate.model.EntryModels.Processor Overridden Method
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        if (null != entryModel)
-        {
-            final boolean exists = org.wheatgenetics.coordinate.database.Table.exists(this.queryAll(
-                /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
-                /* selectionArgs => */
-                    org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
-            if (exists)
-                this.update(entryModel);
-            else
-                this.insert(entryModel);
-        }
-    }
+    { this.insertOrUpdate(entryModel); }
     // endregion
     // endregion
 
@@ -179,6 +167,21 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
 
     public void insert(final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     { if (null != entryModels) entryModels.processAll(this); }
+
+    public void insertOrUpdate(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+        {
+            final boolean exists = org.wheatgenetics.coordinate.database.Table.exists(this.queryAll(
+                /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
+                /* selectionArgs => */
+                org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
+            if (exists)
+                this.update(entryModel);
+            else
+                this.insert(entryModel);
+        }
+    }
 
     public boolean deleteByGridId(final long gridId)
     {
