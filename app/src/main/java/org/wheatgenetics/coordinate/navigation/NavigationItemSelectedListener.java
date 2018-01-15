@@ -12,6 +12,8 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.Utils
+ * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
+ * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
  *
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
@@ -38,7 +40,8 @@ package org.wheatgenetics.coordinate.navigation;
 public class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
-org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
+org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
+org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -48,6 +51,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         public abstract void deleteGrid();
 
         public abstract void handleTemplateDeleted();
+
+        public abstract java.lang.String initialExportFileName();
+        public abstract void             exportGrid(java.lang.String fileName);
 
         public abstract void closeDrawer();
     }
@@ -65,8 +71,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
-    private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator               templateCreator = null;
+    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
+        getExportFileNameAlertDialog = null;
+    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -196,7 +204,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following six ids that have names that start with "nav_" come from
+            // The following nine ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -223,8 +231,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         org.wheatgenetics.coordinate
                             .R.string.NavigationItemSelectedListenerLoadGridTitle,
                         joinedGridModels.names());
-                }
-                break;
+                } break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
                 org.wheatgenetics.coordinate.Utils.confirm(
@@ -271,7 +278,14 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 } break;
 
             case org.wheatgenetics.coordinate.R.id.nav_import_grid: break;
-            case org.wheatgenetics.coordinate.R.id.nav_export_grid: break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_export_grid:
+                if (null == this.getExportFileNameAlertDialog) this.getExportFileNameAlertDialog =
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(
+                        this.activity, this);
+                assert null != this.handler;
+                this.getExportFileNameAlertDialog.show(this.handler.initialExportFileName());
+                break;
 
             case org.wheatgenetics.coordinate.R.id.nav_show_about :
                 if (null == this.aboutAlertDialog)
@@ -282,8 +296,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         final android.content.res.Resources resources =
                             this.activity.getResources();
 
-                        assert null != resources;
-                        title = resources.getString(
+                        assert null != resources; title = resources.getString(
                             org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
                         msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
                             org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
@@ -317,6 +330,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { assert null != joinedGridModel; this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
+    // endregion
+
+    // region org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler Overridden Method
+    @java.lang.Override
+    public void handleGetFileNameDone(final java.lang.String fileName)
+    { assert null != this.handler; this.handler.exportGrid(fileName); }
     // endregion
     // endregion
 }

@@ -258,6 +258,15 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                 this.clearJoinedGridModelThenPopulate();
     }
 
+    private java.lang.String initialExportFileName()
+    {
+        return null == this.joinedGridModel ? null :
+            this.joinedGridModel.getFirstOptionalFieldDatedValue();
+    }
+
+    private void exportGrid(final java.lang.String fileName)
+    {}
+
     private void showChangeLog()
     {
         if (null == this.changeLogAlertDialog)
@@ -468,6 +477,20 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
                                     {
                                         org.wheatgenetics.coordinate
                                             .MainActivity.this.handleTemplateDeleted();
+                                    }
+
+                                    @java.lang.Override
+                                    public java.lang.String initialExportFileName()
+                                    {
+                                        return org.wheatgenetics.coordinate
+                                            .MainActivity.this.initialExportFileName();
+                                    }
+
+                                    @java.lang.Override
+                                    public void exportGrid(final java.lang.String fileName)
+                                    {
+                                        org.wheatgenetics.coordinate
+                                            .MainActivity.this.exportGrid(fileName);
                                     }
 
                                     @java.lang.Override

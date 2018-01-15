@@ -93,6 +93,12 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     public boolean getRowNumbering()
     { assert null != this.templateModel; return this.templateModel.getRowNumbering(); }
 
+    public java.lang.String getFirstOptionalFieldDatedValue()
+    {
+        return null == this.templateModel ? null :
+            this.templateModel.getFirstOptionalFieldDatedValue();
+    }
+
     public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { assert null != templateModel; templateModel.assign(this.templateModel); }
 

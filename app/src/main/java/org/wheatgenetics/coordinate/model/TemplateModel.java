@@ -318,6 +318,12 @@ implements java.lang.Cloneable
 
     org.wheatgenetics.coordinate.model.Cells getInitialExcludedCells()
     { return this.initialExcludedCells(); }
+
+    java.lang.String getFirstOptionalFieldDatedValue()
+    {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+            this.nonNullOptionalFieldsInstance.getDatedFirstValue();
+    }
     // endregion
 
     // region Public Methods
