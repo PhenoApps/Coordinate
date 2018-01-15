@@ -265,7 +265,18 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     }
 
     private void exportGrid(final java.lang.String fileName)
-    {}
+    {
+        if (null != this.joinedGridModel)
+        {
+            assert null != this.exportDir;
+            try
+            {
+                final java.io.File exportFile = this.exportDir.createNewFile(fileName);// throws
+                ;                                                                      //  java.io.-
+            }                                                                          //  IOExcep-
+            catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }//  tion
+        }
+    }
 
     private void showChangeLog()
     {
