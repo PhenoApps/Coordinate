@@ -8,6 +8,11 @@
     <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
+    <string name="MainActivityShareTitle">Share file via&#8230;</string>
+    <string name="MainActivityExportSuccessTitle">File successfully exported</string>
+    <string name="MainActivityExportDeleteConfirmation">Do you want to delete the current grid?</string>
+    <string name="MainActivityExportFailTitle">Export</string>
+    <string name="MainActivityExportFailMessage">No data was exported.</string>
 
     <!-- activity_main_drawer.xml: -->
     <string name="create_grid">Create grid</string>
@@ -87,4 +92,9 @@
     <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>
 
     <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
+    <string name="ExporterProgressDialogTitle">Exporting&#8230;</string>
+    <string name="ExporterProgressDialogInitialMessage">File is being saved.</string>
+    <string name="ExporterProgressDialogMessage">Exporting:\u0020</string>
+    <string name="ExporterFailedMessage">Unable to export grid.</string>
 </resources>

@@ -113,7 +113,7 @@ public class Utils extends java.lang.Object
     }
     // endregion
 
-    // region confirm(title, message, yesRunnable, noRunnable) AlertDialog Methods
+    // region confirm(title, message, yesRunnable, noRunnable) AlertDialog Method
     public static void confirm(final android.content.Context context, final int message,
     final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
     {
