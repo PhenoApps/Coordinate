@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate;
  * android.content.Intent
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
+ * android.media.MediaPlayer
  * android.net.Uri
  * android.os.Bundle
  * android.support.design.widget.NavigationView
@@ -42,6 +43,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -64,6 +66,7 @@ public class MainActivity extends android.support.v7.app.AppCompatActivity imple
 org.wheatgenetics.coordinate.display.DisplayFragment.Handler,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler      ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler         ,
+org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     private static final java.lang.String ACTIVE_ROW = "activeRow", ACTIVE_COL = "activeCol";
@@ -72,6 +75,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
         deleteTemplateMenuItem, exportGridMenuItem;
+    private android.media.MediaPlayer plonkMediaPlayerInstance = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
@@ -673,6 +677,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
+    // region org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler Overridden Method
+    @java.lang.Override
+    public void handleFilledGrid()
+    {
+        org.wheatgenetics.coordinate.Utils.alert(this,
+            org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
+
+        if (null == this.plonkMediaPlayerInstance) this.plonkMediaPlayerInstance =
+            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
+        this.plonkMediaPlayerInstance.start();
+    }
+    // endregion
+
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override
     public java.lang.String getEntryValue()
@@ -715,7 +732,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                         activeIncludedEntryModel.setValue(entryValue);
                         entriesTable().insertOrUpdate(activeIncludedEntryModel);
                     }
-                    nextEntryModel = this.joinedGridModel.next(activeEntryModel);
+                    nextEntryModel = this.joinedGridModel.next(activeEntryModel, this);
                 }
                 if (null != nextEntryModel)
                 {

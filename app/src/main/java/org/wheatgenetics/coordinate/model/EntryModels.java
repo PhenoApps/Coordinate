@@ -12,9 +12,14 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class EntryModels extends java.lang.Object
 {
+    // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Processor
     { public abstract void process(org.wheatgenetics.coordinate.model.EntryModel entryModel); }
+
+    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    public interface FilledGridHandler { public abstract void handleFilledGrid(); }
+    // endregion
 
     // region Fields
     private final long                                          gridId             ;
@@ -55,7 +60,8 @@ public class EntryModels extends java.lang.Object
     { return this.entryModelArray[row - 1][col - 1]; }
 
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
-    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel)
+    final org.wheatgenetics.coordinate.model.EntryModel                    activeEntryModel ,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
     {
         if (null == activeEntryModel)
             return null;
@@ -71,18 +77,21 @@ public class EntryModels extends java.lang.Object
                     activeRow = activeEntryModel.getRow() - 1,
                     activeCol = activeEntryModel.getCol() - 1;
 
-                if (activeRow >= lastRow)
+                if (activeRow < lastRow)
                 {
-                    if (activeCol >= lastCol)
-                        return null;
-                    else
-                        candidateCol = activeCol + 1;
-                    candidateRow = 0;
+                    candidateRow = activeRow + 1;
+                    candidateCol = activeCol    ;
                 }
                 else
                 {
-                    candidateCol = activeCol    ;
-                    candidateRow = activeRow + 1;
+                    if (activeCol >= lastCol)
+                    {
+                        if (null != filledGridHandler) filledGridHandler.handleFilledGrid();
+                        return null;
+                    }
+
+                    candidateRow = 0            ;
+                    candidateCol = activeCol + 1;
                 }
             }
 

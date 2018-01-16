@@ -4,6 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
     <string name="MainActivityEntriesOfGridSuccessToast">Entries successfully deleted</string>
     <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>

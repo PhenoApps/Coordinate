@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
+ * org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -394,7 +395,11 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     { return this.entryModels; }
 
     public org.wheatgenetics.coordinate.model.IncludedEntryModel next(
-    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel)
-    { return null == this.entryModels ? null : this.entryModels.next(activeEntryModel); }
+    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
+    {
+        return null == this.entryModels ? null :
+            this.entryModels.next(activeEntryModel, filledGridHandler);
+    }
     // endregion
 }
