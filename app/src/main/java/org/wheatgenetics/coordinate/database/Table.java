@@ -119,7 +119,12 @@ abstract class Table extends java.lang.Object
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String orderBy)
-    { return this.queryAll(/* selection => */ null, /* selectionArgs => */ null); }
+    {
+        return this.queryAll(
+            /* selection     => */ null   ,
+            /* selectionArgs => */ null   ,
+            /* orderBy       => */ orderBy);
+    }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryDistinct(final java.lang.String selection,
