@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject while OptionalField does.)
  *
  * Uses:
+ * android.support.annotation.VisibleForTesting
+ *
  * org.json.JSONException
  * org.json.JSONObject
  *
@@ -40,6 +42,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     // endregion
 
     // region Package Methods
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
     static void put(final org.json.JSONObject jsonObject,
     final java.lang.String name, java.lang.String value)
     {
@@ -58,17 +62,17 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             return true;
         else
         {
-            boolean result;
             try
             {
-                result = jsonObject.getBoolean(                     // throws org.json.JSONException
+                return jsonObject.getBoolean(                       // throws org.json.JSONException
                     org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME);
             }
-            catch (final org.json.JSONException e) { result = true; }
-            return result;
+            catch (final org.json.JSONException e) { return true; }
         }
     }
 
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
     static void putChecked(final org.json.JSONObject jsonObject, final boolean value)
     {
         if (null != jsonObject)

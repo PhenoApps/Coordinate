@@ -38,8 +38,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             this.showToast(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogToast);
         else
         {
-            assert null != this.nonNullOptionalFields;
-            this.nonNullOptionalFields.add(
+            assert null != this.nonNullOptionalFields; this.nonNullOptionalFields.add(
                 /* name => */ name, /* value => */ defaultValue, /* hint => */ null);
             this.cancelAlertDialog();
             assert null != this.handler; this.handler.handleAddOptionalFieldDone();

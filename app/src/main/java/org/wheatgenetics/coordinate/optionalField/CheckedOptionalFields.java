@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
  */
 public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 {
@@ -13,10 +14,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         super();
 
         if (null != optionalFields)
-        {
-            assert null != this.arrayList;
-            this.arrayList.addAll(optionalFields.arrayList);
-        }
+        { assert null != this.arrayList; this.arrayList.addAll(optionalFields.arrayList); }
     }
 
     @java.lang.Override

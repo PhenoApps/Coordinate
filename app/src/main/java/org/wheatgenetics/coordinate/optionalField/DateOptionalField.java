@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField

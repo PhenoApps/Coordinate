@@ -359,21 +359,6 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
 
     // region Make Public Methods
     @org.junit.Test
-    public void makeInitialWorks()
-    {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            initialNonNullOptionalFields =
-                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeInitial();
-        org.junit.Assert.assertFalse (initialNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                initialNonNullOptionalFields),
-            2);
-        org.junit.Assert.assertEquals(initialNonNullOptionalFields.get(0).getName(), "Plate Id");
-        org.junit.Assert.assertEquals(initialNonNullOptionalFields.get(1).getName(), "Date"    );
-    }
-
-    @org.junit.Test
     public void makeNewWorks()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields

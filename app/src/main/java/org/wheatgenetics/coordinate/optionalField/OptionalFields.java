@@ -101,7 +101,6 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
                 final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields =
                     (org.wheatgenetics.coordinate.optionalField.OptionalFields) object;
 
-                assert null != this.arrayList; assert null != optionalFields.arrayList;
                 if (this.arrayList.size() != optionalFields.arrayList.size())
                     return false;
                 else

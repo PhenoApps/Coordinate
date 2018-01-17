@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -11,7 +12,6 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
- * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
@@ -43,33 +43,29 @@ implements java.lang.Cloneable
             if (null != jsonArray)
             {
                 final int last = jsonArray.length() - 1;
-                assert null != this.arrayList;
-                for (int i = 0; i <= last; i++)
+                assert null != this.arrayList; for (int i = 0; i <= last; i++)
                 {
-                    org.wheatgenetics.coordinate.optionalField.OptionalField optionalField;
+                    org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField;
                     {
-                        org.json.JSONObject jsonObject;
-                        try
+                        final org.json.JSONObject jsonObject;
+                        try { jsonObject = (org.json.JSONObject) jsonArray.get(i); }  // throws org-
+                        catch (final org.json.JSONException e) { continue; }          //  .json.-
+                                                                                      //  JSONExcep-
+                        try                                                           //  tion
                         {
-                            jsonObject = (org.json.JSONObject) jsonArray.get(i);// throws org.json.-
-                        }                                                       //  JSONException
-                        catch (final org.json.JSONException e) { continue; }
-
-                        try
-                        {
-                            optionalField =
+                            baseOptionalField =
                                 new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
                                     jsonObject);
                         }
                         catch (final
                         org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass e)
                         {
-                            optionalField =
+                            baseOptionalField =
                                 new org.wheatgenetics.coordinate.optionalField.DateOptionalField(
                                     jsonObject);
                         }
                     }
-                    this.arrayList.add(optionalField);
+                    this.arrayList.add(baseOptionalField);
                 }
             }
         }
@@ -138,8 +134,30 @@ implements java.lang.Cloneable
     }
     // endregion
 
+    // region Package Methods
     void setChecked(@android.support.annotation.IntRange(from = 0) final int index,
     final boolean checked) { this.get(index).setChecked(checked); }
+
+    boolean[] checks()
+    {
+        final boolean result[];
+        {
+            @java.lang.SuppressWarnings("Convert2Diamond")
+            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
+                new java.util.ArrayList<java.lang.Boolean>();
+
+            for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+            baseOptionalField: this)
+                checkedArrayList.add(baseOptionalField.getChecked());
+
+            final int checkedArrayListSize = checkedArrayList.size();
+            result = new boolean[checkedArrayListSize];
+
+            for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
+        }
+        return result;
+    }
+    // endregion
 
     // region Public Methods
     public boolean isEmpty()
@@ -274,7 +292,7 @@ implements java.lang.Cloneable
                     baseOptionalField: this)
                         if (baseOptionalField.namesAreEqual(name))
                         {
-                            java.lang.String safeValue;
+                            final java.lang.String safeValue;
                             {
                                 if (baseOptionalField instanceof
                                 org.wheatgenetics.coordinate.optionalField.DateOptionalField)
@@ -309,35 +327,7 @@ implements java.lang.Cloneable
             }
     }
 
-    public boolean[] checks()
-    {
-        boolean result[];
-        {
-            @java.lang.SuppressWarnings("Convert2Diamond")
-            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
-                new java.util.ArrayList<java.lang.Boolean>();
-
-            for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-            baseOptionalField: this)
-                checkedArrayList.add(baseOptionalField.getChecked());
-
-            final int checkedArrayListSize = checkedArrayList.size();
-            result = new boolean[checkedArrayListSize];
-
-            for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
-        }
-        return result;
-    }
-
     // region Make Public Methods
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeInitial()
-    {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        result.add("Plate Id"); result.addDate();
-        return result;
-    }
-
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
@@ -363,7 +353,7 @@ implements java.lang.Cloneable
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
 
-        result.add("Plate"                             , /* hint => */ "Plate ID"); // TODO: dna
+        result.add("Plate"                             , /* hint => */ "Plate ID");     // TODO: dna
         result.add("Plate Name"                                                  );
         result.add("Notes"                                                       );
         result.add("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );

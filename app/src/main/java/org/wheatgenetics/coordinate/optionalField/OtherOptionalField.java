@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * org.json.JSONObject
  *
+ * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
@@ -26,7 +27,7 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     {
         super(jsonObject);
 
-        if (org.wheatgenetics.coordinate.optionalField.OptionalField.DATE_HINT.equals(
+        if (org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT.equals(
         this.getHint()))
             throw new org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass();
     }
