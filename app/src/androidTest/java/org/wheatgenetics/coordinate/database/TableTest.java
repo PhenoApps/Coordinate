@@ -29,8 +29,12 @@ public class TableTest extends java.lang.Object
     {
         private ConcreteTable()
         {
-            super(android.support.test.InstrumentationRegistry.getTargetContext(), "sqlite_master",
-                "TableTest", org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME);
+            super(
+                /* context   => */ android.support.test.InstrumentationRegistry.getTargetContext(),
+                /* tableName => */ "sqlite_master"                                                ,
+                /* tag       => */ "TableTest"                                                    ,
+                /* databaseName => */
+                    org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
         }
 
         @java.lang.Override
@@ -82,11 +86,11 @@ public class TableTest extends java.lang.Object
     {
         final android.database.Cursor cursor =
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable().queryAll(
-                "[name] DESC");
+                /* orderBy => */ "[name] DESC");
         org.junit.Assert.assertNotNull(cursor);
         try
         {
-            java.lang.String firstName, lastName;
+            final java.lang.String firstName, lastName;
             {
                 final int nameColumnIndex = 1;
                 cursor.moveToFirst(); firstName = cursor.getString(nameColumnIndex);

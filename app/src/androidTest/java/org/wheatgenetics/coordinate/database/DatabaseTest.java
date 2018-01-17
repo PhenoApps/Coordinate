@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.database;
 
 /**
  * Uses:
- * android.content.Context
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
@@ -13,30 +12,32 @@ package org.wheatgenetics.coordinate.database;
  * org.junit.Before
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.database.Database
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class DatabaseTest extends java.lang.Object
 {
     // region Constants
-    private static final java.lang.String PARENT_PATH =
-        "/data/data/org.wheatgenetics.coordinate/databases/";
-    static final java.lang.String FILE_NAME = "test";
+    private static final java.lang.String
+        PARENT_PATH = "/data/data/org.wheatgenetics.coordinate/databases/",
+        FILE_NAME   = "test"                                              ;
 
     private static final java.lang.String
         FILE_PATH = org.wheatgenetics.coordinate.database.DatabaseTest.PARENT_PATH +
             org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME,
         DATABASE_EXTENSION_NAME = ".db";
 
-    private static final java.lang.String DATABASE_FILE_NAME =
-        org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME              +
-        org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME;
+    static final java.lang.String DATABASE_FILE_NAME =
+        org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME +
+            org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME;
     // endregion
 
     private final java.io.File
         databaseFile = new java.io.File(
-            org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH              +
-            org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME),
+            org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH +
+                org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME),
         journalFile = new java.io.File(
             org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH + ".db-journal");
 
@@ -47,12 +48,14 @@ public class DatabaseTest extends java.lang.Object
     private static void testTable(final java.lang.String name,
     final android.database.sqlite.SQLiteDatabase db, final int id) throws java.io.IOException
     {
-        java.io.StringReader actual = null;
+        final java.io.StringReader actual;
         {
             org.junit.Assert.assertNotNull(db);
             final android.database.Cursor cursor = db.rawQuery(java.lang.String.format(
                 "SELECT ALL [sql] FROM [sqlite_master] WHERE [name] = '%s'", name), null);
-            if (null != cursor)
+            if (null == cursor)
+                actual = null;
+            else
                 try
                 {
                     cursor.moveToFirst();
@@ -101,12 +104,13 @@ public class DatabaseTest extends java.lang.Object
         }
     }
 
+    // region Public Methods
     @org.junit.Before
     public void setUp() { this.cleanFilesystem(); }
 
-    /** nullContextGetDb() must be run before nonNullContextGetDb(). */
+    /** nullContextDb() must be run before nonNullContextDb(). */
     @org.junit.Test(expected = java.lang.NullPointerException.class)
-    public void nullContextGetDb()
+    public void nullContextDb()
     {
         org.junit.Assert.assertFalse(this.databaseFile.exists());
         org.junit.Assert.assertFalse(this.journalFile.exists ());
@@ -116,9 +120,9 @@ public class DatabaseTest extends java.lang.Object
                 org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
     }
 
-    /** nonNullContextGetDb() must be run after nullContextGetDb(). */
+    /** nonNullContextDb() must be run after nullContextDb(). */
     @org.junit.Test
-    public void nonNullContextGetDb() throws java.io.IOException
+    public void nonNullContextDb() throws java.io.IOException
     {
         final android.database.sqlite.SQLiteDatabase db =
             org.wheatgenetics.coordinate.database.Database.db(
@@ -135,4 +139,5 @@ public class DatabaseTest extends java.lang.Object
 
     @org.junit.After
     public void tearDown() { this.cleanFilesystem(); }
+    // endregion
 }
