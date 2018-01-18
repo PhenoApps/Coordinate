@@ -73,13 +73,13 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
 
     /** Creates. */
     private Cells(final org.wheatgenetics.coordinate.model.Cells cells)
-    { this(new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
+    { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
 
     /** Creates. */
     Cells(
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
-    { this(new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
+    { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
 
     Cells(                                         final java.lang.String json  ,
     @android.support.annotation.IntRange(from = 1) final int              maxRow,
@@ -89,15 +89,12 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
 
         if (null != json) if (json.trim().length() > 0)
         {
-            org.json.JSONArray jsonArray;
+            final org.json.JSONArray jsonArray;
             {
                 final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-                try
-                {
-                    jsonArray = (org.json.JSONArray) jsonTokener.nextValue();   // throws org.json.-
-                }                                                               //  JSONException
-                catch (final org.json.JSONException e)
-                { return; /* Leave cellTreeSetInstance == null. */ }
+                try { jsonArray = (org.json.JSONArray) jsonTokener.nextValue(); }    // throws org.-
+                catch (final org.json.JSONException e)                               //  json.JSON-
+                { return; /* Leave cellTreeSetInstance == null. */ }                 //  Exception
             }
 
             assert null != jsonArray; final int length = jsonArray.length();
@@ -123,17 +120,17 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 return "empty";
             else
             {
-                final java.lang.StringBuilder result = new java.lang.StringBuilder();
+                final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder();
                 {
                     boolean firstCell = true;
                     for (final org.wheatgenetics.coordinate.model.Cell cell:
                     this.cellTreeSetInstance) if (null != cell)
                     {
-                        if (firstCell) firstCell = false; else result.append(", ");
-                        result.append(cell.toString());
+                        if (firstCell) firstCell = false; else stringBuilder.append(", ");
+                        stringBuilder.append(cell.toString());
                     }
                 }
-                return result.toString();
+                return stringBuilder.toString();
             }
     }
 
@@ -181,64 +178,35 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    void makeOneRandomCell(
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol)
-    {
-        // Checking maxRow and maxCol before clear()ing is intentional.  This is done so that if an
-        // exception is thrown execution will leave this method before the method can clear().  (It
-        // is better to do all of the work or none of the work than to do half of the work.)
-        new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
-            .inRange(this.maxCell);                     // throws java.lang.IllegalArgumentException
-
-        // Creating the cell before clear()ing  is intentional.  This is done so that if an
-        // exception is thrown when attempting to create the cell execution will leave this method
-        // before the method can clear().  (It is better to do all of the work or none of the work
-        // than to do half of the work.)
-        final org.wheatgenetics.coordinate.model.Cell cell =
-            org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(maxRow, maxCol);
-
-        this.clear(); this.add(cell);
-    }
-
     @java.lang.SuppressWarnings("DefaultLocale")
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
-        if (1 == amount)
-            this.makeOneRandomCell(maxRow, maxCol);
-        else
-            if (amount > 1)
-            {
-                // Checking maxRow and maxCol before clear()ing is intentional.  This is done so
-                // that if an exception is thrown execution will leave this method before the method
-                // can clear().  (It is better to do all of the work or none of the work than to do
-                // half of the work.)
-                new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)
-                    .inRange(this.maxCell);             // throws java.lang.IllegalArgumentException
-
-                {
-                    final int maxAmount = maxRow * maxCol;
-                    if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
-                        java.lang.String.format("amount must be <= %d", maxAmount));
-                }
-
-                this.clear();
-
-                do
-                {
-                    org.wheatgenetics.coordinate.model.Cell cell;
-                    do
-                        cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
-                            maxRow, maxCol);
-                    while (this.contains(cell));
-
-                    this.add(cell);
-                }
-                while (--amount > 0);
+        if (amount >= 1)
+        {
+            new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(  // throws java.-
+                this.maxCell);                                                    //  lang.Illegal-
+                                                                                  //  ArgumentExcep-
+            {                                                                     //  tion
+                final int maxAmount = maxRow * maxCol;
+                if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
+                    java.lang.String.format("amount must be <= %d", maxAmount));
             }
+
+            do
+            {
+                org.wheatgenetics.coordinate.model.Cell cell;
+                do
+                    cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
+                        maxRow, maxCol);
+                while (this.contains(cell));
+
+                this.add(cell);
+            }
+            while (--amount > 0);
+        }
     }
 
     java.lang.String json()
@@ -262,8 +230,6 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             }
         }
     }
-
-    void clear() { if (null != this.cellTreeSetInstance) this.cellTreeSetInstance.clear(); }
 
     boolean contains(
     @android.support.annotation.IntRange(from = 1) final int row,

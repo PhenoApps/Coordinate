@@ -28,8 +28,8 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     Cell(final org.wheatgenetics.coordinate.model.Cell cell)
     {
         this(
-            new org.wheatgenetics.coordinate.model.RowOrCol(cell.getRow()),
-            new org.wheatgenetics.coordinate.model.RowOrCol(cell.getCol()));
+            new org.wheatgenetics.coordinate.model.RowOrCol(/* rowOrCol => */ cell.getRow()),
+            new org.wheatgenetics.coordinate.model.RowOrCol(/* rowOrCol => */ cell.getCol()));
     }
 
     /** Creates. */
@@ -38,8 +38,8 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     @android.support.annotation.IntRange(from = 1) final int col)
     {
         this(
-            new org.wheatgenetics.coordinate.model.RowOrCol(row),
-            new org.wheatgenetics.coordinate.model.RowOrCol(col));
+            new org.wheatgenetics.coordinate.model.RowOrCol(/* value => */ row),
+            new org.wheatgenetics.coordinate.model.RowOrCol(/* value => */ col));
     }
 
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
@@ -53,7 +53,10 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     // region Overridden Methods
     @java.lang.Override @java.lang.SuppressWarnings("DefaultLocale")
     public java.lang.String toString()
-    { return java.lang.String.format("Cell(%s, %s)", this.row.toString(), this.col.toString()); }
+    {
+        return java.lang.String.format("Cell(%s, %s)",
+            this.getRow().toString(), this.getCol().toString());
+    }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean equals(final java.lang.Object object)
@@ -65,7 +68,7 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
             {
                 final org.wheatgenetics.coordinate.model.Cell cell =
                     (org.wheatgenetics.coordinate.model.Cell) object;
-                return this.row.equals(cell.row) && this.col.equals(cell.col);
+                return this.getRow().equals(cell.getRow()) && this.getCol().equals(cell.getCol());
             }
             else return false;
     }
@@ -83,8 +86,8 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             (org.wheatgenetics.coordinate.model.Cell) object;
-        final int rowResult = this.row.compareTo(cell.row);
-        return 0 == rowResult ? this.col.compareTo(cell.col) : rowResult;
+        final int rowCompareResult = this.getRow().compareTo(cell.getRow());
+        return 0 == rowCompareResult ? this.getCol().compareTo(cell.getCol()) : rowCompareResult;
     }
     // endregion
     // endregion
@@ -97,8 +100,8 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
     final org.wheatgenetics.coordinate.model.Cell maxCell)
     {
         assert null != maxCell;
-        this.row.inRange(maxCell.row);                  // throws java.lang.IllegalArgumentException
-        this.col.inRange(maxCell.col);                  // throws java.lang.IllegalArgumentException
+        this.getRow().inRange(maxCell.getRow());        // throws java.lang.IllegalArgumentException
+        this.getCol().inRange(maxCell.getCol());        // throws java.lang.IllegalArgumentException
 
         return this;
     }
@@ -108,9 +111,9 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
         final org.json.JSONObject result = new org.json.JSONObject();
 
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.row.getValue());
+            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.getRow().getValue());
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.col.getValue());
+            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.getCol().getValue());
 
         return result;
     }
