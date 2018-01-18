@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ *
+ * org.wheatgenetics.coordinate.model.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
@@ -12,19 +14,15 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
 
     // region Constructors
     RowOrCol(@android.support.annotation.IntRange(from = 1) final int value)
-    {
-        super();
+    { super(); this.value = org.wheatgenetics.coordinate.model.Utils.valid(value, 1); }
 
-        if (value < 1) throw new java.lang.IllegalArgumentException("value must be > 0");
-        this.value = value;
-    }
-
-    RowOrCol(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol) { this(rowOrCol.value); }
+    RowOrCol(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
+    { this(rowOrCol.getValue()); }
     // endregion
 
     // region Overridden Methods
     @java.lang.Override
-    public java.lang.String toString() { return java.lang.Integer.toString(this.value); }
+    public java.lang.String toString() { return java.lang.Integer.toString(this.getValue()); }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object object)
@@ -36,7 +34,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
             {
                 final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
                     (org.wheatgenetics.coordinate.model.RowOrCol) object;
-                return this.value == rowOrCol.value;
+                return this.getValue() == rowOrCol.getValue();
             }
             else return false;
     }
@@ -47,7 +45,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
-    { return new org.wheatgenetics.coordinate.model.RowOrCol(this.value); }
+    { return new org.wheatgenetics.coordinate.model.RowOrCol(this.getValue()); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override
@@ -66,7 +64,8 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     final org.wheatgenetics.coordinate.model.RowOrCol maxRowOrCol)
     {
         assert null != maxRowOrCol;
-        if (this.value > maxRowOrCol.value) throw new java.lang.IllegalArgumentException();
+        if (this.getValue() > maxRowOrCol.getValue())
+            throw new java.lang.IllegalArgumentException();
         return this;
     }
 
