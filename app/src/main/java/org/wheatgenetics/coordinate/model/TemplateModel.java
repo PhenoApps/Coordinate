@@ -300,6 +300,16 @@ implements java.lang.Cloneable
     org.wheatgenetics.coordinate.model.Cells getInitialExcludedCells()
     { return this.initialExcludedCells(); }
 
+    // region excludedRows, excludedCols Package Methods
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    boolean isExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
+    { return null == this.excludedRowsInstance ? false : this.excludedRowsInstance.contains(row); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
+    { return null == this.excludedColsInstance ? false : this.excludedColsInstance.contains(col); }
+    // endregion
+
     java.lang.String getFirstOptionalFieldDatedValue()
     {
         return null == this.nonNullOptionalFieldsInstance ? null :
@@ -333,14 +343,6 @@ implements java.lang.Cloneable
 
     public java.lang.String getExcludedColsAsJson()
     { return null == this.excludedColsInstance ? null : this.excludedColsInstance.json(); }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean isExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
-    { return null == this.excludedRowsInstance ? false : this.excludedRowsInstance.contains(row); }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
-    { return null == this.excludedColsInstance ? false : this.excludedColsInstance.contains(col); }
     // endregion
 
     // region optionalFields Public Methods
@@ -365,12 +367,6 @@ implements java.lang.Cloneable
     {
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
-    }
-
-    public java.lang.String getFirstOptionalFieldValue()
-    {
-        return null == this.nonNullOptionalFieldsInstance ? null :
-            this.nonNullOptionalFieldsInstance.getFirstValue();
     }
     // endregion
 
