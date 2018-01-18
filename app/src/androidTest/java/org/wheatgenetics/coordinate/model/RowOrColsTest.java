@@ -89,7 +89,7 @@ public class RowOrColsTest extends java.lang.Object
 
     // region Overridden Method Tests
     @org.junit.Test
-    public void toStringAndClearSucceed()
+    public void toStringSucceeds()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
             new org.wheatgenetics.coordinate.model.RowOrCols(50);
@@ -97,27 +97,24 @@ public class RowOrColsTest extends java.lang.Object
 
         rowOrCols.add(34); org.junit.Assert.assertEquals(rowOrCols.toString(), "34"    );
         rowOrCols.add(11); org.junit.Assert.assertEquals(rowOrCols.toString(), "11, 34");  // sorts!
-        rowOrCols.clear(); org.junit.Assert.assertEquals(rowOrCols.toString(), "empty" );
     }
 
     @org.junit.Test @java.lang.SuppressWarnings("EqualsBetweenInconvertibleTypes")
     public void equalsSucceedsAndFails()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols
-            firstRowOrCols  = new org.wheatgenetics.coordinate.model.RowOrCols(150),
+            firstRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(150),
             secondRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(125);
-        org.junit.Assert.assertTrue (firstRowOrCols.equals(secondRowOrCols));
-        org.junit.Assert.assertFalse(firstRowOrCols.equals("nonsense"     ));
-
-        final int value = 123;
-        firstRowOrCols.add(value); secondRowOrCols.add(value);
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
+        org.junit.Assert.assertFalse(firstRowOrCols.equals("nonsense"));
 
-        secondRowOrCols.clear();
-        org.junit.Assert.assertFalse(firstRowOrCols.equals(secondRowOrCols));
-
-        secondRowOrCols.add(45);
-        org.junit.Assert.assertFalse(firstRowOrCols.equals(secondRowOrCols));
+        {
+            final int value = 123;
+            firstRowOrCols.add(value);
+            org.junit.Assert.assertFalse(firstRowOrCols.equals(secondRowOrCols));
+            secondRowOrCols.add(value);
+        }
+        org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
     }
 
     @org.junit.Test
@@ -131,15 +128,11 @@ public class RowOrColsTest extends java.lang.Object
 
         {
             final int value = 123;
-            firstRowOrCols.add(value); secondRowOrCols.add(value);
+            firstRowOrCols.add(value);
+            org.junit.Assert.assertNotEquals(firstRowOrCols.hashCode(), secondRowOrCols.hashCode());
+            secondRowOrCols.add(value);
         }
         org.junit.Assert.assertEquals(firstRowOrCols.hashCode(), secondRowOrCols.hashCode());
-
-        secondRowOrCols.clear();
-        org.junit.Assert.assertNotEquals(firstRowOrCols.hashCode(), secondRowOrCols.hashCode());
-
-        secondRowOrCols.add(99);
-        org.junit.Assert.assertNotEquals(firstRowOrCols.hashCode(), secondRowOrCols.hashCode());
     }
 
     @org.junit.Test

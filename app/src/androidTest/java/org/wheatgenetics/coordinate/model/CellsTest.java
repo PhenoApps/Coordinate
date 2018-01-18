@@ -67,7 +67,7 @@ public class CellsTest extends java.lang.Object
 
     // region Overridden Method Tests
     @org.junit.Test
-    public void toStringSucceed()
+    public void toStringSucceeds()
     {
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells(75, 75);
