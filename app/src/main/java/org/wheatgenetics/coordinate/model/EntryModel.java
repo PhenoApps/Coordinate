@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Model
+ * org.wheatgenetics.coordinate.model.Utils
  */
 public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Model
 {
@@ -26,8 +27,8 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
         super();
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
-        this.row       = org.wheatgenetics.coordinate.model.Model.valid(row, 1);
-        this.col       = org.wheatgenetics.coordinate.model.Model.valid(col, 1);
+        this.row       = org.wheatgenetics.coordinate.model.Utils.valid(row, 1);
+        this.col       = org.wheatgenetics.coordinate.model.Utils.valid(col, 1);
         this.timestamp = java.lang.System.currentTimeMillis()                  ;
     }
 
@@ -42,8 +43,8 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
         super(id);
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
-        this.row       = org.wheatgenetics.coordinate.model.Model.valid(row, 1);
-        this.col       = org.wheatgenetics.coordinate.model.Model.valid(col, 1);
+        this.row       = org.wheatgenetics.coordinate.model.Utils.valid(row, 1);
+        this.col       = org.wheatgenetics.coordinate.model.Utils.valid(col, 1);
         this.timestamp = timestamp                                             ;
     }
     // endregion

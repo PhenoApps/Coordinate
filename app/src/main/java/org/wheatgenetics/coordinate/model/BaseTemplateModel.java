@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
+ * org.wheatgenetics.coordinate.model.Utils
  */
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
@@ -28,10 +29,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     // region Private Methods
     private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
-    { this.rows = org.wheatgenetics.coordinate.model.Model.valid(rows, 1); }
+    { this.rows = org.wheatgenetics.coordinate.model.Utils.valid(rows, 1); }
 
     private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
-    { this.cols = org.wheatgenetics.coordinate.model.Model.valid(cols, 1); }
+    { this.cols = org.wheatgenetics.coordinate.model.Utils.valid(cols, 1); }
 
 
     @java.lang.SuppressWarnings("DefaultLocale")
@@ -186,7 +187,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.IntRange(from = 0) final int amount)
     {
         this.generatedExcludedCellsAmount =
-            org.wheatgenetics.coordinate.model.Model.valid(amount, 0);
+            org.wheatgenetics.coordinate.model.Utils.valid(amount, 0);
     }
 
 
