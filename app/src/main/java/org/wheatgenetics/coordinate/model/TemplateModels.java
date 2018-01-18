@@ -66,8 +66,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     public boolean add(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { return null == templateModel ? false : this.arrayList().add(templateModel); }
 
-    public int size()
-    { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
+    public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
+
+    public org.wheatgenetics.coordinate.model.TemplateModel get(final int i)
+    {
+        if (null == this.arrayListInstance)
+            return null;
+        else
+            return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
+    }
 
     public java.lang.String[] titles()
     {
@@ -84,14 +91,6 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             }
             return result;
         }
-    }
-
-    public org.wheatgenetics.coordinate.model.TemplateModel get(final int i)
-    {
-        if (null == this.arrayListInstance)
-            return null;
-        else
-            return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
     public void logInfo()

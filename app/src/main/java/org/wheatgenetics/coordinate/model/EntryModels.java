@@ -14,11 +14,11 @@ public class EntryModels extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Processor
-    { public abstract void process(org.wheatgenetics.coordinate.model.EntryModel entryModel); }
+    public interface FilledGridHandler { public abstract void handleFilledGrid(); }
 
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface FilledGridHandler { public abstract void handleFilledGrid(); }
+    public interface Processor
+    { public abstract void process(org.wheatgenetics.coordinate.model.EntryModel entryModel); }
     // endregion
 
     // region Fields

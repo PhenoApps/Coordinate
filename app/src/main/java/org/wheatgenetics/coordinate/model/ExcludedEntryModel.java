@@ -4,7 +4,6 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  *
- * org.wheatgenetics.coordinate.BuildConfig
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.EntryModel

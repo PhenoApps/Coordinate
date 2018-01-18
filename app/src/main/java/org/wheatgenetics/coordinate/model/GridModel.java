@@ -28,8 +28,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by first JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String                                                 person        ,
-    final org.wheatgenetics.coordinate.model.Cells                         excludedCells ,
+    final java.lang.String person, final org.wheatgenetics.coordinate.model.Cells excludedCells,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
@@ -92,12 +91,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }
 
     // region OptionalFields Public Methods
-    public java.lang.String getTitle()
-    {
-        return null == this.nonNullOptionalFieldsInstance ? null :
-            this.nonNullOptionalFieldsInstance.getFirstValue();
-    }
-
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 
