@@ -308,9 +308,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             this.templateModel.getFirstOptionalFieldDatedValue();
     }
 
-    public void populate(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    { assert null != templateModel; templateModel.assign(this.templateModel); }
-
     public void addExcludedCell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)

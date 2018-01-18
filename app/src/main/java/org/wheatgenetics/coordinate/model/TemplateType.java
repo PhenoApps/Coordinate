@@ -29,6 +29,13 @@ public enum TemplateType
                     throw new java.lang.IllegalArgumentException();
     }
 
-    public int     getCode()           { return this.code                       ; }
-    public boolean isDefaultTemplate() { return this.code == 0 || this.code == 1; }
+    // region Public Methods
+    public int getCode() { return this.code; }
+
+    public boolean isDefaultTemplate()
+    {
+        return this.code == org.wheatgenetics.coordinate.model.TemplateType.SEED.code
+            || this.code == org.wheatgenetics.coordinate.model.TemplateType.DNA.code;
+    }
+    // endregion
 }

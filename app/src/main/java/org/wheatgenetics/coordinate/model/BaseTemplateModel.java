@@ -18,7 +18,7 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private java      .lang.String                                title                       ;
+    private       java.lang.String                                title                       ;
     private       org.wheatgenetics.coordinate.model.TemplateType type                        ;
     private       int                                             rows, cols                  ;
     private       int                                             generatedExcludedCellsAmount;
@@ -140,7 +140,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
-    /** Called by first constructor, second constructor, and TemplateModel.assign(). */
+    /** Called by first and second constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void assign(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,

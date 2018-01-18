@@ -57,13 +57,6 @@ implements java.lang.Cloneable
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getCols());
         return this.excludedColsInstance;
     }
-
-    private void clearExcludeds()
-    {
-        if (null != this.initialExcludedCellsInstance) this.initialExcludedCellsInstance.clear();
-        if (null != this.excludedRowsInstance        ) this.excludedRowsInstance.clear        ();
-        if (null != this.excludedColsInstance        ) this.excludedColsInstance.clear        ();
-    }
     // endregion
 
     // region Constructors
@@ -124,7 +117,7 @@ implements java.lang.Cloneable
 
     /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
     public TemplateModel(
-    @android.support.annotation.IntRange(from = 1)         final long             id             ,
+    @android.support.annotation.IntRange(from = 1        ) final long             id             ,
                                                            final java.lang.String title          ,
     @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
     @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
@@ -287,7 +280,7 @@ implements java.lang.Cloneable
                 /* timestamp                    => */ this.getTimestamp()                   );
         else
             return new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ id,
+                /* id                           => */ id                                    ,
                 /* title                        => */ this.getTitle()                       ,
                 /* type                         => */ this.getType()                        ,
                 /* rows                         => */ this.getRows()                        ,
@@ -304,18 +297,6 @@ implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    /** Called by JoinedGridModel.populate(). */
-    void assign(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        assert null != templateModel;
-        super.assign(templateModel.getTitle(), templateModel.getType(), templateModel.getRows(),
-            templateModel.getCols(), templateModel.getGeneratedExcludedCellsAmount(),
-            templateModel.getColNumbering(), templateModel.getRowNumbering());
-        this.nonNullOptionalFieldsInstance = templateModel.nonNullOptionalFieldsInstance; // TODO: Assign or clone?
-
-        this.clearExcludeds();                                             // TODO: Still necessary?
-    }
-
     org.wheatgenetics.coordinate.model.Cells getInitialExcludedCells()
     { return this.initialExcludedCells(); }
 
