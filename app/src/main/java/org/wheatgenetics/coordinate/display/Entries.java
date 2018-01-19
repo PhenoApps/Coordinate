@@ -66,7 +66,6 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
     {
         this.entryArray = new org.wheatgenetics.coordinate.display.Entry[rows][cols];
         this.activeRow  = activeRow;                      this.activeCol = activeCol;
-
     }
 
     android.widget.LinearLayout add(final org.wheatgenetics.coordinate.model.EntryModel entryModel)

@@ -69,8 +69,6 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler         ,
 org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
-    private static final java.lang.String ACTIVE_ROW = "activeRow", ACTIVE_COL = "activeCol";
-
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
@@ -94,8 +92,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private org.wheatgenetics.coordinate.display.DisplayFragment displayFragment  ;
     private org.wheatgenetics.coordinate.DataEntryFragment       dataEntryFragment;
-
-    private int activeRow, activeCol;
     // endregion
 
     // region Private Methods
@@ -212,19 +208,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         assert null != this.sharedPreferences;
         if (null == this.joinedGridModel)
-        {
             this.sharedPreferences.clearCurrentGrid();
-            this.activeRow = this.activeCol = 0;
-        }
         else
-        {
             this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
-
-            this.activeRow =
-                java.lang.Math.min(this.activeRow, this.joinedGridModel.getRows() - 1);
-            this.activeCol =
-                java.lang.Math.min(this.activeCol, this.joinedGridModel.getCols() - 1);
-        }
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
@@ -438,18 +424,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         }
         // endregion
 
-        // region Initialize Instance State
-        if (null == savedInstanceState)
-            this.activeRow = this.activeCol = 0;
-        else
-        {
-            this.activeRow =
-                savedInstanceState.getInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_ROW);
-            this.activeCol =
-                savedInstanceState.getInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_COL);
-        }
-        // endregion
-
         // region Configure fragments.
         {
             final android.support.v4.app.FragmentManager fragmentManager =
@@ -641,16 +615,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
 
     @java.lang.Override
-    protected void onSaveInstanceState(final android.os.Bundle outState)
-    {
-        assert null != outState;
-        outState.putInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_ROW, this.activeRow);
-        outState.putInt(org.wheatgenetics.coordinate.MainActivity.ACTIVE_COL, this.activeCol);
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @java.lang.Override
     protected void onDestroy()
     {
         if (null != this.exporter) { this.exporter.cancel(); this.exporter = null; }
@@ -664,13 +628,20 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // endregion
 
     // region org.wheatgenetics.coordinate.display.DisplayFragment.Handler Overridden Methods
-    @java.lang.Override public int getActiveRow() { return this.activeRow; }
-    @java.lang.Override public int getActiveCol() { return this.activeCol; }
+    @java.lang.Override
+    public int getActiveRow()
+    { assert null != this.joinedGridModel; return this.joinedGridModel.getActiveRow(); }
+
+    @java.lang.Override
+    public int getActiveCol()
+    { assert null != this.joinedGridModel; return this.joinedGridModel.getActiveCol(); }
 
     @java.lang.Override
     public void activate(final int row, final int col)
     {
-        this.activeRow = row; this.activeCol = col;
+        if (null != this.joinedGridModel)
+            if (this.joinedGridModel.setActiveRowAndActiveCol(row, col))
+                this.gridsTable().update(this.joinedGridModel);
 
         assert null != this.dataEntryFragment;
         this.dataEntryFragment.setEntry(this.getEntryValue());
@@ -698,9 +669,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             return null;
         else
         {
-            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
-            return null == entryModel ? null : entryModel.getValue();
+            final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
+                this.joinedGridModel.getActiveEntryModel();
+            return null == activeEntryModel ? null : activeEntryModel.getValue();
         }
     }
 
@@ -721,7 +692,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel nextEntryModel;
                 {
                     final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
-                        this.joinedGridModel.getEntryModel(this.activeRow + 1, this.activeCol + 1);
+                        this.joinedGridModel.getActiveEntryModel();
                     if (activeEntryModel instanceof
                     org.wheatgenetics.coordinate.model.IncludedEntryModel)
                     {
@@ -734,11 +705,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     }
                     nextEntryModel = this.joinedGridModel.next(activeEntryModel, this);
                 }
-                if (null != nextEntryModel)
-                {
-                    this.activeRow = nextEntryModel.getRow() - 1;
-                    this.activeCol = nextEntryModel.getCol() - 1;
-                }
+
+                if (this.joinedGridModel.setActiveRowAndActiveCol(nextEntryModel))
+                    this.gridsTable().update(this.joinedGridModel);
+
             }
             this.populateFragments();
         }

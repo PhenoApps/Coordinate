@@ -1,17 +1,26 @@
 <sql>
     <statement>
-    ALTER TABLE templates ADD COLUMN erand INTEGER CHECK(erand >= 0)
+        ALTER TABLE templates ADD COLUMN erand INTEGER CHECK(erand >= 0)
+    </statement>
+
+
+    <statement>
+        ALTER TABLE grids ADD COLUMN person TEXT
     </statement>
 
     <statement>
-    ALTER TABLE grids ADD COLUMN person TEXT
+        ALTER TABLE grids ADD COLUMN ecells TEXT
     </statement>
 
     <statement>
-    ALTER TABLE grids ADD COLUMN ecells TEXT
+        ALTER TABLE grids ADD COLUMN activeRow INTEGER CHECK(activeRow >= 0),
     </statement>
 
     <statement>
-    ALTER TABLE grids ADD COLUMN options TEXT
+        ALTER TABLE grids ADD COLUMN activeCol INTEGER CHECK(activeCol >= 0),
+    </statement>
+
+    <statement>
+        ALTER TABLE grids ADD COLUMN options TEXT
     </statement>
 </sql>

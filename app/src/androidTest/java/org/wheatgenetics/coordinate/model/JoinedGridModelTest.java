@@ -29,8 +29,10 @@ public class JoinedGridModelTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */ 5            ,
-                /* person                       => */ person    ,
+                /* person                       => */ person       ,
                 /* excludedCells                => */ null         ,
+                /* activeRow                    => */ 0            ,
+                /* activeCol                    => */ 0            ,
                 /* optionalFields               => */ null         ,
                 /* timestamp                    => */ timestamp    ,
 
@@ -62,6 +64,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -91,6 +95,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -120,6 +126,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -149,6 +157,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -178,6 +188,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -208,6 +220,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* id                           => */ 5          ,
                     /* person                       => */ "person"   ,
                     /* excludedCells                => */ null       ,
+                    /* activeRow                    => */ 0          ,
+                    /* activeCol                    => */ 0          ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 456        ,
 
@@ -241,8 +255,10 @@ public class JoinedGridModelTest extends java.lang.Object
             excludedRowsJSONArray.put(3); excludedColsJSONArray.put(2);
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */ 5                               ,
-                /* person                       => */ "person"                     ,
+                /* person                       => */ "person"                        ,
                 /* excludedCells                => */ null                            ,
+                /* activeRow                    => */ 0                               ,
+                /* activeCol                    => */ 0                               ,
                 /* optionalFields               => */ null                            ,
                 /* timestamp                    => */ 456                             ,
 
@@ -347,6 +363,8 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* id                           => */ 5          ,
                 /* person                       => */ "person"   ,
                 /* excludedCells                => */ null       ,
+                /* activeRow                    => */ 0          ,
+                /* activeCol                    => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 456        ,
 
@@ -378,6 +396,8 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* id                           => */ 5          ,
                 /* person                       => */ "person"   ,
                 /* excludedCells                => */ null       ,
+                /* activeRow                    => */ 0          ,
+                /* activeCol                    => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 456        ,
 

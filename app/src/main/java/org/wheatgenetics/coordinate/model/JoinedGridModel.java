@@ -229,6 +229,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     /** Used by GridsTable. */
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String person, final java.lang.String excludedCells,
+    @android.support.annotation.IntRange(from = 0) final int activeRow,
+    @android.support.annotation.IntRange(from = 0) final int activeCol,
     final java.lang.String optionalFields, final long timestamp,
 
     @android.support.annotation.IntRange(from = 1        ) final long             templateId     ,
@@ -245,7 +247,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
-        super(id, person, excludedCells, rows, cols, optionalFields, timestamp);
+        super(id, templateId, person, excludedCells, rows, cols,
+            activeRow, activeCol, optionalFields, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
@@ -360,7 +363,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     public void makeEntryModels()
     {
         final int rows = this.getRows(), cols = this.getCols();
-        assert null != this.templateModel;                                  // TODO: clear()s first!
+        assert null != this.templateModel;
         this.excludedCells().makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
             /* maxRow => */ rows, /* maxCol => */ cols);
 
@@ -387,6 +390,30 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { return null == this.entryModels ? null : this.entryModels.get(row, col); }
+
+    public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()
+    { return this.getEntryModel(this.getActiveRow() + 1, this.getActiveCol() + 1); }
+
+    public boolean setActiveRowAndActiveCol(
+    @android.support.annotation.IntRange(from = 0) final int row,
+    @android.support.annotation.IntRange(from = 0) final int col)
+    {
+        final boolean changed = true;
+        if (this.getActiveRow() != row || this.getActiveCol() != col)
+        {
+            this.setActiveRow(row); this.setActiveCol(col);
+            return changed;
+        }
+        else return !changed;
+    }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean setActiveRowAndActiveCol(
+    final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
+    {
+        return null == nextEntryModel ? false : this.setActiveRowAndActiveCol(
+            nextEntryModel.getRow() - 1, nextEntryModel.getCol() - 1);
+    }
 
     public org.wheatgenetics.coordinate.model.EntryModels getEntryModels()
     { return this.entryModels; }
