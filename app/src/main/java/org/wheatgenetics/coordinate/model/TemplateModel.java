@@ -298,7 +298,7 @@ implements java.lang.Cloneable
 
     // region Package Methods
     org.wheatgenetics.coordinate.model.Cells getInitialExcludedCells()
-    { return this.initialExcludedCells(); }
+    { return this.initialExcludedCellsInstance; }
 
     // region excludedRows, excludedCols Package Methods
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")

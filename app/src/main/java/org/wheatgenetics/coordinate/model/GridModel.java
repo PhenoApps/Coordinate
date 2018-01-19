@@ -10,17 +10,15 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
- * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.Utils
  */
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private       long                                     templateId           ;
-    private final java.lang.String                         person               ;
-                  org.wheatgenetics.coordinate.model.Cells excludedCellsInstance;
-    private       int                                      activeRow, activeCol ;
+    private       long             templateId           ;
+    private final java.lang.String person               ;
+    private       int              activeRow, activeCol ;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     private final long timestamp;
@@ -30,16 +28,13 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by first JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String person, final org.wheatgenetics.coordinate.model.Cells excludedCells,
+    final java.lang.String person,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
         this.person     = person                                                    ;
-
-        this.excludedCellsInstance = null == excludedCells ? null :
-            (org.wheatgenetics.coordinate.model.Cells) excludedCells.clone();
 
         this.activeRow = this.activeCol = 0;
 
@@ -50,33 +45,17 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by second JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(
-    @android.support.annotation.IntRange(from = 1) final long id        ,
-    @android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String person, java.lang.String excludedCells,
-    @android.support.annotation.IntRange(from = 1) final int maxRow   ,
-    @android.support.annotation.IntRange(from = 1) final int maxCol   ,
-    @android.support.annotation.IntRange(from = 0) final int activeRow,
-    @android.support.annotation.IntRange(from = 0) final int activeCol,
+    @android.support.annotation.IntRange(from = 1) final long id                ,
+    @android.support.annotation.IntRange(from = 1) final long templateId        ,
+                                                   final java.lang.String person,
+    @android.support.annotation.IntRange(from = 0) final int activeRow          ,
+    @android.support.annotation.IntRange(from = 0) final int activeCol          ,
     java.lang.String optionalFields, final long timestamp)
     {
         super(id);
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
         this.person     = person                                                    ;
-
-        if (null == excludedCells)
-            this.excludedCellsInstance = null;
-        else
-        {
-            excludedCells = excludedCells.trim();
-            if (excludedCells.length() <= 0)
-                this.excludedCellsInstance = null;
-            else
-                this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
-                    /* json   => */ excludedCells,
-                    /* maxRow => */ maxRow       ,
-                    /* maxCol => */ maxCol       );
-        }
 
         this.activeRow = activeRow; this.activeCol = activeCol;
 
@@ -106,13 +85,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // region Public Methods
     public long             getTemplateId() { return this.templateId; }
     public java.lang.String getPerson    () { return this.person    ; }
+    public int              getActiveRow () { return this.activeRow ; }
+    public int              getActiveCol () { return this.activeCol ; }
     public long             getTimestamp () { return this.timestamp ; }
-
-    public java.lang.String excludedCellsAsJson()
-    { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }
-
-    public int getActiveRow() { return this.activeRow; }
-    public int getActiveCol() { return this.activeCol; }
 
     // region OptionalFields Public Methods
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
