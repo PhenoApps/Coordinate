@@ -66,24 +66,24 @@ abstract class Table extends java.lang.Object
     private android.content.ContentValues getContentValuesForUpdate(
     final org.wheatgenetics.coordinate.model.Model model)
     {
-        final android.content.ContentValues contentValues = this.getContentValuesForInsert(model);
+        final android.content.ContentValues result = this.getContentValuesForInsert(model);
 
-        assert null != model; assert null != contentValues;
-        contentValues.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, model.getId());
+        assert null != model; assert null != result;
+        result.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, model.getId());
 
-        return contentValues;
+        return result;
     }
     // endregion
 
     // region query() Dependencies
-    // method                      scope   external usage
-    // =========================== ======= ======================================
-    // query()                     private N/A
-    //     queryAll()              package                           EntriesTable
-    //         queryAll()          package                           EntriesTable
-    //             queryAll()      package TemplatesTable
-    //     queryDistinct()         package                           EntriesTable
-    //         queryDistinct()     package TemplatesTable GridsTable
+    // method                  scope   external usage
+    // ======================= ======= ======================================
+    // query()                 private N/A
+    //     queryAll()          package                           EntriesTable
+    //         queryAll()      package                           EntriesTable
+    //         queryAll()      package TemplatesTable
+    //     queryDistinct()     package                           EntriesTable
+    //         queryDistinct() package TemplatesTable GridsTable
     // endregion
 
     // region External Operations

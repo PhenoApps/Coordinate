@@ -36,12 +36,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                 templateType.getCode());
     }
 
-    private android.database.Cursor query(final long id)
-    {
-        return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.Table.whereClause(id));
-    }
-
     private org.wheatgenetics.coordinate.model.TemplateModels makeTemplateModels(
     final android.database.Cursor cursor)
     {
@@ -120,19 +114,19 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                 templateModel.getTitle());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
                 templateModel.getType().getCode());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
-                templateModel.getCols());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
                 templateModel.getRows());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
+                templateModel.getCols());
 
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME,
                 templateModel.getGeneratedExcludedCellsAmount());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
                 templateModel.getInitialExcludedCellsAsJson());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
-                templateModel.getExcludedColsAsJson());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
                 templateModel.getExcludedRowsAsJson());
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
+                templateModel.getExcludedColsAsJson());
 
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
                 templateModel.getColNumbering());
@@ -158,15 +152,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     {
         return (org.wheatgenetics.coordinate.model.TemplateModel)
             this.makeFromFirst(this.query(templateType));
-    }
-
-    public boolean exists(final long id)
-    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
-
-    public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)
-    {
-        return (org.wheatgenetics.coordinate.model.TemplateModel)
-            this.makeFromFirst(this.query(id));
     }
 
     public org.wheatgenetics.coordinate.model.TemplateModels load()

@@ -40,7 +40,7 @@ class Database extends java.lang.Object
 
                 private org.w3c.dom.NodeList statementNodeList(final int id)
                 {
-                    org.w3c.dom.Document document;
+                    final org.w3c.dom.Document document;
                     {
                         assert null != this.context;
                         final java.io.InputStream inputStream =
@@ -66,7 +66,7 @@ class Database extends java.lang.Object
                     assert null != document; return document.getElementsByTagName("statement");
                 }
 
-                private void executeStatments(final org.w3c.dom.NodeList statementNodeList,
+                private void executeStatements(final org.w3c.dom.NodeList statementNodeList,
                 final android.database.sqlite.SQLiteDatabase db)
                 {
                     assert null != statementNodeList; assert null != db;
@@ -103,7 +103,7 @@ class Database extends java.lang.Object
                         if (null == statementNodeList)
                             return;                       // this.createSucceeded will remain false.
                         else
-                            this.executeStatments(statementNodeList, db);
+                            this.executeStatements(statementNodeList, db);
                     }
                     this.createSucceeded = true;
                 }
@@ -121,7 +121,7 @@ class Database extends java.lang.Object
                         {
                             this.logWarning("Upgrading database from version " +
                                 oldVersion + " to version " + newVersion + ".");
-                            this.executeStatments(statementNodeList, db);
+                            this.executeStatements(statementNodeList, db);
                         }
                     }
                 }
