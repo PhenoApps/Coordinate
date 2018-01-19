@@ -146,14 +146,6 @@ public class TableTest extends java.lang.Object
             try     { org.junit.Assert.assertEquals(5, cursor.getCount()); }
             finally { cursor.close()                                     ; }
         }
-
-        {
-            final android.database.Cursor cursor = concreteTable.queryDistinct(
-                "[type] = ?", org.wheatgenetics.javalib.Utils.stringArray("table"));
-            org.junit.Assert.assertNotNull(cursor);
-            try     { org.junit.Assert.assertEquals(5, cursor.getCount()); }
-            finally { cursor.close()                                     ; }
-        }
     }
 
     @org.junit.Test
