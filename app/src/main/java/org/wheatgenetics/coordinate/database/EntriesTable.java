@@ -150,21 +150,6 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     }
 
     // region Public Operations
-    public org.wheatgenetics.coordinate.model.EntryModel get(final long grid, final int row,
-    final int col)
-    {
-        final java.lang.String selection =
-            org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME  + " = ? AND " +
-            org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME  + " = ?"      ;
-        final java.lang.String[] selectionArgs = new java.lang.String[] {
-            java.lang.String.valueOf(grid),
-            java.lang.String.valueOf(col ),
-            java.lang.String.valueOf(row )};
-        return (org.wheatgenetics.coordinate.model.EntryModel) this.makeFromFirst(
-            this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ selectionArgs));
-    }
-
     public void insert(final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     { if (null != entryModels) entryModels.processAll(this); }
 
@@ -175,11 +160,8 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
             final boolean exists = org.wheatgenetics.coordinate.database.Table.exists(this.queryAll(
                 /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
                 /* selectionArgs => */
-                org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
-            if (exists)
-                this.update(entryModel);
-            else
-                this.insert(entryModel);
+                    org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
+            if (exists) this.update(entryModel); else this.insert(entryModel);
         }
     }
 

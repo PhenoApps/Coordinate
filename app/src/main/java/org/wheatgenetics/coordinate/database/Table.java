@@ -76,14 +76,13 @@ abstract class Table extends java.lang.Object
     // endregion
 
     // region query() Dependencies
-    // method                  scope   external usage
-    // ======================= ======= ======================================
-    // query()                 private N/A
-    //     queryAll()          package                           EntriesTable
-    //         queryAll()      package                           EntriesTable
-    //         queryAll()      package TemplatesTable
-    //     queryDistinct()     package                           EntriesTable
-    //         queryDistinct() package TemplatesTable GridsTable
+    // method              scope   external usage
+    // =================== ======= ======================================
+    // query()             private N/A
+    //     queryAll()      package                           EntriesTable
+    //         queryAll()  package                           EntriesTable
+    //         queryAll()  package TemplatesTable
+    //     queryDistinct() package TemplatesTable GridsTable
     // endregion
 
     // region External Operations
@@ -127,19 +126,14 @@ abstract class Table extends java.lang.Object
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.database.Cursor queryDistinct(final java.lang.String selection,
-    final java.lang.String selectionArgs[])
+    android.database.Cursor queryDistinct(final java.lang.String selection)
     {
         return this.query(
-            /* distinct      => */ true         ,
-            /* selection     => */ selection    ,
-            /* selectionArgs => */ selectionArgs,
-            /* orderBy       => */ null         );
+            /* distinct      => */ true     ,
+            /* selection     => */ selection,
+            /* selectionArgs => */ null     ,
+            /* orderBy       => */ null     );
     }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.database.Cursor queryDistinct(final java.lang.String selection)
-    { return this.queryDistinct(/* selection => */ selection, /* selectionArgs => */ null); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor rawQuery(final java.lang.String sql,
