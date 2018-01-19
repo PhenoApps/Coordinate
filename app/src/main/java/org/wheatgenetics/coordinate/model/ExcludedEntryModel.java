@@ -10,6 +10,8 @@ package org.wheatgenetics.coordinate.model;
  */
 public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
 {
+    public static final java.lang.String DATABASE_VALUE = "excluded";
+
     // region Constructors
     ExcludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long gridId,
@@ -26,16 +28,16 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // endregion
 
     // region Overridden Methods
+    @java.lang.Override        java.lang.String getSeedExportValue       () { return "exclude"; }
+    @java.lang.Override        java.lang.String getUserDefinedExportValue() { return "exclude"; }
+    @java.lang.Override public java.lang.String getValue                 () { return null     ; }
+
     @java.lang.Override
-    public java.lang.String getValue() { return null; }
+    public java.lang.String getDatabaseValue()
+    { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
 
     @java.lang.Override
     public int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
-    // endregion
-
-    // region Package Methods
-    @java.lang.Override java.lang.String getSeedExportValue       () { return "exclude"; }
-    @java.lang.Override java.lang.String getUserDefinedExportValue() { return "exclude"; }
     // endregion
 }

@@ -64,7 +64,8 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
     public int  getCol      () { return this.col      ; }
     public long getTimestamp() { return this.timestamp; }
 
-    public abstract java.lang.String getValue();
+    public abstract java.lang.String getValue        ();
+    public abstract java.lang.String getDatabaseValue();
 
     public abstract int backgroundResource();
     // endregion

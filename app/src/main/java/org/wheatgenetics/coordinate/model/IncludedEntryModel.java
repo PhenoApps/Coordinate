@@ -31,23 +31,6 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Overridden Methods
     @java.lang.Override
-    public java.lang.String getValue() { return this.value; }
-
-    public int backgroundResource()
-    {
-        final java.lang.String value                = this.getValue();
-        final int              empty_included_entry =
-            org.wheatgenetics.coordinate.R.drawable.empty_included_entry;
-        if (null == value)
-            return empty_included_entry;
-        else
-            return value.length() > 0 ?
-                org.wheatgenetics.coordinate.R.drawable.full_included_entry : empty_included_entry;
-    }
-    // endregion
-
-    // region Package Methods
-    @java.lang.Override
     java.lang.String getSeedExportValue()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(), "BLANK_"); }
 
@@ -64,6 +47,22 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override
     java.lang.String getUserDefinedExportValue()
     { return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(this.getValue()); }
+
+    @java.lang.Override public java.lang.String getValue        () { return this.value     ; }
+    @java.lang.Override public java.lang.String getDatabaseValue() { return this.getValue(); }
+
+    @java.lang.Override
+    public int backgroundResource()
+    {
+        final java.lang.String value                = this.getValue();
+        final int              empty_included_entry =
+            org.wheatgenetics.coordinate.R.drawable.empty_included_entry;
+        if (null == value)
+            return empty_included_entry;
+        else
+            return value.length() > 0 ?
+                org.wheatgenetics.coordinate.R.drawable.full_included_entry : empty_included_entry;
+    }
     // endregion
 
     public void setValue(final java.lang.String value)

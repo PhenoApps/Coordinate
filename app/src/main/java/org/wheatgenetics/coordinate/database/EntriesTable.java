@@ -24,7 +24,6 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     private static final java.lang.String TABLE_NAME      = "entries";
     private static final java.lang.String GRID_FIELD_NAME = "grid", ROW_FIELD_NAME = "row",
         COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
-    private static final java.lang.String EXCLUDED_VALUE = "excluded";
     // endregion
 
     public EntriesTable(final android.content.Context context)
@@ -58,7 +57,8 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
             final long timestamp = cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
             if (null != value)
-                if (value.equals(org.wheatgenetics.coordinate.database.EntriesTable.EXCLUDED_VALUE))
+                if (value.equals(
+                org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE))
                     return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
                         /* id        => */ id        ,
                         /* gridId    => */ gridId    ,
@@ -91,18 +91,8 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                 entryModel.getRow());
             result.put(org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME,
                 entryModel.getCol());
-
-            if (model instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
-                    org.wheatgenetics.coordinate.database.EntriesTable.EXCLUDED_VALUE);
-            else
-            {
-                final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
-                    (org.wheatgenetics.coordinate.model.IncludedEntryModel) model;
-                result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
-                    includedEntryModel.getValue());
-            }
-
+            result.put(org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME,
+                entryModel.getDatabaseValue() /* polymorphism */);
             result.put(org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME,
                 entryModel.getTimestamp());
         }
