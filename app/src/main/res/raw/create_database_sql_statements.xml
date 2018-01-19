@@ -2,8 +2,8 @@
     <statement>
         CREATE TABLE IF NOT EXISTS templates
         (
-            _id	    INTEGER PRIMARY KEY AUTOINCREMENT,
-            title    TEXT,
+            _id     INTEGER PRIMARY KEY AUTOINCREMENT,
+            title   TEXT,
             type    INTEGER,
             rows    INTEGER,
             cols    INTEGER,
@@ -25,13 +25,13 @@
     <statement>
         CREATE TABLE IF NOT EXISTS grids
         (
-            _id         INTEGER PRIMARY KEY AUTOINCREMENT,
-            temp        INTEGER,
-            person      TEXT,
-            activeRow   INTEGER CHECK(activeRow >= 0),
-            activeCol   INTEGER CHECK(activeCol >= 0),
-            options     TEXT,
-            stamp       INTEGER
+            _id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            temp         INTEGER,
+            person       TEXT,
+            activeRow    INTEGER CHECK(activeRow >= 0),
+            activeCol    INTEGER CHECK(activeCol >= 0),
+            options      TEXT,
+            stamp        INTEGER
         )
     </statement>
 

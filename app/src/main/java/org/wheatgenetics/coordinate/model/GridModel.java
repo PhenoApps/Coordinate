@@ -16,9 +16,9 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private       long             templateId           ;
-    private final java.lang.String person               ;
-    private       int              activeRow, activeCol ;
+    private       long             templateId          ;
+    private final java.lang.String person              ;
+    private       int              activeRow, activeCol;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     private final long timestamp;

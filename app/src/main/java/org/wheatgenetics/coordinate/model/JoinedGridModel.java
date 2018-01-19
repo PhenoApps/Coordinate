@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.annotation.SuppressLint
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.javalib.CsvWriter
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -52,11 +52,11 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             {
                 for (int row = 1; row <= rows; row++)
                 {
-                    csvWriter.write(tray_id                                 );       // tray id
-                    csvWriter.write("%s_C%02d_R%d", exportFileName, col, row);       // cell_id
-                    csvWriter.write(                                        );       // tray_num
-                    csvWriter.write(col                                     );       // tray_column
-                    csvWriter.write(row                                     );       // tray_row
+                    csvWriter.write(tray_id                                 );        // tray id
+                    csvWriter.write("%s_C%02d_R%d", exportFileName, col, row);        // cell_id
+                    csvWriter.write(                                        );        // tray_num
+                    csvWriter.write(col                                     );        // tray_column
+                    csvWriter.write(row                                     );        // tray_row
                     {
                         final java.lang.String value;
                         {
@@ -69,10 +69,10 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                                 value = org.wheatgenetics.javalib.Utils.replaceIfNull(
                                     entryModel.getValue(), "BLANK_");
                         }
-                        csvWriter.write(value);                                      // seed_id
+                        csvWriter.write(value);                                       // seed_id
                     }
-                    csvWriter.write(person);                                         // person
-                    csvWriter.write(date  );                                         // date
+                    csvWriter.write(person);                                          // person
+                    csvWriter.write(date  );                                          // date
 
                     csvWriter.endRecord();
                 }
@@ -258,7 +258,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     // endregion
 
     // region Package Methods
-    @android.annotation.SuppressLint("DefaultLocale")
+    @java.lang.SuppressWarnings("DefaultLocale")
     java.lang.String name()
     {
         return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
