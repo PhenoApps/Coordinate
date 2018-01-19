@@ -49,6 +49,15 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
     }
     // endregion
 
+    // region Package Methods
+    abstract java.lang.String getSeedExportValue();
+
+    java.lang.String getDNAExportValue(final java.lang.String sample_id)
+    { return "BLANK_" + sample_id; }
+
+    abstract java.lang.String getUserDefinedExportValue();
+    // endregion
+
     // region Public Methods
     public long getGridId   () { return this.gridId   ; }
     public int  getRow      () { return this.row      ; }

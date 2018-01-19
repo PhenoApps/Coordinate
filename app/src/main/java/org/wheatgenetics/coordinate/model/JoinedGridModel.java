@@ -5,7 +5,6 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  *
  * org.wheatgenetics.javalib.CsvWriter
- * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
@@ -13,7 +12,6 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler
- * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -57,20 +55,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                     csvWriter.write(                                        );        // tray_num
                     csvWriter.write(col                                     );        // tray_column
                     csvWriter.write(row                                     );        // tray_row
-                    {
-                        final java.lang.String value;
-                        {
-                            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                                this.getEntryModel(row, col);
-                            if (entryModel instanceof
-                            org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                                value = "exclude";
-                            else
-                                value = org.wheatgenetics.javalib.Utils.replaceIfNull(
-                                    entryModel.getValue(), "BLANK_");
-                        }
-                        csvWriter.write(value);                                       // seed_id
-                    }
+                    csvWriter.write(
+                        this.getEntryModel(row, col).getSeedExportValue());           // seed_id
                     csvWriter.write(person);                                          // person
                     csvWriter.write(date  );                                          // date
 
@@ -83,7 +69,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
 
     @java.lang.SuppressWarnings("DefaultLocale")
-    private void exportDna(final org.wheatgenetics.javalib.CsvWriter csvWriter,
+    private void exportDNA(final org.wheatgenetics.javalib.CsvWriter csvWriter,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException
     {
@@ -125,23 +111,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                             csvWriter.write("%s%s", rowName, colName);                  // well_A01
                             csvWriter.write("%s%s", colName, rowName);                  // well_01A
                         }
-                        {
-                            java.lang.String tissue_id;
-                            {
-                                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                                    this.getEntryModel(r + 1, col);
-                                if (entryModel instanceof
-                                org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                                    tissue_id = "BLANK_" + sample_id;
-                                else
-                                {
-                                    tissue_id = entryModel.getValue();
-                                    if (null == tissue_id || tissue_id.length() == 0)
-                                        tissue_id = "BLANK_" + sample_id;
-                                }
-                            }
-                            csvWriter.write(tissue_id);
-                        }
+                        csvWriter.write(this.getEntryModel(r + 1, col)
+                            .getDNAExportValue(sample_id));                             // tissue_id
                     }
                     csvWriter.write(dna_person );
                     csvWriter.write(notes      );
@@ -176,21 +147,8 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
             {
                 for (int row = 1; row <= rows; row++)
                 {
-                    {
-                        final java.lang.String value;
-                        {
-                            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                                this.getEntryModel(row, col);
-                            if (entryModel instanceof
-                            org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                                value = "exclude";
-                            else
-                                value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(
-                                    entryModel.getValue());
-                        }
-                        csvWriter.write(value);
-                    }
-                    csvWriter.write(col); csvWriter.write(row);
+                    csvWriter.write(this.getEntryModel(row, col).getUserDefinedExportValue());
+                    csvWriter.write(col);                                csvWriter.write(row);
                     for (final java.lang.String value: values) csvWriter.write(value);
 
                     csvWriter.endRecord();
@@ -284,7 +242,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
                 this.exportSeed(csvWriter, exportFileName, helper);    // throws java.io.IOException
             else
                 if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                    this.exportDna(csvWriter, helper);                 // throws java.io.IOException
+                    this.exportDNA(csvWriter, helper);                 // throws java.io.IOException
                 else
                     this.exportUserDefined(csvWriter, helper);         // throws java.io.IOException
             return success;
