@@ -315,6 +315,13 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.populateFragments();
         }
     }
+
+    private android.media.MediaPlayer plonkMediaPlayer()
+    {
+        if (null == this.plonkMediaPlayerInstance) this.plonkMediaPlayerInstance =
+            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
+        return this.plonkMediaPlayerInstance;
+    }
     // endregion
 
     // region Overridden Methods
@@ -677,11 +684,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         org.wheatgenetics.coordinate.Utils.alert(this,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
-
-        if (null == this.plonkMediaPlayerInstance) this.plonkMediaPlayerInstance =
-            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
-        this.plonkMediaPlayerInstance.start();
+        this.plonkMediaPlayer().start();
     }
+
+    @java.lang.Override
+    public void handleFilledRowOrCol() { this.plonkMediaPlayer().start(); }
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods

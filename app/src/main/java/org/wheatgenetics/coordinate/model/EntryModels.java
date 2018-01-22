@@ -14,7 +14,8 @@ public class EntryModels extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface FilledHandler { public abstract void handleFilledGrid(); }
+    public interface FilledHandler
+    { public abstract void handleFilledGrid(); public abstract void handleFilledRowOrCol(); }
 
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Processor
@@ -96,6 +97,7 @@ public class EntryModels extends java.lang.Object
                         return null;
                     }
 
+                    if (null != filledHandler) filledHandler.handleFilledRowOrCol();
                     candidateRow = 0            ;
                     candidateCol = activeCol + 1;
                 }
