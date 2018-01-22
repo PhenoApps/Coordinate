@@ -185,8 +185,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, this);
         this.templateModels = this.templatesTable().load();
         assert null != this.templateModels; this.chooseOldAlertDialog.show(
-            org.wheatgenetics.coordinate.R.string.ChooseOldAlertDialogTitle,
-            this.templateModels.titles()                                   );
+            org.wheatgenetics.coordinate.R.string.GridCreatorChooseOldAlertDialogTitle,
+            this.templateModels.titles()                                              );
     }
 
     @java.lang.Override
