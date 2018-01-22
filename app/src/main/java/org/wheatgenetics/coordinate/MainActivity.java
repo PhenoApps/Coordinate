@@ -309,12 +309,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
-        if (null != entryModel)
+        if (null != this.joinedGridModel) if (this.joinedGridModel.goToNext(entryModel, this))
         {
-            if (null != this.joinedGridModel)
-                if (this.joinedGridModel.setActiveRowAndActiveCol(                 // TODO: Combine?
-                this.joinedGridModel.next(entryModel, this)))
-                    this.gridsTable().update(this.joinedGridModel);
+            this.gridsTable().update(this.joinedGridModel);
             this.populateFragments();
         }
     }

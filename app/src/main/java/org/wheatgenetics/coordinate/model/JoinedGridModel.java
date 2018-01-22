@@ -170,6 +170,22 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 
     private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
     { return null == this.templateModel ? null : this.templateModel.getInitialExcludedCells(); }
+
+    private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
+    {
+        return null == this.entryModels ? null :
+            this.entryModels.next(activeEntryModel, filledGridHandler);
+    }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    private boolean setActiveRowAndActiveCol(
+    final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
+    {
+        return null == nextEntryModel ? false : this.setActiveRowAndActiveCol(
+            nextEntryModel.getRow() - 1, nextEntryModel.getCol() - 1);
+    }
     // endregion
 
     // region Constructors
@@ -328,23 +344,17 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
         else return !changed;
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean setActiveRowAndActiveCol(
-    final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
-    {
-        return null == nextEntryModel ? false : this.setActiveRowAndActiveCol(
-            nextEntryModel.getRow() - 1, nextEntryModel.getCol() - 1);
-    }
-
     public org.wheatgenetics.coordinate.model.EntryModels getEntryModels()
     { return this.entryModels; }
 
-    public org.wheatgenetics.coordinate.model.IncludedEntryModel next(
-    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel,
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
     {
-        return null == this.entryModels ? null :
-            this.entryModels.next(activeEntryModel, filledGridHandler);
+        final org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
+            this.next(entryModel, filledGridHandler);
+        return null == nextIncludedEntryModel ? false :
+            this.setActiveRowAndActiveCol(nextIncludedEntryModel);
     }
     // endregion
 }
