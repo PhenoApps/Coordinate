@@ -53,13 +53,12 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  *
- * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
- * org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
- *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
+ * org.wheatgenetics.coordinate.NavigationItemSelectedListener
+ * org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
@@ -464,10 +463,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                                                                 //  tivity_main.xml.
                     assert null != navigationView;
                     navigationView.setNavigationItemSelectedListener(
-                        new org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener(
+                        new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
                             /* activity    => */ this       ,
                             /* versionName => */ versionName,
-                            /* handler     => */ new org.wheatgenetics.coordinate.navigation
+                            /* handler     => */ new org.wheatgenetics.coordinate
                                 .NavigationItemSelectedListener.Handler()
                                 {
                                     @java.lang.Override

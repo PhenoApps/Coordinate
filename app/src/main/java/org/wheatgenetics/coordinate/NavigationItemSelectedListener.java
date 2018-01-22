@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.navigation;
+package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
@@ -37,14 +37,14 @@ package org.wheatgenetics.coordinate.navigation;
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public class NavigationItemSelectedListener extends java.lang.Object implements
+class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
 org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
 org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler
+    interface Handler
     {
         public abstract void createGrid();
         public abstract void loadGrid  (long gridId);
@@ -59,11 +59,10 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     }
 
     // region Fields
-    private final android.app.Activity activity   ;
-    private final java.lang.String     versionName;
-    private final org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler
-        handler;
-    private final android.view.View.OnClickListener versionOnClickListener;
+    private final android.app.Activity                                                activity   ;
+    private final java.lang.String                                                    versionName;
+    private final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ;
+    private final android.view.View.OnClickListener                        versionOnClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
@@ -176,7 +175,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                     @java.lang.Override
                     public void run()
                     {
-                        org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener
+                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
                             .this.deleteTemplateAfterConfirm(templateModel);
                     }
                 });
@@ -184,10 +183,10 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     // endregion
     // endregion
 
-    public NavigationItemSelectedListener(final android.app.Activity activity,
-    final java.lang.String versionName,
-    final org.wheatgenetics.coordinate.navigation.NavigationItemSelectedListener.Handler handler,
-    final android.view.View.OnClickListener versionOnClickListener)
+    NavigationItemSelectedListener(final android.app.Activity activity,
+    final java.lang.String                                                    versionName,
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ,
+    final android.view.View.OnClickListener                        versionOnClickListener)
     {
         super();
 
@@ -222,9 +221,8 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                                     @java.lang.Override
                                     public void select(final int which)
                                     {
-                                        org.wheatgenetics.coordinate.navigation
-                                            .NavigationItemSelectedListener.this
-                                            .loadGridAfterSelect(joinedGridModels.get(which));
+                                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                            .this.loadGridAfterSelect(joinedGridModels.get(which));
                                     }
                                 });
                     selectGridToLoadAlertDialog.show(
@@ -243,7 +241,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                             @java.lang.Override
                             public void run()
                             {
-                                org.wheatgenetics.coordinate.navigation
+                                org.wheatgenetics.coordinate
                                     .NavigationItemSelectedListener.this.deleteGrid();
                             }
                         }); break;
@@ -266,9 +264,9 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                                     @java.lang.Override
                                     public void select(final int which)
                                     {
-                                        org.wheatgenetics.coordinate.navigation
-                                            .NavigationItemSelectedListener.this
-                                            .deleteTemplateAfterSelect(templateModels.get(which));
+                                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                            .this.deleteTemplateAfterSelect(
+                                                templateModels.get(which));
                                     }
                                 });
                     selectTemplateToDeleteAlertDialog.show(
