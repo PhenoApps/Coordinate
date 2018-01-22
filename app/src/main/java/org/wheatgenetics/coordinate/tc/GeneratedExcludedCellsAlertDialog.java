@@ -82,7 +82,8 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
         {
             this.templateModel = templateModel;
 
-            assert null != this.editText         ; this.editText.selectAll();
+            assert null != this.editText; this.editText.selectAll();
+
             assert null != this.exceptionTextView;
             this.exceptionTextView.setVisibility(android.view.View.INVISIBLE);
 

@@ -99,7 +99,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.androidlibrary.EditorActionListener.ReceiverOverridden Method
+    // region org.wheatgenetics.androidlibrary.EditorActionListener.Receiver Overridden Method
     @java.lang.Override
     public void receiveText(final java.lang.String text)
     { assert null != this.handler; this.handler.addEntry(text); }

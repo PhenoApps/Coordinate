@@ -107,7 +107,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
     private void showLongToast(final int text)
-    { this.showLongToast(this.activity.getString(text)); }
+    { assert null != this.activity; this.showLongToast(this.activity.getString(text)); }
     // endregion
 
     // region Short Toast Private Methods
@@ -115,7 +115,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.activity, text); }
 
     private void showShortToast(final int text)
-    { this.showShortToast(this.activity.getString(text)); }
+    { assert null != this.activity; this.showShortToast(this.activity.getString(text)); }
     // endregion
     // endregion
 
@@ -204,7 +204,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following nine ids that have names that start with "nav_" come from
+            // The following eight ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;

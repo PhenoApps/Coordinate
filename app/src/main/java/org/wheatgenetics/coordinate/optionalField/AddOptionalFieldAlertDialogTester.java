@@ -29,9 +29,11 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
         handler) { super(); this.activity = activity; this.handler = handler; }
 
+    // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
     @java.lang.Override
     public void handleAddOptionalFieldDone()
     { assert null != this.handler; this.handler.handleAddOptionalFieldDone(); }
+    // endregion
 
     public void test(final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
     nonNullOptionalFields)

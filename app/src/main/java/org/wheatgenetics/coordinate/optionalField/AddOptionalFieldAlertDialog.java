@@ -31,15 +31,16 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     {
         final java.lang.String name =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
-        final java.lang.String defaultValue =
-            org.wheatgenetics.androidlibrary.Utils.getText(this.defaultValueEditText);
 
         if (0 == name.length())
             this.showToast(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogToast);
         else
         {
             assert null != this.nonNullOptionalFields; this.nonNullOptionalFields.add(
-                /* name => */ name, /* value => */ defaultValue, /* hint => */ null);
+                /* name  => */ name,
+                /* value => */ org.wheatgenetics.androidlibrary.Utils.getText(
+                    this.defaultValueEditText),
+                /* hint => */ null);
             this.cancelAlertDialog();
             assert null != this.handler; this.handler.handleAddOptionalFieldDone();
         }

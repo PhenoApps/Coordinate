@@ -36,7 +36,7 @@ class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.Aler
         this.setTitle(org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogTitle)
             .setItems(new int[] {
                     org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogOldItem,
-                    org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogNewItem},
+                    org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogNewItem },
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override

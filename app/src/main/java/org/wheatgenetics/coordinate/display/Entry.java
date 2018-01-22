@@ -49,7 +49,7 @@ class Entry extends java.lang.Object implements android.view.View.OnClickListene
             this.inactivate();
 
         if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
-            this.textView.setOnClickListener(this);
+            { assert null != this.textView; this.textView.setOnClickListener(this); }
     }
 
     // region android.view.View.OnClickListener Overridden Method

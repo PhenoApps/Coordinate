@@ -34,9 +34,10 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
     private static java.lang.String convert(final int integer)
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
-    private static int convert(final java.lang.String text)
+    private static int convert(final android.widget.EditText editText)
     throws org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified
     {
+        final java.lang.String text = org.wheatgenetics.androidlibrary.Utils.getText(editText);
         if (0 == text.length())
             throw new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();
         else
@@ -62,13 +63,13 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
             {
                 final int rows =
                     org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                        org.wheatgenetics.androidlibrary.Utils.getText(this.rowsEditText));
-                try
+                        this.rowsEditText);          // throws org.wheatgenetics.coordinate.tc
+                 try                                 //  .AssignTitleRowsColsAlertDialog.Unspecified
                 {
                     final int cols =
                         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                            org.wheatgenetics.androidlibrary.Utils.getText(this.colsEditText));
-
+                            this.colsEditText);      // throws org.wheatgenetics.coordinate.tc
+                                                     //  .AssignTitleRowsColsAlertDialog.Unspecified
                     assert null != this.templateModel; this.templateModel.assign(
                         /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();

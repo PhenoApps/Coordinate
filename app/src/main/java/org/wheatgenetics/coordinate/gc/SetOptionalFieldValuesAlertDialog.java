@@ -47,7 +47,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
             for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
             baseOptionalField: this.checkedOptionalFields)
             {
-                java.lang.String value;
+                final java.lang.String value;
                 {
                     final android.widget.EditText editText = this.editTextArrayList.get(i);
                     value = null == editText ? "" :

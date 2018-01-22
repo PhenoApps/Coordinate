@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate;
  * android.support.v7.widget.Toolbar
  * android.view.Menu
  * android.view.MenuItem
+ * android.view.MenuInflater
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.TextView
@@ -743,7 +744,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             class NoRunnable extends java.lang.Object implements java.lang.Runnable
             {
                 @java.lang.Override
-                public void run() { org.wheatgenetics.coordinate.MainActivity.this.share(exportFile); }
+                public void run()
+                { org.wheatgenetics.coordinate.MainActivity.this.share(exportFile); }
             }
 
             org.wheatgenetics.coordinate.Utils.alert(
