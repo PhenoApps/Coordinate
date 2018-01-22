@@ -14,7 +14,7 @@ public class EntryModels extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface FilledGridHandler { public abstract void handleFilledGrid(); }
+    public interface FilledHandler { public abstract void handleFilledGrid(); }
 
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Processor
@@ -66,8 +66,8 @@ public class EntryModels extends java.lang.Object
     }
 
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
-    final org.wheatgenetics.coordinate.model.EntryModel                    activeEntryModel ,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
+    final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         if (null == activeEntryModel)
             return null;
@@ -92,7 +92,7 @@ public class EntryModels extends java.lang.Object
                 {
                     if (activeCol >= lastCol)
                     {
-                        if (null != filledGridHandler) filledGridHandler.handleFilledGrid();
+                        if (null != filledHandler) filledHandler.handleFilledGrid();
                         return null;
                     }
 

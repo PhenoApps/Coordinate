@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
- * org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler
+ * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -172,11 +172,11 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     { return null == this.templateModel ? null : this.templateModel.getInitialExcludedCells(); }
 
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
-    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
+    final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         return null == this.entryModels ? null :
-            this.entryModels.next(activeEntryModel, filledGridHandler);
+            this.entryModels.next(activeEntryModel, filledHandler);
     }
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
@@ -349,10 +349,10 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         final org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
-            this.next(entryModel, filledGridHandler);
+            this.next(entryModel, filledHandler);
         return null == nextIncludedEntryModel ? false :
             this.setActiveRowAndActiveCol(nextIncludedEntryModel);
     }
