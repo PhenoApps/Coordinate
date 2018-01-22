@@ -47,14 +47,24 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
         this.col       = org.wheatgenetics.coordinate.model.Utils.valid(col, 1);
         this.timestamp = timestamp                                             ;
     }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    EntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        this(entryModel.getId(), entryModel.getGridId(), entryModel.getRow(), entryModel.getCol(),
+            entryModel.getTimestamp());
+    }
     // endregion
 
     // region Package Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract java.lang.String getSeedExportValue();
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String getDNAExportValue(final java.lang.String sample_id)
     { return "BLANK_" + sample_id; }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract java.lang.String getUserDefinedExportValue();
     // endregion
 

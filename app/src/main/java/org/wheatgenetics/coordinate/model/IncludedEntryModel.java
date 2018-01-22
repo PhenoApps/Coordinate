@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  */
 public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
 {
@@ -27,6 +28,10 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final int col    ,
     final java.lang.String value, final long timestamp)
     { super(id, gridId, row, col, timestamp); this.value = value; }
+
+    public IncludedEntryModel(
+    final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
+    { super(excludedEntryModel); }
     // endregion
 
     // region Overridden Methods
@@ -54,17 +59,21 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override
     public int backgroundResource()
     {
-        final java.lang.String value                = this.getValue();
-        final int              empty_included_entry =
-            org.wheatgenetics.coordinate.R.drawable.empty_included_entry;
-        if (null == value)
-            return empty_included_entry;
-        else
-            return value.length() > 0 ?
-                org.wheatgenetics.coordinate.R.drawable.full_included_entry : empty_included_entry;
+        return this.valueIsEmpty() ?
+            org.wheatgenetics.coordinate.R.drawable.empty_included_entry :
+            org.wheatgenetics.coordinate.R.drawable.full_included_entry  ;
     }
     // endregion
 
+    // region Public Methods
     public void setValue(final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean valueIsEmpty()
+    {
+        final java.lang.String value = this.getValue();
+        return null == value ? true : value.length() >= 0;
+    }
+    // endregion
 }

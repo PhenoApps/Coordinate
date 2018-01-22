@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel
  */
 public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
 {
@@ -25,6 +26,10 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final int col       ,
                                                    final long timestamp)
     { super(id, gridId, row, col, timestamp); }
+
+    public ExcludedEntryModel(
+    final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel)
+    { super(includedEntryModel); }
     // endregion
 
     // region Overridden Methods
