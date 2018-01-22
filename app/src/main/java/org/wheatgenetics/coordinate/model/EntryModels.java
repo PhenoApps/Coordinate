@@ -59,6 +59,12 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
 
+    void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
+    }
+
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                    activeEntryModel ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler filledGridHandler)

@@ -73,7 +73,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     public boolean valueIsEmpty()
     {
         final java.lang.String value = this.getValue();
-        return null == value ? true : value.length() >= 0;
+        return null == value ? true : value.length() <= 0;
     }
     // endregion
 }
