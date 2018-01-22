@@ -22,7 +22,7 @@ implements java.lang.Cloneable
     private org.wheatgenetics.coordinate.model.RowOrCols excludedRowsInstance         = null,
         excludedColsInstance = null;
 
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+    private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     // endregion
 

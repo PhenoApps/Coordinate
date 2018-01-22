@@ -163,7 +163,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
+        "CloneDoesntDeclareCloneNotSupportedException", "Convert2Diamond"})
     protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =

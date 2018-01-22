@@ -66,8 +66,5 @@ class Entry extends java.lang.Object implements android.view.View.OnClickListene
 
     int getRow() { return null == this.entryModel ? -1 : this.entryModel.getRow() - 1; }
     int getCol() { return null == this.entryModel ? -1 : this.entryModel.getCol() - 1; }
-
-    java.lang.String getValue()
-    { return null == this.entryModel ? null : this.entryModel.getValue(); }
     // endregion
 }
