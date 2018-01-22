@@ -707,7 +707,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
-    public void addEntry(final java.lang.String entryValue)                         // TODO: Rename.
+    public void saveEntry(final java.lang.String entryValue)
     {
         if (null != this.joinedGridModel)
         {

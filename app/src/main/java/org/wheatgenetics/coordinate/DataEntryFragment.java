@@ -35,7 +35,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             getOptionalFields();
 
-        public abstract void addEntry(java.lang.String entryValue);
+        public abstract void saveEntry(java.lang.String entryValue);
     }
 
     // region Fields
@@ -102,7 +102,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     // region org.wheatgenetics.androidlibrary.EditorActionListener.Receiver Overridden Method
     @java.lang.Override
     public void receiveText(final java.lang.String text)
-    { assert null != this.handler; this.handler.addEntry(text); }
+    { assert null != this.handler; this.handler.saveEntry(text); }
     // endregion
     // endregion
 
