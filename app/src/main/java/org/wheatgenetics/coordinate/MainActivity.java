@@ -45,6 +45,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler
+ * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -304,6 +305,18 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 /* activity               => */ this                                        ,
                 /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
         this.changeLogAlertDialog.show();
+    }
+
+    private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+        {
+            if (null != this.joinedGridModel)
+                if (this.joinedGridModel.setActiveRowAndActiveCol(                 // TODO: Combine?
+                this.joinedGridModel.next(entryModel, this)))
+                    this.gridsTable().update(this.joinedGridModel);
+            this.populateFragments();
+        }
     }
     // endregion
 
@@ -646,6 +659,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.dataEntryFragment;
         this.dataEntryFragment.setEntry(this.getEntryValue());
     }
+
+    @java.lang.Override
+    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != this.joinedGridModel)
+        {
+            this.joinedGridModel.setEntryModel(entryModel);
+            this.entriesTable().insertOrUpdate(entryModel);
+            if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                if (this.joinedGridModel.getActiveEntryModel() == entryModel)
+                    this.goToNext(entryModel);
+        }
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.model.EntryModels.FilledGridHandler Overridden Method
@@ -684,33 +710,21 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
     @java.lang.Override
-    public void addEntry(final java.lang.String entryValue)
+    public void addEntry(final java.lang.String entryValue)                         // TODO: Rename.
     {
         if (null != this.joinedGridModel)
         {
+            final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
+                this.joinedGridModel.getActiveEntryModel();
+            if (activeEntryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
             {
-                final org.wheatgenetics.coordinate.model.IncludedEntryModel nextEntryModel;
-                {
-                    final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
-                        this.joinedGridModel.getActiveEntryModel();
-                    if (activeEntryModel instanceof
-                    org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                    {
-                        final org.wheatgenetics.coordinate.model.IncludedEntryModel
-                            activeIncludedEntryModel =
-                                (org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                                    activeEntryModel;
-                        activeIncludedEntryModel.setValue(entryValue);
-                        entriesTable().insertOrUpdate(activeIncludedEntryModel);
-                    }
-                    nextEntryModel = this.joinedGridModel.next(activeEntryModel, this);
-                }
-
-                if (this.joinedGridModel.setActiveRowAndActiveCol(nextEntryModel))
-                    this.gridsTable().update(this.joinedGridModel);
-
+                final org.wheatgenetics.coordinate.model.IncludedEntryModel
+                    activeIncludedEntryModel =
+                        (org.wheatgenetics.coordinate.model.IncludedEntryModel) activeEntryModel;
+                activeIncludedEntryModel.setValue(entryValue);
+                this.entriesTable().insertOrUpdate(activeIncludedEntryModel);
             }
-            this.populateFragments();
+            this.goToNext(activeEntryModel);
         }
     }
     // endregion

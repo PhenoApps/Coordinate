@@ -33,6 +33,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
         public abstract int getActiveRow();                  public abstract int getActiveCol();
 
         public abstract void activate(int row, int col);
+        public abstract void toggle  (org.wheatgenetics.coordinate.model.EntryModel entryModel);
     }
 
     // region Fields
@@ -83,13 +84,17 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Methods
     @java.lang.Override
     public void activate(final org.wheatgenetics.coordinate.display.Entry entry)
     {
         assert null != entry; assert null != this.handler;
         this.handler.activate(entry.getRow(), entry.getCol());
     }
+
+    @java.lang.Override
+    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    { assert null != this.handler; this.handler.toggle(entryModel); }
     // endregion
     // endregion
 
@@ -102,12 +107,11 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
             null == this.handler ? null : this.handler.getJoinedGridModel();
         if (null != joinedGridModel)
         {
-            final int                         lastCol = joinedGridModel.getCols();
-            final android.view.LayoutInflater layoutInflater                     ;
-            {
-                final android.app.Activity activity = this.getActivity();
-                assert null != activity; layoutInflater = activity.getLayoutInflater();
-            }
+            final int                  lastCol  = joinedGridModel.getCols();
+            final android.app.Activity activity = this.getActivity()       ;
+
+            assert null != activity;
+            final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
 
             // region Populate header row.
             {
@@ -154,9 +158,8 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
             // region Populate body rows.
             final int lastRow = joinedGridModel.getRows();
             if (null == this.entries)
-                this.entries = new org.wheatgenetics.coordinate.display.Entries(layoutInflater,
-                    lastRow, lastCol, this.handler.getActiveRow(), this.handler.getActiveCol(),
-                    this);
+                this.entries = new org.wheatgenetics.coordinate.display.Entries(activity, lastRow,
+                    lastCol, this.handler.getActiveRow(), this.handler.getActiveCol(), this);
             else
                 this.entries.allocate(lastRow, lastCol,
                     this.handler.getActiveRow(), this.handler.getActiveCol());
