@@ -74,7 +74,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
         deleteTemplateMenuItem, exportGridMenuItem;
-    private android.media.MediaPlayer plonkMediaPlayerInstance = null;
+    private android.media.MediaPlayer plonkMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
@@ -314,13 +314,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.gridsTable().update(this.joinedGridModel);
             this.populateFragments();
         }
-    }
-
-    private android.media.MediaPlayer plonkMediaPlayer()
-    {
-        if (null == this.plonkMediaPlayerInstance) this.plonkMediaPlayerInstance =
-            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
-        return this.plonkMediaPlayerInstance;
     }
     // endregion
 
@@ -632,6 +625,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
 
     @java.lang.Override
+    protected void onPause()
+    {
+        if (null != this.columnEndMediaPlayer) this.columnEndMediaPlayer.release();
+        if (null != this.plonkMediaPlayer    ) this.plonkMediaPlayer.release    ();
+        super.onPause();
+    }
+
+    @java.lang.Override
     protected void onDestroy()
     {
         if (null != this.exporter) { this.exporter.cancel(); this.exporter = null; }
@@ -684,11 +685,19 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     {
         org.wheatgenetics.coordinate.Utils.alert(this,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
-        this.plonkMediaPlayer().start();
+
+        if (null == this.plonkMediaPlayer) this.plonkMediaPlayer =
+            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
+        this.plonkMediaPlayer.start();
     }
 
     @java.lang.Override
-    public void handleFilledRowOrCol() { this.plonkMediaPlayer().start(); }
+    public void handleFilledRowOrCol()
+    {
+        if (null == this.columnEndMediaPlayer) this.columnEndMediaPlayer =
+            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.column_end);
+        this.columnEndMediaPlayer.start();
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
