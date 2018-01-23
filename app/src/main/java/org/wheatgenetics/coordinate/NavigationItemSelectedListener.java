@@ -203,7 +203,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following eight ids that have names that start with "nav_" come from
+            // The following ten ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -285,7 +285,10 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                 this.getExportFileNameAlertDialog.show(this.handler.initialExportFileName());
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_show_about :
+            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on : break;
+            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_off: break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_show_about:
                 if (null == this.aboutAlertDialog)
                 {
                     final java.lang.String title, msgs[];

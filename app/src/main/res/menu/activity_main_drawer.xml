@@ -39,6 +39,18 @@
             android:icon="@drawable/ic_menu_export_grid"
             android:title="@string/export_grid"
             android:enabled="false" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/nav_turn_sound_on"
+            android:icon="@drawable/ic_lock_ringer_on_alpha"
+            android:title="@string/turn_sound_on"
+            android:enabled="false" />
+        <item
+            android:id="@+id/nav_turn_sound_off"
+            android:icon="@drawable/ic_lock_ringer_off_alpha"
+            android:title="@string/turn_sound_off" />
         <item
             android:id="@+id/nav_show_about"
             android:icon="@drawable/ic_menu_show_about"
