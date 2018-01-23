@@ -55,6 +55,8 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
         public abstract java.lang.String initialExportFileName();
         public abstract void             exportGrid(java.lang.String fileName);
 
+        public abstract void storeSoundOn(boolean soundOn);
+
         public abstract void closeDrawer();
     }
 
@@ -73,6 +75,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     private org.wheatgenetics.coordinate.tc.TemplateCreator               templateCreator = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getExportFileNameAlertDialog = null;
+    private boolean                                  soundOn          = true;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
 
@@ -181,6 +184,9 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                 });
     }
     // endregion
+
+    private void storeSoundOn()
+    { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
 
     NavigationItemSelectedListener(final android.app.Activity activity,
@@ -285,8 +291,11 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                 this.getExportFileNameAlertDialog.show(this.handler.initialExportFileName());
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on : break;
-            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_off: break;
+            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on:
+                this.soundOn = true; this.storeSoundOn(); break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_off:
+                this.soundOn = false; this.storeSoundOn(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_show_about:
                 if (null == this.aboutAlertDialog)
@@ -339,4 +348,6 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     { assert null != this.handler; this.handler.exportGrid(fileName); }
     // endregion
     // endregion
+
+    boolean getSoundOn() { return this.soundOn; }
 }

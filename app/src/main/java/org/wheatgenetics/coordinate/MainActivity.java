@@ -73,7 +73,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
-        deleteTemplateMenuItem, exportGridMenuItem;
+        deleteTemplateMenuItem, exportGridMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
     private android.media.MediaPlayer plonkMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -87,6 +87,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
+    private org.wheatgenetics.coordinate.NavigationItemSelectedListener
+        navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel = null;
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator     = null;
     private org.wheatgenetics.coordinate.model.Exporter        exporter        = null;
@@ -187,6 +189,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         assert null != this.exportGridMenuItem;
         this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
+
+        assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;
+        this.turnSoundOnMenuItem.setEnabled(!this.navigationItemSelectedListener.getSoundOn());
+
+        assert null != this.turnSoundOffMenuItem;
+        this.turnSoundOffMenuItem.setEnabled(!this.turnSoundOnMenuItem.isEnabled());
     }
     // endregion
 
@@ -469,74 +477,78 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 {
                     final android.support.design.widget.NavigationView navigationView =
                         (android.support.design.widget.NavigationView) this.findViewById(
-                            org.wheatgenetics.coordinate.R.id.nav_view);        // From layout/ac-
-                                                                                //  tivity_main.xml.
-                    assert null != navigationView;
-                    navigationView.setNavigationItemSelectedListener(
-                        new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
-                            /* activity    => */ this       ,
-                            /* versionName => */ versionName,
-                            /* handler     => */ new org.wheatgenetics.coordinate
-                                .NavigationItemSelectedListener.Handler()
-                                {
-                                    @java.lang.Override
-                                    public void createGrid()
+                            org.wheatgenetics.coordinate.R.id.nav_view);        // From layout/acti-
+                                                                                //  vity_main.xml.
+                    assert null != navigationView; navigationView.setNavigationItemSelectedListener(
+                        this.navigationItemSelectedListener =
+                            new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
+                                /* activity    => */ this       ,
+                                /* versionName => */ versionName,
+                                /* handler     => */ new org.wheatgenetics.coordinate
+                                    .NavigationItemSelectedListener.Handler()
                                     {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.createGrid();
-                                    }
+                                        @java.lang.Override
+                                        public void createGrid()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.createGrid();
+                                        }
 
-                                    @java.lang.Override
-                                    public void loadGrid(final long gridId)
-                                    {
-                                        org.wheatgenetics.coordinate.MainActivity.this
-                                            .loadJoinedGridModelThenPopulate(gridId);
-                                    }
+                                        @java.lang.Override
+                                        public void loadGrid(final long gridId)
+                                        {
+                                            org.wheatgenetics.coordinate.MainActivity.this
+                                                .loadJoinedGridModelThenPopulate(gridId);
+                                        }
 
-                                    @java.lang.Override
-                                    public void deleteGrid()
-                                    {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.deleteGrid();
-                                    }
+                                        @java.lang.Override
+                                        public void deleteGrid()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.deleteGrid();
+                                        }
 
-                                    @java.lang.Override
-                                    public void handleTemplateDeleted()
-                                    {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.handleTemplateDeleted();
-                                    }
+                                        @java.lang.Override
+                                        public void handleTemplateDeleted()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.handleTemplateDeleted();
+                                        }
 
-                                    @java.lang.Override
-                                    public java.lang.String initialExportFileName()
-                                    {
-                                        return org.wheatgenetics.coordinate
-                                            .MainActivity.this.initialExportFileName();
-                                    }
+                                        @java.lang.Override
+                                        public java.lang.String initialExportFileName()
+                                        {
+                                            return org.wheatgenetics.coordinate
+                                                .MainActivity.this.initialExportFileName();
+                                        }
 
-                                    @java.lang.Override
-                                    public void exportGrid(final java.lang.String fileName)
-                                    {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.exportGrid(fileName);
-                                    }
+                                        @java.lang.Override
+                                        public void exportGrid(final java.lang.String fileName)
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.exportGrid(fileName);
+                                        }
 
-                                    @java.lang.Override
-                                    public void closeDrawer()
+                                        @java.lang.Override
+                                        public void storeSoundOn(final boolean soundOn) {}   // TODO
+
+                                        @java.lang.Override
+                                        public void closeDrawer()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.closeDrawer();
+                                        }
+                                    },
+                                /* versionOnClickListener => */
+                                    new android.view.View.OnClickListener()
                                     {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.closeDrawer();
-                                    }
-                                },
-                            /* versionOnClickListener => */ new android.view.View.OnClickListener()
-                                {
-                                    @java.lang.Override
-                                    public void onClick(final android.view.View v)
-                                    {
-                                        org.wheatgenetics.coordinate
-                                            .MainActivity.this.showChangeLog();
-                                    }
-                                }));
+                                        @java.lang.Override
+                                        public void onClick(final android.view.View v)
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.showChangeLog();
+                                        }
+                                    }));
 
                     menu = navigationView.getMenu();
                 }
@@ -549,6 +561,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
                 this.exportGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
+                this.turnSoundOnMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_turn_sound_on);
+                this.turnSoundOffMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_turn_sound_off);
             }
             // endregion
 
@@ -686,17 +702,26 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         org.wheatgenetics.coordinate.Utils.alert(this,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
 
-        if (null == this.plonkMediaPlayer) this.plonkMediaPlayer =
-            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
-        this.plonkMediaPlayer.start();
+        assert null != this.navigationItemSelectedListener;
+        if (this.navigationItemSelectedListener.getSoundOn())
+        {
+            if (null == this.plonkMediaPlayer) this.plonkMediaPlayer =
+                android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
+            this.plonkMediaPlayer.start();
+        }
     }
 
     @java.lang.Override
     public void handleFilledRowOrCol()
     {
-        if (null == this.columnEndMediaPlayer) this.columnEndMediaPlayer =
-            android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.column_end);
-        this.columnEndMediaPlayer.start();
+        assert null != this.navigationItemSelectedListener;
+        if (this.navigationItemSelectedListener.getSoundOn())
+        {
+            if (null == this.columnEndMediaPlayer)
+                this.columnEndMediaPlayer = android.media.MediaPlayer.create(
+                    this, org.wheatgenetics.coordinate.R.raw.column_end);
+            this.columnEndMediaPlayer.start();
+        }
     }
     // endregion
 
