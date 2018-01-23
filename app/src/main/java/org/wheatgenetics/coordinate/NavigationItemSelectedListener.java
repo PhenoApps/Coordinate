@@ -75,7 +75,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     private org.wheatgenetics.coordinate.tc.TemplateCreator               templateCreator = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getExportFileNameAlertDialog = null;
-    private boolean                                  soundOn          = true;
+    private boolean                                  soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
 
@@ -190,7 +190,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     // endregion
 
     NavigationItemSelectedListener(final android.app.Activity activity,
-    final java.lang.String                                                    versionName,
+    final java.lang.String versionName, final boolean soundOn,
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ,
     final android.view.View.OnClickListener                        versionOnClickListener)
     {
@@ -198,6 +198,8 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 
         this.activity = activity; this.versionName            = versionName           ;
         this.handler  = handler ; this.versionOnClickListener = versionOnClickListener;
+
+        this.soundOn = soundOn;
     }
 
     // region Overridden Methods

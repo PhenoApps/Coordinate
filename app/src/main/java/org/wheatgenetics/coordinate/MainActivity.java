@@ -306,6 +306,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     }
     // endregion
 
+    private void storeSoundOn(final boolean soundOn)
+    { assert null != this.sharedPreferences; this.sharedPreferences.setSoundOn(soundOn); }
+
     private void showChangeLog()
     {
         if (null == this.changeLogAlertDialog)
@@ -472,6 +475,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             // endregion
 
             // region Configure navigation view.
+            this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
+                this.getSharedPreferences("Settings", /* mode => */ 0));
             {
                 final android.view.Menu menu;
                 {
@@ -482,8 +487,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     assert null != navigationView; navigationView.setNavigationItemSelectedListener(
                         this.navigationItemSelectedListener =
                             new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
-                                /* activity    => */ this       ,
-                                /* versionName => */ versionName,
+                                /* activity    => */ this                               ,
+                                /* versionName => */ versionName                        ,
+                                /* soundOn     => */ this.sharedPreferences.getSoundOn(),
                                 /* handler     => */ new org.wheatgenetics.coordinate
                                     .NavigationItemSelectedListener.Handler()
                                     {
@@ -530,7 +536,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                                         }
 
                                         @java.lang.Override
-                                        public void storeSoundOn(final boolean soundOn) {}   // TODO
+                                        public void storeSoundOn(final boolean soundOn)
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.storeSoundOn(soundOn);
+                                        }
 
                                         @java.lang.Override
                                         public void closeDrawer()
@@ -569,8 +579,6 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             // endregion
 
             // region Load joinedGridModel.
-            this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
-                this.getSharedPreferences("Settings", /* mode => */ 0));
             if (this.sharedPreferences.loadedGridIdIsSet())
                 this.loadJoinedGridModel(this.sharedPreferences.getLoadedGridId());
             else

@@ -11,7 +11,7 @@ package org.wheatgenetics.sharedpreferences;
 public class SharedPreferences
 extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
-    private static final java.lang.String LOADED_GRID_ID = "CurrentGrid";
+    private static final java.lang.String LOADED_GRID_ID = "CurrentGrid", SOUND_OFF = "SoundOFF";
 
     private void uncheckedSetLoadedGridId(final long loadedGridId)
     {
@@ -37,5 +37,17 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     public void clearLoadedGridId() { this.uncheckedSetLoadedGridId(-1); }
 
     public boolean loadedGridIdIsSet() { return this.getLoadedGridId() > -1; }
+
+
+    public boolean getSoundOn()
+    { return !this.getBoolean(org.wheatgenetics.sharedpreferences.SharedPreferences.SOUND_OFF); }
+
+    public void setSoundOn(final boolean soundOn)
+    {
+        if (soundOn)
+            this.setBooleanToFalse(org.wheatgenetics.sharedpreferences.SharedPreferences.SOUND_OFF);
+        else
+            this.setBooleanToTrue(org.wheatgenetics.sharedpreferences.SharedPreferences.SOUND_OFF);
+    }
     // endregion
 }
