@@ -37,9 +37,9 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
     }
 
     // region Fields
-    private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler           ;
-    private android.widget.TableLayout                                   entriesTableLayout;
-    private org.wheatgenetics.coordinate.display.Entries                 entries = null    ;
+    private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler       ;
+    private android.widget.TableLayout                                   tableLayout   ;
+    private org.wheatgenetics.coordinate.display.Entries                 entries = null;
     // endregion
 
     public DisplayFragment() { /* Required empty public constructor. */ }
@@ -75,8 +75,8 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
         super.onActivityCreated(savedInstanceState);
 
         final android.app.Activity activity = this.getActivity();
-        assert null != activity; this.entriesTableLayout = (android.widget.TableLayout)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.entriesTableLayout);
+        assert null != activity; this.tableLayout = (android.widget.TableLayout)
+            activity.findViewById(org.wheatgenetics.coordinate.R.id.displayTableLayout);
 
         this.populate();
     }
@@ -101,7 +101,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
     public void populate()
     {
         if (null != this.entries) this.entries.clear();
-        assert null != this.entriesTableLayout; this.entriesTableLayout.removeAllViews();
+        assert null != this.tableLayout; this.tableLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             null == this.handler ? null : this.handler.getJoinedGridModel();
@@ -151,7 +151,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
                         tableRow.addView(tableCell);
                     }
                 }
-                this.entriesTableLayout.addView(tableRow);
+                this.tableLayout.addView(tableRow);
             }
             // endregion
 
@@ -200,7 +200,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
                     }
                     else
                         tableRow.addView(this.entries.add(joinedGridModel.getEntryModel(row, col)));
-                this.entriesTableLayout.addView(tableRow);
+                this.tableLayout.addView(tableRow);
             }
             // endregion
         }

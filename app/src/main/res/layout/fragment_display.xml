@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <TableLayout
-            android:id="@+id/entriesTableLayout"
+            android:id="@+id/displayTableLayout"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
