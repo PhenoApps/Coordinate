@@ -275,7 +275,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                         templateModels.titles());
                 } break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_import_grid: break;
+            case org.wheatgenetics.coordinate.R.id.nav_import_template: break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_grid:
                 if (null == this.getExportFileNameAlertDialog) this.getExportFileNameAlertDialog =

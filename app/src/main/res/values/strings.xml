@@ -21,8 +21,8 @@
     <string name="delete_grid">Delete grid</string>
     <string name="create_template">Create template</string>
     <string name="delete_template">Delete template</string>
-    <string name="import_grid">Import</string>
-    <string name="export_grid">Export</string>
+    <string name="import_template">Import Template</string>
+    <string name="export_grid">Export Grid</string>
     <string name="show_about">About</string>
 
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>

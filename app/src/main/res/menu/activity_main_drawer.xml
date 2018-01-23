@@ -31,9 +31,9 @@
 
     <group>
         <item
-            android:id="@+id/nav_import_grid"
-            android:icon="@drawable/ic_menu_import_grid"
-            android:title="@string/import_grid" />
+            android:id="@+id/nav_import_template"
+            android:icon="@drawable/ic_menu_import_template"
+            android:title="@string/import_template" />
         <item
             android:id="@+id/nav_export_grid"
             android:icon="@drawable/ic_menu_export_grid"
