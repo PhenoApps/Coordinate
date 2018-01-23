@@ -209,9 +209,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
         assert null != this.sharedPreferences;
         if (null == this.joinedGridModel)
-            this.sharedPreferences.clearCurrentGrid();
+            this.sharedPreferences.clearLoadedGridId();
         else
-            this.sharedPreferences.setCurrentGrid(this.joinedGridModel.getId());
+            this.sharedPreferences.setLoadedGridId(this.joinedGridModel.getId());
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
@@ -555,8 +555,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             // region Load joinedGridModel.
             this.sharedPreferences = new org.wheatgenetics.sharedpreferences.SharedPreferences(
                 this.getSharedPreferences("Settings", /* mode => */ 0));
-            if (this.sharedPreferences.currentGridIsSet())
-                this.loadJoinedGridModel(this.sharedPreferences.getCurrentGrid());
+            if (this.sharedPreferences.loadedGridIdIsSet())
+                this.loadJoinedGridModel(this.sharedPreferences.getLoadedGridId());
             else
                 if (null == savedInstanceState) this.createGrid();
             // endregion

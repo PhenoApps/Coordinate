@@ -11,31 +11,31 @@ package org.wheatgenetics.sharedpreferences;
 public class SharedPreferences
 extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
-    private static final java.lang.String CURRENT_GRID = "CurrentGrid";
+    private static final java.lang.String LOADED_GRID_ID = "CurrentGrid";
 
-    private void uncheckSetCurrentGrid(final long currentGrid)
+    private void uncheckedSetLoadedGridId(final long loadedGridId)
     {
-        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID,
-            currentGrid);
+        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_GRID_ID,
+            loadedGridId);
     }
 
     public SharedPreferences(@android.support.annotation.NonNull
     final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
 
     // region Public Methods
-    public long getCurrentGrid()
-    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.CURRENT_GRID); }
+    public long getLoadedGridId()
+    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_GRID_ID); }
 
-    public void setCurrentGrid(
-    @android.support.annotation.IntRange(from = 1) final long currentGrid)
+    public void setLoadedGridId(
+    @android.support.annotation.IntRange(from = 1) final long loadedGridId)
     {
-        if (currentGrid < 1)
-            throw new java.lang.IllegalArgumentException("currentGrid must be > 0");
-        this.uncheckSetCurrentGrid(currentGrid);
+        if (loadedGridId < 1)
+            throw new java.lang.IllegalArgumentException("loadedGridId must be > 0");
+        this.uncheckedSetLoadedGridId(loadedGridId);
     }
 
-    public void clearCurrentGrid() { this.uncheckSetCurrentGrid(-1); }
+    public void clearLoadedGridId() { this.uncheckedSetLoadedGridId(-1); }
 
-    public boolean currentGridIsSet() { return this.getCurrentGrid() > -1; }
+    public boolean loadedGridIdIsSet() { return this.getLoadedGridId() > -1; }
     // endregion
 }
