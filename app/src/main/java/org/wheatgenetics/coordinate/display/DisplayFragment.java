@@ -118,7 +118,7 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
                 @android.annotation.SuppressLint("InflateParams")
                 final android.widget.TableRow tableRow = (android.widget.TableRow)
                     layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.entries_table_row, null);
+                        org.wheatgenetics.coordinate.R.layout.display_table_row, null);
                 {
                     final boolean colNumbering = joinedGridModel.getColNumbering();
                           byte    offsetFromA  = 0                                ;
@@ -127,12 +127,12 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
                         @android.annotation.SuppressLint("InflateParams")
                         final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
                             layoutInflater.inflate(
-                                org.wheatgenetics.coordinate.R.layout.top_entries_table_cell, null);
+                                org.wheatgenetics.coordinate.R.layout.top_display_table_cell, null);
                         {
                             assert null != tableCell;
                             final android.widget.TextView textView = (android.widget.TextView)
                                 tableCell.findViewById(
-                                    org.wheatgenetics.coordinate.R.id.topEntryTextView);
+                                    org.wheatgenetics.coordinate.R.id.topDisplayTextView);
 
                             final java.lang.String text;
                             if (0 == col)
@@ -171,20 +171,20 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
                 @android.annotation.SuppressLint("InflateParams")
                 final android.widget.TableRow tableRow = (android.widget.TableRow)
                     layoutInflater.inflate(
-                        org.wheatgenetics.coordinate.R.layout.entries_table_row, null);
+                        org.wheatgenetics.coordinate.R.layout.display_table_row, null);
                 assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     if (0 == col)
                     {
                         @android.annotation.SuppressLint("InflateParams")
                         final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
                             layoutInflater.inflate(
-                                org.wheatgenetics.coordinate.R.layout.left_entries_table_cell,
+                                org.wheatgenetics.coordinate.R.layout.left_display_table_cell,
                                 null                                                         );
                         {
                             assert null != tableCell;
                             final android.widget.TextView textView = (android.widget.TextView)
                                 tableCell.findViewById(
-                                    org.wheatgenetics.coordinate.R.id.leftEntryTextView);
+                                    org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
 
                             final java.lang.String text;
                             if (rowNumbering)
