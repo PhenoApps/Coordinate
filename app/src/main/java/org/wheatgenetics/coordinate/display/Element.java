@@ -114,10 +114,10 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
                     assert null != this.context;
                     org.wheatgenetics.coordinate.Utils.confirm(
                         /* context => */ this.context                                           ,
-                        /* title   => */ org.wheatgenetics.coordinate.R.string.EntryConfirmTitle,
+                        /* title   => */ org.wheatgenetics.coordinate.R.string.ElementConfirmTitle,
                         /* message => */ java.lang.String.format(
                             this.context.getString(
-                                org.wheatgenetics.coordinate.R.string.EntryConfirmMessage),
+                                org.wheatgenetics.coordinate.R.string.ElementConfirmMessage),
                             includedEntryModel.getValue()),
                         /* yesRunnable => */ new java.lang.Runnable()
                             {
