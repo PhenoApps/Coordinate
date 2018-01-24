@@ -190,7 +190,8 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 this.maxCell);                                                    //  lang.Illegal-
                                                                                   //  ArgumentExcep-
             {                                                                     //  tion
-                final int maxAmount = maxRow * maxCol;
+                final int maxAmount = maxRow * maxCol -
+                    (null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size());
                 if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
                     java.lang.String.format("amount must be <= %d", maxAmount));
             }
