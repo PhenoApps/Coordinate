@@ -88,7 +88,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
                     this.activity.getLayoutInflater();
 
                 result = (android.widget.LinearLayout) layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.entries_table_cell, null);
+                    org.wheatgenetics.coordinate.R.layout.display_table_cell, null);
             }
             {
                 assert null != result;
@@ -97,7 +97,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
                         /* context    => */ this.activity,
                         /* entryModel => */ entryModel   ,
                         /* textView   => */ (android.widget.TextView)
-                            result.findViewById(org.wheatgenetics.coordinate.R.id.entryTextView),
+                            result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView),
                         /* handler   => */ this          ,
                         /* activeRow => */ this.activeRow,
                         /* activeCol => */ this.activeCol);
