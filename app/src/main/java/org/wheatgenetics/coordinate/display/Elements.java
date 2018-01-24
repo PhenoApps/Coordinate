@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.display.Element.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Entries extends java.lang.Object
+class Elements extends java.lang.Object
 implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     // region Fields
@@ -28,8 +28,8 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     private int activeRow, activeCol;
     // endregion
 
-    Entries(final android.app.Activity activity,
-    final int rows, final int cols, final int activeRow, final int activeCol,
+    Elements(final android.app.Activity activity, final int rows, final int cols,
+    final int activeRow, final int activeCol,
     final org.wheatgenetics.coordinate.display.Element.Handler handler)
     {
         super();

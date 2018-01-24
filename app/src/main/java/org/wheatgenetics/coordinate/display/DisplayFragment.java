@@ -21,7 +21,7 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.display.Element.Handler
- * org.wheatgenetics.coordinate.display.Entries
+ * org.wheatgenetics.coordinate.display.Elements
  */
 public class DisplayFragment extends android.support.v4.app.Fragment
 implements org.wheatgenetics.coordinate.display.Element.Handler
@@ -37,9 +37,9 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     }
 
     // region Fields
-    private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler       ;
-    private android.widget.TableLayout                                   tableLayout   ;
-    private org.wheatgenetics.coordinate.display.Entries                 entries = null;
+    private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler        ;
+    private android.widget.TableLayout                                   tableLayout    ;
+    private org.wheatgenetics.coordinate.display.Elements                elements = null;
     // endregion
 
     public DisplayFragment() { /* Required empty public constructor. */ }
@@ -100,7 +100,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
 
     public void populate()
     {
-        if (null != this.entries) this.entries.clear();
+        if (null != this.elements) this.elements.clear();
         assert null != this.tableLayout; this.tableLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -157,11 +157,11 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
 
             // region Populate body rows.
             final int lastRow = joinedGridModel.getRows();
-            if (null == this.entries)
-                this.entries = new org.wheatgenetics.coordinate.display.Entries(activity, lastRow,
+            if (null == this.elements)
+                this.elements = new org.wheatgenetics.coordinate.display.Elements(activity, lastRow,
                     lastCol, this.handler.getActiveRow(), this.handler.getActiveCol(), this);
             else
-                this.entries.allocate(lastRow, lastCol,
+                this.elements.allocate(lastRow, lastCol,
                     this.handler.getActiveRow(), this.handler.getActiveCol());
 
             final boolean rowNumbering = joinedGridModel.getRowNumbering();
@@ -199,7 +199,8 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
                         tableRow.addView(tableCell);
                     }
                     else
-                        tableRow.addView(this.entries.add(joinedGridModel.getEntryModel(row, col)));
+                        tableRow.addView(this.elements.add(
+                            joinedGridModel.getEntryModel(row, col)));
                 this.tableLayout.addView(tableRow);
             }
             // endregion
