@@ -12,24 +12,25 @@ package org.wheatgenetics.coordinate.display;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.display.Entry
- * org.wheatgenetics.coordinate.display.Entry.Handler
+ * org.wheatgenetics.coordinate.display.Element
+ * org.wheatgenetics.coordinate.display.Element.Handler
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.display.Entry.Handler
+class Entries extends java.lang.Object
+implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     // region Fields
-    private final org.wheatgenetics.coordinate.display.Entry.Handler handler ;
-    private final android.app.Activity                               activity;
+    private final org.wheatgenetics.coordinate.display.Element.Handler handler ;
+    private final android.app.Activity                                 activity;
 
-    private org.wheatgenetics.coordinate.display.Entry entryArray[][];
+    private org.wheatgenetics.coordinate.display.Element elementArray[][];
 
     private int activeRow, activeCol;
     // endregion
 
     Entries(final android.app.Activity activity,
     final int rows, final int cols, final int activeRow, final int activeCol,
-    final org.wheatgenetics.coordinate.display.Entry.Handler handler)
+    final org.wheatgenetics.coordinate.display.Element.Handler handler)
     {
         super();
 
@@ -37,24 +38,24 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
         this.allocate(rows, cols, activeRow, activeCol);
     }
 
-    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Methods
     @java.lang.Override
-    public void activate(final org.wheatgenetics.coordinate.display.Entry entry)
+    public void activate(final org.wheatgenetics.coordinate.display.Element element)
     {
-        if (null != entry)
+        if (null != element)
         {
-            final int newActiveRow = entry.getRow(), newActiveCol = entry.getCol();
+            final int newActiveRow = element.getRow(), newActiveCol = element.getCol();
             if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
             {
                 if (this.activeRow > -1 && this.activeCol > -1)
                 {
-                    assert null != this.entryArray;
-                    this.entryArray[this.activeRow][this.activeCol].inactivate();
+                    assert null != this.elementArray;
+                    this.elementArray[this.activeRow][this.activeCol].inactivate();
                 }
 
                 this.activeRow = newActiveRow; this.activeCol = newActiveCol;
 
-                assert null != this.handler; this.handler.activate(entry);
+                assert null != this.handler; this.handler.activate(element);
             }
         }
     }
@@ -65,31 +66,34 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
     // endregion
 
     // region Package Methods
-    void clear() { this.entryArray = null; this.activeRow = this.activeCol = -1; }
+    void clear() { this.elementArray = null; this.activeRow = this.activeCol = -1; }
 
     void allocate(final int rows, final int cols, final int activeRow, final int activeCol)
     {
-        this.entryArray = new org.wheatgenetics.coordinate.display.Entry[rows][cols];
-        this.activeRow  = activeRow;                      this.activeCol = activeCol;
+        this.elementArray = new org.wheatgenetics.coordinate.display.Element[rows][cols];
+        this.activeRow    = activeRow;                        this.activeCol = activeCol;
     }
 
+    @android.annotation.SuppressLint("InflateParams")
     android.widget.LinearLayout add(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         if (null == entryModel)
             return null;
         else
         {
-            assert null != this.activity;
-            final android.view.LayoutInflater layoutInflater = this.activity.getLayoutInflater();
+            final android.widget.LinearLayout result;
+            {
+                assert null != this.activity;
+                final android.view.LayoutInflater layoutInflater =
+                    this.activity.getLayoutInflater();
 
-            @android.annotation.SuppressLint("InflateParams")
-            final android.widget.LinearLayout result = (android.widget.LinearLayout)
-                layoutInflater.inflate(
+                result = (android.widget.LinearLayout) layoutInflater.inflate(
                     org.wheatgenetics.coordinate.R.layout.entries_table_cell, null);
+            }
             {
                 assert null != result;
-                final org.wheatgenetics.coordinate.display.Entry entry =
-                    new org.wheatgenetics.coordinate.display.Entry(
+                final org.wheatgenetics.coordinate.display.Element element =
+                    new org.wheatgenetics.coordinate.display.Element(
                         /* context    => */ this.activity,
                         /* entryModel => */ entryModel   ,
                         /* textView   => */ (android.widget.TextView)
@@ -97,8 +101,8 @@ class Entries extends java.lang.Object implements org.wheatgenetics.coordinate.d
                         /* handler   => */ this          ,
                         /* activeRow => */ this.activeRow,
                         /* activeCol => */ this.activeCol);
-                assert null != this.entryArray;
-                this.entryArray[entry.getRow()][entry.getCol()] = entry;
+                assert null != this.elementArray;
+                this.elementArray[element.getRow()][element.getCol()] = element;
             }
             return result;
         }

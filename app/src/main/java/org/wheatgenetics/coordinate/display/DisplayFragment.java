@@ -20,11 +20,11 @@ package org.wheatgenetics.coordinate.display;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.display.Element.Handler
  * org.wheatgenetics.coordinate.display.Entries
- * org.wheatgenetics.coordinate.display.Entry.Handler
  */
 public class DisplayFragment extends android.support.v4.app.Fragment
-implements org.wheatgenetics.coordinate.display.Entry.Handler
+implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -84,12 +84,12 @@ implements org.wheatgenetics.coordinate.display.Entry.Handler
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.coordinate.display.Entry.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Methods
     @java.lang.Override
-    public void activate(final org.wheatgenetics.coordinate.display.Entry entry)
+    public void activate(final org.wheatgenetics.coordinate.display.Element element)
     {
-        assert null != entry; assert null != this.handler;
-        this.handler.activate(entry.getRow(), entry.getCol());
+        assert null != element; assert null != this.handler;
+        this.handler.activate(element.getRow(), element.getCol());
     }
 
     @java.lang.Override

@@ -16,21 +16,21 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Entry extends java.lang.Object
+class Element extends java.lang.Object
 implements android.view.View.OnClickListener, android.view.View.OnLongClickListener
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
-        public abstract void activate(org.wheatgenetics.coordinate.display.Entry    entry     );
+        public abstract void activate(org.wheatgenetics.coordinate.display.Element element    );
         public abstract void toggle  (org.wheatgenetics.coordinate.model.EntryModel entryModel);
     }
 
     // region Fields
-    private final android.content.Context                            context   ;
-    private       org.wheatgenetics.coordinate.model.EntryModel      entryModel;
-    private final android.widget.TextView                            textView  ;
-    private final org.wheatgenetics.coordinate.display.Entry.Handler handler   ;
+    private final android.content.Context                              context   ;
+    private       org.wheatgenetics.coordinate.model.EntryModel        entryModel;
+    private final android.widget.TextView                              textView  ;
+    private final org.wheatgenetics.coordinate.display.Element.Handler handler   ;
     // endregion
 
     // region Private Methods
@@ -42,20 +42,16 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
         assert null != this.handler; this.handler.activate(this);
     }
 
-    private void setOnClickListener(final android.view.View.OnClickListener onClickListener)
-    { assert null != this.textView; this.textView.setOnClickListener(onClickListener); }
-
-    // region onClickListener() Private Methods
-    private void setOnClickListener() { this.setOnClickListener(this); }
-
-    private void clearOnClickListener() { this.setOnClickListener(null); }
-
     private void setBackgroundResource()
     {
         assert null != this.entryModel; assert null != this.textView;
         this.textView.setBackgroundResource(this.entryModel.backgroundResource());
     }
-    // endregion
+
+    private void setOnClickListener(final android.view.View.OnClickListener onClickListener)
+    { assert null != this.textView; this.textView.setOnClickListener(onClickListener); }
+
+    private void setOnClickListener() { this.setOnClickListener(this); }
 
     private void toggle()
     {
@@ -67,15 +63,15 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
     {
         this.entryModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
             (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.entryModel);
-        this.clearOnClickListener(); this.toggle();
+        this.setOnClickListener(null); this.toggle();
     }
     // endregion
 
-    Entry(
-    final android.content.Context                            context   ,
-    final org.wheatgenetics.coordinate.model.EntryModel      entryModel,
-    final android.widget.TextView                            textView  ,
-    final org.wheatgenetics.coordinate.display.Entry.Handler handler   ,
+    Element(
+    final android.content.Context                              context   ,
+    final org.wheatgenetics.coordinate.model.EntryModel        entryModel,
+    final android.widget.TextView                              textView  ,
+    final org.wheatgenetics.coordinate.display.Element.Handler handler   ,
     final int activeRow, final int activeCol)
     {
         super();
@@ -127,7 +123,7 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
                             {
                                 @java.lang.Override
                                 public void run()
-                                { org.wheatgenetics.coordinate.display.Entry.this.exclude(); }
+                                { org.wheatgenetics.coordinate.display.Element.this.exclude(); }
                             });
                 }
             }
@@ -144,9 +140,9 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
     // endregion
 
     // region Package Methods
-    void inactivate() { this.setBackgroundResource(); }
-
     int getRow() { return null == this.entryModel ? -1 : this.entryModel.getRow() - 1; }
     int getCol() { return null == this.entryModel ? -1 : this.entryModel.getCol() - 1; }
+
+    void inactivate() { this.setBackgroundResource(); }
     // endregion
 }
