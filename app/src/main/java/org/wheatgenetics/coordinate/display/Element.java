@@ -22,8 +22,8 @@ implements android.view.View.OnClickListener, android.view.View.OnLongClickListe
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
-        public abstract void activate(org.wheatgenetics.coordinate.display.Element element    );
         public abstract void toggle  (org.wheatgenetics.coordinate.model.EntryModel entryModel);
+        public abstract void activate(org.wheatgenetics.coordinate.display.Element element    );
     }
 
     // region Fields

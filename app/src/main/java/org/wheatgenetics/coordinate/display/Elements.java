@@ -20,8 +20,8 @@ class Elements extends java.lang.Object
 implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     // region Fields
-    private final org.wheatgenetics.coordinate.display.Element.Handler handler ;
     private final android.app.Activity                                 activity;
+    private final org.wheatgenetics.coordinate.display.Element.Handler handler ;
 
     private org.wheatgenetics.coordinate.display.Element elementArray[][];
 
@@ -34,11 +34,15 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     {
         super();
 
-        this.handler = handler; this.activity = activity;
+        this.activity = activity; this.handler = handler;
         this.allocate(rows, cols, activeRow, activeCol);
     }
 
     // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Methods
+    @java.lang.Override
+    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    { assert null != this.handler; this.handler.toggle(entryModel); }
+
     @java.lang.Override
     public void activate(final org.wheatgenetics.coordinate.display.Element element)
     {
@@ -59,20 +63,16 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
             }
         }
     }
-
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { assert null != this.handler; this.handler.toggle(entryModel); }
     // endregion
 
     // region Package Methods
-    void clear() { this.elementArray = null; this.activeRow = this.activeCol = -1; }
-
     void allocate(final int rows, final int cols, final int activeRow, final int activeCol)
     {
         this.elementArray = new org.wheatgenetics.coordinate.display.Element[rows][cols];
         this.activeRow    = activeRow;                        this.activeCol = activeCol;
     }
+
+    void clear() { this.elementArray = null; this.activeRow = this.activeCol = -1; }
 
     @android.annotation.SuppressLint("InflateParams")
     android.widget.LinearLayout add(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
