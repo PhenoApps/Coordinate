@@ -28,16 +28,26 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Private Methods
-    private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
+    private void setRows(final int rows)
     { this.rows = org.wheatgenetics.coordinate.model.Utils.valid(rows, 1); }
 
-    private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
+    private void setCols(final int cols)
     { this.cols = org.wheatgenetics.coordinate.model.Utils.valid(cols, 1); }
 
 
+    /** Called by first and second constructor. */
+    private void assign(final java.lang.String title,
+    final org.wheatgenetics.coordinate.model.TemplateType type, final int rows, final int cols,
+    final int generatedExcludedCellsAmount, final boolean colNumbering, final boolean rowNumbering)
+    {
+        this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
+        this.setGeneratedExcludedCellsAmount(generatedExcludedCellsAmount);
+        this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
+    }
+
+
     @java.lang.SuppressWarnings("DefaultLocale")
-    private static java.lang.String[] items(
-    @android.support.annotation.IntRange(from = 1) final int length, final java.lang.String label)
+    private static java.lang.String[] items(final int length, final java.lang.String label)
     {
         if (length <= 0)
             return null;
@@ -141,20 +151,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
-    /** Called by first and second constructor. */
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void assign(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    final boolean colNumbering, final boolean rowNumbering)
-    {
-        this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
-        this.setGeneratedExcludedCellsAmount(generatedExcludedCellsAmount);
-        this.setColNumbering(colNumbering); this.setRowNumbering(rowNumbering);
-    }
-
     @java.lang.SuppressWarnings("DefaultLocale")
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()

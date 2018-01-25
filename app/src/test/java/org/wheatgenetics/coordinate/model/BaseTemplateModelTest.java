@@ -543,56 +543,6 @@ public class BaseTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedFormatString,
             concreteBaseTemplateModel.formatString());
     }
-
-    @org.junit.Test
-    public void packageAssignSucceedsAndFails()
-    {
-        final long                                            testId           = 67         ;
-        final java.lang.String                                testTitle        = "testTitle";
-        final org.wheatgenetics.coordinate.model.TemplateType testTemplateType =
-            org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
-        final int     testRows = 15, testCols = 1, testGeneratedExcludedCellsAmount = 0;
-        final boolean testColNumbering = true, testRowNumbering = false                ;
-        final long    testTimestamp = 0                                                ;
-
-        final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
-            firstConcreteBasePartialTemplateModel = new
-                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
-                        /* id                           => */ testId                          ,
-                        /* title                        => */ testTitle                       ,
-                        /* type                         => */ testTemplateType                ,
-                        /* rows                         => */ testRows                        ,
-                        /* cols                         => */ testCols                        ,
-                        /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
-                        /* colNumbering                 => */ testColNumbering                ,
-                        /* rowNumbering                 => */ testRowNumbering                ,
-                        /* timestamp                    => */ testTimestamp                   ),
-            secondConcreteBasePartialTemplateModel = new
-                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
-                        /* id    => */ testId                                              ,
-                        /* title => */ "different"                                         ,
-                        /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                        /* rows  => */ 3                                                   ,
-                        /* cols  => */ 9                                                   ,
-                        /* generatedExcludedCellsAmount => */ 3            ,
-                        /* colNumbering                 => */ false        ,
-                        /* rowNumbering                 => */ true         ,
-                        /* timestamp                    => */ testTimestamp);                // same
-
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-
-        secondConcreteBasePartialTemplateModel.assign(
-            /* title                        => */ testTitle                       ,
-            /* type                         => */ testTemplateType                ,
-            /* rows                         => */ testRows                        ,
-            /* cols                         => */ testCols                        ,
-            /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
-            /* colNumbering                 => */ testColNumbering                ,
-            /* rowNumbering                 => */ testRowNumbering                );
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-    }
     // endregion
 
     // region Other Public Method Tests
