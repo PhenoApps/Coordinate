@@ -37,12 +37,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
- * org.wheatgenetics.coordinate.display.DisplayFragment
- * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+ * org.wheatgenetics.coordinate.display.GridDisplayFragment
+ * org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
+ * org.wheatgenetics.coordinate.model.DisplayModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -64,10 +66,10 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Utils
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
-org.wheatgenetics.coordinate.display.DisplayFragment.Handler,
-org.wheatgenetics.coordinate.DataEntryFragment.Handler      ,
-org.wheatgenetics.coordinate.gc.GridCreator.Handler         ,
-org.wheatgenetics.coordinate.model.EntryModels.FilledHandler,
+org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
+org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
+org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Fields
@@ -93,8 +95,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator     = null;
     private org.wheatgenetics.coordinate.model.Exporter        exporter        = null;
 
-    private org.wheatgenetics.coordinate.display.DisplayFragment displayFragment  ;
-    private org.wheatgenetics.coordinate.DataEntryFragment       dataEntryFragment;
+    private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
+    private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
     // endregion
 
     // region Private Methods
@@ -206,8 +208,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void populateFragments()
     {
-        assert null != this.displayFragment  ; this.displayFragment.populate  ();
-        assert null != this.dataEntryFragment; this.dataEntryFragment.populate();
+        assert null != this.gridDisplayFragment; this.gridDisplayFragment.populate();
+        assert null != this.dataEntryFragment  ; this.dataEntryFragment.populate  ();
     }
 
     // region loadJoinedGridModel() Private Methods
@@ -451,8 +453,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.getSupportFragmentManager();
             assert null != fragmentManager;
 
-            this.displayFragment = (org.wheatgenetics.coordinate.display.DisplayFragment)
-                fragmentManager.findFragmentById(org.wheatgenetics.coordinate.R.id.displayFragment);
+            this.gridDisplayFragment = (org.wheatgenetics.coordinate.display.GridDisplayFragment)
+                fragmentManager.findFragmentById(
+                    org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
             this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
                 fragmentManager.findFragmentById(
                     org.wheatgenetics.coordinate.R.id.dataEntryFragment);
@@ -663,13 +666,26 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         super.onDestroy();
     }
 
-    // region org.wheatgenetics.coordinate.display.DisplayFragment.Handler and org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Method
+    // region org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler Overridden Methods
     @java.lang.Override
-    public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
-    { return this.joinedGridModel; }
-    // endregion
+    public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
+    { return this.getJoinedGridModel(); }
 
-    // region org.wheatgenetics.coordinate.display.DisplayFragment.Handler Overridden Methods
+    @java.lang.Override
+    public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    {
+        if (null != this.joinedGridModel)
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
+            this.joinedGridModel.setEntryModel(entryModel);
+            this.entriesTable().insertOrUpdate(entryModel);
+            if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                if (this.joinedGridModel.getActiveEntryModel() == entryModel)
+                    this.goToNext(entryModel);
+        }
+    }
+
     @java.lang.Override
     public int getActiveRow()
     { assert null != this.joinedGridModel; return this.joinedGridModel.getActiveRow(); }
@@ -688,22 +704,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         assert null != this.dataEntryFragment;
         this.dataEntryFragment.setEntry(this.getEntryValue());
     }
-
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        if (null != this.joinedGridModel)
-        {
-            this.joinedGridModel.setEntryModel(entryModel);
-            this.entriesTable().insertOrUpdate(entryModel);
-            if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                if (this.joinedGridModel.getActiveEntryModel() == entryModel)
-                    this.goToNext(entryModel);
-        }
-    }
     // endregion
 
-    // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Method
+    // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Methods
     @java.lang.Override
     public void handleFilledGrid()
     {
@@ -781,7 +784,11 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { this.loadJoinedGridModelThenPopulate(gridId); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Method
+    // region org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Methods
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
+    { return this.joinedGridModel; }
+
     @java.lang.Override
     public void handleExportDone(final java.lang.Boolean result, final java.lang.String message,
     final java.io.File exportFile)

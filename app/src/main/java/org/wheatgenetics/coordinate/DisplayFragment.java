@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.display;
+package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
@@ -7,7 +7,9 @@ package org.wheatgenetics.coordinate.display;
  * android.content.Context
  * android.os.Bundle
  * android.support.annotation.Nullable
- * android.support.v4.app.Fragment
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
+ * android.support.v4.app.DialogFragment
  * android.view.LayoutInflater
  * android.view.View
  * android.view.ViewGroup
@@ -16,33 +18,43 @@ package org.wheatgenetics.coordinate.display;
  * android.widget.TableRow
  * android.widget.TextView
  *
- * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.DisplayModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  *
+ * org.wheatgenetics.coordinate.Elements
  * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.display.Element.Handler
- * org.wheatgenetics.coordinate.display.Elements
  */
-public class DisplayFragment extends android.support.v4.app.Fragment
-implements org.wheatgenetics.coordinate.display.Element.Handler
+public abstract class DisplayFragment extends android.support.v4.app.DialogFragment
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
     {
-        public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel();
-        public abstract int getActiveRow();                  public abstract int getActiveCol();
-
-        public abstract void activate(int row, int col);
-        public abstract void toggle  (org.wheatgenetics.coordinate.model.EntryModel entryModel);
+        public abstract org.wheatgenetics.coordinate.model.DisplayModel         getDisplayModel();
+        public abstract void toggle(org.wheatgenetics.coordinate.model.ElementModel elementModel);
     }
 
     // region Fields
-    private org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler        ;
-    private android.widget.TableLayout                                   tableLayout    ;
-    private org.wheatgenetics.coordinate.display.Elements                elements = null;
+    protected org.wheatgenetics.coordinate.DisplayFragment.Handler handler    ;
+    private   android.widget.TableLayout                           tableLayout;
+    protected org.wheatgenetics.coordinate.Elements                elements   ;
     // endregion
 
-    public DisplayFragment() { /* Required empty public constructor. */ }
+    // region Protected Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected boolean setHandler(final android.content.Context context)
+    {
+        final boolean success = true;
+        if (context instanceof org.wheatgenetics.coordinate.DisplayFragment.Handler)
+        {
+            this.handler = (org.wheatgenetics.coordinate.DisplayFragment.Handler) context;
+            return success;
+        }
+        else return !success;
+    }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected abstract void allocateElements(final int lastRow, final int lastCol);
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override
@@ -50,9 +62,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     {
         super.onAttach(context);
 
-        if (context instanceof org.wheatgenetics.coordinate.display.DisplayFragment.Handler)
-            this.handler = (org.wheatgenetics.coordinate.display.DisplayFragment.Handler) context;
-        else
+        if (!this.setHandler(context))
         {
             assert null != context; throw new java.lang.RuntimeException(context.toString() +
                 " must implement Handler");
@@ -83,19 +93,6 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
 
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
-
-    // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Methods
-    @java.lang.Override
-    public void activate(final org.wheatgenetics.coordinate.display.Element element)
-    {
-        assert null != element; assert null != this.handler;
-        this.handler.activate(element.getRow(), element.getCol());
-    }
-
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { assert null != this.handler; this.handler.toggle(entryModel); }
-    // endregion
     // endregion
 
     public void populate()
@@ -103,35 +100,36 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
         if (null != this.elements) this.elements.clear();
         assert null != this.tableLayout; this.tableLayout.removeAllViews();
 
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-            null == this.handler ? null : this.handler.getJoinedGridModel();
-        if (null != joinedGridModel)
+        final org.wheatgenetics.coordinate.model.DisplayModel displayModel =
+            null == this.handler ? null : this.handler.getDisplayModel();
+        if (null != displayModel)
         {
-            final int                  lastCol  = joinedGridModel.getCols();
-            final android.app.Activity activity = this.getActivity()       ;
-
-            assert null != activity;
-            final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
+            final int                         lastCol = displayModel.getCols();
+            final android.view.LayoutInflater layoutInflater                  ;
+            {
+                final android.app.Activity activity = this.getActivity();
+                assert null != activity; layoutInflater = activity.getLayoutInflater();
+            }
 
             // region Populate header row.
             {
                 @android.annotation.SuppressLint("InflateParams")
-                final android.widget.TableRow tableRow = (android.widget.TableRow)
-                    layoutInflater.inflate(
+                final android.widget.TableRow tableRow =
+                    (android.widget.TableRow) layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.display_table_row, null);
                 {
-                    final boolean colNumbering = joinedGridModel.getColNumbering();
-                          byte    offsetFromA  = 0                                ;
+                    final boolean colNumbering = displayModel.getColNumbering();
+                          byte    offsetFromA  = 0                             ;
                     assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     {
                         @android.annotation.SuppressLint("InflateParams")
-                        final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
-                            layoutInflater.inflate(
+                        final android.widget.LinearLayout tableCell =
+                            (android.widget.LinearLayout) layoutInflater.inflate(
                                 org.wheatgenetics.coordinate.R.layout.top_display_table_cell, null);
                         {
                             assert null != tableCell;
-                            final android.widget.TextView textView = (android.widget.TextView)
-                                tableCell.findViewById(
+                            final android.widget.TextView textView =
+                                (android.widget.TextView) tableCell.findViewById(
                                     org.wheatgenetics.coordinate.R.id.topDisplayTextView);
 
                             final java.lang.String text;
@@ -156,34 +154,29 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
             // endregion
 
             // region Populate body rows.
-            final int lastRow = joinedGridModel.getRows();
-            if (null == this.elements)
-                this.elements = new org.wheatgenetics.coordinate.display.Elements(activity, lastRow,
-                    lastCol, this.handler.getActiveRow(), this.handler.getActiveCol(), this);
-            else
-                this.elements.allocate(lastRow, lastCol,
-                    this.handler.getActiveRow(), this.handler.getActiveCol());
+            final int lastRow = displayModel.getRows();
+            this.allocateElements(lastRow, lastCol); assert null != this.elements;
 
-            final boolean rowNumbering = joinedGridModel.getRowNumbering();
-                  byte    offsetFromA  = 0                                ;
+            final boolean rowNumbering = displayModel.getRowNumbering();
+                  byte    offsetFromA  = 0                             ;
             for (int row = 1; row <= lastRow; row++)
             {
                 @android.annotation.SuppressLint("InflateParams")
-                final android.widget.TableRow tableRow = (android.widget.TableRow)
-                    layoutInflater.inflate(
+                final android.widget.TableRow tableRow =
+                    (android.widget.TableRow) layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.display_table_row, null);
                 assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     if (0 == col)
                     {
                         @android.annotation.SuppressLint("InflateParams")
-                        final android.widget.LinearLayout tableCell = (android.widget.LinearLayout)
-                            layoutInflater.inflate(
+                        final android.widget.LinearLayout tableCell =
+                            (android.widget.LinearLayout) layoutInflater.inflate(
                                 org.wheatgenetics.coordinate.R.layout.left_display_table_cell,
                                 null                                                         );
                         {
                             assert null != tableCell;
-                            final android.widget.TextView textView = (android.widget.TextView)
-                                tableCell.findViewById(
+                            final android.widget.TextView textView =
+                                (android.widget.TextView) tableCell.findViewById(
                                     org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
 
                             final java.lang.String text;
@@ -199,8 +192,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
                         tableRow.addView(tableCell);
                     }
                     else
-                        tableRow.addView(this.elements.add(
-                            joinedGridModel.getEntryModel(row, col)));
+                        tableRow.addView(this.elements.add(displayModel.getElementModel(row, col)));
                 this.tableLayout.addView(tableRow);
             }
             // endregion
