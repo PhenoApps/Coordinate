@@ -169,7 +169,7 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
 
     private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
-    { return null == this.templateModel ? null : this.templateModel.getInitialExcludedCells(); }
+    { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
 
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,

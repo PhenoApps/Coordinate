@@ -23,7 +23,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ 5          ,
             /* cols                         => */ 2          ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 1          ,
@@ -42,7 +42,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ 5          ,
             /* cols                         => */ 2          ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 1          ,
@@ -61,7 +61,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ 0          ,
             /* cols                         => */ 2          ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 1          ,
@@ -80,7 +80,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */  5         ,
             /* cols                         => */ -2         ,
             /* generatedExcludedCellsAmount => */  0         ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 1          ,
@@ -99,7 +99,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ 5          ,
             /* cols                         => */ 2          ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 3          ,
@@ -118,7 +118,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ 5          ,
             /* cols                         => */ 2          ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */  1         ,
@@ -135,7 +135,7 @@ public class TemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedFormatString = "%s [id: 09, title=testTitle, type=1, ro" +
             "ws=5, cols=2, generatedExcludedCellsAmount=0, colNumbering=true, rowNumbering=fal" +
-            "se, stamp=0, options=, initialExcludedCells=%s, excludedRows=%s, excludedCols=%s]";
+            "se, stamp=0, options=, excludedCells=%s, excludedRows=%s, excludedCols=%s]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 9          ,
@@ -144,7 +144,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -169,7 +169,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -196,7 +196,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ rows        ,
                 /* cols                         => */ cols        ,
                 /* generatedExcludedCellsAmount => */ 0           ,
-                /* initialExcludedCells         => */ null        ,
+                /* excludedCells                => */ null        ,
                 /* excludedRows                 => */ null        ,
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ colNumbering,
@@ -215,7 +215,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* rows                         => */ rows        ,
                     /* cols                         => */ cols        ,
                     /* generatedExcludedCellsAmount => */ 0           ,
-                    /* initialExcludedCells         => */ null        ,
+                    /* excludedCells                => */ null        ,
                     /* excludedRows                 => */ null        ,
                     /* excludedCols                 => */ null        ,
                     /* colNumbering                 => */ colNumbering,
@@ -263,12 +263,12 @@ public class TemplateModelTest extends java.lang.Object
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
 
-            firstTemplateModel.addInitialExcludedCell(row, col);
+            firstTemplateModel.addExcludedCell(row, col);
             org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertNotEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-            secondTemplateModel.addInitialExcludedCell(row, col);
+            secondTemplateModel.addExcludedCell(row, col);
             org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
             org.junit.Assert.assertEquals(
                 firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -304,14 +304,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ rows        ,
                 /* cols                         => */ cols        ,
                 /* generatedExcludedCellsAmount => */ 0           ,
-                /* initialExcludedCells         => */ null        ,
+                /* excludedCells                => */ null        ,
                 /* excludedRows                 => */ null        ,
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ colNumbering,
                 /* rowNumbering                 => */ rowNumbering,
                 /* optionalFields               => */ null        ,                       // Notice.
                 /* timestamp                    => */ timestamp   );
-        thirdTemplateModel.addInitialExcludedCell(row, col);
+        thirdTemplateModel.addExcludedCell(row, col);
         thirdTemplateModel.addExcludedCol(col); thirdTemplateModel.addExcludedRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -323,14 +323,14 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ rows        ,
             /* cols                         => */ cols        ,
             /* generatedExcludedCellsAmount => */ 0           ,
-            /* initialExcludedCells         => */ null        ,
+            /* excludedCells                => */ null        ,
             /* excludedRows                 => */ null        ,
             /* excludedCols                 => */ null        ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
             /* optionalFields               => */ ""          ,                           // Notice.
             /* timestamp                    => */ timestamp   );
-        thirdTemplateModel.addInitialExcludedCell(row, col);
+        thirdTemplateModel.addExcludedCell(row, col);
         thirdTemplateModel.addExcludedCol(col); thirdTemplateModel.addExcludedRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -342,14 +342,14 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ rows        ,
             /* cols                         => */ cols        ,
             /* generatedExcludedCellsAmount => */ 0           ,
-            /* initialExcludedCells         => */ null        ,
+            /* excludedCells                => */ null        ,
             /* excludedRows                 => */ null        ,
             /* excludedCols                 => */ null        ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
             /* optionalFields               => */ "  "        ,                           // Notice.
             /* timestamp                    => */ timestamp   );
-        thirdTemplateModel.addInitialExcludedCell(row, col);
+        thirdTemplateModel.addExcludedCell(row, col);
         thirdTemplateModel.addExcludedCol(col); thirdTemplateModel.addExcludedRow(row);
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(thirdTemplateModel)               );
         org.junit.Assert.assertEquals(firstTemplateModel.hashCode(), thirdTemplateModel.hashCode());
@@ -361,14 +361,14 @@ public class TemplateModelTest extends java.lang.Object
             /* rows                         => */ rows       ,
             /* cols                         => */ cols       ,
             /* generatedExcludedCellsAmount => */ 0          ,
-            /* initialExcludedCells         => */ null       ,
+            /* excludedCells                => */ null       ,
             /* excludedRows                 => */ null       ,
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
             /* optionalFields               => */ null       ,
             /* timestamp                    => */ 5087       );                           // Notice.
-        thirdTemplateModel.addInitialExcludedCell(row, col);
+        thirdTemplateModel.addExcludedCell(row, col);
         thirdTemplateModel.addExcludedCol(col); thirdTemplateModel.addExcludedRow(row);
         org.junit.Assert.assertFalse    (firstTemplateModel.equals(thirdTemplateModel));
         org.junit.Assert.assertNotEquals(
@@ -386,7 +386,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 1          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -400,8 +400,8 @@ public class TemplateModelTest extends java.lang.Object
     // endregion
 
     // region Public Method Tests
-    // region initialExcludedCells Public Method Tests
-    // region addInitialExcludedCell() initialExcludedCells Public Method Tests
+    // region excludedCells Public Method Tests
+    // region addExcludedCell() excludedCells Public Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void tooSmallRowAddInitialExcludedCellFails()
     {
@@ -413,14 +413,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        templateModel.addInitialExcludedCell(0, 1);
+        templateModel.addExcludedCell(0, 1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -434,14 +434,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        templateModel.addInitialExcludedCell(10, 1);
+        templateModel.addExcludedCell(10, 1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -455,14 +455,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        templateModel.addInitialExcludedCell(1, -1);
+        templateModel.addExcludedCell(1, -1);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -476,14 +476,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        templateModel.addInitialExcludedCell(1, 111);
+        templateModel.addExcludedCell(1, 111);
     }
 
     @org.junit.Test
@@ -497,14 +497,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        templateModel.addInitialExcludedCell(1, 1);
+        templateModel.addExcludedCell(1, 1);
     }
     // endregion
 
@@ -519,14 +519,14 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
-        org.junit.Assert.assertNull(templateModel.getInitialExcludedCellsAsJson());
+        org.junit.Assert.assertNull(templateModel.getExcludedCellsAsJson());
     }
     // endregion
 
@@ -542,7 +542,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -563,7 +563,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -584,7 +584,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -605,7 +605,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -628,7 +628,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 5          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -653,7 +653,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
@@ -679,7 +679,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rows                         => */ 5          ,
                 /* cols                         => */ 2          ,
                 /* generatedExcludedCellsAmount => */ 0          ,
-                /* initialExcludedCells         => */ null       ,
+                /* excludedCells                => */ null       ,
                 /* excludedRows                 => */ null       ,
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,

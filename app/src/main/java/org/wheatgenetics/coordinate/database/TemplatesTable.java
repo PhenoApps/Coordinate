@@ -122,7 +122,7 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME,
                 templateModel.getGeneratedExcludedCellsAmount());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
-                templateModel.getInitialExcludedCellsAsJson());
+                templateModel.getExcludedCellsAsJson());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
                 templateModel.getExcludedRowsAsJson());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,

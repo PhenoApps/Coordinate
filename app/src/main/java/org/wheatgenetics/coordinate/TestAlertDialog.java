@@ -92,12 +92,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 textBuilder.append("generatedExcludedCellsAmount=").append(
                     this.templateModel.getGeneratedExcludedCellsAmount());
                 {
-                    final java.lang.String excludeCellsAsJson =
-                        this.templateModel.getInitialExcludedCellsAsJson();
-                    if (null != excludeCellsAsJson)
+                    final java.lang.String excludedCellsAsJson =
+                        this.templateModel.getExcludedCellsAsJson();
+                    if (null != excludedCellsAsJson)
                     {
                         if (textBuilder.length() > 0) textBuilder.append('\n');
-                        textBuilder.append(excludeCellsAsJson);
+                        textBuilder.append(excludedCellsAsJson);
                     }
                 }
 
