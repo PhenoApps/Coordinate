@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.DisplayModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
@@ -18,6 +20,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
+implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Helper { public abstract void publishProgress(int col); }
@@ -160,6 +163,9 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
     // endregion
 
+    private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
+    { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
+
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean isExcludedRow(final int row)
     { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
@@ -167,9 +173,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     private boolean isExcludedCol(final int col)
     { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
-
-    private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
-    { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
 
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
@@ -231,6 +234,27 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     }
     // endregion
 
+    // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
+    @java.lang.Override
+    public int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
+    @java.lang.Override
+    public int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
+
+    @java.lang.Override
+    public boolean getColNumbering()
+    { assert null != this.templateModel; return this.templateModel.getColNumbering(); }
+
+    @java.lang.Override
+    public boolean getRowNumbering()
+    { assert null != this.templateModel; return this.templateModel.getRowNumbering(); }
+
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+    @android.support.annotation.IntRange(from = 1) int row,
+    @android.support.annotation.IntRange(from = 1) int col)
+    { return this.getEntryModel(row, col); }
+    // endregion
+
     // region Package Methods
     @java.lang.SuppressWarnings("DefaultLocale")
     java.lang.String name()
@@ -269,15 +293,6 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
     // region Public Methods
     public java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
-
-    public int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
-    public int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
-
-    public boolean getColNumbering()
-    { assert null != this.templateModel; return this.templateModel.getColNumbering(); }
-
-    public boolean getRowNumbering()
-    { assert null != this.templateModel; return this.templateModel.getRowNumbering(); }
 
     public java.lang.String getFirstOptionalFieldDatedValue()
     {

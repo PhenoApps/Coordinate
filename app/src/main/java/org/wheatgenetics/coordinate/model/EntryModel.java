@@ -6,10 +6,12 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.Utils
  */
 public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Model
+implements org.wheatgenetics.coordinate.model.ElementModel
 {
     // region Fields
     private final long gridId   ;
@@ -56,15 +58,17 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
     }
     // endregion
 
+    // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
+    @java.lang.Override public int getRowValue() { return this.getRow(); }
+    @java.lang.Override public int getColValue() { return this.getCol(); }
+    // endregion
+
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract java.lang.String getSeedExportValue();
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String getDNAExportValue(final java.lang.String sample_id)
     { return "BLANK_" + sample_id; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract java.lang.String getUserDefinedExportValue();
     // endregion
 

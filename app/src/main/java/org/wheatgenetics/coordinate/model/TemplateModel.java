@@ -9,7 +9,9 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
+ * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -291,6 +293,12 @@ implements java.lang.Cloneable
                 /* optionalFields               => */ optionalFields                        ,
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
+
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+    @android.support.annotation.IntRange(from = 1) int row,
+    @android.support.annotation.IntRange(from = 1) int col)
+    { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
     // endregion
 
     // region Package Methods

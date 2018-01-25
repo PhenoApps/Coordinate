@@ -8,10 +8,12 @@ package org.wheatgenetics.coordinate.model;
  * org.json.JSONException
  * org.json.JSONObject
  *
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
+class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable,
+org.wheatgenetics.coordinate.model.ElementModel
 {
     private static final java.lang.String ROW_NAME = "row", COL_NAME = "col";
 
@@ -42,6 +44,7 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
             new org.wheatgenetics.coordinate.model.RowOrCol(/* value => */ col));
     }
 
+    /** Creates. */
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
         this(
@@ -90,6 +93,11 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
         return 0 == rowCompareResult ? this.getCol().compareTo(cell.getCol()) : rowCompareResult;
     }
     // endregion
+
+    // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
+    @java.lang.Override public int getRowValue() { return this.getRow().getValue(); }
+    @java.lang.Override public int getColValue() { return this.getCol().getValue(); }
+    // endregion
     // endregion
 
     // region Package Methods
@@ -111,9 +119,9 @@ class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Co
         final org.json.JSONObject result = new org.json.JSONObject();
 
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.getRow().getValue());
+            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.getRowValue());
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.getCol().getValue());
+            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.getColValue());
 
         return result;
     }

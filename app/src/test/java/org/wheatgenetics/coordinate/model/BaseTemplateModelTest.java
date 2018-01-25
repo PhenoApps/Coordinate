@@ -2,12 +2,15 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -43,6 +46,11 @@ public class BaseTemplateModelTest extends java.lang.Object
             super(title, type, rows, cols, generatedExcludedCellsAmount,
                 colNumbering, rowNumbering, timestamp);
         }
+
+        @java.lang.Override
+        public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+        @android.support.annotation.IntRange(from = 1) int row,
+        @android.support.annotation.IntRange(from = 1) int col) { return null; }
     }
 
     // region Constructor Tests

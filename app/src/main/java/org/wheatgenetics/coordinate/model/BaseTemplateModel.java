@@ -12,11 +12,14 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.model.DisplayModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.model.Utils
  */
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
+implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     // region Fields
     private       java.lang.String                                title                       ;
@@ -148,6 +151,19 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
             else return false;
         else return false;
     }
+
+    // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
+    @java.lang.Override public int getRows() { return this.rows; }
+    @java.lang.Override public int getCols() { return this.cols; }
+
+    @java.lang.Override public boolean getColNumbering() { return this.colNumbering; }
+    @java.lang.Override public boolean getRowNumbering() { return this.rowNumbering; }
+
+    @java.lang.Override
+    public abstract org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+    @android.support.annotation.IntRange(from = 1) int row,
+    @android.support.annotation.IntRange(from = 1) int col);
+    // endregion
     // endregion
 
     // region Package Methods
@@ -174,9 +190,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     { this.type = templateType; }
 
 
-    public int getRows() { return this.rows; } public int getCols() { return this.cols; }
-
-
     public int getGeneratedExcludedCellsAmount() { return this.generatedExcludedCellsAmount; }
 
     public void setGeneratedExcludedCellsAmount(
@@ -187,11 +200,8 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
-    public boolean getColNumbering()                           { return this.colNumbering        ; }
-    public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
-
-    public boolean getRowNumbering()                           { return this.rowNumbering        ; }
-    public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+    public void setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
+    public void setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
 
 
     public long getTimestamp() { return this.timestamp; }
