@@ -67,9 +67,9 @@ package org.wheatgenetics.coordinate;
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
-org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
     // region Fields

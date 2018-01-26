@@ -9,7 +9,7 @@ package org.wheatgenetics.coordinate;
  * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
- * android.support.v4.app.DialogFragment
+ * android.support.v4.app.Fragment
  * android.view.LayoutInflater
  * android.view.View
  * android.view.ViewGroup
@@ -24,7 +24,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Elements
  * org.wheatgenetics.coordinate.R
  */
-public abstract class DisplayFragment extends android.support.v4.app.DialogFragment
+public abstract class DisplayFragment extends android.support.v4.app.Fragment
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler

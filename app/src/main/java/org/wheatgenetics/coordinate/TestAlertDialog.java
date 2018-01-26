@@ -212,7 +212,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
     // endregion
 
-    TestAlertDialog(final android.app.Activity activity) { super(activity);}
+    TestAlertDialog(final android.app.Activity activity) { super(activity); }
 
     // region Overridden Methods
     @java.lang.Override

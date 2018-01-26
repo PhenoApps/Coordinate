@@ -191,8 +191,8 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 
     NavigationItemSelectedListener(final android.app.Activity activity,
     final java.lang.String versionName, final boolean soundOn,
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ,
-    final android.view.View.OnClickListener                        versionOnClickListener)
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
+    final android.view.View.OnClickListener                     versionOnClickListener)
     {
         super();
 
