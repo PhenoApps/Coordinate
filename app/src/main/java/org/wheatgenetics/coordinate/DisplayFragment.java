@@ -41,19 +41,14 @@ public abstract class DisplayFragment extends android.support.v4.app.DialogFragm
 
     // region Protected Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected boolean setHandler(final android.content.Context context)
-    {
-        final boolean success = true;
-        if (context instanceof org.wheatgenetics.coordinate.DisplayFragment.Handler)
-        {
-            this.handler = (org.wheatgenetics.coordinate.DisplayFragment.Handler) context;
-            return success;
-        }
-        else return !success;
-    }
+    protected abstract boolean setHandler(final android.content.Context context);
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract void allocateElements(final int lastRow, final int lastCol);
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    { assert null != this.handler; this.handler.toggle(elementModel); }
     // endregion
 
     // region Overridden Methods

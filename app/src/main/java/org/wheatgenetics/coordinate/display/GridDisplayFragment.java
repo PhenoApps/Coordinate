@@ -60,7 +60,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Methods
     @java.lang.Override
     public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { assert null != this.handler; this.handler.toggle(elementModel); }
+    { super.toggle(elementModel); }
 
     @java.lang.Override
     public void activate(final org.wheatgenetics.coordinate.display.GridElement gridElement)
