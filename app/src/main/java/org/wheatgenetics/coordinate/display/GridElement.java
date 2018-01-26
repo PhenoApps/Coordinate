@@ -34,19 +34,10 @@ implements android.view.View.OnClickListener
             this);
     }
 
-    private void setBackgroundResource()
-    {
-        this.setBackgroundResource(((org.wheatgenetics.coordinate.model.EntryModel)
-            this.elementModel).backgroundResource());
-    }
-
     private void setOnClickListener(final android.view.View.OnClickListener onClickListener)
     { this.getTextView().setOnClickListener(onClickListener); }
 
     private void setOnClickListener() { this.setOnClickListener(this); }
-
-    private void toggle()
-    { this.setBackgroundResource(); this.getHandler().toggle(this.elementModel); }
 
     private void exclude()
     {
@@ -113,6 +104,13 @@ implements android.view.View.OnClickListener
                 (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel);
             this.setOnClickListener(); this.toggle();
         }
+    }
+
+    @java.lang.Override
+    protected void setBackgroundResource()
+    {
+        this.setBackgroundResource(((org.wheatgenetics.coordinate.model.EntryModel)
+            this.elementModel).backgroundResource());
     }
 
     // region android.view.View.OnClickListener Overridden Method

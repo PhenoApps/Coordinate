@@ -32,18 +32,28 @@ implements android.view.View.OnLongClickListener
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected org.wheatgenetics.coordinate.Element.Handler getHandler() { return this.handler; }
 
+
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract void respondToLongClick();
+
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void setBackgroundResource(final int resId)
     { assert null != this.textView; this.textView.setBackgroundResource(resId); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected abstract void setBackgroundResource();
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected void toggle()
+    { this.setBackgroundResource(); this.getHandler().toggle(this.elementModel); }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected Element(final org.wheatgenetics.coordinate.model.ElementModel elementModel,
-    final android.widget.TextView textView,
-    final org.wheatgenetics.coordinate.Element.Handler handler)
+    protected Element(
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel,
+    final android.widget.TextView                         textView    ,
+    final org.wheatgenetics.coordinate.Element.Handler    handler     )
     {
         super();
 

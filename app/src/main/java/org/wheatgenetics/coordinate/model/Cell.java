@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable,
+public class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable,
 org.wheatgenetics.coordinate.model.ElementModel
 {
     private static final java.lang.String ROW_NAME = "row", COL_NAME = "col";
