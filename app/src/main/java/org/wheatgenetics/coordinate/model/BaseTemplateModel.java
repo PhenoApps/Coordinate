@@ -1,11 +1,11 @@
 package org.wheatgenetics.coordinate.model;
 
 /**
- * BaseTemplateModel and TemplateModel used to be one class that used
+ * BaseTemplateModel, DisplayTemplateModel and TemplateModel used to be one class that used
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.  The one class was split into
- * two in order to do as much local unit testing as possible (BaseTemplateModelTest) and as little
- * instrumented testing as possible (TemplateModelTest).  (BaseTemplateModel does not use
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields while TemplateModel does.)
+ * three partly to do as much local unit testing as possible (BaseTemplateModelTest) and as little
+ * instrumented testing as possible (TemplateModelTest).  (BaseTemplateModel does not use org.json.*
+ * while DisplayTemplateModel and TemplateModel do.)
  *
  * Uses:
  * android.support.annotation.IntRange

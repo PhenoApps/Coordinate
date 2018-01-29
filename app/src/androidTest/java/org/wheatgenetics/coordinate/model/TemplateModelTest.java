@@ -129,38 +129,13 @@ public class TemplateModelTest extends java.lang.Object
     // endregion
 
     // region Overridden Method Tests
-    // region toString() Overridden Method Tests
-    @org.junit.Test
-    public void formatStringSucceeds()
-    {
-        final java.lang.String expectedFormatString = "%s [id: 09, title=testTitle, type=1, ro" +
-            "ws=5, cols=2, generatedExcludedCellsAmount=0, colNumbering=true, rowNumbering=fal" +
-            "se, stamp=0, options=, excludedCells=%s, excludedRows=%s, excludedCols=%s]";
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ 9          ,
-                /* title                        => */ "testTitle",
-                /* code                         => */ 1          ,
-                /* rows                         => */ 5          ,
-                /* cols                         => */ 2          ,
-                /* generatedExcludedCellsAmount => */ 0          ,
-                /* excludedCells                => */ null       ,
-                /* excludedRows                 => */ null       ,
-                /* excludedCols                 => */ null       ,
-                /* colNumbering                 => */ 1          ,
-                /* rowNumbering                 => */ 0          ,
-                /* optionalFields               => */ null       ,
-                /* timestamp                    => */ 0          );
-        org.junit.Assert.assertEquals(templateModel.formatString(), expectedFormatString);
-    }
-
     @org.junit.Test
     public void toStringSucceeds()
     {
         final java.lang.String expectedString =
             "TemplateModel [id: 03, title=testTitle, type=1, rows=5, cols=2, generatedExcludedCel" +
-            "lsAmount=0, colNumbering=true, rowNumbering=false, stamp=0, options=, excludedCells=" +
-            "null, excludedRows=null, excludedCols=null]";
+            "lsAmount=0, colNumbering=true, rowNumbering=false, stamp=0, excludedCells=null, excl" +
+                "udedRows=null, excludedCols=null, options=]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 3          ,
@@ -178,7 +153,6 @@ public class TemplateModelTest extends java.lang.Object
                 /* timestamp                    => */ 0          );
         org.junit.Assert.assertEquals(templateModel.toString(), expectedString);
     }
-    // endregion
 
     @org.junit.Test
     public void equalsAndHashCodeSucceedAndFail()
