@@ -11,13 +11,14 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 public class TemplateModel extends org.wheatgenetics.coordinate.model.BaseTemplateModel
-implements java.lang.Cloneable
+implements java.lang.Cloneable, org.wheatgenetics.coordinate.model.DisplayModel
 {
     // region Fields
     private org.wheatgenetics.coordinate.model.Cells     excludedCellsInstance = null;
@@ -294,11 +295,13 @@ implements java.lang.Cloneable
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
 
+    // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Method
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
     @android.support.annotation.IntRange(from = 1) int row,
     @android.support.annotation.IntRange(from = 1) int col)
     { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
+    // endregion
     // endregion
 
     // region Package Methods

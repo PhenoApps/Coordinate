@@ -12,14 +12,11 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.DisplayModel
- * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.model.Utils
  */
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
-implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     // region Fields
     private       java.lang.String                                title                       ;
@@ -151,22 +148,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             else return false;
         else return false;
     }
-
-    // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
-    @java.lang.Override public int getRows() { return this.rows; }
-    @java.lang.Override public int getCols() { return this.cols; }
-
-    @java.lang.Override public boolean getColNumbering() { return this.colNumbering; }
-    @java.lang.Override public boolean getRowNumbering() { return this.rowNumbering; }
-
-    @java.lang.Override
-    public abstract org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-    @android.support.annotation.IntRange(from = 1) int row,
-    @android.support.annotation.IntRange(from = 1) int col);
-    // endregion
     // endregion
 
-    // region Package Methods
     @java.lang.SuppressWarnings("DefaultLocale")
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
@@ -177,7 +160,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.getCols(), this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
             this.getRowNumbering(), this.getTimestamp());
     }
-    // endregion
 
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }
@@ -190,6 +172,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     { this.type = templateType; }
 
 
+    public int getRows() { return this.rows; } public int getCols() { return this.cols; }
+
+
     public int getGeneratedExcludedCellsAmount() { return this.generatedExcludedCellsAmount; }
 
     public void setGeneratedExcludedCellsAmount(
@@ -200,8 +185,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
 
-    public void setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
-    public void setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+    public boolean getColNumbering()                           { return this.colNumbering        ; }
+    public void    setColNumbering(final boolean colNumbering) { this.colNumbering = colNumbering; }
+
+    public boolean getRowNumbering()                           { return this.rowNumbering        ; }
+    public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
 
 
     public long getTimestamp() { return this.timestamp; }

@@ -46,11 +46,6 @@ public class BaseTemplateModelTest extends java.lang.Object
             super(title, type, rows, cols, generatedExcludedCellsAmount,
                 colNumbering, rowNumbering, timestamp);
         }
-
-        @java.lang.Override
-        public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-        @android.support.annotation.IntRange(from = 1) int row,
-        @android.support.annotation.IntRange(from = 1) int col) { return null; }
     }
 
     // region Constructor Tests
