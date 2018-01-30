@@ -24,8 +24,9 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     }
 
     // region Fields
-    private final android.app.Activity                                    activity;
-    private final org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler ;
+    private final android.app.Activity                                    activity   ;
+    private final int                                                     requestCode;
+    private final org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler    ;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
@@ -35,9 +36,9 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
         setExcludesOptionalFieldsNumberingAlertDialog = null;
     // endregion
 
-    public TemplateCreator(final android.app.Activity activity,
+    public TemplateCreator(final android.app.Activity activity, final int requestCode,
     final org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
+    { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler Overridden Method
@@ -48,7 +49,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog =
                 new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
-                    this.activity, this);
+                    this.activity, this.requestCode, this);
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion

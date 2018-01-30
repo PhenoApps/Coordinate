@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.Intent
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
@@ -72,6 +73,8 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.Exporter.Helper
 {
+    private final static int NAVIGATION_ITEM_SELECTED_LISTENER = 10, GRID_CREATOR = 20;
+
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
@@ -233,7 +236,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     private void createGrid()
     {
         if (null == this.gridCreator)
-            this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(this, this);
+            this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(
+                this, org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR, this);
         this.gridCreator.create();
     }
 
@@ -490,7 +494,9 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     assert null != navigationView; navigationView.setNavigationItemSelectedListener(
                         this.navigationItemSelectedListener =
                             new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
-                                /* activity    => */ this                               ,
+                                /* activity    => */ this,
+                                /* requestCode => */ org.wheatgenetics.coordinate
+                                    .MainActivity.NAVIGATION_ITEM_SELECTED_LISTENER,
                                 /* versionName => */ versionName                        ,
                                 /* soundOn     => */ this.sharedPreferences.getSoundOn(),
                                 /* handler     => */ new org.wheatgenetics.coordinate
@@ -644,11 +650,26 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     protected void onActivityResult(final int requestCode, final int resultCode,
     final android.content.Intent data)
     {
-        if (null != this.dataEntryFragment)
-            this.dataEntryFragment.setEntry(org.wheatgenetics.javalib.Utils.replaceIfNull(
-                org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
-                    requestCode, resultCode, data),
-                "null"));
+        final java.lang.String barcodeScannerResult =
+            org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
+                requestCode, resultCode, data);
+        if (null != barcodeScannerResult)
+        {
+            assert null != this.dataEntryFragment;
+            this.dataEntryFragment.setEntry(barcodeScannerResult);
+        }
+        else if (android.app.Activity.RESULT_OK == resultCode)
+        {
+            assert null != data;
+            switch (requestCode)
+            {
+                case org.wheatgenetics.coordinate.MainActivity.NAVIGATION_ITEM_SELECTED_LISTENER:
+                    //data.getExtras()
+                    break;
+
+                case org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR: break;
+            }
+        }
     }
 
     @java.lang.Override

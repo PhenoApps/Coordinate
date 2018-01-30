@@ -15,6 +15,7 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
 {
     // region Fields
     private final android.app.Activity                             activity     ;
+    private final int                                              requestCode  ;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
@@ -22,8 +23,11 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
     // endregion
 
     public SetExcludesOptionalFieldsNumberingAlertDialogTester(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    { super(); this.activity = activity; this.templateModel = templateModel; }
+    final int requestCode, final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        super();
+        this.activity = activity; this.requestCode = requestCode; this.templateModel = templateModel;
+    }
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler Overridden Method
     @java.lang.Override
@@ -38,7 +42,8 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
     {
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog =
-                new SetExcludesOptionalFieldsNumberingAlertDialog(this.activity, this);
+                new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
+                    this.activity, this.requestCode, this);
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
 }

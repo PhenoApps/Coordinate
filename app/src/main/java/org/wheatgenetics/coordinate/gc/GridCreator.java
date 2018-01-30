@@ -39,8 +39,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     public interface Handler { public abstract void handleGridCreated(long gridId); }
 
     // region Fields
-    private final android.app.Activity                                activity;
-    private final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler ;
+    private final android.app.Activity                                activity   ;
+    private final int                                                 requestCode;
+    private final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler    ;
 
     private org.wheatgenetics.coordinate.database.GridsTable   gridsTableInstance   = null;
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;
@@ -109,9 +110,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
     // endregion
 
-    public GridCreator(final android.app.Activity activity,
+    public GridCreator(final android.app.Activity activity, final int requestCode,
     final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
+    { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler Overridden Methods
@@ -192,8 +193,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.Override
     public void chooseNew()
     {
-        if (null == this.templateCreator) this.templateCreator =
-            new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity, this);
+        if (null == this.templateCreator)
+            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this.activity, this.requestCode, this);
         this.templateCreator.create();
     }
     // endregion

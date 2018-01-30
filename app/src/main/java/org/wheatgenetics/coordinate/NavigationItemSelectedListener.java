@@ -62,6 +62,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 
     // region Fields
     private final android.app.Activity                                                activity   ;
+    private final int                                                                 requestCode;
     private final java.lang.String                                                    versionName;
     private final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ;
     private final android.view.View.OnClickListener                        versionOnClickListener;
@@ -189,17 +190,16 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
 
-    NavigationItemSelectedListener(final android.app.Activity activity,
+    NavigationItemSelectedListener(final android.app.Activity activity, final int requestCode,
     final java.lang.String versionName, final boolean soundOn,
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
     final android.view.View.OnClickListener                     versionOnClickListener)
     {
         super();
 
-        this.activity = activity; this.versionName            = versionName           ;
-        this.handler  = handler ; this.versionOnClickListener = versionOnClickListener;
-
-        this.soundOn = soundOn;
+        this.activity               = activity              ; this.requestCode = requestCode;
+        this.versionName            = versionName           ; this.handler     = handler    ;
+        this.versionOnClickListener = versionOnClickListener; this.soundOn     = soundOn    ;
     }
 
     // region Overridden Methods
@@ -255,8 +255,9 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                         }); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_create_template:
-                if (null == this.templateCreator) this.templateCreator =
-                    new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity, this);
+                if (null == this.templateCreator)
+                    this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                        this.activity, this.requestCode, this);
                 this.templateCreator.create(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:

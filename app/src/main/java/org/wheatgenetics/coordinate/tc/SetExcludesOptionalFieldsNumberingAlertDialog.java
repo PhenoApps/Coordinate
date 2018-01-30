@@ -29,6 +29,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     interface Handler { public abstract void handleSetDone(); }
 
     // region Fields
+    private final int requestCode;
     private final
         org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
             handler;
@@ -54,8 +55,9 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
     private void exclude()
     {
-        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludeAlertDialog(this.activity());
+        if (null == this.excludeAlertDialog)
+            this.excludeAlertDialog = new org.wheatgenetics.coordinate.tc.ExcludeAlertDialog(
+                this.activity(), this.requestCode);
         this.excludeAlertDialog.show(this.templateModel);
     }
 
@@ -71,8 +73,9 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     // endregion
 
     SetExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
+    final int requestCode,
     final org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
-        handler) { super(activity); this.handler = handler; }
+        handler) { super(activity); this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
     @java.lang.Override

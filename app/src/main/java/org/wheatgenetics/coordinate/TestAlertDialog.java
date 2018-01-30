@@ -39,6 +39,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private static enum OptionalFieldAlertDialogUnderTest { NEITHER, ADD, CHECK_AND_ADD }
 
     // region Fields
+    private final int requestCode;
+
     private android.widget.TextView textView;
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -172,7 +174,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.excludeAlertDialogTester) this.excludeAlertDialogTester =
             new org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester(
-                this.activity(), this.templateModel);
+                this.activity(), this.requestCode, this.templateModel);
         this.excludeAlertDialogTester.testExclude();
     }
 
@@ -189,7 +191,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialogTester)
             this.setExcludesOptionalFieldsNumberingAlertDialogTester = new
                 org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester(
-                    this.activity(), this.templateModel);
+                    this.activity(), this.requestCode, this.templateModel);
         this.setExcludesOptionalFieldsNumberingAlertDialogTester
             .testSetExcludesOptionalFieldsNumbering();
     }
@@ -206,13 +208,15 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private void createTemplate()
     {
-        if (null == this.templateCreator) this.templateCreator =
-            new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity(), this);
+        if (null == this.templateCreator)
+            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this.activity(), this.requestCode, this);
         this.templateCreator.create();
     }
     // endregion
 
-    TestAlertDialog(final android.app.Activity activity) { super(activity); }
+    TestAlertDialog(final android.app.Activity activity, final int requestCode)
+    { super(activity); this.requestCode = requestCode; }
 
     // region Overridden Methods
     @java.lang.Override

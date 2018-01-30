@@ -19,6 +19,8 @@ package org.wheatgenetics.coordinate.tc;
 class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Fields
+    private final int requestCode;
+
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
@@ -107,7 +109,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     }
     // endregion
 
-    ExcludeAlertDialog(final android.app.Activity activity) { super(activity); }
+    ExcludeAlertDialog(final android.app.Activity activity, final int requestCode)
+    { super(activity); this.requestCode = requestCode; }
 
     @java.lang.Override
     public void configure()
