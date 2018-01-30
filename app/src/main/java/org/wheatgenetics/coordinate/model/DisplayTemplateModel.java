@@ -34,6 +34,22 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             return 1 == numbering;
     }
 
+    private static org.wheatgenetics.coordinate.model.RowOrCols makeFromJSON(java.lang.String json,
+    final int maxValue)
+    {
+        if (null == json)
+            return null;
+        else
+        {
+            json = json.trim();
+            if (json.length() <= 0)
+                return null;
+            else
+                return new org.wheatgenetics.coordinate.model.RowOrCols(
+                    /* json => */ json, /* maxValue => */ maxValue);
+        }
+    }
+
     private org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
         if (null == this.excludedCellsInstance)
@@ -72,9 +88,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         super(id, title, type, rows, cols, generatedExcludedCellsAmount,
             colNumbering, rowNumbering, timestamp);
-        this.excludedCellsInstance         = excludedCells ;
-        this.excludedRowsInstance          = excludedRows  ;
-        this.excludedColsInstance          = excludedCols  ;
+        this.excludedCellsInstance = excludedCells;
+        this.excludedRowsInstance  = excludedRows ;
+        this.excludedColsInstance  = excludedCols ;
     }
 
     /** Called by clone() and second TemplateModel constructor. */
@@ -91,9 +107,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         super(title, type, rows, cols, generatedExcludedCellsAmount,
             colNumbering, rowNumbering, timestamp);
-        this.excludedCellsInstance         = excludedCells ;
-        this.excludedRowsInstance          = excludedRows  ;
-        this.excludedColsInstance          = excludedCols  ;
+        this.excludedCellsInstance = excludedCells;
+        this.excludedRowsInstance  = excludedRows ;
+        this.excludedColsInstance  = excludedCols ;
     }
 
     /** Called by fourth TemplateModel constructor. */
@@ -105,14 +121,15 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
     @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
     @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    java.lang.String excludedCells, java.lang.String excludedRows, java.lang.String excludedCols,
+    java.lang.String excludedCells,
+    final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  rowNumbering,
                                                            final long timestamp   )
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
             generatedExcludedCellsAmount,
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(colNumbering), // TODO: Move valid()?
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(rowNumbering), timestamp);
 
         if (null != excludedCells)
@@ -125,21 +142,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                     /* maxCol => */ this.getCols());
         }
 
-        if (null != excludedRows)
-        {
-            excludedRows = excludedRows.trim();
-            if (excludedRows.length() > 0)
-                this.excludedRowsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
-                    /* json => */ excludedRows, /* maxValue => */ this.getRows());
-        }
-
-        if (null != excludedCols)
-        {
-            excludedCols = excludedCols.trim();
-            if (excludedCols.length() > 0)
-                this.excludedColsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
-                    /* json => */ excludedCols, /* maxValue => */ this.getCols());
-        }
+        this.excludedRowsInstance =
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
+                /* json => */ excludedRows, /* maxValue => */ this.getRows());
+        this.excludedColsInstance =
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
+                /* json => */ excludedCols, /* maxValue => */ this.getCols());
     }
     // endregion
 
@@ -259,7 +267,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             (org.wheatgenetics.coordinate.model.Cells) this.excludedCellsInstance.clone();
     }
 
-    org.wheatgenetics.coordinate.model.Cells getExcludedCells() // TODO: Restrict?
+    org.wheatgenetics.coordinate.model.Cells getExcludedCells()
     { return this.excludedCellsInstance; }
 
 
@@ -309,6 +317,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     public java.lang.String getExcludedColsAsJson()
     { return null == this.excludedColsInstance ? null : this.excludedColsInstance.json(); }
+
 
     // region checkedItems Public Methods
     public boolean[] rowCheckedItems()
