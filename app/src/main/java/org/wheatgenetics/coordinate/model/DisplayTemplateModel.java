@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.os.Bundle
  * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.RestrictTo.Scope.SUBCLASSES
@@ -18,6 +19,8 @@ package org.wheatgenetics.coordinate.model;
 public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.BaseTemplateModel
 implements org.wheatgenetics.coordinate.model.DisplayModel
 {
+    private static final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY = "excludedCells";
+
     // region Fields
     private org.wheatgenetics.coordinate.model.Cells     excludedCellsInstance = null;
     private org.wheatgenetics.coordinate.model.RowOrCols excludedRowsInstance  = null,
@@ -32,6 +35,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             throw new java.lang.IllegalArgumentException();
         else
             return 1 == numbering;
+    }
+
+    private void setExcludedCells(java.lang.String json)
+    {
+        if (null == json)
+            this.excludedCellsInstance = null;
+        else
+        {
+            json = json.trim();
+            if (json.length() <= 0)
+                this.excludedCellsInstance = null;
+            else
+                this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
+                    /* json   => */ json          ,
+                    /* maxRow => */ this.getRows(),
+                    /* maxCol => */ this.getCols());
+        }
     }
 
     private static org.wheatgenetics.coordinate.model.RowOrCols makeFromJSON(java.lang.String json,
@@ -121,7 +141,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
     @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
     @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    java.lang.String excludedCells,
+    final java.lang.String excludedCells,
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  rowNumbering,
@@ -132,15 +152,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(rowNumbering), timestamp);
 
-        if (null != excludedCells)
-        {
-            excludedCells = excludedCells.trim();
-            if (excludedCells.length() > 0)
-                this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
-                    /* json   => */ excludedCells ,
-                    /* maxRow => */ this.getRows(),
-                    /* maxCol => */ this.getCols());
-        }
+        this.setExcludedCells(excludedCells);
 
         this.excludedRowsInstance =
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
@@ -346,5 +358,29 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         }
     }
     // endregion
+
+
+    public android.os.Bundle getState()
+    {
+        final android.os.Bundle result = new android.os.Bundle();
+
+        result.putInt("rows", this.getRows()); result.putInt("cols", this.getCols());
+        result.putString(
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY,
+            this.getExcludedCellsAsJson()                                                    );
+        result.putString ("excludedRows", this.getExcludedRowsAsJson());
+        result.putString ("excludedCols", this.getExcludedColsAsJson());
+        result.putBoolean("colNumbering", this.getColNumbering      ());
+        result.putBoolean("rowNumbering", this.getRowNumbering      ());
+
+        return result;
+    }
+
+    public void putState(final android.os.Bundle bundle)
+    {
+        assert null != bundle;
+        this.setExcludedCells(bundle.getString(
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY));
+    }
     // endregion
 }
