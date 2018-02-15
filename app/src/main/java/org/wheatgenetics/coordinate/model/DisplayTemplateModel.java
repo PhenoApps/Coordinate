@@ -8,16 +8,12 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo.Scope.SUBCLASSES
  *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
- * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
- * org.wheatgenetics.coordinate.model.DisplayModel
- * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.BaseTemplateModel
-implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     // region Constants
     public static final java.lang.String
@@ -259,14 +255,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                 /* rowNumbering                 => */ this.getRowNumbering()                ,
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
-
-    // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Method
-    @java.lang.Override
-    public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-    @android.support.annotation.IntRange(from = 1) int row,
-    @android.support.annotation.IntRange(from = 1) int col)
-    { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
-    // endregion
     // endregion
 
     // region Package Methods
@@ -383,7 +371,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         return result;
     }
 
-    public void putState(final android.os.Bundle bundle)
+    public void setExcludedCells(final android.os.Bundle bundle)
     {
         assert null != bundle;
         this.setExcludedCells(bundle.getString(
