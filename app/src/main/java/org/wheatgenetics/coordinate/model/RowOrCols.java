@@ -45,6 +45,7 @@ class RowOrCols extends java.lang.Object
     RowOrCols(@android.support.annotation.IntRange(from = 1) final int maxValue)
     { this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(maxValue)); }
 
+    /** Creates. */
     RowOrCols(                                     final java.lang.String json    ,
     @android.support.annotation.IntRange(from = 1) final int              maxValue)
     {

@@ -81,6 +81,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
 
+    /** Creates. */
     Cells(                                         final java.lang.String json  ,
     @android.support.annotation.IntRange(from = 1) final int              maxRow,
     @android.support.annotation.IntRange(from = 1) final int              maxCol)

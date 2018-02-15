@@ -45,7 +45,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
-    { return new org.wheatgenetics.coordinate.model.RowOrCol(this.getValue()); }
+    { return new org.wheatgenetics.coordinate.model.RowOrCol(this); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override

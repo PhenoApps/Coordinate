@@ -170,7 +170,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         return java.lang.String.format(
             super.formatString() + ", excludedCells=%s, excludedRows=%s, excludedCols=%s",
-            "%s", this.excludedCellsInstance, this.excludedRowsInstance, this.excludedColsInstance);
+            "%s", this.getExcludedCells(), this.excludedRowsInstance, this.excludedColsInstance);
     }
 
     @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
@@ -308,10 +308,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Public Methods
-    public void addExcludedCell(
+    public void addExcludedCell(                                              // TODO: Remove later?
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { this.excludedCells().add(row, col); }
+    { this.excludedCells().add(row, col); }                         // TODO: Remove excludedCells()?
 
     public java.lang.String getExcludedCellsAsJson()
     { return null == this.excludedCellsInstance ? null : this.excludedCellsInstance.json(); }

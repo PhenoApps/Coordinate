@@ -62,7 +62,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Constructors
-    /** Called by first and fourth TemplateModel constructors. */
+    /** Called by first and third DisplayTemplateModel constructors. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
@@ -77,7 +77,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
         this.timestamp = timestamp;
     }
 
-    /** Called by second TemplateModel constructor. */
+    /** Called by second DisplayTemplateModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
@@ -108,7 +108,8 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
                     (org.wheatgenetics.coordinate.model.BaseTemplateModel) object;
 
                 {
-                    final java.lang.String myTitle = this.getTitle(),
+                    final java.lang.String
+                        myTitle   = this.getTitle()             ,
                         yourTitle = baseTemplateModel.getTitle();
                     if (null == myTitle && null != yourTitle)
                         return false;
@@ -136,8 +137,8 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
                 if (this.getRows() != baseTemplateModel.getRows()
                 ||  this.getCols() != baseTemplateModel.getCols()) return false;
 
-                if (this.generatedExcludedCellsAmount
-                !=  baseTemplateModel.generatedExcludedCellsAmount)
+                if (this.getGeneratedExcludedCellsAmount()
+                !=  baseTemplateModel.getGeneratedExcludedCellsAmount())
                     return false;
 
                 if (this.getColNumbering() != baseTemplateModel.getColNumbering()) return false;

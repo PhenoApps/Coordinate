@@ -30,7 +30,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
-    final android.widget.TextView textView                            );
+    final android.widget.TextView                         textView    );
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected android.app.Activity getActivity() { return this.activity; }

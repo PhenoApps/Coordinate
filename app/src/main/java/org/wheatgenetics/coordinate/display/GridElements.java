@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.display;
 /**
  * Uses:
  * android.app.Activity
+ * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -22,7 +23,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     final int activeRow, final int activeCol,
     final org.wheatgenetics.coordinate.display.GridElement.Handler handler)
     {
-        super(activity, handler);
+        super(activity, handler);                                   // TODO: Should handler be this?
         this.allocate(rows, cols, activeRow, activeCol);
     }
 
@@ -30,13 +31,13 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     @java.lang.Override
     protected org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
-    final android.widget.TextView textView                            )
+    final android.widget.TextView                         textView    )
     {
         return new org.wheatgenetics.coordinate.display.GridElement(
             /* context    => */ this.getActivity()                                          ,
             /* entryModel => */ (org.wheatgenetics.coordinate.model.EntryModel) elementModel,
             /* textView   => */ textView                                                    ,
-            /* handler    => */ this                                                        ,
+            /* handler    => */ this                                                        ,//TODO:?
             /* activeRow  => */ this.activeRow                                              ,
             /* activeCol  => */ this.activeCol                                              );
     }
@@ -55,7 +56,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
             {
                 if (this.activeRow > -1 && this.activeCol > -1)
                 {
-                    ((org.wheatgenetics.coordinate.display.GridElement)
+                    ((org.wheatgenetics.coordinate.display.GridElement)                    // TODO:?
                         this.getElementArray()[this.activeRow][this.activeCol]).inactivate();
                 }
 

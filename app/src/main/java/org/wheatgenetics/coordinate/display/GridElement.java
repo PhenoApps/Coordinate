@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate.display;
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
- * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  *
@@ -114,8 +113,7 @@ implements android.view.View.OnClickListener
     }
 
     // region android.view.View.OnClickListener Overridden Method
-    @java.lang.Override
-    public void onClick(final android.view.View v) { this.activate(); }
+    @java.lang.Override public void onClick(final android.view.View v) { this.activate(); }
     // endregion
     // endregion
 
