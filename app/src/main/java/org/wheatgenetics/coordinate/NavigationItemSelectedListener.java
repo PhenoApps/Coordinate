@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.app.Activity
  * android.content.res.Resources
+ * android.os.Bundle
  * android.support.annotation.NonNull
  * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
  * android.view.MenuItem
@@ -352,5 +353,10 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     // endregion
     // endregion
 
+    // region Package Methods
+    void setExcludedCells(final android.os.Bundle bundle)
+    { if (null != this.templateCreator) this.templateCreator.setExcludedCells(bundle); }
+
     boolean getSoundOn() { return this.soundOn; }
+    // endregion
 }

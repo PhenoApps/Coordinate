@@ -201,10 +201,15 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
     // endregion
 
+    // region Public Methods
     public void create()
     {
         if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
             new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
         this.getTemplateChoiceAlertDialog.show();
     }
+
+    public void setExcludedCells(final android.os.Bundle bundle)
+    { if (null != this.templateCreator) this.templateCreator.setExcludedCells(bundle); }
+    // endregion
 }

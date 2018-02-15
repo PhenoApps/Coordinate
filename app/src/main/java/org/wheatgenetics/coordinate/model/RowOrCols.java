@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class RowOrCols extends java.lang.Object
+public class RowOrCols extends java.lang.Object
 {
     // region Fields
     private final org.wheatgenetics.coordinate.model.RowOrCol                    maxRowOrCol;
@@ -46,7 +46,7 @@ class RowOrCols extends java.lang.Object
     { this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(maxValue)); }
 
     /** Creates. */
-    RowOrCols(                                     final java.lang.String json    ,
+    public RowOrCols(                              final java.lang.String json    ,
     @android.support.annotation.IntRange(from = 1) final int              maxValue)
     {
         this(maxValue);
@@ -166,9 +166,10 @@ class RowOrCols extends java.lang.Object
             }
         }
     }
+    // endregion
 
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    boolean contains(@android.support.annotation.IntRange(from = 1) final int candidateValue)
+    public boolean contains(@android.support.annotation.IntRange(from = 1) final int candidateValue)
     {
         if (null == this.rowOrColTreeSetInstance)
             return false;
@@ -186,5 +187,4 @@ class RowOrCols extends java.lang.Object
             return this.rowOrColTreeSetInstance.contains(candidateRowOrCol);
         }
     }
-    // endregion
 }

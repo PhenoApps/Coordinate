@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
+ * android.os.Bundle
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
@@ -61,6 +62,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     // endregion
     // endregion
 
+    // region Public Methods
     public void create()
     {
         if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
@@ -69,4 +71,8 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
         this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined();
         this.assignTitleRowsColsAlertDialog.show(this.templateModel);
     }
+
+    public void setExcludedCells(final android.os.Bundle bundle)
+    { if (null != this.templateModel) this.templateModel.setExcludedCells(bundle); }
+    // endregion
 }

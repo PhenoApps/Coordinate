@@ -35,7 +35,7 @@ org.wheatgenetics.coordinate.model.ElementModel
     }
 
     /** Creates. */
-    Cell(
+    public Cell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     {

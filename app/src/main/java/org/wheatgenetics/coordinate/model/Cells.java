@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Cell
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-class Cells extends java.lang.Object implements java.lang.Cloneable
+public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Fields
     private final org.wheatgenetics.coordinate.model.Cell                    maxCell;
@@ -29,13 +29,6 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         return this.cellTreeSetInstance;
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
-    {
-        return null == cell ? false : this.cellTreeSet().add(
-            cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */);
-    }
-
     private void add(final java.lang.Object object)
     {
         if (null != object)
@@ -47,22 +40,6 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
                 this.add(cell);
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
-    }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    private boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
-    {
-        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
-        // that it can't be present so contains() returns false.  (The check is actually not
-        // necessary: the code that follows the following code will also return false since an
-        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
-        // necessary but to (potentially) save time.)
-        assert null != candidateCell;
-        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
-        catch (final java.lang.IllegalArgumentException e) { return false; }
-
-        return null == this.cellTreeSetInstance ? false :
-            this.cellTreeSetInstance.contains(candidateCell);
     }
     // endregion
 
@@ -82,7 +59,7 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
 
     /** Creates. */
-    Cells(                                         final java.lang.String json  ,
+    public Cells(                                  final java.lang.String json  ,
     @android.support.annotation.IntRange(from = 1) final int              maxRow,
     @android.support.annotation.IntRange(from = 1) final int              maxCol)
     {
@@ -211,7 +188,46 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    java.lang.String json()
+    boolean contains(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { return this.contains(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+
+    void add(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+    // endregion
+
+    // region Public Methods
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
+    {
+        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
+        // that it can't be present so contains() returns false.  (The check is actually not
+        // necessary: the code that follows the following code will also return false since an
+        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
+        // necessary but to (potentially) save time.)
+        assert null != candidateCell;
+        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
+        catch (final java.lang.IllegalArgumentException e) { return false; }
+
+        return null == this.cellTreeSetInstance ? false :
+            this.cellTreeSetInstance.contains(candidateCell);
+    }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
+    {
+        return null == cell ? false : this.cellTreeSet().add(
+            cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */);
+    }
+
+    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    public boolean remove(final org.wheatgenetics.coordinate.model.Cell cell)
+    { return null == this.cellTreeSetInstance ? false : this.cellTreeSetInstance.remove(cell); }
+
+    public java.lang.String json()
     {
         if (null == this.cellTreeSetInstance)
             return null;
@@ -232,15 +248,5 @@ class Cells extends java.lang.Object implements java.lang.Cloneable
             }
         }
     }
-
-    boolean contains(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
-    { return this.contains(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
-
-    void add(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
-    { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
     // endregion
 }

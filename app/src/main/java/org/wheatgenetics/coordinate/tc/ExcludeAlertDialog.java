@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.content.Intent
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -12,6 +13,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.tc.ExcludeCellsActivity
  * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
  * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
@@ -25,6 +27,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
         excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
+    private android.content.Intent intentInstance = null;
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
         generatedExcludedCellsAlertDialog = null;
     // endregion
@@ -53,6 +56,17 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         }
     }
     // endregion
+
+    private android.content.Intent intent()
+    {
+        if (null == this.intentInstance) this.intentInstance = new android.content.Intent(
+            this.activity(), org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.class);
+
+        assert null != this.templateModel;
+        this.intentInstance.putExtras(this.templateModel.getState());
+
+        return this.intentInstance;
+    }
 
     private void exclude(final int which)
     {
@@ -99,7 +113,9 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                     this.templateModel.colCheckedItems()                    );
                 break;
 
-            case 2:
+            case 2: this.activity().startActivityForResult(this.intent(), this.requestCode); break;
+
+            case 3:
                 if (null == this.generatedExcludedCellsAlertDialog)
                     this.generatedExcludedCellsAlertDialog =
                         new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog(
@@ -119,6 +135,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
             .setItems(new int[] {
                     org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRowsItem   ,
                     org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogColsItem   ,
+                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogCellsItem  ,
                     org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRandomItem },
                 new android.content.DialogInterface.OnClickListener()
                 {

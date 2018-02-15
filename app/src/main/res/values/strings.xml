@@ -58,6 +58,7 @@
     <string name="ExcludeAlertDialogTitle">Exclude</string>
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
     <string name="ExcludeAlertDialogColsItem">Columns</string>
+    <string name="ExcludeAlertDialogCellsItem">Cells</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
 
     <string name="SetNumberingAlertDialogTitle">Naming</string>

@@ -664,10 +664,14 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.MainActivity.NAVIGATION_ITEM_SELECTED_LISTENER:
-                    //data.getExtras()
+                    assert null != this.navigationItemSelectedListener;
+                    this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
                     break;
 
-                case org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR: break;
+                case org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR:
+                    assert null != this.gridCreator;
+                    this.gridCreator.setExcludedCells(data.getExtras());
+                    break;
             }
         }
     }

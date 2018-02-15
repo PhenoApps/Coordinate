@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="org.wheatgenetics.coordinate">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,10 +19,17 @@
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action   android:name="android.intent.action.MAIN"       />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+        </activity>
+
+        <activity android:name=".tc.ExcludeCellsActivity">
+            <intent-filter>
+                <action   android:name="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity" />
+                <category android:name="android.intent.category.DEFAULT"                      />
+            </intent-filter>
         </activity>
 
     </application>
