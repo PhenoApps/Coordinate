@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.tc;
  * android.support.annotation.IntRange
  * android.support.v7.app.AppCompatActivity
  *
+ * org.wheatgenetics.androidlibrary.Utils
+ *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.DisplayModel
@@ -113,6 +115,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
             /* json => */ bundle.getString(
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY),
             /* maxValue => */ cols);
+    }
+
+    @java.lang.Override
+    protected void onStart()
+    {
+        super.onStart();
+        org.wheatgenetics.androidlibrary.Utils.showLongToast(this, "Press \"Back\" when done.");
     }
 
     @java.lang.Override

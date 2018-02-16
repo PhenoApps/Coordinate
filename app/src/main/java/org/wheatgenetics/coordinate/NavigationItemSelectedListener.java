@@ -44,6 +44,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
 org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
 org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 {
+    // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
@@ -60,6 +61,9 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
 
         public abstract void closeDrawer();
     }
+
+    private enum TemplateOperation { DELETE, EXPORT }
+    // endregion
 
     // region Fields
     private final android.app.Activity                                                activity   ;
@@ -191,6 +195,74 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     }
     // endregion
 
+    private void exportTemplateAfterSelect(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        //if (null != templateModel) templateModel.export();
+
+    }
+
+    private void selectUserDefinedTemplate(
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.TemplateOperation
+        templateOperation)
+    {
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            this.templatesTable().loadUserDefined();
+        if (null != templateModels) if (templateModels.size() > 0)
+        {
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateToDeleteAlertDialog;
+            {
+                final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
+                switch (templateOperation)
+                {
+                    case DELETE: handler =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void select(final int which)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.deleteTemplateAfterSelect(templateModels.get(which));
+                            }
+                        }; break;
+
+                    case EXPORT: handler =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void select(final int which)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.exportTemplateAfterSelect(templateModels.get(which));
+                            }
+                        }; break;
+
+                    default: handler = null; break;
+                }
+
+                selectTemplateToDeleteAlertDialog =
+                    new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
+            }
+
+            final int title;
+            switch (templateOperation)
+            {
+                case DELETE: title =
+                    org.wheatgenetics.coordinate
+                        .R.string.NavigationItemSelectedListenerSelectDeleteTemplateTitle;
+                    break;
+
+                case EXPORT: title =
+                    org.wheatgenetics.coordinate
+                        .R.string.NavigationItemSelectedListenerSelectExportTemplateTitle;
+                    break;
+
+                default: title = 0;
+            }
+            selectTemplateToDeleteAlertDialog.show(title, templateModels.titles());
+        }
+    }
+
     private void storeSoundOn()
     { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
@@ -266,28 +338,9 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                 this.templateCreator.create(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
-                final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-                    this.templatesTable().loadUserDefined();
-                if (null != templateModels) if (templateModels.size() > 0)
-                {
-                    final org.wheatgenetics.coordinate.SelectAlertDialog
-                        selectTemplateToDeleteAlertDialog =
-                            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                                {
-                                    @java.lang.Override
-                                    public void select(final int which)
-                                    {
-                                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
-                                            .this.deleteTemplateAfterSelect(
-                                                templateModels.get(which));
-                                    }
-                                });
-                    selectTemplateToDeleteAlertDialog.show(
-                        org.wheatgenetics.coordinate
-                            .R.string.NavigationItemSelectedListenerSelectDeleteTemplateTitle,
-                        templateModels.titles());
-                } break;
+                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
+                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
+                break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_grid:
                 if (null == this.getExportFileNameAlertDialog) this.getExportFileNameAlertDialog =
@@ -295,6 +348,11 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                         this.activity, this);
                 assert null != this.handler;
                 this.getExportFileNameAlertDialog.show(this.handler.initialExportFileName());
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_export_template:
+                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
+                    .NavigationItemSelectedListener.TemplateOperation.EXPORT);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_import_template: break;

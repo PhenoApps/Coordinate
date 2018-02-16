@@ -31,6 +31,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Private Methods
+    private org.wheatgenetics.coordinate.model.EntryModel getEntryModel(
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
+    { return null == this.entryModels ? null : this.entryModels.get(row, col); }
+
     // region export*() Private Methods
     private void exportSeed(final org.wheatgenetics.javalib.CsvWriter csvWriter,
     final java.lang.String                                          exportFileName,
@@ -334,11 +339,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                             this.entryModels.makeIncludedEntry(row, col);
         }
     }
-
-    public org.wheatgenetics.coordinate.model.EntryModel getEntryModel(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
-    { return null == this.entryModels ? null : this.entryModels.get(row, col); }
 
     public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     { if (null != this.entryModels) this.entryModels.set(entryModel); }

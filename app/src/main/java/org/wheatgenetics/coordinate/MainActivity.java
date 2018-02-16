@@ -77,8 +77,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
-    private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem,
-        deleteTemplateMenuItem, exportGridMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
+    private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, deleteTemplateMenuItem,
+        exportTemplateMenuItem, exportGridMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
     private android.media.MediaPlayer plonkMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -152,48 +152,58 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
 
     private void configureNavigationDrawer()
     {
-        final java.lang.String person                  , templateTitle           ;
-        final boolean          enableDeleteGridMenuItem, enableExportGridMenuItem;
-        if (null == this.joinedGridModel)
         {
-            person                   = templateTitle            = ""   ;
-            enableDeleteGridMenuItem = enableExportGridMenuItem = false;
+            final boolean userDefinedTemplatesExist;
+            {
+                final boolean enableDeleteGridMenuItem, enableExportGridMenuItem;
+                {
+                    final java.lang.String person, templateTitle;
+                    if (null == this.joinedGridModel)
+                    {
+                        person                   = templateTitle            = ""   ;
+                        enableDeleteGridMenuItem = enableExportGridMenuItem = false;
+                    }
+                    else
+                    {
+                        person        = this.joinedGridModel.getPerson       ();
+                        templateTitle = this.joinedGridModel.getTemplateTitle();
+                        enableDeleteGridMenuItem = enableExportGridMenuItem = true;
+                    }
+
+
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.personTextView,          // From nav_hea-
+                        person                                          );         //  der_main.xml.
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,   // From nav_hea-
+                        person                                                 );  //  der_main.xml.
+
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.templateTitleTextView,   // From nav_hea-
+                        templateTitle                                          );  //  der_main.xml.
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView, // From nav-
+                        templateTitle                                                 );//  _header-
+                }                                                                       //  _main-
+                                                                                        //  .xml.
+
+                assert null != this.loadGridMenuItem;
+                this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
+
+                assert null != this.deleteGridMenuItem;
+                this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
+
+                userDefinedTemplatesExist = this.templatesTable().exists(
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+                assert null != this.deleteTemplateMenuItem;
+                this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
+
+                assert null != this.exportGridMenuItem;
+                this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
+            }
+            assert null != this.exportTemplateMenuItem;
+            this.exportTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
         }
-        else
-        {
-            person        = this.joinedGridModel.getPerson       ();
-            templateTitle = this.joinedGridModel.getTemplateTitle();
-            enableDeleteGridMenuItem = enableExportGridMenuItem = true;
-        }
-
-
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.personTextView,           // From nav_header_main.xml.
-            person                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,    // From nav_header_main.xml.
-            person                                                 );
-
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.templateTitleTextView,    // From nav_header_main.xml.
-            templateTitle                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,        // From nav_hea-
-            templateTitle                                                 );       //  der_main.xml.
-
-
-        assert null != this.loadGridMenuItem;
-        this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
-
-        assert null != this.deleteGridMenuItem;
-        this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
-
-         assert null != this.deleteTemplateMenuItem;
-         this.deleteTemplateMenuItem.setEnabled(this.templatesTable().exists(
-             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED));
-
-        assert null != this.exportGridMenuItem;
-        this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
 
         assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;
         this.turnSoundOnMenuItem.setEnabled(!this.navigationItemSelectedListener.getSoundOn());
@@ -578,6 +588,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
                 this.deleteTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
+                this.exportTemplateMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_template);
                 this.exportGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
                 this.turnSoundOnMenuItem =

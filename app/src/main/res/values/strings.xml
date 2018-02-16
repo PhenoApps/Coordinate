@@ -21,8 +21,9 @@
     <string name="delete_grid">Delete grid</string>
     <string name="create_template">Create template</string>
     <string name="delete_template">Delete template</string>
-    <string name="import_template">Import Template</string>
     <string name="export_grid">Export Grid</string>
+    <string name="export_template">Export Template</string>
+    <string name="import_template">Import Template</string>
     <string name="turn_sound_on">Turn Sound On</string>
     <string name="turn_sound_off">Turn Sound Off</string>
     <string name="show_about">About</string>
@@ -36,6 +37,7 @@
     <string name="NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast">Grid(s) were not deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateSuccessToast">Template successfully deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
+    <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
 
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>

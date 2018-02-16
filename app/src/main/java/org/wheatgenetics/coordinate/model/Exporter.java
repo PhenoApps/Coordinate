@@ -66,18 +66,23 @@ public class Exporter extends java.lang.Object
         @java.lang.Override
         protected void onPreExecute() { super.onPreExecute(); this.progressDialog.show(); }
 
-        @java.lang.Override @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
+        @java.lang.Override
+        @java.lang.SuppressWarnings({"PointlessBooleanExpression", "ResultOfMethodCallIgnored"})
         protected java.lang.Boolean doInBackground(final java.lang.Void... params)
         {
-            boolean success = false;
-            if (null != this.exportFile)
+            final boolean success = true;
+            if (null == this.exportFile)
+                return !success;
+            else
             {
                 if (this.exportFile.exists()) this.exportFile.delete();
 
                 assert null != this.helper;
                 final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                     this.helper.getJoinedGridModel();
-                if (null != joinedGridModel)
+                if (null == joinedGridModel)
+                    return !success;
+                else
                     try
                     {
                         if (joinedGridModel.export(                    // throws java.io.IOException
@@ -85,17 +90,18 @@ public class Exporter extends java.lang.Object
                         {
                             org.wheatgenetics.androidlibrary.Utils.makeFileDiscoverable(
                                 this.context, this.exportFile);
-                            success = true;
+                            return success;
                         }
+                        return !success;
                     }
                     catch (final java.io.IOException e)
                     {
                         e.printStackTrace();
                         assert null != this.context; this.message = this.context.getString(
                             org.wheatgenetics.coordinate.R.string.ExporterFailedMessage);
+                        return !success;
                     }
             }
-            return success;
         }
 
         @java.lang.Override
