@@ -14,8 +14,8 @@ package org.wheatgenetics.coordinate;
  * android.widget.LinearLayout
  * android.widget.TextView
  *
- * org.wheatgenetics.androidlibrary.EditorActionListener
- * org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
+ * org.wheatgenetics.androidlibrary.ClearingEditorActionListener
+ * org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
@@ -25,7 +25,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  */
 public class DataEntryFragment extends android.support.v4.app.Fragment
-implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
+implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
@@ -35,7 +35,8 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             getOptionalFields();
 
-        public abstract void saveEntry(java.lang.String entryValue);
+        public abstract void saveEntry (java.lang.String entryValue);
+        public abstract void clearEntry();
     }
 
     // region Fields
@@ -83,7 +84,7 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
         assert null != activity; this.entryEditText = (android.widget.EditText)
             activity.findViewById(org.wheatgenetics.coordinate.R.id.entryEditText);
         assert null != this.entryEditText; this.entryEditText.setOnEditorActionListener(
-            new org.wheatgenetics.androidlibrary.EditorActionListener(
+            new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
                 this.entryEditText, this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
 
         this.templateTitleTextView = (android.widget.TextView)
@@ -99,10 +100,13 @@ implements org.wheatgenetics.androidlibrary.EditorActionListener.Receiver
     @java.lang.Override
     public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.androidlibrary.EditorActionListener.Receiver Overridden Method
+    // region org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver Overridden Methods
     @java.lang.Override
     public void receiveText(final java.lang.String text)
     { assert null != this.handler; this.handler.saveEntry(text); }
+
+    @java.lang.Override
+    public void clearText() { assert null != this.handler; this.handler.clearEntry(); }
     // endregion
     // endregion
 

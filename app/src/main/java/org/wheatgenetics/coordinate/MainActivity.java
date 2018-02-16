@@ -801,6 +801,8 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             this.goToNext(activeEntryModel);
         }
     }
+
+    @java.lang.Override public void clearEntry() { this.saveEntry(null); }
     // endregion
 
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
