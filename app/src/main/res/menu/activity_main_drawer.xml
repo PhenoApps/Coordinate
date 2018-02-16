@@ -36,7 +36,7 @@
             android:title="@string/import_template" />
         <item
             android:id="@+id/nav_export_grid"
-            android:icon="@drawable/ic_menu_export_grid"
+            android:icon="@drawable/ic_menu_export"
             android:title="@string/export_grid"
             android:enabled="false" />
     </group>

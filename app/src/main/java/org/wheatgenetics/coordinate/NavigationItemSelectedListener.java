@@ -144,7 +144,11 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
         {
             final long templateId = templateModel.getId();
 
-            this.gridsTable().loadByTemplateId(templateId).processAll(this);      // delete entries
+            {
+                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+                    this.gridsTable().loadByTemplateId(templateId);
+                if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete entries
+            }
 
             if (this.gridsTable().deleteByTemplateId(templateId))                 // delete grids
                 this.showShortToast(org.wheatgenetics.coordinate
@@ -285,8 +289,6 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                         templateModels.titles());
                 } break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_import_template: break;
-
             case org.wheatgenetics.coordinate.R.id.nav_export_grid:
                 if (null == this.getExportFileNameAlertDialog) this.getExportFileNameAlertDialog =
                     new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(
@@ -294,6 +296,8 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
                 assert null != this.handler;
                 this.getExportFileNameAlertDialog.show(this.handler.initialExportFileName());
                 break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_import_template: break;
 
             case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on:
                 this.soundOn = true; this.storeSoundOn(); break;
