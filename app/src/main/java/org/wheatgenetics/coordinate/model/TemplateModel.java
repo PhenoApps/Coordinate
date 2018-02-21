@@ -171,12 +171,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
-    java.lang.String getFirstOptionalFieldDatedValue()
-    {
-        return null == this.nonNullOptionalFieldsInstance ? null :
-            this.nonNullOptionalFieldsInstance.getDatedFirstValue();
-    }
-
     // region Public Methods
     // region optionalFields Public Methods
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()

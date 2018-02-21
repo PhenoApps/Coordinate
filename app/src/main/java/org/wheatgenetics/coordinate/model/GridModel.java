@@ -98,6 +98,12 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
+
+    public java.lang.String getFirstOptionalFieldDatedValue()
+    {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+            this.nonNullOptionalFieldsInstance.getDatedFirstValue();
+    }
     // endregion
     // endregion
 }

@@ -299,12 +299,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
 
-    public java.lang.String getFirstOptionalFieldDatedValue()
-    {
-        return null == this.templateModel ? null :
-            this.templateModel.getFirstOptionalFieldDatedValue();
-    }
-
     public void makeEntryModels()
     {
         final int rows = this.getRows(), cols = this.getCols();
