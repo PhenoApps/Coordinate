@@ -6,31 +6,28 @@ package org.wheatgenetics.coordinate.model;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnCancelListener
  * android.os.AsyncTask
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.androidlibrary.ProgressDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public class Exporter extends java.lang.Object
+abstract class Exporter extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Helper
+    interface Helper
     {
-        public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel();
         public abstract void handleExportDone(java.lang.Boolean result,
             java.lang.String message, java.io.File exportFile);
     }
 
-    private static class AsyncTask
+    abstract static class AsyncTask
     extends android.os.AsyncTask<java.lang.Void, java.lang.String, java.lang.Boolean> implements
-    android.content.DialogInterface.OnCancelListener,
-    org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+    android.content.DialogInterface.OnCancelListener
     {
         // region Fields
         private final android.content.Context                            context       ;
@@ -42,9 +39,9 @@ public class Exporter extends java.lang.Object
         private java.lang.String message = null;
         // endregion
 
-        private void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
-
-        private AsyncTask(final android.content.Context context, final java.io.File exportFile,
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        AsyncTask(final android.content.Context context, final java.io.File exportFile,
         final java.lang.String exportFileName,
         final org.wheatgenetics.coordinate.model.Exporter.Helper helper)
         {
@@ -67,40 +64,15 @@ public class Exporter extends java.lang.Object
         protected void onPreExecute() { super.onPreExecute(); this.progressDialog.show(); }
 
         @java.lang.Override
-        @java.lang.SuppressWarnings({"PointlessBooleanExpression", "ResultOfMethodCallIgnored"})
+        @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
         protected java.lang.Boolean doInBackground(final java.lang.Void... params)
         {
-            final boolean success = true;
             if (null == this.exportFile)
-                return !success;
+                return false;
             else
             {
                 if (this.exportFile.exists()) this.exportFile.delete();
-
-                assert null != this.helper;
-                final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                    this.helper.getJoinedGridModel();
-                if (null == joinedGridModel)
-                    return !success;
-                else
-                    try
-                    {
-                        if (joinedGridModel.export(                    // throws java.io.IOException
-                        this.exportFile, this.exportFileName, this))
-                        {
-                            org.wheatgenetics.androidlibrary.Utils.makeFileDiscoverable(
-                                this.context, this.exportFile);
-                            return success;
-                        }
-                        return !success;
-                    }
-                    catch (final java.io.IOException e)
-                    {
-                        e.printStackTrace();
-                        assert null != this.context; this.message = this.context.getString(
-                            org.wheatgenetics.coordinate.R.string.ExporterFailedMessage);
-                        return !success;
-                    }
+                return this.export();
             }
         }
 
@@ -126,33 +98,52 @@ public class Exporter extends java.lang.Object
         @java.lang.Override
         public void onCancel(final android.content.DialogInterface dialog) { this.cancel(); }
         // endregion
-
-        // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
-        @java.lang.Override
-        public void publishProgress(final int col)
-        {
-            assert null != this.context;
-            this.publishProgress(this.context.getString(
-                org.wheatgenetics.coordinate.R.string.ExporterProgressDialogMessage) + col);
-        }
         // endregion
+
+        // region Package Methods
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        abstract boolean export();
+
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        java.io.File getExportFile() { return this.exportFile; }
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        java.lang.String getExportFileName() { return this.exportFileName; }
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        org.wheatgenetics.coordinate.model.Exporter.Helper getHelper() { return this.helper; }
+
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        void makeExportFileDiscoverable()
+        {
+            org.wheatgenetics.androidlibrary.Utils.makeFileDiscoverable(
+                this.context, this.exportFile);
+        }
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        java.lang.String getString(final int resId)
+        { assert null != this.context; return this.context.getString(resId); }
+
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        void setMessage(final int resId) { this.message = this.getString(resId); }
+
+
+        void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
         // endregion
     }
     // endregion
 
-    private final org.wheatgenetics.coordinate.model.Exporter.AsyncTask asyncTask;
-
-    public Exporter(final android.content.Context context, final java.io.File exportFile,
-    final java.lang.String exportFileName,
-    final org.wheatgenetics.coordinate.model.Exporter.Helper helper)
-    {
-        super();
-        this.asyncTask = new org.wheatgenetics.coordinate.model.Exporter.AsyncTask(
-            context, exportFile, exportFileName, helper);
-    }
-
     // region Public Methods
-    public void execute() { this.asyncTask.execute(); }
-    public void cancel () { this.asyncTask.cancel (); }
+    public abstract void execute();
+    public abstract void cancel ();
     // endregion
 }

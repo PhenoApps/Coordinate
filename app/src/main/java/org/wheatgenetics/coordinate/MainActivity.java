@@ -49,8 +49,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
- * org.wheatgenetics.coordinate.model.Exporter
- * org.wheatgenetics.coordinate.model.Exporter.Helper
+ * org.wheatgenetics.coordinate.model.GridExporter
+ * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -71,7 +71,7 @@ org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
-org.wheatgenetics.coordinate.model.Exporter.Helper
+org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
     private final static int NAVIGATION_ITEM_SELECTED_LISTENER = 10, GRID_CREATOR = 20;
 
@@ -96,7 +96,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
         navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel = null;
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator     = null;
-    private org.wheatgenetics.coordinate.model.Exporter        exporter        = null;
+    private org.wheatgenetics.coordinate.model.GridExporter    gridExporter    = null;
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
@@ -279,7 +279,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                 this.clearJoinedGridModelThenPopulate();
     }
 
-    // region Export Private Methods
+    // region Grid Export Private Methods
     private java.lang.String initialExportFileName()
     {
         return null == this.joinedGridModel ? null :
@@ -293,12 +293,12 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
             assert null != this.exportDir;
             try
             {
-                this.exporter = new org.wheatgenetics.coordinate.model.Exporter(
+                this.gridExporter = new org.wheatgenetics.coordinate.model.GridExporter(
                     /* context    => */ this                                           ,
                     /* exportFile => */ this.exportDir.createNewFile(fileName + ".csv"),  // throws
                     /* exportFileName => */ fileName                                   ,  //  java.-
                     /* helper         => */ this                                       ); //  io.IO-
-                this.exporter.execute();                                                  //  Excep-
+                this.gridExporter.execute();                                              //  Excep-
             }                                                                             //  tion
             catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }
         }
@@ -699,7 +699,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     @java.lang.Override
     protected void onDestroy()
     {
-        if (null != this.exporter) { this.exporter.cancel(); this.exporter = null; }
+        if (null != this.gridExporter) { this.gridExporter.cancel(); this.gridExporter = null; }
         super.onDestroy();
     }
 
@@ -823,11 +823,7 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
     { this.loadJoinedGridModelThenPopulate(gridId); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.model.Exporter.Helper Overridden Methods
-    @java.lang.Override
-    public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
-    { return this.joinedGridModel; }
-
+    // region org.wheatgenetics.coordinate.model.GridExporter.Helper Overridden Methods
     @java.lang.Override
     public void handleExportDone(final java.lang.Boolean result, final java.lang.String message,
     final java.io.File exportFile)
@@ -879,6 +875,10 @@ org.wheatgenetics.coordinate.model.Exporter.Helper
                     this.getString(
                         org.wheatgenetics.coordinate.R.string.MainActivityExportFailMessage)));
     }
+
+    @java.lang.Override
+    public org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel()
+    { return this.joinedGridModel; }
     // endregion
     // endregion
 }

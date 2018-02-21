@@ -198,7 +198,7 @@ org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
     private void exportTemplateAfterSelect(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        //if (null != templateModel) templateModel.export();
+        //if (null != templateModel) templateModel.export();//TODO
 
     }
 

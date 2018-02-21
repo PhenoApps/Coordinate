@@ -104,6 +104,7 @@
 
     <string name="ExporterProgressDialogTitle">Exporting&#8230;</string>
     <string name="ExporterProgressDialogInitialMessage">File is being saved.</string>
-    <string name="ExporterProgressDialogMessage">Exporting:\u0020</string>
-    <string name="ExporterFailedMessage">Unable to export grid.</string>
+
+    <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
+    <string name="GridExporterFailedMessage">Unable to export grid.</string>
 </resources>
