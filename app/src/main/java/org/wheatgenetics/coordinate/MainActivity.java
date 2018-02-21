@@ -79,7 +79,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, deleteTemplateMenuItem,
         exportTemplateMenuItem, exportGridMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
-    private android.media.MediaPlayer plonkMediaPlayer = null, columnEndMediaPlayer = null;
+    private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
@@ -692,7 +692,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     protected void onPause()
     {
         if (null != this.columnEndMediaPlayer) this.columnEndMediaPlayer.release();
-        if (null != this.plonkMediaPlayer    ) this.plonkMediaPlayer.release    ();
+        if (null != this.gridEndMediaPlayer  ) this.gridEndMediaPlayer.release  ();
         super.onPause();
     }
 
@@ -753,9 +753,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         assert null != this.navigationItemSelectedListener;
         if (this.navigationItemSelectedListener.getSoundOn())
         {
-            if (null == this.plonkMediaPlayer) this.plonkMediaPlayer =
+            if (null == this.gridEndMediaPlayer) this.gridEndMediaPlayer =
                 android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
-            this.plonkMediaPlayer.start();
+            this.gridEndMediaPlayer.start();
         }
     }
 
