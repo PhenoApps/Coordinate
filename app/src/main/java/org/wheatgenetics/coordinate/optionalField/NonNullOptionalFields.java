@@ -19,6 +19,8 @@ package org.wheatgenetics.coordinate.optionalField;
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
+    private java.lang.String getFirstValue() { return this.get(0).getValue(); }
+
     // region Constructors
     public NonNullOptionalFields() { super(); }
 
@@ -191,8 +193,6 @@ implements java.lang.Cloneable
             return result;
         }
     }
-
-    public java.lang.String getFirstValue() { return this.get(0).getValue(); }
 
     public java.lang.String getDatedFirstValue()
     {

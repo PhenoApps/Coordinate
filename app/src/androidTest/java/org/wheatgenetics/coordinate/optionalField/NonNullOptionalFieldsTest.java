@@ -246,20 +246,6 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     }
 
     @org.junit.Test
-    public void getFirstValueSucceeds()
-    {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            nonNullOptionalFields =
-                new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(null);
-        nonNullOptionalFields.add(
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 ,
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1,
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.HINT1 );
-        org.junit.Assert.assertEquals(nonNullOptionalFields.getFirstValue(),
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1);
-    }
-
-    @org.junit.Test
     public void getDatedFirstValueSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
