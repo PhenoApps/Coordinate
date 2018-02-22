@@ -7,6 +7,8 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.RestrictTo.Scope.SUBCLASSES
  *
+ * org.xmlpull.v1.XmlSerializer
+ *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Model
@@ -84,6 +86,30 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         if (null == this.excludedColsInstance) this.excludedColsInstance =
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getCols());
         return this.excludedColsInstance;
+    }
+
+    private static void writeTag(final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    final java.lang.String indent, final java.lang.String tagName, final long text)
+    throws java.io.IOException
+    {
+        org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
+            xmlSerializer, indent, tagName, java.lang.Long.toString(text));
+    }
+
+    private static void writeTag(final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    final java.lang.String indent, final java.lang.String tagName, final int text)
+    throws java.io.IOException
+    {
+        org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
+            xmlSerializer, indent, tagName, java.lang.Integer.toString(text));
+    }
+
+    private static void writeTag(final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    final java.lang.String indent, final java.lang.String tagName, final boolean text)
+    throws java.io.IOException
+    {
+        org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
+            xmlSerializer, indent, tagName, java.lang.String.valueOf(text));
     }
     // endregion
 
@@ -291,6 +317,72 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
     { return null == this.excludedColsInstance ? false : this.excludedColsInstance.contains(col); }
+
+
+    static void writeTag(final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    final java.lang.String indent, final java.lang.String tagName, final java.lang.String text)
+    throws java.io.IOException
+    {
+        assert null != xmlSerializer; xmlSerializer.ignorableWhitespace(indent);
+        xmlSerializer.startTag(null, tagName);                         // throws java.io.IOException
+        xmlSerializer.text    (text         );                         // throws java.io.IOException
+        xmlSerializer.endTag  (null, tagName);                         // throws java.io.IOException
+    }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.SuppressWarnings("PointlessBooleanExpression")
+    boolean export(final org.xmlpull.v1.XmlSerializer xmlSerializer, final java.lang.String indent)
+    {
+        final boolean success = true;
+        if (null == xmlSerializer)
+            return !success;
+        else
+        {
+            try
+            {
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "id", this.getId());
+
+                {
+                    final java.lang.String title = this.getTitle();
+                    if (null != title) if (title.length() > 0)
+                        org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(  // throws
+                            xmlSerializer, indent, "title", title);
+                }
+
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "rows", this.getRows());
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "cols", this.getCols());
+
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "generatedExcludedCellsAmount",
+                    this.getGeneratedExcludedCellsAmount());
+
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "colNumbering", this.getColNumbering());
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "rowNumbering", this.getRowNumbering());
+
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(          // throws
+                    xmlSerializer, indent, "timestamp", this.getTimestamp());
+
+                if (null != this.excludedCellsInstance)
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(      // throws
+                        xmlSerializer, indent, "excludedCells", this.excludedCellsInstance.json());
+
+                if (null != this.excludedRowsInstance)
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(      // throws
+                        xmlSerializer, indent, "excludedRows", this.excludedRowsInstance.json());
+
+                if (null != this.excludedColsInstance)
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(      // throws
+                        xmlSerializer, indent, "excludedCols", this.excludedColsInstance.json());
+            }
+            catch (final java.io.IOException e) { return !success; }
+            return success;
+        }
+    }
     // endregion
 
     // region Public Methods

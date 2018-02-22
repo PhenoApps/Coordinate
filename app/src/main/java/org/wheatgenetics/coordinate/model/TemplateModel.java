@@ -20,31 +20,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
 
-    private java.lang.String serialize()
-    {
-        final java.io.StringWriter stringWriter = new java.io.StringWriter();
-        {
-            final org.xmlpull.v1.XmlSerializer xmlSerializer = android.util.Xml.newSerializer();
-
-            assert null != xmlSerializer;
-            try
-            {
-                xmlSerializer.setOutput(stringWriter);                 // throws java.io.IOException
-                xmlSerializer.startDocument(                           // throws java.io.IOException
-                    /* encoding   => */ "UTF-8",
-                    /* standalone => */ true   );
-                {
-                    final java.lang.String templateTagName = "template";
-                    xmlSerializer.startTag(null, templateTagName);     // throws java.io.IOException
-                    xmlSerializer.endTag  (null, templateTagName);
-                }
-            }
-            catch (final java.io.IOException e) { return null; }
-
-        }
-        return stringWriter.toString();
-    }
-
     // region Constructors
     /** Called by clone(). */
     private TemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
@@ -199,8 +174,54 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
-    boolean export(final java.io.File exportFile, final java.lang.String exportFileName)
-    { return false; }
+    @java.lang.SuppressWarnings("PointlessBooleanExpression")
+    boolean export(final java.io.File exportFile)
+    {
+        final boolean success = true;
+        if (null == exportFile)
+            return !success;
+        else
+        {
+            try
+            {
+                final java.io.FileWriter fileWriter = new java.io.FileWriter(exportFile); // throws
+                try                                                                       //  java.-
+                {                                                                         //  io.IO-
+                    final org.xmlpull.v1.XmlSerializer xmlSerializer =                    //  Excep-
+                        android.util.Xml.newSerializer();                                 //  tion
+                    assert null != xmlSerializer;
+                    xmlSerializer.setOutput(fileWriter);               // throws java.io.IOException
+
+                    xmlSerializer.startDocument(                       // throws java.io.IOException
+                        /* encoding   => */ "UTF-8",
+                        /* standalone => */ true);
+
+                    xmlSerializer.ignorableWhitespace("\n");
+                    {
+                        final java.lang.String templateTagName = "template";
+                        xmlSerializer.startTag(null, templateTagName); // throws java.io.IOException
+
+                        {
+                            final java.lang.String indent = "\n    ";
+                            if (!this.export(xmlSerializer, indent)) return !success;
+                            if (null != this.nonNullOptionalFieldsInstance)
+                                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
+                                    xmlSerializer, indent, "optionalFields",
+                                    this.nonNullOptionalFieldsInstance.toJson());
+                        }
+
+                        xmlSerializer.ignorableWhitespace("\n");
+                        xmlSerializer.endTag(null, templateTagName);
+                    }
+
+                    xmlSerializer.endDocument();                       // throws java.io.IOException
+                }
+                finally { fileWriter.close(); }
+            }
+            catch (final java.io.IOException e) { return !success; }
+            return success;
+        }
+    }
 
     // region Public Methods
     // region optionalFields Public Methods

@@ -18,10 +18,9 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
         private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
         private AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String                                   exportFileName,
-        final org.wheatgenetics.coordinate.model.Exporter.Helper helper        ,
-        final org.wheatgenetics.coordinate.model.TemplateModel   templateModel )
-        { super(context, exportFile, exportFileName, helper); this.templateModel = templateModel; }
+        final org.wheatgenetics.coordinate.model.Exporter.Helper helper       ,
+        final org.wheatgenetics.coordinate.model.TemplateModel   templateModel)
+        { super(context, exportFile, helper); this.templateModel = templateModel; }
 
         @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
         @android.support.annotation.RestrictTo(
@@ -32,7 +31,7 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
             if (null == this.templateModel)
                 return !success;
             else
-                if (this.templateModel.export(this.getExportFile(), this.getExportFileName()))
+                if (this.templateModel.export(this.getExportFile()))
                 {
                     this.makeExportFileDiscoverable();
                     return success;
@@ -44,13 +43,12 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
     private final org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask asyncTask;
 
     public TemplateExporter(final android.content.Context context, final java.io.File exportFile,
-    final java.lang.String                                   exportFileName,
-    final org.wheatgenetics.coordinate.model.Exporter.Helper helper        ,
-    final org.wheatgenetics.coordinate.model.TemplateModel   templateModel )
+    final org.wheatgenetics.coordinate.model.Exporter.Helper helper       ,
+    final org.wheatgenetics.coordinate.model.TemplateModel   templateModel)
     {
         super();
         this.asyncTask = new org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask(
-            context, exportFile, exportFileName, helper, templateModel);
+            context, exportFile, helper, templateModel);
     }
 
     // region Overridden Methods

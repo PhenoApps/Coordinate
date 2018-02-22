@@ -83,7 +83,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator               templateCreator = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getGridExportFileNameAlertDialog = null, getTemplateExportFileNameAlertDialog = null;
+        getGridExportFileNameAlertDialog = null, getTemplateExportFileNameAlertDialog;
     private boolean                                  soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
@@ -211,18 +211,17 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     {
         if (null != templateModel)
         {
-            if (null == this.getTemplateExportFileNameAlertDialog)
-                this.getTemplateExportFileNameAlertDialog =
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
-                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+            this.getTemplateExportFileNameAlertDialog =
+                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+                    {
+                        @java.lang.Override
+                        public void handleGetFileNameDone(final java.lang.String fileName)
                         {
-                            @java.lang.Override
-                            public void handleGetFileNameDone(final java.lang.String fileName)
-                            {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener.this
-                                    .exportTemplateAfterGettingFileName(templateModel, fileName);
-                            }
-                        });
+                            org.wheatgenetics.coordinate.NavigationItemSelectedListener.this
+                                .exportTemplateAfterGettingFileName(templateModel, fileName);
+                        }
+                    });
             this.getTemplateExportFileNameAlertDialog.show(templateModel.getTitle());
         }
 

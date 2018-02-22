@@ -24,10 +24,12 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     private static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
+        private final java.lang.String exportFileName;
+
         private AsyncTask(final android.content.Context context, final java.io.File exportFile,
         final java.lang.String exportFileName,
         final org.wheatgenetics.coordinate.model.GridExporter.Helper helper)
-        { super(context, exportFile, exportFileName, helper); }
+        { super(context, exportFile, helper); this.exportFileName = exportFileName; }
 
         // region Overridden Methods
         @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
@@ -48,7 +50,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
                 try
                 {
                     if (joinedGridModel.export(                        // throws java.io.IOException
-                    this.getExportFile(), this.getExportFileName(), this))
+                    this.getExportFile(), this.exportFileName, this))
                     {
                         this.makeExportFileDiscoverable();
                         return success;

@@ -33,7 +33,6 @@ public abstract class Exporter extends java.lang.Object
         private final android.content.Context                            context       ;
         private final org.wheatgenetics.androidlibrary.ProgressDialog    progressDialog;
         private final java.io.File                                       exportFile    ;
-        private final java.lang.String                                   exportFileName;
         private final org.wheatgenetics.coordinate.model.Exporter.Helper helper        ;
 
         private java.lang.String message = null;
@@ -42,7 +41,6 @@ public abstract class Exporter extends java.lang.Object
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String exportFileName,
         final org.wheatgenetics.coordinate.model.Exporter.Helper helper)
         {
             super();
@@ -54,9 +52,7 @@ public abstract class Exporter extends java.lang.Object
                     org.wheatgenetics.coordinate.R.string.ExporterProgressDialogInitialMessage,
                 /* onCancelListener => */ this);
 
-            this.exportFile     = exportFile    ;
-            this.exportFileName = exportFileName;
-            this.helper         = helper        ;
+            this.exportFile = exportFile; this.helper = helper;
         }
 
         // region Overridden Methods
@@ -111,10 +107,6 @@ public abstract class Exporter extends java.lang.Object
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         java.io.File getExportFile() { return this.exportFile; }
-
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        java.lang.String getExportFileName() { return this.exportFileName; }
 
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)

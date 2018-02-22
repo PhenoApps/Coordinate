@@ -356,8 +356,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 this.templateExporter = new org.wheatgenetics.coordinate.model.TemplateExporter(
                     /* context    => */ this                                              ,
                     /* exportFile => */ this.templatesDir.createNewFile(fileName + ".xml"),// throws
-                    /* exportFileName => */ fileName                                      ,
-                    /* helper         => */ new org.wheatgenetics.coordinate.model.Exporter.Helper()
+                    /* helper     => */ new org.wheatgenetics.coordinate.model.Exporter.Helper()
                         {
                             @java.lang.Override
                             public void handleExportDone(final java.lang.Boolean result,
@@ -371,7 +370,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         .handleTemplateExportFailure(message);
                             }
                         },
-                    /* templateModel  => */ templateModel);
+                    /* templateModel => */ templateModel);
                 this.templateExporter.execute();
             }
             catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }
