@@ -4,7 +4,7 @@ package org.wheatgenetics.coordinate.display;
  * Uses:
  * android.content.Context
  * android.view.View
- * android.view.View.OnClickListener
+ * android.view.View.OnLongClickListener
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -17,7 +17,7 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.Utils
  */
 class GridElement extends org.wheatgenetics.coordinate.Element
-implements android.view.View.OnClickListener
+implements android.view.View.OnLongClickListener
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler extends org.wheatgenetics.coordinate.Element.Handler
@@ -33,16 +33,11 @@ implements android.view.View.OnClickListener
             this);
     }
 
-    private void setOnClickListener(final android.view.View.OnClickListener onClickListener)
-    { this.getTextView().setOnClickListener(onClickListener); }
-
-    private void setOnClickListener() { this.setOnClickListener(this); }
-
     private void exclude()
     {
         this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
             (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
-        this.setOnClickListener(null); this.toggle();
+        this.clearOnClickListener(); this.toggle();
     }
     // endregion
 
@@ -54,7 +49,6 @@ implements android.view.View.OnClickListener
     final int activeRow, final int activeCol)
     {
         super(entryModel, textView, handler);
-
         this.context = context;
 
         if (this.getRow() == activeRow && this.getCol() == activeCol
@@ -65,45 +59,11 @@ implements android.view.View.OnClickListener
 
         if (this.elementModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
             this.setOnClickListener();
+        this.setOnLongClickListener(this);
     }
 
     // region Overridden Methods
-    @java.lang.Override
-    protected void respondToLongClick()
-    {
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-            (org.wheatgenetics.coordinate.model.EntryModel) this.elementModel;
-        if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
-        {
-            final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
-                (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
-            if (includedEntryModel.valueIsEmpty())
-                this.exclude();
-            else
-            {
-                assert null != this.context;
-                org.wheatgenetics.coordinate.Utils.confirm(
-                    /* context => */ this.context                                             ,
-                    /* title   => */ org.wheatgenetics.coordinate.R.string.ElementConfirmTitle,
-                    /* message => */ java.lang.String.format(
-                        this.context.getString(
-                            org.wheatgenetics.coordinate.R.string.ElementConfirmMessage),
-                        includedEntryModel.getValue()),
-                    /* yesRunnable => */ new java.lang.Runnable()
-                        {
-                            @java.lang.Override
-                            public void run()
-                            { org.wheatgenetics.coordinate.display.GridElement.this.exclude(); }
-                        });
-            }
-        }
-        else
-        {
-            this.elementModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel);
-            this.setOnClickListener(); this.toggle();
-        }
-    }
+    @java.lang.Override protected void respondToClick() { this.activate(); }
 
     @java.lang.Override
     protected void setBackgroundResource()
@@ -112,8 +72,47 @@ implements android.view.View.OnClickListener
             this.elementModel).backgroundResource());
     }
 
-    // region android.view.View.OnClickListener Overridden Method
-    @java.lang.Override public void onClick(final android.view.View v) { this.activate(); }
+    // region android.view.View.OnLongClickListener Overridden Method
+    @java.lang.Override
+    public boolean onLongClick(final android.view.View v)
+    {
+        if (this.elementModelIsNotNull())
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                (org.wheatgenetics.coordinate.model.EntryModel) this.elementModel;
+            if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+            {
+                final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
+                    (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                if (includedEntryModel.valueIsEmpty())
+                    this.exclude();
+                else
+                {
+                    assert null != this.context;
+                    org.wheatgenetics.coordinate.Utils.confirm(
+                        /* context => */ this.context                                             ,
+                        /* title   => */ org.wheatgenetics.coordinate.R.string.ElementConfirmTitle,
+                        /* message => */ java.lang.String.format(
+                            this.context.getString(
+                                org.wheatgenetics.coordinate.R.string.ElementConfirmMessage),
+                            includedEntryModel.getValue()),
+                        /* yesRunnable => */ new java.lang.Runnable()
+                            {
+                                @java.lang.Override
+                                public void run()
+                                { org.wheatgenetics.coordinate.display.GridElement.this.exclude(); }
+                            });
+                }
+            }
+            else
+            {
+                this.elementModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel);
+                this.setOnClickListener(); this.toggle();
+            }
+        }
+        return true;
+    }
     // endregion
     // endregion
 

@@ -20,11 +20,11 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
     final org.wheatgenetics.coordinate.model.Cell                 cell    ,
     final android.widget.TextView                                 textView,
     final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler )
-    { super(cell, textView, handler); this.setBackgroundResource(); }
+    { super(cell, textView, handler); this.setBackgroundResource(); this.setOnClickListener(); }
 
     // region Overridden Methods
     @java.lang.Override
-    protected void respondToLongClick() { this.toggle(); this.setBackgroundResource(); }
+    protected void respondToClick() { this.toggle(); this.setBackgroundResource(); }
 
     @java.lang.Override
     protected void setBackgroundResource()

@@ -26,7 +26,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     public GridDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @java.lang.Override
+    @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
     protected boolean setHandler(final android.content.Context context)
     {
         final boolean success = true;

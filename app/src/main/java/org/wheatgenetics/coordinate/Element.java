@@ -5,14 +5,14 @@ package org.wheatgenetics.coordinate;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.View.OnLongClickListener
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public abstract class Element extends java.lang.Object
-implements android.view.View.OnLongClickListener
+public abstract class Element extends java.lang.Object implements android.view.View.OnClickListener
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
@@ -25,16 +25,36 @@ implements android.view.View.OnLongClickListener
     protected org.wheatgenetics.coordinate.model.ElementModel elementModel;
     // endregion
 
+    private void setOnClickListener(final android.view.View.OnClickListener onClickListener)
+    { assert null != this.textView; this.textView.setOnClickListener(onClickListener); }
+
     // region Protected Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected android.widget.TextView getTextView() { return this.textView; }
+    protected void setOnClickListener() { this.setOnClickListener(this); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected void clearOnClickListener() { this.setOnClickListener(null); }
+
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected void setOnLongClickListener(
+    final android.view.View.OnLongClickListener onLongClickListener)
+    { assert null != this.textView; this.textView.setOnLongClickListener(onLongClickListener); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected void clearOnLongClickListener() { this.setOnLongClickListener(null); }
+
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected org.wheatgenetics.coordinate.Element.Handler getHandler() { return this.handler; }
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected abstract void respondToLongClick();
+    protected boolean elementModelIsNotNull() { return null != this.elementModel; }
+
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected abstract void respondToClick();
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -46,7 +66,10 @@ implements android.view.View.OnLongClickListener
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void toggle()
-    { this.setBackgroundResource(); this.getHandler().toggle(this.elementModel); }
+    {
+        this.setBackgroundResource();
+        assert null != this.handler; this.handler.toggle(this.elementModel);
+    }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -54,17 +77,10 @@ implements android.view.View.OnLongClickListener
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    ,
     final org.wheatgenetics.coordinate.Element.Handler    handler     )
-    {
-        super();
+    { super(); this.elementModel = elementModel; this.textView = textView; this.handler = handler; }
 
-        this.elementModel = elementModel; this.textView = textView; this.handler = handler;
-        assert null != this.textView; this.textView.setOnLongClickListener(this);
-    }
-
-    // region android.view.View.OnLongClickListener Overridden Method
-    @java.lang.Override
-    public boolean onLongClick(final android.view.View v)
-    { if (null != this.elementModel) this.respondToLongClick(); return true; }
+    // region android.view.View.OnClickListener Overridden Method
+    @java.lang.Override public void onClick(final android.view.View v) { this.respondToClick(); }
     // endregion
 
     // region Public Methods
