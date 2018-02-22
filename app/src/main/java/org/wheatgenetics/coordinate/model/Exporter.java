@@ -15,19 +15,19 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-abstract class Exporter extends java.lang.Object
+public abstract class Exporter extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    interface Helper
+    public interface Helper
     {
         public abstract void handleExportDone(java.lang.Boolean result,
             java.lang.String message, java.io.File exportFile);
     }
 
     abstract static class AsyncTask
-    extends android.os.AsyncTask<java.lang.Void, java.lang.String, java.lang.Boolean> implements
-    android.content.DialogInterface.OnCancelListener
+    extends android.os.AsyncTask<java.lang.Void, java.lang.String, java.lang.Boolean>
+    implements android.content.DialogInterface.OnCancelListener
     {
         // region Fields
         private final android.content.Context                            context       ;
@@ -105,6 +105,8 @@ abstract class Exporter extends java.lang.Object
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         abstract boolean export();
 
+        void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
+
 
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -135,9 +137,6 @@ abstract class Exporter extends java.lang.Object
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void setMessage(final int resId) { this.message = this.getString(resId); }
-
-
-        void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
         // endregion
     }
     // endregion

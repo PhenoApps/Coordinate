@@ -56,6 +56,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         public abstract java.lang.String initialExportFileName();
         public abstract void             exportGrid(java.lang.String fileName);
 
+        public abstract void exportTemplate(
+            org.wheatgenetics.coordinate.model.TemplateModel templateModel,
+            java.lang.String                                 fileName     );
+
         public abstract void storeSoundOn(boolean soundOn);
 
         public abstract void closeDrawer();
@@ -79,7 +83,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator               templateCreator = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getGridExportFileNameAlertDialog = null;
+        getGridExportFileNameAlertDialog = null, getTemplateExportFileNameAlertDialog = null;
     private boolean                                  soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
@@ -197,10 +201,30 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private void exportGrid(final java.lang.String fileName)
     { assert null != this.handler; this.handler.exportGrid(fileName); }
 
+    private void exportTemplateAfterGettingFileName(
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
+    final java.lang.String                                 fileName     )
+    { assert null != this.handler; this.handler.exportTemplate(templateModel, fileName); }
+
     private void exportTemplateAfterSelect(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        //if (null != templateModel) templateModel.export();//TODO
+        if (null != templateModel)
+        {
+            if (null == this.getTemplateExportFileNameAlertDialog)
+                this.getTemplateExportFileNameAlertDialog =
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
+                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void handleGetFileNameDone(final java.lang.String fileName)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener.this
+                                    .exportTemplateAfterGettingFileName(templateModel, fileName);
+                            }
+                        });
+            this.getTemplateExportFileNameAlertDialog.show(templateModel.getTitle());
+        }
 
     }
 
@@ -354,8 +378,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                                 @java.lang.Override
                                 public void handleGetFileNameDone(final java.lang.String fileName)
                                 {
-                                    org.wheatgenetics.coordinate
-                                        .NavigationItemSelectedListener.this.exportGrid(fileName);
+                                    org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                        .this.exportGrid(fileName);
                                 }
                             });
                 assert null != this.handler;

@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
  * org.wheatgenetics.coordinate.model.Exporter.Helper
+ * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
  */
 public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter

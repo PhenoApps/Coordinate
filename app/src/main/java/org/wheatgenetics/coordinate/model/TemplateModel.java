@@ -3,6 +3,9 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.util.Xml
+ *
+ * org.xmlpull.v1.XmlSerializer
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
@@ -16,6 +19,31 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
 {
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
+
+    private java.lang.String serialize()
+    {
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.xmlpull.v1.XmlSerializer xmlSerializer = android.util.Xml.newSerializer();
+
+            assert null != xmlSerializer;
+            try
+            {
+                xmlSerializer.setOutput(stringWriter);                 // throws java.io.IOException
+                xmlSerializer.startDocument(                           // throws java.io.IOException
+                    /* encoding   => */ "UTF-8",
+                    /* standalone => */ true   );
+                {
+                    final java.lang.String templateTagName = "template";
+                    xmlSerializer.startTag(null, templateTagName);     // throws java.io.IOException
+                    xmlSerializer.endTag  (null, templateTagName);
+                }
+            }
+            catch (final java.io.IOException e) { return null; }
+
+        }
+        return stringWriter.toString();
+    }
 
     // region Constructors
     /** Called by clone(). */
@@ -170,6 +198,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
     // endregion
+
+    boolean export(final java.io.File exportFile, final java.lang.String exportFileName)
+    { return false; }
 
     // region Public Methods
     // region optionalFields Public Methods
