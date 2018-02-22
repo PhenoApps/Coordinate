@@ -82,7 +82,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
-    private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
+    private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
 
@@ -446,11 +446,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
 
             // This directory will be used in the future to transfer templates between devices.
-            try
-            {
-                new org.wheatgenetics.androidlibrary.Dir(this, coordinateDirName + "/Templates",
-                    blankHiddenFileName).createIfMissing();            // throws java.io.IOException
-            }
+            this.templatesDir = new org.wheatgenetics.androidlibrary.Dir(
+                this, coordinateDirName + "/Templates", blankHiddenFileName);
+            try { this.templatesDir.createIfMissing();  /* throws java.io.IOException */ }
             catch (final java.io.IOException e)
             {
                 // Do nothing.  The reason I do nothing is because when an exception is thrown it
