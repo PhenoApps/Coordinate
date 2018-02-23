@@ -18,7 +18,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-public abstract class Exporter extends java.lang.Object
+abstract class Exporter extends java.lang.Object
 {
     abstract static class AsyncTask
     extends android.os.AsyncTask<java.lang.Void, java.lang.String, java.lang.Boolean>

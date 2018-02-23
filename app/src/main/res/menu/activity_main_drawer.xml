@@ -1,64 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/grid_group">
-        <item
-            android:id="@+id/nav_create_grid"
-            android:icon="@drawable/ic_menu_create_grid"
-            android:title="@string/create_grid" />
-        <item
-            android:id="@+id/nav_load_grid"
-            android:icon="@drawable/ic_menu_load_grid"
-            android:title="@string/load_grid"
-            android:enabled="false" />
-        <item
-            android:id="@+id/nav_delete_grid"
-            android:icon="@drawable/ic_menu_delete_grid"
-            android:title="@string/delete_grid"
-            android:enabled="false" />
-    </group>
+    <item android:title="@string/grid">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_create_grid"
+                    android:icon="@drawable/ic_menu_create_grid"
+                    android:title="@string/create_grid" />
+                <item
+                    android:id="@+id/nav_load_grid"
+                    android:icon="@drawable/ic_menu_load_grid"
+                    android:title="@string/load_grid"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_delete_grid"
+                    android:icon="@drawable/ic_menu_delete_grid"
+                    android:title="@string/delete_grid"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_export_grid"
+                    android:icon="@drawable/ic_menu_export"
+                    android:title="@string/export_grid"
+                    android:enabled="false" />
+            </group>
+        </menu>
+    </item>
 
-    <group android:id="@+id/template_group">
-        <item
-            android:id="@+id/nav_create_template"
-            android:icon="@drawable/ic_menu_create_template"
-            android:title="@string/create_template" />
-        <item
-            android:id="@+id/nav_delete_template"
-            android:icon="@drawable/ic_menu_delete_template"
-            android:title="@string/delete_template"
-            android:enabled="false" />
-    </group>
+    <item android:title="@string/template">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_create_template"
+                    android:icon="@drawable/ic_menu_create_template"
+                    android:title="@string/create_template" />
+                <item
+                    android:id="@+id/nav_delete_template"
+                    android:icon="@drawable/ic_menu_delete_template"
+                    android:title="@string/delete_template"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_export_template"
+                    android:icon="@drawable/ic_menu_export"
+                    android:title="@string/export_template"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_import_template"
+                    android:icon="@drawable/ic_menu_import_template"
+                    android:title="@string/import_template" />
+            </group>
+        </menu>
+    </item>
 
-    <group>
-        <item
-            android:id="@+id/nav_export_template"
-            android:icon="@drawable/ic_menu_export"
-            android:title="@string/export_template"
-            android:enabled="false" />
-        <item
-            android:id="@+id/nav_import_template"
-            android:icon="@drawable/ic_menu_import_template"
-            android:title="@string/import_template" />
-        <item
-            android:id="@+id/nav_export_grid"
-            android:icon="@drawable/ic_menu_export"
-            android:title="@string/export_grid"
-            android:enabled="false" />
-    </group>
-
-    <group>
-        <item
-            android:id="@+id/nav_turn_sound_on"
-            android:icon="@drawable/ic_lock_ringer_on_alpha"
-            android:title="@string/turn_sound_on"
-            android:enabled="false" />
-        <item
-            android:id="@+id/nav_turn_sound_off"
-            android:icon="@drawable/ic_lock_ringer_off_alpha"
-            android:title="@string/turn_sound_off" />
-        <item
-            android:id="@+id/nav_show_about"
-            android:icon="@drawable/ic_menu_show_about"
-            android:title="@string/show_about" />
-    </group>
+    <item android:title="@string/app">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_turn_sound_on"
+                    android:icon="@drawable/ic_lock_ringer_on_alpha"
+                    android:title="@string/turn_sound_on"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_turn_sound_off"
+                    android:icon="@drawable/ic_lock_ringer_off_alpha"
+                    android:title="@string/turn_sound_off" />
+                <item
+                    android:id="@+id/nav_show_about"
+                    android:icon="@drawable/ic_menu_show_about"
+                    android:title="@string/show_about" />
+            </group>
+        </menu>
+    </item>
 </menu>

@@ -10,18 +10,26 @@
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 
-    <!-- activity_main_drawer.xml: -->
-    <string name="create_grid">Create grid</string>
-    <string name="load_grid">Load grid</string>
-    <string name="delete_grid">Delete grid</string>
-    <string name="create_template">Create template</string>
-    <string name="delete_template">Delete template</string>
-    <string name="export_grid">Export Grid</string>
-    <string name="export_template">Export Template</string>
-    <string name="import_template">Import Template</string>
+
+    <!-- activity_main_drawer.xml -->
+    <string name="grid">Grid</string>
+    <string name="create_grid">Create</string>
+    <string name="load_grid">Load</string>
+    <string name="delete_grid">Delete</string>
+    <string name="export_grid">Export</string>
+
+    <string name="template">Template</string>
+    <string name="create_template">Create</string>
+    <string name="delete_template">Delete</string>
+    <string name="export_template">Export</string>
+    <string name="import_template">Import</string>
+
+    <string name="app">App</string>
     <string name="turn_sound_on">Turn Sound On</string>
     <string name="turn_sound_off">Turn Sound Off</string>
     <string name="show_about">About</string>
+    <!-- activity_main_drawer.xml -->
+
 
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
