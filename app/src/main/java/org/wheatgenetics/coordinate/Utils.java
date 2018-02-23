@@ -43,7 +43,7 @@ public class Utils extends java.lang.Object
     }
 
     // region alert(title, message) AlertDialog Methods
-    static void alert(final android.content.Context context, final int title,
+    public static void alert(final android.content.Context context, final int title,
     final java.lang.String message)
     {
         assert null != context;
@@ -59,7 +59,7 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region alert(title, message, yesRunnable) AlertDialog Method
-    static void alert(final android.content.Context context, final int message,
+    public static void alert(final android.content.Context context, final int message,
     final java.lang.Runnable yesRunnable)
     {
         assert null != context; org.wheatgenetics.coordinate.Utils.alert(context,
@@ -130,7 +130,7 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region confirm(title, message, yesRunnable, noRunnable) AlertDialog Method
-    static void confirm(final android.content.Context context, final int message,
+    public static void confirm(final android.content.Context context, final int message,
     final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(context,

@@ -7,7 +7,6 @@ package org.wheatgenetics.coordinate;
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * android.media.MediaPlayer
- * android.net.Uri
  * android.os.Bundle
  * android.support.design.widget.NavigationView
  * android.support.v4.app.FragmentManager
@@ -254,27 +253,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.gridCreator.create();
     }
 
-    private void deleteGrid()
-    {
-        assert null != this.joinedGridModel; final long gridId = this.joinedGridModel.getId();
-
-        if (this.entriesTable().deleteByGridId(gridId))
-            this.showShortToast(
-                org.wheatgenetics.coordinate.R.string.MainActivityEntriesOfGridSuccessToast);
-        else
-            this.showShortToast(
-                org.wheatgenetics.coordinate.R.string.MainActivityEntriesOfGridFailToast);
-
-        if (this.gridsTable().delete(gridId))
-        {
-            this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
-            this.clearJoinedGridModelThenPopulate(); this.createGrid();
-        }
-        else
-            this.showLongToast(
-                org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
-    }
-
     private void handleTemplateDeleted()
     {
         if (null != this.joinedGridModel)
@@ -308,42 +286,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
     // endregion
 
-    private void share(final java.io.File exportFile)
-    {
-        if (null != exportFile)
-        {
-            final android.content.Intent intent =
-                new android.content.Intent(android.content.Intent.ACTION_SEND);
-
-            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            intent.putExtra(android.content.Intent.EXTRA_STREAM,
-                android.net.Uri.parse(exportFile.getAbsolutePath()));
-            intent.setType("text/plain");
-
-            this.startActivity(android.content.Intent.createChooser(intent,
-                this.getString(org.wheatgenetics.coordinate.R.string.MainActivityShareTitle)));
-        }
-    }
-
-    // region Template Export Private Methods
-    private void handleTemplateExportSuccess(final java.io.File exportFile)
-    {
-        org.wheatgenetics.coordinate.Utils.alert(
-            /* context => */ this                                                                ,
-            /* message => */ org.wheatgenetics.coordinate.R.string.MainActivityExportSuccessTitle);
-        this.share(exportFile);
-    }
-
-    private void handleTemplateExportFailure(final java.lang.String message)
-    {
-        org.wheatgenetics.coordinate.Utils.alert(
-            /* context => */ this                                                             ,
-            /* title   => */ org.wheatgenetics.coordinate.R.string.MainActivityExportFailTitle,
-            /* message => */ org.wheatgenetics.javalib.Utils.replaceIfNull(message,
-                this.getString(
-                    org.wheatgenetics.coordinate.R.string.MainActivityExportFailMessage)));
-    }
-
     private void exportTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
     final java.lang.String                                 fileName     )
@@ -356,27 +298,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 this.templateExporter = new org.wheatgenetics.coordinate.model.TemplateExporter(
                     /* context    => */ this                                              ,
                     /* exportFile => */ this.templatesDir.createNewFile(fileName + ".xml"),// throws
-                    /* helper     => */ new org.wheatgenetics.coordinate.model.Exporter.Helper()
-                        {
-                            @java.lang.Override
-                            public void handleExportDone(final java.lang.Boolean result,
-                            final java.lang.String message, final java.io.File exportFile)
-                            {
-                                if (null != result && result)
-                                    org.wheatgenetics.coordinate.MainActivity.this
-                                        .handleTemplateExportSuccess(exportFile);
-                                else
-                                    org.wheatgenetics.coordinate.MainActivity.this
-                                        .handleTemplateExportFailure(message);
-                            }
-                        },
-                    /* templateModel => */ templateModel);
-                this.templateExporter.execute();
-            }
-            catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }
-        }
+                    /* templateModel => */ templateModel);                                 //  java-
+                this.templateExporter.execute();                                           //  .io.-
+            }                                                                              //  IOEx-
+            catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }    //  cep-
+        }                                                                                  //  tion
     }
-    // endregion
 
     private void storeSoundOn(final boolean soundOn)
     { assert null != this.sharedPreferences; this.sharedPreferences.setSoundOn(soundOn); }
@@ -895,49 +822,25 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region org.wheatgenetics.coordinate.model.GridExporter.Helper Overridden Methods
     @java.lang.Override
-    public void handleExportDone(final java.lang.Boolean result, final java.lang.String message,
-    final java.io.File exportFile)
+    public void deleteGrid()
     {
-        if (null != result && result)
+        assert null != this.joinedGridModel; final long gridId = this.joinedGridModel.getId();
+
+        if (this.entriesTable().deleteByGridId(gridId))
+            this.showShortToast(
+                org.wheatgenetics.coordinate.R.string.MainActivityEntriesOfGridSuccessToast);
+        else
+            this.showShortToast(
+                org.wheatgenetics.coordinate.R.string.MainActivityEntriesOfGridFailToast);
+
+        if (this.gridsTable().delete(gridId))
         {
-            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-            class YesRunnable extends java.lang.Object implements java.lang.Runnable
-            {
-                @java.lang.Override
-                public void run()
-                {
-                    org.wheatgenetics.coordinate.MainActivity.this.deleteGrid();
-                    org.wheatgenetics.coordinate.MainActivity.this.share(exportFile);
-                }
-            }
-
-            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
-            class NoRunnable extends java.lang.Object implements java.lang.Runnable
-            {
-                @java.lang.Override
-                public void run()
-                { org.wheatgenetics.coordinate.MainActivity.this.share(exportFile); }
-            }
-
-            org.wheatgenetics.coordinate.Utils.alert(
-                /* context => */ this,
-                /* message => */
-                    org.wheatgenetics.coordinate.R.string.MainActivityExportSuccessTitle,
-                /* yesRunnable => */ new java.lang.Runnable()
-                    {
-                        @java.lang.Override
-                        public void run()
-                        {
-                            org.wheatgenetics.coordinate.Utils.confirm(
-                                /* context     => */ org.wheatgenetics.coordinate.MainActivity.this,
-                                /* message     => */ org.wheatgenetics.coordinate
-                                    .R.string.MainActivityExportDeleteConfirmation,
-                                /* yesRunnable => */ new YesRunnable(),
-                                /* noRunnable  => */ new NoRunnable ());
-                        }
-                    });
+            this.showLongToast(org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
+            this.clearJoinedGridModelThenPopulate(); this.createGrid();
         }
-        else this.handleTemplateExportFailure(message);
+        else
+            this.showLongToast(
+                org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
     }
 
     @java.lang.Override
