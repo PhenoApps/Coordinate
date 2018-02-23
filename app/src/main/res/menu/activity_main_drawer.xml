@@ -14,7 +14,7 @@
                     android:enabled="false" />
                 <item
                     android:id="@+id/nav_delete_grid"
-                    android:icon="@drawable/ic_menu_delete_grid"
+                    android:icon="@drawable/ic_menu_delete"
                     android:title="@string/delete_grid"
                     android:enabled="false" />
                 <item
@@ -35,7 +35,7 @@
                     android:title="@string/create_template" />
                 <item
                     android:id="@+id/nav_delete_template"
-                    android:icon="@drawable/ic_menu_delete_template"
+                    android:icon="@drawable/ic_menu_delete"
                     android:title="@string/delete_template"
                     android:enabled="false" />
                 <item
