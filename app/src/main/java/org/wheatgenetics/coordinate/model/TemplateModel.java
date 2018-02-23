@@ -67,7 +67,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         this(title, type, rows, cols, generatedExcludedCellsAmount,
-            null, null, null, true, rowNumbering, optionalFields, 0);
+            null, null, null, true, rowNumbering, optionalFields,
+            type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
     }
 
     /** Called by JoinedGridModel constructor and TemplatesTable.make(). */

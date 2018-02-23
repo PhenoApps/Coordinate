@@ -63,6 +63,28 @@ public class ModelTest extends java.lang.Object
     }
     // endregion
 
+    // region Package Method Tests
+    @org.junit.Test
+    public void illegalSucceeds()
+    {
+        org.junit.Assert.assertFalse(org.wheatgenetics.coordinate.model.Model.illegal(+5));
+        org.junit.Assert.assertTrue (org.wheatgenetics.coordinate.model.Model.illegal(-5));
+    }
+
+    @org.junit.Test
+    public void validSucceeds()
+    {
+        final long testId = 5;
+        org.junit.Assert.assertEquals(testId,
+            org.wheatgenetics.coordinate.model.Model.valid(testId));
+    }
+
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    public void validThrows()
+    { org.wheatgenetics.coordinate.model.Model.valid(-5); }
+    // endregion
+
+    // region Public Method Tests
     @org.junit.Test
     public void equalsAndSetIdSucceedAndFail()
     {
@@ -95,4 +117,5 @@ public class ModelTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel();
         concreteModel.setId(-9);
     }
+    // endregion
 }
