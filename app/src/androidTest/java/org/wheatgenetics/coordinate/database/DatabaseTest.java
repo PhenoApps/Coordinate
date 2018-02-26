@@ -105,8 +105,7 @@ public class DatabaseTest extends java.lang.Object
     }
 
     // region Public Methods
-    @org.junit.Before
-    public void setUp() { this.cleanFilesystem(); }
+    @org.junit.Before public void setUp() { this.cleanFilesystem(); }
 
     /** nullContextDb() must be run before nonNullContextDb(). */
     @org.junit.Test(expected = java.lang.NullPointerException.class)
@@ -131,13 +130,14 @@ public class DatabaseTest extends java.lang.Object
                     org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable("templates",
             db, org.wheatgenetics.coordinate.R.raw.create_templates_table);
+        org.wheatgenetics.coordinate.database.DatabaseTest.testTable("projects",
+            db, org.wheatgenetics.coordinate.R.raw.create_projects_table);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable("grids",
             db, org.wheatgenetics.coordinate.R.raw.create_grids_table);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable("entries",
             db, org.wheatgenetics.coordinate.R.raw.create_entries_table);
     }
 
-    @org.junit.After
-    public void tearDown() { this.cleanFilesystem(); }
+    @org.junit.After public void tearDown() { this.cleanFilesystem(); }
     // endregion
 }

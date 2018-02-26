@@ -5,6 +5,20 @@
 
 
     <statement>
+        CREATE TABLE projects
+        (
+            _id   INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            stamp INTEGER
+        )
+    </statement>
+
+
+    <statement>
+        ALTER TABLE grids ADD COLUMN projectId INTEGER
+    </statement>
+
+    <statement>
         ALTER TABLE grids ADD COLUMN person TEXT
     </statement>
 

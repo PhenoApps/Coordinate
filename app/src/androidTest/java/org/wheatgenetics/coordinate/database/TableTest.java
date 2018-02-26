@@ -68,7 +68,7 @@ public class TableTest extends java.lang.Object
             org.junit.Assert.assertEquals     (cursor.getColumnCount(), 5);
             org.junit.Assert.assertArrayEquals(cursor.getColumnNames(),
                 new java.lang.String[] { "type", "name", "tbl_name", "rootpage", "sql" });
-            org.junit.Assert.assertEquals(cursor.getCount(), 5);
+            org.junit.Assert.assertEquals(cursor.getCount(), 6);
 
             java.lang.String firstName, lastName;
             {
@@ -136,14 +136,14 @@ public class TableTest extends java.lang.Object
             final android.database.Cursor cursor = concreteTable.rawQuery(
                 "SELECT ALL * FROM [sqlite_master] WHERE [type] = 'table'");
             org.junit.Assert.assertNotNull(cursor);
-            try     { org.junit.Assert.assertEquals(5, cursor.getCount()); }
+            try     { org.junit.Assert.assertEquals(6, cursor.getCount()); }
             finally { cursor.close()                                     ; }
         }
 
         {
             final android.database.Cursor cursor = concreteTable.queryDistinct("[type] = 'table'");
             org.junit.Assert.assertNotNull(cursor);
-            try     { org.junit.Assert.assertEquals(5, cursor.getCount()); }
+            try     { org.junit.Assert.assertEquals(6, cursor.getCount()); }
             finally { cursor.close()                                     ; }
         }
     }
