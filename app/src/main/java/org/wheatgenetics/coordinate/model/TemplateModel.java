@@ -6,6 +6,9 @@ package org.wheatgenetics.coordinate.model;
  * android.util.Xml
  *
  * org.xmlpull.v1.XmlSerializer
+ * org.xml.sax.Attributes
+ * org.xml.sax.SAXException
+ * org.xml.sax.helpers.DefaultHandler
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
@@ -17,8 +20,49 @@ package org.wheatgenetics.coordinate.model;
  */
 public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTemplateModel
 {
-    private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME = "optionalFields";
+
+    // region Fields
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
+
+    private static javax.xml.parsers.SAXParserFactory saxParserFactoryInstance = null;
+    private static javax.xml.parsers.SAXParser        saxParserInstance        = null;
+    // endregion
+
+    // region Private Methods
+    private void setOptionalFields(java.lang.String optionalFields)
+    {
+        if (null != optionalFields) optionalFields = optionalFields.trim();
+        this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
+            optionalFields.equals("") ? null : new
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+
+    }
+
+    private static javax.xml.parsers.SAXParserFactory saxParserFactory()
+    {
+        if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance)
+            org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance =
+                javax.xml.parsers.SAXParserFactory.newInstance();
+        return org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance;
+    }
+
+    private static javax.xml.parsers.SAXParser saxParser()
+    {
+        if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance)
+            try
+            {
+                org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance =
+                    org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactory()
+                        .newSAXParser();   // throws javax.xml.parsers.ParserConfigurationException,
+            }                              //   org.xml.sax.SAXException
+            catch (
+            final javax.xml.parsers.ParserConfigurationException | org.xml.sax.SAXException e)
+            { org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance = null; }
+        return org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance;
+    }
+    // endregion
 
     // region Constructors
     /** Called by clone(). */
@@ -71,6 +115,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
     }
 
+    /** Called by DefaultHandler. */ private TemplateModel() { super(); }
+
     /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
     public TemplateModel(
     @android.support.annotation.IntRange(from = 1        ) final long             id             ,
@@ -83,15 +129,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    java.lang.String optionalFields, final long timestamp)
+    final java.lang.String optionalFields, final long timestamp)
     {
         super(id, title, code, rows, cols, generatedExcludedCellsAmount, excludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
-
-        if (null != optionalFields) optionalFields = optionalFields.trim();
-        this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
-            optionalFields.equals("") ? null : new
-                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+        this.setOptionalFields(optionalFields);
     }
     // endregion
 
@@ -175,6 +217,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
+    // region Package Methods
     @java.lang.SuppressWarnings("PointlessBooleanExpression")
     boolean export(final java.io.File exportFile)
     {
@@ -207,7 +250,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                             if (!this.export(xmlSerializer, indent)) return !success;
                             if (null != this.nonNullOptionalFieldsInstance)
                                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
-                                    xmlSerializer, indent, "optionalFields",
+                                    xmlSerializer, indent, org.wheatgenetics.coordinate.model
+                                        .TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
                                     this.nonNullOptionalFieldsInstance.toJson());
                         }
 
@@ -223,6 +267,18 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             return success;
         }
     }
+
+    @java.lang.Override
+    void assignCharacterData(final java.lang.String elementName,
+    final java.lang.String characterData)
+    {
+        if (org.wheatgenetics.coordinate.model.TemplateModel.OPTIONAL_FIELDS_TAG_NAME.equals(
+        elementName))
+            this.setOptionalFields(characterData);
+        else
+            super.assignCharacterData(elementName, characterData);
+    }
+    // endregion
 
     // region Public Methods
     // region optionalFields Public Methods
@@ -291,6 +347,76 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             /* rowNumbering                 => */ false                               ,
             /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFields.makeNew());
+    }
+
+    public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined(
+    final java.io.FileDescriptor fileDescriptor)
+    {
+        if (null == fileDescriptor)
+            return null;
+        else
+        {
+            class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
+            {
+                // region Fields
+                private java.lang.String                                 elementName;
+                private org.wheatgenetics.coordinate.model.TemplateModel
+                    templateModelInstance = null;
+                // endregion
+
+                private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
+                {
+                    if (null == this.templateModelInstance) this.templateModelInstance =
+                        new org.wheatgenetics.coordinate.model.TemplateModel();
+                    return templateModelInstance;
+                }
+
+                // region Overridden Methods
+                @java.lang.Override
+                public void startElement(final java.lang.String uri,
+                final java.lang.String localName, final java.lang.String qName,
+                final org.xml.sax.Attributes attributes) throws org.xml.sax.SAXException
+                { this.elementName = qName; }
+
+                @java.lang.Override
+                public void characters(final char ch[], final int start, final int length)
+                throws org.xml.sax.SAXException
+                {
+                    this.templateModel().assignCharacterData(
+                        this.elementName, new java.lang.String(ch, start, length));
+                }
+
+                @java.lang.Override
+                public void endElement(final java.lang.String uri, final java.lang.String localName,
+                final java.lang.String qName) throws org.xml.sax.SAXException
+                { this.elementName = null; }
+                // endregion
+
+                private org.wheatgenetics.coordinate.model.TemplateModel getTemplateModel()
+                { return this.templateModelInstance; }
+            }
+
+            final DefaultHandler defaultHandler = new DefaultHandler();
+            {
+                try
+                {
+                    final java.io.FileInputStream fileInputStream =
+                        new java.io.FileInputStream(fileDescriptor);
+                    try
+                    {
+                        try
+                        {
+                            org.wheatgenetics.coordinate.model.TemplateModel.saxParser()
+                                .parse(fileInputStream, defaultHandler);     // throws org.xml.sax.-
+                        }                                                    //  SAXException
+                        catch (final org.xml.sax.SAXException e) { return null; }
+                    }
+                    finally { fileInputStream.close(); /* java.io.IOException */ }
+                }
+                catch (final java.io.IOException e) { /* Don't close fileInputStream. */ }
+            }
+            return defaultHandler.getTemplateModel();
+        }
     }
     // endregion
     // endregion

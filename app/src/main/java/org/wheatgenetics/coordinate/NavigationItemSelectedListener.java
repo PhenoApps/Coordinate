@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.app.Activity
+ * android.content.Intent
  * android.content.res.Resources
  * android.os.Bundle
  * android.support.annotation.NonNull
@@ -69,11 +70,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Fields
-    private final android.app.Activity                                                activity   ;
-    private final int                                                                 requestCode;
-    private final java.lang.String                                                    versionName;
-    private final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ;
-    private final android.view.View.OnClickListener                        versionOnClickListener;
+    private final android.app.Activity activity                                            ;
+    private final int                  createTemplateRequestCode, importTemplateRequestCode;
+    private final java.lang.String     versionName                                         ;
+    private final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler;
+    private final android.view.View.OnClickListener                    versionOnClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
@@ -84,6 +85,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
+    private android.content.Intent                          intentInstance   = null;
     private boolean                                         soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
     // endregion
@@ -292,22 +294,37 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             selectTemplateToDeleteAlertDialog.show(title, templateModels.titles());
         }
     }
+
+    private android.content.Intent intent()
+    {
+        if (null == this.intentInstance)
+        {
+            this.intentInstance =
+                new android.content.Intent(android.content.Intent.ACTION_GET_CONTENT);
+            this.intentInstance.setType("text/xml");
+        }
+        return this.intentInstance;
+    }
     // endregion
 
     private void storeSoundOn()
     { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
 
-    NavigationItemSelectedListener(final android.app.Activity activity, final int requestCode,
+    NavigationItemSelectedListener(final android.app.Activity activity,
+    final int createTemplateRequestCode, final int importTemplateRequestCode,
     final java.lang.String versionName, final boolean soundOn,
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
     final android.view.View.OnClickListener                     versionOnClickListener)
     {
         super();
 
-        this.activity               = activity              ; this.requestCode = requestCode;
-        this.versionName            = versionName           ; this.handler     = handler    ;
-        this.versionOnClickListener = versionOnClickListener; this.soundOn     = soundOn    ;
+        this.activity                  = activity                 ;
+        this.createTemplateRequestCode = createTemplateRequestCode;
+        this.importTemplateRequestCode = importTemplateRequestCode;
+
+        this.versionName            = versionName           ; this.handler = handler;
+        this.versionOnClickListener = versionOnClickListener; this.soundOn = soundOn;
     }
 
     // region Overridden Methods
@@ -319,7 +336,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following ten ids that have names that start with "nav_" come from
+            // The following eleven ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -385,7 +402,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             case org.wheatgenetics.coordinate.R.id.nav_create_template:
                 if (null == this.templateCreator)
                     this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                        this.activity, this.requestCode, this);
+                        this.activity, this.createTemplateRequestCode, this);
                 this.templateCreator.create(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
@@ -398,7 +415,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     .NavigationItemSelectedListener.TemplateOperation.EXPORT);
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_import_template: break;
+            case org.wheatgenetics.coordinate.R.id.nav_import_template:
+                assert null != this.activity;
+                this.activity.startActivityForResult(this.intent(), this.importTemplateRequestCode);
+                break;
 
 
 

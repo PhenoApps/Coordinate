@@ -19,12 +19,12 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private       java.lang.String                                title                       ;
-    private       org.wheatgenetics.coordinate.model.TemplateType type                        ;
-    private       int                                             rows, cols                  ;
-    private       int                                             generatedExcludedCellsAmount;
-    private       boolean                                         colNumbering, rowNumbering  ;
-    private final long                                            timestamp                   ;
+    private java.lang.String                                title                       ;
+    private org.wheatgenetics.coordinate.model.TemplateType type                        ;
+    private int                                             rows, cols                  ;
+    private int                                             generatedExcludedCellsAmount;
+    private boolean                                         colNumbering, rowNumbering  ;
+    private long                                            timestamp                   ;
     // endregion
 
     // region Private Methods
@@ -62,7 +62,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Constructors
-    /** Called by first and third DisplayTemplateModel constructors. */
+    /** Called by first and fourth DisplayTemplateModel constructors. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
@@ -91,6 +91,11 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
         this.timestamp = timestamp;
     }
+
+    /** Called by third DisplayTemplateModel constructor. */
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    BaseTemplateModel()
+    { super(); this.type = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED; }
     // endregion
 
     // region Overridden Methods
@@ -151,6 +156,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
     // endregion
 
+    // region Package Methods
     @java.lang.SuppressWarnings("DefaultLocale")
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
@@ -161,6 +167,29 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
             this.getCols(), this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
             this.getRowNumbering(), this.getTimestamp());
     }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setRows(final java.lang.String rows) { this.setRows(java.lang.Integer.valueOf(rows)); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setCols(final java.lang.String cols) { this.setCols(java.lang.Integer.valueOf(cols)); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setGeneratedExcludedCellsAmount(final java.lang.String amount)
+    { this.setGeneratedExcludedCellsAmount(java.lang.Integer.valueOf(amount)); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setColNumbering(final java.lang.String colNumbering)
+    { this.setColNumbering(java.lang.Boolean.valueOf(colNumbering)); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setRowNumbering(final java.lang.String rowNumbering)
+    { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setTimestamp(final java.lang.String timestamp)
+    { this.timestamp = java.lang.Long.valueOf(timestamp); }
+    // endregion
 
     // region Public Methods
     public java.lang.String getTitle()                             { return this.title ; }

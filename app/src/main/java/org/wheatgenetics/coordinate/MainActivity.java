@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate;
  * android.content.pm.PackageManager.NameNotFoundException
  * android.media.MediaPlayer
  * android.os.Bundle
+ * android.os.ParcelFileDescriptor
  * android.support.design.widget.NavigationView
  * android.support.v4.app.FragmentManager
  * android.support.v4.view.GravityCompat
@@ -74,7 +75,7 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
-    private final static int NAVIGATION_ITEM_SELECTED_LISTENER = 10, GRID_CREATOR = 20;
+    private final static int CREATE_TEMPLATE = 10, IMPORT_TEMPLATE = 20, CREATE_GRID = 30;
 
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
@@ -249,7 +250,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     {
         if (null == this.gridCreator)
             this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(
-                this, org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR, this);
+                this, org.wheatgenetics.coordinate.MainActivity.CREATE_GRID, this);
         this.gridCreator.create();
     }
 
@@ -485,9 +486,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     assert null != navigationView; navigationView.setNavigationItemSelectedListener(
                         this.navigationItemSelectedListener =
                             new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
-                                /* activity    => */ this,
-                                /* requestCode => */ org.wheatgenetics.coordinate
-                                    .MainActivity.NAVIGATION_ITEM_SELECTED_LISTENER,
+                                /* activity                  => */ this,
+                                /* createTemplateRequestCode => */
+                                    org.wheatgenetics.coordinate.MainActivity.CREATE_TEMPLATE,
+                                /* importTemplateRequestCode => */
+                                    org.wheatgenetics.coordinate.MainActivity.IMPORT_TEMPLATE,
                                 /* versionName => */ versionName                        ,
                                 /* soundOn     => */ this.sharedPreferences.getSoundOn(),
                                 /* handler     => */ new org.wheatgenetics.coordinate
@@ -661,22 +664,42 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             assert null != this.dataEntryFragment;
             this.dataEntryFragment.setEntry(barcodeScannerResult);
         }
-        else if (android.app.Activity.RESULT_OK == resultCode)
-        {
-            assert null != data;
-            switch (requestCode)
+        else
+            if (android.app.Activity.RESULT_OK == resultCode)
             {
-                case org.wheatgenetics.coordinate.MainActivity.NAVIGATION_ITEM_SELECTED_LISTENER:
-                    assert null != this.navigationItemSelectedListener;
-                    this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
-                    break;
+                assert null != data;
+                switch (requestCode)
+                {
+                    case org.wheatgenetics.coordinate.MainActivity.CREATE_TEMPLATE:
+                        assert null != this.navigationItemSelectedListener;
+                        this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
+                        break;
 
-                case org.wheatgenetics.coordinate.MainActivity.GRID_CREATOR:
-                    assert null != this.gridCreator;
-                    this.gridCreator.setExcludedCells(data.getExtras());
-                    break;
+                    case org.wheatgenetics.coordinate.MainActivity.IMPORT_TEMPLATE:
+                        android.os.ParcelFileDescriptor parcelFileDescriptor;
+                        try
+                        {
+                            parcelFileDescriptor =
+                                this.getContentResolver().openFileDescriptor(data.getData(), "r");
+                        }
+                        catch (final java.io.IOException e) { parcelFileDescriptor = null; }
+
+                        if (null != parcelFileDescriptor)
+                        {
+                            this.templatesTable().insert(
+                                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
+                                    parcelFileDescriptor.getFileDescriptor()));
+                            try { parcelFileDescriptor.close(); }
+                            catch (final java.io.IOException e) { /* Leave open. */ }
+                        }
+                        break;
+
+                    case org.wheatgenetics.coordinate.MainActivity.CREATE_GRID:
+                        assert null != this.gridCreator;
+                        this.gridCreator.setExcludedCells(data.getExtras());
+                        break;
+                }
             }
-        }
     }
 
     @java.lang.Override

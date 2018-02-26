@@ -50,6 +50,9 @@ public abstract class Model extends java.lang.Object
         else
             return id;
     }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setId(final java.lang.String id) { this.setId(java.lang.Long.valueOf(id)); }
     // endregion
 
     // region Public Methods
