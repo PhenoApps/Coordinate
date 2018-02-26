@@ -5,7 +5,7 @@
             <group>
                 <item
                     android:id="@+id/nav_create_grid"
-                    android:icon="@drawable/ic_menu_create_grid"
+                    android:icon="@drawable/ic_menu_create"
                     android:title="@string/create_grid" />
                 <item
                     android:id="@+id/nav_load_grid"
@@ -47,6 +47,27 @@
                     android:id="@+id/nav_import_template"
                     android:icon="@drawable/ic_menu_import_template"
                     android:title="@string/import_template" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/project">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_create_project"
+                    android:icon="@drawable/ic_menu_create"
+                    android:title="@string/create_project" />
+                <item
+                    android:id="@+id/nav_delete_project"
+                    android:icon="@drawable/ic_menu_delete"
+                    android:title="@string/delete_project"
+                    android:enabled="false" />
+                <item
+                    android:id="@+id/nav_export_project"
+                    android:icon="@drawable/ic_menu_export"
+                    android:title="@string/export_project"
+                    android:enabled="false" />
             </group>
         </menu>
     </item>

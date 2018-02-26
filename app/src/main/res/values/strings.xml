@@ -24,6 +24,11 @@
     <string name="export_template">Export</string>
     <string name="import_template">Import</string>
 
+    <string name="project">Project</string>
+    <string name="create_project">Create</string>
+    <string name="delete_project">Delete</string>
+    <string name="export_project">Export</string>
+
     <string name="app">App</string>
     <string name="turn_sound_on">Turn Sound On</string>
     <string name="turn_sound_off">Turn Sound Off</string>
