@@ -22,7 +22,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // region Constants
     private static final java.lang.String TABLE_NAME = "grids";
 
-    private static final java.lang.String TEMP_FIELD_NAME = "temp", PERSON_FIELD_NAME = "person",
+    private static final java.lang.String TEMP_FIELD_NAME = "temp",
+        PROJECTID_FIELD_NAME = "projectId", PERSON_FIELD_NAME = "person",
         ACTIVEROW_FIELD_NAME = "activeRow", ACTIVECOL_FIELD_NAME = "activeCol",
         OPTIONS_FIELD_NAME = "options", STAMP_FIELD_NAME = "stamp";
     private static final java.lang.String TEMPLATEOPTIONS_FIELD_NAME = "templateOptions",
@@ -84,6 +85,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         org.wheatgenetics.coordinate.database.GridsTable.idFieldName = gridsQualifier +
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
         final java.lang.String
+            projectIdFieldName = gridsQualifier +
+                org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME,
             personFieldName = gridsQualifier +
                 org.wheatgenetics.coordinate.database.GridsTable.PERSON_FIELD_NAME,
             activeRowFieldName = gridsQualifier +
@@ -125,8 +128,9 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME;
         org.wheatgenetics.coordinate.database.GridsTable.joinedQuery = "SELECT ALL " +
             org.wheatgenetics.coordinate.database.GridsTable.idFieldName + ", " +
-            personFieldName + ", " + activeRowFieldName + ", " + activeColFieldName + ", " +
-            optionsFieldName + ", " + stampFieldName + ", " + tempFieldName + ", " +
+            projectIdFieldName + ", " + personFieldName  + ", " + activeRowFieldName + ", " +
+            activeColFieldName + ", " + optionsFieldName + ", " + stampFieldName     + ", " +
+            tempFieldName      + ", " +
 
             titleFieldName + ", " + typeFieldName  + ", " + rowsFieldName   + ", " +
             colsFieldName  + ", " + erandFieldName + ", " + ecellsFieldName + ", " +
@@ -156,7 +160,9 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                     org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
 
             return new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id     => */ gridId,
+                /* id        => */ gridId,
+                /* projectId => */ cursor.getLong(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME)),
                 /* person => */ cursor.getString(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.GridsTable.PERSON_FIELD_NAME)),
                 /* activeRow => */ cursor.getInt(cursor.getColumnIndex(
@@ -209,6 +215,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             assert null != gridModel;
             result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
                 gridModel.getTemplateId());
+            result.put(org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME,
+                gridModel.getProjectId());
             result.put(org.wheatgenetics.coordinate.database.GridsTable.PERSON_FIELD_NAME,
                 gridModel.getPerson());
             result.put(org.wheatgenetics.coordinate.database.GridsTable.ACTIVEROW_FIELD_NAME,
@@ -252,6 +260,13 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = " + templateId);
     }
 
+    public boolean deleteByProjectId(final long projectId)
+    {
+        return this.deleteUsingWhereClause(/* whereClause => */
+            org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME +
+                " = " + projectId);
+    }
+
     public org.wheatgenetics.coordinate.model.JoinedGridModels load()
     {
         return this.makeJoinedGridModels(this.rawQuery(/* sql => */
@@ -262,9 +277,17 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     final long templateId)
     {
         return this.makeJoinedGridModels(this.rawQuery(
-            /* sql => */ org.wheatgenetics.coordinate.database.GridsTable.joinedQuery +
-                " AND " + org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = ?",
+            /* sql => */ org.wheatgenetics.coordinate.database.GridsTable.joinedQuery + " AND " +
+                org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = ?",
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(templateId)));
+    }
+
+    public org.wheatgenetics.coordinate.model.JoinedGridModels loadByProjectId(final long projectId)
+    {
+        return this.makeJoinedGridModels(this.rawQuery(
+            /* sql => */ org.wheatgenetics.coordinate.database.GridsTable.joinedQuery + " AND " +
+                org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME + " = ?",
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(projectId)));
     }
     // endregion
 }

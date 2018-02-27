@@ -7,7 +7,8 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  *
  * org.wheatgenetics.coordinate.model.Model
- * new org.wheatgenetics.coordinate.model.ProjectModel
+ * org.wheatgenetics.coordinate.model.ProjectModel
+ * org.wheatgenetics.coordinate.model.ProjectModels
  *
  * org.wheatgenetics.coordinate.database.Table
  */
@@ -58,9 +59,35 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     }
     // endregion
 
+    // region Public Methods
     public boolean exists()
     {
         return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
             "SELECT ALL * FROM " + org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME));
     }
+
+    public org.wheatgenetics.coordinate.model.ProjectModels load()
+    {
+        final android.database.Cursor cursor = this.queryAll(/* orderBy => */
+            org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME + " ASC, " +
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME            + " ASC"   );
+        if (null == cursor)
+            return null;
+        else
+            try
+            {
+                if (cursor.getCount() <= 0)
+                    return null;
+                else
+                {
+                    final org.wheatgenetics.coordinate.model.ProjectModels result =
+                        new org.wheatgenetics.coordinate.model.ProjectModels();
+                    while (cursor.moveToNext()) result.add(
+                        (org.wheatgenetics.coordinate.model.ProjectModel) this.make(cursor));
+                    return result;
+                }
+            }
+            finally { cursor.close(); }
+    }
+    // endregion
 }

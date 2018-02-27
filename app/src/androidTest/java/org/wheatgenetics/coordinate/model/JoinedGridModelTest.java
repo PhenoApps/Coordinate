@@ -29,6 +29,7 @@ public class JoinedGridModelTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */ 5            ,
+                /* projectId                    => */ 0            ,
                 /* person                       => */ person       ,
                 /* activeRow                    => */ 0            ,
                 /* activeCol                    => */ 0            ,

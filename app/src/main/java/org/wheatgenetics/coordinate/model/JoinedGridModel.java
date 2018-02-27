@@ -198,12 +198,13 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     // region Constructors
     /** Used by GridCreator. */
-    public JoinedGridModel(final java.lang.String                          person        ,
+    public JoinedGridModel(final long projectId, final java.lang.String person,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     final org.wheatgenetics.coordinate.model.TemplateModel                 templateModel )
     {
         super(
             /* templateId     => */ templateModel.getId(),
+            /* projectId      => */ projectId            ,
             /* person         => */ person               ,
             /* optionalFields => */ optionalFields       );
         this.templateModel = templateModel;
@@ -211,7 +212,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     /** Used by GridsTable. */
     public JoinedGridModel(@android.support.annotation.IntRange(from = 1) final long id,
-    final java.lang.String person,
+    final long projectId, final java.lang.String person,
     @android.support.annotation.IntRange(from = 0) final int activeRow,
     @android.support.annotation.IntRange(from = 0) final int activeCol,
     final java.lang.String optionalFields, final long timestamp,
@@ -230,7 +231,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
-        super(id, templateId, person, activeRow, activeCol, optionalFields, timestamp);
+        super(id, templateId, projectId, person, activeRow, activeCol, optionalFields, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
@@ -242,6 +243,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
     @java.lang.Override
     public int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
+
     @java.lang.Override
     public int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
 
@@ -256,8 +258,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @java.lang.Override
     public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
     @android.support.annotation.IntRange(from = 1) int row,
-    @android.support.annotation.IntRange(from = 1) int col)
-    { return this.getEntryModel(row, col); }
+    @android.support.annotation.IntRange(from = 1) int col) { return this.getEntryModel(row, col); }
     // endregion
 
     // region Package Methods
@@ -340,6 +341,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()
     { return this.getEntryModel(this.getActiveRow() + 1, this.getActiveCol() + 1); }
 
+    @java.lang.SuppressWarnings("PointlessBooleanExpression")
     public boolean setActiveRowAndActiveCol(
     @android.support.annotation.IntRange(from = 0) final int row,
     @android.support.annotation.IntRange(from = 0) final int col)

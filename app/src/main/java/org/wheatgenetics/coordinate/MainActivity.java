@@ -536,7 +536,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
                                         @java.lang.Override
-                                        public void handleTemplateDeleted()
+                                        public void handleGridDeleted()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.handleTemplateDeleted();

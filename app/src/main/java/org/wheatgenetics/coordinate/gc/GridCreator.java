@@ -124,6 +124,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* projectId      => */ 0                  ,                                 // TODO
                 /* person         => */ this.person        ,
                 /* optionalFields => */ this.optionalFields,
                 /* templateModel  => */ this.templateModel );

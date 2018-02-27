@@ -16,9 +16,9 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private final long             templateId          ;
-    private final java.lang.String person              ;
-    private       int              activeRow, activeCol;
+    private final long             templateId, projectId;
+    private final java.lang.String person               ;
+    private       int              activeRow, activeCol ;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     private final long timestamp;
@@ -28,13 +28,15 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by first JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String person,
+    final long projectId, final java.lang.String person,
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
-        this.person     = person                                                    ;
+        this.projectId  =
+            org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
+        this.person = person;
 
         this.activeRow = this.activeCol = 0;
 
@@ -47,6 +49,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     GridModel(
     @android.support.annotation.IntRange(from = 1) final long id                ,
     @android.support.annotation.IntRange(from = 1) final long templateId        ,
+                                                   final long projectId         ,
                                                    final java.lang.String person,
     @android.support.annotation.IntRange(from = 0) final int activeRow          ,
     @android.support.annotation.IntRange(from = 0) final int activeCol          ,
@@ -55,7 +58,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         super(id);
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
-        this.person     = person                                                    ;
+        this.projectId  =
+            org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
+        this.person = person;
 
         this.activeRow = activeRow; this.activeCol = activeCol;
 
@@ -84,6 +89,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
 
     // region Public Methods
     public long             getTemplateId() { return this.templateId; }
+    public long             getProjectId () { return this.projectId ; }
     public java.lang.String getPerson    () { return this.person    ; }
     public int              getActiveRow () { return this.activeRow ; }
     public int              getActiveCol () { return this.activeCol ; }

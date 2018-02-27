@@ -16,7 +16,7 @@ public class GridModelTest extends java.lang.Object
     // region First Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badTemplateIdFirstConstructorFails()
-    { new org.wheatgenetics.coordinate.model.GridModel(0, "person", null); }
+    { new org.wheatgenetics.coordinate.model.GridModel(0, 0, "person", null); }
 
     @org.junit.Test
     public void firstConstructorAndGettersSucceed()
@@ -24,7 +24,7 @@ public class GridModelTest extends java.lang.Object
         final long                                         templateId = 67      ;
         final java.lang.String                             person     = "person";
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(templateId, person, null);
+            new org.wheatgenetics.coordinate.model.GridModel(templateId, 0, person, null);
         org.junit.Assert.assertEquals(gridModel.getTemplateId(), templateId);
         org.junit.Assert.assertEquals(gridModel.getPerson    (), person    );
     }
@@ -33,7 +33,7 @@ public class GridModelTest extends java.lang.Object
     // region Second Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badIdSecondConstructorFails()
-    { new org.wheatgenetics.coordinate.model.GridModel(-1, 1, "abc", 0, 0, null, 888); }
+    { new org.wheatgenetics.coordinate.model.GridModel(-1, 1, 0, "abc", 0, 0, null, 888); }
 
     @org.junit.Test
     public void secondConstructorAndGettersSucceed()
@@ -42,7 +42,7 @@ public class GridModelTest extends java.lang.Object
         final long             timestamp = 888  ;
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
             new org.wheatgenetics.coordinate.model.GridModel(
-                1, 1, person, 0, 0, null, timestamp);
+                1, 1, 0, person, 0, 0, null, timestamp);
         org.junit.Assert.assertEquals(gridModel.getPerson   (), person   );
         org.junit.Assert.assertEquals(gridModel.getTimestamp(), timestamp);
     }
@@ -55,7 +55,7 @@ public class GridModelTest extends java.lang.Object
         final long timestamp = 888;
         final org.wheatgenetics.coordinate.model.GridModel gridModel =
             new org.wheatgenetics.coordinate.model.GridModel(
-                1, 5, "abc", 0, 0, null, timestamp);
+                1, 5, 0, "abc", 0, 0, null, timestamp);
         org.junit.Assert.assertEquals(gridModel.getFormattedTimestamp(),
             org.wheatgenetics.androidlibrary.Utils.formatDate(gridModel.getTimestamp()));
     }

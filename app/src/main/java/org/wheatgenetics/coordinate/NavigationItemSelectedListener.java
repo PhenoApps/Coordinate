@@ -29,6 +29,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.ProjectModel
+ * org.wheatgenetics.coordinate.model.ProjectModels
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
@@ -56,7 +57,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         public abstract void loadGrid  (long gridId);
         public abstract void deleteGrid();
 
-        public abstract void handleTemplateDeleted();
+        public abstract void handleGridDeleted();
 
         public abstract java.lang.String initialExportFileName();
         public abstract void             exportGrid(java.lang.String fileName);
@@ -70,7 +71,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         public abstract void closeDrawer();
     }
 
-    private enum TemplateOperation { DELETE, EXPORT }
+    private enum SelectOperation { DELETE, EXPORT }
     // endregion
 
     // region Fields
@@ -176,15 +177,15 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             {
                 final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
                     this.gridsTable().loadByTemplateId(templateId);
-                if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete entries
+                if (null != joinedGridModels) joinedGridModels.processAll(this);  // delete entries
             }
 
             if (this.gridsTable().deleteByTemplateId(templateId))                 // delete grids
                 this.showShortToast(org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateSuccessToast);
+                    .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
             else
                 this.showShortToast(org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteGridsOfTemplateFailToast);
+                    .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
 
             success = templatesTable().delete(templateId);                        // delete template
         }
@@ -193,7 +194,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         {
             this.showLongToast(org.wheatgenetics.coordinate
                 .R.string.NavigationItemSelectedListenerDeleteTemplateSuccessToast);
-            assert null != this.handler; this.handler.handleTemplateDeleted();
+            assert null != this.handler; this.handler.handleGridDeleted();
         }
         else this.showLongToast(org.wheatgenetics.coordinate
             .R.string.NavigationItemSelectedListenerDeleteTemplateFailToast);
@@ -249,17 +250,17 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     // endregion
 
     private void selectUserDefinedTemplate(
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.TemplateOperation
-        templateOperation)
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.SelectOperation
+        selectOperation)
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().loadUserDefined();
         if (null != templateModels) if (templateModels.size() > 0)
         {
-            final org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateToDeleteAlertDialog;
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateAlertDialog;
             {
                 final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
-                switch (templateOperation)
+                switch (selectOperation)
                 {
                     case DELETE: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
@@ -286,26 +287,22 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
                     default: handler = null; break;
                 }
 
-                selectTemplateToDeleteAlertDialog =
+                selectTemplateAlertDialog =
                     new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
             }
 
             final int title;
-            switch (templateOperation)
+            switch (selectOperation)
             {
-                case DELETE: title =
-                    org.wheatgenetics.coordinate
-                        .R.string.NavigationItemSelectedListenerSelectDeleteTemplateTitle;
-                    break;
+                case DELETE: title = org.wheatgenetics.coordinate.R.string
+                    .NavigationItemSelectedListenerSelectDeleteTemplateTitle; break;
 
-                case EXPORT: title =
-                    org.wheatgenetics.coordinate
-                        .R.string.NavigationItemSelectedListenerSelectExportTemplateTitle;
-                    break;
+                case EXPORT: title = org.wheatgenetics.coordinate.R.string
+                    .NavigationItemSelectedListenerSelectExportTemplateTitle; break;
 
                 default: title = 0;
             }
-            selectTemplateToDeleteAlertDialog.show(title, templateModels.titles());
+            selectTemplateAlertDialog.show(title, templateModels.titles());
         }
     }
 
@@ -318,6 +315,129 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             this.intentInstance.setType("text/xml");
         }
         return this.intentInstance;
+    }
+    // endregion
+
+    // region Project Private Methods
+    // region Delete Project Private Methods
+    private void deleteProjectAfterConfirm(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        final boolean success;
+        if (null == projectModel)
+            success = false;
+        else
+        {
+            final long projectId = projectModel.getId();
+
+            {
+                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+                    this.gridsTable().loadByProjectId(projectId);
+                if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete entries
+            }
+
+            if (this.gridsTable().deleteByProjectId(projectId))                    // delete grids
+                this.showShortToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
+            else
+                this.showShortToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
+
+            success = projectsTable().delete(projectId);                           // delete project
+        }
+
+        if (success)
+        {
+            this.showLongToast(org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
+            assert null != this.handler; this.handler.handleGridDeleted();
+        }
+        else this.showLongToast(org.wheatgenetics.coordinate
+            .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
+    }
+
+    private void deleteProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
+            /* context => */ this.activity,
+            /* title   => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationTitle,
+            /* message => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
+            /* yesRunnable => */ new java.lang.Runnable()
+            {
+                @java.lang.Override
+                public void run()
+                {
+                    org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                        .this.deleteProjectAfterConfirm(projectModel);
+                }
+            });
+    }
+    // endregion
+
+    private void exportProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        //TODO
+    }
+
+    private void selectProject(
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.SelectOperation
+        selectOperation)
+    {
+        final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
+            this.projectsTable().load();
+        if (null != projectModels) if (projectModels.size() > 0)
+        {
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectProjectAlertDialog;
+            {
+                final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
+                switch (selectOperation)
+                {
+                    case DELETE: handler =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void select(final int which)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.deleteProjectAfterSelect(projectModels.get(which));
+                            }
+                        }; break;
+
+                    case EXPORT: handler =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void select(final int which)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.exportProjectAfterSelect(projectModels.get(which));
+                            }
+                        }; break;
+
+                    default: handler = null; break;
+                }
+
+                selectProjectAlertDialog =
+                    new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
+            }
+
+            final int title;
+            switch (selectOperation)
+            {
+                case DELETE: title = org.wheatgenetics.coordinate.R.string
+                    .NavigationItemSelectedListenerSelectDeleteProjectTitle; break;
+
+                case EXPORT: title = org.wheatgenetics.coordinate.R.string
+                    .NavigationItemSelectedListenerSelectExportProjectTitle; break;
+
+                default: title = 0;
+            }
+            selectProjectAlertDialog.show(title, projectModels.titles());
+        }
     }
     // endregion
 
@@ -421,12 +541,12 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
+                    .NavigationItemSelectedListener.SelectOperation.DELETE);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.TemplateOperation.EXPORT);
+                    .NavigationItemSelectedListener.SelectOperation.EXPORT);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_import_template:
@@ -443,7 +563,13 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_project:
+                this.selectProject(org.wheatgenetics.coordinate
+                    .NavigationItemSelectedListener.SelectOperation.DELETE);
+                break;
+
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
+                this.selectProject(org.wheatgenetics.coordinate
+                    .NavigationItemSelectedListener.SelectOperation.EXPORT);
                 break;
 
 
