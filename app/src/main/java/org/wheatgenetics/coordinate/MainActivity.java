@@ -36,6 +36,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.display.GridDisplayFragment
@@ -91,6 +92,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
+    private org.wheatgenetics.coordinate.database.ProjectsTable  projectsTableInstance  = null;
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
@@ -113,6 +115,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
+    {
+        if (null == this.projectsTableInstance) this.projectsTableInstance =
+            new org.wheatgenetics.coordinate.database.ProjectsTable(this);
+        return this.projectsTableInstance;
     }
 
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
@@ -206,6 +215,15 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
             assert null != this.exportTemplateMenuItem;
             this.exportTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
+        }
+        {
+            final boolean projectsExists = this.projectsTable().exists();
+
+            assert null != this.deleteProjectMenuItem;
+            this.deleteProjectMenuItem.setEnabled(projectsExists);
+
+            assert null != this.exportProjectMenuItem;
+            this.exportProjectMenuItem.setEnabled(projectsExists);
         }
 
         assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;

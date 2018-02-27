@@ -22,17 +22,20 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
+ * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.CreateProjectAlertDialog
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -42,7 +45,8 @@ package org.wheatgenetics.coordinate;
 class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
-org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
+org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
+org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
@@ -80,12 +84,15 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
+    private org.wheatgenetics.coordinate.database.ProjectsTable  projectsTableInstance  = null;
     // endregion
 
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
-    private android.content.Intent                          intentInstance   = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator       templateCreator  = null;
+    private android.content.Intent                                intentInstance   = null;
+    private org.wheatgenetics.coordinate.CreateProjectAlertDialog
+        createProjectAlertDialog = null;
     private boolean                                         soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
     // endregion
@@ -111,6 +118,13 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         if (null == this.entriesTableInstance) this.entriesTableInstance =
             new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
         return this.entriesTableInstance;
+    }
+
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
+    {
+        if (null == this.projectsTableInstance) this.projectsTableInstance =
+            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity);
+        return this.projectsTableInstance;
     }
     // endregion
 
@@ -336,7 +350,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following eleven ids that have names that start with "nav_" come from
+            // The following fourteen ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -422,6 +436,18 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
 
 
+            case org.wheatgenetics.coordinate.R.id.nav_create_project:
+                if (null == this.createProjectAlertDialog) this.createProjectAlertDialog =
+                    new org.wheatgenetics.coordinate.CreateProjectAlertDialog(this.activity, this);
+                this.createProjectAlertDialog.show();
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_delete_project:
+            case org.wheatgenetics.coordinate.R.id.nav_export_project:
+                break;
+
+
+
             case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on:
                 this.soundOn = true; this.storeSoundOn(); break;
 
@@ -471,6 +497,15 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { assert null != joinedGridModel; this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler Overridden Method
+    @java.lang.Override
+    public void handleCreateProjectDone(final java.lang.String projectTitle)
+    {
+        this.projectsTable().insert(
+            new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle));
+    }
     // endregion
     // endregion
 

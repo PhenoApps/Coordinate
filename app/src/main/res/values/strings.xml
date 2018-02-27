@@ -120,4 +120,8 @@
     <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
     <string name="GridExporterDeleteConfirmation">Do you want to delete the current grid?</string>
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
+
+    <string name="CreateProjectAlertDialogTitle">Create Project</string>
+    <string name="CreateProjectAlertDialogEditTextHint">Project name</string>
+    <string name="CreateProjectAlertDialogToast">Project name cannot be empty</string>
 </resources>
