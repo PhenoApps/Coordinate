@@ -45,7 +45,7 @@
             android:src="@drawable/ic_template" />
 
         <TextView
-            android:id="@+id/templateTitleTextView"
+            android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="25dp"

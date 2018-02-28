@@ -82,6 +82,13 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Public Methods
+    public org.wheatgenetics.coordinate.model.ProjectModel get(final long id)
+    {
+        return (org.wheatgenetics.coordinate.model.ProjectModel) this.makeFromFirst(this.queryAll(
+            /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          ));
+    }
+
     public boolean exists()
     {
         return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(

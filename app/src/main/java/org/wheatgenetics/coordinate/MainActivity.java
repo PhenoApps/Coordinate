@@ -55,6 +55,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateExporter
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -100,6 +101,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.NavigationItemSelectedListener
         navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel  = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel     = null;
     private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator      = null;
     private org.wheatgenetics.coordinate.model.GridExporter     gridExporter     = null;
     private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter = null;
@@ -190,13 +192,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     person                                                 );      //  der_main.xml.
 
                 this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.templateTitleTextView,       // From nav_hea-
-                    templateTitle                                          );      //  der_main.xml.
+                    org.wheatgenetics.coordinate.R.id.titleTextView,               // From nav_hea-
+                    templateTitle                                  );              //  der_main.xml.
                 this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.sw600dpTemplateTitleTextView,     // From nav-
-                    templateTitle                                                 );    //  _header-
-            }                                                                           //  _main-
-                                                                                        //  .xml.
+                    org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,        // From nav_hea-
+                    templateTitle                                         );       //  der_main.xml.
+            }
+
             assert null != this.loadGridMenuItem;
             this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
 
@@ -220,7 +222,26 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             final boolean projectsExists = this.projectsTable().exists();
 
             assert null != this.loadProjectMenuItem;
-            //
+            this.loadProjectMenuItem.setEnabled(projectsExists);
+
+            {
+                final boolean projectModelIsLoaded = null != this.projectModel;
+
+                assert null != this.clearProjectMenuItem;
+                this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
+
+                if (projectModelIsLoaded)
+                {
+                    final java.lang.String projectTitle = this.projectModel.getTitle();
+
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.titleTextView,           // From nav_hea-
+                        projectTitle                                   );          //  der_main.xml.
+                    this.setTextViewText(
+                        org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,    // From nav_hea-
+                        projectTitle                                          );   //  der_main.xml.
+                }
+            }
 
             assert null != this.deleteProjectMenuItem;
             this.deleteProjectMenuItem.setEnabled(projectsExists);
@@ -269,6 +290,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void clearJoinedGridModelThenPopulate() { this.loadJoinedGridModelThenPopulate(0); }
     // endregion
+
+    private void loadProjectModel(final long projectId)
+    {
+        this.projectModel = projectId > 0 ? this.projectsTable().get(projectId) : null;
+
+        assert null != this.sharedPreferences;
+        if (null == this.projectModel)
+            this.sharedPreferences.clearLoadedProjectId();
+        else
+            this.sharedPreferences.setLoadedProjectId(this.projectModel.getId());
+    }
 
     private void createGrid()
     {
@@ -628,11 +660,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
             // endregion
 
-            // region Load joinedGridModel.
+            // region Load joinedGridModel and projectModel.
             if (this.sharedPreferences.loadedGridIdIsSet())
                 this.loadJoinedGridModel(this.sharedPreferences.getLoadedGridId());
             else
                 if (null == savedInstanceState) this.createGrid();
+
+            if (this.sharedPreferences.loadedProjectIdIsSet())
+                this.loadProjectModel(this.sharedPreferences.getLoadedProjectId());
             // endregion
 
             // region Set version.

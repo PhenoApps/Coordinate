@@ -455,7 +455,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     final int createTemplateRequestCode, final int importTemplateRequestCode,
     final java.lang.String versionName, final boolean soundOn,
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
-    final android.view.View.OnClickListener                     versionOnClickListener)
+    final android.view.View.OnClickListener                    versionOnClickListener)
     {
         super();
 
