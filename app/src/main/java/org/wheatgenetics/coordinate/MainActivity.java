@@ -226,7 +226,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.deleteProjectMenuItem.setEnabled(projectsExists);
 
             assert null != this.exportProjectMenuItem;
-            this.exportProjectMenuItem.setEnabled(projectsExists);
+            if (projectsExists)
+                this.exportProjectMenuItem.setEnabled(this.gridsTable().existsInProject());
+            else
+                this.exportProjectMenuItem.setEnabled(false);
         }
 
         assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;

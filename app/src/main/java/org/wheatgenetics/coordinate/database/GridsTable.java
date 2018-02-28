@@ -254,6 +254,14 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             "SELECT ALL * FROM " + org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME));
     }
 
+    public boolean existsInProject()
+    {
+        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
+            /* sql => */ "SELECT ALL * FROM " +
+                org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME + " WHERE " +
+                org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME + " > 0"));
+    }
+
     public boolean deleteByTemplateId(final long templateId)
     {
         return this.deleteUsingWhereClause(/* whereClause => */
