@@ -95,6 +95,13 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             "SELECT ALL * FROM " + org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME));
     }
 
+    public boolean exists(final long id)
+    {
+        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
+            /* selection => */ org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " <> ?",
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)));
+    }
+
     public org.wheatgenetics.coordinate.model.ProjectModels load()
     {
         return this.makeProjectModels(this.queryAll(/* orderBy => */

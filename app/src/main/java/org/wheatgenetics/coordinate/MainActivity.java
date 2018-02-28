@@ -221,14 +221,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             final boolean projectsExists = this.projectsTable().exists();
 
-            assert null != this.loadProjectMenuItem;
-            this.loadProjectMenuItem.setEnabled(projectsExists);
-
             {
                 final boolean projectModelIsLoaded = null != this.projectModel;
-
-                assert null != this.clearProjectMenuItem;
-                this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
 
                 if (projectModelIsLoaded)
                 {
@@ -241,6 +235,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                         org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,    // From nav_hea-
                         projectTitle                                          );   //  der_main.xml.
                 }
+
+                assert null != this.loadProjectMenuItem;
+                if (projectsExists)
+                    if (projectModelIsLoaded)
+                        this.loadProjectMenuItem.setEnabled(
+                            this.projectsTable().exists(this.projectModel.getId()));
+                    else
+                        this.loadProjectMenuItem.setEnabled(true);
+                else this.loadProjectMenuItem.setEnabled(false);
+
+                assert null != this.clearProjectMenuItem;
+                this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
             }
 
             assert null != this.deleteProjectMenuItem;
