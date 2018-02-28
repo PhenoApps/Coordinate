@@ -387,8 +387,14 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.SelectOperation
         selectOperation)
     {
-        final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
-            this.projectsTable().load();
+        final org.wheatgenetics.coordinate.model.ProjectModels projectModels;
+        switch (selectOperation)
+        {
+            case DELETE: projectModels = this.projectsTable().load                 (); break;
+            case EXPORT: projectModels = this.projectsTable().loadProjectsWithGrids(); break;
+            default    : projectModels = null                                        ; break;
+        }
+
         if (null != projectModels) if (projectModels.size() > 0)
         {
             final org.wheatgenetics.coordinate.SelectAlertDialog selectProjectAlertDialog;

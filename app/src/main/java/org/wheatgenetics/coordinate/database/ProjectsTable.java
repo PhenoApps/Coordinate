@@ -19,6 +19,28 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String TITLE_FIELD_NAME = "title"   , STAMP_FIELD_NAME = "stamp";
     // endregion
 
+    private org.wheatgenetics.coordinate.model.ProjectModels makeProjectModels(
+    final android.database.Cursor cursor)
+    {
+        final org.wheatgenetics.coordinate.model.ProjectModels result;
+        if (null == cursor)
+            result = null;
+        else
+            try
+            {
+                if (cursor.getCount() <= 0)
+                    result = null;
+                else
+                {
+                    result = new org.wheatgenetics.coordinate.model.ProjectModels();
+                    while (cursor.moveToNext()) result.add(
+                        (org.wheatgenetics.coordinate.model.ProjectModel) this.make(cursor));
+                }
+            }
+            finally { cursor.close(); }
+        return result;
+    }
+
     public ProjectsTable(final android.content.Context context)
     {
         super(
@@ -68,26 +90,16 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
 
     public org.wheatgenetics.coordinate.model.ProjectModels load()
     {
-        final android.database.Cursor cursor = this.queryAll(/* orderBy => */
+        return this.makeProjectModels(this.queryAll(/* orderBy => */
             org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME + " ASC, " +
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME            + " ASC"   );
-        if (null == cursor)
-            return null;
-        else
-            try
-            {
-                if (cursor.getCount() <= 0)
-                    return null;
-                else
-                {
-                    final org.wheatgenetics.coordinate.model.ProjectModels result =
-                        new org.wheatgenetics.coordinate.model.ProjectModels();
-                    while (cursor.moveToNext()) result.add(
-                        (org.wheatgenetics.coordinate.model.ProjectModel) this.make(cursor));
-                    return result;
-                }
-            }
-            finally { cursor.close(); }
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME            + " ASC"   ));
+    }
+
+    public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
+    {
+        return this.makeProjectModels(this.queryDistinct(/* selection => */
+            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " IN (SELECT DI" +
+            "STINCT projectId FROM grids WHERE projectId IS NOT NULL AND projectId > 0)"));
     }
     // endregion
 }
