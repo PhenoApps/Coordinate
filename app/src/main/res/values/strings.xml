@@ -26,6 +26,8 @@
 
     <string name="project">Project</string>
     <string name="create_project">Create</string>
+    <string name="load_project">Load</string>
+    <string name="clear_project">Clear</string>
     <string name="delete_project">Delete</string>
     <string name="export_project">Export</string>
 

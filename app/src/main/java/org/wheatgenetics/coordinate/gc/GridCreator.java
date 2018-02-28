@@ -31,8 +31,8 @@ package org.wheatgenetics.coordinate.gc;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class GridCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
-org.wheatgenetics.coordinate.SelectAlertDialog.Handler,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler,
+org.wheatgenetics.coordinate.SelectAlertDialog.Handler              ,
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")

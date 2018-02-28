@@ -470,7 +470,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following fourteen ids that have names that start with "nav_" come from
+            // The following sixteen ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -560,6 +560,10 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
                 if (null == this.createProjectAlertDialog) this.createProjectAlertDialog =
                     new org.wheatgenetics.coordinate.CreateProjectAlertDialog(this.activity, this);
                 this.createProjectAlertDialog.show();
+                break;
+
+            case org.wheatgenetics.coordinate.R.id.nav_load_project:
+            case org.wheatgenetics.coordinate.R.id.nav_clear_project:
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_project:
