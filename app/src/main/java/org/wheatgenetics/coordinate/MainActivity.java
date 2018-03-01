@@ -165,6 +165,26 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (null != textView) textView.setText(text);
     }
 
+    private void setPersonTextViewText(final java.lang.String person)
+    {
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.personTextView,           // From nav_header_main.xml.
+            person                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,    // From nav_header_main.xml.
+            person                                                 );
+    }
+
+    private void setTitleTextViewText(final java.lang.String title)
+    {
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.titleTextView,            // From nav_header_main.xml.
+            title                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,     // From nav_header_main.xml.
+            title                                                 );
+    }
+
     private void configureNavigationDrawer()
     {
         {
@@ -184,19 +204,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 }
 
 
-                this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.personTextView,              // From nav_hea-
-                    person                                          );             //  der_main.xml.
-                this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,       // From nav_hea-
-                    person                                                 );      //  der_main.xml.
-
-                this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.titleTextView,               // From nav_hea-
-                    templateTitle                                  );              //  der_main.xml.
-                this.setTextViewText(
-                    org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,        // From nav_hea-
-                    templateTitle                                         );       //  der_main.xml.
+                this.setPersonTextViewText(person      );
+                this.setTitleTextViewText(templateTitle);
             }
 
             assert null != this.loadGridMenuItem;
@@ -224,17 +233,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             {
                 final boolean projectModelIsLoaded = null != this.projectModel;
 
-                if (projectModelIsLoaded)
-                {
-                    final java.lang.String projectTitle = this.projectModel.getTitle();
-
-                    this.setTextViewText(
-                        org.wheatgenetics.coordinate.R.id.titleTextView,           // From nav_hea-
-                        projectTitle                                   );          //  der_main.xml.
-                    this.setTextViewText(
-                        org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,    // From nav_hea-
-                        projectTitle                                          );   //  der_main.xml.
-                }
+                if (projectModelIsLoaded) this.setTitleTextViewText(this.projectModel.getTitle());
 
                 assert null != this.loadProjectMenuItem;
                 if (projectsExists)
