@@ -376,8 +376,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
     // endregion
 
+    // region Project Private Methods
     private long getProjectModelId()
     { return null == this.projectModel ? 0 : this.projectModel.getId(); }
+
+    private void handleProjectDeleted(final long projectId)
+    {
+        if (null != this.projectModel) if (!this.projectsTable().exists(projectId))
+            this.clearProjectModel();
+        this.handleGridDeleted();
+    }
+    // endregion
 
     private void storeSoundOn(final boolean soundOn)
     { assert null != this.sharedPreferences; this.sharedPreferences.setSoundOn(soundOn); }
@@ -640,6 +649,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.clearProjectModel();
+                                        }
+
+                                        @java.lang.Override
+                                        public void handleProjectDeleted(final long projectId)
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.handleProjectDeleted(projectId);
                                         }
 
                                         @java.lang.Override

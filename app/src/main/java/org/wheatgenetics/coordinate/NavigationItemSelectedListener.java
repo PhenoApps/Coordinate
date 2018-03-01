@@ -64,9 +64,10 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             org.wheatgenetics.coordinate.model.TemplateModel templateModel,
             java.lang.String                                 fileName     );
 
-        public abstract long getProjectModelId();
-        public abstract void loadProject      (long projectId);
-        public abstract void clearProject     ();
+        public abstract long getProjectModelId   ();
+        public abstract void loadProject         (long projectId);
+        public abstract void clearProject        ();
+        public abstract void handleProjectDeleted(long projectId);
 
         public abstract void storeSoundOn(boolean soundOn);
 
@@ -333,12 +334,13 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     private void deleteProjectAfterConfirm(
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
-        final boolean success;
+        final boolean success  ;
+        final long    projectId;
         if (null == projectModel)
-            success = false;
+            { success = false; projectId = 0; }
         else
         {
-            final long projectId = projectModel.getId();
+            projectId = projectModel.getId();
 
             {
                 final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
@@ -360,7 +362,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         {
             this.showLongToast(org.wheatgenetics.coordinate
                 .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
-            assert null != this.handler; this.handler.handleGridDeleted();
+            assert null != this.handler; this.handler.handleProjectDeleted(projectId);
         }
         else this.showLongToast(org.wheatgenetics.coordinate
             .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
