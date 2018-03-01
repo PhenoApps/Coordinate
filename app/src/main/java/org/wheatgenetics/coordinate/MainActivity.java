@@ -286,9 +286,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         assert null != this.sharedPreferences;
         if (null == this.joinedGridModel)
-            this.sharedPreferences.clearLoadedGridId();
+            this.sharedPreferences.clearGridId();
         else
-            this.sharedPreferences.setLoadedGridId(this.joinedGridModel.getId());
+            this.sharedPreferences.setGridId(this.joinedGridModel.getId());
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
@@ -304,9 +304,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         assert null != this.sharedPreferences;
         if (null == this.projectModel)
-            this.sharedPreferences.clearLoadedProjectId();
+            this.sharedPreferences.clearProjectId();
         else
-            this.sharedPreferences.setLoadedProjectId(this.projectModel.getId());
+            this.sharedPreferences.setProjectId(this.projectModel.getId());
     }
 
     private void clearProjectModel() { this.loadProjectModel(0); }
@@ -699,13 +699,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             // endregion
 
             // region Load joinedGridModel and projectModel.
-            if (this.sharedPreferences.loadedGridIdIsSet())
-                this.loadJoinedGridModel(this.sharedPreferences.getLoadedGridId());
+            if (this.sharedPreferences.gridIdIsSet())
+                this.loadJoinedGridModel(this.sharedPreferences.getGridId());
             else
                 if (null == savedInstanceState) this.createGrid();
 
-            if (this.sharedPreferences.loadedProjectIdIsSet())
-                this.loadProjectModel(this.sharedPreferences.getLoadedProjectId());
+            if (this.sharedPreferences.projectIdIsSet())
+                this.loadProjectModel(this.sharedPreferences.getProjectId());
             // endregion
 
             // region Set version.

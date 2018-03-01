@@ -6,67 +6,50 @@ package org.wheatgenetics.sharedpreferences;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  *
+ * org.wheatgenetics.coordinate.model.Model
+ *
  * org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
  */
 public class SharedPreferences
 extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
-    private static final java.lang.String LOADED_GRID_ID = "CurrentGrid",
-        LOADED_PROJECT_ID = "CurrentProject", SOUND_OFF = "SoundOFF";
+    private static final java.lang.String GRID_ID = "CurrentGrid",
+        PROJECT_ID = "CurrentProject", SOUND_OFF = "SoundOFF";
 
     // region Private Methods
-    private void uncheckedSetLoadedGridId(final long loadedGridId)
-    {
-        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_GRID_ID,
-            loadedGridId);
-    }
+    private void uncheckedSetGridId(final long gridId)
+    { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID, gridId); }
 
-    private void uncheckedSetLoadedProjectId(final long loadedProjectId)
-    {
-        this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_PROJECT_ID,
-            loadedProjectId);
-    }
+    private void uncheckedSetProjectId(final long projectId)
+    { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID, projectId); }
     // endregion
 
     public SharedPreferences(@android.support.annotation.NonNull
     final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
 
     // region Public Methods
-    // region Loaded GridId Public Methods
-    public long getLoadedGridId()
-    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_GRID_ID); }
+    // region GridId Public Methods
+    public long getGridId()
+    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID); }
 
-    public void setLoadedGridId(
-    @android.support.annotation.IntRange(from = 1) final long loadedGridId)
-    {
-        if (loadedGridId < 1)
-            throw new java.lang.IllegalArgumentException("loadedGridId must be > 0");
-        this.uncheckedSetLoadedGridId(loadedGridId);
-    }
+    public void setGridId(@android.support.annotation.IntRange(from = 1) final long gridId)
+    { this.uncheckedSetGridId(org.wheatgenetics.coordinate.model.Model.valid(gridId)); }
 
-    public void clearLoadedGridId() { this.uncheckedSetLoadedGridId(-1); }
+    public void clearGridId() { this.uncheckedSetGridId(-1); }
 
-    public boolean loadedGridIdIsSet() { return this.getLoadedGridId() > -1; }
+    public boolean gridIdIsSet() { return this.getGridId() > -1; }
     // endregion
 
-    // region Loaded ProjectId Public Methods
-    public long getLoadedProjectId()
-    {
-        return this.getLong(
-            org.wheatgenetics.sharedpreferences.SharedPreferences.LOADED_PROJECT_ID);
-    }
+    // region ProjectId Public Methods
+    public long getProjectId()
+    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID); }
 
-    public void setLoadedProjectId(
-    @android.support.annotation.IntRange(from = 1) final long loadedProjectId)
-    {
-        if (loadedProjectId < 1)
-            throw new java.lang.IllegalArgumentException("loadedProjectId must be > 0");
-        this.uncheckedSetLoadedProjectId(loadedProjectId);
-    }
+    public void setProjectId(@android.support.annotation.IntRange(from = 1) final long projectId)
+    { this.uncheckedSetProjectId(org.wheatgenetics.coordinate.model.Model.valid(projectId)); }
 
-    public void clearLoadedProjectId() { this.uncheckedSetLoadedProjectId(-1); }
+    public void clearProjectId() { this.uncheckedSetProjectId(-1); }
 
-    public boolean loadedProjectIdIsSet() { return this.getLoadedProjectId() > -1; }
+    public boolean projectIdIsSet() { return this.getProjectId() > -1; }
     // endregion
 
     // region Sound On Public Methods

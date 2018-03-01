@@ -39,21 +39,19 @@ public abstract class Model extends java.lang.Object
     public int hashCode() { return this.toString().hashCode(); }
     // endregion
 
-    // region Package Methods
-    static long valid(final long id)
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setId(final java.lang.String id) { this.setId(java.lang.Long.valueOf(id)); }
+
+    // region Public Methods
+    public static boolean illegal(final long id) { return id < 1; }
+
+    public static long valid(final long id)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
             throw new java.lang.IllegalArgumentException("id must be > 0");
         else
             return id;
     }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setId(final java.lang.String id) { this.setId(java.lang.Long.valueOf(id)); }
-    // endregion
-
-    // region Public Methods
-    public static boolean illegal(final long id) { return id < 1; }
 
     public long getId() { return this.id; }
 
