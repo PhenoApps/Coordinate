@@ -297,6 +297,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void clearJoinedGridModelThenPopulate() { this.loadJoinedGridModelThenPopulate(0); }
     // endregion
 
+    // region loadProjectModel() Private Methods
     private void loadProjectModel(final long projectId)
     {
         this.projectModel = projectId > 0 ? this.projectsTable().get(projectId) : null;
@@ -307,6 +308,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         else
             this.sharedPreferences.setLoadedProjectId(this.projectModel.getId());
     }
+
+    private void clearProjectModel() { this.loadProjectModel(0); }
+    // endregion
 
     private void createGrid()
     {
@@ -625,6 +629,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         {
                                             org.wheatgenetics.coordinate.MainActivity.this
                                                 .loadProjectModel(projectId);
+                                        }
+
+                                        @java.lang.Override
+                                        public void clearProject()
+                                        {
+                                            org.wheatgenetics.coordinate.MainActivity.this
+                                                .clearProjectModel();
                                         }
 
                                         @java.lang.Override

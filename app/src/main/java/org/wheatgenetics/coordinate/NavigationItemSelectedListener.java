@@ -66,6 +66,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
 
         public abstract long getProjectModelId();
         public abstract void loadProject      (long projectId);
+        public abstract void clearProject     ();
 
         public abstract void storeSoundOn(boolean soundOn);
 
@@ -600,7 +601,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_clear_project:
-                break;
+                assert null != this.handler; this.handler.clearProject(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_project:
                 this.selectProject(org.wheatgenetics.coordinate
