@@ -158,6 +158,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region configureNavigationDrawer() Private Methods
+    // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
     private void setTextViewText(final int textViewId, final java.lang.String text)
     {
         final android.widget.TextView textView =
@@ -185,84 +186,89 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             title                                                 );
     }
 
-    private void configureNavigationDrawer()
+    private void configureNavHeaderMain()
     {
+        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
+        this.setPersonTextViewText(joinedGridModelIsLoaded ? this.joinedGridModel.getPerson() : "");
+
+        final boolean projectModelIsLoaded = null != this.projectModel;
+        if (projectModelIsLoaded)
+            this.setTitleTextViewText(this.projectModel.getTitle());
+        else
+            this.setTitleTextViewText(
+                joinedGridModelIsLoaded ? this.joinedGridModel.getTemplateTitle() : "");
+    }
+    // endregion
+
+    private void configureGridMenuItems()
+    {
+        assert null != this.loadGridMenuItem;
+        this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
+
+        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
+
+        assert null != this.deleteGridMenuItem;
+        this.deleteGridMenuItem.setEnabled(joinedGridModelIsLoaded);
+
+        assert null != this.exportGridMenuItem;
+        this.exportGridMenuItem.setEnabled(joinedGridModelIsLoaded);
+    }
+
+    private void configureTemplateMenuItems()
+    {
+        final boolean userDefinedTemplatesExist = this.templatesTable().exists(
+            org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
+
+        assert null != this.deleteTemplateMenuItem;
+        this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
+
+        assert null != this.exportTemplateMenuItem;
+        this.exportTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
+    }
+
+    protected void configureProjectMenuItems()
+    {
+        final boolean projectsExists = this.projectsTable().exists();
+
         {
-            final boolean enableDeleteGridMenuItem, enableExportGridMenuItem;
-            {
-                final java.lang.String person, templateTitle;
-                if (null == this.joinedGridModel)
-                {
-                    person                   = templateTitle            = ""   ;
-                    enableDeleteGridMenuItem = enableExportGridMenuItem = false;
-                }
-                else
-                {
-                    person        = this.joinedGridModel.getPerson       ();
-                    templateTitle = this.joinedGridModel.getTemplateTitle();
-                    enableDeleteGridMenuItem = enableExportGridMenuItem = true;
-                }
+            final boolean projectModelIsLoaded = null != this.projectModel;
 
-
-                this.setPersonTextViewText(person      );
-                this.setTitleTextViewText(templateTitle);
-            }
-
-            assert null != this.loadGridMenuItem;
-            this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
-
-            assert null != this.deleteGridMenuItem;
-            this.deleteGridMenuItem.setEnabled(enableDeleteGridMenuItem);
-
-            assert null != this.exportGridMenuItem;
-            this.exportGridMenuItem.setEnabled(enableExportGridMenuItem);
-        }
-        {
-            final boolean userDefinedTemplatesExist = this.templatesTable().exists(
-                org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
-
-            assert null != this.deleteTemplateMenuItem;
-            this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
-
-            assert null != this.exportTemplateMenuItem;
-            this.exportTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
-        }
-        {
-            final boolean projectsExists = this.projectsTable().exists();
-
-            {
-                final boolean projectModelIsLoaded = null != this.projectModel;
-
-                if (projectModelIsLoaded) this.setTitleTextViewText(this.projectModel.getTitle());
-
-                assert null != this.loadProjectMenuItem;
-                if (projectsExists)
-                    if (projectModelIsLoaded)
-                        this.loadProjectMenuItem.setEnabled(
-                            this.projectsTable().existsExceptFor(this.projectModel.getId()));
-                    else
-                        this.loadProjectMenuItem.setEnabled(true);
-                else this.loadProjectMenuItem.setEnabled(false);
-
-                assert null != this.clearProjectMenuItem;
-                this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
-            }
-
-            assert null != this.deleteProjectMenuItem;
-            this.deleteProjectMenuItem.setEnabled(projectsExists);
-
-            assert null != this.exportProjectMenuItem;
+            assert null != this.loadProjectMenuItem;
             if (projectsExists)
-                this.exportProjectMenuItem.setEnabled(this.gridsTable().existsInProject());
-            else
-                this.exportProjectMenuItem.setEnabled(false);
+                if (projectModelIsLoaded)
+                    this.loadProjectMenuItem.setEnabled(
+                        this.projectsTable().existsExceptFor(this.projectModel.getId()));
+                else this.loadProjectMenuItem.setEnabled(true);
+            else this.loadProjectMenuItem.setEnabled(false);
+
+            assert null != this.clearProjectMenuItem;
+            this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
         }
 
+        assert null != this.deleteProjectMenuItem;
+        this.deleteProjectMenuItem.setEnabled(projectsExists);
+
+        assert null != this.exportProjectMenuItem;
+        if (projectsExists)
+            this.exportProjectMenuItem.setEnabled(this.gridsTable().existsInProject());
+        else
+            this.exportProjectMenuItem.setEnabled(false);
+    }
+
+    private void configureAppMenuItems()
+    {
         assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;
         this.turnSoundOnMenuItem.setEnabled(!this.navigationItemSelectedListener.getSoundOn());
 
         assert null != this.turnSoundOffMenuItem;
         this.turnSoundOffMenuItem.setEnabled(!this.turnSoundOnMenuItem.isEnabled());
+    }
+
+    private void configureNavigationDrawer()
+    {
+        this.configureNavHeaderMain    (); this.configureGridMenuItems   ();
+        this.configureTemplateMenuItems(); this.configureProjectMenuItems();
+        this.configureAppMenuItems     ();
     }
     // endregion
 
