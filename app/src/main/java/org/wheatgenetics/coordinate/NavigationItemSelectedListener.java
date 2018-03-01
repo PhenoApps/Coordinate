@@ -53,25 +53,27 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
-        public abstract void createGrid();
-        public abstract void loadGrid  (long gridId);
-        public abstract void deleteGrid();
+        public abstract void             createGrid           ();
+        public abstract void             loadGrid             (long gridId);
+        public abstract void             deleteGrid           ();
+        public abstract java.lang.String initialExportFileName();
+        public abstract void             exportGrid           (java.lang.String fileName);
 
         public abstract void handleGridDeleted();
-
-        public abstract java.lang.String initialExportFileName();
-        public abstract void             exportGrid(java.lang.String fileName);
-
         public abstract void exportTemplate(
             org.wheatgenetics.coordinate.model.TemplateModel templateModel,
             java.lang.String                                 fileName     );
+
+        public abstract long getProjectModelId();
+        public abstract void loadProject      (long projectId);
 
         public abstract void storeSoundOn(boolean soundOn);
 
         public abstract void closeDrawer();
     }
 
-    private enum SelectOperation { DELETE, EXPORT }
+    private enum TemplateOperation {       DELETE, EXPORT }
+    private enum ProjectOperation  { LOAD, DELETE, EXPORT }
     // endregion
 
     // region Fields
@@ -250,8 +252,8 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     // endregion
 
     private void selectUserDefinedTemplate(
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.SelectOperation
-        selectOperation)
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.TemplateOperation
+        templateOperation)
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             this.templatesTable().loadUserDefined();
@@ -260,7 +262,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             final org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateAlertDialog;
             {
                 final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
-                switch (selectOperation)
+                switch (templateOperation)
                 {
                     case DELETE: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
@@ -292,7 +294,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             }
 
             final int title;
-            switch (selectOperation)
+            switch (templateOperation)
             {
                 case DELETE: title = org.wheatgenetics.coordinate.R.string
                     .NavigationItemSelectedListenerSelectDeleteTemplateTitle; break;
@@ -319,6 +321,13 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
     // endregion
 
     // region Project Private Methods
+    private void loadProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        if (null != projectModel)
+        { assert null != this.handler; this.handler.loadProject(projectModel.getId()); }
+    }
+
     // region Delete Project Private Methods
     private void deleteProjectAfterConfirm(
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
@@ -379,17 +388,20 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
 
     private void exportProjectAfterSelect(
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        //TODO
-    }
+    {}
 
     private void selectProject(
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.SelectOperation
-        selectOperation)
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.ProjectOperation
+        projectOperation)
     {
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels;
-        switch (selectOperation)
+        switch (projectOperation)
         {
+            case LOAD:
+                assert null != this.handler;
+                projectModels = this.projectsTable().load(this.handler.getProjectModelId());
+                break;
+
             case DELETE: projectModels = this.projectsTable().load                 (); break;
             case EXPORT: projectModels = this.projectsTable().loadProjectsWithGrids(); break;
             default    : projectModels = null                                        ; break;
@@ -400,8 +412,19 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             final org.wheatgenetics.coordinate.SelectAlertDialog selectProjectAlertDialog;
             {
                 final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
-                switch (selectOperation)
+                switch (projectOperation)
                 {
+                    case LOAD: handler =
+                        new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void select(final int which)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.loadProjectAfterSelect(projectModels.get(which));
+                            }
+                        }; break;
+
                     case DELETE: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
@@ -432,8 +455,11 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
             }
 
             final int title;
-            switch (selectOperation)
+            switch (projectOperation)
             {
+                case LOAD: title = org.wheatgenetics.coordinate.R.string
+                    .NavigationItemSelectedListenerSelectLoadProjectTitle; break;
+
                 case DELETE: title = org.wheatgenetics.coordinate.R.string
                     .NavigationItemSelectedListenerSelectDeleteProjectTitle; break;
 
@@ -547,12 +573,12 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.SelectOperation.DELETE);
+                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.SelectOperation.EXPORT);
+                    .NavigationItemSelectedListener.TemplateOperation.EXPORT);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_import_template:
@@ -569,17 +595,21 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_load_project:
+                this.selectProject(org.wheatgenetics.coordinate
+                    .NavigationItemSelectedListener.ProjectOperation.LOAD);
+                break;
+
             case org.wheatgenetics.coordinate.R.id.nav_clear_project:
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_project:
                 this.selectProject(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.SelectOperation.DELETE);
+                    .NavigationItemSelectedListener.ProjectOperation.DELETE);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate
-                    .NavigationItemSelectedListener.SelectOperation.EXPORT);
+                    .NavigationItemSelectedListener.ProjectOperation.EXPORT);
                 break;
 
 

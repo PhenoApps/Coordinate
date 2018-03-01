@@ -368,6 +368,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }                                                                                  //  tion
     }
 
+    private long getProjectModelId()
+    { return null == this.projectModel ? 0 : this.projectModel.getId(); }
+
     private void storeSoundOn(final boolean soundOn)
     { assert null != this.sharedPreferences; this.sharedPreferences.setSoundOn(soundOn); }
 
@@ -580,13 +583,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
                                         @java.lang.Override
-                                        public void handleGridDeleted()
-                                        {
-                                            org.wheatgenetics.coordinate
-                                                .MainActivity.this.handleTemplateDeleted();
-                                        }
-
-                                        @java.lang.Override
                                         public java.lang.String initialExportFileName()
                                         {
                                             return org.wheatgenetics.coordinate
@@ -601,6 +597,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
                                         @java.lang.Override
+                                        public void handleGridDeleted()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.handleTemplateDeleted();
+                                        }
+
+                                        @java.lang.Override
                                         public void exportTemplate(
                                         final org.wheatgenetics.coordinate.model.TemplateModel
                                             templateModel,
@@ -608,6 +611,20 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         {
                                             org.wheatgenetics.coordinate.MainActivity
                                                 .this.exportTemplate(templateModel, fileName);
+                                        }
+
+                                        @java.lang.Override
+                                        public long getProjectModelId()
+                                        {
+                                            return org.wheatgenetics.coordinate.MainActivity
+                                                .this.getProjectModelId();
+                                        }
+
+                                        @java.lang.Override
+                                        public void loadProject(final long projectId)
+                                        {
+                                            org.wheatgenetics.coordinate.MainActivity.this
+                                                .loadProjectModel(projectId);
                                         }
 
                                         @java.lang.Override

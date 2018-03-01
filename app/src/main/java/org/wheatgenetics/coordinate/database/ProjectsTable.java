@@ -19,6 +19,14 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     private static final java.lang.String TITLE_FIELD_NAME = "title"   , STAMP_FIELD_NAME = "stamp";
     // endregion
 
+    // region Private Methods
+    private android.database.Cursor query(final long id)
+    {
+        return this.queryAll(
+            /* selection => */ org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " <> ?",
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)                );
+    }
+
     private org.wheatgenetics.coordinate.model.ProjectModels makeProjectModels(
     final android.database.Cursor cursor)
     {
@@ -40,6 +48,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             finally { cursor.close(); }
         return result;
     }
+    // endregion
 
     public ProjectsTable(final android.content.Context context)
     {
@@ -96,11 +105,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     public boolean exists(final long id)
-    {
-        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
-            /* selection => */ org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " <> ?",
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)));
-    }
+    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
 
     public org.wheatgenetics.coordinate.model.ProjectModels load()
     {
@@ -108,6 +113,9 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME + " ASC, " +
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME            + " ASC"   ));
     }
+
+    public org.wheatgenetics.coordinate.model.ProjectModels load(final long id)
+    { return this.makeProjectModels(this.query(id)); }
 
     public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
     {
