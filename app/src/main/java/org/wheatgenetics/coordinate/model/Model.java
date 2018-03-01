@@ -40,9 +40,6 @@ public abstract class Model extends java.lang.Object
     // endregion
 
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    static boolean illegal(final long id) { return id < 1; }
-
     static long valid(final long id)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
@@ -56,6 +53,8 @@ public abstract class Model extends java.lang.Object
     // endregion
 
     // region Public Methods
+    public static boolean illegal(final long id) { return id < 1; }
+
     public long getId() { return this.id; }
 
     public void setId(@android.support.annotation.IntRange(from = 1) final long id)

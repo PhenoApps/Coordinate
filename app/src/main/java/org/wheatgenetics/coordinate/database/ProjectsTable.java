@@ -23,6 +23,13 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     private android.database.Cursor query(final long id)
     {
         return this.queryAll(
+            /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          );
+    }
+
+    private android.database.Cursor exceptForQuery(final long id)
+    {
+        return this.queryAll(
             /* selection => */ org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " <> ?",
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)                );
     }
@@ -91,12 +98,11 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Public Methods
+    public boolean exists(final long id)
+    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
+
     public org.wheatgenetics.coordinate.model.ProjectModel get(final long id)
-    {
-        return (org.wheatgenetics.coordinate.model.ProjectModel) this.makeFromFirst(this.queryAll(
-            /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          ));
-    }
+    { return (org.wheatgenetics.coordinate.model.ProjectModel) this.makeFromFirst(this.query(id)); }
 
     public boolean exists()
     {
@@ -104,8 +110,13 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             "SELECT ALL * FROM " + org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME));
     }
 
-    public boolean exists(final long id)
-    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
+    public boolean existsExceptFor(final long id)
+    {
+        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+            return this.exists();
+        else
+            return org.wheatgenetics.coordinate.database.Table.exists(this.exceptForQuery(id));
+    }
 
     public org.wheatgenetics.coordinate.model.ProjectModels load()
     {
@@ -114,8 +125,13 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME            + " ASC"   ));
     }
 
-    public org.wheatgenetics.coordinate.model.ProjectModels load(final long id)
-    { return this.makeProjectModels(this.query(id)); }
+    public org.wheatgenetics.coordinate.model.ProjectModels loadExceptFor(final long id)
+    {
+        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+            return this.load();
+        else
+            return this.makeProjectModels(this.exceptForQuery(id));
+    }
 
     public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
     {

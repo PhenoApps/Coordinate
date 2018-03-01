@@ -240,7 +240,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 if (projectsExists)
                     if (projectModelIsLoaded)
                         this.loadProjectMenuItem.setEnabled(
-                            this.projectsTable().exists(this.projectModel.getId()));
+                            this.projectsTable().existsExceptFor(this.projectModel.getId()));
                     else
                         this.loadProjectMenuItem.setEnabled(true);
                 else this.loadProjectMenuItem.setEnabled(false);
@@ -312,19 +312,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void clearProjectModel() { this.loadProjectModel(0); }
     // endregion
 
+    // region Grid Private Methods
     private void createGrid()
     {
         if (null == this.gridCreator)
             this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(
                 this, org.wheatgenetics.coordinate.MainActivity.CREATE_GRID, this);
         this.gridCreator.create();
-    }
-
-    private void handleTemplateDeleted()
-    {
-        if (null != this.joinedGridModel)
-            if (!this.gridsTable().exists(this.joinedGridModel.getId()))
-                this.clearJoinedGridModelThenPopulate();
     }
 
     // region Grid Export Private Methods
@@ -352,6 +346,15 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
     // endregion
+    // endregion
+
+    // region Template Private Methods
+    private void handleGridDeleted()
+    {
+        if (null != this.joinedGridModel)
+            if (!this.gridsTable().exists(this.joinedGridModel.getId()))
+                this.clearJoinedGridModelThenPopulate();
+    }
 
     private void exportTemplate(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
@@ -371,6 +374,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }    //  cep-
         }                                                                                  //  tion
     }
+    // endregion
 
     private long getProjectModelId()
     { return null == this.projectModel ? 0 : this.projectModel.getId(); }
@@ -575,8 +579,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         @java.lang.Override
                                         public void loadGrid(final long gridId)
                                         {
-                                            org.wheatgenetics.coordinate.MainActivity.this
-                                                .loadJoinedGridModelThenPopulate(gridId);
+                                            org.wheatgenetics.coordinate.MainActivity
+                                                .this.loadJoinedGridModelThenPopulate(gridId);
                                         }
 
                                         @java.lang.Override
@@ -604,7 +608,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         public void handleGridDeleted()
                                         {
                                             org.wheatgenetics.coordinate
-                                                .MainActivity.this.handleTemplateDeleted();
+                                                .MainActivity.this.handleGridDeleted();
                                         }
 
                                         @java.lang.Override
@@ -620,22 +624,22 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         @java.lang.Override
                                         public long getProjectModelId()
                                         {
-                                            return org.wheatgenetics.coordinate.MainActivity
-                                                .this.getProjectModelId();
+                                            return org.wheatgenetics.coordinate
+                                                .MainActivity.this.getProjectModelId();
                                         }
 
                                         @java.lang.Override
                                         public void loadProject(final long projectId)
                                         {
-                                            org.wheatgenetics.coordinate.MainActivity.this
-                                                .loadProjectModel(projectId);
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.loadProjectModel(projectId);
                                         }
 
                                         @java.lang.Override
                                         public void clearProject()
                                         {
-                                            org.wheatgenetics.coordinate.MainActivity.this
-                                                .clearProjectModel();
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.clearProjectModel();
                                         }
 
                                         @java.lang.Override

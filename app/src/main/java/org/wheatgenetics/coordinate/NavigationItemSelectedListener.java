@@ -60,7 +60,7 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         public abstract void             exportGrid           (java.lang.String fileName);
 
         public abstract void handleGridDeleted();
-        public abstract void exportTemplate(
+        public abstract void exportTemplate   (
             org.wheatgenetics.coordinate.model.TemplateModel templateModel,
             java.lang.String                                 fileName     );
 
@@ -400,7 +400,8 @@ org.wheatgenetics.coordinate.CreateProjectAlertDialog.Handler
         {
             case LOAD:
                 assert null != this.handler;
-                projectModels = this.projectsTable().load(this.handler.getProjectModelId());
+                projectModels =
+                    this.projectsTable().loadExceptFor(this.handler.getProjectModelId());
                 break;
 
             case DELETE: projectModels = this.projectsTable().load                 (); break;
