@@ -83,9 +83,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (null == this.projectModel)
             switch (which)
             {
-                case 0 :    this.projectId = 0                     ; /* Get template choice. */ break;
-                case 1 : /* this.projectId = createAndLoadProject();    Get template choice. */ break;
-                default: throw new java.lang.IllegalArgumentException()                       ;
+                case 0 :    this.projectId = 0                     ;    break;
+                case 1 : /* this.projectId = createAndLoadProject(); */ break;
+                default: throw new java.lang.IllegalArgumentException()      ;
             }
         else
             switch (which)
