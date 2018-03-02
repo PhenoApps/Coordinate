@@ -323,7 +323,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (null == this.gridCreator)
             this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(
                 this, org.wheatgenetics.coordinate.MainActivity.CREATE_GRID, this);
-        this.gridCreator.create();
+        this.gridCreator.create(this.projectModel);
     }
 
     // region Grid Export Private Methods

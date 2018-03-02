@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
@@ -60,9 +61,51 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog
         getTemplateChoiceAlertDialog = null;
+
+    private org.wheatgenetics.coordinate.model.ProjectModel projectModel                = null;
+    private org.wheatgenetics.coordinate.SelectAlertDialog  getProjectChoiceAlertDialog = null;
+    private long                                            projectId                         ;
     // endregion
 
     // region Private Methods
+    /**
+     * projectModel     which
+     * == null (0) no project (0)
+     * != null (1) (create)use (1)  side effect
+     * =========== =============== =============
+     *      0             0        none
+     *      0             1        load project
+     *      1             0        clear project
+     *      1             1        none
+     */
+    private void handleProjectChoice(final int which)
+    {
+        if (null == this.projectModel)
+            switch (which)
+            {
+                case 0 :    this.projectId = 0                     ; /* Get template choice. */ break;
+                case 1 : /* this.projectId = createAndLoadProject();    Get template choice. */ break;
+                default: throw new java.lang.IllegalArgumentException()                       ;
+            }
+        else
+            switch (which)
+            {
+                case 0: this.projectId = 0; /* Clear project. Get template choice. */ break;
+
+                case 1:
+                    this.projectId = this.projectModel.getId();
+                    // Use project's template if it has one. setValues().
+                    // If it doesn't have one then get template choice.
+                    break;
+
+                default: throw new java.lang.IllegalArgumentException();
+            }
+
+        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
+        this.getTemplateChoiceAlertDialog.show();
+    }
+
     private void chooseOldAfterSelect(final int which)
     {
         assert null != this.templateModels; this.templateModel = this.templateModels.get(which);
@@ -130,7 +173,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* projectId      => */ 0                  ,                                 // TODO
+                /* projectId      => */ this.projectId     ,
                 /* person         => */ this.person        ,
                 /* optionalFields => */ this.optionalFields,
                 /* templateModel  => */ this.templateModel );
@@ -208,11 +251,23 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
 
     // region Public Methods
-    public void create()
+    public void create(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
-        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
-            new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
-        this.getTemplateChoiceAlertDialog.show();
+        this.projectModel = projectModel;
+
+        if (null == this.getProjectChoiceAlertDialog) this.getProjectChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void select(final int which)
+                    { org.wheatgenetics.coordinate.gc.GridCreator.this.handleProjectChoice(which); }
+                });
+        this.getProjectChoiceAlertDialog.show(
+            org.wheatgenetics.coordinate.R.string.GridCreatorGetProjectChoiceAlertDialogTitle,
+            new java.lang.String[] {"Don't put this grid in a project.", null == this.projectModel ?
+                "Create then select new project."             :
+                "Put this grid in \"" + this.projectModel.getTitle() + "\"."});
     }
 
     public void setExcludedCells(final android.os.Bundle bundle)
