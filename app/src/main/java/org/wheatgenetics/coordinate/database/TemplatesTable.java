@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -146,6 +148,13 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // region Operations
     public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
     { return org.wheatgenetics.coordinate.database.Table.exists(this.query(templateType)); }
+
+    public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)
+    {
+        return (org.wheatgenetics.coordinate.model.TemplateModel) this.makeFromFirst(this.queryAll(
+            /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          ));
+    }
 
     public org.wheatgenetics.coordinate.model.TemplateModel get(
     final org.wheatgenetics.coordinate.model.TemplateType templateType)

@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -119,8 +120,16 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
                 case 1:
                     this.projectId = this.projectModel.getId();
-                    // Use project's template if it has one. setValues().
-                    // If it doesn't have one then get template choice.
+                    {
+                        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+                            this.gridsTable().loadByProjectId(this.projectId);
+                        if (null != joinedGridModels && joinedGridModels.size() > 0)
+                        {
+                            this.templateModel = this.templatesTable().get(
+                                joinedGridModels.get(0).getTemplateId());
+                            this.setValues(); return;
+                        }
+                    }
                     break;
 
                 default: throw new java.lang.IllegalArgumentException();
