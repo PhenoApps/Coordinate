@@ -12,15 +12,15 @@ package org.wheatgenetics.coordinate.pc;
  *
  * org.wheatgenetics.coordinate.R
  */
-public class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler
+    interface Handler
     { public abstract void handleCreateProjectDone(java.lang.String projectTitle); }
 
     // region Fields
     private final org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler;
-    private       android.widget.EditText                          projectTitleEditText;
+    private       android.widget.EditText                             projectTitleEditText;
     // endregion
 
     private void createProject()
@@ -36,7 +36,7 @@ public class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.A
         }
     }
 
-    public CreateProjectAlertDialog(final android.app.Activity activity,
+    CreateProjectAlertDialog(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 

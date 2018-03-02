@@ -33,8 +33,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
- * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
- * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
+ * org.wheatgenetics.coordinate.pc.ProjectCreator
+ * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
@@ -49,7 +49,7 @@ class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
 org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
-org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
+org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
@@ -96,10 +96,9 @@ org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
 
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
-    private org.wheatgenetics.coordinate.tc.TemplateCreator          templateCreator  = null;
-    private android.content.Intent                                   intentInstance   = null;
-    private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
-        createProjectAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
+    private android.content.Intent                          intentInstance   = null;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator   = null;
     private boolean                                         soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
     // endregion
@@ -595,10 +594,9 @@ org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
 
 
             case org.wheatgenetics.coordinate.R.id.nav_create_project:
-                if (null == this.createProjectAlertDialog) this.createProjectAlertDialog =
-                    new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog(
-                        this.activity, this);
-                this.createProjectAlertDialog.show();
+                if (null == this.projectCreator) this.projectCreator =
+                    new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity, this);
+                this.projectCreator.create();
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_load_project:
@@ -672,7 +670,7 @@ org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
     { assert null != joinedGridModel; this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.pc.ProjectCreator.Handler Overridden Method
     @java.lang.Override
     public void handleCreateProjectDone(final java.lang.String projectTitle)
     {
