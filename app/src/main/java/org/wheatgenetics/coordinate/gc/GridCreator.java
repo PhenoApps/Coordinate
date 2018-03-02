@@ -42,8 +42,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     public interface Handler
     {
-        public abstract void handleGridCreated(long gridId   );
+        public abstract void handleGridCreated(long gridId);
+
         public abstract void loadProjectModel (long projectId);
+        public abstract void clearProjectModel(              );
     }
 
     // region Fields
@@ -111,7 +113,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         else
             switch (which)
             {
-                case 0: this.projectId = 0; /* Clear project. Get template choice. */ break;
+                case 0:
+                    this.projectId = 0;
+                    assert null != this.handler; this.handler.clearProjectModel(); break;
 
                 case 1:
                     this.projectId = this.projectModel.getId();
