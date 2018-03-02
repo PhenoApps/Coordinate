@@ -31,7 +31,6 @@ package org.wheatgenetics.coordinate.gc;
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class GridCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
-org.wheatgenetics.coordinate.SelectAlertDialog.Handler              ,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
@@ -64,6 +63,13 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
 
     // region Private Methods
+    private void chooseOldAfterSelect(final int which)
+    {
+        assert null != this.templateModels; this.templateModel = this.templateModels.get(which);
+        this.templateModels = null;
+        this.setValues();
+    }
+
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -143,16 +149,6 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
     // endregion
 
-    // region org.wheatgenetics.coordinate.SelectAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void select(final int which)
-    {
-        assert null != this.templateModels; this.templateModel = this.templateModels.get(which);
-        this.templateModels = null;
-        this.setValues();
-    }
-    // endregion
-
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
     @java.lang.Override
     public void handleTemplateCreated(
@@ -184,7 +180,16 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     public void chooseOld()
     {
         if (null == this.chooseOldAlertDialog) this.chooseOldAlertDialog =
-            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, this);
+            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                {
+                    @java.lang.Override
+                    public void select(final int which)
+                    {
+                        org.wheatgenetics.coordinate.gc.GridCreator.this.chooseOldAfterSelect(
+                            which);
+                    }
+                });
         this.templateModels = this.templatesTable().load();
         assert null != this.templateModels; this.chooseOldAlertDialog.show(
             org.wheatgenetics.coordinate.R.string.GridCreatorChooseOldAlertDialogTitle,
