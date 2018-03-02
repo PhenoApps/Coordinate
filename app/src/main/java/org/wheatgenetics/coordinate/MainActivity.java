@@ -158,48 +158,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region configureNavigationDrawer() Private Methods
-    // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
-    private void setTextViewText(final int textViewId, final java.lang.String text)
-    {
-        final android.widget.TextView textView =
-            (android.widget.TextView) this.findViewById(textViewId);
-        if (null != textView) textView.setText(text);
-    }
-
-    private void setPersonTextViewText(final java.lang.String person)
-    {
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.personTextView,           // From nav_header_main.xml.
-            person                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,    // From nav_header_main.xml.
-            person                                                 );
-    }
-
-    private void setTitleTextViewText(final java.lang.String title)
-    {
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.titleTextView,            // From nav_header_main.xml.
-            title                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,     // From nav_header_main.xml.
-            title                                                 );
-    }
-
-    private void configureNavHeaderMain()
-    {
-        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
-        this.setPersonTextViewText(joinedGridModelIsLoaded ? this.joinedGridModel.getPerson() : "");
-
-        final boolean projectModelIsLoaded = null != this.projectModel;
-        if (projectModelIsLoaded)
-            this.setTitleTextViewText(this.projectModel.getTitle());
-        else
-            this.setTitleTextViewText(
-                joinedGridModelIsLoaded ? this.joinedGridModel.getTemplateTitle() : "");
-    }
-    // endregion
-
     private void configureGridMenuItems()
     {
         assert null != this.loadGridMenuItem;
@@ -264,11 +222,53 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.turnSoundOffMenuItem.setEnabled(!this.turnSoundOnMenuItem.isEnabled());
     }
 
+    // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
+    private void setTextViewText(final int textViewId, final java.lang.String text)
+    {
+        final android.widget.TextView textView =
+            (android.widget.TextView) this.findViewById(textViewId);
+        if (null != textView) textView.setText(text);
+    }
+
+    private void setPersonTextViewText(final java.lang.String person)
+    {
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.personTextView,           // From nav_header_main.xml.
+            person                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpPersonTextView,    // From nav_header_main.xml.
+            person                                                 );
+    }
+
+    private void setTitleTextViewText(final java.lang.String title)
+    {
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.titleTextView,            // From nav_header_main.xml.
+            title                                          );
+        this.setTextViewText(
+            org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,     // From nav_header_main.xml.
+            title                                                 );
+    }
+
+    private void configureNavHeaderMain()
+    {
+        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
+        this.setPersonTextViewText(joinedGridModelIsLoaded ? this.joinedGridModel.getPerson() : "");
+
+        final boolean projectModelIsLoaded = null != this.projectModel;
+        if (projectModelIsLoaded)
+            this.setTitleTextViewText(this.projectModel.getTitle());
+        else
+            this.setTitleTextViewText(
+                joinedGridModelIsLoaded ? this.joinedGridModel.getTemplateTitle() : "");
+    }
+    // endregion
+
     private void configureNavigationDrawer()
     {
-        this.configureNavHeaderMain    (); this.configureGridMenuItems   ();
-        this.configureTemplateMenuItems(); this.configureProjectMenuItems();
-        this.configureAppMenuItems     ();
+        this.configureGridMenuItems   (); this.configureTemplateMenuItems();
+        this.configureProjectMenuItems(); this.configureAppMenuItems     ();
+        this.configureNavHeaderMain();
     }
     // endregion
 
