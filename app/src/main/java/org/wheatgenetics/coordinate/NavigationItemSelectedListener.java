@@ -34,7 +34,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.TemplateModels
  *
  * org.wheatgenetics.coordinate.pc.ProjectCreator
- * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
@@ -48,8 +47,7 @@ package org.wheatgenetics.coordinate;
 class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
-org.wheatgenetics.coordinate.model.JoinedGridModels.Processor                ,
-org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
+org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 {
     // region Types
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
@@ -595,7 +593,7 @@ org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
 
             case org.wheatgenetics.coordinate.R.id.nav_create_project:
                 if (null == this.projectCreator) this.projectCreator =
-                    new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity, this);
+                    new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity);
                 this.projectCreator.create();
                 break;
 
@@ -668,15 +666,6 @@ org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { assert null != joinedGridModel; this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
-    // endregion
-
-    // region org.wheatgenetics.coordinate.pc.ProjectCreator.Handler Overridden Method
-    @java.lang.Override
-    public void handleCreateProjectDone(final java.lang.String projectTitle)
-    {
-        this.projectsTable().insert(
-            new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle));
-    }
     // endregion
     // endregion
 
