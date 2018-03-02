@@ -55,6 +55,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateExporter
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -918,6 +919,19 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
                 this.joinedGridModel.getActiveEntryModel();
             return null == activeEntryModel ? null : activeEntryModel.getValue();
+        }
+    }
+
+    @java.lang.Override
+    public java.lang.String getProjectTitle()
+    {
+        if (null == this.joinedGridModel)
+            return "";
+        else
+        {
+            final long projectId = this.joinedGridModel.getProjectId();
+            return org.wheatgenetics.coordinate.model.Model.illegal(projectId) ?
+                "none" : this.projectsTable().get(projectId).getTitle();
         }
     }
 

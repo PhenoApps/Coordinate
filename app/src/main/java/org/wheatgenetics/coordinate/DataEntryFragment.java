@@ -31,6 +31,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     interface Handler
     {
         public abstract java.lang.String getEntryValue   ();
+        public abstract java.lang.String getProjectTitle ();
         public abstract java.lang.String getTemplateTitle();
         public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             getOptionalFields();
@@ -42,9 +43,9 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     // region Fields
     private org.wheatgenetics.coordinate.DataEntryFragment.Handler handler;
 
-    private android.widget.EditText     entryEditText        ;
-    private android.widget.TextView     templateTitleTextView;
-    private android.widget.LinearLayout optionalFieldsLayout ;
+    private android.widget.EditText     entryEditText                              ;
+    private android.widget.TextView     templateTitleTextView, projectTitleTextView;
+    private android.widget.LinearLayout optionalFieldsLayout                       ;
     // endregion
 
     public DataEntryFragment() { /* Required empty public constructor. */ }
@@ -87,6 +88,9 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
             new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
                 this.entryEditText, this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
 
+        this.projectTitleTextView = (android.widget.TextView)
+            activity.findViewById(org.wheatgenetics.coordinate.R.id.projectTitleTextView);
+
         this.templateTitleTextView = (android.widget.TextView)
             activity.findViewById(org.wheatgenetics.coordinate.R.id.templateTitleTextView);
 
@@ -115,6 +119,9 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     {
         assert null != this.handler; assert null != this.entryEditText;
         this.entryEditText.setText(this.handler.getEntryValue());
+
+        assert null != this.projectTitleTextView;
+        this.projectTitleTextView.setText(this.handler.getProjectTitle());
 
         assert null != this.templateTitleTextView;
         this.templateTitleTextView.setText(this.handler.getTemplateTitle());
