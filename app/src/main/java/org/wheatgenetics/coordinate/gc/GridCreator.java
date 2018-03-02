@@ -21,6 +21,9 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
+ * org.wheatgenetics.coordinate.pc.ProjectCreator
+ * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
+ *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
@@ -31,12 +34,17 @@ package org.wheatgenetics.coordinate.gc;
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class GridCreator extends java.lang.Object implements
+org.wheatgenetics.coordinate.pc.ProjectCreator.Handler              ,
 org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-    public interface Handler { public abstract void handleGridCreated(long gridId); }
+    public interface Handler
+    {
+        public abstract void handleGridCreated(long gridId   );
+        public abstract void loadProjectModel (long projectId);
+    }
 
     // region Fields
     private final android.app.Activity                                activity   ;
@@ -64,10 +72,18 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private org.wheatgenetics.coordinate.model.ProjectModel projectModel                = null;
     private org.wheatgenetics.coordinate.SelectAlertDialog  getProjectChoiceAlertDialog = null;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator              = null;
     private long                                            projectId                         ;
     // endregion
 
     // region Private Methods
+    private void getTemplateChoice()
+    {
+        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
+        this.getTemplateChoiceAlertDialog.show();
+    }
+
     /**
      * projectModel     which
      * == null (0) no project (0)
@@ -83,9 +99,14 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (null == this.projectModel)
             switch (which)
             {
-                case 0 :    this.projectId = 0                     ;    break;
-                case 1 : /* this.projectId = createAndLoadProject(); */ break;
-                default: throw new java.lang.IllegalArgumentException()      ;
+                case 0: this.projectId = 0; break;
+
+                case 1:
+                    if (null == this.projectCreator) this.projectCreator =
+                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity, this);
+                    this.projectCreator.createAndReturn(); return;
+
+                default: throw new java.lang.IllegalArgumentException();
             }
         else
             switch (which)
@@ -101,9 +122,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 default: throw new java.lang.IllegalArgumentException();
             }
 
-        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
-            new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
-        this.getTemplateChoiceAlertDialog.show();
+        this.getTemplateChoice();
     }
 
     private void chooseOldAfterSelect(final int which)
@@ -246,6 +265,16 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
                 this.activity, this.requestCode, this);
         this.templateCreator.create();
+    }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.pc.ProjectCreator.Handler Overridden Method
+    @java.lang.Override
+    public void handleCreateProjectDone(final long projectId)
+    {
+        this.projectId = projectId;
+        assert null != this.handler; this.handler.loadProjectModel(this.projectId);
+        this.getTemplateChoice();
     }
     // endregion
     // endregion

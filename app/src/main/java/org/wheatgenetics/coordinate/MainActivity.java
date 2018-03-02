@@ -302,20 +302,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void clearJoinedGridModelThenPopulate() { this.loadJoinedGridModelThenPopulate(0); }
     // endregion
 
-    // region loadProjectModel() Private Methods
-    private void loadProjectModel(final long projectId)
-    {
-        this.projectModel = projectId > 0 ? this.projectsTable().get(projectId) : null;
-
-        assert null != this.sharedPreferences;
-        if (null == this.projectModel)
-            this.sharedPreferences.clearProjectId();
-        else
-            this.sharedPreferences.setProjectId(this.projectModel.getId());
-    }
-
     private void clearProjectModel() { this.loadProjectModel(0); }
-    // endregion
 
     // region Grid Private Methods
     private void createGrid()
@@ -970,6 +957,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override
     public void handleGridCreated(final long gridId)
     { this.loadJoinedGridModelThenPopulate(gridId); }
+
+    @java.lang.Override
+    public void loadProjectModel(final long projectId)
+    {
+        this.projectModel = projectId > 0 ? this.projectsTable().get(projectId) : null;
+
+        assert null != this.sharedPreferences;
+        if (null == this.projectModel)
+            this.sharedPreferences.clearProjectId();
+        else
+            this.sharedPreferences.setProjectId(this.projectModel.getId());
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.model.GridExporter.Helper Overridden Methods
