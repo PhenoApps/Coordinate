@@ -238,6 +238,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     return;
                 }
             }
+            if (joinedGridModel.activeRowAndOrActiveColWasAdjusted())
+                this.gridsTable().update(joinedGridModel);           // Update activeRow, activeCol.
             this.entriesTable().insert(joinedGridModel.getEntryModels());
             assert null != this.handler; this.handler.handleGridCreated(gridId);
         }

@@ -23,7 +23,7 @@ package org.wheatgenetics.coordinate.model;
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 implements org.wheatgenetics.coordinate.model.DisplayModel
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Helper { public abstract void publishProgress(int col); }
 
     // region Fields
@@ -77,7 +77,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         csvWriter.close();
     }
 
-    @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     private void exportDNA(final org.wheatgenetics.javalib.CsvWriter csvWriter,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException
@@ -172,11 +172,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
     { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isExcludedRow(final int row)
     { return null == this.templateModel ? true : this.templateModel.isExcludedRow(row); }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isExcludedCol(final int col)
     { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
 
@@ -188,7 +188,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.entryModels.next(activeEntryModel, filledHandler);
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean setActiveRowAndActiveCol(
     final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
     {
@@ -263,7 +263,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
-    @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     java.lang.String name()
     {
         return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
@@ -290,7 +290,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         }
     }
 
-    @java.lang.SuppressWarnings("PointlessBooleanExpression")
+    @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
     boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException
@@ -364,7 +364,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()
     { return this.getEntryModel(this.getActiveRow() + 1, this.getActiveCol() + 1); }
 
-    @java.lang.SuppressWarnings("PointlessBooleanExpression")
+    @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
     public boolean setActiveRowAndActiveCol(
     @android.support.annotation.IntRange(from = 0) final int row,
     @android.support.annotation.IntRange(from = 0) final int col)
@@ -381,7 +381,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public org.wheatgenetics.coordinate.model.EntryModels getEntryModels()
     { return this.entryModels; }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
@@ -389,6 +389,15 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.next(entryModel, filledHandler);
         return null == nextIncludedEntryModel ? false :
             this.setActiveRowAndActiveCol(nextIncludedEntryModel);
+    }
+
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
+    public boolean activeRowAndOrActiveColWasAdjusted()
+    {
+        final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
+            this.getActiveEntryModel();
+        return activeEntryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel ?
+            this.goToNext(activeEntryModel, null) : false;
     }
     // endregion
 }

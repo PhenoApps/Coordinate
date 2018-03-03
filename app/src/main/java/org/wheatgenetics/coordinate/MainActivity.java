@@ -395,7 +395,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     {
         if (null != this.joinedGridModel) if (this.joinedGridModel.goToNext(entryModel, this))
         {
-            this.gridsTable().update(this.joinedGridModel);
+            this.gridsTable().update(this.joinedGridModel);          // Update activeRow, activeCol.
             this.populateFragments();
         }
     }
