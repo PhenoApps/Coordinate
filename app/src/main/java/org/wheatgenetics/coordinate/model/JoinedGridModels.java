@@ -2,6 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
@@ -49,6 +52,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList)
             { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
 
+            // region Overridden Methods
             @java.lang.Override
             public boolean hasNext() { return this.listIterator.hasNext(); }
 
@@ -58,6 +62,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
 
             @java.lang.Override
             public void remove() { throw new java.lang.UnsupportedOperationException(); }
+            // endregion
         }
         return new Iterator(this.arrayList());
     }
@@ -103,6 +108,26 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         if (null != processor)
             for (final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel: this)
                 processor.process(joinedGridModel);
+    }
+
+    public org.wheatgenetics.coordinate.model.Cells excludedCells(
+    @android.support.annotation.IntRange(from = 1) final int maxRow,
+    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    {
+        final int size = this.size();
+
+        if (size <= 0)
+            return null;
+        else
+        {
+            final org.wheatgenetics.coordinate.model.Cells result =
+                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+            {
+                final int first = 0, last = size - 1;
+                for (int i = first; i <= last; i++) result.accumulate(this.get(i).excludedCells());
+            }
+            return result;
+        }
     }
     // endregion
 }
