@@ -21,14 +21,6 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Private Methods
-    @java.lang.SuppressWarnings("Convert2Diamond")
-    private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
-    {
-        if (null == this.cellTreeSetInstance) this.cellTreeSetInstance =
-            new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>();
-        return this.cellTreeSetInstance;
-    }
-
     private void add(final java.lang.Object object)
     {
         if (null != object)
@@ -40,6 +32,17 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                 this.add(cell);
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
+    }
+
+    private java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator()
+    { return null == this.cellTreeSetInstance ? null : this.cellTreeSetInstance.iterator(); }
+
+    @java.lang.SuppressWarnings("Convert2Diamond")
+    private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
+    {
+        if (null == this.cellTreeSetInstance) this.cellTreeSetInstance =
+            new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>();
+        return this.cellTreeSetInstance;
     }
     // endregion
 
@@ -156,7 +159,22 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    @java.lang.SuppressWarnings("DefaultLocale")
+    void accumulate(final org.wheatgenetics.coordinate.model.Cells cells)
+    {
+        if (null != cells)
+        {
+            final java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator =
+                cells.iterator();
+            if (null != iterator)
+                while (iterator.hasNext())
+                {
+                    final org.wheatgenetics.coordinate.model.Cell cell = iterator.next();
+                    if (null != cell) this.add(cell.getRowValue(), cell.getColValue());
+                }
+        }
+    }
+
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
@@ -178,8 +196,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             {
                 org.wheatgenetics.coordinate.model.Cell cell;
                 do
+                {
                     cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
                         maxRow, maxCol);
+                }
                 while (this.contains(cell));
 
                 this.add(cell);
