@@ -114,6 +114,7 @@
     <string name="GridCreatorChooseOldAlertDialogTitle">Load Template</string>
     <string name="GridCreatorTemplateAlertMessage">Unable to create template.</string>
     <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>
+    <string name="GridCreatorEntriesAlertMessage">Unable to make excluded entr(y|ies).</string>
 
     <string name="ElementConfirmTitle">Exclude Cell</string>
     <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
