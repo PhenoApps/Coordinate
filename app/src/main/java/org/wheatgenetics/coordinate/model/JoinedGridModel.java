@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
+ * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -270,6 +271,25 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.getFormattedTimestamp());
     }
 
+    org.wheatgenetics.coordinate.model.Cells excludedCells()
+    {
+        if (null == this.entryModels)
+            return null;
+        else
+        {
+            final org.wheatgenetics.coordinate.model.Cells result;
+            {
+                final int rows = this.getRows(), cols = this.getCols();
+                result = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+                for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
+                    if (this.getEntryModel(row, col) instanceof
+                    org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                        result.add(row, col);
+            }
+            return result;
+        }
+    }
+
     @java.lang.SuppressWarnings("PointlessBooleanExpression")
     boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
@@ -312,6 +332,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                 new org.wheatgenetics.coordinate.model.Cells(rows, cols)               :
                 (org.wheatgenetics.coordinate.model.Cells) initialExcludedCells.clone();
         }
+
         assert null != this.templateModel;
         excludedCells.makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
             /* maxRow => */ rows, /* maxCol => */ cols);
