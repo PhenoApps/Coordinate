@@ -73,7 +73,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     @android.support.annotation.IntRange(from = 1) final int maxValue)
     {
         return new org.wheatgenetics.coordinate.model.RowOrCol(
-            new java.util.Random(java.lang.System.currentTimeMillis()).nextInt(maxValue) + 1);
+            /* value => */ new java.util.Random().nextInt(maxValue) + 1);
     }
     // endregion
 }
