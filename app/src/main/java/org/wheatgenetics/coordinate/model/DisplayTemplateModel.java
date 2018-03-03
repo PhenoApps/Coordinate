@@ -464,12 +464,18 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     public void addExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
     { this.excludedRows().add(row); }
 
+    public void clearExcludedRows()
+    { if (null != this.excludedRowsInstance) this.excludedRowsInstance.clear(); }
+
     public java.lang.String getExcludedRowsAsJson()
     { return null == this.excludedRowsInstance ? null : this.excludedRowsInstance.json(); }
 
 
     public void addExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
     { this.excludedCols().add(col); }
+
+    public void clearExcludedCols()
+    { if (null != this.excludedColsInstance) this.excludedColsInstance.clear(); }
 
     public java.lang.String getExcludedColsAsJson()
     { return null == this.excludedColsInstance ? null : this.excludedColsInstance.json(); }

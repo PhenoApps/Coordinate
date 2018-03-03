@@ -37,7 +37,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private void excludeRows(final boolean checkedItems[])
     {
         int i = 1;
-        assert null != checkedItems; assert null != this.templateModel;
+        assert null != this.templateModel; this.templateModel.clearExcludedRows();
+        assert null != checkedItems      ;
         for (final boolean checkedItem: checkedItems)
         {
             if (checkedItem) this.templateModel.addExcludedRow(i);
@@ -48,7 +49,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private void excludeCols(final boolean checkedItems[])
     {
         int i = 1;
-        assert null != checkedItems; assert null != this.templateModel;
+        assert null != this.templateModel; this.templateModel.clearExcludedCols();
+        assert null != checkedItems      ;
         for (final boolean checkedItem: checkedItems)
         {
             if (checkedItem) this.templateModel.addExcludedCol(i);

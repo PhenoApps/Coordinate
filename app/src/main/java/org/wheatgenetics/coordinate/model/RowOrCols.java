@@ -148,6 +148,8 @@ public class RowOrCols extends java.lang.Object
     void add(@android.support.annotation.IntRange(from = 1) final int value)
     { this.add(/* rowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(value)); }
 
+    void clear() { if (null != this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance.clear(); }
+
     java.lang.String json()
     {
         if (null == this.rowOrColTreeSetInstance)
