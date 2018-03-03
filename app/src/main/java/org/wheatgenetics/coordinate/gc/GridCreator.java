@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.ProjectModel
@@ -227,7 +228,15 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                         projectJoinedGridModels.excludedCells(
                             joinedGridModel.getRows(), joinedGridModel.getCols());
                 }
-                joinedGridModel.makeEntryModels(projectExcludedCells);
+                try { joinedGridModel.makeEntryModels(projectExcludedCells); }
+                catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
+                {
+                    this.gridsTable().delete(gridId);
+                    org.wheatgenetics.coordinate.Utils.alert(this.activity                  ,
+                        org.wheatgenetics.coordinate.R.string.GridCreatorEntriesAlertMessage,
+                        e.getMessage()                                                      );
+                    return;
+                }
             }
             this.entriesTable().insert(joinedGridModel.getEntryModels());
             assert null != this.handler; this.handler.handleGridCreated(gridId);

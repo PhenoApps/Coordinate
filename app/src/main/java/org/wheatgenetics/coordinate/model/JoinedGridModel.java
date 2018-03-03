@@ -321,6 +321,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
 
     public void makeEntryModels(final org.wheatgenetics.coordinate.model.Cells projectExcludedCells)
+    throws org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
+    org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
         final int rows = this.getRows(), cols = this.getCols();
 

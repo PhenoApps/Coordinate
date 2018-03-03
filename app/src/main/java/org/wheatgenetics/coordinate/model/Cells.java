@@ -14,6 +14,26 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
+    // region Types
+    public class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
+    { MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
+
+    public class AmountIsTooLarge extends java.lang.IllegalArgumentException
+    {
+        @java.lang.SuppressWarnings({"DefaultLocale"})
+        AmountIsTooLarge(final int maxAmount)
+        {
+            super(java.lang.String.format(
+                maxAmount <= 0 ?
+                    "There is no more room for entries." :
+                    1 == maxAmount ?
+                        "There is room for only %d more entry."  :
+                        "There is room for only %d more entries.",
+                maxAmount));
+        }
+    }
+    // endregion
+
     // region Fields
     private final org.wheatgenetics.coordinate.model.Cell                    maxCell;
     private       java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>
@@ -36,22 +56,6 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 
     private java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator()
     { return null == this.cellTreeSetInstance ? null : this.cellTreeSetInstance.iterator(); }
-
-    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
-    private boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell,
-    final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet)
-    {
-        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
-        // that it can't be present so contains() returns false.  (The check is actually not
-        // necessary: the code that follows the following code will also return false since an
-        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
-        // necessary but to (potentially) save time.)
-        assert null != candidateCell;
-        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
-        catch (final java.lang.IllegalArgumentException e) { return false; }
-
-        return null == cellTreeSet ? false : cellTreeSet.contains(candidateCell);
-    }
 
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
@@ -190,37 +194,49 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    @java.lang.SuppressWarnings({"DefaultLocale"})
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol,
-    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells)
+    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells) throws
+    org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
+    org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
         if (amount >= 1)
         {
-            new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(  // throws java.-
-                this.maxCell);                                                    //  lang.Illegal-
-                                                                                  //  ArgumentExcep-
-            final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>      //  tion
-                cellTreeSet = null == projectExcludedCells ?
-                    this.cellTreeSetInstance : projectExcludedCells.cellTreeSetInstance;
+            try
             {
-                final int maxAmount = maxRow * maxCol -
-                    (null == cellTreeSet ? 0 : cellTreeSet.size());
-                if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
-                    java.lang.String.format("amount must be <= %d", maxAmount));
+                new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(// throws java.-
+                    this.maxCell);                                                  //  lang.Ille-
+            }                                                                       //  galArgument-
+            catch (final java.lang.IllegalArgumentException e)                      //  Exception
+            { throw new org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange(); }
+
+            final boolean hasAProject = null != projectExcludedCells;
+            {
+                final int maxAmount;
+                {
+                    final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet =
+                        hasAProject ?
+                            projectExcludedCells.cellTreeSetInstance : this.cellTreeSetInstance;
+                    maxAmount = maxRow * maxCol - (null == cellTreeSet ? 0 : cellTreeSet.size());
+                }
+                if (amount > maxAmount)
+                    throw new org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge(maxAmount);
             }
 
+            final org.wheatgenetics.coordinate.model.Cells cells =
+                hasAProject ? projectExcludedCells : this;
             do
             {
                 org.wheatgenetics.coordinate.model.Cell cell;
                 do
                     cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
                         maxRow, maxCol);
-                while (this.contains(cell, cellTreeSet));
+                while (cells.contains(cell));
 
                 this.add(cell);
+                if (hasAProject) projectExcludedCells.add(cell);
             }
             while (--amount > 0);
         }
@@ -238,8 +254,21 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Public Methods
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
-    { return this.contains(candidateCell, this.cellTreeSetInstance); }
+    {
+        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
+        // that it can't be present so contains() returns false.  (The check is actually not
+        // necessary: the code that follows the following code will also return false since an
+        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
+        // necessary but to (potentially) save time.)
+        assert null != candidateCell;
+        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
+        catch (final java.lang.IllegalArgumentException e) { return false; }
+
+        return null == this.cellTreeSetInstance ? false :
+            this.cellTreeSetInstance.contains(candidateCell);
+    }
 
     @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
