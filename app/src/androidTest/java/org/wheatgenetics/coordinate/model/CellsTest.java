@@ -136,13 +136,13 @@ public class CellsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.Cells cells  =
             new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
 
-        cells.makeRandomCells(0, maxRow, maxCol);
+        cells.makeRandomCells(0, maxRow, maxCol, null);
         org.junit.Assert.assertEquals(cells.toString(), "null");
 
-        cells.makeRandomCells(-5, maxRow, maxCol);
+        cells.makeRandomCells(-5, maxRow, maxCol, null);
         org.junit.Assert.assertEquals(cells.toString(), "null");
 
-        cells.makeRandomCells(2, maxRow, maxCol);
+        cells.makeRandomCells(2, maxRow, maxCol, null);
         org.junit.Assert.assertNotEquals(cells.toString(), "null");
     }
 
@@ -152,7 +152,7 @@ public class CellsTest extends java.lang.Object
         final int                                      maxRow = 2, maxCol = 2;
         final org.wheatgenetics.coordinate.model.Cells cells  =
             new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
-        cells.makeRandomCells(200, maxRow, maxCol);
+        cells.makeRandomCells(200, maxRow, maxCol, null);
     }
     // endregion
 

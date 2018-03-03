@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Cell
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Fields
@@ -37,7 +37,23 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     private java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator()
     { return null == this.cellTreeSetInstance ? null : this.cellTreeSetInstance.iterator(); }
 
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
+    private boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell,
+    final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet)
+    {
+        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
+        // that it can't be present so contains() returns false.  (The check is actually not
+        // necessary: the code that follows the following code will also return false since an
+        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
+        // necessary but to (potentially) save time.)
+        assert null != candidateCell;
+        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
+        catch (final java.lang.IllegalArgumentException e) { return false; }
+
+        return null == cellTreeSet ? false : cellTreeSet.contains(candidateCell);
+    }
+
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
     {
         if (null == this.cellTreeSetInstance) this.cellTreeSetInstance =
@@ -115,7 +131,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             }
     }
 
-    @java.lang.Override  @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.Override  @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -178,16 +194,20 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     void makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    @android.support.annotation.IntRange(from = 1) final int maxCol,
+    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells)
     {
         if (amount >= 1)
         {
             new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(  // throws java.-
                 this.maxCell);                                                    //  lang.Illegal-
                                                                                   //  ArgumentExcep-
-            {                                                                     //  tion
+            final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>      //  tion
+                cellTreeSet = null == projectExcludedCells ?
+                    this.cellTreeSetInstance : projectExcludedCells.cellTreeSetInstance;
+            {
                 final int maxAmount = maxRow * maxCol -
-                    (null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size());
+                    (null == cellTreeSet ? 0 : cellTreeSet.size());
                 if (amount > maxAmount) throw new java.lang.IllegalArgumentException(
                     java.lang.String.format("amount must be <= %d", maxAmount));
             }
@@ -196,11 +216,9 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             {
                 org.wheatgenetics.coordinate.model.Cell cell;
                 do
-                {
                     cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
                         maxRow, maxCol);
-                }
-                while (this.contains(cell));
+                while (this.contains(cell, cellTreeSet));
 
                 this.add(cell);
             }
@@ -220,30 +238,17 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Public Methods
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
     public boolean contains(final org.wheatgenetics.coordinate.model.Cell candidateCell)
-    {
-        // The following code checks to see if candidateCell is inRange().  If it isn't then we know
-        // that it can't be present so contains() returns false.  (The check is actually not
-        // necessary: the code that follows the following code will also return false since an
-        // out-of-range candidateCell will not be found.  The purpose of the check is not to be
-        // necessary but to (potentially) save time.)
-        assert null != candidateCell;
-        try { candidateCell.inRange(this.maxCell); /* throws java.lang.IllegalArgumentException */ }
-        catch (final java.lang.IllegalArgumentException e) { return false; }
+    { return this.contains(candidateCell, this.cellTreeSetInstance); }
 
-        return null == this.cellTreeSetInstance ? false :
-            this.cellTreeSetInstance.contains(candidateCell);
-    }
-
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
     {
         return null == cell ? false : this.cellTreeSet().add(
             cell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */);
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean remove(final org.wheatgenetics.coordinate.model.Cell cell)
     { return null == this.cellTreeSetInstance ? false : this.cellTreeSetInstance.remove(cell); }
 

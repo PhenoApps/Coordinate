@@ -217,7 +217,18 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
         else
         {
-            joinedGridModel.setId(gridId); joinedGridModel.makeEntryModels();
+            joinedGridModel.setId(gridId);
+            {
+                final org.wheatgenetics.coordinate.model.Cells projectExcludedCells;
+                {
+                    final org.wheatgenetics.coordinate.model.JoinedGridModels
+                        projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
+                    projectExcludedCells = null == projectJoinedGridModels ? null :
+                        projectJoinedGridModels.excludedCells(
+                            joinedGridModel.getRows(), joinedGridModel.getCols());
+                }
+                joinedGridModel.makeEntryModels(projectExcludedCells);
+            }
             this.entriesTable().insert(joinedGridModel.getEntryModels());
             assert null != this.handler; this.handler.handleGridCreated(gridId);
         }

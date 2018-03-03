@@ -320,7 +320,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
 
-    public void makeEntryModels()
+    public void makeEntryModels(final org.wheatgenetics.coordinate.model.Cells projectExcludedCells)
     {
         final int rows = this.getRows(), cols = this.getCols();
 
@@ -335,7 +335,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
         assert null != this.templateModel;
         excludedCells.makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
-            /* maxRow => */ rows, /* maxCol => */ cols);
+            /* maxRow => */ rows, /* maxCol => */ cols, projectExcludedCells);
 
         this.entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
             /* gridId => */ this.getId(), rows, cols);
