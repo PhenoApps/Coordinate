@@ -224,18 +224,20 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             try
             {
                 if (org.wheatgenetics.coordinate.model.Model.illegal(projectId))
-                    joinedGridModel.makeEntryModels();
+                    joinedGridModel.makeEntryModels();                    // throws AmountIsTooLarge
                 else
                 {
-                    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells;
-                    {
-                        final org.wheatgenetics.coordinate.model.JoinedGridModels
-                            projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
-                        projectExcludedCells = null == projectJoinedGridModels ? null :
-                            projectJoinedGridModels.excludedCells(
-                                joinedGridModel.getRows(), joinedGridModel.getCols());
-                    }
-                    joinedGridModel.makeEntryModels(projectExcludedCells);
+                    final org.wheatgenetics.coordinate.model.JoinedGridModels
+                        projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
+                    if (null == projectJoinedGridModels)
+                        joinedGridModel.makeEntryModels();                // throws AmountIsTooLarge
+                    else
+                        if (projectJoinedGridModels.size() <= 1)
+                            joinedGridModel.makeEntryModels();            // throws AmountIsTooLarge
+                        else
+                            joinedGridModel.makeEntryModels(              // throws AmountIsTooLarge
+                                projectJoinedGridModels.excludedCells(
+                                    joinedGridModel.getRows(), joinedGridModel.getCols()));
                 }
             }
             catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)

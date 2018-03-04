@@ -273,21 +273,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
-        if (null == this.entryModels)
-            return null;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.Cells result;
-            {
-                final int rows = this.getRows(), cols = this.getCols();
-                result = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
-                for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
-                    if (this.getEntryModel(row, col) instanceof
-                    org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                        result.add(row, col);
-            }
-            return result;
-        }
+        final int rows = this.getRows(), cols = this.getCols();
+        final org.wheatgenetics.coordinate.model.Cells result =
+            new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+
+        if (null != this.entryModels)
+            for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
+                if (this.getEntryModel(row, col) instanceof
+                org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                    result.add(row, col);
+
+        for (int row = 1; row <= rows; row++) if (this.isExcludedRow(row))
+            for (int col = 1; col <= cols; col++) result.add(row, col);
+
+        for (int col = 1; col <= cols; col++) if (this.isExcludedCol(col))
+            for (int row = 1; row <= rows; row++) result.add(row, col);
+
+        return result;
     }
 
     @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
@@ -320,41 +322,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     public java.lang.String getTemplateTitle()
     { return null == this.templateModel ? null : this.templateModel.getTitle(); }
 
-    public void makeEntryModels()
-    {
-        final int rows = this.getRows(), cols = this.getCols();
-
-        final org.wheatgenetics.coordinate.model.Cells excludedCells;
-        {
-            final org.wheatgenetics.coordinate.model.Cells initialExcludedCells =
-                this.initialExcludedCells();
-            excludedCells = null == initialExcludedCells ?
-                new org.wheatgenetics.coordinate.model.Cells(rows, cols)               :
-                (org.wheatgenetics.coordinate.model.Cells) initialExcludedCells.clone();
-        }
-
-        for (int row = 1; row <= rows; row++) if (this.isExcludedRow(row))
-                for (int col = 1; col <= cols; col++) excludedCells.add(row, col);
-
-        for (int col = 1; col <= cols; col++) if (this.isExcludedCol(col))
-                for (int row = 1; row <= rows; row++) excludedCells.add(row, col);
-
-        assert null != this.templateModel;
-        excludedCells.makeRandomCells(
-            /* amount => */ this.templateModel.getGeneratedExcludedCellsAmount(),
-            /* maxRow => */ rows,                           /* maxCol => */ cols);
-
-        this.entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
-            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
-        for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
-            if (excludedCells.contains(row, col))
-                this.entryModels.makeExcludedEntry(row, col);
-            else
-                this.entryModels.makeIncludedEntry(row, col);
-    }
-
-    public void makeEntryModels(final org.wheatgenetics.coordinate.model.Cells projectExcludedCells)
-    throws org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
+    public void makeEntryModels() throws
+    org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
     org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
         final int rows = this.getRows(), cols = this.getCols();
@@ -368,27 +337,33 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                 (org.wheatgenetics.coordinate.model.Cells) initialExcludedCells.clone();
         }
 
-        assert null != this.templateModel;
-        excludedCells.makeRandomCells(this.templateModel.getGeneratedExcludedCellsAmount(),
-            /* maxRow => */ rows, /* maxCol => */ cols, projectExcludedCells);
+        for (int row = 1; row <= rows; row++) if (this.isExcludedRow(row))
+            for (int col = 1; col <= cols; col++) excludedCells.add(row, col);
+
+        for (int col = 1; col <= cols; col++) if (this.isExcludedCol(col))
+            for (int row = 1; row <= rows; row++) excludedCells.add(row, col);
+
+        this.makeEntryModels(excludedCells); // throws MaxRowAndOrMaxColOutOfRange, AmountIsTooLarge
+    }
+
+    public void makeEntryModels(final org.wheatgenetics.coordinate.model.Cells excludedCells)
+    throws org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
+    org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
+    {
+        final int rows = this.getRows(), cols = this.getCols();
+
+        assert null != this.templateModel; assert null != excludedCells;
+        excludedCells.makeRandomCells(       // throws MaxRowAndOrMaxColOutOfRange, AmountIsTooLarge
+            /* amount => */ this.templateModel.getGeneratedExcludedCellsAmount(),
+            /* maxRow => */ rows,                           /* maxCol => */ cols);
 
         this.entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
-            /* gridId => */ this.getId(), rows, cols);
-        for (int row = 1; row <= rows; row++)
-        {
-            final boolean excludedRow = this.isExcludedRow(row);
-            for (int col = 1; col <= cols; col++)
-                if (excludedRow)
-                    this.entryModels.makeExcludedEntry(row, col);
-                else
-                    if (this.isExcludedCol(col))
-                        this.entryModels.makeExcludedEntry(row, col);
-                    else
-                        if (excludedCells.contains(row, col))
-                            this.entryModels.makeExcludedEntry(row, col);
-                        else
-                            this.entryModels.makeIncludedEntry(row, col);
-        }
+            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
+        for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
+            if (excludedCells.contains(row, col))
+                this.entryModels.makeExcludedEntry(row, col);
+            else
+                this.entryModels.makeIncludedEntry(row, col);
     }
 
     public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)

@@ -232,54 +232,6 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    void makeRandomCells(
-    @android.support.annotation.IntRange(from = 1)       int amount,
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol,
-    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells) throws
-    org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
-    org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
-    {
-        if (amount >= 1)
-        {
-            try
-            {
-                new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(// throws java.-
-                    this.maxCell);                                                  //  lang.Ille-
-            }                                                                       //  galArgument-
-            catch (final java.lang.IllegalArgumentException e)                      //  Exception
-            { throw new org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange(); }
-
-            final boolean hasAProject = null != projectExcludedCells;
-            {
-                final int maxAmount;
-                {
-                    final java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet =
-                        hasAProject ?
-                            projectExcludedCells.cellTreeSetInstance : this.cellTreeSetInstance;
-                    maxAmount = maxRow * maxCol - (null == cellTreeSet ? 0 : cellTreeSet.size());
-                }
-                if (amount > maxAmount)
-                    throw new org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge(maxAmount);
-            }
-
-            final org.wheatgenetics.coordinate.model.Cells cells =
-                hasAProject ? projectExcludedCells : this;
-            do
-            {
-                org.wheatgenetics.coordinate.model.Cell cell;
-                do
-                    cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
-                        maxRow, maxCol);
-                while (cells.contains(cell));
-
-                this.add(cell);
-                if (hasAProject) projectExcludedCells.add(cell);
-            }
-            while (--amount > 0);
-        }
-    }
-
     boolean contains(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
