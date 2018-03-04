@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
+ * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
@@ -219,28 +220,38 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         else
         {
             joinedGridModel.setId(gridId);
+
+            try
             {
-                final org.wheatgenetics.coordinate.model.Cells projectExcludedCells;
+                if (org.wheatgenetics.coordinate.model.Model.illegal(projectId))
+                    joinedGridModel.makeEntryModels();
+                else
                 {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModels
-                        projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
-                    projectExcludedCells = null == projectJoinedGridModels ? null :
-                        projectJoinedGridModels.excludedCells(
-                            joinedGridModel.getRows(), joinedGridModel.getCols());
-                }
-                try { joinedGridModel.makeEntryModels(projectExcludedCells); }
-                catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
-                {
-                    this.gridsTable().delete(gridId);
-                    org.wheatgenetics.coordinate.Utils.alert(this.activity                  ,
-                        org.wheatgenetics.coordinate.R.string.GridCreatorEntriesAlertMessage,
-                        e.getMessage()                                                      );
-                    return;
+                    final org.wheatgenetics.coordinate.model.Cells projectExcludedCells;
+                    {
+                        final org.wheatgenetics.coordinate.model.JoinedGridModels
+                            projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
+                        projectExcludedCells = null == projectJoinedGridModels ? null :
+                            projectJoinedGridModels.excludedCells(
+                                joinedGridModel.getRows(), joinedGridModel.getCols());
+                    }
+                    joinedGridModel.makeEntryModels(projectExcludedCells);
                 }
             }
+            catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
+            {
+                this.gridsTable().delete(gridId);
+                org.wheatgenetics.coordinate.Utils.alert(this.activity                  ,
+                    org.wheatgenetics.coordinate.R.string.GridCreatorEntriesAlertMessage,
+                    e.getMessage()                                                      );
+                return;
+            }
+
             if (joinedGridModel.activeRowAndOrActiveColWasAdjusted())
                 this.gridsTable().update(joinedGridModel);           // Update activeRow, activeCol.
+
             this.entriesTable().insert(joinedGridModel.getEntryModels());
+
             assert null != this.handler; this.handler.handleGridCreated(gridId);
         }
     }
