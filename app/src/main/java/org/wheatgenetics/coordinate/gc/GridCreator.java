@@ -235,9 +235,15 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                         if (projectJoinedGridModels.size() <= 1)
                             joinedGridModel.makeEntryModels();            // throws AmountIsTooLarge
                         else
-                            joinedGridModel.makeEntryModels(              // throws AmountIsTooLarge
-                                projectJoinedGridModels.excludedCells(
-                                    joinedGridModel.getRows(), joinedGridModel.getCols()));
+                            try
+                            {
+                                joinedGridModel.makeEntryModels(          // throws AmountIsTooLarge
+                                    projectJoinedGridModels.excludedCells(
+                                        joinedGridModel.getRows(), joinedGridModel.getCols()));
+                            }
+                            catch (
+                            final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
+                            { joinedGridModel.makeEntryModels(); /* throws AmountIsTooLarge */ }
                 }
             }
             catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
