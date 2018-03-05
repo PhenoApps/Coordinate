@@ -353,13 +353,13 @@ implements java.lang.Cloneable
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
 
-        result.add("Plate"                             , /* hint => */ "Plate ID");     // TODO: dna
-        result.add("Plate Name"                                                  );
-        result.add("Notes"                                                       );
-        result.add("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
-        result.add("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
-        result.add("person"                                                      );
-        result.add("date"                                                        );
+        result.add    ("Plate"                             , /* hint => */ "Plate ID");     // TODO: dna
+        result.add    ("Plate Name"                                                  );
+        result.add    ("Notes"                                                       );
+        result.add    ("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
+        result.add    ("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
+        result.add    ("person"                                                      );
+        result.addDate(                                                              );
 
         return result;
     }
