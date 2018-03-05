@@ -194,14 +194,16 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    void makeRandomCells(
+    org.wheatgenetics.coordinate.model.Cells makeRandomCells(
     @android.support.annotation.IntRange(from = 1)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol) throws
     org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
     org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
-        if (amount >= 1)
+        if (amount < 1)
+            return null;
+        else
         {
             try
             {
@@ -218,6 +220,8 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                     throw new org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge(maxAmount);
             }
 
+            final org.wheatgenetics.coordinate.model.Cells result =
+                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
             do
             {
                 org.wheatgenetics.coordinate.model.Cell cell;
@@ -226,9 +230,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                         maxRow, maxCol);
                 while (this.contains(cell));
 
-                this.add(cell);
+                this.add(cell); result.add(cell);
             }
             while (--amount > 0);
+            return result;
         }
     }
 
