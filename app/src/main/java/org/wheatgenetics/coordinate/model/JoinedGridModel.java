@@ -271,7 +271,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.getFormattedTimestamp());
     }
 
-    org.wheatgenetics.coordinate.model.Cells excludedCells()
+    org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
         final int rows = this.getRows(), cols = this.getCols();
         final org.wheatgenetics.coordinate.model.Cells result =

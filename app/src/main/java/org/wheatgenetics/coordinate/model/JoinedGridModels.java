@@ -124,7 +124,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                 new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
             {
                 final int first = 0, last = size - 1;
-                for (int i = first; i <= last; i++) result.accumulate(this.get(i).excludedCells());
+                for (int i = first; i <= last; i++)
+                    result.accumulate(this.get(i).excludedCellsFromEntries());
             }
             return result;
         }
