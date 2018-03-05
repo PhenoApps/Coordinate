@@ -37,7 +37,6 @@ package org.wheatgenetics.coordinate.gc;
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class GridCreator extends java.lang.Object implements
-org.wheatgenetics.coordinate.pc.ProjectCreator.Handler              ,
 org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
@@ -77,7 +76,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private org.wheatgenetics.coordinate.model.ProjectModel projectModel                = null;
     private org.wheatgenetics.coordinate.SelectAlertDialog  getProjectChoiceAlertDialog = null;
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator              = null;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  clearedProjectCreator       = null;
     private long                                            projectId                         ;
     // endregion
 
@@ -87,6 +86,13 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
             new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(this.activity, this);
         this.getTemplateChoiceAlertDialog.show();
+    }
+
+    private void handleCreateClearedProjectDone(final long projectId)
+    {
+        this.projectId = projectId;
+        assert null != this.handler; this.handler.loadProjectModel(this.projectId);
+        this.getTemplateChoice();
     }
 
     /**
@@ -107,9 +113,18 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 case 0: this.projectId = 0; break;
 
                 case 1:
-                    if (null == this.projectCreator) this.projectCreator =
-                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity, this);
-                    this.projectCreator.createAndReturn(); return;
+                    if (null == this.clearedProjectCreator) this.clearedProjectCreator =
+                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity,
+                            new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
+                            {
+                                @java.lang.Override
+                                public void handleCreateProjectDone(final long projectId)
+                                {
+                                    org.wheatgenetics.coordinate.gc.GridCreator.this
+                                        .handleCreateClearedProjectDone(projectId);
+                                }
+                            } );
+                    this.clearedProjectCreator.createAndReturn(); return;
 
                 default: throw new java.lang.IllegalArgumentException();
             }
@@ -321,16 +336,6 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         this.templateCreator.create();
     }
     // endregion
-
-    // region org.wheatgenetics.coordinate.pc.ProjectCreator.Handler Overridden Method
-    @java.lang.Override
-    public void handleCreateProjectDone(final long projectId)
-    {
-        this.projectId = projectId;
-        assert null != this.handler; this.handler.loadProjectModel(this.projectId);
-        this.getTemplateChoice();
-    }
-    // endregion
     // endregion
 
     // region Public Methods
@@ -346,11 +351,19 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     public void select(final int which)
                     { org.wheatgenetics.coordinate.gc.GridCreator.this.handleProjectChoice(which); }
                 });
+
+        final java.lang.String items[];
+        {
+            final java.lang.String firstItem = "Don't put this grid in a project.";
+            if (null == this.projectModel)
+                items = new java.lang.String[] {firstItem, "Create then select new project."};
+            else
+                items = new java.lang.String[] {firstItem,
+                    "Put this grid in \"" + this.projectModel.getTitle() + "\"."};
+        }
         this.getProjectChoiceAlertDialog.show(
             org.wheatgenetics.coordinate.R.string.GridCreatorGetProjectChoiceAlertDialogTitle,
-            new java.lang.String[] {"Don't put this grid in a project.", null == this.projectModel ?
-                "Create then select new project."             :
-                "Put this grid in \"" + this.projectModel.getTitle() + "\"."});
+            items                                                                            );
     }
 
     public void setExcludedCells(final android.os.Bundle bundle)
