@@ -110,7 +110,7 @@
     <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
     <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
 
-    <string name="GridCreatorGetProjectChoiceAlertDialogTitle">Grid\'s Project</string>
+    <string name="GridCreatorGetProjectChoiceAlertDialogTitle">Create Grid - Grid\'s Project</string>
     <string name="GridCreatorChooseOldAlertDialogTitle">Load Template</string>
     <string name="GridCreatorTemplateAlertMessage">Unable to create template.</string>
     <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>

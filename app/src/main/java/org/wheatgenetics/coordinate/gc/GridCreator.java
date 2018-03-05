@@ -76,8 +76,9 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private org.wheatgenetics.coordinate.model.ProjectModel projectModel                = null;
     private org.wheatgenetics.coordinate.SelectAlertDialog  getProjectChoiceAlertDialog = null;
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  clearedProjectCreator       = null;
-    private long                                            projectId                         ;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator
+        clearedProjectCreator = null, loadedProjectCreator = null;
+    private long projectId;
     // endregion
 
     // region Private Methods
@@ -95,15 +96,38 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         this.getTemplateChoice();
     }
 
+    private boolean setTemplateFromOtherGrids()
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            this.gridsTable().loadByProjectId(this.projectId);
+        if (null != joinedGridModels && joinedGridModels.size() > 0)
+        {
+            this.templateModel = this.templatesTable().get(
+                joinedGridModels.get(0).getTemplateId());
+            this.setValues();
+            return true;
+        }
+        return false;
+    }
+
+    private void handleCreateLoadedProjectDone(final long projectId)
+    {
+        this.projectId = projectId;
+        assert null != this.handler; this.handler.loadProjectModel(this.projectId);
+        if (!this.setTemplateFromOtherGrids()) this.getTemplateChoice();
+    }
+
     /**
      * projectModel     which
-     * == null (0) no project (0)
-     * != null (1) (create)use (1)  side effect
+     *              no project (0)
+     * == null (0) (create)use (1)
+     * != null (1)     use (2)      side effect
      * =========== =============== =============
      *      0             0        none
      *      0             1        load project
      *      1             0        clear project
-     *      1             1        none
+     *      1             1        load project
+     *      1             2        none
      */
     private void handleProjectChoice(final int which)
     {
@@ -120,8 +144,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                                 @java.lang.Override
                                 public void handleCreateProjectDone(final long projectId)
                                 {
-                                    org.wheatgenetics.coordinate.gc.GridCreator.this
-                                        .handleCreateClearedProjectDone(projectId);
+                                    org.wheatgenetics.coordinate.gc.GridCreator
+                                        .this.handleCreateClearedProjectDone(projectId);
                                 }
                             } );
                     this.clearedProjectCreator.createAndReturn(); return;
@@ -136,18 +160,22 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     assert null != this.handler; this.handler.clearProjectModel(); break;
 
                 case 1:
+                    if (null == this.loadedProjectCreator) this.loadedProjectCreator =
+                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity,
+                            new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
+                            {
+                                @java.lang.Override
+                                public void handleCreateProjectDone(final long projectId)
+                                {
+                                    org.wheatgenetics.coordinate.gc.GridCreator
+                                        .this.handleCreateLoadedProjectDone(projectId);
+                                }
+                            });
+                    this.loadedProjectCreator.createAndReturn(); return;
+
+                case 2:
                     this.projectId = this.projectModel.getId();
-                    {
-                        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-                            this.gridsTable().loadByProjectId(this.projectId);
-                        if (null != joinedGridModels && joinedGridModels.size() > 0)
-                        {
-                            this.templateModel = this.templatesTable().get(
-                                joinedGridModels.get(0).getTemplateId());
-                            this.setValues(); return;
-                        }
-                    }
-                    break;
+                    if (this.setTemplateFromOtherGrids()) return; else break;
 
                 default: throw new java.lang.IllegalArgumentException();
             }
@@ -354,11 +382,13 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
         final java.lang.String items[];
         {
-            final java.lang.String firstItem = "Don't put this grid in a project.";
+            final java.lang.String
+                firstItem  = "Don't put this grid in a project.",
+                secondItem = "Create then select new project."  ;
             if (null == this.projectModel)
-                items = new java.lang.String[] {firstItem, "Create then select new project."};
+                items = new java.lang.String[] {firstItem, secondItem};
             else
-                items = new java.lang.String[] {firstItem,
+                items = new java.lang.String[] {firstItem, secondItem,
                     "Put this grid in \"" + this.projectModel.getTitle() + "\"."};
         }
         this.getProjectChoiceAlertDialog.show(
