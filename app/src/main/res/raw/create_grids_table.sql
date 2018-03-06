@@ -1,7 +1,7 @@
 CREATE TABLE grids
 (
     _id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    temp        INTEGER,
+    temp        INTEGER NOT NULL,
     projectId   INTEGER,
     person      TEXT,
     activeRow   INTEGER CHECK(activeRow >= 0),
