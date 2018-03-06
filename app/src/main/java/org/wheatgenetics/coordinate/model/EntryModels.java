@@ -78,16 +78,17 @@ public class EntryModels extends java.lang.Object
                 lastRow      = this.entryModelArray.length    - 1,
                 lastCol      = this.entryModelArray[0].length - 1,
                 candidateRow                                     ,
-                candidateCol                                     ;
+                candidateCol                                     ,
+                activeCol    = activeEntryModel.getCol() - 1     ;
+            final boolean filledRowOrColNeedsHandling;
             {
-                final int
-                    activeRow = activeEntryModel.getRow() - 1,
-                    activeCol = activeEntryModel.getCol() - 1;
+                final int activeRow = activeEntryModel.getRow() - 1;
 
                 if (activeRow < lastRow)
                 {
-                    candidateRow = activeRow + 1;
-                    candidateCol = activeCol    ;
+                    candidateRow                = activeRow + 1        ;
+                    candidateCol                = activeCol            ;
+                    filledRowOrColNeedsHandling = null != filledHandler;
                 }
                 else
                 {
@@ -98,8 +99,9 @@ public class EntryModels extends java.lang.Object
                     }
 
                     if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                    candidateRow = 0            ;
-                    candidateCol = activeCol + 1;
+                    candidateRow                = 0            ;
+                    candidateCol                = activeCol + 1;
+                    filledRowOrColNeedsHandling = false        ;
                 }
             }
 
@@ -111,7 +113,11 @@ public class EntryModels extends java.lang.Object
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.entryModelArray[row][col];
                     if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                    {
+                        if (filledRowOrColNeedsHandling) if (entryModel.getCol() - 1 > activeCol)
+                            filledHandler.handleFilledRowOrCol();
                         return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                    }
                 }
                 onCandidateCol = false;
             }
