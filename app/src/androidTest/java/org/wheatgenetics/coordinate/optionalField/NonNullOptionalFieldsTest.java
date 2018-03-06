@@ -396,7 +396,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertEquals(
             dnaDefaultNonNullOptionalFields.get(4).getName(), "extraction");
         org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(5).getName(), "person");
-        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(6).getName(), "date"  );
+        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(6).getName(), "Date"  );
     }
     // endregion
     // endregion
