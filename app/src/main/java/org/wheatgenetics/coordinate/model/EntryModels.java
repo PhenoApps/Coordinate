@@ -84,25 +84,30 @@ public class EntryModels extends java.lang.Object
             {
                 final int activeRow = activeEntryModel.getRow() - 1;
 
-                if (activeRow < lastRow)
+                if (null != filledHandler && null == this.next(activeEntryModel, null))
                 {
-                    candidateRow                = activeRow + 1        ;
-                    candidateCol                = activeCol            ;
-                    filledRowOrColNeedsHandling = null != filledHandler;
+                    filledHandler.handleFilledGrid();
+                    filledRowOrColNeedsHandling = false;
                 }
                 else
-                {
-                    if (activeCol >= lastCol)
+                    if (activeRow < lastRow)
+                        filledRowOrColNeedsHandling = null != filledHandler;
+                    else
                     {
-                        if (null != filledHandler) filledHandler.handleFilledGrid();
-                        return null;
+                        if (activeCol >= lastCol)
+                        {
+                            if (null != filledHandler) filledHandler.handleFilledGrid();
+                            return null;
+                        }
+
+                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                        filledRowOrColNeedsHandling = false;
                     }
 
-                    if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                    candidateRow                = 0            ;
-                    candidateCol                = activeCol + 1;
-                    filledRowOrColNeedsHandling = false        ;
-                }
+                if (activeRow < lastRow)
+                    { candidateRow = activeRow + 1; candidateCol = activeCol; }
+                else
+                    { candidateRow = 0; candidateCol = activeCol + 1; }
             }
 
             boolean onCandidateCol = true;
@@ -114,7 +119,7 @@ public class EntryModels extends java.lang.Object
                         this.entryModelArray[row][col];
                     if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
                     {
-                        if (filledRowOrColNeedsHandling) if (entryModel.getCol() - 1 > activeCol)
+                        if (filledRowOrColNeedsHandling) if (col > activeCol)
                             filledHandler.handleFilledRowOrCol();
                         return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
                     }
