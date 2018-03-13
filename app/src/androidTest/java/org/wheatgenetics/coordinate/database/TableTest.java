@@ -68,7 +68,7 @@ public class TableTest extends java.lang.Object
             org.junit.Assert.assertEquals     (cursor.getColumnCount(), 5);
             org.junit.Assert.assertArrayEquals(cursor.getColumnNames(),
                 new java.lang.String[] { "type", "name", "tbl_name", "rootpage", "sql" });
-            org.junit.Assert.assertEquals(cursor.getCount(), 6);
+            org.junit.Assert.assertEquals(cursor.getCount(), 8);
 
             java.lang.String firstName, lastName;
             {

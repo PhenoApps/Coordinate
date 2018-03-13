@@ -657,8 +657,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     public void handleTemplateCreated(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        if (null != templateModel) if (this.templatesTable().insert(templateModel) > 0)
-            this.showLongToast(templateModel.getTitle() + " created");
+        if (null != templateModel)
+        {
+            final java.lang.String not =
+                this.templatesTable().insert(templateModel) > 0 ? "" : " not";
+            this.showLongToast(templateModel.getTitle() + not + " created");
+        }
     }
     // endregion
 

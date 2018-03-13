@@ -84,7 +84,7 @@ public class EntryModels extends java.lang.Object
             {
                 final int activeRow = activeEntryModel.getRow() - 1;
 
-                if (null != filledHandler && null == this.next(activeEntryModel, null))
+                if (null != filledHandler && null == this.next(activeEntryModel, null)) // recursion
                 {
                     filledHandler.handleFilledGrid();
                     filledRowOrColNeedsHandling = false;

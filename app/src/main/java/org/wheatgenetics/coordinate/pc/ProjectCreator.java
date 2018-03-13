@@ -34,16 +34,24 @@ public class ProjectCreator extends java.lang.Object
         return this.projectsTableInstance;
     }
 
-    private long insert(final java.lang.String projectTitle)
+    private long sharedInsert(final java.lang.String projectTitle)
     {
         return this.projectsTable().insert(
             new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle));
     }
 
-    private void insertAndReturn(final java.lang.String projectTitle)
+    private boolean insert(final java.lang.String projectTitle)
+    { return this.sharedInsert(projectTitle) > 0; }
+
+    private boolean insertAndReturn(final java.lang.String projectTitle)
     {
-        assert null != this.handler;
-        this.handler.handleCreateProjectDone(this.insert(projectTitle));
+        final long projectId = this.sharedInsert(projectTitle);
+        if (projectId > 0)
+        {
+            assert null != this.handler; this.handler.handleCreateProjectDone(projectId);
+            return true;
+        }
+        else return false;
     }
     // endregion
 
@@ -64,8 +72,11 @@ public class ProjectCreator extends java.lang.Object
                 new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void handleCreateProjectDone(final java.lang.String projectTitle)
-                    { org.wheatgenetics.coordinate.pc.ProjectCreator.this.insert(projectTitle); }
+                    public boolean handleCreateProjectDone(final java.lang.String projectTitle)
+                    {
+                        return org.wheatgenetics.coordinate.pc.ProjectCreator.this.insert(
+                            projectTitle);
+                    }
                 });
         this.createProjectAlertDialog.show();
     }
@@ -77,9 +88,9 @@ public class ProjectCreator extends java.lang.Object
                 new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler()
                 {
                     @java.lang.Override
-                    public void handleCreateProjectDone(final java.lang.String projectTitle)
+                    public boolean handleCreateProjectDone(final java.lang.String projectTitle)
                     {
-                        org.wheatgenetics.coordinate.pc.ProjectCreator.this.insertAndReturn(
+                        return org.wheatgenetics.coordinate.pc.ProjectCreator.this.insertAndReturn(
                             projectTitle);
                     }
                 });

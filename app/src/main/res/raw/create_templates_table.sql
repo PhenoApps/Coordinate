@@ -1,7 +1,7 @@
 CREATE TABLE templates
 (
     _id     INTEGER PRIMARY KEY AUTOINCREMENT,
-    title   TEXT    NOT NULL,
+    title   TEXT    NOT NULL UNIQUE,
     type    INTEGER NOT NULL CHECK(type BETWEEN 0 AND 2),
     rows    INTEGER NOT NULL CHECK(rows >= 0),
     cols    INTEGER NOT NULL CHECK(cols >= 0),

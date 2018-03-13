@@ -16,7 +16,7 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
 {
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
-    { public abstract void handleCreateProjectDone(java.lang.String projectTitle); }
+    { public abstract boolean handleCreateProjectDone(java.lang.String projectTitle); }
 
     // region Fields
     private final org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler;
@@ -28,11 +28,16 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
         final java.lang.String projectTitle =
             org.wheatgenetics.androidlibrary.Utils.getText(this.projectTitleEditText);
         if (0 == projectTitle.length())
-            this.showToast(org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogToast);
+            this.showToast(
+                org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogEmptyToast);
         else
         {
-            this.cancelAlertDialog();
-            assert null != this.handler; this.handler.handleCreateProjectDone(projectTitle);
+            assert null != this.handler;
+            if (this.handler.handleCreateProjectDone(projectTitle))
+                this.cancelAlertDialog();
+            else
+                this.showToast(
+                    org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogInUseToast);
         }
     }
 

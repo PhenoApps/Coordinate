@@ -134,5 +134,6 @@
 
     <string name="CreateProjectAlertDialogTitle">Create Project</string>
     <string name="CreateProjectAlertDialogEditTextHint">Project name</string>
-    <string name="CreateProjectAlertDialogToast">Project name cannot be empty</string>
+    <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
+    <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
 </resources>
