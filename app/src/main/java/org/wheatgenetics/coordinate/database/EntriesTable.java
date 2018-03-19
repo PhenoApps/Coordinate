@@ -130,7 +130,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                     {
                         result =
                             new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
-                        while (cursor.moveToNext()) result.add(
+                        while (cursor.moveToNext()) result.set(
                             (org.wheatgenetics.coordinate.model.EntryModel) this.make(cursor));
                     }
                 }

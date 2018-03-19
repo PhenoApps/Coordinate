@@ -42,29 +42,17 @@ public class EntryModels extends java.lang.Object
     void makeExcludedEntry(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    {
-        this.entryModelArray[row - 1][col - 1] =
-            new org.wheatgenetics.coordinate.model.ExcludedEntryModel(this.gridId, row, col);
-    }
+    { this.set(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(this.gridId, row, col)); }
 
     void makeIncludedEntry(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    {
-        this.entryModelArray[row - 1][col - 1] =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(this.gridId, row, col);
-    }
+    { this.set(new org.wheatgenetics.coordinate.model.IncludedEntryModel(this.gridId, row, col)); }
 
     org.wheatgenetics.coordinate.model.EntryModel get(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
-
-    void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        if (null != entryModel)
-            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
-    }
 
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
@@ -132,7 +120,7 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Public Methods
-    public void add(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    public void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         if (null != entryModel)
             this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
