@@ -269,7 +269,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     {
         this.configureGridMenuItems   (); this.configureTemplateMenuItems();
         this.configureProjectMenuItems(); this.configureAppMenuItems     ();
-        this.configureNavHeaderMain();
+        this.configureNavHeaderMain   ();
     }
     // endregion
 
@@ -313,7 +313,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region Grid Export Private Methods
-    private java.lang.String initialExportFileName()
+    private java.lang.String initialGridExportFileName()
     {
         return null == this.joinedGridModel ? null :
             this.joinedGridModel.getFirstOptionalFieldDatedValue();
@@ -326,7 +326,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             final org.wheatgenetics.androidlibrary.Dir exportDir =
                 new org.wheatgenetics.androidlibrary.Dir(
                     this, this.exportDir, this.joinedGridModel.getTemplateTitle());
-            try { exportDir.createIfMissing();  /* throws java.io.IOException */ }
+            try { exportDir.createIfMissing(); /* throws java.io.IOException */ }
             catch (final java.io.IOException e)
             {
                 // Do nothing.  The reason I do nothing is because when an exception is thrown it
@@ -602,10 +602,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
                                         @java.lang.Override
-                                        public java.lang.String initialExportFileName()
+                                        public java.lang.String initialGridExportFileName()
                                         {
                                             return org.wheatgenetics.coordinate
-                                                .MainActivity.this.initialExportFileName();
+                                                .MainActivity.this.initialGridExportFileName();
                                         }
 
                                         @java.lang.Override
@@ -839,11 +839,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override
     protected void onDestroy()
     {
+        if (null != this.projectExporter)
+            { this.projectExporter.cancel(); this.projectExporter = null; }
+
         if (null != this.templateExporter)
-        {
-            this.templateExporter.cancel();
-            this.templateExporter = null;
-        }
+            { this.templateExporter.cancel(); this.templateExporter = null; }
+
         if (null != this.gridExporter) { this.gridExporter.cancel(); this.gridExporter = null; }
 
         super.onDestroy();

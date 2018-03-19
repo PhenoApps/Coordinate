@@ -56,10 +56,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
                 {
                     if (joinedGridModel.export(                        // throws java.io.IOException
                     this.getExportFile(), this.exportFileName, this))
-                    {
-                        this.makeExportFileDiscoverable();
-                        return success;
-                    }
+                        { this.makeExportFileDiscoverable(); return success; }
                     return !success;
                 }
                 catch (final java.io.IOException e)
@@ -88,7 +85,6 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
 
             this.alert(org.wheatgenetics.coordinate.R.string.GridExporterDeleteConfirmation,
                 new YesRunnable());
-
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method

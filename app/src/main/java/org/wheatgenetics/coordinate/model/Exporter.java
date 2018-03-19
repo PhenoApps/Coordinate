@@ -11,6 +11,8 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.androidlibrary.ProgressDialog
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -34,7 +36,6 @@ abstract class Exporter extends java.lang.Object
 
         private void confirm(final int message, final java.lang.Runnable yesRunnable)
         {
-            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
             class NoRunnable extends java.lang.Object implements java.lang.Runnable
             {
                 @java.lang.Override
@@ -113,8 +114,6 @@ abstract class Exporter extends java.lang.Object
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         abstract boolean export();
 
-        void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
-
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         abstract void handleExportSuccess(final java.io.File exportFile);
@@ -123,6 +122,8 @@ abstract class Exporter extends java.lang.Object
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         java.lang.String getString(final int resId)
         { assert null != this.context; return this.context.getString(resId); }
+
+        void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
         // endregion
 
         // region Subclass Package Methods
@@ -174,14 +175,14 @@ abstract class Exporter extends java.lang.Object
         {
             org.wheatgenetics.coordinate.Utils.alert(this.context,
                 org.wheatgenetics.coordinate.R.string.ExporterSuccessTitle, new java.lang.Runnable()
+                {
+                    @java.lang.Override
+                    public void run()
                     {
-                        @java.lang.Override
-                        public void run()
-                        {
-                            org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.confirm(
-                                message, yesRunnable);
-                        }
-                    });
+                        org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.confirm(
+                            message, yesRunnable);
+                    }
+                });
         }
         // endregion
 

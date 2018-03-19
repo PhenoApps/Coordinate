@@ -53,11 +53,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
     interface Handler
     {
-        public abstract void             createGrid           ();
-        public abstract void             loadGrid             (long gridId);
-        public abstract void             deleteGrid           ();
-        public abstract java.lang.String initialExportFileName();
-        public abstract void             exportGrid           (java.lang.String fileName);
+        public abstract void             createGrid               ();
+        public abstract void             loadGrid                 (long gridId);
+        public abstract void             deleteGrid               ();
+        public abstract java.lang.String initialGridExportFileName();
+        public abstract void             exportGrid               (java.lang.String fileName);
 
         public abstract void handleGridDeleted();
         public abstract void exportTemplate   (
@@ -94,11 +94,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator  = null;
-    private android.content.Intent                          intentInstance   = null;
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator   = null;
-    private boolean                                         soundOn                ;
-    private org.wheatgenetics.about.AboutAlertDialog        aboutAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;
+    private android.content.Intent                          intentInstance  = null;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator  = null;
+    private long                                     exportProjectId  =    0;
+    private boolean                                  soundOn                ;
+    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
     // endregion
 
     // region Private Methods
@@ -326,7 +327,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel)
-        { assert null != this.handler; this.handler.loadProject(projectModel.getId()); }
+            { assert null != this.handler; this.handler.loadProject(projectModel.getId()); }
     }
 
     // region Delete Project Private Methods
@@ -388,9 +389,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     }
     // endregion
 
+    // region Export Project Private Methods
     private void exportProjectAfterSelect(
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {}
+    // endregion
 
     private void selectProject(
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.ProjectOperation
@@ -563,7 +566,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                                 }
                             });
                 assert null != this.handler;
-                this.getGridExportFileNameAlertDialog.show(this.handler.initialExportFileName());
+                this.getGridExportFileNameAlertDialog.show(
+                    this.handler.initialGridExportFileName());
                 break;
 
 
