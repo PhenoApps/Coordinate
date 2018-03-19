@@ -68,6 +68,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         public abstract void loadProject         (long projectId);
         public abstract void clearProject        ();
         public abstract void handleProjectDeleted(long projectId);
+        public abstract void exportProject       (long projectId, java.lang.String directoryName);
 
         public abstract void storeSoundOn(boolean soundOn);
 
@@ -97,6 +98,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;
     private android.content.Intent                          intentInstance  = null;
     private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator  = null;
+    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
+        getProjectExportFileNameAlertDialog = null;
     private long                                     exportProjectId  =    0;
     private boolean                                  soundOn                ;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
@@ -390,9 +393,35 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Export Project Private Methods
+    private void exportProject(final java.lang.String directoryName)
+    {
+        assert null != this.handler;
+        this.handler.exportProject(this.exportProjectId, directoryName);
+
+        this.exportProjectId = 0;
+    }
+
     private void exportProjectAfterSelect(
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {}
+    {
+        if (null != projectModel)
+        {
+            if (null == this.getProjectExportFileNameAlertDialog)
+                this.getProjectExportFileNameAlertDialog =
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
+                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void handleGetFileNameDone(final java.lang.String fileName)
+                            {
+                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    .this.exportProject(fileName);
+                            }
+                        });
+            this.exportProjectId = projectModel.getId();
+            this.getProjectExportFileNameAlertDialog.show(projectModel.getTitle());
+        }
+    }
     // endregion
 
     private void selectProject(

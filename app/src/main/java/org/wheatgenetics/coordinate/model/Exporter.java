@@ -78,8 +78,7 @@ abstract class Exporter extends java.lang.Object
             }
         }
 
-        @java.lang.Override
-        protected void onProgressUpdate(final java.lang.String... messages)
+        @java.lang.Override protected void onProgressUpdate(final java.lang.String... messages)
         {
             if (null != messages)
             {
@@ -88,8 +87,7 @@ abstract class Exporter extends java.lang.Object
             }
         }
 
-        @java.lang.Override
-        protected void onPostExecute(final java.lang.Boolean result)
+        @java.lang.Override protected void onPostExecute(final java.lang.Boolean result)
         {
             this.progressDialog.dismiss();
             if (null != result && result)
@@ -164,11 +162,7 @@ abstract class Exporter extends java.lang.Object
         // endregion
         // endregion
 
-        // region GridExporter.AsyncTask Package Methods
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        void setMessage(final int resId) { this.message = this.getString(resId); }
-
+        // region GridExporter.AsyncTask Package Method
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void alert(final int message, final java.lang.Runnable yesRunnable)
@@ -186,7 +180,13 @@ abstract class Exporter extends java.lang.Object
         }
         // endregion
 
-        // region TemplateExporter.AsyncTask Package Method
+        // region ProjectExporter.AsyncTask Package Method
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        void setMessage(final java.lang.String message) { this.message = message; }
+        // endregion
+
+        // region TemplateExporter.AsyncTask, ProjectExporter.AsyncTask Package Method
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void alert()
@@ -195,6 +195,12 @@ abstract class Exporter extends java.lang.Object
                 /* context => */ this.context                                              ,
                 /* message => */ org.wheatgenetics.coordinate.R.string.ExporterSuccessTitle);
         }
+        // endregion
+
+        // region GridExporter.AsyncTask, ProjectExporter.AsyncTask Package Method
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        void setMessage(final int resId) { this.message = this.getString(resId); }
         // endregion
         // endregion
     }

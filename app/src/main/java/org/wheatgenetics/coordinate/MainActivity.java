@@ -55,7 +55,9 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.Model
+ * org.wheatgenetics.coordinate.model.ProjectExporter
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateExporter
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -106,6 +108,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator      = null;
     private org.wheatgenetics.coordinate.model.GridExporter     gridExporter     = null;
     private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter = null;
+    private org.wheatgenetics.coordinate.model.ProjectExporter  projectExporter  = null;
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
@@ -388,6 +391,32 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.clearProjectModel();
         this.handleGridDeleted();
     }
+
+    private void exportProject(final long projectId, final java.lang.String directoryName)
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            this.gridsTable().loadByProjectId(projectId);
+        if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+        {
+            final org.wheatgenetics.androidlibrary.Dir exportDir =
+                new org.wheatgenetics.androidlibrary.Dir(this, this.exportDir, directoryName);
+            try { exportDir.createIfMissing(); /* throws java.io.IOException */ }
+            catch (final java.io.IOException e)
+            {
+                // Do nothing.  The reason I do nothing is because when an exception is thrown it
+                // does not mean there is a problem.  For example, an exception is thrown when a di-
+                // rectory already exists.  If I try to create a directory and I fail because the
+                // directory already exists then I don't have a problem.
+            }
+
+            this.projectExporter = new org.wheatgenetics.coordinate.model.ProjectExporter(
+                /* joinedGridModels    => */ joinedGridModels,
+                /* context             => */ this            ,
+                /* exportDir           => */ exportDir       ,
+                /* exportDirectoryName => */ directoryName   );
+            this.projectExporter.execute();
+        }
+    }
     // endregion
 
     private void storeSoundOn(final boolean soundOn)
@@ -658,6 +687,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.handleProjectDeleted(projectId);
+                                        }
+
+                                        @java.lang.Override
+                                        public void exportProject(final long projectId,
+                                        final java.lang.String directoryName)
+                                        {
+                                            org.wheatgenetics.coordinate.MainActivity
+                                                .this.exportProject(projectId, directoryName);
                                         }
 
                                         @java.lang.Override
