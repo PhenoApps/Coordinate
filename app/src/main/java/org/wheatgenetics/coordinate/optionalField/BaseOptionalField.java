@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * org.wheatgenetics.javalib.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
 {
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
@@ -24,7 +24,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     // region Private Methods
     private static java.lang.String valid(final java.lang.String s)
     {
-        assert null != s; if (s.length() <= 0) throw new java.lang.AssertionError();
+        if (null == s || s.length() <= 0) throw new java.lang.AssertionError();
         return s;
     }
 
@@ -47,12 +47,10 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override public java.lang.String toString()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getName(), super.toString()); }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object object)
+    @java.lang.Override public boolean equals(final java.lang.Object object)
     {
         if (null == object)
             return false;
@@ -72,8 +70,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     }
 
     /** Overridden just to elevate from protected to public. */
-    @java.lang.Override
-    public java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    @java.lang.Override public java.lang.Object clone() throws java.lang.CloneNotSupportedException
     { return super.clone(); }
     // endregion
 
