@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
@@ -50,8 +50,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogTitle)
             .setCancelableToFalse();
@@ -85,8 +84,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
                 new android.view.View.OnClickListener()
                 {
-                    @java.lang.Override
-                    public void onClick(final android.view.View view)
+                    @java.lang.Override public void onClick(final android.view.View view)
                     {
                         org.wheatgenetics.coordinate.optionalField
                             .AddOptionalFieldAlertDialog.this.addOptionalField();

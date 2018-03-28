@@ -8,11 +8,11 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class AddOptionalFieldAlertDialogTester extends java.lang.Object
 implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
@@ -30,8 +30,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
         handler) { super(); this.activity = activity; this.handler = handler; }
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void handleAddOptionalFieldDone()
+    @java.lang.Override public void handleAddOptionalFieldDone()
     { assert null != this.handler; this.handler.handleAddOptionalFieldDone(); }
     // endregion
 

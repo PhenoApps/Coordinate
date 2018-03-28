@@ -19,7 +19,7 @@ public class CheckAndAddOptionalFieldsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
@@ -72,14 +72,12 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
         handler) { super(activity); this.handler = handler; }
 
     // region Overridden Methods
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         super.configure();
         this.setTitle(
                 org.wheatgenetics.coordinate.R.string.CheckAndAddOptionalFieldsAlertDialogTitle)
-            .setOKPositiveButton()
-            .setNeutralButton(org.wheatgenetics.coordinate
+            .setOKPositiveButton().setNeutralButton(org.wheatgenetics.coordinate
                     .R.string.CheckAndAddOptionalFieldsAlertDialogButtonText,
                 new android.content.DialogInterface.OnClickListener()
                 {
@@ -94,8 +92,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     }
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void handleAddOptionalFieldDone()
+    @java.lang.Override public void handleAddOptionalFieldDone()
     { assert null != this.handler; this.handler.handleAddOptionalFieldDone(); }
     // endregion
     // endregion
