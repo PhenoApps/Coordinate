@@ -14,7 +14,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         super();
 
         if (null != optionalFields)
-        { assert null != this.arrayList; this.arrayList.addAll(optionalFields.arrayList); }
+            { assert null != this.arrayList; this.arrayList.addAll(optionalFields.arrayList); }
     }
 
     @java.lang.Override
@@ -27,8 +27,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
             { super(arrayList); }
 
-            @java.lang.Override
-            public boolean hasNext()
+            @java.lang.Override public boolean hasNext()
             {
                 assert null != this.listIterator; assert null != this.arrayList;
                 while (super.hasNext())
