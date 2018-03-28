@@ -33,7 +33,7 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     }
     // endregion
 
-    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
     public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.OtherOptionalField result =
