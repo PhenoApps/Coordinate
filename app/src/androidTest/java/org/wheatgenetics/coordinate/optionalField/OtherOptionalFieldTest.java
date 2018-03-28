@@ -7,10 +7,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.junit.Test
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- *
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
- *
- * org.wheatgenetics.coordinate.optionalField.OptionalFieldTest
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class OtherOptionalFieldTest extends java.lang.Object
@@ -21,7 +19,7 @@ public class OtherOptionalFieldTest extends java.lang.Object
     throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
         final org.json.JSONObject jsonObject =
-            org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.makeJSONObject("testName",
+            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject("testName",
                 null, org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT);
         new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(jsonObject);
     }
@@ -31,7 +29,7 @@ public class OtherOptionalFieldTest extends java.lang.Object
     throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
         final org.json.JSONObject jsonObject =
-            org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.makeJSONObject(
+            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 "testName", null, "testHint");
         new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(jsonObject);
     }

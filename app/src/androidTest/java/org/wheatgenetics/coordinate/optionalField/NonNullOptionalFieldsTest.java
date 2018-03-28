@@ -12,9 +12,8 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
- *
- * org.wheatgenetics.coordinate.optionalField.OptionalFieldTest
  */
 @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
 public class NonNullOptionalFieldsTest extends java.lang.Object
@@ -24,7 +23,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     // region Private Methods
     private static org.json.JSONObject makeJSONObject()
     {
-        return org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.makeJSONObject(
+        return org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 ,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.HINT1 );
@@ -35,7 +34,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.json.JSONArray result = new org.json.JSONArray();
         result.put(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.makeJSONObject());
-        result.put(org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.makeJSONObject(
+        result.put(org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
             "name2", "value2",
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT));
         return result;
