@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class OptionalFields extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
 {
@@ -32,8 +32,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
         }
 
         // region java.util.Iterator<> Overridden Methods
-        @java.lang.Override
-        public boolean hasNext()
+        @java.lang.Override public boolean hasNext()
         {
             assert null != this.listIterator; assert null != this.arrayList;
             while (this.listIterator.hasNext())
@@ -52,6 +51,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
 
             assert null != this.listIterator;
             do result = this.listIterator.next(); while (null == result);
+
             return result;
         }
 
@@ -60,15 +60,14 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
         // endregion
     }
 
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
         arrayList =
             new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override public java.lang.String toString()
     {
         final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder("{");
         {
@@ -76,22 +75,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
             for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
             baseOptionalField: this)
             {
-                final java.lang.String string = baseOptionalField.toString();
-
-                if (firstOptionalField)
-                {
-                    stringBuilder.append(string);
-                    firstOptionalField = false;
-                }
-                else stringBuilder.append(", ").append(string);
+                if (firstOptionalField) firstOptionalField = false; else stringBuilder.append(", ");
+                stringBuilder.append(baseOptionalField.toString());
             }
         }
         stringBuilder.append("}");
         return stringBuilder.toString();
     }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object object)
+    @java.lang.Override public boolean equals(final java.lang.Object object)
     {
         if (null == object)
             return false;
@@ -118,8 +110,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
             else return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     // region java.lang.Iterable<> Overridden Method
     @java.lang.Override
