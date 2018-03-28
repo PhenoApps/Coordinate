@@ -9,11 +9,10 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class DateOptionalFieldTest extends java.lang.Object
 {
-    @org.junit.Test
-    public void constructorSucceeds()
+    @org.junit.Test public void constructorSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();

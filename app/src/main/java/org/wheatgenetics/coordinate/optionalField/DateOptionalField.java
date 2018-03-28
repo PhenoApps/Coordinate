@@ -28,7 +28,7 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
     public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
@@ -37,8 +37,7 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
         return result;
     }
 
-    @java.lang.Override
-    public java.lang.String getValue()
+    @java.lang.Override public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
     // endregion
 

@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject while OptionalField does.)
  *
  * Uses:
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONException
@@ -83,6 +85,7 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         return result;
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     static boolean getChecked(final org.json.JSONObject jsonObject)
     {
         if (null == jsonObject)
