@@ -8,11 +8,13 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- * _org.wheatgenetics.coordinate.optionalField.DateOptionalField
+ * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalField
- * _org.wheatgenetics.coordinate.optionalField.OtherOptionalField
+ * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class NonNullOptionalFieldsTest extends java.lang.Object
@@ -60,12 +62,12 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     }
 
     // region Constructor Tests
-    // region First Constructor Tests
-    @org.junit.Test
-    public void firstConstructorSucceeds()
+    // region First Constructor Test
+    @org.junit.Test public void firstConstructorSucceeds()
     {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields =
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+            nonNullOptionalFields =
+                new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         org.junit.Assert.assertNotNull(nonNullOptionalFields);
         org.junit.Assert.assertEquals(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
@@ -75,8 +77,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     // endregion
 
     // region Second Constructor Tests
-    @org.junit.Test
-    public void secondConstructorNullParameterSucceeds()
+    @org.junit.Test public void secondConstructorNullParameterSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -84,8 +85,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertTrue(nonNullOptionalFields.isEmpty());
     }
 
-    @org.junit.Test
-    public void secondConstructorEmptyParameterSucceeds()
+    @org.junit.Test public void secondConstructorEmptyParameterSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -93,8 +93,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertTrue(nonNullOptionalFields.isEmpty());
     }
 
-    @org.junit.Test
-    public void secondConstructorSpacesParameterSucceeds()
+    @org.junit.Test public void secondConstructorSpacesParameterSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -102,8 +101,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertTrue(nonNullOptionalFields.isEmpty());
     }
 
-    @org.junit.Test
-    public void secondConstructorBadParameterSucceeds()
+    @org.junit.Test public void secondConstructorBadParameterSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -111,8 +109,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertTrue(nonNullOptionalFields.isEmpty());
     }
 
-    @org.junit.Test
-    public void secondConstructorGoodParameterSucceeds()
+    @org.junit.Test public void secondConstructorGoodParameterSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
@@ -185,8 +182,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     // endregion
 
     // region Add Method Test
-    @org.junit.Test
-    public void addAndGetSucceed()
+    @org.junit.Test public void addAndGetSucceed()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -206,6 +202,30 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     }
     // endregion
 
+    // region Package Method Tests
+    @org.junit.Test public void setCheckedSucceeds()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+            nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
+
+        nonNullOptionalFields.setChecked(0, false);
+        org.junit.Assert.assertFalse(nonNullOptionalFields.get(0).getChecked());
+
+        nonNullOptionalFields.setChecked(0, true);
+        org.junit.Assert.assertTrue(nonNullOptionalFields.get(0).getChecked());
+    }
+
+    @org.junit.Test public void checksSucceeds()
+    {
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+            nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
+        org.junit.Assert.assertArrayEquals(
+            new boolean[]{true, true}, nonNullOptionalFields.checks());
+    }
+    // endregion
+
     // region Public Method Tests
     @org.junit.Test(expected = java.lang.IndexOutOfBoundsException.class)
     public void getIndexParameterTooSmallFails()
@@ -213,7 +233,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        assert null != nonNullOptionalFields; nonNullOptionalFields.get(-3);
+        nonNullOptionalFields.get(-3);
     }
 
     @org.junit.Test(expected = java.lang.IndexOutOfBoundsException.class)
@@ -221,24 +241,21 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
-            .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        assert null != nonNullOptionalFields; nonNullOptionalFields.get(33);
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
+        nonNullOptionalFields.get(33);
     }
 
 
-    @org.junit.Test
-    public void getSucceeds()
+    @org.junit.Test public void getSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
-            .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        assert null != nonNullOptionalFields;
+                .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
         org.junit.Assert.assertNotNull(nonNullOptionalFields.get(0));
         org.junit.Assert.assertNotNull(nonNullOptionalFields.get(1));
     }
 
-    @org.junit.Test
-    public void getDatedFirstValueSucceeds()
+    @org.junit.Test public void getDatedFirstValueSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields =
@@ -253,13 +270,12 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
                     .replace(".", "_"));
     }
 
-    @org.junit.Test
-    public void toJSONSucceeds()
+    @org.junit.Test public void toJSONSucceeds()
     {
         final java.lang.String actualJSON = org.wheatgenetics.coordinate.optionalField
             .NonNullOptionalFieldsTest.makeNonNullOptionalFields().toJson();
 
-        java.lang.String expectedJSON;
+        final java.lang.String expectedJSON;
         {
             final org.json.JSONArray jsonArray = new org.json.JSONArray();
             {
@@ -274,70 +290,57 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             expectedJSON = jsonArray.toString();
         }
 
-        org.junit.Assert.assertEquals(actualJSON, expectedJSON);
+        org.junit.Assert.assertEquals(expectedJSON, actualJSON);
     }
 
-    @org.junit.Test
-    public void namesSucceeds()
+    @org.junit.Test public void namesSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertArrayEquals(nonNullOptionalFields.names(), new java.lang.String[] {
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1, "Date" });
+        org.junit.Assert.assertArrayEquals(new java.lang.String[]{
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1, "Date"},
+            nonNullOptionalFields.names());
     }
 
-    @org.junit.Test
-    public void firstValuesSucceeds()
+    @org.junit.Test public void firstValuesSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertArrayEquals(nonNullOptionalFields.values(), new java.lang.String[] {
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1,
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate() });
+        org.junit.Assert.assertArrayEquals(new java.lang.String[]{
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1  ,
+                org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()},
+            nonNullOptionalFields.values());
     }
 
-    @org.junit.Test
-    public void secondValuesFails()
+    @org.junit.Test public void secondValuesFails()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertNull(nonNullOptionalFields.values(null                     ));
-        org.junit.Assert.assertNull(nonNullOptionalFields.values(new java.lang.String[] {}));
+        org.junit.Assert.assertNull(nonNullOptionalFields.values(null                    ));
+        org.junit.Assert.assertNull(nonNullOptionalFields.values(new java.lang.String[]{}));
     }
 
-    @org.junit.Test
-    public void secondValuesSucceeds()
+    @org.junit.Test public void secondValuesSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
         org.junit.Assert.assertArrayEquals(
+            org.wheatgenetics.javalib.Utils.stringArray(
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1),
             nonNullOptionalFields.values(org.wheatgenetics.javalib.Utils.stringArray(
-                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1)),
-            org.wheatgenetics.javalib.Utils.stringArray(
-                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1));
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1)));
         org.junit.Assert.assertArrayEquals(
-            nonNullOptionalFields.values(org.wheatgenetics.javalib.Utils.stringArray("Date")) ,
             org.wheatgenetics.javalib.Utils.stringArray(
-                org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()));
-    }
-
-    @org.junit.Test
-    public void checksSucceeds()
-    {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
-                .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertArrayEquals(
-            nonNullOptionalFields.checks(), new boolean[] {true, true});
+                org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()),
+            nonNullOptionalFields.values(org.wheatgenetics.javalib.Utils.stringArray("Date")));
     }
 
     // region Make Public Methods
-    @org.junit.Test
-    public void makeNewWorks()
+    @org.junit.Test public void makeNewWorks()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             newNonNullOptionalFields =
@@ -352,8 +355,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertEquals(newNonNullOptionalFields.get(2).getName(), "Date"          );
     }
 
-    @org.junit.Test
-    public void makeSeedDefaultWorks()
+    @org.junit.Test public void makeSeedDefaultWorks()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             seedDefaultNonNullOptionalFields =
@@ -368,8 +370,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         org.junit.Assert.assertEquals(seedDefaultNonNullOptionalFields.get(2).getName(), "Date"  );
     }
 
-    @org.junit.Test
-    public void makeDNADefaultWorks()
+    @org.junit.Test public void makeDNADefaultWorks()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             dnaDefaultNonNullOptionalFields =

@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.support.annotation.IntRange
- * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -19,8 +18,6 @@ package org.wheatgenetics.coordinate.optionalField;
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
-    private java.lang.String getFirstValue() { return this.get(0).getValue(); }
-
     // region Constructors
     public NonNullOptionalFields() { super(); }
 
@@ -55,9 +52,8 @@ implements java.lang.Cloneable
                                                                                       //  JSONExcep-
                         try                                                           //  tion
                         {
-                            baseOptionalField =
-                                new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
-                                    jsonObject);
+                            baseOptionalField = new org.wheatgenetics.coordinate
+                                .optionalField.OtherOptionalField(jsonObject);             // throws
                         }
                         catch (final
                         org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass e)
@@ -74,7 +70,7 @@ implements java.lang.Cloneable
     }
     // endregion
 
-    @java.lang.Override @java.lang.SuppressWarnings("CloneDoesntCallSuperClone")
+    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
     public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
@@ -144,7 +140,7 @@ implements java.lang.Cloneable
     {
         final boolean result[];
         {
-            @java.lang.SuppressWarnings("Convert2Diamond")
+            @java.lang.SuppressWarnings({"Convert2Diamond"})
             final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
                 new java.util.ArrayList<java.lang.Boolean>();
 
@@ -196,7 +192,7 @@ implements java.lang.Cloneable
 
     public java.lang.String getDatedFirstValue()
     {
-        return this.getFirstValue() + "_" +
+        return this.get(0).getValue() + "_" +
             org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate().replace(
                 ".", "_");
     }
@@ -232,18 +228,18 @@ implements java.lang.Cloneable
 
     public java.lang.String[] names()
     {
-        @java.lang.SuppressWarnings("Convert2Diamond")
+        @java.lang.SuppressWarnings({"Convert2Diamond"})
         final java.util.ArrayList<java.lang.String> nameArrayList =
             new java.util.ArrayList<java.lang.String>();
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-        baseOptionalField: this)
+        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
+        this)
             nameArrayList.add(baseOptionalField.getName());
         return nameArrayList.toArray(new java.lang.String[nameArrayList.size()]);
     }
 
     public java.lang.String[] values()
     {
-        @java.lang.SuppressWarnings("Convert2Diamond")
+        @java.lang.SuppressWarnings({"Convert2Diamond"})
         final java.util.ArrayList<java.lang.String> valueArrayList =
             new java.util.ArrayList<java.lang.String>();
 
@@ -264,8 +260,8 @@ implements java.lang.Cloneable
                 {
                     final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
                         otherOptionalField =
-                        (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                            baseOptionalField;
+                            (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                                baseOptionalField;
                     valueArrayList.add(otherOptionalField.getValue());
                 }
 
@@ -281,7 +277,7 @@ implements java.lang.Cloneable
                 return null;
             else
             {
-                @java.lang.SuppressWarnings("Convert2Diamond")
+                @java.lang.SuppressWarnings({"Convert2Diamond"})
                 final java.util.ArrayList<java.lang.String> valueArrayList =
                     new java.util.ArrayList<java.lang.String>();
 
@@ -289,37 +285,34 @@ implements java.lang.Cloneable
                 {
                     boolean nameFound = false;
                     for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                    baseOptionalField: this)
-                        if (baseOptionalField.namesAreEqual(name))
+                    baseOptionalField: this) if (baseOptionalField.namesAreEqual(name))
+                    {
+                        final java.lang.String safeValue;
                         {
-                            final java.lang.String safeValue;
+                            if (baseOptionalField instanceof
+                            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
                             {
-                                if (baseOptionalField instanceof
-                                org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                                {
-                                    final
-                                        org.wheatgenetics.coordinate.optionalField.DateOptionalField
-                                            dateOptionalField =
-                                                (org.wheatgenetics.coordinate.optionalField
-                                                    .DateOptionalField) baseOptionalField;
-                                    safeValue = dateOptionalField.getSafeValue();
-                                }
-                                else
-                                    if (baseOptionalField instanceof
-                                    org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                                    {
-                                        final org.wheatgenetics.coordinate.optionalField
-                                            .OtherOptionalField otherOptionalField =
-                                                (org.wheatgenetics.coordinate.optionalField
-                                                    .OtherOptionalField) baseOptionalField;
-                                        safeValue = otherOptionalField.getSafeValue();
-                                    }
-                                    else safeValue = null;
+                                final org.wheatgenetics.coordinate.optionalField
+                                    .DateOptionalField dateOptionalField =
+                                        (org.wheatgenetics.coordinate.optionalField
+                                            .DateOptionalField) baseOptionalField;
+                                safeValue = dateOptionalField.getSafeValue();
                             }
-                            valueArrayList.add(safeValue);
-                            nameFound = true;
-                            break;
+                            else
+                                if (baseOptionalField instanceof
+                                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                                {
+                                    final org.wheatgenetics.coordinate.optionalField
+                                        .OtherOptionalField otherOptionalField =
+                                            (org.wheatgenetics.coordinate.optionalField
+                                                .OtherOptionalField) baseOptionalField;
+                                    safeValue = otherOptionalField.getSafeValue();
+                                }
+                                else safeValue = null;
                         }
+                        valueArrayList.add(safeValue);
+                        nameFound = true; break;
+                    }
                     if (!nameFound) valueArrayList.add("");
                 }
 
@@ -353,7 +346,7 @@ implements java.lang.Cloneable
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
 
-        result.add    ("Plate"                             , /* hint => */ "Plate ID");     // TODO: dna
+        result.add    ("Plate"                             , /* hint => */ "Plate ID"); // TODO: dna
         result.add    ("Plate Name"                                                  );
         result.add    ("Notes"                                                       );
         result.add    ("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
