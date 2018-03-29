@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Cell
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CellTest extends java.lang.Object
 {
     static org.json.JSONObject makeJSONObject(final int row, final int col)
@@ -26,6 +26,7 @@ public class CellTest extends java.lang.Object
 
     // region Constructor Tests
     // region Second Constructor Tests
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void zeroRowSecondConstructorFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(
@@ -101,8 +102,7 @@ public class CellTest extends java.lang.Object
             org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(1, -2));  // throws org.json-
     }                                                                            //  .JSONException
 
-    @org.junit.Test
-    public void fourthConstructorSucceeds() throws org.json.JSONException
+    @org.junit.Test public void fourthConstructorSucceeds() throws org.json.JSONException
     {
         new org.wheatgenetics.coordinate.model.Cell(
             org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(1, 2));   // throws org.json-
@@ -125,23 +125,26 @@ public class CellTest extends java.lang.Object
     // endregion
 
     // region Overridden Method Tests
-    @org.junit.Test @java.lang.SuppressWarnings("DefaultLocale")
+    @org.junit.Test @java.lang.SuppressWarnings({"DefaultLocale"})
     public void toStringAndHashCodeSucceed()
     {
-        final int                                     row  = 1, col = 2;
-        final org.wheatgenetics.coordinate.model.Cell cell =
-            new org.wheatgenetics.coordinate.model.Cell(row, col);
-        final java.lang.String expectedString = java.lang.String.format("Cell(%d, %d)", row, col);
-        org.junit.Assert.assertEquals(cell.toString(), expectedString           );
-        org.junit.Assert.assertEquals(cell.hashCode(), expectedString.hashCode());
+        final java.lang.String                        expectedString;
+        final org.wheatgenetics.coordinate.model.Cell cell          ;
+        {
+            final int row = 1, col = 2;
+            expectedString = java.lang.String.format("Cell(%d, %d)", row, col)    ;
+            cell           = new org.wheatgenetics.coordinate.model.Cell(row, col);
+        }
+        org.junit.Assert.assertEquals(expectedString           , cell.toString());
+        org.junit.Assert.assertEquals(expectedString.hashCode(), cell.hashCode());
     }
 
-    @org.junit.Test
-    public void equalsSucceedsAndFails()
+    @org.junit.Test public void equalsSucceedsAndFails()
     {
         final int row = 1, col = 2;
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(row, col);
+
         org.junit.Assert.assertTrue(cell.equals(
             new org.wheatgenetics.coordinate.model.Cell(row, col)));
         org.junit.Assert.assertFalse(cell.equals(
@@ -150,31 +153,29 @@ public class CellTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cell(row, 4)));
     }
 
-    @org.junit.Test
-    public void cloneSucceeds()
+    @org.junit.Test public void cloneSucceeds()
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(23, 999);
         org.junit.Assert.assertTrue(cell.equals(cell.clone()));
     }
 
-    @org.junit.Test
-    public void compareToSucceeds()
+    @org.junit.Test public void compareToSucceeds()
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(5, 5);
 
         // Same col:
-        org.junit.Assert.assertEquals(
-            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5)),  0);
+        org.junit.Assert.assertEquals(0,
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5))    );
         org.junit.Assert.assertTrue(
             cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(1, 5)) > 0);
         org.junit.Assert.assertTrue(
             cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(9, 5)) < 0);
 
         // Same row:
-        org.junit.Assert.assertEquals(
-            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5)),  0);
+        org.junit.Assert.assertEquals(0,
+            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 5))    );
         org.junit.Assert.assertTrue(
             cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5, 1)) > 0);
         org.junit.Assert.assertTrue(
@@ -186,71 +187,99 @@ public class CellTest extends java.lang.Object
         org.junit.Assert.assertTrue(
             cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(9, 9)) < 0);
     }
+
+    @org.junit.Test public void getRowValueWorks()
+    {
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(5, 5);
+        org.junit.Assert.assertEquals   (5, cell.getRowValue());
+        org.junit.Assert.assertNotEquals(6, cell.getRowValue());
+    }
+
+    @org.junit.Test public void getColValueWorks()
+    {
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(5, 5);
+        org.junit.Assert.assertEquals   (5, cell.getColValue());
+        org.junit.Assert.assertNotEquals(6, cell.getColValue());
+    }
     // endregion
 
     // region Package Method Tests
-    @org.junit.Test
-    public void getRowAndGetColFailAndSucceed()
+    @org.junit.Test public void getRowAndGetColFailAndSucceed()
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(4, 5);
-        org.junit.Assert.assertNotEquals(cell.getRow().getValue(), 1);
-        org.junit.Assert.assertNotEquals(cell.getCol().getValue(), 1);
+        org.junit.Assert.assertNotEquals(1, cell.getRow().getValue());
+        org.junit.Assert.assertNotEquals(1, cell.getCol().getValue());
 
-        org.junit.Assert.assertEquals(cell.getRow().getValue(), 4);
-        org.junit.Assert.assertEquals(cell.getCol().getValue(), 5);
+        org.junit.Assert.assertEquals(4, cell.getRow().getValue());
+        org.junit.Assert.assertEquals(5, cell.getCol().getValue());
     }
 
     // region inRange() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void bigXInRangeFails()
+    public void bigRowInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(9, 1).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void smallXInRangeFails()
+    public void smallRowInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(0, 1).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void bigYInRangeFails()
+    public void bigColInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(1, 9).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void smallYInRangeFails()
+    public void smallColInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(1, -1).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void bigXbigYInRangeFails()
+    public void bigRowBigColInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(9, 9).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void smallXsmallYInRangeFails()
+    public void smallRowSmallColInRangeFails()
     {
         new org.wheatgenetics.coordinate.model.Cell(-9, 0).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
 
-    @org.junit.Test
-    public void inRangeSucceeds()
+    @org.junit.Test public void inRangeSucceeds()
     {
         new org.wheatgenetics.coordinate.model.Cell(1, 1).inRange(
             new org.wheatgenetics.coordinate.model.Cell(5, 5));
     }
     // endregion
+
+    @org.junit.Test public void jsonSucceeds() throws org.json.JSONException
+    {
+        final org.json.JSONObject                     jsonObject;
+        final org.wheatgenetics.coordinate.model.Cell cell      ;
+        {
+            final int row = 1, col = 2;
+            jsonObject = org.wheatgenetics.coordinate.model.CellTest.makeJSONObject( // throws org-
+                row, col);                                                           //  .json.JSON-
+            cell = new org.wheatgenetics.coordinate.model.Cell(row, col);            //  Exception
+        }
+        assert null != jsonObject;
+        org.junit.Assert.assertEquals(jsonObject.toString(), cell.json().toString());
+    }
 
     // region makeWithRandomValues() Package Method Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -261,8 +290,7 @@ public class CellTest extends java.lang.Object
     public void negativeMaxRowMakeWithRandomValuesFails()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(-5, 9); }
 
-    @org.junit.Test
-    public void oneMaxRowMakeWithRandomValuesSucceeds()
+    @org.junit.Test public void oneMaxRowMakeWithRandomValuesSucceeds()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(1, 9); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -273,23 +301,8 @@ public class CellTest extends java.lang.Object
     public void negativeMaxColMakeWithRandomValuesFails()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(5, -9); }
 
-    @org.junit.Test
-    public void oneMaxColMakeWithRandomValuesSucceeds()
+    @org.junit.Test public void oneMaxColMakeWithRandomValuesSucceeds()
     { org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(5, 1); }
     // endregion
-
-    @org.junit.Test
-    public void jsonSucceeds() throws org.json.JSONException
-    {
-        final int row = 1, col = 2;
-        final org.wheatgenetics.coordinate.model.Cell cell =
-            new org.wheatgenetics.coordinate.model.Cell(row, col);
-
-        final org.json.JSONObject jsonObject =
-            org.wheatgenetics.coordinate.model.CellTest.makeJSONObject(row, col);  // throws org-
-                                                                                   //  .json.JSONEx-
-        assert null != jsonObject;                                                 //  ception
-        org.junit.Assert.assertEquals(cell.json().toString(), jsonObject.toString());
-    }
     // endregion
 }

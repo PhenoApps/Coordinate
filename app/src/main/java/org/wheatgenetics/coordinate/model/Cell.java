@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable,
 org.wheatgenetics.coordinate.model.ElementModel
 {
@@ -54,14 +54,14 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.Override @java.lang.SuppressWarnings({"DefaultLocale"})
     public java.lang.String toString()
     {
         return java.lang.String.format("Cell(%s, %s)",
             this.getRow().toString(), this.getCol().toString());
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -76,8 +76,7 @@ org.wheatgenetics.coordinate.model.ElementModel
             else return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
