@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.model;
 public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Types
-    public class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
+    class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
     { MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
 
     public class AmountIsTooLarge extends java.lang.IllegalArgumentException
@@ -24,12 +24,12 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         AmountIsTooLarge(final int maxAmount)
         {
             super(java.lang.String.format(
-                maxAmount <= 0 ?
+                /* format => */ maxAmount <= 0 ?
                     "There is no more room for entries." :
                     1 == maxAmount ?
                         "There is room for only %d more entry."  :
                         "There is room for only %d more entries.",
-                maxAmount));
+                /* args => */ maxAmount));
         }
     }
     // endregion
@@ -111,8 +111,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override public java.lang.String toString()
     {
         if (null == this.cellTreeSetInstance)
             return "null";
@@ -160,8 +159,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             else return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException", "Convert2Diamond"})
