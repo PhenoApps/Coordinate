@@ -16,8 +16,9 @@ public class DateOptionalFieldTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
-        org.junit.Assert.assertEquals(dateOptionalField.getName(), "Date");
-        org.junit.Assert.assertEquals(dateOptionalField.getHint(),
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT);
+        org.junit.Assert.assertEquals("Date", dateOptionalField.getName());
+        org.junit.Assert.assertEquals(
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+            dateOptionalField.getHint()                                           );
     }
 }

@@ -69,10 +69,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             nonNullOptionalFields =
                 new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
         org.junit.Assert.assertNotNull(nonNullOptionalFields);
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(0,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                nonNullOptionalFields),
-            0);
+                nonNullOptionalFields));
     }
     // endregion
 
@@ -115,10 +114,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
         org.junit.Assert.assertFalse (nonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(2,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                nonNullOptionalFields),
-            2);
+                nonNullOptionalFields));
     }
     // endregion
     // endregion
@@ -129,8 +127,10 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertEquals(nonNullOptionalFields.toString(), "{" +
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 + ", Date}");
+        org.junit.Assert.assertEquals(
+            "{" + org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 +
+                ", Date}",
+            nonNullOptionalFields.toString());
     }
 
     @org.junit.Test public void equalsAndCloneSucceed()
@@ -166,18 +166,16 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
                 .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(2,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                nonNullOptionalFields),
-            2);
+                nonNullOptionalFields));
 
         nonNullOptionalFields.arrayList.add(null);
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(2,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                nonNullOptionalFields),
-            2);
+                nonNullOptionalFields));
 
-        org.junit.Assert.assertEquals(nonNullOptionalFields.arrayList.size(), 3);
+        org.junit.Assert.assertEquals(3, nonNullOptionalFields.arrayList.size());
     }
     // endregion
 
@@ -264,10 +262,11 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 ,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.HINT1 );
-        org.junit.Assert.assertEquals(nonNullOptionalFields.getDatedFirstValue(),
+        org.junit.Assert.assertEquals(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.VALUE1 + "_" +
                 org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()
-                    .replace(".", "_"));
+                    .replace(".", "_"),
+            nonNullOptionalFields.getDatedFirstValue());
     }
 
     @org.junit.Test public void toJSONSucceeds()
@@ -346,10 +345,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             newNonNullOptionalFields =
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
         org.junit.Assert.assertFalse (newNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(3,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                newNonNullOptionalFields),
-            3);
+                newNonNullOptionalFields));
         org.junit.Assert.assertEquals(newNonNullOptionalFields.get(0).getName(), "Identification");
         org.junit.Assert.assertEquals(newNonNullOptionalFields.get(1).getName(), "Person"        );
         org.junit.Assert.assertEquals(newNonNullOptionalFields.get(2).getName(), "Date"          );
@@ -365,9 +363,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
                 seedDefaultNonNullOptionalFields),
             3);
-        org.junit.Assert.assertEquals(seedDefaultNonNullOptionalFields.get(0).getName(), "Tray"  );
-        org.junit.Assert.assertEquals(seedDefaultNonNullOptionalFields.get(1).getName(), "Person");
-        org.junit.Assert.assertEquals(seedDefaultNonNullOptionalFields.get(2).getName(), "Date"  );
+        org.junit.Assert.assertEquals("Tray"  , seedDefaultNonNullOptionalFields.get(0).getName());
+        org.junit.Assert.assertEquals("Person", seedDefaultNonNullOptionalFields.get(1).getName());
+        org.junit.Assert.assertEquals("Date"  , seedDefaultNonNullOptionalFields.get(2).getName());
     }
 
     @org.junit.Test public void makeDNADefaultWorks()
@@ -376,20 +374,19 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             dnaDefaultNonNullOptionalFields =
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeDNADefault();
         org.junit.Assert.assertFalse (dnaDefaultNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(
+        org.junit.Assert.assertEquals(7,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
-                dnaDefaultNonNullOptionalFields),
-            7);
-        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(0).getName(), "Plate");
-        org.junit.Assert.assertEquals(
-            dnaDefaultNonNullOptionalFields.get(1).getName(), "Plate Name");
-        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(2).getName(), "Notes");
-        org.junit.Assert.assertEquals(
-            dnaDefaultNonNullOptionalFields.get(3).getName(), "tissue_type");
-        org.junit.Assert.assertEquals(
-            dnaDefaultNonNullOptionalFields.get(4).getName(), "extraction");
-        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(5).getName(), "person");
-        org.junit.Assert.assertEquals(dnaDefaultNonNullOptionalFields.get(6).getName(), "Date"  );
+                dnaDefaultNonNullOptionalFields));
+        org.junit.Assert.assertEquals("Plate", dnaDefaultNonNullOptionalFields.get(0).getName());
+        org.junit.Assert.assertEquals("Plate Name",
+            dnaDefaultNonNullOptionalFields.get(1).getName());
+        org.junit.Assert.assertEquals("Notes", dnaDefaultNonNullOptionalFields.get(2).getName());
+        org.junit.Assert.assertEquals("tissue_type",
+            dnaDefaultNonNullOptionalFields.get(3).getName());
+        org.junit.Assert.assertEquals("extraction",
+            dnaDefaultNonNullOptionalFields.get(4).getName());
+        org.junit.Assert.assertEquals("person", dnaDefaultNonNullOptionalFields.get(5).getName());
+        org.junit.Assert.assertEquals("Date"  , dnaDefaultNonNullOptionalFields.get(6).getName());
     }
     // endregion
     // endregion

@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Model extends java.lang.Object
 {
     private long id;
@@ -20,10 +20,10 @@ public abstract class Model extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.Override @java.lang.SuppressWarnings({"DefaultLocale"})
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.getId()); }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -35,8 +35,7 @@ public abstract class Model extends java.lang.Object
                 return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)

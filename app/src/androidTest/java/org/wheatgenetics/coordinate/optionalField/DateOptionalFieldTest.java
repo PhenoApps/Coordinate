@@ -8,10 +8,9 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class DateOptionalFieldTest extends java.lang.Object
 {
     private static java.lang.String expectedCurrentDate()
@@ -21,8 +20,7 @@ public class DateOptionalFieldTest extends java.lang.Object
     }
 
     // region Tests
-    @org.junit.Test
-    public void cloneSucceeds()
+    @org.junit.Test public void cloneSucceeds()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
@@ -30,22 +28,21 @@ public class DateOptionalFieldTest extends java.lang.Object
             clonedBaseDateOptionalField =
                 (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
                     dateOptionalField.clone();
-        org.junit.Assert.assertEquals(clonedBaseDateOptionalField.getName(), "Date");
-        org.junit.Assert.assertEquals(clonedBaseDateOptionalField.getHint(),
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT);
+        org.junit.Assert.assertEquals("Date", clonedBaseDateOptionalField.getName());
+        org.junit.Assert.assertEquals(
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+            clonedBaseDateOptionalField.getHint()                                 );
         org.junit.Assert.assertTrue(dateOptionalField.equals(clonedBaseDateOptionalField));
     }
 
-    @org.junit.Test
-    public void getCurrentDate()
+    @org.junit.Test public void getCurrentDate()
     {
         org.junit.Assert.assertEquals(
             org.wheatgenetics.coordinate.optionalField.DateOptionalFieldTest.expectedCurrentDate(),
             org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()         );
     }
 
-    @org.junit.Test
-    public void getValue()
+    @org.junit.Test public void getValue()
     {
         org.junit.Assert.assertEquals(
             org.wheatgenetics.coordinate.optionalField.DateOptionalFieldTest.expectedCurrentDate(),

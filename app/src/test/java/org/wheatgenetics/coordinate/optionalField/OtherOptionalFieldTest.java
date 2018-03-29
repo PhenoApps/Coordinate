@@ -25,9 +25,9 @@ public class OtherOptionalFieldTest extends java.lang.Object
                 (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
                     otherOptionalField.clone();
 
-            org.junit.Assert.assertEquals(clonedOtherOptionalField.getName (), testName );
-            org.junit.Assert.assertEquals(clonedOtherOptionalField.getValue(), testValue);
-            org.junit.Assert.assertEquals(clonedOtherOptionalField.getHint (), testHint );
+            org.junit.Assert.assertEquals(testName , clonedOtherOptionalField.getName ());
+            org.junit.Assert.assertEquals(testValue, clonedOtherOptionalField.getValue());
+            org.junit.Assert.assertEquals(testHint , clonedOtherOptionalField.getHint ());
         }
         org.junit.Assert.assertFalse(clonedOtherOptionalField.getChecked()              );
         org.junit.Assert.assertTrue (otherOptionalField.equals(clonedOtherOptionalField));
