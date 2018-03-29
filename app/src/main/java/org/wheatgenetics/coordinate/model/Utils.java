@@ -1,9 +1,9 @@
 package org.wheatgenetics.coordinate.model;
 
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class Utils extends java.lang.Object
 {
-    @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     static int valid(final int value, final int minValue)
     {
         if (value < minValue)
