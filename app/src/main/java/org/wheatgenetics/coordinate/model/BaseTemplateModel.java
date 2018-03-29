@@ -46,7 +46,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
-    @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     private static java.lang.String[] items(final int length, final java.lang.String label)
     {
         if (length <= 0)
@@ -99,11 +99,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "BaseTemplateModel") + "]"; }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     public boolean equals(final java.lang.Object object)
     {
         if (super.equals(object))
@@ -157,7 +156,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
-    @java.lang.SuppressWarnings("DefaultLocale")
+    @java.lang.SuppressWarnings({"DefaultLocale"})
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.String formatString()
     {
@@ -236,15 +235,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
 
     public java.lang.String[] rowItems(final java.lang.String label)
-    {
-        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(
-            this.getRows(), label);
-    }
+    { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getRows(), label); }
 
     public java.lang.String[] colItems(final java.lang.String label)
-    {
-        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(
-            this.getCols(), label);
-    }
+    { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getCols(), label); }
     // endregion
 }

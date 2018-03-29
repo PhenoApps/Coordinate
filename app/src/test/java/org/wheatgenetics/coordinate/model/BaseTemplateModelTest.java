@@ -10,10 +10,9 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
- * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class BaseTemplateModelTest extends java.lang.Object
 {
     /**
@@ -125,8 +124,7 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* timestamp                    => */ 0    );
     }
 
-    @org.junit.Test
-    public void firstConstructorSucceeds()
+    @org.junit.Test public void firstConstructorSucceeds()
     {
         new org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
             /* id    => */ 88                                                  ,
@@ -184,8 +182,7 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* timestamp                    => */ 0    );
     }
 
-    @org.junit.Test
-    public void secondConstructorSucceeds()
+    @org.junit.Test public void secondConstructorSucceeds()
     {
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new
@@ -204,8 +201,7 @@ public class BaseTemplateModelTest extends java.lang.Object
     // endregion
 
     // region Getter and Setter Public Method Tests
-    @org.junit.Test
-    public void getAndSetTitleSucceed()
+    @org.junit.Test public void getAndSetTitleSucceed()
     {
         final java.lang.String firstTestTitle = "firstTestTitle";
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
@@ -220,16 +216,15 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false,
                     /* rowNumbering                 => */ true ,
                     /* timestamp                    => */ 0    );
-        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getTitle(), firstTestTitle);
+        org.junit.Assert.assertEquals(firstTestTitle, concreteBaseTemplateModel.getTitle());
 
         final java.lang.String secondTestTitle = "secondTestTitle";
         concreteBaseTemplateModel.setTitle(secondTestTitle);
-        org.junit.Assert.assertNotEquals(concreteBaseTemplateModel.getTitle(), firstTestTitle );
-        org.junit.Assert.assertEquals   (concreteBaseTemplateModel.getTitle(), secondTestTitle);
+        org.junit.Assert.assertNotEquals(firstTestTitle , concreteBaseTemplateModel.getTitle());
+        org.junit.Assert.assertEquals   (secondTestTitle, concreteBaseTemplateModel.getTitle());
     }
 
-    @org.junit.Test
-    public void getAndSetTypeSucceed()
+    @org.junit.Test public void getAndSetTypeSucceed()
     {
         final org.wheatgenetics.coordinate.model.TemplateType firstTemplateType =
             org.wheatgenetics.coordinate.model.TemplateType.SEED;
@@ -245,17 +240,16 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false            ,
                     /* rowNumbering                 => */ true             ,
                     /* timestamp                    => */ 0                );
-        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getType(), firstTemplateType);
+        org.junit.Assert.assertEquals(firstTemplateType, concreteBaseTemplateModel.getType());
 
         final org.wheatgenetics.coordinate.model.TemplateType secondTemplateType =
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
         concreteBaseTemplateModel.setType(secondTemplateType);
-        org.junit.Assert.assertNotEquals(concreteBaseTemplateModel.getType(), firstTemplateType );
-        org.junit.Assert.assertEquals   (concreteBaseTemplateModel.getType(), secondTemplateType);
+        org.junit.Assert.assertNotEquals(firstTemplateType , concreteBaseTemplateModel.getType());
+        org.junit.Assert.assertEquals   (secondTemplateType, concreteBaseTemplateModel.getType());
     }
 
-    @org.junit.Test
-    public void getRowsAndGetColsSucceed()
+    @org.junit.Test public void getRowsAndGetColsSucceed()
     {
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new 
@@ -269,12 +263,11 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false,
                     /* rowNumbering                 => */ true ,
                     /* timestamp                    => */ 0    );
-        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getRows(),  9);
-        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getCols(), 20);
+        org.junit.Assert.assertEquals( 9, concreteBaseTemplateModel.getRows());
+        org.junit.Assert.assertEquals(20, concreteBaseTemplateModel.getCols());
     }
 
-    @org.junit.Test
-    public void getAndSetGeneratedExcludedCellsAmountSucceed()
+    @org.junit.Test public void getAndSetGeneratedExcludedCellsAmountSucceed()
     {
         final int firstGeneratedExcludedCellsAmount = 1;
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
@@ -319,8 +312,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         concreteBaseTemplateModel.setGeneratedExcludedCellsAmount(-7);
     }
 
-    @org.junit.Test
-    public void getAndSetColNumberingSucceed()
+    @org.junit.Test public void getAndSetColNumberingSucceed()
     {
         final boolean firstColNumbering = false;
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel 
@@ -335,19 +327,18 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ firstColNumbering,
                     /* rowNumbering                 => */ true             ,
                     /* timestamp                    => */ 0                );
-        org.junit.Assert.assertEquals(
-            concreteBaseTemplateModel.getColNumbering(), firstColNumbering);
+        org.junit.Assert.assertEquals(firstColNumbering,
+            concreteBaseTemplateModel.getColNumbering());
 
         final boolean secondColNumbering = true;
         concreteBaseTemplateModel.setColNumbering(secondColNumbering);
-        org.junit.Assert.assertNotEquals(
-            concreteBaseTemplateModel.getColNumbering(), firstColNumbering);
-        org.junit.Assert.assertEquals(
-            concreteBaseTemplateModel.getColNumbering(), secondColNumbering);
+        org.junit.Assert.assertNotEquals(firstColNumbering,
+            concreteBaseTemplateModel.getColNumbering()   );
+        org.junit.Assert.assertEquals(secondColNumbering,
+            concreteBaseTemplateModel.getColNumbering() );
     }
 
-    @org.junit.Test
-    public void getAndSetRowNumberingSucceed()
+    @org.junit.Test public void getAndSetRowNumberingSucceed()
     {
         final boolean firstRowNumbering = false;
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
@@ -362,19 +353,18 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false            ,
                     /* rowNumbering                 => */ firstRowNumbering,
                     /* timestamp                    => */ 0                );
-        org.junit.Assert.assertEquals(
-            concreteBaseTemplateModel.getRowNumbering(), firstRowNumbering);
+        org.junit.Assert.assertEquals(firstRowNumbering,
+            concreteBaseTemplateModel.getRowNumbering());
 
         final boolean secondRowNumbering = true;
         concreteBaseTemplateModel.setRowNumbering(secondRowNumbering);
-        org.junit.Assert.assertNotEquals(
-            concreteBaseTemplateModel.getRowNumbering(), firstRowNumbering);
-        org.junit.Assert.assertEquals(
-            concreteBaseTemplateModel.getRowNumbering(), secondRowNumbering);
+        org.junit.Assert.assertNotEquals(firstRowNumbering,
+            concreteBaseTemplateModel.getRowNumbering()   );
+        org.junit.Assert.assertEquals(secondRowNumbering,
+            concreteBaseTemplateModel.getRowNumbering() );
     }
 
-    @org.junit.Test
-    public void getTimestampSucceeds()
+    @org.junit.Test public void getTimestampSucceeds()
     {
         final long timestamp = 880;
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
@@ -389,13 +379,12 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ true     ,
                     /* rowNumbering                 => */ false    ,
                     /* timestamp                    => */ timestamp);
-        org.junit.Assert.assertEquals(concreteBaseTemplateModel.getTimestamp(), timestamp);
+        org.junit.Assert.assertEquals(timestamp, concreteBaseTemplateModel.getTimestamp());
     }
     // endregion
 
     // region Overridden Method Tests
-    @org.junit.Test
-    public void toStringSucceeds()
+    @org.junit.Test public void toStringSucceeds()
     {
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new
@@ -415,8 +404,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedString, concreteBaseTemplateModel.toString());
     }
 
-    @org.junit.Test
-    public void equalsAndHashCodeSucceedAndFail()
+    @org.junit.Test public void equalsAndHashCodeSucceedAndFail()
     {
         final long                                            testId           = 67         ;
         final java.lang.String                                testTitle        = "testTitle";
@@ -524,9 +512,8 @@ public class BaseTemplateModelTest extends java.lang.Object
     }
     // endregion
 
-    // region Package Method Tests
-    @org.junit.Test
-    public void formatStringSucceeds()
+    // region Package Method Test
+    @org.junit.Test public void formatStringSucceeds()
     {
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new
@@ -549,8 +536,7 @@ public class BaseTemplateModelTest extends java.lang.Object
     // endregion
 
     // region Other Public Method Tests
-    @org.junit.Test
-    public void publicAssignSucceeds()
+    @org.junit.Test public void publicAssignSucceeds()
     {
         final long                                            testId           = 67         ;
         final java.lang.String                                testTitle        = "testTitle";
@@ -595,8 +581,27 @@ public class BaseTemplateModelTest extends java.lang.Object
             firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
     }
 
-    @org.junit.Test
-    public void rowItemsSucceeds()
+    @org.junit.Test public void isDefaultWorks()
+    {
+        final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
+            concreteBaseTemplateModel = new
+                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
+                    /* id    => */ 5                                                          ,
+                    /* title => */ "testTitle"                                                ,
+                    /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
+                    /* rows  => */  1                                                         ,
+                    /* cols  => */ 20                                                         ,
+                    /* generatedExcludedCellsAmount => */ 0    ,
+                    /* colNumbering                 => */ false,
+                    /* rowNumbering                 => */ false,
+                    /* timestamp                    => */ 0    );
+        org.junit.Assert.assertFalse(concreteBaseTemplateModel.isDefaultTemplate());
+
+        concreteBaseTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
+        org.junit.Assert.assertTrue(concreteBaseTemplateModel.isDefaultTemplate());
+    }
+
+    @org.junit.Test public void rowItemsSucceeds()
     {
         org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new
@@ -610,8 +615,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false,
                     /* rowNumbering                 => */ false,
                     /* timestamp                    => */ 0    );
-        org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.rowItems("Row"),
-            org.wheatgenetics.javalib.Utils.stringArray("Row 1"));
+        org.junit.Assert.assertArrayEquals(org.wheatgenetics.javalib.Utils.stringArray("Row 1"),
+            concreteBaseTemplateModel.rowItems("Row"));
 
         concreteBaseTemplateModel =
             new org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
@@ -624,12 +629,11 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */ false,
                 /* rowNumbering                 => */ false,
                 /* timestamp                    => */ 0    );
-        org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.rowItems("Row"),
-            new java.lang.String[] {"Row 1", "Row 2", "Row 3"} );
+        org.junit.Assert.assertArrayEquals(new java.lang.String[]{"Row 1", "Row 2", "Row 3"},
+            concreteBaseTemplateModel.rowItems("Row"));
     }
 
-    @org.junit.Test
-    public void colItemsSucceeds()
+    @org.junit.Test public void colItemsSucceeds()
     {
         org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new
@@ -643,8 +647,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ false,
                     /* rowNumbering                 => */ false,
                     /* timestamp                    => */ 0    );
-        org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.colItems("Column"),
-            org.wheatgenetics.javalib.Utils.stringArray("Column 1"));
+        org.junit.Assert.assertArrayEquals(org.wheatgenetics.javalib.Utils.stringArray("Column 1"),
+            concreteBaseTemplateModel.colItems("Column"));
 
         concreteBaseTemplateModel =
             new org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
@@ -657,8 +661,9 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */ false,
                 /* rowNumbering                 => */ false,
                 /* timestamp                    => */ 0    );
-        org.junit.Assert.assertArrayEquals(concreteBaseTemplateModel.colItems("Column"),
-            new java.lang.String[] {"Column 1", "Column 2", "Column 3"} );
+        org.junit.Assert.assertArrayEquals(
+            new java.lang.String[]{"Column 1", "Column 2", "Column 3"},
+            concreteBaseTemplateModel.colItems("Column")              );
     }
     // endregion
 }

@@ -10,7 +10,7 @@ public enum TemplateType
 
     private final int code;
 
-    @java.lang.SuppressWarnings("UnnecessaryEnumModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryEnumModifier"})
     private TemplateType(@android.support.annotation.IntRange(from = 0, to = 2) final int code)
     { this.code = code; }
 
