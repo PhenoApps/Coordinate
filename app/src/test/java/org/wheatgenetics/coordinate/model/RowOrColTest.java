@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class RowOrColTest extends java.lang.Object
 {
     // region Constructor Tests
@@ -39,60 +39,59 @@ public class RowOrColTest extends java.lang.Object
     // endregion
 
     // region Overridden Method Tests
-    @org.junit.Test
-    public void toStringAndHashCodeSucceed()
+    @org.junit.Test public void toStringAndHashCodeSucceed()
     {
         final int                                         value    = 23;
         final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
             new org.wheatgenetics.coordinate.model.RowOrCol(value);
         final String expectedString = Integer.toString(value);
-        org.junit.Assert.assertEquals(rowOrCol.toString(), expectedString           );
-        org.junit.Assert.assertEquals(rowOrCol.hashCode(), expectedString.hashCode());
+        org.junit.Assert.assertEquals(expectedString           , rowOrCol.toString());
+        org.junit.Assert.assertEquals(expectedString.hashCode(), rowOrCol.hashCode());
     }
 
-    @org.junit.Test
-    public void equalsSucceedsAndFails()
+    @org.junit.Test public void equalsSucceedsAndFails()
     {
-        final int                                         value    = 23;
-        final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
-            new org.wheatgenetics.coordinate.model.RowOrCol(value);
-        org.junit.Assert.assertTrue(rowOrCol.equals(
-            new org.wheatgenetics.coordinate.model.RowOrCol(value)));
+        final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol;
+        {
+            final int value = 23;
+            rowOrCol = new org.wheatgenetics.coordinate.model.RowOrCol(value);
+            org.junit.Assert.assertTrue(rowOrCol.equals(
+                new org.wheatgenetics.coordinate.model.RowOrCol(value)));
+        }
         org.junit.Assert.assertFalse(rowOrCol.equals(
             new org.wheatgenetics.coordinate.model.RowOrCol(16)));
     }
 
-    @org.junit.Test
-    public void cloneSucceeds()
+    @org.junit.Test public void cloneSucceeds()
     {
         final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
             new org.wheatgenetics.coordinate.model.RowOrCol(48);
         org.junit.Assert.assertTrue(rowOrCol.equals(rowOrCol.clone()));
     }
 
-    @org.junit.Test
-    public void compareToSucceeds()
+    @org.junit.Test public void compareToSucceeds()
     {
         final org.wheatgenetics.coordinate.model.RowOrCol
             rowOrCol       = new org.wheatgenetics.coordinate.model.RowOrCol(5),
             smallRowOrCol  = new org.wheatgenetics.coordinate.model.RowOrCol(1),
             mediumRowOrCol = new org.wheatgenetics.coordinate.model.RowOrCol(5),
             largeRowOrCol  = new org.wheatgenetics.coordinate.model.RowOrCol(9);
-        org.junit.Assert.assertTrue  (rowOrCol.compareTo(smallRowOrCol ) > 0);
-        org.junit.Assert.assertEquals(rowOrCol.compareTo(mediumRowOrCol),  0);
-        org.junit.Assert.assertTrue  (rowOrCol.compareTo(largeRowOrCol ) < 0);
+        org.junit.Assert.assertTrue  (   rowOrCol.compareTo(smallRowOrCol ) > 0);
+        org.junit.Assert.assertEquals(0, rowOrCol.compareTo(mediumRowOrCol)    );
+        org.junit.Assert.assertTrue  (   rowOrCol.compareTo(largeRowOrCol ) < 0);
     }
     // endregion
 
     // region Package Method Tests
-    @org.junit.Test
-    public void getValueSucceedsAndFails()
+    @org.junit.Test public void getValueSucceedsAndFails()
     {
-        final int                                         value    = 23;
-        final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
-            new org.wheatgenetics.coordinate.model.RowOrCol(value);
-        org.junit.Assert.assertEquals   (rowOrCol.getValue(), value);
-        org.junit.Assert.assertNotEquals(rowOrCol.getValue(), 77   );
+        final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol;
+        {
+            final int value = 23;
+            rowOrCol = new org.wheatgenetics.coordinate.model.RowOrCol(value);
+            org.junit.Assert.assertEquals(value, rowOrCol.getValue());
+        }
+        org.junit.Assert.assertNotEquals(77, rowOrCol.getValue());
     }
 
     // region inRange() Package Method Tests
@@ -107,8 +106,7 @@ public class RowOrColTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.RowOrCol(3));
     }
 
-    @org.junit.Test
-    public void inRangeSucceeds()
+    @org.junit.Test public void inRangeSucceeds()
     {
         new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(
             new org.wheatgenetics.coordinate.model.RowOrCol(30));
@@ -124,8 +122,7 @@ public class RowOrColTest extends java.lang.Object
     public void negativeMaxValueMakeWithRandomValueFails()
     { org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(-9); }
 
-    @org.junit.Test
-    public void oneMaxValueMakeWithRandomValueFails()
+    @org.junit.Test public void oneMaxValueMakeWithRandomValueSucceeds()
     { org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(1); }
     // endregion
     // endregion

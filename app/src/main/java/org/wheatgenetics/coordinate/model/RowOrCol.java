@@ -7,7 +7,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
 {
     private final int value;
@@ -21,11 +21,10 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString() { return java.lang.Integer.toString(this.getValue()); }
+    @java.lang.Override public java.lang.String toString()
+    { return java.lang.Integer.toString(this.getValue()); }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object object)
+    @java.lang.Override public boolean equals(final java.lang.Object object)
     {
         if (null == object)
             return false;
@@ -39,8 +38,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
             else return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})

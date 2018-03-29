@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class RowOrCols extends java.lang.Object
 {
     // region Fields
@@ -20,7 +20,7 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Private Methods
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColTreeSet()
     {
         if (null == this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance =
@@ -28,7 +28,7 @@ public class RowOrCols extends java.lang.Object
         return this.rowOrColTreeSetInstance;
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean add(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
     {
         return null == rowOrCol ? false : this.rowOrColTreeSet().add(
@@ -74,8 +74,7 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override public java.lang.String toString()
     {
         if (null == this.rowOrColTreeSetInstance)
             return "null";
@@ -99,7 +98,7 @@ public class RowOrCols extends java.lang.Object
             }
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     public boolean equals(final java.lang.Object object)
     {
         if (null == object)
@@ -125,8 +124,7 @@ public class RowOrCols extends java.lang.Object
             else return false;
     }
 
-    @java.lang.Override
-    public int hashCode() { return this.toString().hashCode(); }
+    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException", "Convert2Diamond"})
@@ -170,7 +168,7 @@ public class RowOrCols extends java.lang.Object
     }
     // endregion
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean contains(@android.support.annotation.IntRange(from = 1) final int candidateValue)
     {
         if (null == this.rowOrColTreeSetInstance)
