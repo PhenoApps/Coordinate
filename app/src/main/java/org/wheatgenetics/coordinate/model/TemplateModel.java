@@ -249,7 +249,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                             final java.lang.String indent = "\n    ";
                             if (!this.export(xmlSerializer, indent)) return !success;
                             if (null != this.nonNullOptionalFieldsInstance)
-                                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeTag(
+                                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(
                                     xmlSerializer, indent, org.wheatgenetics.coordinate.model
                                         .TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
                                     this.nonNullOptionalFieldsInstance.toJson());
