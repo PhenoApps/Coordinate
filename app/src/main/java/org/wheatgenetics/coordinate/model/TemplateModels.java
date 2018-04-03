@@ -4,7 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class TemplateModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 {
@@ -12,7 +12,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
     // region Private Methods
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList()
     {
         if (null == this.arrayListInstance) this.arrayListInstance =
@@ -20,7 +20,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         return this.arrayListInstance;
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isInRange(final int i)
     {
         return i < 0 ? false : null == this.arrayListInstance ?
@@ -42,22 +42,22 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
             { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
 
-            @java.lang.Override
-            public boolean hasNext() { return this.listIterator.hasNext(); }
+            // region Overridden Methods
+            @java.lang.Override public boolean hasNext() { return this.listIterator.hasNext(); }
 
-            @java.lang.Override
-            public org.wheatgenetics.coordinate.model.TemplateModel next()
+            @java.lang.Override public org.wheatgenetics.coordinate.model.TemplateModel next()
             { return this.listIterator.next(); }
 
-            @java.lang.Override
-            public void remove() { throw new java.lang.UnsupportedOperationException(); }
+            @java.lang.Override public void remove()
+            { throw new java.lang.UnsupportedOperationException(); }
+            // endregion
         }
         return new Iterator(this.arrayList());
     }
     // endregion
 
     // region Public Methods
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean add(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { return null == templateModel ? false : this.arrayList().add(templateModel); }
 
