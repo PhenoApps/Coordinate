@@ -16,14 +16,14 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // region Constructors
     ExcludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int row    ,
-    @android.support.annotation.IntRange(from = 1) final int col    ) { super(gridId, row, col); }
+    @android.support.annotation.IntRange(from = 1) final int  row   ,
+    @android.support.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
 
     public ExcludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long id       ,
     @android.support.annotation.IntRange(from = 1) final long gridId   ,
-    @android.support.annotation.IntRange(from = 1) final int row       ,
-    @android.support.annotation.IntRange(from = 1) final int col       ,
+    @android.support.annotation.IntRange(from = 1) final int  row      ,
+    @android.support.annotation.IntRange(from = 1) final int  col      ,
                                                    final long timestamp)
     { super(id, gridId, row, col, timestamp); }
 
@@ -37,12 +37,10 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override        java.lang.String getUserDefinedExportValue() { return "exclude"; }
     @java.lang.Override public java.lang.String getValue                 () { return null     ; }
 
-    @java.lang.Override
-    public java.lang.String getDatabaseValue()
+    @java.lang.Override public java.lang.String getDatabaseValue()
     { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
 
-    @java.lang.Override
-    public int backgroundResource()
+    @java.lang.Override public int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
     // endregion
 }
