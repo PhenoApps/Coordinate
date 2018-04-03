@@ -62,7 +62,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
         this.person = person;
 
-        this.activeRow = activeRow; this.activeCol = activeCol;
+        this.activeRow = org.wheatgenetics.coordinate.model.Utils.valid(activeRow, 0);
+        this.activeCol = org.wheatgenetics.coordinate.model.Utils.valid(activeCol, 0);
 
         if (null != optionalFields) optionalFields = optionalFields.trim();
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
