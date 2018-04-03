@@ -18,14 +18,14 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // region Constructors
     IncludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int row    ,
-    @android.support.annotation.IntRange(from = 1) final int col    ) { super(gridId, row, col); }
+    @android.support.annotation.IntRange(from = 1) final int  row   ,
+    @android.support.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
 
     public IncludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long id    ,
     @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int row    ,
-    @android.support.annotation.IntRange(from = 1) final int col    ,
+    @android.support.annotation.IntRange(from = 1) final int  row   ,
+    @android.support.annotation.IntRange(from = 1) final int  col   ,
     final java.lang.String value, final long timestamp)
     { super(id, gridId, row, col, timestamp); this.value = value; }
 
@@ -35,12 +35,10 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    java.lang.String getSeedExportValue()
+    @java.lang.Override java.lang.String getSeedExportValue()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(), "BLANK_"); }
 
-    @java.lang.Override
-    java.lang.String getDNAExportValue(final java.lang.String sample_id)
+    @java.lang.Override java.lang.String getDNAExportValue(final java.lang.String sample_id)
     {
         final java.lang.String result = this.getValue();
         if (null == result || result.length() == 0)
@@ -49,15 +47,13 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
             return result;
     }
 
-    @java.lang.Override
-    java.lang.String getUserDefinedExportValue()
+    @java.lang.Override java.lang.String getUserDefinedExportValue()
     { return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(this.getValue()); }
 
     @java.lang.Override public java.lang.String getValue        () { return this.value     ; }
     @java.lang.Override public java.lang.String getDatabaseValue() { return this.getValue(); }
 
-    @java.lang.Override
-    public int backgroundResource()
+    @java.lang.Override public int backgroundResource()
     {
         return this.valueIsEmpty() ?
             org.wheatgenetics.coordinate.R.drawable.empty_included_entry :
@@ -69,8 +65,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     public void setValue(final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
-    public boolean valueIsEmpty()
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"}) public boolean valueIsEmpty()
     {
         final java.lang.String value = this.getValue();
         return null == value ? true : value.length() <= 0;
