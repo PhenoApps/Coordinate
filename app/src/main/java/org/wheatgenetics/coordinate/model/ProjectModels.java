@@ -4,14 +4,14 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * org.wheatgenetics.coordinate.model.ProjectModel
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectModels extends java.lang.Object
 {
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.ProjectModel>
         arrayListInstance = null;
 
     // region Private Methods
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.ProjectModel> arrayList()
     {
         if (null == this.arrayListInstance) this.arrayListInstance =
@@ -19,7 +19,7 @@ public class ProjectModels extends java.lang.Object
         return this.arrayListInstance;
     }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isInRange(final int i)
     {
         return i < 0 ? false : null == this.arrayListInstance ?
@@ -28,7 +28,7 @@ public class ProjectModels extends java.lang.Object
     // endregion
 
     // region Public Methods
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean add(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     { return null == projectModel ? false : this.arrayList().add(projectModel); }
 

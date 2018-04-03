@@ -66,11 +66,11 @@ public class TemplateModelsTest extends java.lang.Object
 
     @org.junit.Test public void titlesAndMakeDefaultSucceed()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
         final java.lang.String expected[] = new java.lang.String[]{
             org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault().getTitle(),
             org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ().getTitle()};
+        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
+            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
         org.junit.Assert.assertArrayEquals(expected, templateModels.titles());
     }
 
