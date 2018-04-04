@@ -8,16 +8,17 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.Model
+ * org.wheatgenetics.coordinate.model.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class EntryModels extends java.lang.Object
 {
     // region Types
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface FilledHandler
     { public abstract void handleFilledGrid(); public abstract void handleFilledRowOrCol(); }
 
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Processor
     { public abstract void process(org.wheatgenetics.coordinate.model.EntryModel entryModel); }
     // endregion
@@ -34,8 +35,10 @@ public class EntryModels extends java.lang.Object
     {
         super();
 
-        this.gridId          = org.wheatgenetics.coordinate.model.Model.valid(gridId)       ;
-        this.entryModelArray = new org.wheatgenetics.coordinate.model.EntryModel[rows][cols];
+        this.gridId          = org.wheatgenetics.coordinate.model.Model.valid(gridId);
+        this.entryModelArray = new org.wheatgenetics.coordinate.model.EntryModel
+            [org.wheatgenetics.coordinate.model.Utils.valid(rows, 1)]
+            [org.wheatgenetics.coordinate.model.Utils.valid(cols, 1)];
     }
 
     // region Package Methods
@@ -93,7 +96,10 @@ public class EntryModels extends java.lang.Object
                     }
 
                 if (activeRow < lastRow)
-                    { candidateRow = activeRow + 1; candidateCol = activeCol; }
+                {
+                    candidateRow = activeRow + 1                         ;
+                    candidateCol = java.lang.Math.min(activeCol, lastCol);
+                }
                 else
                     { candidateRow = 0; candidateCol = activeCol + 1; }
             }
