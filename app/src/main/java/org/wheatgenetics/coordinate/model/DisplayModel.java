@@ -6,7 +6,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  */
-@java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+@java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
 public interface DisplayModel
 {
     public abstract int     getRows        (); public abstract int     getCols        ();

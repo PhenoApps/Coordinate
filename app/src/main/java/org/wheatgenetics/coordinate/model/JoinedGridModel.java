@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Cells
+ * org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
+ * org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -46,11 +48,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         final java.lang.String tray_id, person, date;
         {
             final java.lang.String values[] = this.optionalFields().values(
-                /* names[] => */ new java.lang.String[] { "Tray", "Person", "date" });
+                /* names[] => */ new java.lang.String[]{"Tray", "Person", "date"});
             tray_id = values[0]; person = values[1]; date = values[2];
         }
 
-        csvWriter.writeRecord(new java.lang.String[] {"tray_id", "cell_id",
+        csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
             "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
         {
             final int cols = this.getCols(), rows = this.getRows();
@@ -86,14 +88,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             dna_person, notes, tissue_type, extraction;
         {
             final java.lang.String values[] = this.optionalFields().values(
-                /* names[] => */ new java.lang.String[] { "date", "Plate",
-                    "Plate Name", "person", "Notes", "tissue_type", "extraction" });
+                /* names[] => */ new java.lang.String[]{"date", "Plate",
+                    "Plate Name", "person", "Notes", "tissue_type", "extraction"});
             date       = values[0]; plate_id = values[1]; plate_name  = values[2];
             dna_person = values[3]; notes    = values[4]; tissue_type = values[5];
             extraction = values[6];
         }
 
-        csvWriter.writeRecord(new java.lang.String[] {"date", "plate_id",
+        csvWriter.writeRecord(new java.lang.String[]{"date", "plate_id",
             "plate_name", "sample_id", "well_A01", "well_01A", "tissue_id",
             "dna_person", "notes", "tissue_type", "extraction"});
         {
@@ -180,7 +182,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private boolean isExcludedCol(final int col)
     { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
 
-    private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()
+    private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()//TODO: Do in Cells?
     {
         final int rows = this.getRows(), cols = this.getCols();
 
@@ -280,18 +282,16 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
-    @java.lang.Override
-    public int getRows() { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
+    @java.lang.Override public int getRows()
+    { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
 
-    @java.lang.Override
-    public int getCols() { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
+    @java.lang.Override public int getCols()
+    { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
 
-    @java.lang.Override
-    public boolean getColNumbering()
+    @java.lang.Override public boolean getColNumbering()
     { assert null != this.templateModel; return this.templateModel.getColNumbering(); }
 
-    @java.lang.Override
-    public boolean getRowNumbering()
+    @java.lang.Override public boolean getRowNumbering()
     { assert null != this.templateModel; return this.templateModel.getRowNumbering(); }
 
     @java.lang.Override
@@ -301,8 +301,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
-    @java.lang.SuppressWarnings({"DefaultLocale"})
-    java.lang.String name()
+    @java.lang.SuppressWarnings({"DefaultLocale"}) java.lang.String name()
     {
         return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
             this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
@@ -315,7 +314,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(rows, cols);
 
-        if (null != this.entryModels)
+        if (null != this.entryModels)                                    // TODO: Do in EntryModels?
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (this.getEntryModel(row, col) instanceof
                 org.wheatgenetics.coordinate.model.ExcludedEntryModel)
@@ -408,13 +407,16 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @android.support.annotation.IntRange(from = 0) final int row,
     @android.support.annotation.IntRange(from = 0) final int col)
     {
-        final boolean changed = true;
+        final boolean changed;
+
         if (this.getActiveRow() != row || this.getActiveCol() != col)
         {
             this.setActiveRow(row); this.setActiveCol(col);
-            return changed;
+            changed = true;
         }
-        else return !changed;
+        else changed = false;
+
+        return changed;
     }
 
     public org.wheatgenetics.coordinate.model.EntryModels getEntryModels()
