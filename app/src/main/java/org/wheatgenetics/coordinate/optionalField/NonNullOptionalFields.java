@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -329,16 +330,37 @@ implements java.lang.Cloneable
         return result;
     }
 
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault(
+    final java.lang.String trayId, final java.lang.String person)
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
 
-        result.add    ("Tray"  , /* hint => */ "Tray ID"    );
-        result.add    ("Person", /* hint => */ "Person name");
-        result.addDate(                                     );
+        {
+            final java.lang.String name = "Tray", hint = "Tray ID";
+            if (null != trayId && trayId.trim().length() > 0)
+                result.add(name, /* value => */ trayId, hint);
+            else
+                result.add(name, hint);
+        }
+        {
+            final java.lang.String name = "Person", hint = "Person name";
+            if (null != person && person.trim().length() > 0)
+                result.add(name, /* value => */ person, hint);
+            else
+                result.add(name, hint);
+        }
+        result.addDate();
 
         return result;
+    }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
+    {
+        return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeSeedDefault(
+            null, null);
     }
 
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()

@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.VisibleForTesting
+ *
  * org.json.JSONObject
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -9,7 +11,9 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
-class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
+@android.support.annotation.VisibleForTesting(
+    otherwise = android.support.annotation.VisibleForTesting.PACKAGE_PRIVATE)
+public class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     // region Constructors
     DateOptionalField()
@@ -41,7 +45,9 @@ class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.Optio
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
     // endregion
 
-    static java.lang.String getCurrentDate()
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PACKAGE_PRIVATE)
+    public static java.lang.String getCurrentDate()
     {
         return org.wheatgenetics.androidlibrary.Utils.formatDate(
             java.lang.System.currentTimeMillis()).toString();
