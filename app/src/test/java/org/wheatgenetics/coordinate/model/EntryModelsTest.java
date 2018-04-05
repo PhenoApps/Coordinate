@@ -87,6 +87,38 @@ public class EntryModelsTest extends java.lang.Object
         org.junit.Assert.assertEquals(col, includedEntryModel.getCol());
     }
 
+    @org.junit.Test public void emptyExcludedCellsWorks()
+    {
+        final org.wheatgenetics.coordinate.model.Cells       expectedCells;
+        final org.wheatgenetics.coordinate.model.EntryModels entryModels  ;
+        {
+            final int rows = 5, cols = 5;
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells      (   rows, cols);
+            entryModels   = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+        }
+        org.junit.Assert.assertTrue(expectedCells.equals(entryModels.excludedCells()));
+    }
+
+    @org.junit.Test public void oneCellExcludedCellsWorks()
+    {
+        final org.wheatgenetics.coordinate.model.Cells       expectedCells;
+        final org.wheatgenetics.coordinate.model.EntryModels entryModels  ;
+        {
+            final int rows = 5, cols = 5, excludedRow = 3, excludedCol = 3;
+
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells.add(excludedRow, excludedCol);
+
+            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
+                if (excludedRow == row && excludedCol == col)
+                    entryModels.makeExcludedEntry(row, col);
+                else
+                    entryModels.makeIncludedEntry(row, col);
+        }
+        org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
+    }
+
     @org.junit.Test public void allIncludedNextSucceeds()
     {
         final long                                           gridId = 1          ;

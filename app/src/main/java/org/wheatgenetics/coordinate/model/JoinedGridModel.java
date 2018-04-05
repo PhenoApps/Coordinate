@@ -182,7 +182,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private boolean isExcludedCol(final int col)
     { return null == this.templateModel ? true : this.templateModel.isExcludedCol(col); }
 
-    private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()//TODO: Do in Cells?
+    private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()
     {
         final int rows = this.getRows(), cols = this.getCols();
 
@@ -311,14 +311,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
         final int rows = this.getRows(), cols = this.getCols();
-        final org.wheatgenetics.coordinate.model.Cells result =
-            new org.wheatgenetics.coordinate.model.Cells(rows, cols);
 
-        if (null != this.entryModels)                                    // TODO: Do in EntryModels?
-            for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
-                if (this.getEntryModel(row, col) instanceof
-                org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                    result.add(row, col);
+        final org.wheatgenetics.coordinate.model.Cells result;
+        if (null == this.entryModels)
+            result = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+        else
+            result = this.entryModels.excludedCells();
 
         for (int row = 1; row <= rows; row++) if (this.isExcludedRow(row))
             for (int col = 1; col <= cols; col++) result.add(row, col);

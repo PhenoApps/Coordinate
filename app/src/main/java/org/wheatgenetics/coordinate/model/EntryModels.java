@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -56,6 +57,23 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
+
+    org.wheatgenetics.coordinate.model.Cells excludedCells()
+    {
+        if (null == this.entryModelArray)
+            return null;
+        else
+        {
+            final org.wheatgenetics.coordinate.model.Cells result =
+                new org.wheatgenetics.coordinate.model.Cells(
+                    this.entryModelArray.length, this.entryModelArray[0].length);
+            for (final org.wheatgenetics.coordinate.model.EntryModel[] row : this.entryModelArray)
+                for (final org.wheatgenetics.coordinate.model.EntryModel entryModel : row)
+                    if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                        result.add(entryModel.getRow(), entryModel.getCol());
+            return result;
+        }
+    }
 
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
