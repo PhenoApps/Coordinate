@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.VisibleForTesting
  *
  * org.wheatgenetics.javalib.CsvWriter
  *
@@ -47,9 +48,16 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         final java.lang.String tray_id, person, date;
         {
-            final java.lang.String values[] = this.optionalFields().values(
-                /* names[] => */ new java.lang.String[]{"Tray", "Person", "date"});
-            tray_id = values[0]; person = values[1]; date = values[2];
+            final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
+                this.optionalFields();
+            if (null == optionalFields)
+                { tray_id = null; person = null; date = null; }
+            else
+            {
+                final java.lang.String values[] = optionalFields.values(
+                    /* names[] => */ new java.lang.String[]{"Tray", "Person", "date"});
+                tray_id = values[0]; person = values[1]; date = values[2];
+            }
         }
 
         csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
@@ -61,17 +69,21 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             {
                 for (int row = 1; row <= rows; row++)
                 {
-                    csvWriter.write(tray_id                                 );        // tray id
-                    csvWriter.write("%s_C%02d_R%d", exportFileName, col, row);        // cell_id
-                    csvWriter.write(                                        );        // tray_num
-                    csvWriter.write(col                                     );        // tray_column
-                    csvWriter.write(row                                     );        // tray_row
-                    csvWriter.write(
-                        this.getEntryModel(row, col).getSeedExportValue());           // seed_id
-                    csvWriter.write(person);                                          // person
-                    csvWriter.write(date  );                                          // date
+                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                        this.getEntryModel(row, col);
+                    if (null != entryModel)
+                    {
+                        csvWriter.write(tray_id                                 );    // tray id
+                        csvWriter.write("%s_C%02d_R%d", exportFileName, col, row);    // cell_id
+                        csvWriter.write(                                        );    // tray_num
+                        csvWriter.write(col                                     );    // tray_column
+                        csvWriter.write(row                                     );    // tray_row
+                        csvWriter.write(entryModel.getSeedExportValue()         );    // seed_id
+                        csvWriter.write(person                                  );    // person
+                        csvWriter.write(date                                    );    // date
 
-                    csvWriter.endRecord();
+                        csvWriter.endRecord();
+                    }
                 }
                 helper.publishProgress(col);
             }
@@ -87,12 +99,22 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         final java.lang.String date, plate_id, plate_name,
             dna_person, notes, tissue_type, extraction;
         {
-            final java.lang.String values[] = this.optionalFields().values(
-                /* names[] => */ new java.lang.String[]{"date", "Plate",
-                    "Plate Name", "person", "Notes", "tissue_type", "extraction"});
-            date       = values[0]; plate_id = values[1]; plate_name  = values[2];
-            dna_person = values[3]; notes    = values[4]; tissue_type = values[5];
-            extraction = values[6];
+            final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
+                this.optionalFields();
+            if (null == optionalFields)
+            {
+                date  = null; plate_id    = null; plate_name = null; dna_person = null;
+                notes = null; tissue_type = null; extraction = null;
+            }
+            else
+            {
+                final java.lang.String values[] = optionalFields.values(
+                    /* names[] => */ new java.lang.String[]{"date", "Plate",
+                        "Plate Name", "person", "Notes", "tissue_type", "extraction"});
+                date       = values[0]; plate_id = values[1]; plate_name  = values[2];
+                dna_person = values[3]; notes    = values[4]; tissue_type = values[5];
+                extraction = values[6];
+            }
         }
 
         csvWriter.writeRecord(new java.lang.String[]{"date", "plate_id",
@@ -105,32 +127,37 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             {
                 for (int r = 0; r < rows; r++)
                 {
-                    csvWriter.write(date      );
-                    csvWriter.write(plate_id  );
-                    csvWriter.write(plate_name);
+                    final int                                           row        = r + 1;
+                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                        this.getEntryModel(row, col);
+                    if (null != entryModel)
                     {
-                        final java.lang.String sample_id;
+                        csvWriter.write(date      );
+                        csvWriter.write(plate_id  );
+                        csvWriter.write(plate_name);
                         {
-                            final java.lang.String rowName =
-                                java.lang.Character.toString((char) ('A' + r));
-                            final java.lang.String colName =
-                                java.lang.String.format("%02d", col);
+                            final java.lang.String sample_id;
+                            {
+                                final java.lang.String rowName =
+                                    java.lang.Character.toString((char) ('A' + r));
+                                final java.lang.String colName =
+                                    java.lang.String.format("%02d", col);
 
-                            sample_id = java.lang.String.format(
-                                "%s_%s%s", plate_id, rowName, colName);
-                            csvWriter.write(sample_id               );                  // sample_id
-                            csvWriter.write("%s%s", rowName, colName);                  // well_A01
-                            csvWriter.write("%s%s", colName, rowName);                  // well_01A
+                                sample_id = java.lang.String.format(
+                                    "%s_%s%s", plate_id, rowName, colName);
+                                csvWriter.write(sample_id               );              // sample_id
+                                csvWriter.write("%s%s", rowName, colName);              // well_A01
+                                csvWriter.write("%s%s", colName, rowName);              // well_01A
+                            }
+                            csvWriter.write(entryModel.getDNAExportValue(sample_id));   // tissue_id
                         }
-                        csvWriter.write(this.getEntryModel(r + 1, col)
-                            .getDNAExportValue(sample_id));                             // tissue_id
-                    }
-                    csvWriter.write(dna_person );
-                    csvWriter.write(notes      );
-                    csvWriter.write(tissue_type);
-                    csvWriter.write(extraction );
+                        csvWriter.write(dna_person );
+                        csvWriter.write(notes      );
+                        csvWriter.write(tissue_type);
+                        csvWriter.write(extraction );
 
-                    csvWriter.endRecord();
+                        csvWriter.endRecord();
+                    }
                 }
                 helper.publishProgress(col);
             }
@@ -144,25 +171,35 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         csvWriter.write("Value"); csvWriter.write("Column"); csvWriter.write("Row");
 
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
+            this.optionalFields();
+        if (null != optionalFields)
         {
-            final java.lang.String names[] = this.optionalFields().names();
-            assert null != names; for (final java.lang.String name: names) csvWriter.write(name);
+            final java.lang.String names[] = optionalFields.names();
+            assert null != names; for (final java.lang.String name : names) csvWriter.write(name);
         }
         csvWriter.endRecord();
 
         {
             final int              cols     = this.getCols(), rows = this.getRows();
-            final java.lang.String values[] = this.optionalFields().values()       ;
+            final java.lang.String values[] =
+                null == optionalFields ? null : optionalFields.values();
 
-            assert null != values; for (int col = 1; col <= cols; col++)
+            for (int col = 1; col <= cols; col++)
             {
                 for (int row = 1; row <= rows; row++)
                 {
-                    csvWriter.write(this.getEntryModel(row, col).getUserDefinedExportValue());
-                    csvWriter.write(col);                                csvWriter.write(row);
-                    for (final java.lang.String value: values) csvWriter.write(value);
+                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                        this.getEntryModel(row, col);
+                    if (null != entryModel)
+                    {
+                        csvWriter.write(entryModel.getUserDefinedExportValue());
+                        csvWriter.write(col);              csvWriter.write(row);
+                        if (null != values)
+                            for (final java.lang.String value: values) csvWriter.write(value);
 
-                    csvWriter.endRecord();
+                        csvWriter.endRecord();
+                    }
                 }
                 helper.publishProgress(col);
             }
@@ -330,29 +367,41 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         return result;
     }
 
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    void export(final java.io.Writer writer, final java.lang.String exportFileName,
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
+    throws java.io.IOException
+    {
+        final org.wheatgenetics.coordinate.model.TemplateType templateType =
+            this.templateModel.getType();
+        final org.wheatgenetics.javalib.CsvWriter csvWriter =
+            new org.wheatgenetics.javalib.CsvWriter(writer);
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
+            this.exportSeed(csvWriter, exportFileName, helper);        // throws java.io.IOException
+        else
+            if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
+                this.exportDNA(csvWriter, helper);                     // throws java.io.IOException
+            else
+                this.exportUserDefined(csvWriter, helper);             // throws java.io.IOException
+    }
+
     @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
     boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException
     {
-        final boolean success = true;
+        final boolean success;
         if (null == exportFile || null == helper || null == this.templateModel)
-            return !success;
+            success = false;
         else
         {
-            final org.wheatgenetics.coordinate.model.TemplateType templateType =
-                this.templateModel.getType();
-            final org.wheatgenetics.javalib.CsvWriter csvWriter =
-                new org.wheatgenetics.javalib.CsvWriter(exportFile);   // throws java.io.IOException
-            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-                this.exportSeed(csvWriter, exportFileName, helper);    // throws java.io.IOException
-            else
-                if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                    this.exportDNA(csvWriter, helper);                 // throws java.io.IOException
-                else
-                    this.exportUserDefined(csvWriter, helper);         // throws java.io.IOException
-            return success;
+            this.export(                                               // throws java.io.IOException
+                new java.io.FileWriter(exportFile) /* throws java.io.IOException */,
+                exportFileName, helper                                             );
+            success = true;
         }
+        return success;
     }
     // endregion
 

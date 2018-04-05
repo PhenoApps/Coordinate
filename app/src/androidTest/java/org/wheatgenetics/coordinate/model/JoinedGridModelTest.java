@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
  * org.wheatgenetics.coordinate.model.RowOrCols
+ * org.wheatgenetics.coordinate.model.TemplateType
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class JoinedGridModelTest extends java.lang.Object
@@ -322,6 +323,440 @@ public class JoinedGridModelTest extends java.lang.Object
     // endregion
 
     // region export() Package Method Tests
+    // region SEED export() Package Method Tests
+    @org.junit.Test public void emptySeedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString =
+            "tray_id,cell_id,tray_num,tray_column,tray_row,seed_id,person,date\n";
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                   ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void blankSeedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString =
+            "tray_id,cell_id,tray_num,tray_column,tray_row,seed_id,person,date\n" +
+            "\"\",exportFileName_C01_R1,,1,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C01_R2,,1,2,BLANK_,,\n"                          +
+            "\"\",exportFileName_C01_R3,,1,3,BLANK_,,\n"                          +
+            "\"\",exportFileName_C02_R1,,2,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C02_R2,,2,2,BLANK_,,\n"                          +
+            "\"\",exportFileName_C02_R3,,2,3,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R1,,3,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R2,,3,2,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R3,,3,3,BLANK_,,\n"                          ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                   ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.makeEntryModels();
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void someSeedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String value          = "234.105";
+        final java.lang.String expectedString =
+            "tray_id,cell_id,tray_num,tray_column,tray_row,seed_id,person,date\n" +
+            "\"\",exportFileName_C01_R1,,1,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C01_R2,,1,2,BLANK_,,\n"                          +
+            "\"\",exportFileName_C01_R3,,1,3,BLANK_,,\n"                          +
+            "\"\",exportFileName_C02_R1,,2,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C02_R2,,2,2," + value + ",,\n"                   +
+            "\"\",exportFileName_C02_R3,,2,3,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R1,,3,1,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R2,,3,2,BLANK_,,\n"                          +
+            "\"\",exportFileName_C03_R3,,3,3,BLANK_,,\n"                          ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+            {
+                final long gridId = 5;
+                joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ gridId      ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                   ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+                joinedGridModel.makeEntryModels();
+                {
+                    final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
+                        new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, 2, 2);
+                    includedEntryModel.setValue(value);
+                    joinedGridModel.setEntryModel(includedEntryModel);
+                }
+            }
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+    // endregion
+
+    // region DNA export() Package Method Tests
+    @org.junit.Test public void emptyDNAExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString = "date,plate_id,plate_name,sample_id" +
+            ",well_A01,well_01A,tissue_id,dna_person,notes,tissue_type,extraction\n";
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                  ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void blankDNAExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString =
+            "date,plate_id,plate_name,sample_id,well_A01,well_01A,t" +
+                "issue_id,dna_person,notes,tissue_type,extraction\n" +
+            "\"\",,,null_A01,A01,01A,BLANK_null_A01,,,,\n"           +
+            "\"\",,,null_B01,B01,01B,BLANK_null_B01,,,,\n"           +
+            "\"\",,,null_C01,C01,01C,BLANK_null_C01,,,,\n"           +
+            "\"\",,,null_A02,A02,02A,BLANK_null_A02,,,,\n"           +
+            "\"\",,,null_B02,B02,02B,BLANK_null_B02,,,,\n"           +
+            "\"\",,,null_C02,C02,02C,BLANK_null_C02,,,,\n"           +
+            "\"\",,,null_A03,A03,03A,BLANK_null_A03,,,,\n"           +
+            "\"\",,,null_B03,B03,03B,BLANK_null_B03,,,,\n"           +
+            "\"\",,,null_C03,C03,03C,BLANK_null_C03,,,,\n"           ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                  ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.makeEntryModels();
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void someDNAExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String value          = "234.105";
+        final java.lang.String expectedString =
+            "date,plate_id,plate_name,sample_id,well_A01,well_01A,t" +
+                "issue_id,dna_person,notes,tissue_type,extraction\n" +
+            "\"\",,,null_A01,A01,01A,BLANK_null_A01,,,,\n"           +
+            "\"\",,,null_B01,B01,01B,BLANK_null_B01,,,,\n"           +
+            "\"\",,,null_C01,C01,01C,BLANK_null_C01,,,,\n"           +
+            "\"\",,,null_A02,A02,02A,BLANK_null_A02,,,,\n"           +
+            "\"\",,,null_B02,B02,02B," + value + ",,,,\n"            +
+            "\"\",,,null_C02,C02,02C,BLANK_null_C02,,,,\n"           +
+            "\"\",,,null_A03,A03,03A,BLANK_null_A03,,,,\n"           +
+            "\"\",,,null_B03,B03,03B,BLANK_null_B03,,,,\n"           +
+            "\"\",,,null_C03,C03,03C,BLANK_null_C03,,,,\n"           ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+            {
+                final long gridId = 5;
+                joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ gridId      ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6,
+                    /* title => */ "testTitle"                                                  ,
+                    /* code  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+                joinedGridModel.makeEntryModels();
+                {
+                    final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
+                        new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, 2, 2);
+                    includedEntryModel.setValue(value);
+                    joinedGridModel.setEntryModel(includedEntryModel);
+                }
+            }
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+    // endregion
+
+    // region User-Defined export() Package Method Tests
+    @org.junit.Test public void emptyUserDefinedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString   = "Value,Column,Row\n"      ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6          ,
+                    /* title      => */ "testTitle",
+                    /* code       => */
+                        org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void blankUserDefinedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String expectedString =
+            "Value,Column,Row\n" +
+            "\"\",1,1\n"         +
+            "\"\",1,2\n"         +
+            "\"\",1,3\n"         +
+            "\"\",2,1\n"         +
+            "\"\",2,2\n"         +
+            "\"\",2,3\n"         +
+            "\"\",3,1\n"         +
+            "\"\",3,2\n"         +
+            "\"\",3,3\n"         ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5           ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6          ,
+                    /* title      => */ "testTitle",
+                    /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            joinedGridModel.makeEntryModels();
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void someUserDefinedExportSucceeds() throws java.io.IOException
+    {
+        final java.lang.String value          = "234.105";
+        final java.lang.String expectedString =
+            "Value,Column,Row\n" +
+                "\"\",1,1\n"     +
+                "\"\",1,2\n"     +
+                "\"\",1,3\n"     +
+                "\"\",2,1\n"     +
+            value + ",2,2\n"     +
+                "\"\",2,3\n"     +
+                "\"\",3,1\n"     +
+                "\"\",3,2\n"     +
+                "\"\",3,3\n"     ;
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+            {
+                final long gridId = 5;
+                joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ gridId      ,
+                    /* projectId      => */ 0           ,
+                    /* person         => */ "testPerson",
+                    /* activeRow      => */ 0           ,
+                    /* activeCol      => */ 0           ,
+                    /* optionalFields => */ null        ,
+                    /* timestamp      => */ 123         ,
+
+                    /* templateId => */ 6          ,
+                    /* title      => */ "testTitle",
+                    /* code       => */
+                        org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+                joinedGridModel.makeEntryModels();
+                {
+                    final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
+                        new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, 2, 2);
+                    includedEntryModel.setValue(value);
+                    joinedGridModel.setEntryModel(includedEntryModel);
+                }
+            }
+            joinedGridModel.export(stringWriter, "exportFileName",
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+    // endregion
+
+    // region exportFile export() Package Method Tests
     @org.junit.Test public void nullExportFileExportFails() throws java.io.IOException
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -349,7 +784,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* templateTimestamp            => */ 333         ,
 
                 /* entryModels                  => */ null        );
-        org.junit.Assert.assertFalse(joinedGridModel.export(null, "exportFileName",
+        org.junit.Assert.assertFalse(joinedGridModel.export((java.io.File) null, "exportFileName",
             new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper()));
     }
 
@@ -383,5 +818,6 @@ public class JoinedGridModelTest extends java.lang.Object
         org.junit.Assert.assertFalse(joinedGridModel.export(
             new java.io.File(""), "exportFileName", null));
     }
+    // endregion
     // endregion
 }
