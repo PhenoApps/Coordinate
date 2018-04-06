@@ -419,15 +419,15 @@ public class JoinedGridModelTest extends java.lang.Object
                 org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate();
             expectedString =
                 "tray_id,cell_id,tray_num,tray_column,tray_row,seed_id,person,date\n"           +
-                trayId + ",exportFileName_C01_R1,,1,1,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C01_R2,,1,2,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C01_R3,,1,3,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C02_R1,,2,1,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C02_R2,,2,2,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C02_R3,,2,3,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C03_R1,,3,1,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C03_R2,,3,2,BLANK_," + safePerson + "," + date + "\n" +
-                trayId + ",exportFileName_C03_R3,,3,3,BLANK_," + safePerson + "," + date + "\n" ;
+                trayId + ",exportFileName_C01_R1,,1,1,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C01_R2,,1,2,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C01_R3,,1,3,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C02_R1,,2,1,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C02_R2,,2,2,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C02_R3,,2,3,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C03_R1,,3,1,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C03_R2,,3,2,BLANK_," + safePerson + ',' + date + '\n' +
+                trayId + ",exportFileName_C03_R3,,3,3,BLANK_," + safePerson + ',' + date + '\n' ;
         }
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
         {
@@ -615,30 +615,31 @@ public class JoinedGridModelTest extends java.lang.Object
 
     @org.junit.Test public void optionalFieldsBlankDNAExportSucceeds() throws java.io.IOException
     {
-        final java.lang.String plateId = "45", plateName = "test", person = "John Doe", expectedString;
+        final java.lang.String plateId = "45", plateName = "test",
+            person = "John Doe", expectedString;
         {
             final java.lang.String safePerson = person.replace(' ', '_'), date =
                 org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate();
             expectedString =
                 "date,plate_id,plate_name,sample_id,well_A01,well_01A,t" +
                     "issue_id,dna_person,notes,tissue_type,extraction\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_A01,A01,01A,BLANK_" + plateId + "_A01," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_B01,B01,01B,BLANK_" + plateId + "_B01," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_C01,C01,01C,BLANK_" + plateId + "_C01," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_A02,A02,02A,BLANK_" + plateId + "_A02," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_B02,B02,02B,BLANK_" + plateId + "_B02," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_C02,C02,02C,BLANK_" + plateId + "_C02," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_A03,A03,03A,BLANK_" + plateId + "_A03," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_B03,B03,03B,BLANK_" + plateId + "_B03," + safePerson + ",,Leaf,CTAB\n" +
-                date + "," + plateId + "," + plateName + "," + plateId +
+                date + ',' + plateId + ',' + plateName + ',' + plateId +
                     "_C03,C03,03C,BLANK_" + plateId + "_C03," + safePerson + ",,Leaf,CTAB\n" ;
         }
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
@@ -819,6 +820,67 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* templateTimestamp            => */ 333 ,
 
                     /* entryModels => */ null);
+            joinedGridModel.makeEntryModels();
+            joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+        }
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+    }
+
+    @org.junit.Test public void optionalFieldsBlankUserDefinedExportSucceeds()
+    throws java.io.IOException
+    {
+        final java.lang.String identification = "alpha", person = "Jane Roe", expectedString;
+        {
+            final java.lang.String safePerson = person.replace(' ', '_'), date =
+                org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate();
+            expectedString =
+                "Value,Column,Row,Identification,Person,Date\n"                 +
+                "\"\",1,1," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",1,2," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",1,3," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,1," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,2," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,3," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,1," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,2," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,3," + identification + ',' + person + ',' + date + '\n' ;
+        }
+        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        {
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+            {
+                final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+                    optionalFields =
+                        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew(
+                            identification, person);
+                assert null != optionalFields;
+                joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                    /* id             => */ 5                      ,
+                    /* projectId      => */ 0                      ,
+                    /* person         => */ "testPerson"           ,
+                    /* activeRow      => */ 0                      ,
+                    /* activeCol      => */ 0                      ,
+                    /* optionalFields => */ optionalFields.toJson(),
+                    /* timestamp      => */ 123                    ,
+
+                    /* templateId => */ 6          ,
+                    /* title      => */ "testTitle",
+                    /* code       => */
+                        org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                    /* rows                         => */ 3   ,
+                    /* cols                         => */ 3   ,
+                    /* generatedExcludedCellsAmount => */ 0   ,
+                    /* initialExcludedCells         => */ null,
+                    /* excludedRows                 => */ null,
+                    /* excludedCols                 => */ null,
+                    /* colNumbering                 => */ 1   ,
+                    /* rowNumbering                 => */ 0   ,
+                    /* templateOptionalFields       => */ null,
+                    /* templateTimestamp            => */ 333 ,
+
+                    /* entryModels => */ null);
+            }
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
                 new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());

@@ -322,13 +322,35 @@ implements java.lang.Cloneable
     }
 
     // region Make Public Methods
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew(
+    final java.lang.String identification, final java.lang.String person)
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
-        result.add("Identification"); result.add("Person"); result.addDate();
+
+        {
+            final java.lang.String name = "Identification";
+            if (null != identification && identification.trim().length() > 0)
+                result.add(name, /* value => */ identification, /* hint => */ null);
+            else
+                result.add(name);
+        }
+        {
+            final java.lang.String name = "Person";
+            if (null != person && person.trim().length() > 0)
+                result.add(name, /* value => */ person, /* hint => */ null);
+            else
+                result.add(name);
+        }
+        result.addDate();
+
         return result;
     }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
+    { return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew(null, null); }
 
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
