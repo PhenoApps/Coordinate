@@ -8,9 +8,9 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.androidlibrary.Dir
  *
- * org.wheatgenetics.coordinate.Utils
- *
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
@@ -23,7 +23,7 @@ public class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
     private static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
-        @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+        @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
         private interface Client { public abstract void execute(); }
 
         // region Fields
@@ -60,7 +60,7 @@ public class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
             super.onPostExecute(result);
         }
 
-        @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
+        @java.lang.Override @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         boolean export()
@@ -122,7 +122,7 @@ public class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
     {
         super();
 
-        this.joinedGridModels = joinedGridModels; this.context        = context                 ;
+        this.joinedGridModels = joinedGridModels; this.context             = context            ;
         this.exportDir        = exportDir       ; this.exportDirectoryName = exportDirectoryName;
     }
 
@@ -158,7 +158,7 @@ public class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
                                             @java.lang.Override public void execute()
                                             {
                                                 org.wheatgenetics.coordinate.model.ProjectExporter
-                                                    .this.execute();
+                                                    .this.execute();                    // recursion
                                             }
                                         });
                             this.asyncTask.execute();

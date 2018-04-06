@@ -10,6 +10,7 @@ package org.wheatgenetics.coordinate.model;
  * android.os.AsyncTask
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
+ * android.support.annotation.StringRes
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -19,7 +20,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class Exporter extends java.lang.Object
 {
     abstract static class AsyncTask
@@ -38,8 +39,7 @@ abstract class Exporter extends java.lang.Object
         {
             class NoRunnable extends java.lang.Object implements java.lang.Runnable
             {
-                @java.lang.Override
-                public void run()
+                @java.lang.Override public void run()
                 { org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.share(); }
             }
 
@@ -63,10 +63,10 @@ abstract class Exporter extends java.lang.Object
         }
 
         // region Overridden Methods
-        @java.lang.Override
-        protected void onPreExecute() { super.onPreExecute(); this.progressDialog.show(); }
+        @java.lang.Override protected void onPreExecute()
+        { super.onPreExecute(); this.progressDialog.show(); }
 
-        @java.lang.Override @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
+        @java.lang.Override @java.lang.SuppressWarnings({"ResultOfMethodCallIgnored"})
         protected java.lang.Boolean doInBackground(final java.lang.Void... params)
         {
             if (null == this.exportFile)
@@ -101,8 +101,8 @@ abstract class Exporter extends java.lang.Object
         }
 
         // region android.content.DialogInterface.OnCancelListener Overridden Method
-        @java.lang.Override
-        public void onCancel(final android.content.DialogInterface dialog) { this.cancel(); }
+        @java.lang.Override public void onCancel(final android.content.DialogInterface dialog)
+        { this.cancel(); }
         // endregion
         // endregion
 
@@ -118,7 +118,7 @@ abstract class Exporter extends java.lang.Object
 
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        java.lang.String getString(final int resId)
+        java.lang.String getString(@android.support.annotation.StringRes final int resId)
         { assert null != this.context; return this.context.getString(resId); }
 
         void cancel() { this.cancel(/* mayInterruptIfRunning => */ true); }
@@ -170,8 +170,7 @@ abstract class Exporter extends java.lang.Object
             org.wheatgenetics.coordinate.Utils.alert(this.context,
                 org.wheatgenetics.coordinate.R.string.ExporterSuccessTitle, new java.lang.Runnable()
                 {
-                    @java.lang.Override
-                    public void run()
+                    @java.lang.Override public void run()
                     {
                         org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.confirm(
                             message, yesRunnable);
@@ -200,13 +199,13 @@ abstract class Exporter extends java.lang.Object
         // region GridExporter.AsyncTask, ProjectExporter.AsyncTask Package Method
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        void setMessage(final int resId) { this.message = this.getString(resId); }
+        void setMessage(@android.support.annotation.StringRes final int resId)
+        { this.message = this.getString(resId); }
         // endregion
         // endregion
     }
 
     // region Public Methods
-    public abstract void execute();
-    public abstract void cancel ();
+    public abstract void execute(); public abstract void cancel();
     // endregion
 }

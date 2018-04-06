@@ -21,7 +21,7 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
         { super(context, exportFile); this.templateModel = templateModel; }
 
         // region Overridden Methods
-        @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
+        @java.lang.Override @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         boolean export()

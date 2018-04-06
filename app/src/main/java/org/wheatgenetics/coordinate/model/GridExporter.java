@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.model;
 public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
 {
     // region Types
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Helper
     {
         public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel();
@@ -39,7 +39,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         { super(context, exportFile); this.exportFileName = exportFileName; this.helper = helper; }
 
         // region Overridden Methods
-        @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
+        @java.lang.Override @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         boolean export()
@@ -57,7 +57,8 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
                     if (joinedGridModel.export(                        // throws java.io.IOException
                     this.getExportFile(), this.exportFileName, this))
                         { this.makeExportFileDiscoverable(); return success; }
-                    return !success;
+                    else
+                        return !success;
                 }
                 catch (final java.io.IOException e)
                 {
@@ -72,11 +73,10 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void handleExportSuccess(final java.io.File exportFile)
         {
-            @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+            @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
             class YesRunnable extends java.lang.Object implements java.lang.Runnable
             {
-                @java.lang.Override
-                public void run()
+                @java.lang.Override public void run()
                 {
                     org.wheatgenetics.coordinate.model.GridExporter.AsyncTask.this.deleteGrid();
                     org.wheatgenetics.coordinate.model.GridExporter.AsyncTask.this.share     ();
@@ -88,8 +88,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
-        @java.lang.Override
-        public void publishProgress(final int col)
+        @java.lang.Override public void publishProgress(final int col)
         {
             this.publishProgress(this.getString(
                 org.wheatgenetics.coordinate.R.string.GridExporterProgressDialogMessage) + col);
