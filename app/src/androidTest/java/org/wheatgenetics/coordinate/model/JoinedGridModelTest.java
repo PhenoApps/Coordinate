@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
+ * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -23,9 +24,18 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class JoinedGridModelTest extends java.lang.Object
 {
+    // region Types
     private static class Helper extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     { @java.lang.Override public void publishProgress(final int col) {} }
+
+    private static class FilledHandler extends java.lang.Object
+    implements org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
+    {
+        @java.lang.Override public void handleFilledGrid    () {}
+        @java.lang.Override public void handleFilledRowOrCol() {}
+    }
+    // endregion
 
     @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void firstConstructorFails()
@@ -1178,5 +1188,211 @@ public class JoinedGridModelTest extends java.lang.Object
                 joinedGridModel.getElementModel(activeRow, activeCol),
             joinedGridModel.getActiveEntryModel());
     }
+
+    @org.junit.Test public void setActiveEntryModelWorks()
+    {
+        final int oldActiveRow = 0, oldActiveCol = 0;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ 5           ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ oldActiveRow,
+                /* activeCol      => */ oldActiveCol,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ 3   ,
+                /* cols                         => */ 3   ,
+                /* generatedExcludedCellsAmount => */ 0   ,
+                /* initialExcludedCells         => */ null,
+                /* excludedRows                 => */ null,
+                /* excludedCols                 => */ null,
+                /* colNumbering                 => */ 1   ,
+                /* rowNumbering                 => */ 0   ,
+                /* templateOptionalFields       => */ null,
+                /* templateTimestamp            => */ 333 ,
+
+                /* entryModels => */ null);
+        joinedGridModel.makeEntryModels();
+
+        org.junit.Assert.assertFalse(
+            joinedGridModel.setActiveRowAndActiveCol(oldActiveRow, oldActiveCol));
+
+        final int newActiveRow = 1;
+        org.junit.Assert.assertTrue(
+            joinedGridModel.setActiveRowAndActiveCol(newActiveRow, oldActiveCol));
+        org.junit.Assert.assertFalse(
+            joinedGridModel.setActiveRowAndActiveCol(newActiveRow, oldActiveCol));
+        org.junit.Assert.assertEquals((org.wheatgenetics.coordinate.model.EntryModel)
+                joinedGridModel.getElementModel(newActiveRow + 1, oldActiveCol + 1),
+            joinedGridModel.getActiveEntryModel());
+    }
+
+    // region goToNext() Public Method Tests
+    @org.junit.Test public void middleGoToNextDoes()
+    {
+        final long                                               gridId          = 5;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ gridId      ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ 0           ,
+                /* activeCol      => */ 0           ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ 3   ,
+                /* cols                         => */ 3   ,
+                /* generatedExcludedCellsAmount => */ 0   ,
+                /* initialExcludedCells         => */ null,
+                /* excludedRows                 => */ null,
+                /* excludedCols                 => */ null,
+                /* colNumbering                 => */ 1   ,
+                /* rowNumbering                 => */ 0   ,
+                /* templateOptionalFields       => */ null,
+                /* templateTimestamp            => */ 333 ,
+
+                /* entryModels => */ null);
+        joinedGridModel.makeEntryModels();
+
+        final int currentRow = 2, currentCol = 2;
+        org.junit.Assert.assertTrue(joinedGridModel.goToNext(
+            new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                gridId, currentRow, currentCol),
+            new org.wheatgenetics.coordinate.model.JoinedGridModelTest.FilledHandler()));
+
+        org.junit.Assert.assertEquals((org.wheatgenetics.coordinate.model.EntryModel)
+                joinedGridModel.getElementModel(currentRow + 1, currentCol),
+            joinedGridModel.getActiveEntryModel());
+    }
+
+    @org.junit.Test public void endGoToNextDoesNot()
+    {
+        final long                                               gridId          = 5               ;
+        final int                                                activeRow       = 0, activeCol = 0;
+        final int                                                rows            = 3, cols      = 3;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ gridId      ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ activeRow   ,
+                /* activeCol      => */ activeCol   ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ rows,
+                /* cols                         => */ cols,
+                /* generatedExcludedCellsAmount => */ 0   ,
+                /* initialExcludedCells         => */ null,
+                /* excludedRows                 => */ null,
+                /* excludedCols                 => */ null,
+                /* colNumbering                 => */ 1   ,
+                /* rowNumbering                 => */ 0   ,
+                /* templateOptionalFields       => */ null,
+                /* templateTimestamp            => */ 333 ,
+
+                /* entryModels => */ null);
+        joinedGridModel.makeEntryModels();
+
+        org.junit.Assert.assertFalse(joinedGridModel.goToNext(
+            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows, cols),
+            new org.wheatgenetics.coordinate.model.JoinedGridModelTest.FilledHandler()  ));
+
+        org.junit.Assert.assertEquals((org.wheatgenetics.coordinate.model.EntryModel)
+                joinedGridModel.getElementModel(activeRow + 1, activeCol + 1),
+            joinedGridModel.getActiveEntryModel());
+    }
+    // endregion
+
+    // region activeRowAndOrActiveColWasAdjusted() Public Method Tests
+    @org.junit.Test public void easyActiveRowAndOrActiveColWasAdjustedWorks()
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ 5           ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ 0           ,
+                /* activeCol      => */ 0           ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ 3   ,
+                /* cols                         => */ 3   ,
+                /* generatedExcludedCellsAmount => */ 0   ,
+                /* initialExcludedCells         => */ null,
+                /* excludedRows                 => */ null,
+                /* excludedCols                 => */ null,
+                /* colNumbering                 => */ 1   ,
+                /* rowNumbering                 => */ 0   ,
+                /* templateOptionalFields       => */ null,
+                /* templateTimestamp            => */ 333 ,
+
+                /* entryModels => */ null);
+        joinedGridModel.makeEntryModels();
+
+        joinedGridModel.setActiveRowAndActiveCol(0, 2);
+        org.junit.Assert.assertFalse(joinedGridModel.activeRowAndOrActiveColWasAdjusted());
+    }
+
+    @org.junit.Test public void hardActiveRowAndOrActiveColWasAdjustedWorks()
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+        {
+            final int                                          rows         = 3;
+            final org.wheatgenetics.coordinate.model.RowOrCols excludedRows =
+                new org.wheatgenetics.coordinate.model.RowOrCols(rows);
+            excludedRows.add(1);
+            joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ 5           ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ 0           ,
+                /* activeCol      => */ 0           ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ rows               ,
+                /* cols                         => */ 3                  ,
+                /* generatedExcludedCellsAmount => */ 0                  ,
+                /* initialExcludedCells         => */ null               ,
+                /* excludedRows                 => */ excludedRows.json(),
+                /* excludedCols                 => */ null               ,
+                /* colNumbering                 => */ 1                  ,
+                /* rowNumbering                 => */ 0                  ,
+                /* templateOptionalFields       => */ null               ,
+                /* templateTimestamp            => */ 333                ,
+
+                /* entryModels => */ null);
+        }
+        joinedGridModel.makeEntryModels();
+
+        joinedGridModel.setActiveRowAndActiveCol(0, 2);
+        org.junit.Assert.assertTrue(joinedGridModel.activeRowAndOrActiveColWasAdjusted());
+    }
+    // endregion
     // endregion
 }
