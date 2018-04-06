@@ -363,20 +363,47 @@ implements java.lang.Cloneable
             null, null);
     }
 
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault(
+    final java.lang.String plateId, final java.lang.String plateName, final java.lang.String person)
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
 
-        result.add    ("Plate"                             , /* hint => */ "Plate ID"); // TODO: dna
-        result.add    ("Plate Name"                                                  );
-        result.add    ("Notes"                                                       );
-        result.add    ("tissue_type", /* value => */ "Leaf", /* hint => */ ""        );
-        result.add    ("extraction" , /* value => */ "CTAB", /* hint => */ ""        );
-        result.add    ("person"                                                      );
-        result.addDate(                                                              );
+        {
+            final java.lang.String name = "Plate", hint = "Plate ID";
+            if (null != plateId && plateId.trim().length() > 0)
+                result.add(name, /* value => */ plateId, hint);
+            else
+                result.add(name, hint);                                                 // TODO: dna
+        }
+        {
+            final java.lang.String name = "Plate Name";
+            if (null != plateName && plateName.trim().length() > 0)
+                result.add(name, /* value => */ plateName, /* hint => */ null);
+            else
+                result.add(name);
+        }
+        result.add("Notes"                                               );
+        result.add("tissue_type", /* value => */ "Leaf", /* hint => */ "");
+        result.add("extraction" , /* value => */ "CTAB", /* hint => */ "");
+        {
+            final java.lang.String name = "person";
+            if (null != person && person.trim().length() > 0)
+                result.add(name, /* value => */ person, /* hint => */ null);
+            else
+                result.add(name);
+        }
+        result.addDate();
 
         return result;
+    }
+
+    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()
+    {
+        return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeDNADefault(
+            null, null, null);
     }
     // endregion
     // endregion
