@@ -37,6 +37,7 @@ public class EntryModelsTest extends java.lang.Object
     // endregion
 
     // region Package Method Tests
+    // region makeExcludedEntry() Package Method Tests
     @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
     public void makeExcludedEntryFails()
     { new org.wheatgenetics.coordinate.model.EntryModels(1, 5, 5).makeExcludedEntry(50, 1); }
@@ -61,7 +62,9 @@ public class EntryModelsTest extends java.lang.Object
         org.junit.Assert.assertEquals(row, excludedEntryModel.getRow());
         org.junit.Assert.assertEquals(col, excludedEntryModel.getCol());
     }
+    // endregion
 
+    // region makeIncludedEntry() Package Method Tests
     @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
     public void makeIncludedEntryFails()
     { new org.wheatgenetics.coordinate.model.EntryModels(1, 5, 5).makeIncludedEntry(5, 10); }
@@ -86,7 +89,9 @@ public class EntryModelsTest extends java.lang.Object
         org.junit.Assert.assertEquals(row, includedEntryModel.getRow());
         org.junit.Assert.assertEquals(col, includedEntryModel.getCol());
     }
+    // endregion
 
+    // region excludedCells() Package Method Tests
     @org.junit.Test public void emptyExcludedCellsWorks()
     {
         final org.wheatgenetics.coordinate.model.Cells       expectedCells;
@@ -118,7 +123,9 @@ public class EntryModelsTest extends java.lang.Object
         }
         org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
+    // endregion
 
+    // region next() Package Method Tests
     @org.junit.Test public void allIncludedNextSucceeds()
     {
         final long                                           gridId = 1          ;
@@ -211,6 +218,7 @@ public class EntryModelsTest extends java.lang.Object
         org.junit.Assert.assertEquals (4, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
     }
+    // endregion
     // endregion
 
     // region Public Method Tests
