@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -244,6 +245,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+
+    @android.support.annotation.VisibleForTesting(
+        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    int size() { return null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size(); }
     // endregion
 
     // region Public Methods

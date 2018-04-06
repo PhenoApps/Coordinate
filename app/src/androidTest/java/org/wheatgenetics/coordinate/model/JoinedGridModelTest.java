@@ -323,7 +323,6 @@ public class JoinedGridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedCells, joinedGridModel.excludedCellsFromEntries());
     }
     // endregion
-    // endregion
 
     // region export() Package Method Tests
     // region SEED export() Package Method Tests
@@ -1008,6 +1007,107 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* entryModels                  => */ null        );
         org.junit.Assert.assertFalse(joinedGridModel.export(
             new java.io.File(""), "exportFileName", null));
+    }
+    // endregion
+    // endregion
+    // endregion
+
+    // region Public Method Tests
+    // region makeEntryModels() Public Method Tests
+    @org.junit.Test public void noneGeneratedMakeEntryModelWorks()
+    {
+        final org.wheatgenetics.coordinate.model.Cells           expectedCells  ;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+        {
+            final org.wheatgenetics.coordinate.model.Cells     initialExcludedCells      ;
+            final org.wheatgenetics.coordinate.model.RowOrCols excludedRows, excludedCols;
+            final int                                          rows = 3    , cols = 3    ;
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(
+                /* maxRow => */ rows, /* maxCols => */ cols);
+            {
+                final int excludedRow = 1, excludedCol = 1;
+                expectedCells.add(excludedRow, 1); expectedCells.add(1, excludedCol);
+                expectedCells.add(excludedRow, 2); expectedCells.add(2, excludedCol);
+                expectedCells.add(excludedRow, 3); expectedCells.add(3, excludedCol);
+
+                excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(rows);
+                excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(cols);
+                excludedRows.add(excludedRow); excludedCols.add(excludedCol);
+            }
+            {
+                final int excludedCellRow = 3, excludedCellCol = 3;
+                expectedCells.add(excludedCellRow, excludedCellCol);
+
+                initialExcludedCells = new org.wheatgenetics.coordinate.model.Cells(
+                    /* maxRow => */ rows, /* maxCols => */ cols);
+                initialExcludedCells.add(excludedCellRow, excludedCellCol);
+            }
+            joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ 5           ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ 0           ,
+                /* activeCol      => */ 0           ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ rows                       ,
+                /* cols                         => */ cols                       ,
+                /* generatedExcludedCellsAmount => */ 0                          ,
+                /* initialExcludedCells         => */ initialExcludedCells.json(),
+                /* excludedRows                 => */ excludedRows.json()        ,
+                /* excludedCols                 => */ excludedCols.json()        ,
+                /* colNumbering                 => */ 1                          ,
+                /* rowNumbering                 => */ 0                          ,
+                /* templateOptionalFields       => */ null                       ,
+                /* templateTimestamp            => */ 333                        ,
+
+                /* entryModels => */ null);
+        }
+        joinedGridModel.makeEntryModels();
+        org.junit.Assert.assertTrue(expectedCells.equals(
+            joinedGridModel.excludedCellsFromEntries()));
+    }
+
+    @org.junit.Test public void twoGeneratedMakeEntryModelWorks()
+    {
+        final int                                                generatedExcludedCellsAmount = 2;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel                 ;
+        {
+            final int rows = 3, cols = 3;
+            joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id             => */ 5           ,
+                /* projectId      => */ 0           ,
+                /* person         => */ "testPerson",
+                /* activeRow      => */ 0           ,
+                /* activeCol      => */ 0           ,
+                /* optionalFields => */ null        ,
+                /* timestamp      => */ 123         ,
+
+                /* templateId => */ 6          ,
+                /* title      => */ "testTitle",
+                /* code       => */
+                    org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode(),
+                /* rows                         => */ rows                        ,
+                /* cols                         => */ cols                        ,
+                /* generatedExcludedCellsAmount => */ generatedExcludedCellsAmount,
+                /* initialExcludedCells         => */ null                        ,
+                /* excludedRows                 => */ null                        ,
+                /* excludedCols                 => */ null                        ,
+                /* colNumbering                 => */ 1                           ,
+                /* rowNumbering                 => */ 0                           ,
+                /* templateOptionalFields       => */ null                        ,
+                /* templateTimestamp            => */ 333                         ,
+
+                /* entryModels => */ null);
+        }
+        joinedGridModel.makeEntryModels();
+        org.junit.Assert.assertEquals(generatedExcludedCellsAmount,
+            joinedGridModel.excludedCellsFromEntries().size());
     }
     // endregion
     // endregion
