@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
+ * android.support.annotation.RawRes
  * android.support.test.InstrumentationRegistry
  *
  * org.junit.After
@@ -16,7 +17,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Database
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class DatabaseTest extends java.lang.Object
 {
     // region Constants
@@ -45,8 +46,11 @@ public class DatabaseTest extends java.lang.Object
     private static int logInfo(final int a, final int e)
     { return android.util.Log.i("DatabaseTest", java.lang.String.format("'%c'|'%c'", a, e)); }
 
-    private static void testTable(final java.lang.String name,
-    final android.database.sqlite.SQLiteDatabase db, final int id) throws java.io.IOException
+    private static void testTable(
+                                       final java.lang.String                       name,
+                                       final android.database.sqlite.SQLiteDatabase db  ,
+    @android.support.annotation.RawRes final int                                    id  )
+    throws java.io.IOException
     {
         final java.io.StringReader actual;
         {
@@ -90,7 +94,7 @@ public class DatabaseTest extends java.lang.Object
     }
     // endregion
 
-    @java.lang.SuppressWarnings("ResultOfMethodCallIgnored")
+    @java.lang.SuppressWarnings({"ResultOfMethodCallIgnored"})
     void cleanFilesystem()
     {
         final java.io.File parent = this.databaseFile.getParentFile();
@@ -104,12 +108,11 @@ public class DatabaseTest extends java.lang.Object
         }
     }
 
-    // region Public Methods
     @org.junit.Before public void setUp() { this.cleanFilesystem(); }
 
+    // region db() Tests
     /** nullContextDb() must be run before nonNullContextDb(). */
-    @org.junit.Test(expected = java.lang.NullPointerException.class)
-    public void nullContextDb()
+    @org.junit.Test(expected = java.lang.NullPointerException.class) public void nullContextDb()
     {
         org.junit.Assert.assertFalse(this.databaseFile.exists());
         org.junit.Assert.assertFalse(this.journalFile.exists ());
@@ -120,8 +123,7 @@ public class DatabaseTest extends java.lang.Object
     }
 
     /** nonNullContextDb() must be run after nullContextDb(). */
-    @org.junit.Test
-    public void nonNullContextDb() throws java.io.IOException
+    @org.junit.Test public void nonNullContextDb() throws java.io.IOException
     {
         final android.database.sqlite.SQLiteDatabase db =
             org.wheatgenetics.coordinate.database.Database.db(
@@ -137,7 +139,7 @@ public class DatabaseTest extends java.lang.Object
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable("entries",
             db, org.wheatgenetics.coordinate.R.raw.create_entries_table);
     }
+    // endregion
 
     @org.junit.After public void tearDown() { this.cleanFilesystem(); }
-    // endregion
 }

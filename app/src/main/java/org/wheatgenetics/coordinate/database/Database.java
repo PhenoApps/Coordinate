@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.sqlite.SQLiteDatabase
  * android.database.sqlite.SQLiteOpenHelper
+ * android.support.annotation.RawRes
  * android.support.annotation.VisibleForTesting
  * android.util.Log
  *
@@ -15,7 +16,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.R
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase dbInstance = null;
@@ -38,7 +39,8 @@ class Database extends java.lang.Object
                 private int logWarning(final java.lang.String msg)
                 { return android.util.Log.w("SQLiteOpenHelper", msg); }
 
-                private org.w3c.dom.NodeList statementNodeList(final int id)
+                private org.w3c.dom.NodeList statementNodeList(
+                @android.support.annotation.RawRes final int id)
                 {
                     final org.w3c.dom.Document document;
                     {

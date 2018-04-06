@@ -11,13 +11,13 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.coordinate.model.Model
+ * _org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
  *
  * org.wheatgenetics.coordinate.database.DatabaseTest
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class TableTest extends java.lang.Object
 {
     /**
@@ -42,13 +42,11 @@ public class TableTest extends java.lang.Object
         { return null; }
     }
 
-    @org.junit.Test
-    public void secondConstructorSucceeds()
+    @org.junit.Test public void secondConstructorSucceeds()
     { new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable(); }
 
     // region Package External Operation Tests
-    @org.junit.Test
-    public void whereClauseSucceeds()
+    @org.junit.Test public void whereClauseSucceeds()
     {
         final long id = 45;
         org.junit.Assert.assertEquals(
@@ -56,8 +54,7 @@ public class TableTest extends java.lang.Object
             org.wheatgenetics.coordinate.database.Table.whereClause(id)           );
     }
 
-    @org.junit.Test
-    public void ascendingQueryAll()
+    @org.junit.Test public void ascendingQueryAll()
     {
         final android.database.Cursor cursor =
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable().queryAll(
@@ -66,23 +63,23 @@ public class TableTest extends java.lang.Object
         try
         {
             org.junit.Assert.assertEquals     (cursor.getColumnCount(), 5);
-            org.junit.Assert.assertArrayEquals(cursor.getColumnNames(),
-                new java.lang.String[] { "type", "name", "tbl_name", "rootpage", "sql" });
+            org.junit.Assert.assertArrayEquals(
+                new java.lang.String[]{"type", "name", "tbl_name", "rootpage", "sql"},
+                cursor.getColumnNames()                                              );
             org.junit.Assert.assertEquals(cursor.getCount(), 8);
 
-            java.lang.String firstName, lastName;
+            final java.lang.String firstRowName, lastRowName;
             {
                 final int nameColumnIndex = 1;
-                cursor.moveToFirst(); firstName = cursor.getString(nameColumnIndex);
-                cursor.moveToLast (); lastName  = cursor.getString(nameColumnIndex);
+                cursor.moveToFirst(); firstRowName = cursor.getString(nameColumnIndex);
+                cursor.moveToLast (); lastRowName  = cursor.getString(nameColumnIndex);
             }
-            org.junit.Assert.assertTrue(firstName.compareTo(lastName) < 0);
+            org.junit.Assert.assertTrue(firstRowName.compareTo(lastRowName) < 0);
         }
         finally { cursor.close(); }
     }
 
-    @org.junit.Test
-    public void descendingQueryAll()
+    @org.junit.Test public void descendingQueryAll()
     {
         final android.database.Cursor cursor =
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable().queryAll(
@@ -90,21 +87,20 @@ public class TableTest extends java.lang.Object
         org.junit.Assert.assertNotNull(cursor);
         try
         {
-            final java.lang.String firstName, lastName;
+            final java.lang.String firstRowName, lastRowName;
             {
                 final int nameColumnIndex = 1;
-                cursor.moveToFirst(); firstName = cursor.getString(nameColumnIndex);
-                cursor.moveToLast (); lastName  = cursor.getString(nameColumnIndex);
+                cursor.moveToFirst(); firstRowName = cursor.getString(nameColumnIndex);
+                cursor.moveToLast (); lastRowName  = cursor.getString(nameColumnIndex);
             }
-            org.junit.Assert.assertTrue(firstName.compareTo(lastName) > 0);
+            org.junit.Assert.assertTrue(firstRowName.compareTo(lastRowName) > 0);
         }
         finally { cursor.close(); }
     }
 
-    @org.junit.Test
-    public void rawQuerySucceeds()
+    @org.junit.Test public void rawQuerySucceeds()
     {
-        android.database.Cursor firstCursor = null, secondCursor = null;
+        final android.database.Cursor firstCursor, secondCursor;
         {
             final org.wheatgenetics.coordinate.database.TableTest.ConcreteTable concreteTable =
                 new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable();
@@ -118,7 +114,7 @@ public class TableTest extends java.lang.Object
 
         try
         {
-            org.junit.Assert.assertEquals(firstCursor.getCount() , 1);
+            org.junit.Assert.assertEquals(firstCursor.getCount (), 1);
             org.junit.Assert.assertEquals(secondCursor.getCount(), 1);
 
             firstCursor.moveToFirst(); secondCursor.moveToFirst();
@@ -127,8 +123,7 @@ public class TableTest extends java.lang.Object
         finally { firstCursor.close(); secondCursor.close(); }
     }
 
-    @org.junit.Test
-    public void queryDistinctSucceeds()
+    @org.junit.Test public void queryDistinctSucceeds()
     {
         final org.wheatgenetics.coordinate.database.TableTest.ConcreteTable concreteTable =
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable();
@@ -148,8 +143,7 @@ public class TableTest extends java.lang.Object
         }
     }
 
-    @org.junit.Test
-    public void existsFailsAndSucceeds()
+    @org.junit.Test public void existsFailsAndSucceeds()
     {
         org.junit.Assert.assertFalse(org.wheatgenetics.coordinate.database.Table.exists(null));
 
@@ -157,21 +151,17 @@ public class TableTest extends java.lang.Object
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable().queryAll(null);
         org.junit.Assert.assertNotNull(cursor);
         try
-        {
-            org.junit.Assert.assertTrue(org.wheatgenetics.coordinate.database.Table.exists(cursor));
-        }
+        { org.junit.Assert.assertTrue(org.wheatgenetics.coordinate.database.Table.exists(cursor)); }
         finally { cursor.close(); }
     }
 
-    @org.junit.Test
-    public void nullCursorMakeFromFirstReturnsNull()
+    @org.junit.Test public void nullCursorMakeFromFirstReturnsNull()
     {
         org.junit.Assert.assertNull(new
             org.wheatgenetics.coordinate.database.TableTest.ConcreteTable().makeFromFirst(null));
     }
 
-    @org.junit.Test
-    public void getContentValuesForInsertSucceeds()
+    @org.junit.Test public void getContentValuesForInsertSucceeds()
     {
         org.junit.Assert.assertNotNull(
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable()
@@ -179,7 +169,6 @@ public class TableTest extends java.lang.Object
     }
     // endregion
 
-    @org.junit.After
-    public void tearDown()
+    @org.junit.After public void tearDown()
     { new org.wheatgenetics.coordinate.database.DatabaseTest().cleanFilesystem(); }
 }

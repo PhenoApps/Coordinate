@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
+ * android.support.annotation.CallSuper
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.VisibleForTesting
@@ -15,7 +16,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Database
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class Table extends java.lang.Object
 {
     static final java.lang.String ID_FIELD_NAME = "_id";
@@ -170,6 +171,7 @@ abstract class Table extends java.lang.Object
             finally { cursor.close();                                                            }
     }
 
+    @android.support.annotation.CallSuper
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model)
