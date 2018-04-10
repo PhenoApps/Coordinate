@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.support.annotation.DrawableRes
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.view.View
@@ -11,10 +12,10 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Element extends java.lang.Object implements android.view.View.OnClickListener
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler
     { public abstract void toggle(org.wheatgenetics.coordinate.model.ElementModel elementModel); }
 
@@ -58,7 +59,7 @@ public abstract class Element extends java.lang.Object implements android.view.V
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void setBackgroundResource(final int resId)
+    protected void setBackgroundResource(@android.support.annotation.DrawableRes final int resId)
     { assert null != this.textView; this.textView.setBackgroundResource(resId); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)

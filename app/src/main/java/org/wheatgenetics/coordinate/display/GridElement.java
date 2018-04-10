@@ -19,7 +19,7 @@ package org.wheatgenetics.coordinate.display;
 class GridElement extends org.wheatgenetics.coordinate.Element
 implements android.view.View.OnLongClickListener
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler extends org.wheatgenetics.coordinate.Element.Handler
     { public abstract void activate(org.wheatgenetics.coordinate.display.GridElement gridElement); }
 
@@ -46,11 +46,13 @@ implements android.view.View.OnLongClickListener
     final org.wheatgenetics.coordinate.model.EntryModel            entryModel,
     final android.widget.TextView                                  textView  ,
     final org.wheatgenetics.coordinate.display.GridElement.Handler handler   ,
-    final int activeRow, final int activeCol)
+          int activeRow,                                       int activeCol )
     {
         super(entryModel, textView, handler);
         this.context = context;
 
+        activeRow = java.lang.Math.max(activeRow, -1);
+        activeCol = java.lang.Math.max(activeCol, -1);
         if (this.getRow() == activeRow && this.getCol() == activeCol
         ||  -1            == activeRow && -1            == activeCol)
             this.activate();
@@ -65,16 +67,14 @@ implements android.view.View.OnLongClickListener
     // region Overridden Methods
     @java.lang.Override protected void respondToClick() { this.activate(); }
 
-    @java.lang.Override
-    protected void setBackgroundResource()
+    @java.lang.Override protected void setBackgroundResource()
     {
         this.setBackgroundResource(((org.wheatgenetics.coordinate.model.EntryModel)
             this.elementModel).backgroundResource());
     }
 
     // region android.view.View.OnLongClickListener Overridden Method
-    @java.lang.Override
-    public boolean onLongClick(final android.view.View v)
+    @java.lang.Override public boolean onLongClick(final android.view.View v)
     {
         if (this.elementModelIsNotNull())
         {
@@ -98,8 +98,7 @@ implements android.view.View.OnLongClickListener
                             includedEntryModel.getValue()),
                         /* yesRunnable => */ new java.lang.Runnable()
                             {
-                                @java.lang.Override
-                                public void run()
+                                @java.lang.Override public void run()
                                 { org.wheatgenetics.coordinate.display.GridElement.this.exclude(); }
                             });
                 }

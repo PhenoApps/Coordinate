@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.tc;
  */
 class TemplateElement extends org.wheatgenetics.coordinate.Element
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler extends org.wheatgenetics.coordinate.Element.Handler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
@@ -23,11 +23,10 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
     { super(cell, textView, handler); this.setBackgroundResource(); this.setOnClickListener(); }
 
     // region Overridden Methods
-    @java.lang.Override
-    protected void respondToClick() { this.toggle(); this.setBackgroundResource(); }
+    @java.lang.Override protected void respondToClick()
+    { this.toggle(); this.setBackgroundResource(); }
 
-    @java.lang.Override
-    protected void setBackgroundResource()
+    @java.lang.Override protected void setBackgroundResource()
     {
         final boolean excluded = ((org.wheatgenetics.coordinate.tc.TemplateElement.Handler)
             this.getHandler()).isExcluded(
