@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.display;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.IntRange
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -19,7 +20,9 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
     private int activeRow, activeCol;
 
-    GridElements(final android.app.Activity activity, final int rows, final int cols,
+    GridElements(final android.app.Activity activity,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols,
     final int activeRow, final int activeCol,
     final org.wheatgenetics.coordinate.display.GridElement.Handler handler)
     {
@@ -42,8 +45,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
             /* activeCol  => */ this.activeCol                                              );
     }
 
-    @java.lang.Override
-    protected void clear() { super.clear(); this.activeRow = this.activeCol = -1; }
+    @java.lang.Override protected void clear()
+    { super.clear(); this.activeRow = this.activeCol = -1; }
 
     // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Method
     @java.lang.Override
@@ -70,6 +73,10 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     // endregion
     // endregion
 
-    void allocate(final int rows, final int cols, final int activeRow, final int activeCol)
+    /** Note: Overloaded, not overridden. */
+    void allocate(
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols,
+    final int activeRow, final int activeCol)
     { this.allocate(rows, cols); this.activeRow = activeRow; this.activeCol = activeCol; }
 }

@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.IntRange
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.Cell
@@ -16,7 +17,9 @@ package org.wheatgenetics.coordinate.tc;
  */
 class TemplateElements extends org.wheatgenetics.coordinate.Elements
 {
-    TemplateElements(final android.app.Activity activity, final int rows, final int cols,
+    TemplateElements(final android.app.Activity activity,
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols,
     final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler)
     { super(activity, handler); this.allocate(rows, cols); }
 

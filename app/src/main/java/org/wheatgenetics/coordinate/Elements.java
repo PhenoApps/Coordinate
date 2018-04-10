@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.view.LayoutInflater
@@ -14,8 +15,9 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Element
  * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Elements extends java.lang.Object
 implements org.wheatgenetics.coordinate.Element.Handler
 {
@@ -31,6 +33,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
     protected abstract org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    );
+
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected android.app.Activity getActivity() { return this.activity; }
@@ -86,6 +89,12 @@ implements org.wheatgenetics.coordinate.Element.Handler
     }
     // endregion
 
-    public void allocate(final int rows, final int cols)
-    { this.elementArray = new org.wheatgenetics.coordinate.Element[rows][cols]; }
+    public void allocate(
+    @android.support.annotation.IntRange(from = 1) final int rows,
+    @android.support.annotation.IntRange(from = 1) final int cols)
+    {
+        this.elementArray = new org.wheatgenetics.coordinate.Element
+            [org.wheatgenetics.coordinate.Utils.valid(rows, 1)]
+            [org.wheatgenetics.coordinate.Utils.valid(cols, 1)];
+    }
 }
