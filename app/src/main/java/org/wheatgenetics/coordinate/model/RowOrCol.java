@@ -5,7 +5,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  *
- * org.wheatgenetics.coordinate.model.Utils
+ * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
@@ -14,7 +14,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
 
     // region Constructors
     RowOrCol(@android.support.annotation.IntRange(from = 1) final int value)
-    { super(); this.value = org.wheatgenetics.coordinate.model.Utils.valid(value, 1); }
+    { super(); this.value =  org.wheatgenetics.coordinate.Utils.valid(value, 1); }
 
     RowOrCol(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
     { this(rowOrCol.getValue()); }

@@ -12,9 +12,10 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.TemplateType
- * org.wheatgenetics.coordinate.model.Utils
  */
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
@@ -29,10 +30,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     // region Private Methods
     private void setRows(final int rows)
-    { this.rows = org.wheatgenetics.coordinate.model.Utils.valid(rows, 1); }
+    { this.rows = org.wheatgenetics.coordinate.Utils.valid(rows, 1); }
 
     private void setCols(final int cols)
-    { this.cols = org.wheatgenetics.coordinate.model.Utils.valid(cols, 1); }
+    { this.cols = org.wheatgenetics.coordinate.Utils.valid(cols, 1); }
 
 
     /** Called by first and second constructor. */
@@ -208,10 +209,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     public void setGeneratedExcludedCellsAmount(
     @android.support.annotation.IntRange(from = 0) final int amount)
-    {
-        this.generatedExcludedCellsAmount =
-            org.wheatgenetics.coordinate.model.Utils.valid(amount, 0);
-    }
+    { this.generatedExcludedCellsAmount = org.wheatgenetics.coordinate.Utils.valid(amount, 0); }
 
 
     public boolean getColNumbering()                           { return this.colNumbering        ; }

@@ -6,9 +6,10 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.Utils
  */
 public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Model
 implements org.wheatgenetics.coordinate.model.ElementModel
@@ -29,8 +30,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
         super();
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
-        this.row       = org.wheatgenetics.coordinate.model.Utils.valid(row, 1);
-        this.col       = org.wheatgenetics.coordinate.model.Utils.valid(col, 1);
+        this.row       = org.wheatgenetics.coordinate.Utils.valid(row, 1)      ;
+        this.col       = org.wheatgenetics.coordinate.Utils.valid(col, 1)      ;
         this.timestamp = java.lang.System.currentTimeMillis()                  ;
     }
 
@@ -45,8 +46,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
         super(id);
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
-        this.row       = org.wheatgenetics.coordinate.model.Utils.valid(row, 1);
-        this.col       = org.wheatgenetics.coordinate.model.Utils.valid(col, 1);
+        this.row       = org.wheatgenetics.coordinate.Utils.valid(row, 1)      ;
+        this.col       = org.wheatgenetics.coordinate.Utils.valid(col, 1)      ;
         this.timestamp = timestamp                                             ;
     }
 

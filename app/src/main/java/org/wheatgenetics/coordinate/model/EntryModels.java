@@ -4,12 +4,13 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  *
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.Utils
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class EntryModels extends java.lang.Object
@@ -38,8 +39,8 @@ public class EntryModels extends java.lang.Object
 
         this.gridId          = org.wheatgenetics.coordinate.model.Model.valid(gridId);
         this.entryModelArray = new org.wheatgenetics.coordinate.model.EntryModel
-            [org.wheatgenetics.coordinate.model.Utils.valid(rows, 1)]
-            [org.wheatgenetics.coordinate.model.Utils.valid(cols, 1)];
+            [org.wheatgenetics.coordinate.Utils.valid(rows, 1)]
+            [org.wheatgenetics.coordinate.Utils.valid(cols, 1)];
     }
 
     // region Package Methods

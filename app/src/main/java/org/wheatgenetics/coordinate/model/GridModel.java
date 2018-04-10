@@ -8,10 +8,11 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.Utils
  */
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
@@ -62,8 +63,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
         this.person = person;
 
-        this.activeRow = org.wheatgenetics.coordinate.model.Utils.valid(activeRow, 0);
-        this.activeCol = org.wheatgenetics.coordinate.model.Utils.valid(activeCol, 0);
+        this.activeRow = org.wheatgenetics.coordinate.Utils.valid(activeRow, 0);
+        this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol, 0);
 
         if (null != optionalFields) optionalFields = optionalFields.trim();
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
@@ -77,11 +78,11 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // region Package Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveRow(@android.support.annotation.IntRange(from = 0) final int activeRow)
-    { this.activeRow = org.wheatgenetics.coordinate.model.Utils.valid(activeRow, 0); }
+    { this.activeRow = org.wheatgenetics.coordinate.Utils.valid(activeRow, 0); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveCol(@android.support.annotation.IntRange(from = 0) final int activeCol)
-    { this.activeCol = org.wheatgenetics.coordinate.model.Utils.valid(activeCol, 0); }
+    { this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol, 0); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     java.lang.CharSequence getFormattedTimestamp()
