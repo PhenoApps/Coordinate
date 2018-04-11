@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate;
  * org.junit.Assert
  * org.junit.Test
  *
+ * android.support.test.InstrumentationRegistry
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -35,6 +36,7 @@ public class ElementTest extends java.lang.Object
     }
 
     // region Protected Method Tests
+    // region setOnClickListener() Protected Method Tests
     @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void setOnClickListenerFails()
     {
@@ -42,6 +44,17 @@ public class ElementTest extends java.lang.Object
             null, null, null).setOnClickListener();
     }
 
+    @org.junit.Test public void setOnClickListenerSucceeds()
+    {
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            /* elementModel => */ null,
+            /* textView     => */ new android.widget.TextView(
+                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* handler => */ null).setOnClickListener();
+    }
+    // endregion
+
+    // region clearOnClickListener() Protected Method Tests
     @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void clearOnClickListenerFails()
     {
@@ -49,6 +62,17 @@ public class ElementTest extends java.lang.Object
             null, null, null).clearOnClickListener();
     }
 
+    @org.junit.Test public void clearOnClickListenerSucceeds()
+    {
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            /* elementModel => */ null,
+            /* textView     => */ new android.widget.TextView(
+                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* handler => */ null).clearOnClickListener();
+    }
+    // endregion
+
+    // region setOnLongClickListener() Protected Method Tests
     @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void setOnLongClickListenerFails()
     {
@@ -56,12 +80,33 @@ public class ElementTest extends java.lang.Object
             null, null, null).setOnLongClickListener(null);
     }
 
+    @org.junit.Test public void setOnLongClickListenerSucceeds()
+    {
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            /* elementModel => */ null,
+            /* textView     => */ new android.widget.TextView(
+                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* handler => */ null).setOnLongClickListener(null);
+    }
+    // endregion
+
+    // region clearOnLongClickListener() Protected Method Tests
     @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void clearOnLongClickListenerFails()
     {
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             null, null, null).clearOnLongClickListener();
     }
+
+    @org.junit.Test public void clearOnLongClickListenerSucceeds()
+    {
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            /* elementModel => */ null,
+            /* textView     => */ new android.widget.TextView(
+                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* handler => */ null).clearOnLongClickListener();
+    }
+    // endregion
 
     @org.junit.Test public void getHandlerWorks()
     {
@@ -106,6 +151,9 @@ public class ElementTest extends java.lang.Object
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             null, null, null).setBackgroundResource(55);
     }
+
+    @org.junit.Test(expected = java.lang.NullPointerException.class) public void toggleFails()
+    { new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(null, null, null).toggle(); }
     // endregion
 
     // region Public MethodTests
