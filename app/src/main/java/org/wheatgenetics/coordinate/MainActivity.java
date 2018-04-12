@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate;
  * android.media.MediaPlayer
  * android.os.Bundle
  * android.os.ParcelFileDescriptor
+ * android.support.annotation.IntDef
  * android.support.design.widget.NavigationView
  * android.support.v4.app.FragmentManager
  * android.support.v4.view.GravityCompat
@@ -80,7 +81,13 @@ org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
-    private final static int CREATE_TEMPLATE = 10, IMPORT_TEMPLATE = 20, CREATE_GRID = 30;
+    private static final int CREATE_TEMPLATE = 10, IMPORT_TEMPLATE = 20, CREATE_GRID = 30;
+
+    @android.support.annotation.IntDef({
+        org.wheatgenetics.coordinate.MainActivity.CREATE_TEMPLATE,
+        org.wheatgenetics.coordinate.MainActivity.IMPORT_TEMPLATE,
+        org.wheatgenetics.coordinate.MainActivity.CREATE_GRID    })
+    @java.lang.annotation.Documented public @interface RequestCode {}
 
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;

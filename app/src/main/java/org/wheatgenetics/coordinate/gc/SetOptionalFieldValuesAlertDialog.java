@@ -20,7 +20,7 @@ package org.wheatgenetics.coordinate.gc;
  */
 class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler
     {
         public abstract void setPerson(java.lang.String person);
@@ -82,8 +82,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     final org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setCancelableToFalse()
             .setPositiveButton(org.wheatgenetics.coordinate
@@ -91,10 +90,10 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
             .setCancelNegativeButton();
     }
 
-    @java.lang.SuppressWarnings("Convert2Diamond")
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     void show(final java.lang.String title,
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
-    final boolean firstCannotBeEmpty)
+    final boolean                                                          firstCannotBeEmpty   )
     {
         this.setTitle(title);
 
@@ -115,7 +114,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
 
 
                 assert null != checkedOptionalFields;
-                assert null != layoutInflater; assert null != linearLayout;
+                assert null != layoutInflater       ; assert null != linearLayout;
                 for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
                 baseOptionalField: checkedOptionalFields)
                 {
@@ -158,8 +157,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
         if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
             new android.view.View.OnClickListener()
             {
-                @java.lang.Override
-                public void onClick(final android.view.View view)
+                @java.lang.Override public void onClick(final android.view.View view)
                 {
                     org.wheatgenetics.coordinate.gc
                         .SetOptionalFieldValuesAlertDialog.this.setValues();
