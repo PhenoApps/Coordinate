@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.pc;
  */
 class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler
     { public abstract boolean handleCreateProjectDone(java.lang.String projectTitle); }
 
@@ -46,8 +46,7 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     { super(activity); this.handler = handler; }
 
     // region Overridden Methods
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogTitle);
 
@@ -68,15 +67,13 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
         this.setOKPositiveButton().setCancelNegativeButton();
     }
 
-    @java.lang.Override
-    public void show()
+    @java.lang.Override public void show()
     {
         super.show();
         if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
             new android.view.View.OnClickListener()
             {
-                @java.lang.Override
-                public void onClick(final android.view.View view)
+                @java.lang.Override public void onClick(final android.view.View view)
                 { org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.this.createProject(); }
             });
     }

@@ -11,10 +11,10 @@ package org.wheatgenetics.coordinate.pc;
  * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
  * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectCreator extends java.lang.Object
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler { public abstract void handleCreateProjectDone(long projectId); }
 
     // region Fields
