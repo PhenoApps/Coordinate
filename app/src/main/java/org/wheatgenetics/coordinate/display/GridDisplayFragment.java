@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.display;
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.IntRange
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
@@ -10,13 +11,13 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.DisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.display.GridElement
- * org.wheatgenetics.coordinate.display.GridElements
  * org.wheatgenetics.coordinate.display.GridElement.Handler
+ * org.wheatgenetics.coordinate.display.GridElements
  */
 public class GridDisplayFragment extends org.wheatgenetics.coordinate.DisplayFragment
 implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler extends org.wheatgenetics.coordinate.DisplayFragment.Handler
     {
         public abstract int getActiveRow(); public abstract int getActiveCol();
@@ -26,21 +27,25 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     public GridDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings("PointlessBooleanExpression")
-    protected boolean setHandler(final android.content.Context context)
+    @java.lang.Override protected boolean setHandler(final android.content.Context context)
     {
-        final boolean success = true;
+        final boolean success;
+
         if (context instanceof org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler)
         {
             this.handler =
                 (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) context;
-            return success;
+            success = true;
         }
-        else return !success;
+        else success = false;
+
+        return success;
     }
 
     @java.lang.Override
-    protected void allocateElements(final int lastRow, final int lastCol)
+    protected void allocateElements(
+    @android.support.annotation.IntRange(from = 1) final int lastRow,
+    @android.support.annotation.IntRange(from = 1) final int lastCol)
     {
         final int activeRow, activeCol;
         {

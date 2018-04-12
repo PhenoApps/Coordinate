@@ -3,10 +3,10 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.IntRange
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.ElementModel
- * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.DisplayFragment
  * org.wheatgenetics.coordinate.DisplayFragment.Handler
@@ -17,27 +17,32 @@ package org.wheatgenetics.coordinate.tc;
 public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.DisplayFragment
 implements org.wheatgenetics.coordinate.tc.TemplateElement.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler extends org.wheatgenetics.coordinate.DisplayFragment.Handler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     public TemplateDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @java.lang.Override
-    protected boolean setHandler(final android.content.Context context)
+    @java.lang.Override protected boolean setHandler(final android.content.Context context)
     {
-        final boolean success = true;
-        if (context instanceof org.wheatgenetics.coordinate.DisplayFragment.Handler)
+        final boolean success;
+
+        if (context instanceof org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler)
         {
-            this.handler = (org.wheatgenetics.coordinate.DisplayFragment.Handler) context;
-            return success;
+            this.handler =
+                (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) context;
+            success = true;
         }
-        else return !success;
+        else success = false;
+
+        return success;
     }
 
     @java.lang.Override
-    protected void allocateElements(final int lastRow, final int lastCol)
+    protected void allocateElements(
+    @android.support.annotation.IntRange(from = 1) final int lastRow,
+    @android.support.annotation.IntRange(from = 1) final int lastCol)
     {
         if (null == this.elements)
             this.elements = new org.wheatgenetics.coordinate.tc.TemplateElements(

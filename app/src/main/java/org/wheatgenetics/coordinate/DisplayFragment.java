@@ -2,10 +2,10 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
- * android.annotation.SuppressLint
  * android.app.Activity
  * android.content.Context
  * android.os.Bundle
+ * android.support.annotation.IntRange
  * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
@@ -26,7 +26,7 @@ package org.wheatgenetics.coordinate;
  */
 public abstract class DisplayFragment extends android.support.v4.app.Fragment
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler
     {
         public abstract org.wheatgenetics.coordinate.model.DisplayModel         getDisplayModel();
@@ -44,7 +44,9 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     protected abstract boolean setHandler(final android.content.Context context);
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected abstract void allocateElements(final int lastRow, final int lastCol);
+    protected abstract void allocateElements(
+    @android.support.annotation.IntRange(from = 1) final int lastRow,
+    @android.support.annotation.IntRange(from = 1) final int lastCol);
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
@@ -52,8 +54,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    public void onAttach(final android.content.Context context)
+    @java.lang.Override public void onAttach(final android.content.Context context)
     {
         super.onAttach(context);
 
@@ -86,8 +87,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
         this.populate();
     }
 
-    @java.lang.Override
-    public void onDetach() { this.handler = null; super.onDetach(); }
+    @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
     // endregion
 
     public void populate()
@@ -108,7 +108,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
 
             // region Populate header row.
             {
-                @android.annotation.SuppressLint("InflateParams")
+                @java.lang.SuppressWarnings({"InflateParams"})
                 final android.widget.TableRow tableRow =
                     (android.widget.TableRow) layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.display_table_row, null);
@@ -117,7 +117,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                           byte    offsetFromA  = 0                             ;
                     assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     {
-                        @android.annotation.SuppressLint("InflateParams")
+                        @java.lang.SuppressWarnings({"InflateParams"})
                         final android.widget.LinearLayout tableCell =
                             (android.widget.LinearLayout) layoutInflater.inflate(
                                 org.wheatgenetics.coordinate.R.layout.top_display_table_cell, null);
@@ -156,14 +156,14 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                   byte    offsetFromA  = 0                             ;
             for (int row = 1; row <= lastRow; row++)
             {
-                @android.annotation.SuppressLint("InflateParams")
+                @java.lang.SuppressWarnings({"InflateParams"})
                 final android.widget.TableRow tableRow =
                     (android.widget.TableRow) layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.display_table_row, null);
                 assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     if (0 == col)
                     {
-                        @android.annotation.SuppressLint("InflateParams")
+                        @java.lang.SuppressWarnings({"InflateParams"})
                         final android.widget.LinearLayout tableCell =
                             (android.widget.LinearLayout) layoutInflater.inflate(
                                 org.wheatgenetics.coordinate.R.layout.left_display_table_cell,
