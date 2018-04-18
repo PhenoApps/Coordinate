@@ -4,12 +4,14 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  *
+ * org.wheatgenetics.coordinate.MainActivity.RequestCode
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
  * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class SetExcludesOptionalFieldsNumberingAlertDialogTester extends java.lang.Object
 implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
 {
@@ -23,15 +25,18 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
     // endregion
 
     public SetExcludesOptionalFieldsNumberingAlertDialogTester(final android.app.Activity activity,
-    final int requestCode, final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    @org.wheatgenetics.coordinate.MainActivity.RequestCode final int requestCode,
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         super();
-        this.activity = activity; this.requestCode = requestCode; this.templateModel = templateModel;
+
+        this.activity      = activity     ;
+        this.requestCode   = requestCode  ;
+        this.templateModel = templateModel;
     }
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler Overridden Method
-    @java.lang.Override
-    public void handleSetDone()
+    @java.lang.Override public void handleSetDone()
     {
         assert null != this.setExcludesOptionalFieldsNumberingAlertDialog;
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);

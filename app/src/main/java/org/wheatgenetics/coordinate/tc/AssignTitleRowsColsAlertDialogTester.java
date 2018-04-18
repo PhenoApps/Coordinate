@@ -9,11 +9,11 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class AssignTitleRowsColsAlertDialogTester extends java.lang.Object
 implements org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler { public abstract void handleAssignDone(); }
 
     // region Fields
@@ -34,8 +34,8 @@ implements org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handle
         this.activity = activity; this.templateModel = templateModel; this.handler = handler;
     }
 
-    @java.lang.Override
-    public void handleAssignDone() { assert null != this.handler; this.handler.handleAssignDone(); }
+    @java.lang.Override public void handleAssignDone()
+    { assert null != this.handler; this.handler.handleAssignDone(); }
 
     public void testAssignTitleRowsCols()
     {

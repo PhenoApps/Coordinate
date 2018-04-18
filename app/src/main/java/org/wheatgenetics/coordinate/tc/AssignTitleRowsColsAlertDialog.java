@@ -17,9 +17,10 @@ package org.wheatgenetics.coordinate.tc;
 class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
-                   interface Handler     { public abstract void handleAssignDone(); }
-    private static class     Unspecified extends java.lang.Exception {}
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    interface Handler { public abstract void handleAssignDone(); }
+
+    private static class Unspecified extends java.lang.Exception {}
     // endregion
 
     // region Fields
@@ -64,7 +65,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
                 final int rows =
                     org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
                         this.rowsEditText);          // throws org.wheatgenetics.coordinate.tc
-                 try                                 //  .AssignTitleRowsColsAlertDialog.Unspecified
+                try                                  //  .AssignTitleRowsColsAlertDialog.Unspecified
                 {
                     final int cols =
                         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
@@ -95,8 +96,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
     final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.AssignTitleRowsColsAlertDialogTitle);
 
@@ -137,8 +137,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
                 new android.view.View.OnClickListener()
                 {
-                    @java.lang.Override
-                    public void onClick(final android.view.View view)
+                    @java.lang.Override public void onClick(final android.view.View view)
                     {
                         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
                             .this.assignTemplate();

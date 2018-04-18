@@ -4,11 +4,13 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  *
+ * org.wheatgenetics.coordinate.MainActivity.RequestCode
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ExcludeAlertDialogTester extends java.lang.Object
 {
     // region Fields
@@ -19,11 +21,15 @@ public class ExcludeAlertDialogTester extends java.lang.Object
     private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog excludeAlertDialog = null;
     // endregion
 
-    public ExcludeAlertDialogTester(final android.app.Activity activity, final int requestCode,
+    public ExcludeAlertDialogTester(final android.app.Activity activity,
+    @org.wheatgenetics.coordinate.MainActivity.RequestCode final int requestCode,
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         super();
-        this.activity = activity; this.requestCode = requestCode; this.templateModel = templateModel;
+
+        this.activity      = activity     ;
+        this.requestCode   = requestCode  ;
+        this.templateModel = templateModel;
     }
 
     public void testExclude()

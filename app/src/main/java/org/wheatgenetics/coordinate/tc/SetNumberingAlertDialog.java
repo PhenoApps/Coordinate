@@ -32,8 +32,7 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 
     SetNumberingAlertDialog(final android.app.Activity activity) { super(activity); }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.SetNumberingAlertDialogTitle)
             .setCancelableToFalse();

@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
+ * org.wheatgenetics.coordinate.MainActivity.RequestCode
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -70,7 +71,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         return this.intentInstance;
     }
 
-    private void exclude(final int which)
+    private void select(final int which)
     {
         switch (which)
         {
@@ -127,24 +128,24 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     }
     // endregion
 
-    ExcludeAlertDialog(final android.app.Activity activity, final int requestCode)
+    ExcludeAlertDialog(final android.app.Activity activity,
+    @org.wheatgenetics.coordinate.MainActivity.RequestCode final int requestCode)
     { super(activity); this.requestCode = requestCode; }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogTitle)
-            .setItems(new int[] {
-                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRowsItem   ,
-                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogColsItem   ,
-                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogCellsItem  ,
-                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRandomItem },
+            .setItems(new int[]{
+                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRowsItem  ,
+                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogColsItem  ,
+                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogCellsItem ,
+                    org.wheatgenetics.coordinate.R.string.ExcludeAlertDialogRandomItem},
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override
                     public void onClick(final android.content.DialogInterface dialog,
                     final int which)
-                    { org.wheatgenetics.coordinate.tc.ExcludeAlertDialog.this.exclude(which); }
+                    { org.wheatgenetics.coordinate.tc.ExcludeAlertDialog.this.select(which); }
                 })
             .setCancelNegativeButton();
     }

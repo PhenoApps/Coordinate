@@ -24,7 +24,7 @@ package org.wheatgenetics.coordinate.tc;
 public class ExcludeCellsActivity extends android.support.v7.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 {
-    @java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+    @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
     private static class DisplayModel extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.DisplayModel
     {
@@ -68,22 +68,21 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     // endregion
 
     // region Private Methods
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isExcludedRow(final int row)
     { return null == this.excludedRows ? false : this.excludedRows.contains(row); }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isExcludedCol(final int col)
     { return null == this.excludedCols ? false : this.excludedCols.contains(col); }
 
-    @java.lang.SuppressWarnings("SimplifiableConditionalExpression")
+    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     private boolean isExcludedCell(final org.wheatgenetics.coordinate.model.Cell cell)
     { return null == this.excludedCells ? false : this.excludedCells.contains(cell); }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    protected void onCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_exclude_cells);
@@ -117,15 +116,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
             /* maxValue => */ cols);
     }
 
-    @java.lang.Override
-    protected void onStart()
+    @java.lang.Override protected void onStart()
     {
         super.onStart();
         org.wheatgenetics.androidlibrary.Utils.showLongToast(this, "Press \"Back\" when done.");
     }
 
-    @java.lang.Override
-    public void onBackPressed()
+    @java.lang.Override public void onBackPressed()
     {
         {
             final android.content.Intent intent = new android.content.Intent();
@@ -143,8 +140,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     }
 
     // region org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler Overridden Methods
-    @java.lang.Override
-    public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
+    @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.displayModel; }
 
     @java.lang.Override
@@ -161,7 +157,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         }
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     public boolean isExcluded(final org.wheatgenetics.coordinate.model.Cell cell)
     {
         assert null != cell;

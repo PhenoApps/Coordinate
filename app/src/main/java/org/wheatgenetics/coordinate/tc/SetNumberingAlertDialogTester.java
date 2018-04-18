@@ -5,8 +5,10 @@ package org.wheatgenetics.coordinate.tc;
  * android.app.Activity
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
+ *
+ * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class SetNumberingAlertDialogTester extends java.lang.Object
 {
     // region Fields
