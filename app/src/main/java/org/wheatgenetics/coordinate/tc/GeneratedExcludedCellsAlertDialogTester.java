@@ -8,7 +8,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class GeneratedExcludedCellsAlertDialogTester extends java.lang.Object
 {
     // region Fields

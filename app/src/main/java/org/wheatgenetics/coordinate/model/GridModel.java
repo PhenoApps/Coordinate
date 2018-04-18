@@ -97,7 +97,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     public int              getActiveCol () { return this.activeCol ; }
     public long             getTimestamp () { return this.timestamp ; }
 
-    // region OptionalFields Public Methods
+    // region optionalFields Public Methods
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 

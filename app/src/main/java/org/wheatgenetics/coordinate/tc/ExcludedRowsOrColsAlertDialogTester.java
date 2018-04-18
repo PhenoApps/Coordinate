@@ -11,16 +11,16 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
  * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
 {
     // region Fields
     private final android.app.Activity                             activity     ;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private java.lang.String rowLabel = null, colLabel = null;
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
         excludedRowsAlertDialog = null, excludedColsAlertDialog = null;
+    private java.lang.String rowLabel = null, colLabel = null;
     // endregion
 
     // region Private Methods
@@ -59,8 +59,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
                 org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
                 new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                 {
-                    @java.lang.Override
-                    public void excludeRowsOrCols(final boolean checkedItems[])
+                    @java.lang.Override public void excludeRowsOrCols(final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
                             .ExcludedRowsOrColsAlertDialogTester.this.excludeRows(checkedItems);
@@ -86,8 +85,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
                 org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
                 new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                 {
-                    @java.lang.Override
-                    public void excludeRowsOrCols(final boolean checkedItems[])
+                    @java.lang.Override public void excludeRowsOrCols(final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
                             .ExcludedRowsOrColsAlertDialogTester.this.excludeCols(checkedItems);

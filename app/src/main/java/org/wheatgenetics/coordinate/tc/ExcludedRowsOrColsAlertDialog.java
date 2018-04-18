@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
  *
@@ -14,7 +15,7 @@ package org.wheatgenetics.coordinate.tc;
 class ExcludedRowsOrColsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler { public abstract void excludeRowsOrCols(boolean checkedItems[]); }
 
     // region Fields
@@ -27,7 +28,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     private void excludeRowsOrCols(final boolean checkedItems[])
     { assert null != this.handler; this.handler.excludeRowsOrCols(checkedItems); }
 
-    ExcludedRowsOrColsAlertDialog(final android.app.Activity activity, final int label,
+    ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
+    @android.support.annotation.StringRes final int label,
     final org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 

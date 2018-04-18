@@ -25,7 +25,7 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel    ;
     // endregion
 
-    private void excludeCells()
+    private void setGeneratedExcludedCellsAmount()
     {
         final int amount = org.wheatgenetics.javalib.Utils.convert(
             org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
@@ -48,8 +48,7 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
 
     GeneratedExcludedCellsAlertDialog(final android.app.Activity activity) { super(activity); }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setTitle(org.wheatgenetics.coordinate.R.string.GeneratedExcludedCellsAlertDialogTitle)
             .setCancelableToFalse();
@@ -92,11 +91,10 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
                 new android.view.View.OnClickListener()
                 {
-                    @java.lang.Override
-                    public void onClick(final android.view.View view)
+                    @java.lang.Override public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.tc
-                            .GeneratedExcludedCellsAlertDialog.this.excludeCells();
+                        org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
+                            .this.setGeneratedExcludedCellsAmount();
                     }
                 });
         }
