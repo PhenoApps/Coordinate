@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate;
  * android.content.res.Resources
  * android.os.Bundle
  * android.support.annotation.NonNull
+ * android.support.annotation.StringRes
  * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
  * android.view.MenuItem
  * android.view.View.OnClickListener
@@ -38,19 +39,20 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.MainActivity.RequestCode
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings("ClassExplicitlyExtendsObject")
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
 org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 {
     // region Types
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler
     {
         public abstract void             createGrid               ();
@@ -64,7 +66,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             org.wheatgenetics.coordinate.model.TemplateModel templateModel,
             java.lang.String                                 fileName     );
 
-        public abstract long getProjectModelId   ();
+        public abstract long getProjectId        ();
         public abstract void loadProject         (long projectId);
         public abstract void clearProject        ();
         public abstract void handleProjectDeleted(long projectId);
@@ -141,7 +143,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
-    private void showLongToast(final int text)
+    private void showLongToast(@android.support.annotation.StringRes final int text)
     { assert null != this.activity; this.showLongToast(this.activity.getString(text)); }
     // endregion
 
@@ -149,7 +151,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private void showShortToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.activity, text); }
 
-    private void showShortToast(final int text)
+    private void showShortToast(@android.support.annotation.StringRes final int text)
     { assert null != this.activity; this.showShortToast(this.activity.getString(text)); }
     // endregion
     // endregion
@@ -170,7 +172,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     // region Template Private Methods
     // region Delete Template Private Methods
-    @java.lang.SuppressWarnings("SimplifiableIfStatement")
+    @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     private void deleteTemplateAfterConfirm(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
@@ -218,8 +220,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 .R.string.NavigationItemSelectedListenerDeleteTemplateConfirmationMessage,
             /* yesRunnable => */ new java.lang.Runnable()
                 {
-                    @java.lang.Override
-                    public void run()
+                    @java.lang.Override public void run()
                     {
                         org.wheatgenetics.coordinate.NavigationItemSelectedListener
                             .this.deleteTemplateAfterConfirm(templateModel);
@@ -272,8 +273,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     case DELETE: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void select(final int which)
+                            @java.lang.Override public void select(final int which)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                     .this.deleteTemplateAfterSelect(templateModels.get(which));
@@ -283,8 +283,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     case EXPORT: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void select(final int which)
+                            @java.lang.Override public void select(final int which)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                     .this.exportTemplateAfterSelect(templateModels.get(which));
@@ -298,7 +297,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
             }
 
-            final int title;
+            @android.support.annotation.StringRes final int title;
             switch (templateOperation)
             {
                 case DELETE: title = org.wheatgenetics.coordinate.R.string
@@ -382,8 +381,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
             /* yesRunnable => */ new java.lang.Runnable()
             {
-                @java.lang.Override
-                public void run()
+                @java.lang.Override public void run()
                 {
                     org.wheatgenetics.coordinate.NavigationItemSelectedListener
                         .this.deleteProjectAfterConfirm(projectModel);
@@ -393,7 +391,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Export Project Private Methods
-    private void exportProject(final java.lang.String directoryName)
+    private void exportProjectAfterGettingDirectoryName(final java.lang.String directoryName)
     {
         assert null != this.handler;
         this.handler.exportProject(this.exportProjectId, directoryName);
@@ -415,7 +413,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                             public void handleGetFileNameDone(final java.lang.String fileName)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
-                                    .this.exportProject(fileName);
+                                    .this.exportProjectAfterGettingDirectoryName(fileName);
                             }
                         });
             this.exportProjectId = projectModel.getId();
@@ -433,8 +431,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         {
             case LOAD:
                 assert null != this.handler;
-                projectModels =
-                    this.projectsTable().loadExceptFor(this.handler.getProjectModelId());
+                projectModels = this.projectsTable().loadExceptFor(this.handler.getProjectId());
                 break;
 
             case DELETE: projectModels = this.projectsTable().load                 (); break;
@@ -452,8 +449,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     case LOAD: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void select(final int which)
+                            @java.lang.Override public void select(final int which)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                     .this.loadProjectAfterSelect(projectModels.get(which));
@@ -463,8 +459,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     case DELETE: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void select(final int which)
+                            @java.lang.Override public void select(final int which)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                     .this.deleteProjectAfterSelect(projectModels.get(which));
@@ -474,8 +469,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     case EXPORT: handler =
                         new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void select(final int which)
+                            @java.lang.Override public void select(final int which)
                             {
                                 org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                     .this.exportProjectAfterSelect(projectModels.get(which));
@@ -489,7 +483,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
             }
 
-            final int title;
+            @android.support.annotation.StringRes final int title;
             switch (projectOperation)
             {
                 case LOAD: title = org.wheatgenetics.coordinate.R.string
@@ -513,7 +507,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     NavigationItemSelectedListener(final android.app.Activity activity,
-    final int createTemplateRequestCode, final int importTemplateRequestCode,
+    @org.wheatgenetics.coordinate.MainActivity.RequestCode final int createTemplateRequestCode,
+    @org.wheatgenetics.coordinate.MainActivity.RequestCode final int importTemplateRequestCode,
     final java.lang.String versionName, final boolean soundOn,
     final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
     final android.view.View.OnClickListener                    versionOnClickListener)
@@ -530,8 +525,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     // region Overridden Methods
     // region android.support.design.widget.NavigationView.OnNavigationItemSelectedListener Overridden Method
-    @java.lang.Override
-    public boolean onNavigationItemSelected(
+    @java.lang.Override public boolean onNavigationItemSelected(
     @android.support.annotation.NonNull final android.view.MenuItem item)
     {
         // Handle navigation view item clicks here.
@@ -552,8 +546,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                             new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
                                 new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                                 {
-                                    @java.lang.Override
-                                    public void select(final int which)
+                                    @java.lang.Override public void select(final int which)
                                     {
                                         org.wheatgenetics.coordinate.NavigationItemSelectedListener
                                             .this.loadGridAfterSelect(joinedGridModels.get(which));
@@ -572,8 +565,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         .R.string.NavigationItemSelectedListenerDeleteGridConfirmation,
                     /* yesRunnable => */ new java.lang.Runnable()
                         {
-                            @java.lang.Override
-                            public void run()
+                            @java.lang.Override public void run()
                             {
                                 org.wheatgenetics.coordinate
                                     .NavigationItemSelectedListener.this.deleteGrid();
@@ -686,8 +678,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
-    @java.lang.Override
-    public void handleTemplateCreated(
+    @java.lang.Override public void handleTemplateCreated(
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)

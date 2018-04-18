@@ -389,7 +389,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region Project Private Methods
-    private long getProjectModelId()
+    private long getProjectId()
     { return null == this.projectModel ? 0 : this.projectModel.getId(); }
 
     private void handleProjectDeleted(final long projectId)
@@ -669,10 +669,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
                                         @java.lang.Override
-                                        public long getProjectModelId()
+                                        public long getProjectId()
                                         {
                                             return org.wheatgenetics.coordinate
-                                                .MainActivity.this.getProjectModelId();
+                                                .MainActivity.this.getProjectId();
                                         }
 
                                         @java.lang.Override
