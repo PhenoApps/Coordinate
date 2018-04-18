@@ -27,7 +27,7 @@ package org.wheatgenetics.coordinate;
 public class DataEntryFragment extends android.support.v4.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler
     {
         public abstract java.lang.String getEntryValue   ();
@@ -51,8 +51,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     public DataEntryFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @java.lang.Override
-    public void onAttach(final android.content.Context context)
+    @java.lang.Override public void onAttach(final android.content.Context context)
     {
         super.onAttach(context);
 
@@ -74,8 +73,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
             org.wheatgenetics.coordinate.R.layout.fragment_data_entry, container, false);
     }
 
-    @java.lang.Override
-    public void onActivityCreated(
+    @java.lang.Override public void onActivityCreated(
     @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
@@ -101,16 +99,14 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
         this.populate();
     }
 
-    @java.lang.Override
-    public void onDetach() { this.handler = null; super.onDetach(); }
+    @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
 
     // region org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver Overridden Methods
-    @java.lang.Override
-    public void receiveText(final java.lang.String text)
+    @java.lang.Override public void receiveText(final java.lang.String text)
     { assert null != this.handler; this.handler.saveEntry(text); }
 
-    @java.lang.Override
-    public void clearText() { assert null != this.handler; this.handler.clearEntry(); }
+    @java.lang.Override public void clearText()
+    { assert null != this.handler; this.handler.clearEntry(); }
     // endregion
     // endregion
 

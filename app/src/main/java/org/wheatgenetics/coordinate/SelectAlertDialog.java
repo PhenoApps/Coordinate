@@ -5,12 +5,13 @@ package org.wheatgenetics.coordinate;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.ItemsAlertDialog
  */
 public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler { public abstract void select(int which); }
 
     private final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
@@ -22,8 +23,7 @@ public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAle
     final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    @java.lang.Override
-    public void configure()
+    @java.lang.Override public void configure()
     {
         this.setOnClickListener(new android.content.DialogInterface.OnClickListener()
             {
@@ -33,6 +33,6 @@ public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAle
             });
     }
 
-    public void show(final int title, final java.lang.String items[])
-    { this.setTitle(title); this.show(items); }
+    public void show(@android.support.annotation.StringRes final int title,
+    final java.lang.String items[]) { this.setTitle(title); this.show(items); }
 }
