@@ -93,9 +93,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, exportGridMenuItem,
-        templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, loadProjectMenuItem,
-        clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem, turnSoundOnMenuItem,
-        turnSoundOffMenuItem;
+        templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem,
+        loadProjectMenuItem, clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem,
+        turnSoundOnMenuItem, turnSoundOffMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
@@ -190,10 +190,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void configureTemplateMenuItems()
     {
         {
-            final java.lang.StringBuilder stringBuilder;
+            final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
+                this.getString(org.wheatgenetics.coordinate.R.string.template));
             {
-                stringBuilder = new java.lang.StringBuilder(
-                    this.getString(org.wheatgenetics.coordinate.R.string.template));
                 final java.lang.String templateTitle = this.getTemplateTitle();
                 if (templateTitle.length() > 0) stringBuilder.append(": ").append(templateTitle);
             }
@@ -217,6 +216,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         {
             final boolean projectModelIsLoaded = null != this.projectModel;
+
+            {
+                final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
+                    this.getString(org.wheatgenetics.coordinate.R.string.project));
+                if (projectModelIsLoaded)
+                {
+                    final java.lang.String projectTitle = this.projectModel.getTitle();
+                    if (projectTitle.length() > 0) stringBuilder.append(": ").append(projectTitle);
+                }
+                assert null != this.projectMenuItem;
+                this.projectMenuItem.setTitle(stringBuilder.toString());
+            }
 
             assert null != this.loadProjectMenuItem;
             if (projectsExists)
@@ -752,6 +763,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 this.exportTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_template);
 
+                this.projectMenuItem = menu.findItem(org.wheatgenetics.coordinate.R.id.nav_project);
                 this.loadProjectMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_load_project);
                 this.clearProjectMenuItem =

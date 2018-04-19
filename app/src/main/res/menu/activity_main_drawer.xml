@@ -51,7 +51,7 @@
         </menu>
     </item>
 
-    <item android:title="@string/project">
+    <item android:title="@string/project" android:id="@+id/nav_project">
         <menu>
             <group>
                 <item
