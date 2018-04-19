@@ -768,14 +768,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
             // endregion
 
-            // region Load joinedGridModel and projectModel.
+            // region Load projectModel and joinedGridModel.
+            if (this.sharedPreferences.projectIdIsSet())
+                this.loadProjectModel(this.sharedPreferences.getProjectId());
+
             if (this.sharedPreferences.gridIdIsSet())
                 this.loadJoinedGridModel(this.sharedPreferences.getGridId());
             else
                 if (null == savedInstanceState) this.createGrid();
-
-            if (this.sharedPreferences.projectIdIsSet())
-                this.loadProjectModel(this.sharedPreferences.getProjectId());
             // endregion
 
             // region Set version.
