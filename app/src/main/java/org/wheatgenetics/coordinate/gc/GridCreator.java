@@ -390,8 +390,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         final java.lang.String items[];
         {
             final java.lang.String
-                firstItem  = "Don't put this grid in a project.",
-                secondItem = "Create then select new project."  ;
+                firstItem  = "Don't put this grid in a project."       ,
+                secondItem = "Create project then put this grid in it.";
             if (null == this.projectModel)
                 items = new java.lang.String[]{firstItem, secondItem};
             else
