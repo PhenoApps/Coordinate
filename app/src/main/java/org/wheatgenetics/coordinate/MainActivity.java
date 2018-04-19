@@ -267,15 +267,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void configureNavHeaderMain()
     {
-        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
-        this.setPersonTextViewText(joinedGridModelIsLoaded ? this.joinedGridModel.getPerson() : "");
+        this.setPersonTextViewText(
+            null == this.joinedGridModel ? "" : this.joinedGridModel.getPerson());
 
-        final boolean projectModelIsLoaded = null != this.projectModel;
-        if (projectModelIsLoaded)
-            this.setTitleTextViewText(this.projectModel.getTitle());
+        if (null == this.projectModel)
+            this.setTitleTextViewText(this.getTemplateTitle());
         else
-            this.setTitleTextViewText(
-                joinedGridModelIsLoaded ? this.joinedGridModel.getTemplateTitle() : "");
+            this.setTitleTextViewText(this.projectModel.getTitle());
     }
     // endregion
 
