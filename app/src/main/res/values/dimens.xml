@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- nav_header_main.xml: -->
-    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_height">114dp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
     <dimen name="large_text_size">20sp</dimen>
 </resources>

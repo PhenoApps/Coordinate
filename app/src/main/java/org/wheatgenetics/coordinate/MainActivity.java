@@ -279,25 +279,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             person                                                 );
     }
 
-    private void setTitleTextViewText(final java.lang.String title)
-    {
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.titleTextView,            // From nav_header_main.xml.
-            title                                          );
-        this.setTextViewText(
-            org.wheatgenetics.coordinate.R.id.sw600dpTitleTextView,     // From nav_header_main.xml.
-            title                                                 );
-    }
-
     private void configureNavHeaderMain()
     {
         this.setPersonTextViewText(
             null == this.joinedGridModel ? "" : this.joinedGridModel.getPerson());
-
-        if (null == this.projectModel)
-            this.setTitleTextViewText(this.getTemplateTitle());
-        else
-            this.setTitleTextViewText(this.projectModel.getTitle());
     }
     // endregion
 
