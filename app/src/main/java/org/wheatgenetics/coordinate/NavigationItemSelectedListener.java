@@ -55,11 +55,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler
     {
-        public abstract void             createGrid               ();
-        public abstract void             loadGrid                 (long gridId);
-        public abstract void             deleteGrid               ();
-        public abstract java.lang.String initialGridExportFileName();
-        public abstract void             exportGrid               (java.lang.String fileName);
+        public abstract void             createGrid                  ();
+        public abstract void             loadGrid                    (long gridId);
+        public abstract void             deleteGrid                  ();
+        public abstract java.lang.String getInitialGridExportFileName();
+        public abstract void             exportGrid                  (java.lang.String fileName);
 
         public abstract void handleGridDeleted();
         public abstract void exportTemplate   (
@@ -588,7 +588,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                             });
                 assert null != this.handler;
                 this.getGridExportFileNameAlertDialog.show(
-                    this.handler.initialGridExportFileName());
+                    this.handler.getInitialGridExportFileName());
                 break;
 
 

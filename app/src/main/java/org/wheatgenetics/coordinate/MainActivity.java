@@ -9,7 +9,9 @@ package org.wheatgenetics.coordinate;
  * android.media.MediaPlayer
  * android.os.Bundle
  * android.os.ParcelFileDescriptor
+ * android.support.annotation.IdRes
  * android.support.annotation.IntDef
+ * android.support.annotation.StringRes
  * android.support.design.widget.NavigationView
  * android.support.v4.app.FragmentManager
  * android.support.v4.view.GravityCompat
@@ -51,7 +53,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
- * org.wheatgenetics.coordinate.model.Exporter.Helper
  * org.wheatgenetics.coordinate.model.GridExporter
  * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -96,8 +97,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         deleteProjectMenuItem, exportProjectMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
 
-    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
+    private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
 
@@ -157,14 +158,16 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
-    private void showLongToast(final int text) { this.showLongToast(this.getString(text)); }
+    private void showLongToast(@android.support.annotation.StringRes final int text)
+    { this.showLongToast(this.getString(text)); }
     // endregion
 
     // region Short Toast Private Methods
     private void showShortToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
 
-    private void showShortToast(final int text) { this.showShortToast(this.getString(text)); }
+    private void showShortToast(@android.support.annotation.StringRes final int text)
+    { this.showShortToast(this.getString(text)); }
     // endregion
     // endregion
 
@@ -234,7 +237,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
-    private void setTextViewText(final int textViewId, final java.lang.String text)
+    private void setTextViewText(@android.support.annotation.IdRes final int textViewId,
+    final java.lang.String text)
     {
         final android.widget.TextView textView =
             (android.widget.TextView) this.findViewById(textViewId);
@@ -298,7 +302,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region loadJoinedGridModel() Private Methods
     private void loadJoinedGridModel(final long gridId)
     {
-        this.joinedGridModel = gridId > 0 ? this.gridsTable().get(gridId) : null;
+        this.joinedGridModel = org.wheatgenetics.coordinate.model.Model.illegal(gridId) ?
+            null : this.gridsTable().get(gridId);
 
         assert null != this.sharedPreferences;
         if (null == this.joinedGridModel)
@@ -323,7 +328,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region Grid Export Private Methods
-    private java.lang.String initialGridExportFileName()
+    private java.lang.String getInitialGridExportFileName()
     {
         return null == this.joinedGridModel ? null :
             this.joinedGridModel.getFirstOptionalFieldDatedValue();
@@ -449,8 +454,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
-    protected void onCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
@@ -549,7 +553,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 // directory already exists then I don't have a problem.
             }
 
-            // This directory will be used in the future to transfer templates between devices.
+            // This directory is used to transfer templates between devices.
             this.templatesDir = new org.wheatgenetics.androidlibrary.Dir(
                 this, coordinateDirName + "/Templates", blankHiddenFileName);
             try { this.templatesDir.createIfMissing();  /* throws java.io.IOException */ }
@@ -616,32 +620,29 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 /* handler     => */ new org.wheatgenetics.coordinate
                                     .NavigationItemSelectedListener.Handler()
                                     {
-                                        @java.lang.Override
-                                        public void createGrid()
+                                        @java.lang.Override public void createGrid()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.createGrid();
                                         }
 
-                                        @java.lang.Override
-                                        public void loadGrid(final long gridId)
+                                        @java.lang.Override public void loadGrid(final long gridId)
                                         {
                                             org.wheatgenetics.coordinate.MainActivity
                                                 .this.loadJoinedGridModelThenPopulate(gridId);
                                         }
 
-                                        @java.lang.Override
-                                        public void deleteGrid()
+                                        @java.lang.Override public void deleteGrid()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.deleteGrid();
                                         }
 
                                         @java.lang.Override
-                                        public java.lang.String initialGridExportFileName()
+                                        public java.lang.String getInitialGridExportFileName()
                                         {
                                             return org.wheatgenetics.coordinate
-                                                .MainActivity.this.initialGridExportFileName();
+                                                .MainActivity.this.getInitialGridExportFileName();
                                         }
 
                                         @java.lang.Override
@@ -651,15 +652,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.exportGrid(fileName);
                                         }
 
-                                        @java.lang.Override
-                                        public void handleGridDeleted()
+                                        @java.lang.Override public void handleGridDeleted()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.handleGridDeleted();
                                         }
 
-                                        @java.lang.Override
-                                        public void exportTemplate(
+                                        @java.lang.Override public void exportTemplate(
                                         final org.wheatgenetics.coordinate.model.TemplateModel
                                             templateModel,
                                         final java.lang.String fileName)
@@ -668,8 +667,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .this.exportTemplate(templateModel, fileName);
                                         }
 
-                                        @java.lang.Override
-                                        public long getProjectId()
+                                        @java.lang.Override public long getProjectId()
                                         {
                                             return org.wheatgenetics.coordinate
                                                 .MainActivity.this.getProjectId();
@@ -682,8 +680,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.loadProjectModel(projectId);
                                         }
 
-                                        @java.lang.Override
-                                        public void clearProject()
+                                        @java.lang.Override public void clearProject()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.clearProjectModel();
@@ -696,9 +693,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.handleProjectDeleted(projectId);
                                         }
 
-                                        @java.lang.Override
-                                        public void exportProject(final long projectId,
-                                        final java.lang.String directoryName)
+                                        @java.lang.Override public void exportProject(
+                                        final long projectId, final java.lang.String directoryName)
                                         {
                                             org.wheatgenetics.coordinate.MainActivity
                                                 .this.exportProject(projectId, directoryName);
@@ -711,8 +707,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.storeSoundOn(soundOn);
                                         }
 
-                                        @java.lang.Override
-                                        public void closeDrawer()
+                                        @java.lang.Override public void closeDrawer()
                                         {
                                             org.wheatgenetics.coordinate
                                                 .MainActivity.this.closeDrawer();
@@ -780,15 +775,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override
-    protected void onPostCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onPostCreate(final android.os.Bundle savedInstanceState)
     { super.onPostCreate(savedInstanceState); this.closeDrawer(); }
 
-    @java.lang.Override
-    protected void onStart() { super.onStart(); this.populateFragments(); }
+    @java.lang.Override protected void onStart() { super.onStart(); this.populateFragments(); }
 
-    @java.lang.Override
-    public void onBackPressed()
+    @java.lang.Override public void onBackPressed()
     {
         assert null != this.drawerLayout;
         if (this.drawerLayout.isDrawerOpen(android.support.v4.view.GravityCompat.START))
@@ -797,16 +789,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             super.onBackPressed();
     }
 
-    @java.lang.Override
-    public boolean onCreateOptionsMenu(final android.view.Menu menu)
+    @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
     {
         new android.view.MenuInflater(this).inflate(
             org.wheatgenetics.androidlibrary.R.menu.camera_options_menu, menu);
         return true;
     }
 
-    @java.lang.Override
-    public boolean onOptionsItemSelected(final android.view.MenuItem item)
+    @java.lang.Override public boolean onOptionsItemSelected(final android.view.MenuItem item)
     {
         // Handle action bar item clicks here.  The action bar will automatically handle clicks on
         // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
@@ -822,9 +812,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         else return super.onOptionsItemSelected(item);
     }
 
-    @java.lang.Override
-    protected void onActivityResult(final int requestCode, final int resultCode,
-    final android.content.Intent data)
+    @java.lang.Override protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
     {
         final java.lang.String barcodeScannerResult =
             org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
@@ -872,16 +861,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
-    @java.lang.Override
-    protected void onPause()
+    @java.lang.Override protected void onPause()
     {
         if (null != this.columnEndMediaPlayer) this.columnEndMediaPlayer.release();
         if (null != this.gridEndMediaPlayer  ) this.gridEndMediaPlayer.release  ();
         super.onPause();
     }
 
-    @java.lang.Override
-    protected void onDestroy()
+    @java.lang.Override protected void onDestroy()
     {
         if (null != this.projectExporter)
             { this.projectExporter.cancel(); this.projectExporter = null; }
@@ -914,16 +901,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override
-    public int getActiveRow()
+    @java.lang.Override public int getActiveRow()
     { assert null != this.joinedGridModel; return this.joinedGridModel.getActiveRow(); }
 
-    @java.lang.Override
-    public int getActiveCol()
+    @java.lang.Override public int getActiveCol()
     { assert null != this.joinedGridModel; return this.joinedGridModel.getActiveCol(); }
 
-    @java.lang.Override
-    public void activate(final int row, final int col)
+    @java.lang.Override public void activate(final int row, final int col)
     {
         if (null != this.joinedGridModel)
             if (this.joinedGridModel.setActiveRowAndActiveCol(row, col))
@@ -935,8 +919,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Methods
-    @java.lang.Override
-    public void handleFilledGrid()
+    @java.lang.Override public void handleFilledGrid()
     {
         org.wheatgenetics.coordinate.Utils.alert(this,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
@@ -950,8 +933,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override
-    public void handleFilledRowOrCol()
+    @java.lang.Override public void handleFilledRowOrCol()
     {
         assert null != this.navigationItemSelectedListener;
         if (this.navigationItemSelectedListener.getSoundOn())
@@ -965,8 +947,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
-    @java.lang.Override
-    public java.lang.String getEntryValue()
+    @java.lang.Override public java.lang.String getEntryValue()
     {
         if (null == this.joinedGridModel)
             return null;
@@ -978,8 +959,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override
-    public java.lang.String getProjectTitle()
+    @java.lang.Override public java.lang.String getProjectTitle()
     {
         if (null == this.joinedGridModel)
             return "";
@@ -991,16 +971,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override
-    public java.lang.String getTemplateTitle()
+    @java.lang.Override public java.lang.String getTemplateTitle()
     { return null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle(); }
 
     @java.lang.Override
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
     { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
 
-    @java.lang.Override
-    public void saveEntry(final java.lang.String entryValue)
+    @java.lang.Override public void saveEntry(final java.lang.String entryValue)
     {
         if (null != this.joinedGridModel)
         {
@@ -1022,14 +1000,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Method
-    @java.lang.Override
-    public void handleGridCreated(final long gridId)
+    @java.lang.Override public void handleGridCreated(final long gridId)
     { this.loadJoinedGridModelThenPopulate(gridId); }
 
-    @java.lang.Override
-    public void loadProjectModel(final long projectId)
+    @java.lang.Override public void loadProjectModel(final long projectId)
     {
-        this.projectModel = projectId > 0 ? this.projectsTable().get(projectId) : null;
+        this.projectModel = org.wheatgenetics.coordinate.model.Model.illegal(projectId) ?
+            null : this.projectsTable().get(projectId);
 
         assert null != this.sharedPreferences;
         if (null == this.projectModel)
@@ -1038,13 +1015,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.sharedPreferences.setProjectId(this.projectModel.getId());
     }
 
-    @java.lang.Override
-    public void clearProjectModel() { this.loadProjectModel(0); }
+    @java.lang.Override public void clearProjectModel() { this.loadProjectModel(0); }
     // endregion
 
     // region org.wheatgenetics.coordinate.model.GridExporter.Helper Overridden Methods
-    @java.lang.Override
-    public void deleteGrid()
+    @java.lang.Override public void deleteGrid()
     {
         assert null != this.joinedGridModel; final long gridId = this.joinedGridModel.getId();
 
