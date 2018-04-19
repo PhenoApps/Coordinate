@@ -93,8 +93,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, exportGridMenuItem,
-        deleteTemplateMenuItem, exportTemplateMenuItem, loadProjectMenuItem, clearProjectMenuItem,
-        deleteProjectMenuItem, exportProjectMenuItem, turnSoundOnMenuItem, turnSoundOffMenuItem;
+        templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, loadProjectMenuItem,
+        clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem, turnSoundOnMenuItem,
+        turnSoundOffMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
@@ -188,6 +189,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void configureTemplateMenuItems()
     {
+        {
+            final java.lang.StringBuilder stringBuilder;
+            {
+                stringBuilder = new java.lang.StringBuilder(
+                    this.getString(org.wheatgenetics.coordinate.R.string.template));
+                final java.lang.String templateTitle = this.getTemplateTitle();
+                if (templateTitle.length() > 0) stringBuilder.append(": ").append(templateTitle);
+            }
+            assert null != this.templateMenuItem;
+            this.templateMenuItem.setTitle(stringBuilder.toString());
+        }
+
         final boolean userDefinedTemplatesExist = this.templatesTable().exists(
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
 
@@ -732,6 +745,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 this.exportGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
 
+                this.templateMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_template);
                 this.deleteTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
                 this.exportTemplateMenuItem =

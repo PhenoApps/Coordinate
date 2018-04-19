@@ -26,7 +26,7 @@
         </menu>
     </item>
 
-    <item android:title="@string/template">
+    <item android:title="@string/template" android:id="@+id/nav_template">
         <menu>
             <group>
                 <item
