@@ -40,6 +40,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
  * org.wheatgenetics.coordinate.MainActivity.RequestCode
+ * org.wheatgenetics.coordinate.PreferenceActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -102,9 +103,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator               = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getProjectExportFileNameAlertDialog = null;
-    private long                                     exportProjectId  =    0;
-    private boolean                                  soundOn                ;
-    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = null;
+    private long                                     exportProjectId          =    0;
+    private android.content.Intent                   preferenceIntentInstance = null;
+    private boolean                                  soundOn                        ;
+    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog         = null;
     // endregion
 
     // region Private Methods
@@ -502,6 +504,14 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     }
     // endregion
 
+    private android.content.Intent preferenceIntent()
+    {
+        if (null == this.preferenceIntentInstance)
+            this.preferenceIntentInstance = new android.content.Intent(
+                this.activity, org.wheatgenetics.coordinate.PreferenceActivity.class);
+        return this.preferenceIntentInstance;
+    }
+
     private void storeSoundOn()
     { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
@@ -531,7 +541,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following sixteen ids that have names that start with "nav_" come from
+            // The following seventeen ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -639,6 +649,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate
                     .NavigationItemSelectedListener.ProjectOperation.EXPORT);
+                break;
+
+
+
+            case org.wheatgenetics.coordinate.R.id.nav_settings:
+                assert null != this.activity; this.activity.startActivity(this.preferenceIntent());
                 break;
 
 

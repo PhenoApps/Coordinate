@@ -35,6 +35,8 @@
     <string name="turn_sound_on">Turn Sound On</string>
     <string name="turn_sound_off">Turn Sound Off</string>
     <string name="show_about">About</string>
+
+    <string name="settings">Settings</string>
     <!-- activity_main_drawer.xml -->
 
 
@@ -139,4 +141,8 @@
     <string name="CreateProjectAlertDialogEditTextHint">Project name</string>
     <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
+
+    <string name="SoundPreferenceTitle">Sound</string>
+    <string name="SoundPreferenceSummaryOff">Remain silent at end of row or column and grid.</string>
+    <string name="SoundPreferenceSummaryOn">Play sound at end of row or column and grid.</string>
 </resources>
