@@ -97,9 +97,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;
-    private android.content.Intent                          intentInstance  = null;
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator  = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator              = null;
+    private android.content.Intent                          importTemplateIntentInstance = null;
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator               = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getProjectExportFileNameAlertDialog = null;
     private long                                     exportProjectId  =    0;
@@ -312,15 +312,15 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         }
     }
 
-    private android.content.Intent intent()
+    private android.content.Intent importTemplateIntent()
     {
-        if (null == this.intentInstance)
+        if (null == this.importTemplateIntentInstance)
         {
-            this.intentInstance =
+            this.importTemplateIntentInstance =
                 new android.content.Intent(android.content.Intent.ACTION_GET_CONTENT);
-            this.intentInstance.setType("text/xml");
+            this.importTemplateIntentInstance.setType("text/xml");
         }
-        return this.intentInstance;
+        return this.importTemplateIntentInstance;
     }
     // endregion
 
@@ -611,7 +611,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
             case org.wheatgenetics.coordinate.R.id.nav_import_template:
                 assert null != this.activity;
-                this.activity.startActivityForResult(this.intent(), this.importTemplateRequestCode);
+                this.activity.startActivityForResult(
+                    this.importTemplateIntent(), this.importTemplateRequestCode);
                 break;
 
 

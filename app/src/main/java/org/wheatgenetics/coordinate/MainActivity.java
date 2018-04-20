@@ -96,7 +96,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem,
         loadProjectMenuItem, clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem,
         turnSoundOnMenuItem, turnSoundOffMenuItem;
-    private android.media.MediaPlayer gridEndMediaPlayer = null, columnEndMediaPlayer = null;
+    private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -873,8 +873,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @java.lang.Override protected void onPause()
     {
-        if (null != this.columnEndMediaPlayer) this.columnEndMediaPlayer.release();
-        if (null != this.gridEndMediaPlayer  ) this.gridEndMediaPlayer.release  ();
+        if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
+        if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
         super.onPause();
     }
 
@@ -948,10 +948,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         assert null != this.navigationItemSelectedListener;
         if (this.navigationItemSelectedListener.getSoundOn())
         {
-            if (null == this.columnEndMediaPlayer)
-                this.columnEndMediaPlayer = android.media.MediaPlayer.create(
-                    this, org.wheatgenetics.coordinate.R.raw.column_end);
-            this.columnEndMediaPlayer.start();
+            if (null == this.rowOrColumnEndMediaPlayer)
+                this.rowOrColumnEndMediaPlayer = android.media.MediaPlayer.create(
+                    this, org.wheatgenetics.coordinate.R.raw.row_or_column_end);
+            this.rowOrColumnEndMediaPlayer.start();
         }
     }
     // endregion
