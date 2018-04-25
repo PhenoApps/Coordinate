@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.nisl;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -16,7 +17,7 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     interface Handler { public void loadGrid(); public void deleteGrid(); }
 
     // region Fields
-    private static final int
+    @android.support.annotation.StringRes private static final int
         BOTH_ITEMS[] = new int[]{
             org.wheatgenetics.coordinate.R.string.NavigationItemSelectedListenerLoadGrid  ,
             org.wheatgenetics.coordinate.R.string.NavigationItemSelectedListenerDeleteGrid},

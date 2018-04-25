@@ -47,6 +47,8 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
+ * org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
+ * org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler
  * org.wheatgenetics.coordinate.nisl.PreferenceActivity
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -71,11 +73,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             org.wheatgenetics.coordinate.model.TemplateModel templateModel,
             java.lang.String                                 fileName     );
 
-        public abstract long getProjectId        ();
-        public abstract void loadProject         (long projectId);
-        public abstract void clearProject        ();
-        public abstract void handleProjectDeleted(long projectId);
-        public abstract void exportProject       (long projectId, java.lang.String directoryName);
+        public abstract long    getProjectId        ();
+        public abstract boolean projectModelIsLoaded();
+        public abstract void    loadProject         (long projectId);
+        public abstract void    clearProject        ();
+        public abstract void    handleProjectDeleted(long projectId);
+        public abstract void    exportProject       (long projectId, java.lang.String directoryName);
 
         public abstract void closeDrawer();
     }
@@ -104,6 +107,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator              = null;
     private android.content.Intent                          importTemplateIntentInstance = null;
     private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator               = null;
+    private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
+        manageProjectAlertDialog = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getProjectExportFileNameAlertDialog = null;
     private long                                     exportProjectId          =    0;
@@ -373,6 +378,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Project Private Methods
+    private long getProjectId() { assert null != this.handler; return this.handler.getProjectId(); }
+
     private void selectProject(
     final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.ProjectOperation
         projectOperation)
@@ -381,8 +388,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         switch (projectOperation)
         {
             case LOAD:
-                assert null != this.handler;
-                projectModels = this.projectsTable().loadExceptFor(this.handler.getProjectId());
+                projectModels = this.projectsTable().loadExceptFor(this.getProjectId());
                 break;
 
             case DELETE: projectModels = this.projectsTable().load                 (); break;
@@ -601,7 +607,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following fourteen ids that have names that start with "nav_" come from
+            // The following twelve ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -681,9 +687,42 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 this.projectCreator.create();
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_load_project  : this.loadProject  (); break;
-            case org.wheatgenetics.coordinate.R.id.nav_clear_project : this.clearProject (); break;
-            case org.wheatgenetics.coordinate.R.id.nav_delete_project: this.deleteProject(); break;
+            case org.wheatgenetics.coordinate.R.id.nav_manage_project:
+                if (null == this.manageProjectAlertDialog)
+                {
+                    this.manageProjectAlertDialog =
+                        new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog(
+                            this.activity,
+                            new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler()
+                            {
+                                @java.lang.Override public long getProjectId()
+                                {
+                                    return org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.getProjectId();
+                                }
+
+                                @java.lang.Override public void loadProject()
+                                {
+                                    org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.loadProject();
+                                }
+
+                                @java.lang.Override public void clearProject()
+                                {
+                                    org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.clearProject();
+                                }
+
+                                @java.lang.Override public void deleteProject()
+                                {
+                                    org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.deleteProject();
+                                }
+                            });
+                    assert null != this.handler;
+                }
+                this.manageProjectAlertDialog.show(this.handler.projectModelIsLoaded());
+                break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate.nisl

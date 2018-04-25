@@ -95,8 +95,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem manageGridMenuItem, exportGridMenuItem, templateMenuItem,
-        deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem, loadProjectMenuItem,
-        clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem;
+        deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem, manageProjectMenuItem,
+        exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
     private android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
@@ -213,37 +213,21 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     protected void configureProjectMenuItems()
     {
-        final boolean projectsExists = this.projectsTable().exists();
-
         {
-            final boolean projectModelIsLoaded = this.projectModelIsLoaded();
-
+            final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
+                this.getString(org.wheatgenetics.coordinate.R.string.project));
+            if (this.projectModelIsLoaded())
             {
-                final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
-                    this.getString(org.wheatgenetics.coordinate.R.string.project));
-                if (projectModelIsLoaded)
-                {
-                    final java.lang.String projectTitle = this.projectModel.getTitle();
-                    if (projectTitle.length() > 0) stringBuilder.append(": ").append(projectTitle);
-                }
-                assert null != this.projectMenuItem;
-                this.projectMenuItem.setTitle(stringBuilder.toString());
+                final java.lang.String projectTitle = this.projectModel.getTitle();
+                if (projectTitle.length() > 0) stringBuilder.append(": ").append(projectTitle);
             }
-
-            assert null != this.loadProjectMenuItem;
-            if (projectsExists)
-                if (projectModelIsLoaded)
-                    this.loadProjectMenuItem.setEnabled(
-                        this.projectsTable().existsExceptFor(this.projectModel.getId()));
-                else this.loadProjectMenuItem.setEnabled(true);
-            else this.loadProjectMenuItem.setEnabled(false);
-
-            assert null != this.clearProjectMenuItem;
-            this.clearProjectMenuItem.setEnabled(projectModelIsLoaded);
+            assert null != this.projectMenuItem;
+            this.projectMenuItem.setTitle(stringBuilder.toString());
         }
 
-        assert null != this.deleteProjectMenuItem;
-        this.deleteProjectMenuItem.setEnabled(projectsExists);
+        final boolean projectsExists = this.projectsTable().exists();
+        assert null != this.manageProjectMenuItem;
+        this.manageProjectMenuItem.setEnabled(projectsExists);
 
         assert null != this.exportProjectMenuItem;
         if (projectsExists)
@@ -664,6 +648,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.exportGrid(fileName);
                                         }
 
+
                                         @java.lang.Override public void handleGridDeleted()
                                         {
                                             org.wheatgenetics.coordinate
@@ -679,10 +664,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .this.exportTemplate(templateModel, fileName);
                                         }
 
+
                                         @java.lang.Override public long getProjectId()
                                         {
                                             return org.wheatgenetics.coordinate
                                                 .MainActivity.this.getProjectId();
+                                        }
+
+                                        @java.lang.Override
+                                        public boolean projectModelIsLoaded()
+                                        {
+                                            return org.wheatgenetics.coordinate
+                                                .MainActivity.this.projectModelIsLoaded();
                                         }
 
                                         @java.lang.Override
@@ -711,6 +704,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                             org.wheatgenetics.coordinate.MainActivity
                                                 .this.exportProject(projectId, directoryName);
                                         }
+
 
                                         @java.lang.Override public void closeDrawer()
                                         {
@@ -745,12 +739,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_template);
 
                 this.projectMenuItem = menu.findItem(org.wheatgenetics.coordinate.R.id.nav_project);
-                this.loadProjectMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_load_project);
-                this.clearProjectMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_clear_project);
-                this.deleteProjectMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_project);
+                this.manageProjectMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_manage_project);
                 this.exportProjectMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_project);
             }
