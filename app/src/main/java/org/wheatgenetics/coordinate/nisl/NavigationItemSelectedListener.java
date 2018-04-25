@@ -373,103 +373,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Project Private Methods
-    private void loadProjectAfterSelect(
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        if (null != projectModel)
-            { assert null != this.handler; this.handler.loadProject(projectModel.getId()); }
-    }
-
-    // region Delete Project Private Methods
-    private void deleteProjectAfterConfirm(
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        final boolean success  ;
-        final long    projectId;
-        if (null == projectModel)
-            { success = false; projectId = 0; }
-        else
-        {
-            projectId = projectModel.getId();
-
-            {
-                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-                    this.gridsTable().loadByProjectId(projectId);
-                if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete entries
-            }
-
-            if (this.gridsTable().deleteByProjectId(projectId))                    // delete grids
-                this.showShortToast(org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
-            else
-                this.showShortToast(org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
-
-            success = projectsTable().delete(projectId);                           // delete project
-        }
-
-        if (success)
-        {
-            this.showLongToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
-            assert null != this.handler; this.handler.handleProjectDeleted(projectId);
-        }
-        else this.showLongToast(org.wheatgenetics.coordinate
-            .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
-    }
-
-    private void deleteProjectAfterSelect(
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
-            /* context => */ this.activity,
-            /* title   => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationTitle,
-            /* message => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
-            /* yesRunnable => */ new java.lang.Runnable()
-            {
-                @java.lang.Override public void run()
-                {
-                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                        .this.deleteProjectAfterConfirm(projectModel);
-                }
-            });
-    }
-    // endregion
-
-    // region Export Project Private Methods
-    private void exportProjectAfterGettingDirectoryName(final java.lang.String directoryName)
-    {
-        assert null != this.handler;
-        this.handler.exportProject(this.exportProjectId, directoryName);
-
-        this.exportProjectId = 0;
-    }
-
-    private void exportProjectAfterSelect(
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        if (null != projectModel)
-        {
-            if (null == this.getProjectExportFileNameAlertDialog)
-                this.getProjectExportFileNameAlertDialog =
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
-                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
-                        {
-                            @java.lang.Override
-                            public void handleGetFileNameDone(final java.lang.String fileName)
-                            {
-                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                    .this.exportProjectAfterGettingDirectoryName(fileName);
-                            }
-                        });
-            this.exportProjectId = projectModel.getId();
-            this.getProjectExportFileNameAlertDialog.show(projectModel.getTitle());
-        }
-    }
-    // endregion
-
     private void selectProject(
     final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.ProjectOperation
         projectOperation)
@@ -548,6 +451,120 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             selectProjectAlertDialog.show(title, projectModels.titles());
         }
     }
+
+    // region Load Project Private Methods
+    private void loadProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        if (null != projectModel)
+            { assert null != this.handler; this.handler.loadProject(projectModel.getId()); }
+    }
+
+    private void loadProject()
+    {
+        this.selectProject(
+            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.ProjectOperation.LOAD);
+    }
+    // endregion
+
+    private void clearProject() { assert null != this.handler; this.handler.clearProject(); }
+
+    // region Delete Project Private Methods
+    private void deleteProjectAfterConfirm(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        final boolean success  ;
+        final long    projectId;
+        if (null == projectModel)
+            { success = false; projectId = 0; }
+        else
+        {
+            projectId = projectModel.getId();
+
+            {
+                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+                    this.gridsTable().loadByProjectId(projectId);
+                if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete entries
+            }
+
+            if (this.gridsTable().deleteByProjectId(projectId))                    // delete grids
+                this.showShortToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
+            else
+                this.showShortToast(org.wheatgenetics.coordinate
+                    .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
+
+            success = projectsTable().delete(projectId);                           // delete project
+        }
+
+        if (success)
+        {
+            this.showLongToast(org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
+            assert null != this.handler; this.handler.handleProjectDeleted(projectId);
+        }
+        else this.showLongToast(org.wheatgenetics.coordinate
+            .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
+    }
+
+    private void deleteProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
+            /* context => */ this.activity,
+            /* title   => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationTitle,
+            /* message => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
+            /* yesRunnable => */ new java.lang.Runnable()
+            {
+                @java.lang.Override public void run()
+                {
+                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                        .this.deleteProjectAfterConfirm(projectModel);
+                }
+            });
+    }
+
+    private void deleteProject()
+    {
+        this.selectProject(org.wheatgenetics.coordinate.nisl
+            .NavigationItemSelectedListener.ProjectOperation.DELETE);
+
+    }
+    // endregion
+
+    // region Export Project Private Methods
+    private void exportProjectAfterGettingDirectoryName(final java.lang.String directoryName)
+    {
+        assert null != this.handler;
+        this.handler.exportProject(this.exportProjectId, directoryName);
+
+        this.exportProjectId = 0;
+    }
+
+    private void exportProjectAfterSelect(
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    {
+        if (null != projectModel)
+        {
+            if (null == this.getProjectExportFileNameAlertDialog)
+                this.getProjectExportFileNameAlertDialog =
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
+                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+                        {
+                            @java.lang.Override
+                            public void handleGetFileNameDone(final java.lang.String fileName)
+                            {
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                    .this.exportProjectAfterGettingDirectoryName(fileName);
+                            }
+                        });
+            this.exportProjectId = projectModel.getId();
+            this.getProjectExportFileNameAlertDialog.show(projectModel.getTitle());
+        }
+    }
+    // endregion
     // endregion
 
     private android.content.Intent preferenceIntent()
@@ -664,18 +681,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 this.projectCreator.create();
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_load_project:
-                this.selectProject(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.ProjectOperation.LOAD);
-                break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_clear_project:
-                assert null != this.handler; this.handler.clearProject(); break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_delete_project:
-                this.selectProject(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.ProjectOperation.DELETE);
-                break;
+            case org.wheatgenetics.coordinate.R.id.nav_load_project  : this.loadProject  (); break;
+            case org.wheatgenetics.coordinate.R.id.nav_clear_project : this.clearProject (); break;
+            case org.wheatgenetics.coordinate.R.id.nav_delete_project: this.deleteProject(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate.nisl

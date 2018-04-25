@@ -209,12 +209,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
     }
 
+    private boolean projectModelIsLoaded() { return null != this.projectModel; }
+
     protected void configureProjectMenuItems()
     {
         final boolean projectsExists = this.projectsTable().exists();
 
         {
-            final boolean projectModelIsLoaded = null != this.projectModel;
+            final boolean projectModelIsLoaded = this.projectModelIsLoaded();
 
             {
                 final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
@@ -391,11 +393,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region Project Private Methods
     private long getProjectId()
-    { return null == this.projectModel ? 0 : this.projectModel.getId(); }
+    { return this.projectModelIsLoaded() ? this.projectModel.getId() : 0; }
 
     private void handleProjectDeleted(final long projectId)
     {
-        if (null != this.projectModel) if (!this.projectsTable().exists(projectId))
+        if (this.projectModelIsLoaded()) if (!this.projectsTable().exists(projectId))
             this.clearProjectModel();
         this.handleGridDeleted();
     }
@@ -1004,10 +1006,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             null : this.projectsTable().get(projectId);
 
         assert null != this.sharedPreferences;
-        if (null == this.projectModel)
-            this.sharedPreferences.clearProjectId();
-        else
+        if (this.projectModelIsLoaded())
             this.sharedPreferences.setProjectId(this.projectModel.getId());
+        else
+            this.sharedPreferences.clearProjectId();
     }
 
     @java.lang.Override public void clearProjectModel() { this.loadProjectModel(0); }
