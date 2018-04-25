@@ -73,8 +73,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         public abstract void handleProjectDeleted(long projectId);
         public abstract void exportProject       (long projectId, java.lang.String directoryName);
 
-        public abstract void storeSoundOn(boolean soundOn);
-
         public abstract void closeDrawer();
     }
 
@@ -105,7 +103,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         getProjectExportFileNameAlertDialog = null;
     private long                                     exportProjectId          =    0;
     private android.content.Intent                   preferenceIntentInstance = null;
-    private boolean                                  soundOn                        ;
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog         = null;
     // endregion
 
@@ -511,26 +508,23 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 this.activity, org.wheatgenetics.coordinate.PreferenceActivity.class);
         return this.preferenceIntentInstance;
     }
-
-    private void storeSoundOn()
-    { assert null != this.handler; this.handler.storeSoundOn(this.soundOn); }
     // endregion
 
     NavigationItemSelectedListener(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.MainActivity.RequestCode final int createTemplateRequestCode,
     @org.wheatgenetics.coordinate.MainActivity.RequestCode final int importTemplateRequestCode,
-    final java.lang.String versionName, final boolean soundOn,
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler,
-    final android.view.View.OnClickListener                    versionOnClickListener)
+    final java.lang.String                                                    versionName,
+    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ,
+    final android.view.View.OnClickListener                        versionOnClickListener)
     {
         super();
 
         this.activity                  = activity                 ;
         this.createTemplateRequestCode = createTemplateRequestCode;
         this.importTemplateRequestCode = importTemplateRequestCode;
-
-        this.versionName            = versionName           ; this.handler = handler;
-        this.versionOnClickListener = versionOnClickListener; this.soundOn = soundOn;
+        this.versionName               = versionName              ;
+        this.handler                   = handler                  ;
+        this.versionOnClickListener    = versionOnClickListener   ;
     }
 
     // region Overridden Methods
@@ -541,7 +535,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following seventeen ids that have names that start with "nav_" come from
+            // The following fifteen ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
@@ -659,12 +653,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
 
 
-            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_on:
-                this.soundOn = true; this.storeSoundOn(); break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_turn_sound_off:
-                this.soundOn = false; this.storeSoundOn(); break;
-
             case org.wheatgenetics.coordinate.R.id.nav_show_about:
                 if (null == this.aboutAlertDialog)
                 {
@@ -714,10 +702,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
     // endregion
 
-    // region Package Methods
     void setExcludedCells(final android.os.Bundle bundle)
     { if (null != this.templateCreator) this.templateCreator.setExcludedCells(bundle); }
-
-    boolean getSoundOn() { return this.soundOn; }
-    // endregion
 }

@@ -87,23 +87,8 @@
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/settings" />
 
-    <item android:title="@string/app">
-        <menu>
-            <group>
-                <item
-                    android:id="@+id/nav_turn_sound_on"
-                    android:icon="@drawable/ic_lock_ringer_on_alpha"
-                    android:title="@string/turn_sound_on"
-                    android:enabled="false" />
-                <item
-                    android:id="@+id/nav_turn_sound_off"
-                    android:icon="@drawable/ic_lock_ringer_off_alpha"
-                    android:title="@string/turn_sound_off" />
-                <item
-                    android:id="@+id/nav_show_about"
-                    android:icon="@drawable/ic_menu_show_about"
-                    android:title="@string/show_about" />
-            </group>
-        </menu>
-    </item>
+     <item
+        android:id="@+id/nav_show_about"
+        android:icon="@drawable/ic_menu_show_about"
+        android:title="@string/show_about" />
 </menu>

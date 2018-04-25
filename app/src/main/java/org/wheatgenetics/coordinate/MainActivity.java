@@ -4,11 +4,13 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.app.Activity
  * android.content.Intent
+ * android.content.SharedPreferences
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * android.media.MediaPlayer
  * android.os.Bundle
  * android.os.ParcelFileDescriptor
+ * android.preference.PreferenceManager
  * android.support.annotation.IdRes
  * android.support.annotation.IntDef
  * android.support.annotation.StringRes
@@ -94,9 +96,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, exportGridMenuItem,
         templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem,
-        loadProjectMenuItem, clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem,
-        turnSoundOnMenuItem, turnSoundOffMenuItem;
+        loadProjectMenuItem, clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
+    private android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -251,15 +253,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.exportProjectMenuItem.setEnabled(false);
     }
 
-    private void configureAppMenuItems()
-    {
-        assert null != this.navigationItemSelectedListener; assert null != this.turnSoundOnMenuItem;
-        this.turnSoundOnMenuItem.setEnabled(!this.navigationItemSelectedListener.getSoundOn());
-
-        assert null != this.turnSoundOffMenuItem;
-        this.turnSoundOffMenuItem.setEnabled(!this.turnSoundOnMenuItem.isEnabled());
-    }
-
     // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
     private void setTextViewText(@android.support.annotation.IdRes final int textViewId,
     final java.lang.String text)
@@ -289,8 +282,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void configureNavigationDrawer()
     {
         this.configureGridMenuItems   (); this.configureTemplateMenuItems();
-        this.configureProjectMenuItems(); this.configureAppMenuItems     ();
-        this.configureNavHeaderMain   ();
+        this.configureProjectMenuItems(); this.configureNavHeaderMain    ();
     }
     // endregion
 
@@ -438,9 +430,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
     // endregion
 
-    private void storeSoundOn(final boolean soundOn)
-    { assert null != this.sharedPreferences; this.sharedPreferences.setSoundOn(soundOn); }
-
     private void showChangeLog()
     {
         if (null == this.changeLogAlertDialog)
@@ -458,6 +447,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.populateFragments();
         }
     }
+
+    // region getSoundOn() Private Methods
+    private android.content.SharedPreferences getDefaultSharedPreferences()
+    {
+        if (null == this.defaultSharedPreferencesInstance) this.defaultSharedPreferencesInstance =
+            android.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        return this.defaultSharedPreferencesInstance;
+    }
+
+    private boolean getSoundOn()
+    { return this.getDefaultSharedPreferences().getBoolean("SoundOn", /* defValue => */ true); }
+    // endregion
     // endregion
 
     // region Overridden Methods
@@ -622,8 +623,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     org.wheatgenetics.coordinate.MainActivity.CREATE_TEMPLATE,
                                 /* importTemplateRequestCode => */
                                     org.wheatgenetics.coordinate.MainActivity.IMPORT_TEMPLATE,
-                                /* versionName => */ versionName                        ,
-                                /* soundOn     => */ this.sharedPreferences.getSoundOn(),
+                                /* versionName => */ versionName,
                                 /* handler     => */ new org.wheatgenetics.coordinate
                                     .NavigationItemSelectedListener.Handler()
                                     {
@@ -707,13 +707,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .this.exportProject(projectId, directoryName);
                                         }
 
-                                        @java.lang.Override
-                                        public void storeSoundOn(final boolean soundOn)
-                                        {
-                                            org.wheatgenetics.coordinate
-                                                .MainActivity.this.storeSoundOn(soundOn);
-                                        }
-
                                         @java.lang.Override public void closeDrawer()
                                         {
                                             org.wheatgenetics.coordinate
@@ -757,11 +750,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_project);
                 this.exportProjectMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_project);
-
-                this.turnSoundOnMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_turn_sound_on);
-                this.turnSoundOffMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_turn_sound_off);
             }
             // endregion
 
@@ -934,8 +922,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         org.wheatgenetics.coordinate.Utils.alert(this,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
 
-        assert null != this.navigationItemSelectedListener;
-        if (this.navigationItemSelectedListener.getSoundOn())
+        if (this.getSoundOn())
         {
             if (null == this.gridEndMediaPlayer) this.gridEndMediaPlayer =
                 android.media.MediaPlayer.create(this, org.wheatgenetics.coordinate.R.raw.plonk);
@@ -945,8 +932,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @java.lang.Override public void handleFilledRowOrCol()
     {
-        assert null != this.navigationItemSelectedListener;
-        if (this.navigationItemSelectedListener.getSoundOn())
+        if (this.getSoundOn())
         {
             if (null == this.rowOrColumnEndMediaPlayer)
                 this.rowOrColumnEndMediaPlayer = android.media.MediaPlayer.create(
