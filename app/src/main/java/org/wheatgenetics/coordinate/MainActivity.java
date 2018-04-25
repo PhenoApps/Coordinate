@@ -175,6 +175,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region configureNavigationDrawer() Private Methods
+    private boolean joinedGridModelIsLoaded() { return null != this.joinedGridModel; }
+
     private void configureGridMenuItems()
     {
         assert null != this.loadGridMenuItem;
@@ -275,7 +277,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void configureNavHeaderMain()
     {
         this.setPersonTextViewText(
-            null == this.joinedGridModel ? "" : this.joinedGridModel.getPerson());
+            this.joinedGridModelIsLoaded() ? this.joinedGridModel.getPerson() : "");
     }
     // endregion
 
@@ -305,10 +307,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             null : this.gridsTable().get(gridId);
 
         assert null != this.sharedPreferences;
-        if (null == this.joinedGridModel)
-            this.sharedPreferences.clearGridId();
-        else
+        if (this.joinedGridModelIsLoaded())
             this.sharedPreferences.setGridId(this.joinedGridModel.getId());
+        else
+            this.sharedPreferences.clearGridId();
     }
 
     private void loadJoinedGridModelThenPopulate(final long gridId)
@@ -329,13 +331,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region Grid Export Private Methods
     private java.lang.String getInitialGridExportFileName()
     {
-        return null == this.joinedGridModel ? null :
-            this.joinedGridModel.getFirstOptionalFieldDatedValue();
+        return this.joinedGridModelIsLoaded() ?
+            this.joinedGridModel.getFirstOptionalFieldDatedValue() : null;
     }
 
     private void exportGrid(final java.lang.String fileName)
     {
-        if (null != this.joinedGridModel)
+        if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.androidlibrary.Dir exportDir =
                 new org.wheatgenetics.androidlibrary.Dir(
@@ -367,7 +369,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region Template Private Methods
     private void handleGridDeleted()
     {
-        if (null != this.joinedGridModel)
+        if (this.joinedGridModelIsLoaded())
             if (!this.gridsTable().exists(this.joinedGridModel.getId()))
                 this.clearJoinedGridModelThenPopulate();
     }
@@ -441,7 +443,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
-        if (null != this.joinedGridModel) if (this.joinedGridModel.goToNext(entryModel, this))
+        if (this.joinedGridModelIsLoaded()) if (this.joinedGridModel.goToNext(entryModel, this))
         {
             this.gridsTable().update(this.joinedGridModel);          // Update activeRow, activeCol.
             this.populateFragments();
@@ -887,7 +889,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override
     public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
-        if (null != this.joinedGridModel)
+        if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                 (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
@@ -907,7 +909,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @java.lang.Override public void activate(final int row, final int col)
     {
-        if (null != this.joinedGridModel)
+        if (this.joinedGridModelIsLoaded())
             if (this.joinedGridModel.setActiveRowAndActiveCol(row, col))
                 this.gridsTable().update(this.joinedGridModel);
 
@@ -945,38 +947,36 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override public java.lang.String getEntryValue()
     {
-        if (null == this.joinedGridModel)
-            return null;
-        else
+        if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
                 this.joinedGridModel.getActiveEntryModel();
             return null == activeEntryModel ? null : activeEntryModel.getValue();
         }
+        else return null;
     }
 
     @java.lang.Override public java.lang.String getProjectTitle()
     {
-        if (null == this.joinedGridModel)
-            return "";
-        else
+        if (this.joinedGridModelIsLoaded())
         {
             final long projectId = this.joinedGridModel.getProjectId();
             return org.wheatgenetics.coordinate.model.Model.illegal(projectId) ?
                 "none" : this.projectsTable().get(projectId).getTitle();
         }
+        else return "";
     }
 
     @java.lang.Override public java.lang.String getTemplateTitle()
-    { return null == this.joinedGridModel ? "" : this.joinedGridModel.getTemplateTitle(); }
+    { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getTemplateTitle() : ""; }
 
     @java.lang.Override
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
-    { return null == this.joinedGridModel ? null : this.joinedGridModel.optionalFields(); }
+    { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.optionalFields() : null; }
 
     @java.lang.Override public void saveEntry(final java.lang.String entryValue)
     {
-        if (null != this.joinedGridModel)
+        if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
                 this.joinedGridModel.getActiveEntryModel();
