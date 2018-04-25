@@ -90,29 +90,32 @@ public class EntryModels extends java.lang.Object
                 candidateRow                                     ,
                 candidateCol                                     ,
                 activeCol    = activeEntryModel.getCol() - 1     ;
-            final boolean filledRowOrColNeedsHandling;
+            final boolean filledRowOrColNeedsChecking;
             {
                 final int activeRow = activeEntryModel.getRow() - 1;
 
-                if (null != filledHandler && null == this.next(activeEntryModel, null)) // recursion
                 {
-                    filledHandler.handleFilledGrid();
-                    filledRowOrColNeedsHandling = false;
-                }
-                else
-                    if (activeRow < lastRow)
-                        filledRowOrColNeedsHandling = null != filledHandler;
-                    else
+                    final boolean recursion = null == filledHandler;
+                    if (!recursion && null == this.next(activeEntryModel, null))        // recursion
                     {
-                        if (activeCol >= lastCol)
-                        {
-                            if (null != filledHandler) filledHandler.handleFilledGrid();
-                            return null;
-                        }
-
-                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                        filledRowOrColNeedsHandling = false;
+                        filledHandler.handleFilledGrid();
+                        filledRowOrColNeedsChecking = false;
                     }
+                    else
+                        if (activeRow < lastRow)
+                            filledRowOrColNeedsChecking = null != filledHandler;
+                        else
+                        {
+                            if (activeCol >= lastCol)
+                            {
+                                if (null != filledHandler) filledHandler.handleFilledGrid();
+                                return null;
+                            }
+
+                            if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                            filledRowOrColNeedsChecking = false;         // Since I just handled it.
+                        }
+                }
 
                 if (activeRow < lastRow)
                 {
@@ -132,7 +135,7 @@ public class EntryModels extends java.lang.Object
                         this.entryModelArray[row][col];
                     if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
                     {
-                        if (filledRowOrColNeedsHandling) if (col > activeCol)
+                        if (filledRowOrColNeedsChecking) if (col > activeCol)
                             filledHandler.handleFilledRowOrCol();
                         return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
                     }
