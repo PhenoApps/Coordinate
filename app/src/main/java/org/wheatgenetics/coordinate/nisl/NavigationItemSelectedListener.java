@@ -45,6 +45,8 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
  *
+ * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
+ * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.nisl.PreferenceActivity
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -58,6 +60,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     public interface Handler
     {
         public abstract void             createGrid                  ();
+        public abstract boolean          joinedGridModelIsLoaded     ();
         public abstract void             loadGrid                    (long gridId);
         public abstract void             deleteGrid                  ();
         public abstract java.lang.String getInitialGridExportFileName();
@@ -95,6 +98,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private org.wheatgenetics.coordinate.database.ProjectsTable  projectsTableInstance  = null;
     // endregion
 
+    private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog manageGridAlertDialog = null;
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getGridExportFileNameAlertDialog = null;
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator              = null;
@@ -157,6 +161,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Grid Private Methods
+    // region loadGrid() Grid Private Methods
     private void loadGridAfterSelect(
     final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     {
@@ -164,7 +169,49 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             { assert null != this.handler; this.handler.loadGrid(joinedGridModel.getId()); }
     }
 
-    private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
+    private void loadGrid()
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            this.gridsTable().load();
+        if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+        {
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectGridToLoadAlertDialog =
+                new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
+                    new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                    {
+                        @java.lang.Override public void select(final int which)
+                        {
+                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                .this.loadGridAfterSelect(joinedGridModels.get(which));
+                        }
+                    });
+            selectGridToLoadAlertDialog.show(
+                org.wheatgenetics.coordinate.R.string.NavigationItemSelectedListenerLoadGridTitle,
+                joinedGridModels.names()                                                         );
+        }
+    }
+    // endregion
+
+    // region deleteGrid() Grid Private Methods
+    private void deleteGridAfterConfirm()
+    { assert null != this.handler; this.handler.deleteGrid(); }
+
+    private void deleteGrid()
+    {
+        org.wheatgenetics.coordinate.Utils.confirm(
+            /* context => */ this.activity,
+            /* message => */ org.wheatgenetics.coordinate
+                .R.string.NavigationItemSelectedListenerDeleteGridConfirmation,
+            /* yesRunnable => */ new java.lang.Runnable()
+                {
+                    @java.lang.Override public void run()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.deleteGridAfterConfirm();
+                    }
+                });
+    }
+    // endregion
 
     private void exportGrid(final java.lang.String fileName)
     { assert null != this.handler; this.handler.exportGrid(fileName); }
@@ -537,47 +584,34 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            // The following fifteen ids that have names that start with "nav_" come from
+            // The following fourteen ids that have names that start with "nav_" come from
             // menu/activity_main_drawer.xml.
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 assert null != this.handler; this.handler.createGrid(); break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_load_grid:
-                final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-                    this.gridsTable().load();
-                if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+            case org.wheatgenetics.coordinate.R.id.nav_manage_grid:
+                if (null == this.manageGridAlertDialog)
                 {
-                    final org.wheatgenetics.coordinate.SelectAlertDialog
-                        selectGridToLoadAlertDialog =
-                            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                                {
-                                    @java.lang.Override public void select(final int which)
-                                    {
-                                        org.wheatgenetics.coordinate.nisl
-                                            .NavigationItemSelectedListener.this
-                                            .loadGridAfterSelect(joinedGridModels.get(which));
-                                    }
-                                });
-                    selectGridToLoadAlertDialog.show(
-                        org.wheatgenetics.coordinate
-                            .R.string.NavigationItemSelectedListenerLoadGridTitle,
-                        joinedGridModels.names());
-                } break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_delete_grid:
-                org.wheatgenetics.coordinate.Utils.confirm(
-                    /* context => */ this.activity,
-                    /* message => */ org.wheatgenetics.coordinate
-                        .R.string.NavigationItemSelectedListenerDeleteGridConfirmation,
-                    /* yesRunnable => */ new java.lang.Runnable()
-                        {
-                            @java.lang.Override public void run()
+                    this.manageGridAlertDialog =
+                        new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog(this.activity,
+                            new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler()
                             {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.deleteGrid();
-                            }
-                        }); break;
+                                @java.lang.Override public void loadGrid()
+                                {
+                                    org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.loadGrid();
+                                }
+
+                                @java.lang.Override public void deleteGrid()
+                                {
+                                    org.wheatgenetics.coordinate.nisl
+                                        .NavigationItemSelectedListener.this.deleteGrid();
+                                }
+                            });
+                    assert null != this.handler;
+                }
+                this.manageGridAlertDialog.show(this.handler.joinedGridModelIsLoaded());
+                break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_grid:
                 if (null == this.getGridExportFileNameAlertDialog)

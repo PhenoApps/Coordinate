@@ -94,9 +94,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
-    private android.view.MenuItem loadGridMenuItem, deleteGridMenuItem, exportGridMenuItem,
-        templateMenuItem, deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem,
-        loadProjectMenuItem, clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem;
+    private android.view.MenuItem manageGridMenuItem, exportGridMenuItem, templateMenuItem,
+        deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem, loadProjectMenuItem,
+        clearProjectMenuItem, deleteProjectMenuItem, exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
     private android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
@@ -179,16 +179,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void configureGridMenuItems()
     {
-        assert null != this.loadGridMenuItem;
-        this.loadGridMenuItem.setEnabled(this.gridsTable().exists());
-
-        final boolean joinedGridModelIsLoaded = null != this.joinedGridModel;
-
-        assert null != this.deleteGridMenuItem;
-        this.deleteGridMenuItem.setEnabled(joinedGridModelIsLoaded);
+        assert null != this.manageGridMenuItem;
+        this.manageGridMenuItem.setEnabled(this.gridsTable().exists());
 
         assert null != this.exportGridMenuItem;
-        this.exportGridMenuItem.setEnabled(joinedGridModelIsLoaded);
+        this.exportGridMenuItem.setEnabled(this.joinedGridModelIsLoaded());
     }
 
     private void configureTemplateMenuItems()
@@ -635,6 +630,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                 .MainActivity.this.createGrid();
                                         }
 
+                                        @java.lang.Override public boolean joinedGridModelIsLoaded()
+                                        {
+                                            return org.wheatgenetics.coordinate
+                                                .MainActivity.this.joinedGridModelIsLoaded();
+                                        }
+
                                         @java.lang.Override public void loadGrid(final long gridId)
                                         {
                                             org.wheatgenetics.coordinate.MainActivity
@@ -729,10 +730,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     menu = navigationView.getMenu();
                 }
 
-                assert null != menu; this.loadGridMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_load_grid);
-                this.deleteGridMenuItem =
-                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_grid);
+                assert null != menu; this.manageGridMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_manage_grid);
                 this.exportGridMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_export_grid);
 

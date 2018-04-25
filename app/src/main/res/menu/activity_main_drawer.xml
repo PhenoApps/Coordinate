@@ -8,14 +8,9 @@
                     android:icon="@drawable/ic_menu_create"
                     android:title="@string/create_grid" />
                 <item
-                    android:id="@+id/nav_load_grid"
+                    android:id="@+id/nav_manage_grid"
                     android:icon="@drawable/ic_menu_load"
-                    android:title="@string/load_grid"
-                    android:enabled="false" />
-                <item
-                    android:id="@+id/nav_delete_grid"
-                    android:icon="@drawable/ic_menu_delete"
-                    android:title="@string/delete_grid"
+                    android:title="@string/manage_grid"
                     android:enabled="false" />
                 <item
                     android:id="@+id/nav_export_grid"

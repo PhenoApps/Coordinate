@@ -13,23 +13,22 @@
 
     <!-- activity_main_drawer.xml -->
     <string name="grid">Grid</string>
-    <string name="create_grid">Create</string>
-    <string name="load_grid">Load</string>
-    <string name="delete_grid">Delete</string>
-    <string name="export_grid">Export</string>
+        <string name="create_grid">Create</string>
+        <string name="manage_grid">Manage</string>
+        <string name="export_grid">Export</string>
 
     <string name="template">Template</string>
-    <string name="create_template">Create</string>
-    <string name="import_template">Import</string>
-    <string name="export_template">Export</string>
-    <string name="delete_template">Delete</string>
+        <string name="create_template">Create</string>
+        <string name="import_template">Import</string>
+        <string name="export_template">Export</string>
+        <string name="delete_template">Delete</string>
 
     <string name="project">Project</string>
-    <string name="create_project">Create</string>
-    <string name="load_project">Load</string>
-    <string name="clear_project">Clear</string>
-    <string name="delete_project">Delete</string>
-    <string name="export_project">Export</string>
+        <string name="create_project">Create</string>
+        <string name="load_project">Load</string>
+        <string name="clear_project">Clear</string>
+        <string name="delete_project">Delete</string>
+        <string name="export_project">Export</string>
 
     <string name="settings">Settings</string>
 
@@ -38,6 +37,9 @@
 
 
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
+    <string name="NavigationItemSelectedListenerManageGridTitle">Manage grid</string>
+    <string name="NavigationItemSelectedListenerLoadGrid">Load</string>
+    <string name="NavigationItemSelectedListenerDeleteGrid">Delete</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
