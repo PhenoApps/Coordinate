@@ -20,9 +20,9 @@
 
     <string name="template">Template</string>
     <string name="create_template">Create</string>
-    <string name="delete_template">Delete</string>
-    <string name="export_template">Export</string>
     <string name="import_template">Import</string>
+    <string name="export_template">Export</string>
+    <string name="delete_template">Delete</string>
 
     <string name="project">Project</string>
     <string name="create_project">Create</string>

@@ -205,11 +205,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         final boolean userDefinedTemplatesExist = this.templatesTable().exists(
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
 
-        assert null != this.deleteTemplateMenuItem;
-        this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
-
         assert null != this.exportTemplateMenuItem;
         this.exportTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
+
+        assert null != this.deleteTemplateMenuItem;
+        this.deleteTemplateMenuItem.setEnabled(userDefinedTemplatesExist);
     }
 
     protected void configureProjectMenuItems()

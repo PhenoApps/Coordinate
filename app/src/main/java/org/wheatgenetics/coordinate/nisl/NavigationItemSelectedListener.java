@@ -606,9 +606,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         this.activity, this.createTemplateRequestCode, this);
                 this.templateCreator.create(); break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_delete_template:
-                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
+            case org.wheatgenetics.coordinate.R.id.nav_import_template:
+                assert null != this.activity;
+                this.activity.startActivityForResult(
+                    this.importTemplateIntent(), this.importTemplateRequestCode);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_template:
@@ -616,10 +617,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                     .NavigationItemSelectedListener.TemplateOperation.EXPORT);
                 break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_import_template:
-                assert null != this.activity;
-                this.activity.startActivityForResult(
-                    this.importTemplateIntent(), this.importTemplateRequestCode);
+            case org.wheatgenetics.coordinate.R.id.nav_delete_template:
+                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
+                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
                 break;
 
 
