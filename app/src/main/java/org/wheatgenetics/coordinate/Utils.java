@@ -123,13 +123,13 @@ public class Utils extends java.lang.Object
     }
 
     // region confirm(title, int message, yesRunnable) AlertDialog Methods
-    static void confirm(final android.content.Context context,
+    public static void confirm(final android.content.Context context,
     @android.support.annotation.StringRes final int title  ,
     @android.support.annotation.StringRes final int message,
     final java.lang.Runnable yesRunnable)
     { org.wheatgenetics.coordinate.Utils.confirm(context, title, message, yesRunnable, null); }
 
-    static void confirm(final android.content.Context context,
+    public static void confirm(final android.content.Context context,
     @android.support.annotation.StringRes final int message, final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(context,

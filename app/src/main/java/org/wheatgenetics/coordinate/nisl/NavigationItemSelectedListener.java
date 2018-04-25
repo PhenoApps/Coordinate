@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.nisl;
 
 /**
  * Uses:
@@ -40,21 +40,22 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
  * org.wheatgenetics.coordinate.MainActivity.RequestCode
- * org.wheatgenetics.coordinate.PreferenceActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.Utils
+ *
+ * org.wheatgenetics.coordinate.nisl.PreferenceActivity
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-class NavigationItemSelectedListener extends java.lang.Object implements
+public class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
 org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler
+    public interface Handler
     {
         public abstract void             createGrid                  ();
         public abstract void             loadGrid                    (long gridId);
@@ -84,8 +85,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private final android.app.Activity activity                                            ;
     private final int                  createTemplateRequestCode, importTemplateRequestCode;
     private final java.lang.String     versionName                                         ;
-    private final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler;
-    private final android.view.View.OnClickListener                    versionOnClickListener;
+    private final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler;
+    private final android.view.View.OnClickListener                         versionOnClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;
@@ -221,7 +222,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 {
                     @java.lang.Override public void run()
                     {
-                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                             .this.deleteTemplateAfterConfirm(templateModel);
                     }
                 });
@@ -247,8 +248,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                             @java.lang.Override
                             public void handleGetFileNameDone(final java.lang.String fileName)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener.this
-                                    .exportTemplateAfterGettingFileName(templateModel, fileName);
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                    .this.exportTemplateAfterGettingFileName(
+                                        templateModel, fileName);
                             }
                         });
             getTemplateExportFileNameAlertDialog.show(templateModel.getTitle());
@@ -257,7 +259,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     private void selectUserDefinedTemplate(
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.TemplateOperation
+    final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.TemplateOperation
         templateOperation)
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
@@ -274,7 +276,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void select(final int which)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.deleteTemplateAfterSelect(templateModels.get(which));
                             }
                         }; break;
@@ -284,7 +286,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void select(final int which)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.exportTemplateAfterSelect(templateModels.get(which));
                             }
                         }; break;
@@ -382,7 +384,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
             {
                 @java.lang.Override public void run()
                 {
-                    org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                         .this.deleteProjectAfterConfirm(projectModel);
                 }
             });
@@ -411,7 +413,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                             @java.lang.Override
                             public void handleGetFileNameDone(final java.lang.String fileName)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.exportProjectAfterGettingDirectoryName(fileName);
                             }
                         });
@@ -422,7 +424,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     private void selectProject(
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.ProjectOperation
+    final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.ProjectOperation
         projectOperation)
     {
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels;
@@ -450,7 +452,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void select(final int which)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.loadProjectAfterSelect(projectModels.get(which));
                             }
                         }; break;
@@ -460,7 +462,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void select(final int which)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.deleteProjectAfterSelect(projectModels.get(which));
                             }
                         }; break;
@@ -470,7 +472,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void select(final int which)
                             {
-                                org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                     .this.exportProjectAfterSelect(projectModels.get(which));
                             }
                         }; break;
@@ -505,17 +507,17 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     {
         if (null == this.preferenceIntentInstance)
             this.preferenceIntentInstance = new android.content.Intent(
-                this.activity, org.wheatgenetics.coordinate.PreferenceActivity.class);
+                this.activity, org.wheatgenetics.coordinate.nisl.PreferenceActivity.class);
         return this.preferenceIntentInstance;
     }
     // endregion
 
-    NavigationItemSelectedListener(final android.app.Activity activity,
+    public NavigationItemSelectedListener(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.MainActivity.RequestCode final int createTemplateRequestCode,
     @org.wheatgenetics.coordinate.MainActivity.RequestCode final int importTemplateRequestCode,
-    final java.lang.String                                                    versionName,
-    final org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler handler    ,
-    final android.view.View.OnClickListener                        versionOnClickListener)
+    final java.lang.String                                                         versionName,
+    final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler    ,
+    final android.view.View.OnClickListener                             versionOnClickListener)
     {
         super();
 
@@ -552,8 +554,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                                 {
                                     @java.lang.Override public void select(final int which)
                                     {
-                                        org.wheatgenetics.coordinate.NavigationItemSelectedListener
-                                            .this.loadGridAfterSelect(joinedGridModels.get(which));
+                                        org.wheatgenetics.coordinate.nisl
+                                            .NavigationItemSelectedListener.this
+                                            .loadGridAfterSelect(joinedGridModels.get(which));
                                     }
                                 });
                     selectGridToLoadAlertDialog.show(
@@ -571,7 +574,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         {
                             @java.lang.Override public void run()
                             {
-                                org.wheatgenetics.coordinate
+                                org.wheatgenetics.coordinate.nisl
                                     .NavigationItemSelectedListener.this.deleteGrid();
                             }
                         }); break;
@@ -586,7 +589,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                                 @java.lang.Override
                                 public void handleGetFileNameDone(final java.lang.String fileName)
                                 {
-                                    org.wheatgenetics.coordinate.NavigationItemSelectedListener
+                                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
                                         .this.exportGrid(fileName);
                                 }
                             });
@@ -604,12 +607,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 this.templateCreator.create(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
-                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
+                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
                     .NavigationItemSelectedListener.TemplateOperation.DELETE);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_template:
-                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate
+                this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
                     .NavigationItemSelectedListener.TemplateOperation.EXPORT);
                 break;
 
@@ -628,7 +631,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_load_project:
-                this.selectProject(org.wheatgenetics.coordinate
+                this.selectProject(org.wheatgenetics.coordinate.nisl
                     .NavigationItemSelectedListener.ProjectOperation.LOAD);
                 break;
 
@@ -636,12 +639,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                 assert null != this.handler; this.handler.clearProject(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_project:
-                this.selectProject(org.wheatgenetics.coordinate
+                this.selectProject(org.wheatgenetics.coordinate.nisl
                     .NavigationItemSelectedListener.ProjectOperation.DELETE);
                 break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
-                this.selectProject(org.wheatgenetics.coordinate
+                this.selectProject(org.wheatgenetics.coordinate.nisl
                     .NavigationItemSelectedListener.ProjectOperation.EXPORT);
                 break;
 
@@ -702,6 +705,6 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
     // endregion
 
-    void setExcludedCells(final android.os.Bundle bundle)
+    public void setExcludedCells(final android.os.Bundle bundle)
     { if (null != this.templateCreator) this.templateCreator.setExcludedCells(bundle); }
 }

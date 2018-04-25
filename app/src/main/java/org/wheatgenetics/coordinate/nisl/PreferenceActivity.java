@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.nisl;
 
 /**
  * Uses:
@@ -7,9 +7,9 @@ package org.wheatgenetics.coordinate;
  * android.support.annotation.Nullable
  * android.support.v7.app.AppCompatActivity
  *
- * org.wheatgenetics.coordinate.PreferenceFragment
+ * org.wheatgenetics.coordinate.nisl.PreferenceFragment
  */
-public class PreferenceActivity extends android.support.v7.app.AppCompatActivity
+class PreferenceActivity extends android.support.v7.app.AppCompatActivity
 {
     @java.lang.Override protected void onCreate(
     @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
@@ -18,6 +18,6 @@ public class PreferenceActivity extends android.support.v7.app.AppCompatActivity
 
         // Display PreferenceFragment as the main content.
         this.getFragmentManager().beginTransaction().replace(android.R.id.content,
-            new org.wheatgenetics.coordinate.PreferenceFragment()).commit();
+            new org.wheatgenetics.coordinate.nisl.PreferenceFragment()).commit();
     }
 }

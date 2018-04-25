@@ -112,7 +112,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.NavigationItemSelectedListener
+    private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel  = null;
     private org.wheatgenetics.coordinate.model.ProjectModel     projectModel     = null;
@@ -617,14 +617,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                                                                 //  vity_main.xml.
                     assert null != navigationView; navigationView.setNavigationItemSelectedListener(
                         this.navigationItemSelectedListener =
-                            new org.wheatgenetics.coordinate.NavigationItemSelectedListener(
+                            new org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener(
                                 /* activity                  => */ this,
                                 /* createTemplateRequestCode => */
                                     org.wheatgenetics.coordinate.MainActivity.CREATE_TEMPLATE,
                                 /* importTemplateRequestCode => */
                                     org.wheatgenetics.coordinate.MainActivity.IMPORT_TEMPLATE,
                                 /* versionName => */ versionName,
-                                /* handler     => */ new org.wheatgenetics.coordinate
+                                /* handler     => */ new org.wheatgenetics.coordinate.nisl
                                     .NavigationItemSelectedListener.Handler()
                                     {
                                         @java.lang.Override public void createGrid()
