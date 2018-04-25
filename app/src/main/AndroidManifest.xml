@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PreferenceActivity">
+        <activity android:name=".nisl.PreferenceActivity">
             <intent-filter>
                 <action   android:name="org.wheatgenetics.coordinate.PreferenceActivity" />
                 <category android:name="android.intent.category.DEFAULT"                 />

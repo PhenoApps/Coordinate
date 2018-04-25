@@ -9,7 +9,7 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.nisl.PreferenceFragment
  */
-class PreferenceActivity extends android.support.v7.app.AppCompatActivity
+public class PreferenceActivity extends android.support.v7.app.AppCompatActivity
 {
     @java.lang.Override protected void onCreate(
     @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
