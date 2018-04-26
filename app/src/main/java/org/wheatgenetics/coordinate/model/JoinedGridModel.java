@@ -7,6 +7,8 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.javalib.CsvWriter
  *
+ * org.wheatgenetics.coordinate.Utils.Advancement
+ *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.model.Cells
@@ -269,10 +271,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
+    final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
-        return null == this.entryModels ? null :
-            this.entryModels.next(activeEntryModel, filledHandler);
+        return null == this.entryModels ? null : this.entryModels.next(
+            activeEntryModel, advancement, filledHandler);
     }
 
     @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
@@ -474,21 +477,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel,
+    final org.wheatgenetics.coordinate.Utils.Advancement               advancement  ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         final org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
-            this.next(entryModel, filledHandler);
+            this.next(entryModel, advancement, filledHandler);
         return null == nextIncludedEntryModel ? false :
             this.setActiveRowAndActiveCol(nextIncludedEntryModel);
     }
 
     @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
-    public boolean activeRowAndOrActiveColWasAdjusted()
+    public boolean activeRowAndOrActiveColWasAdjusted(
+    final org.wheatgenetics.coordinate.Utils.Advancement advancement)
     {
         final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
             this.getActiveEntryModel();
         return activeEntryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel ?
-            this.goToNext(activeEntryModel, null) : false;
+            this.goToNext(activeEntryModel, advancement, null) : false;
     }
     // endregion
 }

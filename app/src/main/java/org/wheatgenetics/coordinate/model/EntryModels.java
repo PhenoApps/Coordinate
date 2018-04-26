@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  *
  * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.Utils.Advancement
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -30,7 +31,8 @@ public class EntryModels extends java.lang.Object
     private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
 
-    private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    // region Private Methods
+    private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
     final int lastRow, final int lastCol, final int activeRow, final int activeCol,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
@@ -39,7 +41,8 @@ public class EntryModels extends java.lang.Object
         {
             {
                 final boolean recursion = null == filledHandler;
-                if (!recursion && null == this.next(lastRow, lastCol, activeRow, activeCol, null))
+                if (!recursion && null == this.downThenAcrossNext(                      // recursion
+                lastRow, lastCol, activeRow, activeCol, null))
                 {
                     filledHandler.handleFilledGrid();
                     filledRowOrColNeedsChecking = false;
@@ -87,6 +90,66 @@ public class EntryModels extends java.lang.Object
         }
         return null;
     }
+
+    private org.wheatgenetics.coordinate.model.IncludedEntryModel acrossThenDownNext(
+    final int lastRow, final int lastCol, final int activeRow, final int activeCol,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    {
+        final int     candidateRow, candidateCol ;
+        final boolean filledRowOrColNeedsChecking;
+        {
+            {
+                final boolean recursion = null == filledHandler;
+                if (!recursion && null == this.acrossThenDownNext(                      // recursion
+                lastRow, lastCol, activeRow, activeCol, null))
+                {
+                    filledHandler.handleFilledGrid();
+                    filledRowOrColNeedsChecking = false;
+                }
+                else
+                    if (activeCol < lastCol)
+                        filledRowOrColNeedsChecking = null != filledHandler;
+                    else
+                    {
+                        if (activeRow >= lastRow)
+                        {
+                            if (null != filledHandler) filledHandler.handleFilledGrid();
+                            return null;
+                        }
+
+                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                        filledRowOrColNeedsChecking = false;             // Since I just handled it.
+                    }
+            }
+
+            if (activeCol < lastCol)
+            {
+                candidateRow = java.lang.Math.min(activeRow, lastRow);
+                candidateCol = activeCol + 1                         ;
+            }
+            else
+                { candidateRow = activeRow + 1; candidateCol = 0; }
+        }
+
+        boolean onCandidateRow = true;
+        for (int row = candidateRow; row <= lastRow; row++)
+        {
+            for (int col = onCandidateRow ? candidateCol : 0; col <= lastCol; col++)
+            {
+                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                    this.entryModelArray[row][col];
+                if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                {
+                    if (filledRowOrColNeedsChecking) if (row > activeRow)
+                        filledHandler.handleFilledRowOrCol();
+                    return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                }
+            }
+            onCandidateRow = false;
+        }
+        return null;
+    }
+    // endregion
 
     public EntryModels(
     @android.support.annotation.IntRange(from = 1) final long gridId,
@@ -136,17 +199,28 @@ public class EntryModels extends java.lang.Object
 
     org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
+    final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         if (null == activeEntryModel)
             return null;
         else
-            return this.next(
-                /* lastRow       => */ this.entryModelArray.length    - 1,
-                /* lastCol       => */ this.entryModelArray[0].length - 1,
-                /* activeRow     => */ activeEntryModel.getRow()      - 1,
-                /* activeCol     => */ activeEntryModel.getCol()      - 1,
-                /* filledHandler => */ filledHandler                     );
+        {
+            final int
+                lastRow   = this.entryModelArray.length    - 1,
+                lastCol   = this.entryModelArray[0].length - 1,
+                activeRow = activeEntryModel.getRow()      - 1,
+                activeCol = activeEntryModel.getCol()      - 1;
+            switch (advancement)
+            {
+                case DOWN_THEN_ACROSS: return this.downThenAcrossNext(
+                    lastRow, lastCol, activeRow, activeCol, filledHandler);
+
+                case ACROSS_THEN_DOWN: return this.acrossThenDownNext(
+                    lastRow, lastCol, activeRow, activeCol, filledHandler);
+            }
+            return null;
+        }
     }
     // endregion
 

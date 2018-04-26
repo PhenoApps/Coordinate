@@ -309,7 +309,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 return;
             }
 
-            if (joinedGridModel.activeRowAndOrActiveColWasAdjusted())
+            if (joinedGridModel.activeRowAndOrActiveColWasAdjusted(
+            org.wheatgenetics.coordinate.Utils.getAdvancement(this.activity)))
                 this.gridsTable().update(joinedGridModel);           // Update activeRow, activeCol.
 
             this.entriesTable().insert(joinedGridModel.getEntryModels());

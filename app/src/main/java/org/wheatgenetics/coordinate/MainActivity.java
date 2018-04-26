@@ -429,11 +429,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
-        if (this.joinedGridModelIsLoaded()) if (this.joinedGridModel.goToNext(entryModel, this))
-        {
-            this.gridsTable().update(this.joinedGridModel);          // Update activeRow, activeCol.
-            this.populateFragments();
-        }
+        if (this.joinedGridModelIsLoaded())
+            if (this.joinedGridModel.goToNext(entryModel, this.getAdvancement(), this))
+            {
+                this.gridsTable().update(this.joinedGridModel);      // Update activeRow, activeCol.
+                this.populateFragments();
+            }
     }
     // endregion
 
