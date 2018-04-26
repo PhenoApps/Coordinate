@@ -30,6 +30,64 @@ public class EntryModels extends java.lang.Object
     private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
 
+    private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    final int lastRow, final int lastCol, final int activeRow, final int activeCol,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    {
+        final int     candidateRow, candidateCol ;
+        final boolean filledRowOrColNeedsChecking;
+        {
+            {
+                final boolean recursion = null == filledHandler;
+                if (!recursion && null == this.next(lastRow, lastCol, activeRow, activeCol, null))
+                {
+                    filledHandler.handleFilledGrid();
+                    filledRowOrColNeedsChecking = false;
+                }
+                else
+                    if (activeRow < lastRow)
+                        filledRowOrColNeedsChecking = null != filledHandler;
+                    else
+                    {
+                        if (activeCol >= lastCol)
+                        {
+                            if (null != filledHandler) filledHandler.handleFilledGrid();
+                            return null;
+                        }
+
+                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                        filledRowOrColNeedsChecking = false;             // Since I just handled it.
+                    }
+            }
+
+            if (activeRow < lastRow)
+            {
+                candidateRow = activeRow + 1                         ;
+                candidateCol = java.lang.Math.min(activeCol, lastCol);
+            }
+            else
+                { candidateRow = 0; candidateCol = activeCol + 1; }
+        }
+
+        boolean onCandidateCol = true;
+        for (int col = candidateCol; col <= lastCol; col++)
+        {
+            for (int row = onCandidateCol ? candidateRow : 0; row <= lastRow; row++)
+            {
+                final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                    this.entryModelArray[row][col];
+                if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                {
+                    if (filledRowOrColNeedsChecking) if (col > activeCol)
+                        filledHandler.handleFilledRowOrCol();
+                    return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                }
+            }
+            onCandidateCol = false;
+        }
+        return null;
+    }
+
     public EntryModels(
     @android.support.annotation.IntRange(from = 1) final long gridId,
     @android.support.annotation.IntRange(from = 1) final int  rows  ,
@@ -83,67 +141,12 @@ public class EntryModels extends java.lang.Object
         if (null == activeEntryModel)
             return null;
         else
-        {
-            final int
-                lastRow      = this.entryModelArray.length    - 1,
-                lastCol      = this.entryModelArray[0].length - 1,
-                candidateRow                                     ,
-                candidateCol                                     ,
-                activeCol    = activeEntryModel.getCol() - 1     ;
-            final boolean filledRowOrColNeedsChecking;
-            {
-                final int activeRow = activeEntryModel.getRow() - 1;
-
-                {
-                    final boolean recursion = null == filledHandler;
-                    if (!recursion && null == this.next(activeEntryModel, null))        // recursion
-                    {
-                        filledHandler.handleFilledGrid();
-                        filledRowOrColNeedsChecking = false;
-                    }
-                    else
-                        if (activeRow < lastRow)
-                            filledRowOrColNeedsChecking = null != filledHandler;
-                        else
-                        {
-                            if (activeCol >= lastCol)
-                            {
-                                if (null != filledHandler) filledHandler.handleFilledGrid();
-                                return null;
-                            }
-
-                            if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                            filledRowOrColNeedsChecking = false;         // Since I just handled it.
-                        }
-                }
-
-                if (activeRow < lastRow)
-                {
-                    candidateRow = activeRow + 1                         ;
-                    candidateCol = java.lang.Math.min(activeCol, lastCol);
-                }
-                else
-                    { candidateRow = 0; candidateCol = activeCol + 1; }
-            }
-
-            boolean onCandidateCol = true;
-            for (int col = candidateCol; col <= lastCol; col++)
-            {
-                for (int row = onCandidateCol ? candidateRow : 0; row <= lastRow; row++)
-                {
-                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                        this.entryModelArray[row][col];
-                    if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
-                    {
-                        if (filledRowOrColNeedsChecking) if (col > activeCol)
-                            filledHandler.handleFilledRowOrCol();
-                        return (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
-                    }
-                }
-                onCandidateCol = false;
-            }
-            return null;
-        }
+            return this.next(
+                /* lastRow       => */ this.entryModelArray.length    - 1,
+                /* lastCol       => */ this.entryModelArray[0].length - 1,
+                /* activeRow     => */ activeEntryModel.getRow()      - 1,
+                /* activeCol     => */ activeEntryModel.getCol()      - 1,
+                /* filledHandler => */ filledHandler                     );
     }
     // endregion
 
