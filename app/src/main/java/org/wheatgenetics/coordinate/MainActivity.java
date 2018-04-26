@@ -74,6 +74,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.NavigationItemSelectedListener.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.Utils.Advancement
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
@@ -419,6 +420,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.changeLogAlertDialog.show();
     }
 
+    // region Default SharedPreferences Private Methods
+    private boolean getSoundOn() { return org.wheatgenetics.coordinate.Utils.getSoundOn(this); }
+
+    private org.wheatgenetics.coordinate.Utils.Advancement getAdvancement()
+    { return org.wheatgenetics.coordinate.Utils.getAdvancement(this); }
+    // endregion
+
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         if (this.joinedGridModelIsLoaded()) if (this.joinedGridModel.goToNext(entryModel, this))
@@ -427,8 +435,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.populateFragments();
         }
     }
-
-    private boolean getSoundOn() { return org.wheatgenetics.coordinate.Utils.getSoundOn(this); }
     // endregion
 
     // region Overridden Methods

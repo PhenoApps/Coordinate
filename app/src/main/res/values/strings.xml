@@ -62,7 +62,6 @@
     <string name="NavigationItemSelectedListenerSelectExportProjectTitle">Export project</string>
 
 
-
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
 
@@ -147,7 +146,22 @@
     <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
 
+
     <string name="SoundPreferenceTitle">Sound</string>
     <string name="SoundPreferenceSummaryOff">Remain silent at end of row or column and grid.</string>
     <string name="SoundPreferenceSummaryOn">Play sound at end of row or column and grid.</string>
+
+    <string name="AdvancementPreferenceTitle">Advancement</string>
+    <string name="AdvancementPreferenceSummary">After saving a value in a cell, Coordinate will advance to the next included cell in the grid.  You may advance either down, then across, or across, then down.</string>
+    <string-array name="AdvancementPreferenceEntries">
+        <item>Down, then across</item>
+        <item>Across, then down</item>
+    </string-array>
+    <string name="AdvancementPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
+    <string name="AdvancementPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+    <string-array name="AdvancementPreferenceEntryValues">
+        <item>@string/AdvancementPreferenceDefault</item>
+        <item>@string/AdvancementPreferenceAcrossThenDownEntryValue</item>
+    </string-array>
+    <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
 </resources>

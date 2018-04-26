@@ -17,6 +17,8 @@ package org.wheatgenetics.coordinate;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
+    public enum Advancement { ERROR, DOWN_THEN_ACROSS, ACROSS_THEN_DOWN }
+
     private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
     // region AlertDialog Methods
@@ -177,6 +179,27 @@ public class Utils extends java.lang.Object
     {
         return org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getBoolean(
             "SoundOn", /* defValue => */ true);
+    }
+
+    public static org.wheatgenetics.coordinate.Utils.Advancement getAdvancement(
+    final android.content.Context context)
+    {
+        assert null != context;
+        final java.lang.String advancement =
+            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getString(
+                /* key      => */ "Advancement",
+                /* defValue => */ context.getString(
+                    org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDefault));
+
+        if (advancement.equals(context.getString(
+        org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
+            return org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS;
+        else
+            if (advancement.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
+                return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
+            else
+                return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
     }
     // endregion
 }
