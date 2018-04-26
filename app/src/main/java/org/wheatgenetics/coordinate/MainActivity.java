@@ -4,13 +4,11 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.app.Activity
  * android.content.Intent
- * android.content.SharedPreferences
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * android.media.MediaPlayer
  * android.os.Bundle
  * android.os.ParcelFileDescriptor
- * android.preference.PreferenceManager
  * android.support.annotation.IdRes
  * android.support.annotation.IntDef
  * android.support.annotation.StringRes
@@ -98,7 +96,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem, manageProjectMenuItem,
         exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
-    private android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
@@ -431,17 +428,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    // region getSoundOn() Private Methods
-    private android.content.SharedPreferences getDefaultSharedPreferences()
-    {
-        if (null == this.defaultSharedPreferencesInstance) this.defaultSharedPreferencesInstance =
-            android.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        return this.defaultSharedPreferencesInstance;
-    }
-
-    private boolean getSoundOn()
-    { return this.getDefaultSharedPreferences().getBoolean("SoundOn", /* defValue => */ true); }
-    // endregion
+    private boolean getSoundOn() { return org.wheatgenetics.coordinate.Utils.getSoundOn(this); }
     // endregion
 
     // region Overridden Methods

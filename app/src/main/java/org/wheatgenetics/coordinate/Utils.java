@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate;
  * android.content.Context
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.content.SharedPreferences
+ * android.preference.PreferenceManager
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -15,6 +17,8 @@ package org.wheatgenetics.coordinate;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
+    private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;
+
     // region AlertDialog Methods
     // region Overview
     // private alert(String title, String message, positiveText, positiveListener, negativeListener)
@@ -158,4 +162,21 @@ public class Utils extends java.lang.Object
         else
             return value;
     }
+
+    // region Default SharedPreferences Methods
+    private static android.content.SharedPreferences getDefaultSharedPreferences(
+    final android.content.Context context)
+    {
+        if (null == org.wheatgenetics.coordinate.Utils.defaultSharedPreferencesInstance)
+            org.wheatgenetics.coordinate.Utils.defaultSharedPreferencesInstance =
+                android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        return org.wheatgenetics.coordinate.Utils.defaultSharedPreferencesInstance;
+    }
+
+    static boolean getSoundOn(final android.content.Context context)
+    {
+        return org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getBoolean(
+            "SoundOn", /* defValue => */ true);
+    }
+    // endregion
 }
