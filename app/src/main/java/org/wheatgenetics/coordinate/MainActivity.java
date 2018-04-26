@@ -839,15 +839,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
-    @java.lang.Override protected void onPause()
+    @java.lang.Override protected void onDestroy()
     {
         if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
         if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
-        super.onPause();
-    }
 
-    @java.lang.Override protected void onDestroy()
-    {
+
         if (null != this.projectExporter)
             { this.projectExporter.cancel(); this.projectExporter = null; }
 
@@ -855,6 +852,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             { this.templateExporter.cancel(); this.templateExporter = null; }
 
         if (null != this.gridExporter) { this.gridExporter.cancel(); this.gridExporter = null; }
+
 
         super.onDestroy();
     }
