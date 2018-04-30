@@ -17,7 +17,10 @@ package org.wheatgenetics.coordinate;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
-    public enum Advancement { ERROR, DOWN_THEN_ACROSS, ACROSS_THEN_DOWN }
+    // region Types
+    public enum Advancement   { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN        }
+           enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT }
+    // endregion
 
     private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;
 
@@ -175,12 +178,6 @@ public class Utils extends java.lang.Object
         return org.wheatgenetics.coordinate.Utils.defaultSharedPreferencesInstance;
     }
 
-    static boolean getSoundOn(final android.content.Context context)
-    {
-        return org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getBoolean(
-            "SoundOn", /* defValue => */ true);
-    }
-
     public static org.wheatgenetics.coordinate.Utils.Advancement getAdvancement(
     final android.content.Context context)
     {
@@ -200,6 +197,33 @@ public class Utils extends java.lang.Object
                 return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
             else
                 return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
+    }
+
+    static boolean getSoundOn(final android.content.Context context)
+    {
+        return org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getBoolean(
+            "SoundOn", /* defValue => */ true);
+    }
+
+    static org.wheatgenetics.coordinate.Utils.ProjectExport getProjectExport(
+    final android.content.Context context)
+    {
+        assert null != context;
+        final java.lang.String projectExport =
+            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getString(
+                /* key      => */ "ProjectExport",
+                /* defValue => */ context.getString(
+                    org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceDefault));
+
+        if (projectExport.equals(context.getString(
+        org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
+            return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID;
+        else
+            if (projectExport.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFileEntireProject)))
+                return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
+            else
+                return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
     }
     // endregion
 }
