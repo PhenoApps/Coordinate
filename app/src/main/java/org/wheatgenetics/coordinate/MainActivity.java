@@ -59,7 +59,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.ProjectExporter
+ * org.wheatgenetics.coordinate.model.PerGridProjectExporter
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateExporter
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -113,12 +113,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
-    private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel  = null;
-    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel     = null;
-    private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator      = null;
-    private org.wheatgenetics.coordinate.model.GridExporter     gridExporter     = null;
-    private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter = null;
-    private org.wheatgenetics.coordinate.model.ProjectExporter  projectExporter  = null;
+    private org.wheatgenetics.coordinate.model.JoinedGridModel        joinedGridModel        = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel           projectModel           = null;
+    private org.wheatgenetics.coordinate.gc.GridCreator               gridCreator            = null;
+    private org.wheatgenetics.coordinate.model.GridExporter           gridExporter           = null;
+    private org.wheatgenetics.coordinate.model.TemplateExporter       templateExporter       = null;
+    private org.wheatgenetics.coordinate.model.PerGridProjectExporter perGridProjectExporter = null;
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
@@ -402,12 +402,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 // directory already exists then I don't have a problem.
             }
 
-            this.projectExporter = new org.wheatgenetics.coordinate.model.ProjectExporter(
-                /* joinedGridModels    => */ joinedGridModels,
-                /* context             => */ this            ,
-                /* exportDir           => */ exportDir       ,
-                /* exportDirectoryName => */ directoryName   );
-            this.projectExporter.execute();
+            this.perGridProjectExporter =
+                new org.wheatgenetics.coordinate.model.PerGridProjectExporter(
+                    /* joinedGridModels    => */ joinedGridModels,
+                    /* context             => */ this            ,
+                    /* exportDir           => */ exportDir       ,
+                    /* exportDirectoryName => */ directoryName   );
+            this.perGridProjectExporter.execute();
         }
     }
     // endregion
@@ -856,8 +857,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
 
 
-        if (null != this.projectExporter)
-            { this.projectExporter.cancel(); this.projectExporter = null; }
+        if (null != this.perGridProjectExporter)
+            { this.perGridProjectExporter.cancel(); this.perGridProjectExporter = null; }
 
         if (null != this.templateExporter)
             { this.templateExporter.cancel(); this.templateExporter = null; }

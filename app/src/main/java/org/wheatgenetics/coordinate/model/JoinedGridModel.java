@@ -370,8 +370,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         return result;
     }
 
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
     void export(final java.io.Writer writer, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException

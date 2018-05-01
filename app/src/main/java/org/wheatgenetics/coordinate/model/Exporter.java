@@ -35,7 +35,8 @@ abstract class Exporter extends java.lang.Object
         private java.lang.String message = null;
         // endregion
 
-        private void confirm(final int message, final java.lang.Runnable yesRunnable)
+        private void confirm(@android.support.annotation.StringRes final int message,
+        final java.lang.Runnable yesRunnable)
         {
             class NoRunnable extends java.lang.Object implements java.lang.Runnable
             {
@@ -196,7 +197,7 @@ abstract class Exporter extends java.lang.Object
         }
         // endregion
 
-        // region GridExporter.AsyncTask, ProjectExporter.AsyncTask Package Method
+        // region GridExporter.AsyncTask, PerGridProjectExporter.AsyncTask, EntireProjectProjectExporter.AsyncTask Package Method
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void setMessage(@android.support.annotation.StringRes final int resId)

@@ -139,7 +139,7 @@
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
 
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
-    <string name="ProjectExporterAsyncTaskFailedMessage">Grid %d was not exported.</string>
+    <string name="PerGridProjectExporterAsyncTaskFailedMessage">Grid %d was not exported.</string>
 
     <string name="CreateProjectAlertDialogTitle">Create Project</string>
     <string name="CreateProjectAlertDialogEditTextHint">Project name</string>

@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class JoinedGridModels extends java.lang.Object
@@ -65,6 +66,40 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         return new Iterator(this.arrayList());
     }
     // endregion
+
+    boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
+    throws java.io.IOException
+    {
+        final boolean success;
+        if (null == exportFile || null == helper)
+            success = false;
+        else
+        {
+            {
+                final java.lang.String string;
+                {
+                    final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder();
+                    for (final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel:
+                    this)
+                    {
+                        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+                        joinedGridModel.export(stringWriter,                      // throws java.io-
+                            exportFileName, helper);                              //  .IOException
+                        stringBuilder.append(stringWriter.toString());
+                    }
+                    string = stringBuilder.toString();
+                }
+
+                final java.io.FileOutputStream fileOutputStream =
+                    new java.io.FileOutputStream(exportFile);
+                try     { fileOutputStream.write(string.getBytes()); }
+                finally { fileOutputStream.close()                 ; }
+            }
+            success = true;
+        }
+        return success;
+    }
 
     // region Public Methods
     @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
