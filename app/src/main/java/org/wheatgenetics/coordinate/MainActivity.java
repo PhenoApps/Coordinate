@@ -50,6 +50,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
+ * org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -119,6 +120,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.model.GridExporter           gridExporter           = null;
     private org.wheatgenetics.coordinate.model.TemplateExporter       templateExporter       = null;
     private org.wheatgenetics.coordinate.model.PerGridProjectExporter perGridProjectExporter = null;
+    private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
+        entireProjectProjectExporter = null;
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
@@ -391,24 +394,41 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.gridsTable().loadByProjectId(projectId);
         if (null != joinedGridModels) if (joinedGridModels.size() > 0)
         {
-            final org.wheatgenetics.androidlibrary.Dir exportDir =
-                new org.wheatgenetics.androidlibrary.Dir(this, this.exportDir, directoryName);
-            try { exportDir.createIfMissing(); /* throws java.io.IOException */ }
-            catch (final java.io.IOException e)
+            final org.wheatgenetics.coordinate.Utils.ProjectExport projectExport =
+                this.getProjectExport();
+            if (org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID == projectExport)
             {
-                // Do nothing.  The reason I do nothing is because when an exception is thrown it
-                // does not mean there is a problem.  For example, an exception is thrown when a di-
-                // rectory already exists.  If I try to create a directory and I fail because the
-                // directory already exists then I don't have a problem.
-            }
+                final org.wheatgenetics.androidlibrary.Dir exportDir =
+                    new org.wheatgenetics.androidlibrary.Dir(this, this.exportDir, directoryName);
+                try { exportDir.createIfMissing(); /* throws java.io.IOException */ }
+                catch (final java.io.IOException e)
+                {
+                    // Do nothing.  The reason I do nothing is because when an exception is thrown
+                    // it does not mean there is a problem.  For example, an exception is thrown
+                    // when a directory already exists.  If I try to create a directory and I fail
+                    // because the directory already exists then I don't have a problem.
+                }
 
-            this.perGridProjectExporter =
-                new org.wheatgenetics.coordinate.model.PerGridProjectExporter(
-                    /* joinedGridModels    => */ joinedGridModels,
-                    /* context             => */ this            ,
-                    /* exportDir           => */ exportDir       ,
-                    /* exportDirectoryName => */ directoryName   );
-            this.perGridProjectExporter.execute();
+                this.perGridProjectExporter =
+                    new org.wheatgenetics.coordinate.model.PerGridProjectExporter(
+                        /* joinedGridModels    => */ joinedGridModels,
+                        /* context             => */ this            ,
+                        /* exportDir           => */ exportDir       ,
+                        /* exportDirectoryName => */ directoryName   );
+                this.perGridProjectExporter.execute();
+            }
+            else
+                if (org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
+                == projectExport)
+                {
+                    this.entireProjectProjectExporter =
+                        new org.wheatgenetics.coordinate.model.EntireProjectProjectExporter(
+                            /* joinedGridModels => */ joinedGridModels,
+                            /* context          => */ this            ,
+                            /* exportDir        => */ this.exportDir  ,
+                            /* exportFileName   => */ directoryName   );
+                    this.entireProjectProjectExporter.execute();
+                }
         }
     }
     // endregion
@@ -856,6 +876,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
         if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
 
+
+        if (null != this.entireProjectProjectExporter)
+        {
+            this.entireProjectProjectExporter.cancel();
+            this.entireProjectProjectExporter = null;
+        }
 
         if (null != this.perGridProjectExporter)
             { this.perGridProjectExporter.cancel(); this.perGridProjectExporter = null; }
