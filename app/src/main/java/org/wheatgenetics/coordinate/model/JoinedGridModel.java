@@ -45,8 +45,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // region export*() Private Methods
     private void exportSeed(final org.wheatgenetics.javalib.CsvWriter csvWriter,
     final java.lang.String                                          exportFileName,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper        )
-    throws java.io.IOException
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper        ,
+    final boolean includeHeader) throws java.io.IOException
     {
         final java.lang.String tray_id, person, date;
         {
@@ -62,7 +62,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             }
         }
 
-        csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
+        if (includeHeader) csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
             "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
         {
             final int cols = this.getCols(), rows = this.getRows();
@@ -95,8 +95,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     @java.lang.SuppressWarnings({"DefaultLocale"})
     private void exportDNA(final org.wheatgenetics.javalib.CsvWriter csvWriter,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-    throws java.io.IOException
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    final boolean includeHeader) throws java.io.IOException
     {
         final java.lang.String date, plate_id, plate_name,
             dna_person, notes, tissue_type, extraction;
@@ -119,9 +119,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             }
         }
 
-        csvWriter.writeRecord(new java.lang.String[]{"date", "plate_id",
-            "plate_name", "sample_id", "well_A01", "well_01A", "tissue_id",
-            "dna_person", "notes", "tissue_type", "extraction"});
+        if (includeHeader) csvWriter.writeRecord(new java.lang.String[]{
+            "date", "plate_id", "plate_name", "sample_id", "well_A01", "well_01A",
+            "tissue_id", "dna_person", "notes", "tissue_type", "extraction"});
         {
             final int cols = this.getCols(), rows = this.getRows();
 
@@ -168,19 +168,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     private void exportUserDefined(final org.wheatgenetics.javalib.CsvWriter csvWriter,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-    throws java.io.IOException
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    final boolean includeHeader) throws java.io.IOException
     {
-        csvWriter.write("Value"); csvWriter.write("Column"); csvWriter.write("Row");
-
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
             this.optionalFields();
-        if (null != optionalFields)
+        if (includeHeader)
         {
-            final java.lang.String names[] = optionalFields.names();
-            assert null != names; for (final java.lang.String name : names) csvWriter.write(name);
+            csvWriter.write("Value"); csvWriter.write("Column"); csvWriter.write("Row");
+
+            if (null != optionalFields)
+            {
+                final java.lang.String names[] = optionalFields.names();
+                assert null != names;
+                for (final java.lang.String name: names) csvWriter.write(name);
+            }
+            csvWriter.endRecord();
         }
-        csvWriter.endRecord();
 
         {
             final int              cols     = this.getCols(), rows = this.getRows();
@@ -371,21 +375,21 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     void export(final java.io.Writer writer, final java.lang.String exportFileName,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-    throws java.io.IOException
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    final boolean includeHeader) throws java.io.IOException
     {
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
             this.templateModel.getType();
         final org.wheatgenetics.javalib.CsvWriter csvWriter =
             new org.wheatgenetics.javalib.CsvWriter(writer);
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-            this.exportSeed(csvWriter, exportFileName, helper);        // throws java.io.IOException
-        else
+            this.exportSeed(csvWriter, exportFileName, helper, includeHeader);    // throws java.io-
+        else                                                                      //  .IOException
             if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                this.exportDNA(csvWriter, helper);                     // throws java.io.IOException
-            else
-                this.exportUserDefined(csvWriter, helper);             // throws java.io.IOException
-    }
+                this.exportDNA(csvWriter, helper, includeHeader);                 // throws java.io-
+            else                                                                  //  .IOException
+                this.exportUserDefined(csvWriter, helper, includeHeader);         // throws java.io-
+    }                                                                             //  .IOException
 
     @java.lang.SuppressWarnings({"PointlessBooleanExpression"})
     boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
@@ -399,7 +403,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         {
             this.export(                                               // throws java.io.IOException
                 new java.io.FileWriter(exportFile) /* throws java.io.IOException */,
-                exportFileName, helper                                             );
+                exportFileName, helper, /* includeHeader => */ true                );
             success = true;
         }
         return success;

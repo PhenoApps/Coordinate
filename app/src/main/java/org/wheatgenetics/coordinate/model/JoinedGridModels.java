@@ -80,13 +80,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                 final java.lang.String string;
                 {
                     final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder();
+                          boolean                 first         = true                         ;
                     for (final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel:
                     this)
                     {
                         final java.io.StringWriter stringWriter = new java.io.StringWriter();
-                        joinedGridModel.export(stringWriter,                      // throws java.io-
-                            exportFileName, helper);                              //  .IOException
+                        joinedGridModel.export(stringWriter, exportFileName,      // throws java.io-
+                            helper, /* includeHeader => */ first);                //  .IOException
                         stringBuilder.append(stringWriter.toString());
+                        if (first) first = false;
                     }
                     string = stringBuilder.toString();
                 }

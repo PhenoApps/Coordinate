@@ -371,7 +371,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
                     /* entryModels => */ null);
             joinedGridModel.export(stringWriter, "exportFileName",    // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -418,7 +418,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* entryModels => */ null);
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -476,7 +476,7 @@ public class JoinedGridModelTest extends java.lang.Object
             }
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -533,7 +533,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 }
             }
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -572,7 +572,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
                     /* entryModels => */ null);
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -620,7 +620,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* entryModels => */ null);
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -689,7 +689,7 @@ public class JoinedGridModelTest extends java.lang.Object
             }
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -747,7 +747,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 }
             }
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -786,7 +786,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
                     /* entryModels => */ null);
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -834,7 +834,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* entryModels => */ null);
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -895,7 +895,7 @@ public class JoinedGridModelTest extends java.lang.Object
             }
             joinedGridModel.makeEntryModels();
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
@@ -953,7 +953,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 }
             }
             joinedGridModel.export(stringWriter, "exportFileName",     // throws java.io.IOException
-                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper());
+                new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper(), true);
         }
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
