@@ -4,9 +4,8 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.os.Bundle
  * android.support.annotation.NonNull
- * android.support.design.widget.FloatingActionButton
  * android.support.design.widget.NavigationView
- * android.support.design.widget.Snackbar
+ * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
  * android.support.v4.view.GravityCompat
  * android.support.v4.widget.DrawerLayout
  * android.support.v7.app.ActionBarDrawerToggle
@@ -14,7 +13,6 @@ package org.wheatgenetics.coordinate;
  * android.support.v7.widget.Toolbar
  * android.view.Menu
  * android.view.MenuItem
- * android.view.View
  *
  * org.wheatgenetics.coordinate.R
  */
@@ -31,21 +29,6 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
             final android.support.v7.widget.Toolbar toolbar = this.findViewById(
                 org.wheatgenetics.coordinate.R.id.toolbar);         // From layout/app_bar_main.xml.
             this.setSupportActionBar(toolbar);
-
-            {
-                final android.support.design.widget.FloatingActionButton fab = this.findViewById(
-                    org.wheatgenetics.coordinate.R.id.fab);         // From layout/app_bar_main.xml.
-                assert null != fab; fab.setOnClickListener(new android.view.View.OnClickListener()
-                    {
-                        @java.lang.Override public void onClick(final android.view.View view)
-                        {
-                            android.support.design.widget.Snackbar.make(
-                                    view, "Replace with your own action",
-                                    android.support.design.widget.Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        }
-                    });
-            }
 
             final android.support.v4.widget.DrawerLayout drawerLayout = this.findViewById(
                 org.wheatgenetics.coordinate.R.id.drawer_layout);  // From layout/activity_main.xml.
