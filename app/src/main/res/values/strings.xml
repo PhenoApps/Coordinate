@@ -65,4 +65,17 @@
 
     <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
     <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
+
+
+    <!-- assign_title_rows_cols.xml -->
+    <string name="AssignTitleRowsColsAlertDialogTitleEditTextHint">Template name</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsEditTextHint">Number of rows</string>
+    <string name="AssignTitleRowsColsAlertDialogColsEditTextHint">Number of columns</string>
+
+    <!-- AssignTitleRowsColsAlertDialog -->
+    <string name="AssignTitleRowsColsAlertDialogTitle">New Template</string>
+    <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Next</string>
+    <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
+    <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
 </resources>
