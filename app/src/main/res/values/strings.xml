@@ -158,6 +158,13 @@
     <string name="ManageGridAlertDialogTitle">Manage grid</string>
 
 
+    <!-- ManageProjectAlertDialog -->
+    <string name="ManageProjectAlertDialogTitle">Manage project</string>
+    <string name="ManageProjectAlertDialogLoad">Load</string>
+    <string name="ManageProjectAlertDialogClear">Clear</string>
+    <string name="ManageProjectAlertDialogDelete">Delete</string>
+
+
     <!--  -->
     <!--string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string-->
@@ -171,10 +178,6 @@
     <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
     <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
 
-    <string name="NavigationItemSelectedListenerManageProjectTitle">Manage project</string>
-    <string name="NavigationItemSelectedListenerLoadProject">Load</string>
-    <string name="NavigationItemSelectedListenerClearProject">Clear</string>
-    <string name="NavigationItemSelectedListenerDeleteProject">Delete</string>
     <string name="NavigationItemSelectedListenerSelectLoadProjectTitle">Load project</string>
     <string name="NavigationItemSelectedListenerSelectDeleteProjectTitle">Delete project</string>
     <string name="NavigationItemSelectedListenerDeleteProjectConfirmationTitle">Delete project</string>
