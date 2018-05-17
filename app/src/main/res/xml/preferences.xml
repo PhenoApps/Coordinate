@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="Advancement"
+        android:title="@string/AdvancementPreferenceTitle"
+        android:summary="@string/AdvancementPreferenceSummary"
+        android:entries="@array/AdvancementPreferenceEntries"
+        android:entryValues="@array/AdvancementPreferenceEntryValues"
+        android:defaultValue="@string/AdvancementPreferenceDefault" />
+
+    <CheckBoxPreference
+        android:key="SoundOn"
+        android:title="@string/SoundPreferenceTitle"
+        android:summaryOff="@string/SoundPreferenceSummaryOff"
+        android:summaryOn="@string/SoundPreferenceSummaryOn"
+        android:defaultValue="true" />
+
+    <ListPreference
+        android:key="ProjectExport"
+        android:title="@string/ProjectExportPreferenceTitle"
+        android:summary="@string/ProjectExportPreferenceSummary"
+        android:entries="@array/ProjectExportPreferenceEntries"
+        android:entryValues="@array/ProjectExportPreferenceEntryValues"
+        android:defaultValue="@string/ProjectExportPreferenceDefault" />
+
+</PreferenceScreen>
