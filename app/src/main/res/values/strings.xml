@@ -86,4 +86,11 @@
     <!-- ExcludedRowsOrColsAlertDialogTester -->
     <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
     <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
+
+
+    <!-- generated_excluded_cells.xml -->
+    <string name="GeneratedExcludedCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
+
+    <!-- GeneratedExcludedCellsAlertDialog -->
+    <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
 </resources>
