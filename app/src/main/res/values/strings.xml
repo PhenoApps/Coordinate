@@ -132,4 +132,10 @@
     <string name="CreateProjectAlertDialogTitle">Create Project</string>
     <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
+
+
+    <!-- GetTemplateChoiceAlertDialog -->
+    <string name="GetTemplateChoiceAlertDialogTitle">Template Options</string>
+    <string name="GetTemplateChoiceAlertDialogOldItem">Load Template</string>
+    <string name="GetTemplateChoiceAlertDialogNewItem">New Template</string>
 </resources>
