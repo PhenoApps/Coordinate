@@ -209,4 +209,9 @@
 
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
+
+
+    <!-- GridElement -->
+    <string name="ElementConfirmTitle">Exclude Cell</string>
+    <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
 </resources>
