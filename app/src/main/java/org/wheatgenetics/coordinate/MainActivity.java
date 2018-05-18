@@ -87,12 +87,6 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            case org.wheatgenetics.coordinate.R.id.nav_camera   : break;
-            case org.wheatgenetics.coordinate.R.id.nav_gallery  : break;
-            case org.wheatgenetics.coordinate.R.id.nav_slideshow: break;
-            case org.wheatgenetics.coordinate.R.id.nav_manage   : break;
-            case org.wheatgenetics.coordinate.R.id.nav_share    : break;
-            case org.wheatgenetics.coordinate.R.id.nav_send     : break;
         }
 
         {
