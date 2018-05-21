@@ -6,4 +6,5 @@
     <!-- nav_header_main.xml: -->
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="large_text_size">20sp</dimen>
+    <dimen name="medium_text_size">16sp</dimen>
 </resources>
