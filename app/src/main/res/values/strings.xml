@@ -142,6 +142,8 @@
     <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
     <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
 
+
+
     <!-- GridCreator -->
     <string name="GridCreatorGetProjectChoiceAlertDialogTitle">Create Grid</string>
     <string name="GridCreatorChooseOldAlertDialogTitle">Load Template</string>
@@ -165,20 +167,20 @@
 
     <!-- activity_main_drawer.xml -->
     <string name="grid">Grid</string>
-    <string name="create_grid">Create</string>
-    <string name="manage_grid">Manage</string>
-    <string name="export_grid">Export</string>
+        <string name="create_grid">Create</string>
+        <string name="manage_grid">Manage</string>
+        <string name="export_grid">Export</string>
 
     <string name="template">Template</string>
-    <string name="create_template">Create</string>
-    <string name="import_template">Import</string>
-    <string name="export_template">Export</string>
-    <string name="delete_template">Delete</string>
+        <string name="create_template">Create</string>
+        <string name="import_template">Import</string>
+        <string name="export_template">Export</string>
+        <string name="delete_template">Delete</string>
 
     <string name="project">Project</string>
-    <string name="create_project">Create</string>
-    <string name="manage_project">Manage</string>
-    <string name="export_project">Export</string>
+        <string name="create_project">Create</string>
+        <string name="manage_project">Manage</string>
+        <string name="export_project">Export</string>
 
     <string name="settings">Settings</string>
 
@@ -220,4 +222,12 @@
 
     <!-- fragment_data_entry.xml -->
     <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
+
+    <!-- MainActivity -->
+    <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
+    <string name="MainActivityEntriesOfGridSuccessToast">Entries successfully deleted</string>
+    <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
+    <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
+    <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 </resources>
