@@ -60,11 +60,7 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
     }
 
     @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.main, menu);
-        return true;
-    }
+    { return true; }
 
     @java.lang.Override public boolean onOptionsItemSelected(final android.view.MenuItem item)
     {
@@ -73,10 +69,7 @@ implements android.support.design.widget.NavigationView.OnNavigationItemSelected
         assert null != item; final int itemId = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (org.wheatgenetics.coordinate.R.id.action_settings == itemId)
-            return true;
-        else
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     // region android.support.design.widget.NavigationView.OnNavigationItemSelectedListener Overridden Method
