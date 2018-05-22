@@ -378,8 +378,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 }
 
                 // region Overridden Methods
-                @java.lang.Override
-                public void startElement(final java.lang.String uri,
+                @java.lang.Override public void startElement(final java.lang.String uri,
                 final java.lang.String localName, final java.lang.String qName,
                 final org.xml.sax.Attributes attributes) throws org.xml.sax.SAXException
                 { this.elementName = qName; }
