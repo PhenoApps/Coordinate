@@ -80,6 +80,20 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         }
     }
 
+    private void setExcludedRows(final java.lang.String json)
+    {
+        this.excludedRowsInstance =
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
+                /* json => */ json, /* maxValue => */ this.getRows());
+    }
+
+    private void setExcludedCols(final java.lang.String json)
+    {
+        this.excludedColsInstance =
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
+                /* json => */ json, /* maxValue => */ this.getCols());
+    }
+
     private static void writeElement(final org.xmlpull.v1.XmlSerializer xmlSerializer,
     final java.lang.String indent, final java.lang.String tagName, final int text)
     throws java.io.IOException
@@ -183,13 +197,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(rowNumbering), timestamp);
 
         this.setExcludedCells(excludedCells);
-
-        this.excludedRowsInstance =
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
-                /* json => */ excludedRows, /* maxValue => */ this.getRows());
-        this.excludedColsInstance =
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
-                /* json => */ excludedCols, /* maxValue => */ this.getCols());
+        this.setExcludedRows(excludedRows); this.setExcludedCols(excludedCols);
     }
     // endregion
 
@@ -450,6 +458,15 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                     if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
                                     .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
                                         this.setExcludedCells(characterData);
+                                    else
+                                        if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
+                                        .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
+                                            this.setExcludedRows(characterData);
+                                        else
+                                            if (org.wheatgenetics.coordinate.model
+                                            .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME.equals(
+                                            elementName))
+                                                this.setExcludedCols(characterData);
     }
     // endregion
 
