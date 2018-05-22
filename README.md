@@ -7,6 +7,8 @@ Trevor Rife - trife@ksu.edu
 
 Jesse Poland
 
+Peter J. Rosario - peterrosario@ksu.edu
+
 ## License
     Licensed under the GNU General Public License version 2 (GPLv2)
     You may obtain a copy of the License at
