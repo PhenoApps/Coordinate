@@ -446,6 +446,10 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                 if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
                                 .TIMESTAMP_TAG_NAME.equals(elementName))
                                     this.setTimestamp(characterData);
+                                else
+                                    if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
+                                    .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
+                                        this.setExcludedCells(characterData);
     }
     // endregion
 
