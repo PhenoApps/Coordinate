@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<template>
+    <title>HTPG</title>
+    <rows>8</rows>
+    <cols>12</cols>
+    <generatedExcludedCellsAmount>0</generatedExcludedCellsAmount>
+    <colNumbering>true</colNumbering>
+    <rowNumbering>false</rowNumbering>
+    <timestamp>1527002745578</timestamp>
+    <excludedCells>[{"row":8,"col":11},{"row":8,"col":12}]</excludedCells>
+    <optionalFields>[{"field":"Plate ID","checked":true},{"field":"Username","checked":true},{"field":"Date","hint":"yyyy-mm-dd","checked":true}]</optionalFields>
+</template>

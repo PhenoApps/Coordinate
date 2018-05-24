@@ -182,7 +182,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.exportGridMenuItem.setEnabled(this.joinedGridModelIsLoaded());
     }
 
-    @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     private void configureTemplateMenuItems()
     {
         {
@@ -196,19 +195,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.templateMenuItem.setTitle(stringBuilder.toString());
         }
 
-        {
-            final boolean exportedTemplatesExist;
-            assert null != this.templatesDir;
-            {
-                final java.lang.String fileNames[] = this.templatesDir.listXml();
-                if (null == fileNames)
-                    exportedTemplatesExist = false;
-                else
-                    exportedTemplatesExist = fileNames.length > 0;
-            }
-            assert null != this.importTemplateMenuItem;
-            this.importTemplateMenuItem.setEnabled(exportedTemplatesExist);
-        }
+        assert null != this.templatesDir; assert null != this.importTemplateMenuItem;
+        this.importTemplateMenuItem.setEnabled(this.templatesDir.atLeastOneXmlFileExists());
 
         final boolean userDefinedTemplatesExist = this.templatesTable().exists(
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
