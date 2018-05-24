@@ -14,7 +14,6 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.androidlibrary.Dir
  * org.wheatgenetics.androidlibrary.Utils
  * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
  * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
@@ -40,10 +39,10 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
- * org.wheatgenetics.coordinate.Const
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
+ * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  *
@@ -91,10 +90,10 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     // endregion
 
     // region Fields
-    private final android.app.Activity                 activity                 ;
-    private final int                                  createTemplateRequestCode;
-    private final org.wheatgenetics.androidlibrary.Dir templatesDir             ;
-    private final java.lang.String                     versionName              ;
+    private final android.app.Activity                      activity                 ;
+    private final int                                       createTemplateRequestCode;
+    private final org.wheatgenetics.coordinate.TemplatesDir templatesDir             ;
+    private final java.lang.String                          versionName              ;
     private final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler;
     private final android.view.View.OnClickListener                         versionOnClickListener;
 
@@ -233,8 +232,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private void selectExportedTemplate()
     {
         assert null != this.templatesDir;
-        final java.lang.String fileNames[] =
-            this.templatesDir.list(org.wheatgenetics.coordinate.Const.XML_FILE);
+        final java.lang.String fileNames[] = this.templatesDir.listXml();
         if (null != fileNames) if (fileNames.length > 0)
         {
             final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog =
@@ -604,7 +602,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     public NavigationItemSelectedListener(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int createTemplateRequestCode,
-    final org.wheatgenetics.androidlibrary.Dir                                     templatesDir,
+    final org.wheatgenetics.coordinate.TemplatesDir                                templatesDir,
     final java.lang.String                                                         versionName ,
     final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler     ,
     final android.view.View.OnClickListener                             versionOnClickListener )

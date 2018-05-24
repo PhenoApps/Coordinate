@@ -69,10 +69,10 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
- * org.wheatgenetics.coordinate.Const
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
@@ -93,7 +93,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private android.view.MenuItem projectMenuItem , manageProjectMenuItem , exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
 
-    private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
+    private org.wheatgenetics.androidlibrary.Dir                  exportDir                  ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null;
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null;
@@ -105,6 +105,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;
     // endregion
 
+    private org.wheatgenetics.coordinate.TemplatesDir                       templatesDir;
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel        joinedGridModel        = null;
@@ -199,8 +200,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             final boolean exportedTemplatesExist;
             assert null != this.templatesDir;
             {
-                final java.lang.String fileNames[] =
-                    this.templatesDir.list(org.wheatgenetics.coordinate.Const.XML_FILE);
+                final java.lang.String fileNames[] = this.templatesDir.listXml();
                 if (null == fileNames)
                     exportedTemplatesExist = false;
                 else
@@ -585,7 +585,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
 
             // This directory is used to transfer templates between devices.
-            this.templatesDir = new org.wheatgenetics.androidlibrary.Dir(
+            this.templatesDir = new org.wheatgenetics.coordinate.TemplatesDir(
                 this, coordinateDirName + "/Templates", blankHiddenFileName);
             try { this.templatesDir.createIfMissing();  /* throws java.io.IOException */ }
             catch (final java.io.IOException e)
