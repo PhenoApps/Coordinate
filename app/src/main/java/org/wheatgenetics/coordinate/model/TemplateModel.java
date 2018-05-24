@@ -356,9 +356,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
 
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined(
-    final java.io.FileDescriptor fileDescriptor)
+    final java.io.File file)
     {
-        if (null == fileDescriptor)
+        if (null == file)
             return null;
         else
         {
@@ -405,7 +405,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             try
             {
                 final java.io.FileInputStream fileInputStream =
-                    new java.io.FileInputStream(fileDescriptor);
+                    new java.io.FileInputStream(file);
                 try
                 {
                     try

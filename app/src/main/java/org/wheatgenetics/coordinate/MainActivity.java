@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate;
  * android.content.pm.PackageManager.NameNotFoundException
  * android.media.MediaPlayer
  * android.os.Bundle
- * android.os.ParcelFileDescriptor
  * android.support.annotation.IdRes
  * android.support.annotation.StringRes
  * android.support.design.widget.NavigationView
@@ -341,11 +340,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region Template Private Methods
-    private void handleGridDeleted()
+    private void importTemplate(final java.lang.String fileName)
     {
-        if (this.joinedGridModelIsLoaded())
-            if (!this.gridsTable().exists(this.joinedGridModel.getId()))
-                this.clearJoinedGridModelThenPopulate();
+        try
+        {
+            assert null != this.templatesDir;
+            final java.io.File file = this.templatesDir.makeFile(fileName);       // throws java.-
+            this.templatesTable().insert(                                         //  io.IOException
+                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file));
+        }
+        catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }
+
     }
 
     private void exportTemplate(
@@ -365,6 +370,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }                                                                              //  IOEx-
             catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }    //  cep-
         }                                                                                  //  tion
+    }
+
+    private void handleGridDeleted()
+    {
+        if (this.joinedGridModelIsLoaded())
+            if (!this.gridsTable().exists(this.joinedGridModel.getId()))
+                this.clearJoinedGridModelThenPopulate();
     }
     // endregion
 
@@ -614,10 +626,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 /* activity                  => */ this,
                                 /* createTemplateRequestCode => */
                                     org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,
-                                /* importTemplateRequestCode => */
-                                    org.wheatgenetics.coordinate.Types.IMPORT_TEMPLATE,
-                                /* versionName => */ versionName,
-                                /* handler     => */ new org.wheatgenetics.coordinate.nisl
+                                /* templatesDir => */ this.templatesDir,
+                                /* versionName  => */ versionName      ,
+                                /* handler      => */ new org.wheatgenetics.coordinate.nisl
                                     .NavigationItemSelectedListener.Handler()
                                     {
                                         @java.lang.Override public void createGrid()
@@ -659,10 +670,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         }
 
 
-                                        @java.lang.Override public void handleGridDeleted()
+                                        @java.lang.Override
+                                        public void importTemplate(final java.lang.String fileName)
                                         {
                                             org.wheatgenetics.coordinate
-                                                .MainActivity.this.handleGridDeleted();
+                                                .MainActivity.this.importTemplate(fileName);
                                         }
 
                                         @java.lang.Override public void exportTemplate(
@@ -672,6 +684,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         {
                                             org.wheatgenetics.coordinate.MainActivity
                                                 .this.exportTemplate(templateModel, fileName);
+                                        }
+
+                                        @java.lang.Override public void handleGridDeleted()
+                                        {
+                                            org.wheatgenetics.coordinate
+                                                .MainActivity.this.handleGridDeleted();
                                         }
 
 
@@ -832,25 +850,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                         assert null != this.navigationItemSelectedListener;
                         this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
-                        break;
-
-                    case org.wheatgenetics.coordinate.Types.IMPORT_TEMPLATE:
-                        android.os.ParcelFileDescriptor parcelFileDescriptor;
-                        try
-                        {
-                            parcelFileDescriptor =
-                                this.getContentResolver().openFileDescriptor(data.getData(), "r");
-                        }
-                        catch (final java.io.IOException e) { parcelFileDescriptor = null; }
-
-                        if (null != parcelFileDescriptor)
-                        {
-                            this.templatesTable().insert(
-                                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
-                                    parcelFileDescriptor.getFileDescriptor()));
-                            try { parcelFileDescriptor.close(); }
-                            catch (final java.io.IOException e) { /* Leave open. */ }
-                        }
                         break;
 
                     case org.wheatgenetics.coordinate.Types.CREATE_GRID:

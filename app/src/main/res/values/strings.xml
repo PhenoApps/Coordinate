@@ -190,6 +190,8 @@
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
 
+    <string name="NavigationItemSelectedListenerSelectImportTemplateTitle">Import template</string>
+    <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
@@ -197,7 +199,6 @@
     <string name="NavigationItemSelectedListenerDeleteGridsFailToast">Grid(s) were not deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateSuccessToast">Template successfully deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
-    <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
 
     <string name="NavigationItemSelectedListenerSelectLoadProjectTitle">Load project</string>
     <string name="NavigationItemSelectedListenerSelectDeleteProjectTitle">Delete project</string>
