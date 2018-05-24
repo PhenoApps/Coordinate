@@ -40,6 +40,7 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.Const
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -232,7 +233,8 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     private void selectExportedTemplate()
     {
         assert null != this.templatesDir;
-        final java.lang.String fileNames[] = this.templatesDir.list(".+\\.xml");
+        final java.lang.String fileNames[] =
+            this.templatesDir.list(org.wheatgenetics.coordinate.Const.XML_FILE);
         if (null != fileNames) if (fileNames.length > 0)
         {
             final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog =

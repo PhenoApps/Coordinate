@@ -69,6 +69,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
+ * org.wheatgenetics.coordinate.Const
  * org.wheatgenetics.coordinate.DataEntryFragment
  * org.wheatgenetics.coordinate.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.R
@@ -85,10 +86,11 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
     // region Fields
-    private android.support.v4.widget.DrawerLayout drawerLayout;
-    private android.view.MenuItem manageGridMenuItem, exportGridMenuItem, templateMenuItem,
-        deleteTemplateMenuItem, exportTemplateMenuItem, projectMenuItem, manageProjectMenuItem,
-        exportProjectMenuItem;
+    private android.support.v4.widget.DrawerLayout drawerLayout                          ;
+    private android.view.MenuItem                  manageGridMenuItem, exportGridMenuItem;
+    private android.view.MenuItem                  templateMenuItem,
+        importTemplateMenuItem, exportTemplateMenuItem, deleteTemplateMenuItem;
+    private android.view.MenuItem projectMenuItem , manageProjectMenuItem , exportProjectMenuItem;
     private android.media.MediaPlayer gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;
 
     private org.wheatgenetics.androidlibrary.Dir                  exportDir, templatesDir    ;
@@ -179,6 +181,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.exportGridMenuItem.setEnabled(this.joinedGridModelIsLoaded());
     }
 
+    @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
     private void configureTemplateMenuItems()
     {
         {
@@ -190,6 +193,21 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
             assert null != this.templateMenuItem;
             this.templateMenuItem.setTitle(stringBuilder.toString());
+        }
+
+        {
+            final boolean exportedTemplatesExist;
+            assert null != this.templatesDir;
+            {
+                final java.lang.String fileNames[] =
+                    this.templatesDir.list(org.wheatgenetics.coordinate.Const.XML_FILE);
+                if (null == fileNames)
+                    exportedTemplatesExist = false;
+                else
+                    exportedTemplatesExist = fileNames.length > 0;
+            }
+            assert null != this.importTemplateMenuItem;
+            this.importTemplateMenuItem.setEnabled(exportedTemplatesExist);
         }
 
         final boolean userDefinedTemplatesExist = this.templatesTable().exists(
@@ -760,6 +778,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
                 this.templateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_template);
+                this.importTemplateMenuItem =
+                    menu.findItem(org.wheatgenetics.coordinate.R.id.nav_import_template);
                 this.deleteTemplateMenuItem =
                     menu.findItem(org.wheatgenetics.coordinate.R.id.nav_delete_template);
                 this.exportTemplateMenuItem =
