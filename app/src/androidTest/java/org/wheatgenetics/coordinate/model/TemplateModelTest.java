@@ -159,15 +159,13 @@ public class TemplateModelTest extends java.lang.Object
         final java.lang.String expectedString =
             "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n"           +
             "<template>\n"                                                         +
-            "    <id>3</id>\n"                                                     +
             "    <title>testTitle</title>\n"                                       +
             "    <rows>5</rows>\n"                                                 +
             "    <cols>2</cols>\n"                                                 +
             "    <generatedExcludedCellsAmount>0</generatedExcludedCellsAmount>\n" +
             "    <colNumbering>true</colNumbering>\n"                              +
             "    <rowNumbering>false</rowNumbering>\n"                             +
-            "    <timestamp>0</timestamp>\n"                                       +
-            "</template>";
+            "</template>"                                                          ;
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
         {
             final org.wheatgenetics.coordinate.model.TemplateModel templateModel =

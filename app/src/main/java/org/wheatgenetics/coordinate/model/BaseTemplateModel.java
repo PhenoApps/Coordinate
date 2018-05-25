@@ -96,7 +96,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     /** Called by third DisplayTemplateModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel()
-    { super(); this.type = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED; }
+    {
+        super();
+
+        this.type      = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
+        this.timestamp = java.lang.System.currentTimeMillis()                       ;
+    }
     // endregion
 
     // region Overridden Methods

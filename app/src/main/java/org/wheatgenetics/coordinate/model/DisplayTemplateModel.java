@@ -21,9 +21,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     private static final java.lang.String
         TITLE_TAG_NAME = "title", ROWS_TAG_NAME = "rows", COLS_TAG_NAME = "cols",
         GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME = "generatedExcludedCellsAmount",
-        COL_NUMBERING_TAG_NAME = "colNumbering", ROW_NUMBERING_TAG_NAME  = "rowNumbering" ,
-        TIMESTAMP_TAG_NAME     = "timestamp"   , EXCLUDED_CELLS_TAG_NAME = "excludedCells",
-        EXCLUDED_ROWS_TAG_NAME = "excludedRows", EXCLUDED_COLS_TAG_NAME  = "excludedCols" ;
+        COL_NUMBERING_TAG_NAME  = "colNumbering" , ROW_NUMBERING_TAG_NAME = "rowNumbering",
+        EXCLUDED_CELLS_TAG_NAME = "excludedCells",
+        EXCLUDED_ROWS_TAG_NAME  = "excludedRows" , EXCLUDED_COLS_TAG_NAME = "excludedCols";
     public static final java.lang.String
         ROWS_BUNDLE_KEY           = "rows"         , COLS_BUNDLE_KEY          = "cols"        ,
         EXCLUDED_CELLS_BUNDLE_KEY = "excludedCells",
@@ -108,14 +108,6 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     {
         org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(
             xmlSerializer, indent, tagName, java.lang.String.valueOf(text));
-    }
-
-    private static void writeElement(final org.xmlpull.v1.XmlSerializer xmlSerializer,
-    final java.lang.String indent, final java.lang.String tagName, final long text)
-    throws java.io.IOException
-    {
-        org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(
-            xmlSerializer, indent, tagName, java.lang.Long.toString(text));
     }
 
     private org.wheatgenetics.coordinate.model.RowOrCols excludedRows()
@@ -393,11 +385,6 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_TAG_NAME,
                     this.getRowNumbering());
 
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
-                    xmlSerializer, indent,
-                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.TIMESTAMP_TAG_NAME,
-                    this.getTimestamp());
-
                 if (null != this.excludedCellsInstance)
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
@@ -452,22 +439,17 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                 this.setRowNumbering(characterData);
                             else
                                 if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                .TIMESTAMP_TAG_NAME.equals(elementName))
-                                    this.setTimestamp(characterData);
+                                .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
+                                    this.setExcludedCells(characterData);
                                 else
                                     if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                    .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
-                                        this.setExcludedCells(characterData);
+                                    .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
+                                        this.setExcludedRows(characterData);
                                     else
                                         if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                        .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
-                                            this.setExcludedRows(characterData);
-                                        else
-                                            if (org.wheatgenetics.coordinate.model
-                                            .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME.equals(
-                                            elementName))
-                                                this.setExcludedCols(characterData);
-    }
+                                        .EXCLUDED_COLS_TAG_NAME.equals(elementName))
+                                            this.setExcludedCols(characterData);
+}
     // endregion
 
     // region Public Methods
