@@ -89,9 +89,8 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
             assert null != view;
             {
-                final android.widget.Button checkAndAddOptionalFieldsButton =
-                    (android.widget.Button) view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.checkAndAddOptionalFieldsButton);
+                final android.widget.Button checkAndAddOptionalFieldsButton = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.checkAndAddOptionalFieldsButton);
                 assert null != checkAndAddOptionalFieldsButton;
                 checkAndAddOptionalFieldsButton.setOnClickListener(
                     new android.view.View.OnClickListener()
@@ -106,8 +105,8 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
             }
 
             {
-                final android.widget.Button excludeButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.excludeButton);
+                final android.widget.Button excludeButton = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.excludeButton);
                 assert null != excludeButton;
                 excludeButton.setOnClickListener(new android.view.View.OnClickListener()
                     {
@@ -120,8 +119,8 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
             }
 
             {
-                final android.widget.Button setNumberingButton = (android.widget.Button)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.setNumberingButton);
+                final android.widget.Button setNumberingButton = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.setNumberingButton);
                 assert null != setNumberingButton;
                 setNumberingButton.setOnClickListener(new android.view.View.OnClickListener()
                     {

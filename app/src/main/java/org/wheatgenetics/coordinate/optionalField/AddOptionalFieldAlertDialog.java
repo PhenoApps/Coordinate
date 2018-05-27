@@ -60,11 +60,10 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
                 org.wheatgenetics.coordinate.R.layout.add_optional_field, null);
 
             assert null != view;
-            if (null == this.nameEditText) this.nameEditText = (android.widget.EditText)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.nameEditText);
+            if (null == this.nameEditText) this.nameEditText = view.findViewById(
+                org.wheatgenetics.coordinate.R.id.nameEditText);
             if (null == this.defaultValueEditText) this.defaultValueEditText =
-                (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.defaultValueEditText);
+                view.findViewById(org.wheatgenetics.coordinate.R.id.defaultValueEditText);
 
             this.setView(view);
         }

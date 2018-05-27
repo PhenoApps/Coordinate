@@ -99,6 +99,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
         {
             @android.support.annotation.StringRes final int items[];
             {
+                @java.lang.SuppressWarnings({"Convert2Diamond"})
                 final java.util.ArrayList<java.lang.Integer> arrayList =
                     new java.util.ArrayList<java.lang.Integer>();
                 {

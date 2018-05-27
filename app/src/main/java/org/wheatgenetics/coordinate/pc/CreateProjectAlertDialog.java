@@ -57,8 +57,8 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
             if (null == this.projectTitleEditText)
             {
                 assert null != view;
-                this.projectTitleEditText = (android.widget.EditText)
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.projectTitleEditText);
+                this.projectTitleEditText = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.projectTitleEditText);
             }
 
             this.setView(view);

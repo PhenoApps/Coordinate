@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate;
  * android.app.Activity
  * android.content.Context
  * android.os.Bundle
+ * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  * android.support.v4.app.Fragment
  * android.view.LayoutInflater
@@ -65,12 +66,13 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     }
 
     @java.lang.Override
-    public android.view.View onCreateView(final android.view.LayoutInflater inflater,
+    public android.view.View onCreateView(
+    @android.support.annotation.NonNull final android.view.LayoutInflater inflater,
     final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment:
-        assert null != inflater; return inflater.inflate(
-            org.wheatgenetics.coordinate.R.layout.fragment_data_entry, container, false);
+        return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_data_entry,
+            container, false);
     }
 
     @java.lang.Override public void onActivityCreated(
@@ -80,20 +82,20 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
 
 
         final android.app.Activity activity = this.getActivity();
-        assert null != activity; this.entryEditText = (android.widget.EditText)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.entryEditText);
+        assert null != activity; this.entryEditText = activity.findViewById(
+            org.wheatgenetics.coordinate.R.id.entryEditText);
         assert null != this.entryEditText; this.entryEditText.setOnEditorActionListener(
             new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
                 this.entryEditText, this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
 
-        this.projectTitleTextView = (android.widget.TextView)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.projectTitleTextView);
+        this.projectTitleTextView = activity.findViewById(
+            org.wheatgenetics.coordinate.R.id.projectTitleTextView);
 
-        this.templateTitleTextView = (android.widget.TextView)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.templateTitleTextView);
+        this.templateTitleTextView = activity.findViewById(
+            org.wheatgenetics.coordinate.R.id.templateTitleTextView);
 
-        this.optionalFieldsLayout = (android.widget.LinearLayout)
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
+        this.optionalFieldsLayout = activity.findViewById(
+            org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
 
 
         this.populate();
@@ -146,13 +148,13 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
                     new android.widget.LinearLayout(activity), false);
                 {
                     assert null != view;
-                    final android.widget.TextView nameTextView = (android.widget.TextView)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.nameTextView);
+                    final android.widget.TextView nameTextView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.nameTextView);
                     assert null != nameTextView; nameTextView.setText(baseOptionalField.getName());
                 }
                 {
-                    final android.widget.TextView valueTextView = (android.widget.TextView)
-                        view.findViewById(org.wheatgenetics.coordinate.R.id.valueTextView);
+                    final android.widget.TextView valueTextView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.valueTextView);
                     assert null != valueTextView;
                     valueTextView.setText(baseOptionalField.getValue());
                 }

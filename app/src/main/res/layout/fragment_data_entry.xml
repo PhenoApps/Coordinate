@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Data Entry"
+                tools:ignore="HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -33,6 +34,7 @@
                 android:layout_height="wrap_content"
 
                 android:hint="Cell ID"
+                tools:ignore="HardcodedText"
                 android:imeActionId="100"
                 android:imeActionLabel="@string/DataEntryFragmentCellIDEditTextActionLabel"
                 android:imeOptions="actionDone"
@@ -53,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Grid Information"
+                tools:ignore="HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -68,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Project:"
+                tools:ignore="HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
 
@@ -78,6 +82,7 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="..."
+                tools:ignore="RtlSymmetry,HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </LinearLayout>
@@ -92,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Template:"
+                tools:ignore="HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
 
@@ -102,6 +108,7 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="..."
+                tools:ignore="RtlSymmetry,HardcodedText"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <LinearLayout

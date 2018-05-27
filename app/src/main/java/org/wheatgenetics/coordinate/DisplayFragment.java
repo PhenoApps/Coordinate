@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate;
  * android.content.Context
  * android.os.Bundle
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
@@ -66,12 +67,13 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     }
 
     @java.lang.Override
-    public android.view.View onCreateView(final android.view.LayoutInflater inflater,
+    public android.view.View onCreateView(
+    @android.support.annotation.NonNull final android.view.LayoutInflater inflater,
     final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment:
-        assert null != inflater; return inflater.inflate(
-            org.wheatgenetics.coordinate.R.layout.fragment_display, container, false);
+        return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_display,
+            container, false);
     }
 
     @java.lang.Override public void onActivityCreated(
@@ -89,6 +91,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
     // endregion
 
+    @java.lang.SuppressWarnings({"ResourceType"})
     public void populate()
     {
         if (null != this.elements) this.elements.clear();
@@ -122,9 +125,8 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                                 org.wheatgenetics.coordinate.R.layout.top_display_table_cell, null);
                         {
                             assert null != tableCell;
-                            final android.widget.TextView textView =
-                                (android.widget.TextView) tableCell.findViewById(
-                                    org.wheatgenetics.coordinate.R.id.topDisplayTextView);
+                            final android.widget.TextView textView = tableCell.findViewById(
+                                org.wheatgenetics.coordinate.R.id.topDisplayTextView);
 
                             final java.lang.String text;
                             if (0 == col)
@@ -169,9 +171,8 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                                 null                                                         );
                         {
                             assert null != tableCell;
-                            final android.widget.TextView textView =
-                                (android.widget.TextView) tableCell.findViewById(
-                                    org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
+                            final android.widget.TextView textView = tableCell.findViewById(
+                                org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
 
                             final java.lang.String text;
                             if (rowNumbering)

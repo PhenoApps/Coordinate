@@ -42,10 +42,10 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 org.wheatgenetics.coordinate.R.layout.set_numbering, null);
 
             assert null != view;
-            if (null == this.rowSpinner) this.rowSpinner = (android.widget.Spinner)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.rowSpinner);
-            if (null == this.colSpinner) this.colSpinner = (android.widget.Spinner)
-                view.findViewById(org.wheatgenetics.coordinate.R.id.colSpinner);
+            if (null == this.rowSpinner) this.rowSpinner = view.findViewById(
+                org.wheatgenetics.coordinate.R.id.rowSpinner);
+            if (null == this.colSpinner) this.colSpinner = view.findViewById(
+                org.wheatgenetics.coordinate.R.id.colSpinner);
 
             this.setView(view);
         }

@@ -20,12 +20,13 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
+    private final long timestamp;
+
     private java.lang.String                                title                       ;
     private org.wheatgenetics.coordinate.model.TemplateType type                        ;
     private int                                             rows, cols                  ;
     private int                                             generatedExcludedCellsAmount;
     private boolean                                         colNumbering, rowNumbering  ;
-    private long                                            timestamp                   ;
     // endregion
 
     // region Private Methods
@@ -190,10 +191,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void setRowNumbering(final java.lang.String rowNumbering)
     { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setTimestamp(final java.lang.String timestamp)
-    { this.timestamp = java.lang.Long.valueOf(timestamp); }
     // endregion
 
     // region Public Methods

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -28,6 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="300dp"
         android:text="Add Optional Field"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <Button
@@ -40,6 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="200dp"
         android:text="Check and Add Optional Field"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <Button
@@ -52,6 +55,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="100dp"
         android:text="Refresh Text"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <LinearLayout
@@ -70,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exclude Rows"
+            tools:ignore="ButtonStyle,HardcodedText"
             android:textAllCaps="false" />
 
         <Button
@@ -77,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exclude Cols"
+            tools:ignore="ButtonStyle,HardcodedText"
             android:textAllCaps="false" />
 
     </LinearLayout>
@@ -98,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set Generated Amount"
+            tools:ignore="ButtonStyle,HardcodedText"
             android:textAllCaps="false" />
 
         <Button
@@ -105,6 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exclude"
+            tools:ignore="ButtonStyle,HardcodedText"
             android:textAllCaps="false" />
 
     </LinearLayout>
@@ -119,6 +127,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="200dp"
         android:text="Set Numbering"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <Button
@@ -131,6 +140,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="300dp"
         android:text="Set Excludes, Optional Fields, Numbering"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <Button
@@ -143,6 +153,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="400dp"
         android:text="Assign Title, Rows, Columns"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
     <Button
@@ -155,6 +166,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="500dp"
         android:text="Create Template"
+        tools:ignore="HardcodedText"
         android:textAllCaps="false" />
 
 </android.support.constraint.ConstraintLayout>

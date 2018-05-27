@@ -67,6 +67,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     }
     // endregion
 
+    @java.lang.SuppressWarnings({"TryFinallyCanBeTryWithResources"})
     boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
@@ -17,7 +19,9 @@
         <ImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:src="@drawable/ic_account_white" />
+            android:src="@drawable/ic_account_white"
+            android:contentDescription="personImageView"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/sw600dpPersonTextView"
@@ -25,6 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
             android:paddingLeft="15dp"
+            tools:ignore="RtlSymmetry"
             android:textColor="@android:color/white"
             android:textSize="@dimen/medium_text_size"
             android:textStyle="bold" />

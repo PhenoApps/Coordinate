@@ -210,7 +210,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private boolean projectModelIsLoaded() { return null != this.projectModel; }
 
-    protected void configureProjectMenuItems()
+    private void configureProjectMenuItems()
     {
         {
             final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder(
@@ -287,6 +287,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         assert null != this.sharedPreferences;
         if (this.joinedGridModelIsLoaded())
+            // noinspection ConstantConditions
             this.sharedPreferences.setGridId(this.joinedGridModel.getId());
         else
             this.sharedPreferences.clearGridId();
@@ -1017,6 +1018,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         assert null != this.sharedPreferences;
         if (this.projectModelIsLoaded())
+            // noinspection ConstantConditions
             this.sharedPreferences.setProjectId(this.projectModel.getId());
         else
             this.sharedPreferences.clearProjectId();

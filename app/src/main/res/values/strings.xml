@@ -52,7 +52,8 @@
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
 
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
-    <string name="PerGridProjectExporterAsyncTaskFailedMessage">Grid %d was not exported.</string>
+    <string name="PerGridProjectExporterAsyncTaskFailedMessage"
+        tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
 

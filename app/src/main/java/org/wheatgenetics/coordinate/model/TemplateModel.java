@@ -355,6 +355,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 .NonNullOptionalFields.makeNew());
     }
 
+    @java.lang.SuppressWarnings({"TryFinallyCanBeTryWithResources"})
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined(
     final java.io.File file)
     {

@@ -106,9 +106,8 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
                 this.inflate(org.wheatgenetics.coordinate.R.layout.set_optional_field_values);
             {
                 assert null != view;
-                final android.widget.LinearLayout linearLayout =
-                    (android.widget.LinearLayout) view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.setOptionalFieldValuesLinearLayout);
+                final android.widget.LinearLayout linearLayout = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.setOptionalFieldValuesLinearLayout);
 
                 final android.view.LayoutInflater layoutInflater = this.layoutInflater();
 
@@ -125,7 +124,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
                     assert null != optionalFieldView;
                     {
                         final android.widget.TextView optionalFieldValueTextView =
-                            (android.widget.TextView) optionalFieldView.findViewById(
+                            optionalFieldView.findViewById(
                                 org.wheatgenetics.coordinate.R.id.optionalFieldValueTextView);
 
                         assert null != optionalFieldValueTextView;
@@ -134,7 +133,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
 
                     {
                         final android.widget.EditText optionalFieldValueEditText =
-                            (android.widget.EditText) optionalFieldView.findViewById(
+                            optionalFieldView.findViewById(
                                 org.wheatgenetics.coordinate.R.id.optionalFieldValueEditText);
 
                         assert null != optionalFieldValueEditText;

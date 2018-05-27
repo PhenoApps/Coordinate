@@ -987,7 +987,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* templateTimestamp            => */ 333         ,
 
                 /* entryModels                  => */ null        );
-        org.junit.Assert.assertFalse(joinedGridModel.export((java.io.File) null, "exportFileName",
+        org.junit.Assert.assertFalse(joinedGridModel.export(null, "exportFileName",
             new org.wheatgenetics.coordinate.model.JoinedGridModelTest.Helper()));
     }
 
@@ -1186,8 +1186,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
                 /* entryModels => */ null);
         joinedGridModel.makeEntryModels();
-        org.junit.Assert.assertEquals((org.wheatgenetics.coordinate.model.EntryModel)
-                joinedGridModel.getElementModel(activeRow, activeCol),
+        org.junit.Assert.assertEquals(joinedGridModel.getElementModel(activeRow, activeCol),
             joinedGridModel.getActiveEntryModel());
     }
 
@@ -1230,9 +1229,9 @@ public class JoinedGridModelTest extends java.lang.Object
             joinedGridModel.setActiveRowAndActiveCol(newActiveRow, oldActiveCol));
         org.junit.Assert.assertFalse(
             joinedGridModel.setActiveRowAndActiveCol(newActiveRow, oldActiveCol));
-        org.junit.Assert.assertEquals((org.wheatgenetics.coordinate.model.EntryModel)
-                joinedGridModel.getElementModel(newActiveRow + 1, oldActiveCol + 1),
-            joinedGridModel.getActiveEntryModel());
+        org.junit.Assert.assertEquals(
+            joinedGridModel.getElementModel(newActiveRow + 1, oldActiveCol + 1),
+            joinedGridModel.getActiveEntryModel()                              );
     }
 
     // region goToNext() Public Method Tests
@@ -1282,8 +1281,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* advancement => */
                     org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS,
                 /* filledHandler => */ filledHandler));
-            org.junit.Assert.assertSame((org.wheatgenetics.coordinate.model.EntryModel)
-                    joinedGridModel.getElementModel(currentRow + 1, currentCol),
+            org.junit.Assert.assertSame(joinedGridModel.getElementModel(currentRow + 1, currentCol),
                 joinedGridModel.getActiveEntryModel());
 
             org.junit.Assert.assertTrue(joinedGridModel.goToNext(
@@ -1292,8 +1290,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN,
                 /* filledHandler => */ filledHandler));
         }
-        org.junit.Assert.assertSame((org.wheatgenetics.coordinate.model.EntryModel)
-                joinedGridModel.getElementModel(currentRow, currentCol + 1),
+        org.junit.Assert.assertSame(joinedGridModel.getElementModel(currentRow, currentCol + 1),
             joinedGridModel.getActiveEntryModel());
     }
 
@@ -1339,16 +1336,14 @@ public class JoinedGridModelTest extends java.lang.Object
             /* entryModel    => */ entryModel                                                     ,
             /* advancement   => */ org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS,
             /* filledHandler => */ filledHandler));
-        org.junit.Assert.assertSame((org.wheatgenetics.coordinate.model.EntryModel)
-                joinedGridModel.getElementModel(activeRow + 1, activeCol + 1),
+        org.junit.Assert.assertSame(joinedGridModel.getElementModel(activeRow + 1, activeCol + 1),
             joinedGridModel.getActiveEntryModel());
 
         org.junit.Assert.assertFalse(joinedGridModel.goToNext(
             /* entryModel    => */ entryModel                                                     ,
             /* advancement   => */ org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN,
             /* filledHandler => */ filledHandler));
-        org.junit.Assert.assertSame((org.wheatgenetics.coordinate.model.EntryModel)
-                joinedGridModel.getElementModel(activeRow + 1, activeCol + 1),
+        org.junit.Assert.assertSame(joinedGridModel.getElementModel(activeRow + 1, activeCol + 1),
             joinedGridModel.getActiveEntryModel());
     }
     // endregion

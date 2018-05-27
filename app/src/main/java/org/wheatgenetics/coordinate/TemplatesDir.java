@@ -13,7 +13,8 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.Dir
     TemplatesDir(final android.content.Context context, final java.lang.String name,
     final java.lang.String blankHiddenFileName) { super(context, name, blankHiddenFileName); }
 
-    @java.lang.Override public java.io.File createIfMissing() throws java.io.IOException
+    @java.lang.SuppressWarnings({"TryFinallyCanBeTryWithResources"}) @java.lang.Override
+    public java.io.File createIfMissing() throws java.io.IOException
     {
         {
             final java.io.File htpgFile = this.makeFile("HTPG.xml");
@@ -32,7 +33,7 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.Dir
                         try
                         {
                             final byte buffer[]          = new byte[1024];
-                                  int  numberOfBytesRead = 0             ;
+                                  int  numberOfBytesRead                 ;
                             while ((numberOfBytesRead = inputStream.read(buffer)) > 0)
                                 outputStream.write(buffer, 0, numberOfBytesRead);
                         }

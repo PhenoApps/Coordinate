@@ -59,14 +59,14 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
 
             if (null == this.editText)
             {
-                assert null != view; this.editText = (android.widget.EditText) view.findViewById(
+                assert null != view; this.editText = view.findViewById(
                     org.wheatgenetics.coordinate.R.id.generatedExcludedCellsEditText);
                 assert null != this.editText;
             }
             this.editText.setText("1");
 
             if (null == this.exceptionTextView)
-                this.exceptionTextView = (android.widget.TextView) view.findViewById(
+                this.exceptionTextView = view.findViewById(
                     org.wheatgenetics.coordinate.R.id.generatedExcludedCellsExceptionTextView);
 
             this.setView(view);

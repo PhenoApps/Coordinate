@@ -38,9 +38,6 @@ public abstract class Model extends java.lang.Object
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
     // endregion
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setId(final java.lang.String id) { this.setId(java.lang.Long.valueOf(id)); }
-
     // region Public Methods
     public static boolean illegal(final long id) { return id < 1; }
 
