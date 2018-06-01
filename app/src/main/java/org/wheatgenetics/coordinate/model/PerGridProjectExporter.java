@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.androidlibrary.Dir
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
@@ -80,10 +81,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         @java.lang.Override @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         void handleExportSuccess(final java.io.File exportFile)
-        {
-            super.handleExportSuccess(exportFile);
-            assert null != this.client; this.client.execute();
-        }
+        { assert null != this.client; this.client.execute(); }
         // endregion
     }
 
@@ -109,7 +107,13 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         {
             final int size = joinedGridModels.size(), last = size - 1;
             if (this.i > last)
+            {
                 this.i = 0;
+                org.wheatgenetics.coordinate.Utils.alert(
+                    /* context => */ this.getContext(),
+                    /* message => */
+                        org.wheatgenetics.coordinate.R.string.PerGridProjectExporterSuccessMessage);
+            }
             else
             {
                 final org.wheatgenetics.androidlibrary.Dir exportDir = this.getExportDir();

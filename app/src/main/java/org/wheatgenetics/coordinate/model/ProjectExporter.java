@@ -28,18 +28,12 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
         final java.lang.String exportFileName)
         { super(context, exportFile); this.exportFileName = exportFileName; }
 
-        // region Overridden Methods
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
-
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
         @java.lang.Override public void publishProgress(final int col)
         {
             this.publishProgress(this.getString(
                 org.wheatgenetics.coordinate.R.string.GridExporterProgressDialogMessage) + col);
         }
-        // endregion
         // endregion
 
         // region Package Methods

@@ -61,6 +61,10 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
                 this.makeExportFileDiscoverable(); return success;
             }
         }
+
+        @java.lang.Override @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
         // endregion
     }
 
