@@ -21,9 +21,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     private static final java.lang.String
         TITLE_TAG_NAME = "title", ROWS_TAG_NAME = "rows", COLS_TAG_NAME = "cols",
         GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME = "generatedExcludedCellsAmount",
-        COL_NUMBERING_TAG_NAME  = "colNumbering" , ROW_NUMBERING_TAG_NAME = "rowNumbering",
-        EXCLUDED_CELLS_TAG_NAME = "excludedCells",
-        EXCLUDED_ROWS_TAG_NAME  = "excludedRows" , EXCLUDED_COLS_TAG_NAME = "excludedCols";
+        COL_NUMBERING_TAG_NAME  = "colNumbering", ROW_NUMBERING_TAG_NAME  = "rowNumbering" ,
+        ENTRY_LABEL_TAG_NAME    = "entryLabel"  , EXCLUDED_CELLS_TAG_NAME = "excludedCells",
+        EXCLUDED_ROWS_TAG_NAME  = "excludedRows", EXCLUDED_COLS_TAG_NAME  = "excludedCols" ;
     public static final java.lang.String
         ROWS_BUNDLE_KEY           = "rows"         , COLS_BUNDLE_KEY          = "cols"        ,
         EXCLUDED_CELLS_BUNDLE_KEY = "excludedCells",
@@ -439,16 +439,21 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                 this.setRowNumbering(characterData);
                             else
                                 if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
-                                    this.setExcludedCells(characterData);
+                                .ENTRY_LABEL_TAG_NAME.equals(elementName))
+                                    this.setEntryLabel(characterData);
                                 else
                                     if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                    .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
-                                        this.setExcludedRows(characterData);
+                                    .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
+                                        this.setExcludedCells(characterData);
                                     else
                                         if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                        .EXCLUDED_COLS_TAG_NAME.equals(elementName))
-                                            this.setExcludedCols(characterData);
+                                        .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
+                                            this.setExcludedRows(characterData);
+                                        else
+                                            if (org.wheatgenetics.coordinate.model
+                                            .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME.equals(
+                                            elementName))
+                                                this.setExcludedCols(characterData);
 }
     // endregion
 

@@ -399,8 +399,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ false,
                     /* timestamp                    => */ 0    );
         final java.lang.String expectedString =
-            "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, gener" +
-            "atedExcludedCellsAmount=9, colNumbering=false, rowNumbering=false, stamp=0]";
+            "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcl" +
+            "udedCellsAmount=9, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0]";
         org.junit.Assert.assertEquals(expectedString, concreteBaseTemplateModel.toString());
     }
 
@@ -509,6 +509,22 @@ public class BaseTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(
             firstConcreteBasePartialTemplateModel.hashCode (),
             secondConcreteBasePartialTemplateModel.hashCode());
+
+        {
+            final java.lang.String testEntryLabel = "testEntryLabel";
+            secondConcreteBasePartialTemplateModel.setEntryLabel(testEntryLabel);
+            org.junit.Assert.assertFalse(firstConcreteBasePartialTemplateModel.equals(
+                secondConcreteBasePartialTemplateModel));
+            org.junit.Assert.assertNotEquals(
+                firstConcreteBasePartialTemplateModel.hashCode (),
+                secondConcreteBasePartialTemplateModel.hashCode());
+            firstConcreteBasePartialTemplateModel.setEntryLabel(testEntryLabel);
+        }
+        org.junit.Assert.assertTrue(
+            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
+        org.junit.Assert.assertEquals(
+            firstConcreteBasePartialTemplateModel.hashCode (),
+            secondConcreteBasePartialTemplateModel.hashCode());
     }
     // endregion
 
@@ -528,8 +544,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ false,
                     /* timestamp                    => */ 0    );
         final java.lang.String expectedFormatString =
-            "%s [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExc" +
-            "ludedCellsAmount=0, colNumbering=false, rowNumbering=false, stamp=0";
+            "%s [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcludedCel" +
+            "lsAmount=0, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0";
         org.junit.Assert.assertEquals(expectedFormatString,
             concreteBaseTemplateModel.formatString());
     }

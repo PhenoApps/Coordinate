@@ -357,7 +357,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file));
         }
         catch (final java.io.IOException e) { this.showLongToast(e.getMessage()); }
-
     }
 
     private void exportTemplate(

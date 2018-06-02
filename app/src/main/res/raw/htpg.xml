@@ -6,6 +6,7 @@
     <generatedExcludedCellsAmount>0</generatedExcludedCellsAmount>
     <colNumbering>true</colNumbering>
     <rowNumbering>false</rowNumbering>
+    <entryLabel>Sample UUID</entryLabel>
     <timestamp>1527002745578</timestamp>
     <excludedCells>[{"row":8,"col":11},{"row":8,"col":12}]</excludedCells>
     <optionalFields>[{"field":"Plate ID","checked":true},{"field":"Username","checked":true},{"field":"Date","hint":"yyyy-mm-dd","checked":true}]</optionalFields>

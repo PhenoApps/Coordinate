@@ -114,8 +114,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         this(title, type, rows, cols, generatedExcludedCellsAmount,
-            null, null, null, true, rowNumbering, optionalFields,
-            type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
+            /* excludedCells => */ null, /* excludedRows => */ null, /* excludedCols => */ null,
+            /* colNumbering  => */ true, rowNumbering              , optionalFields            ,
+            /* timestamp => */ type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
     }
 
     /** Called by DefaultHandler class. */ private TemplateModel() { super(); }
@@ -388,8 +389,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 public void characters(final char ch[], final int start, final int length)
                 throws org.xml.sax.SAXException
                 {
-                    this.templateModel().assignCharacterData(
-                        this.elementName, new java.lang.String(ch, start, length));
+                    this.templateModel().assignCharacterData(this.elementName,
+                        /* characterData => */ new java.lang.String(ch, start, length));
                 }
 
                 @java.lang.Override

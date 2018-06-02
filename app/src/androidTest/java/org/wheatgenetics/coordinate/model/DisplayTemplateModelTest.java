@@ -75,8 +75,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedString =
             "DisplayTemplateModel [id: 03, title=testTitle, type=1, rows=5, cols=2, generatedExcl" +
-            "udedCellsAmount=0, colNumbering=true, rowNumbering=false, stamp=0, excludedCells=nul" +
-            "l, excludedRows=null, excludedCols=null";
+            "udedCellsAmount=0, colNumbering=true, rowNumbering=false, entryLabel=null, stamp=0, " +
+            "excludedCells=null, excludedRows=null, excludedCols=null";
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
             new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
                 /* id                           => */ 3          ,

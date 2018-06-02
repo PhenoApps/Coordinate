@@ -15,8 +15,8 @@ public class TemplateModelTest extends java.lang.Object
     {
         final java.lang.String expectedString =
             "TemplateModel [id: 03, title=testTitle, type=1, rows=5, cols=2, generatedExcludedCel" +
-            "lsAmount=0, colNumbering=true, rowNumbering=false, stamp=0, excludedCells=null, excl" +
-                "udedRows=null, excludedCols=null, options=]";
+            "lsAmount=0, colNumbering=true, rowNumbering=false, entryLabel=null, stamp=0, exclude" +
+            "dCells=null, excludedRows=null, excludedCols=null, options=]";
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
                 /* id                           => */ 3          ,
