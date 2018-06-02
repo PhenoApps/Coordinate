@@ -528,7 +528,7 @@ public class BaseTemplateModelTest extends java.lang.Object
     }
     // endregion
 
-    // region Package Method Test
+    // region Package Method Tests
     @org.junit.Test public void formatStringSucceeds()
     {
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
@@ -548,6 +548,29 @@ public class BaseTemplateModelTest extends java.lang.Object
             "lsAmount=0, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0";
         org.junit.Assert.assertEquals(expectedFormatString,
             concreteBaseTemplateModel.formatString());
+    }
+
+    @org.junit.Test public void entryLabelIsNotNullAndGetAndSetEntryLabelSucceed()
+    {
+        final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
+            concreteBaseTemplateModel = new
+                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
+                    /* id    => */ 5                                                  ,
+                    /* title => */ "testTitle"                                        ,
+                    /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+                    /* rows  => */  9                                                 ,
+                    /* cols  => */ 20                                                 ,
+                    /* generatedExcludedCellsAmount => */ 0    ,
+                    /* colNumbering                 => */ false,
+                    /* rowNumbering                 => */ true ,
+                    /* timestamp                    => */ 0    );
+        org.junit.Assert.assertFalse(concreteBaseTemplateModel.entryLabelIsNotNull());
+        org.junit.Assert.assertNull (concreteBaseTemplateModel.getEntryLabel()      );
+
+        final java.lang.String testEntryLabel = "testEntryLabel";
+        concreteBaseTemplateModel.setEntryLabel(testEntryLabel);
+        org.junit.Assert.assertTrue  (concreteBaseTemplateModel.entryLabelIsNotNull());
+        org.junit.Assert.assertEquals(testEntryLabel, concreteBaseTemplateModel.getEntryLabel());
     }
     // endregion
 
