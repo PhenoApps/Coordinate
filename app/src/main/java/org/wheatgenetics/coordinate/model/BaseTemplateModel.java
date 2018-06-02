@@ -207,6 +207,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    boolean entryLabelIsNotNull() { return null != this.entryLabel; }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    java.lang.String getEntryLabel() { return this.entryLabel; }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void setEntryLabel(final java.lang.String entryLabel) { this.entryLabel = entryLabel; }
     // endregion
 

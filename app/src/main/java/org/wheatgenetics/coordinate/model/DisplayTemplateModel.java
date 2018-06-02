@@ -385,6 +385,12 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_TAG_NAME,
                     this.getRowNumbering());
 
+                if (this.entryLabelIsNotNull())
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
+                        xmlSerializer, indent, org.wheatgenetics.coordinate.model
+                            .DisplayTemplateModel.ENTRY_LABEL_TAG_NAME,
+                        this.getEntryLabel());
+
                 if (null != this.excludedCellsInstance)
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
@@ -454,7 +460,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                             .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME.equals(
                                             elementName))
                                                 this.setExcludedCols(characterData);
-}
+    }
     // endregion
 
     // region Public Methods
