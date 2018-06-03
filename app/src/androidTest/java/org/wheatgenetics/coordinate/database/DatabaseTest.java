@@ -46,8 +46,7 @@ public class DatabaseTest extends java.lang.Object
     private static int logInfo(final int a, final int e)
     { return android.util.Log.i("DatabaseTest", java.lang.String.format("'%c'|'%c'", a, e)); }
 
-    private static void testTable(
-                                       final java.lang.String                       name,
+    private static void testTable(     final java.lang.String                       name,
                                        final android.database.sqlite.SQLiteDatabase db  ,
     @android.support.annotation.RawRes final int                                    id  )
     throws java.io.IOException

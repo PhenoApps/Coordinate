@@ -40,6 +40,7 @@ public class TemplateModelsTest extends java.lang.Object
                     /* excludeCols                  => */ null       ,
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
+                    /* entryLabel                   => */ null       ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 0          );
             assert null != templateModels; templateModels.add(templateModel);

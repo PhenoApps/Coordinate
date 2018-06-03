@@ -30,6 +30,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 1          ,
             /* rowNumbering                 => */ 0          ,
+            /* entryLabel                   => */ null       ,
             /* timestamp                    => */ 0          );
     }
 
@@ -48,6 +49,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */ 3          ,
             /* rowNumbering                 => */ 0          ,
+            /* entryLabel                   => */ null       ,
             /* timestamp                    => */ 0          );
     }
 
@@ -66,6 +68,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* excludedCols                 => */ null       ,
             /* colNumbering                 => */  1         ,
             /* rowNumbering                 => */ 56         ,
+            /* entryLabel                   => */ null       ,
             /* timestamp                    => */ 0          );
     }
     // endregion
@@ -90,6 +93,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 0          );
         org.junit.Assert.assertEquals(expectedString, displayTemplateModel.toString());
     }
@@ -114,6 +118,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ colNumbering,
                 /* rowNumbering                 => */ rowNumbering,
+                /* entryLabel                   => */ null        ,
                 /* timestamp                    => */ timestamp   ),
             secondDisplayTemplateModel =
                 new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
@@ -128,6 +133,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                     /* excludedCols                 => */ null        ,
                     /* colNumbering                 => */ colNumbering,
                     /* rowNumbering                 => */ rowNumbering,
+                    /* entryLabel                   => */ null        ,
                     /* timestamp                    => */ timestamp   );
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
@@ -211,6 +217,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 0          );
         displayTemplateModel.setEntryLabel("abc");
 
@@ -236,6 +243,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(1));
     }
@@ -255,6 +263,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(1));
     }
@@ -276,6 +285,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedCellsAsJson());
     }
@@ -296,6 +306,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         final int row = 1;
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(row));
@@ -322,6 +333,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedRowsAsJson());
     }
@@ -343,6 +355,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         final int col = 1;
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(col));
@@ -369,6 +382,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedColsAsJson());
     }
@@ -390,6 +404,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertArrayEquals(new boolean[]{false, false, false, false, false},
             displayTemplateModel.rowCheckedItems());
@@ -414,6 +429,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertArrayEquals(
             new boolean[]{false, false}, displayTemplateModel.colCheckedItems());
@@ -440,6 +456,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         android.os.Bundle state = displayTemplateModel.getState();
         org.junit.Assert.assertNotNull(state);
@@ -491,6 +508,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* timestamp                    => */ 880        );
         final java.lang.String json = "[{\"row\":1,\"col\":1}]";
         {

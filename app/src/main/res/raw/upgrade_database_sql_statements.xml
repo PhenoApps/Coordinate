@@ -3,6 +3,10 @@
         ALTER TABLE templates ADD COLUMN erand INTEGER CHECK(erand >= 0)
     </statement>
 
+    <statement>
+        ALTER TABLE templates ADD COLUMN entryLabel TEXT
+    </statement>
+
 
     <statement>
         CREATE TABLE projects

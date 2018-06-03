@@ -133,10 +133,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    final java.lang.String optionalFields, final long timestamp)
+    final java.lang.String entryLabel, final java.lang.String optionalFields, final long timestamp)
     {
         super(id, title, code, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
+            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp);
         this.setOptionalFields(optionalFields);
     }
     // endregion

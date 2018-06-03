@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * _org.wheatgenetics.coordinate.model.Model
+ * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
  *

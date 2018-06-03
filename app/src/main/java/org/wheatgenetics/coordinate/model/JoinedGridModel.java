@@ -322,7 +322,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-    final java.lang.String templateOptionalFields, final long templateTimestamp,
+    final java.lang.String entryLabel       , final java.lang.String templateOptionalFields,
+    final long             templateTimestamp,
 
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
@@ -330,7 +331,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
-            templateTimestamp);
+            entryLabel, templateTimestamp);
         this.entryModels = entryModels;
     }
     // endregion

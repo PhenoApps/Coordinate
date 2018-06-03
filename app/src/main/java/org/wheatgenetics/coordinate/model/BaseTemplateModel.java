@@ -210,9 +210,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     boolean entryLabelIsNotNull() { return null != this.entryLabel; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String getEntryLabel() { return this.entryLabel; }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void setEntryLabel(final java.lang.String entryLabel) { this.entryLabel = entryLabel; }
     // endregion
 
@@ -242,6 +239,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     public boolean getRowNumbering()                           { return this.rowNumbering        ; }
     public void    setRowNumbering(final boolean rowNumbering) { this.rowNumbering = rowNumbering; }
+
+
+    public java.lang.String getEntryLabel() { return this.entryLabel; }
 
 
     public long getTimestamp() { return this.timestamp; }

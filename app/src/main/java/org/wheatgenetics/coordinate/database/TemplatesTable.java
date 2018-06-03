@@ -25,8 +25,9 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     static final java.lang.String ERAND_FIELD_NAME = "erand", ECELLS_FIELD_NAME = "ecells",
         EROWS_FIELD_NAME = "erows", ECOLS_FIELD_NAME = "ecols";
     static final java.lang.String CNUMB_FIELD_NAME   = "cnumb"  , RNUMB_FIELD_NAME = "rnumb";
-    static final java.lang.String OPTIONS_FIELD_NAME = "options";
-    static final java.lang.String STAMP_FIELD_NAME   = "stamp"  ;
+    static final java.lang.String ENTRY_LABEL_FIELD_NAME = "entryLabel";
+    static final java.lang.String OPTIONS_FIELD_NAME     = "options";
+    static final java.lang.String STAMP_FIELD_NAME       = "stamp"  ;
     // endregion
 
     // region Private Methods
@@ -96,14 +97,15 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
             /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
+            /* entryLabel => */ cursor.getString(cursor.getColumnIndex(
+                org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME)),
             /* optionalFields => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME)),
             /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME)));
     }
 
-    @java.lang.Override
-    android.content.ContentValues getContentValuesForInsert(
+    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
@@ -134,6 +136,9 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                 templateModel.getColNumbering());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
                 templateModel.getRowNumbering());
+
+            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME,
+                templateModel.getEntryLabel());
 
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
                 templateModel.optionalFieldsAsJson());

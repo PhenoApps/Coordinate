@@ -181,7 +181,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     final java.lang.String excludedRows, final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int  rowNumbering,
-                                                           final long timestamp   )
+    final java.lang.String entryLabel,                     final long timestamp   )
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
             generatedExcludedCellsAmount,
@@ -190,6 +190,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
         this.setExcludedCells(excludedCells);
         this.setExcludedRows(excludedRows); this.setExcludedCols(excludedCols);
+        this.setEntryLabel(entryLabel);
     }
     // endregion
 

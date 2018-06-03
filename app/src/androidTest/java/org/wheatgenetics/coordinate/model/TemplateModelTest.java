@@ -30,6 +30,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 0          );
         org.junit.Assert.assertEquals(expectedString, templateModel.toString());
@@ -55,6 +56,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ colNumbering,
                 /* rowNumbering                 => */ rowNumbering,
+                /* entryLabel                   => */ null        ,
                 /* optionalFields               => */ null        ,
                 /* timestamp                    => */ timestamp   );
         org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
@@ -70,6 +72,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ colNumbering,
                 /* rowNumbering                 => */ rowNumbering,
+                /* entryLabel                   => */ null        ,
                 /* optionalFields               => */ null        ,                       // Notice.
                 /* timestamp                    => */ timestamp   );
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
@@ -88,6 +91,7 @@ public class TemplateModelTest extends java.lang.Object
             /* excludedCols                 => */ null        ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
+            /* entryLabel                   => */ null        ,
             /* optionalFields               => */ ""          ,                           // Notice.
             /* timestamp                    => */ timestamp   );
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
@@ -106,6 +110,7 @@ public class TemplateModelTest extends java.lang.Object
             /* excludedCols                 => */ null        ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
+            /* entryLabel                   => */ null        ,
             /* optionalFields               => */ "  "        ,                           // Notice.
             /* timestamp                    => */ timestamp   );
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
@@ -113,19 +118,20 @@ public class TemplateModelTest extends java.lang.Object
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
         secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* id                           => */ id         ,
-            /* title                        => */ title,
-            /* code                         => */ code       ,
-            /* rows                         => */ rows       ,
-            /* cols                         => */ cols       ,
-            /* generatedExcludedCellsAmount => */ 0          ,
-            /* excludedCells                => */ null       ,
-            /* excludedRows                 => */ null       ,
-            /* excludedCols                 => */ null       ,
+            /* id                           => */ id          ,
+            /* title                        => */ title       ,
+            /* code                         => */ code        ,
+            /* rows                         => */ rows        ,
+            /* cols                         => */ cols        ,
+            /* generatedExcludedCellsAmount => */ 0           ,
+            /* excludedCells                => */ null        ,
+            /* excludedRows                 => */ null        ,
+            /* excludedCols                 => */ null        ,
             /* colNumbering                 => */ colNumbering,
             /* rowNumbering                 => */ rowNumbering,
-            /* optionalFields               => */ null       ,
-            /* timestamp                    => */ 5087       );                           // Notice.
+            /* entryLabel                   => */ null        ,
+            /* optionalFields               => */ null        ,
+            /* timestamp                    => */ 5087        );                          // Notice.
         org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -146,6 +152,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 0          );
         final org.wheatgenetics.coordinate.model.TemplateModel clonedTemplateModel =
@@ -182,6 +189,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* excludedCols                 => */ null       ,
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
+                    /* entryLabel                   => */ null       ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 0          );
             org.junit.Assert.assertTrue(templateModel.export(stringWriter));
@@ -217,6 +225,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* excludedCols                 => */ null       ,
                     /* colNumbering                 => */ 1          ,
                     /* rowNumbering                 => */ 0          ,
+                    /* entryLabel                   => */ null       ,
                     /* optionalFields               => */ null       ,
                     /* timestamp                    => */ 0          );
             templateModel.setEntryLabel("testEntryLabel");
@@ -241,6 +250,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* excludedCols                 => */ null       ,
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
+                /* entryLabel                   => */ null       ,
                 /* optionalFields               => */ null       ,
                 /* timestamp                    => */ 880        );
         org.junit.Assert.assertNull(templateModel.optionalFields       ());

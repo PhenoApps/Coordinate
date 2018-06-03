@@ -44,6 +44,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* excludedCols                 => */ null        ,
                     /* colNumbering                 => */ 1           ,
                     /* rowNumbering                 => */ 0           ,
+                    /* entryLabel                   => */ null        ,
                     /* templateOptionalFields       => */ null        ,
                     /* templateTimestamp            => */ 333         ,
 
@@ -90,6 +91,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                 /* excludedCols                 => */ null        ,
                 /* colNumbering                 => */ 1           ,
                 /* rowNumbering                 => */ 0           ,
+                /* entryLabel                   => */ null        ,
                 /* templateOptionalFields       => */ null        ,
                 /* templateTimestamp            => */ 333         ,
 
@@ -127,6 +129,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* excludedCols                 => */ null        ,
                     /* colNumbering                 => */ 1           ,
                     /* rowNumbering                 => */ 0           ,
+                    /* entryLabel                   => */ null        ,
                     /* templateOptionalFields       => */ null        ,
                     /* templateTimestamp            => */ 333         ,
 
@@ -182,6 +185,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* excludedCols                 => */ null               ,
                     /* colNumbering                 => */ 1                  ,
                     /* rowNumbering                 => */ 0                  ,
+                    /* entryLabel                   => */ null               ,
                     /* templateOptionalFields       => */ null               ,
                     /* templateTimestamp            => */ 333                ,
 
@@ -217,6 +221,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* excludedCols                 => */ excludedCols.json(),
                     /* colNumbering                 => */ 1                  ,
                     /* rowNumbering                 => */ 0                  ,
+                    /* entryLabel                   => */ null               ,
                     /* templateOptionalFields       => */ null               ,
                     /* templateTimestamp            => */ 333                ,
 

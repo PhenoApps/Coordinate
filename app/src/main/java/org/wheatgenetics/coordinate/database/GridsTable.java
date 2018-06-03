@@ -120,6 +120,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
             rnumbFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
+            entryLabelFieldName = templatesQualifier +
+                org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME,
             templateOptionsFieldName = templatesQualifier +
                 org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
             templateStampFieldName = templatesQualifier +
@@ -132,10 +134,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             activeColFieldName + ", " + optionsFieldName + ", " + stampFieldName     + ", " +
             tempFieldName      + ", " +
 
-            titleFieldName + ", " + typeFieldName  + ", " + rowsFieldName   + ", " +
-            colsFieldName  + ", " + erandFieldName + ", " + ecellsFieldName + ", " +
-            erowsFieldName + ", " + ecolsFieldName + ", " + cnumbFieldName  + ", " +
-            rnumbFieldName + ", " + templateOptionsFieldName + " AS " +
+            titleFieldName + ", " + typeFieldName       + ", " + rowsFieldName   + ", " +
+            colsFieldName  + ", " + erandFieldName      + ", " + ecellsFieldName + ", " +
+            erowsFieldName + ", " + ecolsFieldName      + ", " + cnumbFieldName  + ", " +
+            rnumbFieldName + ", " + entryLabelFieldName + ", " +
+            templateOptionsFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATEOPTIONS_FIELD_NAME + ", " +
             templateStampFieldName + " AS " +
                 org.wheatgenetics.coordinate.database.GridsTable.TEMPLATESTAMP_FIELD_NAME +
@@ -194,6 +197,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                     org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
                 /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
+                /* entryValue => */ cursor.getString(cursor.getColumnIndex(
+                    org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME)),
                 /* templateOptionalFields => */ cursor.getString(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.GridsTable.TEMPLATEOPTIONS_FIELD_NAME)),
                 /* templateTimestamp => */ cursor.getLong(cursor.getColumnIndex(
@@ -203,8 +208,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
-    @java.lang.Override
-    android.content.ContentValues getContentValuesForInsert(
+    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
     final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
