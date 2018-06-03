@@ -260,38 +260,44 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         "CloneDoesntDeclareCloneNotSupportedException"})
     protected java.lang.Object clone()
     {
-        final long                                     id            = this.getId             ();
-        final org.wheatgenetics.coordinate.model.Cells excludedCells = this.excludedCellsClone();
-        final org.wheatgenetics.coordinate.model.RowOrCols
-            excludedRows = this.excludedRowsClone(), excludedCols = this.excludedColsClone();
+        final org.wheatgenetics.coordinate.model.DisplayTemplateModel result;
+        {
+            final long                                     id            = this.getId();
+            final org.wheatgenetics.coordinate.model.Cells excludedCells =
+                this.excludedCellsClone();
+            final org.wheatgenetics.coordinate.model.RowOrCols
+                excludedRows = this.excludedRowsClone(), excludedCols = this.excludedColsClone();
 
-        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-            return new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* title                        => */ this.getTitle()                       ,
-                /* type                         => */ this.getType()                        ,
-                /* rows                         => */ this.getRows()                        ,
-                /* cols                         => */ this.getCols()                        ,
-                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
-                /* excludedCells                => */ excludedCells                         ,
-                /* excludedRows                 => */ excludedRows                          ,
-                /* excludedCols                 => */ excludedCols                          ,
-                /* colNumbering                 => */ this.getColNumbering()                ,
-                /* rowNumbering                 => */ this.getRowNumbering()                ,
-                /* timestamp                    => */ this.getTimestamp()                   );
-        else
-            return new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* id                           => */ id                                    ,
-                /* title                        => */ this.getTitle()                       ,
-                /* type                         => */ this.getType()                        ,
-                /* rows                         => */ this.getRows()                        ,
-                /* cols                         => */ this.getCols()                        ,
-                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
-                /* excludedCells                => */ excludedCells                         ,
-                /* excludedRows                 => */ excludedRows                          ,
-                /* excludedCols                 => */ excludedCols                          ,
-                /* colNumbering                 => */ this.getColNumbering()                ,
-                /* rowNumbering                 => */ this.getRowNumbering()                ,
-                /* timestamp                    => */ this.getTimestamp()                   );
+            if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+                result = new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+                    /* title                        => */ this.getTitle()                       ,
+                    /* type                         => */ this.getType()                        ,
+                    /* rows                         => */ this.getRows()                        ,
+                    /* cols                         => */ this.getCols()                        ,
+                    /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                    /* excludedCells                => */ excludedCells                         ,
+                    /* excludedRows                 => */ excludedRows                          ,
+                    /* excludedCols                 => */ excludedCols                          ,
+                    /* colNumbering                 => */ this.getColNumbering()                ,
+                    /* rowNumbering                 => */ this.getRowNumbering()                ,
+                    /* timestamp                    => */ this.getTimestamp()                   );
+            else
+                result = new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+                    /* id                           => */ id                                    ,
+                    /* title                        => */ this.getTitle()                       ,
+                    /* type                         => */ this.getType()                        ,
+                    /* rows                         => */ this.getRows()                        ,
+                    /* cols                         => */ this.getCols()                        ,
+                    /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                    /* excludedCells                => */ excludedCells                         ,
+                    /* excludedRows                 => */ excludedRows                          ,
+                    /* excludedCols                 => */ excludedCols                          ,
+                    /* colNumbering                 => */ this.getColNumbering()                ,
+                    /* rowNumbering                 => */ this.getRowNumbering()                ,
+                    /* timestamp                    => */ this.getTimestamp()                   );
+        }
+        if (this.entryLabelIsNotNull()) result.setEntryLabel(this.getEntryLabel());
+        return result;
     }
     // endregion
 

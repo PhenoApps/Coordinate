@@ -212,6 +212,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */ 1          ,
                 /* rowNumbering                 => */ 0          ,
                 /* timestamp                    => */ 0          );
+        displayTemplateModel.setEntryLabel("abc");
+
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel clonedDisplayTemplateModel =
             (org.wheatgenetics.coordinate.model.DisplayTemplateModel) displayTemplateModel.clone();
         org.junit.Assert.assertTrue(displayTemplateModel.equals(clonedDisplayTemplateModel));
