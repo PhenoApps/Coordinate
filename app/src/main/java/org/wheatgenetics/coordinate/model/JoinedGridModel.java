@@ -330,8 +330,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         super(id, templateId, projectId, person, activeRow, activeCol, optionalFields, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, templateOptionalFields,
-            entryLabel, templateTimestamp);
+            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
+            templateOptionalFields, templateTimestamp);
         this.entryModels = entryModels;
     }
     // endregion
