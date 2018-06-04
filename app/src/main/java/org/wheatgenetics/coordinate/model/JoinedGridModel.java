@@ -175,7 +175,16 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.optionalFields();
         if (includeHeader)
         {
-            csvWriter.write("Value"); csvWriter.write("Column"); csvWriter.write("Row");
+            {
+                final java.lang.String entryLabel, defaultEntryLabel = "Value";
+                if (null == this.templateModel)
+                    entryLabel = defaultEntryLabel;
+                else
+                    entryLabel = this.templateModel.entryLabelIsNotNull() ?
+                        this.templateModel.getEntryLabel() : defaultEntryLabel;
+                csvWriter.write(entryLabel);
+            }
+            csvWriter.write("Column"); csvWriter.write("Row");
 
             if (null != optionalFields)
             {

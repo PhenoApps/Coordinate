@@ -206,7 +206,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     void setRowNumbering(final java.lang.String rowNumbering)
     { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean entryLabelIsNotNull() { return null != this.entryLabel; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)

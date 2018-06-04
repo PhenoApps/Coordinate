@@ -197,7 +197,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                     org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME)),
                 /* rowNumbering => */ cursor.getInt(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME)),
-                /* entryValue => */ cursor.getString(cursor.getColumnIndex(
+                /* entryLabel => */ cursor.getString(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME)),
                 /* templateOptionalFields => */ cursor.getString(cursor.getColumnIndex(
                     org.wheatgenetics.coordinate.database.GridsTable.TEMPLATEOPTIONS_FIELD_NAME)),
