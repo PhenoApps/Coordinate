@@ -24,6 +24,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.Elements
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
  */
 public abstract class DisplayFragment extends android.support.v4.app.Fragment
 {
@@ -137,7 +138,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                                 else
                                 {
                                     text =
-                                        java.lang.Character.toString((char) ('A' + offsetFromA++));
+                                        org.wheatgenetics.coordinate.Utils.convert(offsetFromA++);
                                     if (offsetFromA >= 26) offsetFromA = 0;
                                 }
                             assert null != textView; textView.setText(text);

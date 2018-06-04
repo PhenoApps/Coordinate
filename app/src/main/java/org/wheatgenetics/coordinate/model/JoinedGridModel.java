@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.javalib.CsvWriter
  *
+ * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -141,7 +142,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                             final java.lang.String sample_id;
                             {
                                 final java.lang.String rowName =
-                                    java.lang.Character.toString((char) ('A' + r));
+                                    org.wheatgenetics.coordinate.Utils.convert(r);
                                 final java.lang.String colName =
                                     java.lang.String.format("%02d", col);
 
@@ -153,10 +154,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                             }
                             csvWriter.write(entryModel.getDNAExportValue(sample_id));   // tissue_id
                         }
-                        csvWriter.write(dna_person );
-                        csvWriter.write(notes      );
-                        csvWriter.write(tissue_type);
-                        csvWriter.write(extraction );
+                        csvWriter.write(dna_person ); csvWriter.write(notes     );
+                        csvWriter.write(tissue_type); csvWriter.write(extraction);
 
                         csvWriter.endRecord();
                     }

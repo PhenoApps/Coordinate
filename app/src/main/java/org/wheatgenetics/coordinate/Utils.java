@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate;
  * android.content.DialogInterface.OnClickListener
  * android.content.SharedPreferences
  * android.preference.PreferenceManager
+ * android.support.annotation.IntRange
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -226,4 +227,8 @@ public class Utils extends java.lang.Object
                 return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
     }
     // endregion
+
+    public static java.lang.String convert(
+    @android.support.annotation.IntRange(from = 0) final int offsetFromA)
+    { return java.lang.Character.toString((char) ('A' + offsetFromA)); }
 }
