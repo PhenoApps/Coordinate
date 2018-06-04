@@ -811,15 +811,15 @@ public class JoinedGridModelTest extends java.lang.Object
     {
         final java.lang.String expectedString =
             "Value,Column,Row\n" +
-            "\"\",1,1\n"         +
-            "\"\",1,2\n"         +
-            "\"\",1,3\n"         +
-            "\"\",2,1\n"         +
-            "\"\",2,2\n"         +
-            "\"\",2,3\n"         +
-            "\"\",3,1\n"         +
-            "\"\",3,2\n"         +
-            "\"\",3,3\n"         ;
+            "\"\",A,1\n"         +
+            "\"\",A,2\n"         +
+            "\"\",A,3\n"         +
+            "\"\",B,1\n"         +
+            "\"\",B,2\n"         +
+            "\"\",B,3\n"         +
+            "\"\",C,1\n"         +
+            "\"\",C,2\n"         +
+            "\"\",C,3\n"         ;
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -842,8 +842,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* initialExcludedCells         => */ null,
                     /* excludedRows                 => */ null,
                     /* excludedCols                 => */ null,
-                    /* colNumbering                 => */ 1   ,
-                    /* rowNumbering                 => */ 0   ,
+                    /* colNumbering                 => */ 0   ,                             // false
+                    /* rowNumbering                 => */ 1   ,                             // true
                     /* entryLabel                   => */ null,
                     /* templateOptionalFields       => */ null,
                     /* templateTimestamp            => */ 333 ,
@@ -865,15 +865,15 @@ public class JoinedGridModelTest extends java.lang.Object
                 org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate();
             expectedString =
                 "Value,Column,Row,Identification,Person,Date\n"                 +
-                "\"\",1,1," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",1,2," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",1,3," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",2,1," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",2,2," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",2,3," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",3,1," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",3,2," + identification + ',' + person + ',' + date + '\n' +
-                "\"\",3,3," + identification + ',' + person + ',' + date + '\n' ;
+                "\"\",1,A," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",1,B," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",1,C," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,A," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,B," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",2,C," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,A," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,B," + identification + ',' + person + ',' + date + '\n' +
+                "\"\",3,C," + identification + ',' + person + ',' + date + '\n' ;
         }
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
         {
@@ -903,8 +903,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* initialExcludedCells         => */ null,
                     /* excludedRows                 => */ null,
                     /* excludedCols                 => */ null,
-                    /* colNumbering                 => */ 1   ,
-                    /* rowNumbering                 => */ 0   ,
+                    /* colNumbering                 => */ 1   ,                             // true
+                    /* rowNumbering                 => */ 0   ,                             // false
                     /* entryLabel                   => */ null,
                     /* templateOptionalFields       => */ null,
                     /* templateTimestamp            => */ 333 ,
@@ -923,15 +923,15 @@ public class JoinedGridModelTest extends java.lang.Object
         final java.lang.String value          = "234.105";
         final java.lang.String expectedString =
             "Value,Column,Row\n" +
-                "\"\",1,1\n"     +
-                "\"\",1,2\n"     +
-                "\"\",1,3\n"     +
-                "\"\",2,1\n"     +
-            value + ",2,2\n"     +
-                "\"\",2,3\n"     +
-                "\"\",3,1\n"     +
-                "\"\",3,2\n"     +
-                "\"\",3,3\n"     ;
+                "\"\",1,A\n"     +
+                "\"\",1,B\n"     +
+                "\"\",1,C\n"     +
+                "\"\",2,A\n"     +
+            value + ",2,B\n"     +
+                "\"\",2,C\n"     +
+                "\"\",3,A\n"     +
+                "\"\",3,B\n"     +
+                "\"\",3,C\n"     ;
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
@@ -956,8 +956,8 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* initialExcludedCells         => */ null,
                     /* excludedRows                 => */ null,
                     /* excludedCols                 => */ null,
-                    /* colNumbering                 => */ 1   ,
-                    /* rowNumbering                 => */ 0   ,
+                    /* colNumbering                 => */ 1   ,                             // true
+                    /* rowNumbering                 => */ 0   ,                             // false
                     /* entryLabel                   => */ null,
                     /* templateOptionalFields       => */ null,
                     /* templateTimestamp            => */ 333 ,

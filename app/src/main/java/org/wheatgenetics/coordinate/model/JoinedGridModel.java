@@ -199,6 +199,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             final java.lang.String values[] =
                 null == optionalFields ? null : optionalFields.values();
 
+            assert null != this.templateModel;
+            final boolean
+                colNumbering = this.templateModel.getColNumbering(),
+                rowNumbering = this.templateModel.getRowNumbering();
             for (int col = 1; col <= cols; col++)
             {
                 for (int row = 1; row <= rows; row++)
@@ -208,7 +212,17 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                     if (null != entryModel)
                     {
                         csvWriter.write(entryModel.getUserDefinedExportValue());
-                        csvWriter.write(col);              csvWriter.write(row);
+
+                        if (colNumbering)
+                            csvWriter.write(col);
+                        else
+                            csvWriter.write(org.wheatgenetics.coordinate.Utils.convert(col - 1));
+
+                        if (rowNumbering)
+                            csvWriter.write(row);
+                        else
+                            csvWriter.write(org.wheatgenetics.coordinate.Utils.convert(row - 1));
+
                         if (null != values)
                             for (final java.lang.String value: values) csvWriter.write(value);
 
