@@ -7,35 +7,41 @@
 
     <!-- Preferences -->
     <string name="SoundPreferenceTitle">Sound</string>
-    <string name="SoundPreferenceSummaryOff">Remain silent at end of row or column and grid.</string>
-    <string name="SoundPreferenceSummaryOn">Play sound at end of row or column and grid.</string>
+    <string name="SoundPreferenceSummaryOn">Play sound at the end of each row/column and when the grid is completed.</string>
 
     <string name="AdvancementPreferenceTitle">Advancement</string>
-    <string name="AdvancementPreferenceSummary">After saving a value in a cell, Coordinate will advance to the next included cell in the grid.  You may advance either down, then across, or across, then down.</string>
+    <string name="AdvancementPreferenceSummary">Method used when determining which cell to advance to after a value is saved.</string>
+
     <string-array name="AdvancementPreferenceEntries">
-        <item>Down, then across</item>
-        <item>Across, then down</item>
+        <item>Down each column</item>
+        <item>Across each row</item>
     </string-array>
+
     <string name="AdvancementPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
     <string name="AdvancementPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+
     <string-array name="AdvancementPreferenceEntryValues">
         <item>@string/AdvancementPreferenceDownThenAcrossEntryValue</item>
         <item>@string/AdvancementPreferenceAcrossThenDownEntryValue</item>
     </string-array>
     <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
 
-    <string name="ProjectExportPreferenceTitle">Project Export</string>
-    <string name="ProjectExportPreferenceSummary">When exporting the grids in a project, you may create one file per grid or one file for the entire project.</string>
+    <string name="ProjectExportPreferenceTitle">Project export</string>
+    <string name="ProjectExportPreferenceSummary">When exporting a project, Coordinate can create one file for each grid or combine grids and export a single file for the entire project.</string>
+
     <string-array name="ProjectExportPreferenceEntries">
         <item>One file per grid</item>
-        <item>One file for the entire project</item>
+        <item>One file per project</item>
     </string-array>
+
     <string name="ProjectExportPreferenceOneFilePerGrid">OneFilePerGrid</string>
     <string name="ProjectExportPreferenceOneFileEntireProject">OneFileEntireProject</string>
+
     <string-array name="ProjectExportPreferenceEntryValues">
         <item>@string/ProjectExportPreferenceOneFilePerGrid</item>
         <item>@string/ProjectExportPreferenceOneFileEntireProject</item>
     </string-array>
+
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
 
 
@@ -52,8 +58,7 @@
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
 
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
-    <string name="PerGridProjectExporterAsyncTaskFailedMessage"
-        tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
+    <string name="PerGridProjectExporterAsyncTaskFailedMessage" tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
     <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
@@ -145,7 +150,6 @@
     <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
 
 
-
     <!-- GridCreator -->
     <string name="GridCreatorGetProjectChoiceAlertDialogTitle">Create Grid</string>
     <string name="GridCreatorChooseOldAlertDialogTitle">Load Template</string>
@@ -169,20 +173,20 @@
 
     <!-- activity_main_drawer.xml -->
     <string name="grid">Grid</string>
-        <string name="create_grid">Create</string>
-        <string name="manage_grid">Manage</string>
-        <string name="export_grid">Export</string>
+    <string name="create_grid">Create</string>
+    <string name="manage_grid">Manage</string>
+    <string name="export_grid">Export</string>
 
     <string name="template">Template</string>
-        <string name="create_template">Create</string>
-        <string name="import_template">Import</string>
-        <string name="export_template">Export</string>
-        <string name="delete_template">Delete</string>
+    <string name="create_template">Create</string>
+    <string name="import_template">Import</string>
+    <string name="export_template">Export</string>
+    <string name="delete_template">Delete</string>
 
     <string name="project">Project</string>
-        <string name="create_project">Create</string>
-        <string name="manage_project">Manage</string>
-        <string name="export_project">Export</string>
+    <string name="create_project">Create</string>
+    <string name="manage_project">Manage</string>
+    <string name="export_project">Export</string>
 
     <string name="settings">Settings</string>
 

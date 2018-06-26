@@ -264,6 +264,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     {
         this.configureGridMenuItems   (); this.configureTemplateMenuItems();
         this.configureProjectMenuItems(); this.configureNavHeaderMain    ();
+
+        //hide keyboard
+        android.view.View view = this.getCurrentFocus();
+        if (view != null) {
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
     // endregion
 

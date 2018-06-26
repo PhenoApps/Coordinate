@@ -1,5 +1,10 @@
 2/2.0.0
-Fixed grid persistent storage.
+Added 'Projects' to allow multiple grids to be exported together
+Added option to advance horizontally or vertically
+Added sound notifications for end of row/column
+Added graphical selection tool for excluding cells when creating a new template
+Added ability to toggle exclusion status of a cell with long press
+Fixed numerous bugs
 
 1/1.0.0
 Initial release

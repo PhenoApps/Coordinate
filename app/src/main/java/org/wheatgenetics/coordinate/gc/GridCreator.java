@@ -391,13 +391,13 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         final java.lang.String items[];
         {
             final java.lang.String
-                firstItem  = "Don't put this grid in a project."       ,
-                secondItem = "Create project then put this grid in it.";
+                firstItem  = "Don't add this grid to a project."       ,
+                secondItem = "Create a project for this grid.";
             if (null == this.projectModel)
                 items = new java.lang.String[]{firstItem, secondItem};
             else
                 items = new java.lang.String[]{firstItem, secondItem,
-                    "Put this grid in \"" + this.projectModel.getTitle() + "\"."};
+                    "Add this grid to \"" + this.projectModel.getTitle() + "\" project."};
         }
         this.getProjectChoiceAlertDialog.show(
             org.wheatgenetics.coordinate.R.string.GridCreatorGetProjectChoiceAlertDialogTitle,
