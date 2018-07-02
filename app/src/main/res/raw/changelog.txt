@@ -1,3 +1,6 @@
+3/2.0.1
+Bug fix when scanning barcodes with device camera
+
 2/2.0.0
 Added 'Projects' to allow multiple grids to be exported together
 Added option to advance horizontally or vertically
