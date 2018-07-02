@@ -872,6 +872,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             assert null != this.dataEntryFragment;
             this.dataEntryFragment.setEntry(barcodeScannerResult);
+            this.saveEntry(barcodeScannerResult);
         }
         else
             if (android.app.Activity.RESULT_OK == resultCode)
