@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion "28.0.1"
     defaultConfig {
         applicationId "org.wheatgenetics.coordinate"
         minSdkVersion 15
