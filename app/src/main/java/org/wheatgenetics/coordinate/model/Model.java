@@ -23,12 +23,12 @@ public abstract class Model extends java.lang.Object
     @java.lang.Override @java.lang.SuppressWarnings({"DefaultLocale"})
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.getId()); }
 
-    @java.lang.Override @java.lang.SuppressWarnings({"SimplifiableIfStatement"})
-    public boolean equals(final java.lang.Object object)
+    @java.lang.Override public boolean equals(final java.lang.Object object)
     {
         if (null == object)
             return false;
         else
+            // noinspection SimplifiableIfStatement
             if (object instanceof org.wheatgenetics.coordinate.model.Model)
                 return this.getId() == ((org.wheatgenetics.coordinate.model.Model) object).getId();
             else
@@ -52,6 +52,6 @@ public abstract class Model extends java.lang.Object
     public long getId() { return this.id; }
 
     public void setId(@android.support.annotation.IntRange(from = 1) final long id)
-    { this.id = org.wheatgenetics.coordinate.model.Model.valid(id); }
+    { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }
     // endregion
 }
