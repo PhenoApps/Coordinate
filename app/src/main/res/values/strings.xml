@@ -89,4 +89,12 @@
     <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
     <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
     <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
+
+
+    <!-- ExcludedRowsOrColsAlertDialog -->
+    <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
+
+    <!-- ExcludedRowsOrColsAlertDialogTester -->
+    <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
+    <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
 </resources>
