@@ -91,7 +91,6 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
     // endregion
 
-    @java.lang.SuppressWarnings({"ResourceType"})
     public void populate()
     {
         if (null != this.elements) this.elements.clear();
@@ -119,7 +118,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                           byte    offsetFromA  = 0                             ;
                     assert null != tableRow; for (int col = 0; col <= lastCol; col++)
                     {
-//                        @java.lang.SuppressWarnings({"InflateParams"})
+                        @java.lang.SuppressWarnings({"InflateParams"})
                         final android.widget.LinearLayout tableCell =
                             (android.widget.LinearLayout) layoutInflater.inflate(
                                 org.wheatgenetics.coordinate.R.layout.top_display_table_cell,
