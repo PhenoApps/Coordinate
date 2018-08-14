@@ -1,0 +1,61 @@
+<sql>
+    <statement>
+        CREATE TABLE IF NOT EXISTS templates
+        (
+            _id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            title      TEXT    NOT NULL UNIQUE,
+            type       INTEGER NOT NULL CHECK(type BETWEEN 0 AND 2),
+            rows       INTEGER NOT NULL CHECK(rows >= 0),
+            cols       INTEGER NOT NULL CHECK(cols >= 0),
+
+            erand      INTEGER CHECK(erand >= 0),
+            ecells     TEXT,
+            erows      TEXT,
+            ecols      TEXT,
+
+            cnumb      INTEGER NOT NULL CHECK(cnumb BETWEEN 0 AND 1),
+            rnumb      INTEGER NOT NULL CHECK(rnumb BETWEEN 0 AND 1),
+
+            entryLabel TEXT,
+
+            options    TEXT,
+
+            stamp      INTEGER
+        )
+    </statement>
+
+    <statement>
+        CREATE TABLE IF NOT EXISTS projects
+        (
+            _id   INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL UNIQUE,
+            stamp INTEGER
+        )
+    </statement>
+
+    <statement>
+        CREATE TABLE IF NOT EXISTS grids
+        (
+            _id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            temp         INTEGER NOT NULL,
+            projectId    INTEGER,
+            person       TEXT,
+            activeRow    INTEGER CHECK(activeRow >= 0),
+            activeCol    INTEGER CHECK(activeCol >= 0),
+            options      TEXT,
+            stamp        INTEGER
+        )
+    </statement>
+
+    <statement>
+        CREATE TABLE IF NOT EXISTS entries
+        (
+            _id     INTEGER PRIMARY KEY AUTOINCREMENT,
+            grid    INTEGER NOT NULL,
+            row     INTEGER NOT NULL CHECK(row >= 1),
+            col     INTEGER NOT NULL CHECK(col >= 1),
+            edata   TEXT,
+            stamp   INTEGER
+        )
+    </statement>
+</sql>

@@ -1,0 +1,6 @@
+CREATE TABLE projects
+(
+    _id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL UNIQUE,
+    stamp INTEGER
+)
