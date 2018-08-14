@@ -49,4 +49,23 @@
     </string-array>
 
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
+
+
+    <!-- Exporter -->
+    <string name="ExporterProgressDialogTitle">Exporting&#8230;</string>
+    <string name="ExporterProgressDialogInitialMessage">File is being saved.</string>
+    <string name="ExporterSuccessTitle">File successfully exported</string>
+    <string name="ExporterShareTitle">Share file via&#8230;</string>
+    <string name="ExporterFailTitle">Export</string>
+    <string name="ExporterFailMessage">No data was exported.</string>
+
+    <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
+    <string name="GridExporterDeleteConfirmation">Do you want to delete the current grid?</string>
+    <string name="GridExporterFailedMessage">Unable to export grid.</string>
+
+    <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
+    <string name="PerGridProjectExporterAsyncTaskFailedMessage">Grid %d was not exported.</string>
+    <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
+    <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
+    <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
 </resources>
