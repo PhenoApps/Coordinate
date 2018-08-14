@@ -68,4 +68,12 @@
     <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
+
+
+    <!-- optionalField AlertDialogs -->
+    <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
+    <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
+
+    <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
+    <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
 </resources>
