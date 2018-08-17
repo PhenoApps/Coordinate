@@ -162,4 +162,10 @@
     <string name="GridCreatorTemplateAlertMessage">Unable to create template.</string>
     <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>
     <string name="GridCreatorEntriesAlertMessage">Unable to make excluded entr(y|ies).</string>
+
+
+    <!-- ManageGridAlertDialog -->
+    <string name="ManageGridAlertDialogLoad">Load</string>
+    <string name="ManageGridAlertDialogDelete">Delete</string>
+    <string name="ManageGridAlertDialogTitle">Manage grid</string>
 </resources>
