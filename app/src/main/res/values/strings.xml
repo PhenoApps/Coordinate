@@ -112,4 +112,16 @@
     <string name="ExcludeAlertDialogColsItem">Columns</string>
     <string name="ExcludeAlertDialogCellsItem">Cells</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
+
+
+    <!-- set_numbering.xml -->
+    <string name="SetNumberingAlertDialogRowSpinnerLabel">Rows</string>
+    <string name="SetNumberingAlertDialogColSpinnerLabel">Columns</string>
+    <string-array name="SetNumberingAlertDialogSpinnerEntries">
+        <item>1,2,3</item>
+        <item>A,B,C</item>
+    </string-array>
+
+    <!-- SetNumberingAlertDialog -->
+    <string name="SetNumberingAlertDialogTitle">Naming</string>
 </resources>
