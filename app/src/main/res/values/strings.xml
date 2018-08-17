@@ -134,4 +134,13 @@
     <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
+
+
+    <!-- create_project.xml -->
+    <string name="CreateProjectAlertDialogEditTextHint">Project name</string>
+
+    <!-- CreateProjectAlertDialog -->
+    <string name="CreateProjectAlertDialogTitle">Create Project</string>
+    <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
+    <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
 </resources>
