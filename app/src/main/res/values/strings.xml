@@ -124,4 +124,14 @@
 
     <!-- SetNumberingAlertDialog -->
     <string name="SetNumberingAlertDialogTitle">Naming</string>
+
+
+    <!-- set_excludes_optional_fields_numbering.xml -->
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
+
+    <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
 </resources>
