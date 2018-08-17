@@ -168,4 +168,11 @@
     <string name="ManageGridAlertDialogLoad">Load</string>
     <string name="ManageGridAlertDialogDelete">Delete</string>
     <string name="ManageGridAlertDialogTitle">Manage grid</string>
+
+
+    <!-- ManageProjectAlertDialog -->
+    <string name="ManageProjectAlertDialogTitle">Manage project</string>
+    <string name="ManageProjectAlertDialogLoad">Load</string>
+    <string name="ManageProjectAlertDialogClear">Clear</string>
+    <string name="ManageProjectAlertDialogDelete">Delete</string>
 </resources>
