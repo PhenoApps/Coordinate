@@ -231,4 +231,8 @@
 
     <!-- TestAlertDialog -->
     <string name="TestAlertDialogTitle">Test Coordinate</string>
+
+
+    <!-- fragment_data_entry.xml -->
+    <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
 </resources>
