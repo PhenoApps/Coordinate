@@ -227,4 +227,8 @@
     <!-- GridElement -->
     <string name="ElementConfirmTitle">Exclude Cell</string>
     <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
+
+
+    <!-- TestAlertDialog -->
+    <string name="TestAlertDialogTitle">Test Coordinate</string>
 </resources>
