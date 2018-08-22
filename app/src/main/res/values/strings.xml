@@ -8,8 +8,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="action_settings">Settings</string>
-
 
     <!-- Preferences -->
     <string name="SoundPreferenceTitle">Sound</string>
