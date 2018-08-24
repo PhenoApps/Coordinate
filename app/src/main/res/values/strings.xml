@@ -233,4 +233,12 @@
 
     <!-- fragment_data_entry.xml -->
     <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
+
+    <!-- MainActivity -->
+    <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
+    <string name="MainActivityEntriesOfGridSuccessToast">Entries successfully deleted</string>
+    <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
+    <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
+    <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 </resources>

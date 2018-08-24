@@ -16,8 +16,8 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
     final java.lang.String blankHiddenFileName, final int requestCode)
     { super(activity, name, blankHiddenFileName, requestCode); }
 
-    @java.lang.Override public java.io.File createIfMissing() throws java.io.IOException,
-    java.io.FileNotFoundException, org.wheatgenetics.javalib.Dir.PermissionException
+    @java.lang.Override public java.io.File createIfMissing()
+    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
     {
         {
             final java.io.File htpgFile = this.makeFile( // throws java.io.IOException, org.wheatge-
@@ -39,8 +39,8 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
                         {
                             final byte buffer[]          = new byte[1024];
                                   int  numberOfBytesRead                 ;
-                            while ((numberOfBytesRead = inputStream.read(buffer)) > 0)
-                                outputStream.write(buffer, 0, numberOfBytesRead);
+                            while ((numberOfBytesRead = inputStream.read(buffer) /* throws */) > 0)
+                                outputStream.write(buffer,0, numberOfBytesRead) /* throws */;
                         }
                         finally { outputStream.close() /* throws java.io.IOException */; }
                     }
