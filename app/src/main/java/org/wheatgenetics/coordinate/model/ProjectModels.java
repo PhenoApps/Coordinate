@@ -29,11 +29,8 @@ public class ProjectModels extends java.lang.Object
     // endregion
 
     // region Public Methods
-    public boolean add(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        // noinspection SimplifiableConditionalExpression
-        return null == projectModel ? false : this.arrayList().add(projectModel);
-    }
+    public void add(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    { if (null != projectModel) this.arrayList().add(projectModel); }
 
     public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 

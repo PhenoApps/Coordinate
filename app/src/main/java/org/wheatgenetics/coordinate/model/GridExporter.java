@@ -16,8 +16,7 @@ package org.wheatgenetics.coordinate.model;
 public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
 {
     // region Types
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Helper
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Helper
     {
         public abstract org.wheatgenetics.coordinate.model.JoinedGridModel getJoinedGridModel();
         public abstract void                                               deleteGrid        ();

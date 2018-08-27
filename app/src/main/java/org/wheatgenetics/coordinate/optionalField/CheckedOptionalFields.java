@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
  * org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
@@ -17,7 +19,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
             { assert null != this.arrayList; this.arrayList.addAll(optionalFields.arrayList); }
     }
 
-    @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
         // Only iterates over checked optional fields.

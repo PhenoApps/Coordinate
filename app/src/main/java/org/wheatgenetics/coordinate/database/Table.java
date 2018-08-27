@@ -199,17 +199,17 @@ abstract class Table extends java.lang.Object
             /* values         => */ this.getContentValuesForInsert(model) /* polymorphism */);
     }
 
-    public boolean update(final org.wheatgenetics.coordinate.model.Model model)
+    public void update(final org.wheatgenetics.coordinate.model.Model model)
     {
         assert null != model;
         final java.lang.String whereClause =
             org.wheatgenetics.coordinate.database.Table.whereClause(model.getId());
         this.logInfo("Updating table " + this.tableName + " on " + whereClause);
-        assert null != this.db; return this.db.update(
+        assert null != this.db; this.db.update(
             /* table       => */ this.tableName                                          ,
             /* values      => */ this.getContentValuesForUpdate(model) /* polymorphism */,
             /* whereClause => */ whereClause                                             ,
-            /* whereArgs   => */null) > 0;
+            /* whereArgs   => */null);
     }
 
     public boolean delete(final long id)

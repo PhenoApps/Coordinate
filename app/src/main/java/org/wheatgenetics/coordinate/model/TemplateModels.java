@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -29,7 +31,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel> iterator()
     {
         class Iterator extends java.lang.Object
@@ -57,11 +59,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     // endregion
 
     // region Public Methods
-    public boolean add(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        // noinspection SimplifiableConditionalExpression
-        return null == templateModel ? false : this.arrayList().add(templateModel);
-    }
+    public void add(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    { if (null != templateModel) this.arrayList().add(templateModel); }
 
     public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 

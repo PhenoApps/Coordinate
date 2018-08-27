@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -12,8 +13,7 @@ package org.wheatgenetics.coordinate.model;
 public class JoinedGridModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel>
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Processor
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Processor
     {
         public abstract void process(
             org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
@@ -41,7 +41,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public java.util.Iterator<org.wheatgenetics.coordinate.model.JoinedGridModel> iterator()
     {
         class Iterator extends java.lang.Object

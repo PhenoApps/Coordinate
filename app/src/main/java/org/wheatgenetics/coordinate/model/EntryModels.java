@@ -17,12 +17,10 @@ package org.wheatgenetics.coordinate.model;
 public class EntryModels extends java.lang.Object
 {
     // region Types
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface FilledHandler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface FilledHandler
     { public abstract void handleFilledGrid(); public abstract void handleFilledRowOrCol(); }
 
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Processor
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Processor
     { public abstract void process(org.wheatgenetics.coordinate.model.EntryModel entryModel); }
     // endregion
 

@@ -14,8 +14,7 @@ package org.wheatgenetics.coordinate.pc;
  */
 class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     { public abstract boolean handleCreateProjectDone(java.lang.String projectTitle); }
 
     // region Fields

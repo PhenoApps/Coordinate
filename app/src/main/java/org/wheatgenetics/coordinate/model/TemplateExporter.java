@@ -27,7 +27,7 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
         {
             final boolean success;
             if (null == this.templateModel)
-                return success = false;
+                success = false;
             else
                 if (this.templateModel.export(this.getExportFile()))
                 {

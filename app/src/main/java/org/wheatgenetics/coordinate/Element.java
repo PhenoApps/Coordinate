@@ -15,8 +15,7 @@ package org.wheatgenetics.coordinate;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Element extends java.lang.Object implements android.view.View.OnClickListener
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     { public abstract void toggle(org.wheatgenetics.coordinate.model.ElementModel elementModel); }
 
     // region Fields

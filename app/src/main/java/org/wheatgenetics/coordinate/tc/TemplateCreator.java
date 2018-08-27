@@ -19,8 +19,7 @@ public class TemplateCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void handleTemplateCreated(
             org.wheatgenetics.coordinate.model.TemplateModel templateModel);

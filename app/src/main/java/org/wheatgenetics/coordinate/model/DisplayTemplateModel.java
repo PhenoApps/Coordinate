@@ -434,47 +434,39 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     void assignCharacterData(final java.lang.String elementName,
     final java.lang.String characterData)
     {
-        if (org.wheatgenetics.coordinate.model.DisplayTemplateModel.TITLE_TAG_NAME.equals(
-        elementName))
-            this.setTitle(characterData);
-        else
-            if (org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_TAG_NAME.equals(
-            elementName))
-                this.setRows(characterData);
-            else
-                if (
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_TAG_NAME.equals(
-                elementName))
-                    this.setCols(characterData);
-                else
-                    if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                    .GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME.equals(elementName))
-                        this.setGeneratedExcludedCellsAmount(characterData);
-                    else
-                        if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                        .COL_NUMBERING_TAG_NAME.equals(elementName))
-                            this.setColNumbering(characterData);
-                        else
-                            if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                            .ROW_NUMBERING_TAG_NAME.equals(elementName))
-                                this.setRowNumbering(characterData);
-                            else
-                                if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                .ENTRY_LABEL_TAG_NAME.equals(elementName))
-                                    this.setEntryLabel(characterData);
-                                else
-                                    if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                    .EXCLUDED_CELLS_TAG_NAME.equals(elementName))
-                                        this.setExcludedCells(characterData);
-                                    else
-                                        if (org.wheatgenetics.coordinate.model.DisplayTemplateModel
-                                        .EXCLUDED_ROWS_TAG_NAME.equals(elementName))
-                                            this.setExcludedRows(characterData);
-                                        else
-                                            if (org.wheatgenetics.coordinate.model
-                                            .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME.equals(
-                                            elementName))
-                                                this.setExcludedCols(characterData);
+        switch (elementName)
+        {
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.TITLE_TAG_NAME:
+                this.setTitle(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_TAG_NAME:
+                this.setRows(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_TAG_NAME:
+                this.setCols(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel
+                .GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME:
+                    this.setGeneratedExcludedCellsAmount(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_TAG_NAME:
+                this.setColNumbering(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_TAG_NAME:
+                this.setRowNumbering(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.ENTRY_LABEL_TAG_NAME:
+                this.setEntryLabel(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_TAG_NAME:
+                this.setExcludedCells(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_TAG_NAME:
+                this.setExcludedRows(characterData); break;
+
+            case org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME:
+                this.setExcludedCols(characterData); break;
+        }
     }
     // endregion
 

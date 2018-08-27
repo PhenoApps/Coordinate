@@ -246,6 +246,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @android.support.annotation.IntRange(from = 1) final int col)
     { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
     int size() { return null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size(); }

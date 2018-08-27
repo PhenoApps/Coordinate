@@ -119,10 +119,10 @@ implements java.lang.Cloneable
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, hint));
     }
 
-    public boolean add(final java.lang.String name, final java.lang.String value,
+    public void add(final java.lang.String name, final java.lang.String value,
     final java.lang.String hint)
     {
-        assert null != this.arrayList; return this.arrayList.add(
+        assert null != this.arrayList; this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, value, hint));
     }
 
