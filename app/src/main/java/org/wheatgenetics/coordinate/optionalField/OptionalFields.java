@@ -114,7 +114,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override
+    @android.support.annotation.NonNull @java.lang.Override
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
         return

@@ -408,6 +408,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.templateModel.getType();
         final org.wheatgenetics.javalib.CsvWriter csvWriter =
             new org.wheatgenetics.javalib.CsvWriter(writer);
+        // noinspection IfCanBeSwitch
         if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
             this.exportSeed(csvWriter, exportFileName, helper, includeHeader);    // throws java.io-
         else                                                                      //  .IOException
