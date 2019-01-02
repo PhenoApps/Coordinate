@@ -32,6 +32,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     interface Helper { public abstract void publishProgress(int col); }
 
     // region Fields
+    @java.lang.SuppressWarnings({"UnusedAssignment"})
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel = null;
     private org.wheatgenetics.coordinate.model.EntryModels   entryModels   = null;
     // endregion

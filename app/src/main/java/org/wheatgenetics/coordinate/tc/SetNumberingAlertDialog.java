@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.tc;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
@@ -38,8 +39,9 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             .setCancelableToFalse();
 
         {
-            final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.set_numbering,null);
+            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
+                this.layoutInflater().inflate(
+                    org.wheatgenetics.coordinate.R.layout.set_numbering,null);
 
             assert null != view;
             if (null == this.rowSpinner) this.rowSpinner = view.findViewById(

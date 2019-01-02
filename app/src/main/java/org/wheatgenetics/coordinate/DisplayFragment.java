@@ -28,7 +28,7 @@ package org.wheatgenetics.coordinate;
  */
 public abstract class DisplayFragment extends android.support.v4.app.Fragment
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
     {
         public abstract org.wheatgenetics.coordinate.model.DisplayModel         getDisplayModel();
         public abstract void toggle(org.wheatgenetics.coordinate.model.ElementModel elementModel);

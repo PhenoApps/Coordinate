@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
  * android.view.View.OnClickListener
@@ -56,8 +57,9 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             .setCancelableToFalse();
 
         {
-            final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.add_optional_field,null);
+            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
+                this.layoutInflater().inflate(
+                    org.wheatgenetics.coordinate.R.layout.add_optional_field,null);
 
             assert null != view;
             if (null == this.nameEditText) this.nameEditText = view.findViewById(

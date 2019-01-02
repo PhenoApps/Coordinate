@@ -9,12 +9,16 @@
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp"
-    android:theme="@style/ThemeOverlay.AppCompat">
+    android:theme="@style/ThemeOverlay.AppCompat"
+
+    tools:ignore="Overdraw">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+
+        tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
             android:layout_width="56dp"
@@ -29,10 +33,11 @@
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
             android:paddingLeft="15dp"
-            tools:ignore="RtlSymmetry"
             android:textColor="@android:color/white"
             android:textSize="@dimen/medium_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+
+            tools:ignore="InconsistentLayout,RtlSymmetry" />
 
     </LinearLayout>
 

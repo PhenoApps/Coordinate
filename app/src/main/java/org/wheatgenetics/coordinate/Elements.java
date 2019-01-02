@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.app.Activity
  * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
@@ -60,7 +61,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
     // region Protected Methods
     protected void clear() { this.elementArray = null; }
 
-    protected android.widget.LinearLayout add(
+    @android.annotation.SuppressLint({"InflateParams"}) protected android.widget.LinearLayout add(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (null == elementModel)

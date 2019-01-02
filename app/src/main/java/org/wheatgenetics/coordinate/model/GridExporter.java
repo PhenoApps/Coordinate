@@ -22,7 +22,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         public abstract void                                               deleteGrid        ();
     }
 
-    private class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
+    private static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
         // region Fields

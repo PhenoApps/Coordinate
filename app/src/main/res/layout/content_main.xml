@@ -15,7 +15,7 @@
     tools:showIn="@layout/app_bar_main"
     tools:ignore="PrivateResource">
 
-    <TableRow>
+    <TableRow tools:ignore="UselessParent">
 
         <fragment
             android:id="@+id/gridDisplayFragment"

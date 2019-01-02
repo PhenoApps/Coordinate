@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.content.Context
  * android.content.DialogInterface
  * android.content.DialogInterface.OnCancelListener
@@ -23,7 +24,7 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class Exporter extends java.lang.Object
 {
-    abstract static class AsyncTask
+    @android.annotation.SuppressLint({"StaticFieldLeak"}) abstract static class AsyncTask
     extends android.os.AsyncTask<java.lang.Void, java.lang.String, java.lang.Boolean>
     implements android.content.DialogInterface.OnCancelListener
     {

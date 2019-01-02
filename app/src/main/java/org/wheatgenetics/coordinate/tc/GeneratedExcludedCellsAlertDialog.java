@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.tc;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
  * android.view.View.OnClickListener
@@ -54,8 +55,9 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
             .setCancelableToFalse();
 
         {
-            final android.view.View view = this.layoutInflater().inflate(
-                org.wheatgenetics.coordinate.R.layout.generated_excluded_cells,null);
+            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
+                this.layoutInflater().inflate(
+                    org.wheatgenetics.coordinate.R.layout.generated_excluded_cells,null);
 
             if (null == this.editText)
             {
