@@ -17,9 +17,10 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private final long             templateId, projectId;
-    private final java.lang.String person               ;
-    private       int              activeRow, activeCol ;
+    private final @android.support.annotation.IntRange(from = 1) long templateId           ;
+    private final @android.support.annotation.IntRange(from = 0) long projectId            ;
+    private final java.lang.String                                    person               ;
+    private       @android.support.annotation.IntRange(from = 0) int  activeRow, activeCol ;
     private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
     private final long timestamp;
@@ -63,8 +64,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
         this.person = person;
 
-        this.activeRow = org.wheatgenetics.coordinate.Utils.valid(activeRow,0);
-        this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol,0);
+        this.setActiveRow(activeRow); this.setActiveCol(activeCol);
 
         if (null != optionalFields) optionalFields = optionalFields.trim();
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
@@ -90,12 +90,21 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Public Methods
-    public long             getTemplateId() { return this.templateId; }
-    public long             getProjectId () { return this.projectId ; }
-    public java.lang.String getPerson    () { return this.person    ; }
-    public int              getActiveRow () { return this.activeRow ; }
-    public int              getActiveCol () { return this.activeCol ; }
-    public long             getTimestamp () { return this.timestamp ; }
+    public @android.support.annotation.IntRange(from = 1) long getTemplateId()
+    { return this.templateId; }
+
+    public @android.support.annotation.IntRange(from = 0) long getProjectId()
+    { return this.projectId; }
+
+    public java.lang.String getPerson() { return this.person; }
+
+    public @android.support.annotation.IntRange(from = 0) int getActiveRow()
+    { return this.activeRow; }
+
+    public @android.support.annotation.IntRange(from = 0) int getActiveCol()
+    { return this.activeCol; }
+
+    public long getTimestamp() { return this.timestamp; }
 
     // region optionalFields Public Methods
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()

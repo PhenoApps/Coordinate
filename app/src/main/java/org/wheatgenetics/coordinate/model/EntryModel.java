@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.DrawableRes
  * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
@@ -15,9 +16,9 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
 implements org.wheatgenetics.coordinate.model.ElementModel
 {
     // region Fields
-    private final long gridId   ;
-    private final int  row, col ;
-    private final long timestamp;
+    @android.support.annotation.IntRange(from = 1) private final long gridId   ;
+    @android.support.annotation.IntRange(from = 1) private final int  row, col ;
+                                                   private final long timestamp;
     // endregion
 
     // region Constructors
@@ -60,8 +61,11 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
-    @java.lang.Override public int getRowValue() { return this.getRow(); }
-    @java.lang.Override public int getColValue() { return this.getCol(); }
+    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getRowValue()
+    { return this.getRow(); }
+
+    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getColValue()
+    { return this.getCol(); }
     // endregion
 
     // region Package Methods
@@ -74,14 +78,15 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Public Methods
-    public long getGridId   () { return this.gridId   ; }
-    public int  getRow      () { return this.row      ; }
-    public int  getCol      () { return this.col      ; }
+    public @android.support.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
+    public @android.support.annotation.IntRange(from = 1) int  getRow   () { return this.row   ; }
+    public @android.support.annotation.IntRange(from = 1) int  getCol   () { return this.col   ; }
+
     public long getTimestamp() { return this.timestamp; }
 
     public abstract java.lang.String getValue        ();
     public abstract java.lang.String getDatabaseValue();
 
-    public abstract int backgroundResource();
+    public abstract @android.support.annotation.DrawableRes int backgroundResource();
     // endregion
 }

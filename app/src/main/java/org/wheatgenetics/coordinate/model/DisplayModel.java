@@ -8,7 +8,8 @@ package org.wheatgenetics.coordinate.model;
  */
 @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface DisplayModel
 {
-    public abstract int     getRows        (); public abstract int     getCols        ();
+    public abstract @android.support.annotation.IntRange(from = 1) int getRows();
+    public abstract @android.support.annotation.IntRange(from = 1) int getCols();
     public abstract boolean getColNumbering(); public abstract boolean getRowNumbering();
 
     public abstract org.wheatgenetics.coordinate.model.ElementModel getElementModel(

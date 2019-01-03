@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -87,7 +88,8 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
-        @java.lang.Override public void publishProgress(final int col)
+        @java.lang.Override public void publishProgress(
+        @android.support.annotation.IntRange(from = 1) final int col)
         {
             this.publishProgress(this.getString(
                 org.wheatgenetics.coordinate.R.string.GridExporterProgressDialogMessage) + col);

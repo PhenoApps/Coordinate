@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -14,11 +15,12 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         arrayListInstance = null;
 
     // region Private Methods
-    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList()
     {
-        if (null == this.arrayListInstance) this.arrayListInstance =
-            new java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel>();
+        if (null == this.arrayListInstance)
+            // noinspection Convert2Diamond
+            this.arrayListInstance =
+                new java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel>();
         return this.arrayListInstance;
     }
 
@@ -31,7 +33,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override @android.support.annotation.NonNull
+    @android.support.annotation.NonNull @java.lang.Override
     public java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel> iterator()
     {
         class Iterator extends java.lang.Object
@@ -64,7 +66,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 
     public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
-    public org.wheatgenetics.coordinate.model.TemplateModel get(final int i)
+    public org.wheatgenetics.coordinate.model.TemplateModel get(
+    @android.support.annotation.IntRange(from = 0) final int i)
     {
         if (null == this.arrayListInstance)
             return null;
@@ -74,7 +77,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 
     public java.lang.String[] titles()
     {
-        final int size = this.size();
+        @android.support.annotation.IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;

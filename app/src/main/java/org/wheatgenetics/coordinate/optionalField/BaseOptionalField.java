@@ -23,10 +23,7 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Private Methods
     private static java.lang.String valid(final java.lang.String s)
-    {
-        if (null == s || s.length() <= 0) throw new java.lang.AssertionError();
-        return s;
-    }
+    { if (null == s || s.length() <= 0) throw new java.lang.AssertionError(); return s; }
 
     private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
     // endregion

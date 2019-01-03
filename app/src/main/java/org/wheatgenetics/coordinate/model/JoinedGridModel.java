@@ -29,7 +29,11 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Helper { public abstract void publishProgress(int col); }
+    interface Helper
+    {
+        public abstract void publishProgress(
+            @android.support.annotation.IntRange(from = 1) int col);
+    }
 
     // region Fields
     @java.lang.SuppressWarnings({"UnusedAssignment"})
@@ -66,11 +70,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         if (includeHeader) csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
             "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
         {
-            final int cols = this.getCols(), rows = this.getRows();
+            final @android.support.annotation.IntRange(from = 1) int
+                cols = this.getCols(), rows = this.getRows();
 
-            for (int col = 1; col <= cols; col++)
+            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (int row = 1; row <= rows; row++)
+                for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
                 {
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.getEntryModel(row, col);
@@ -88,7 +93,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         csvWriter.endRecord();
                     }
                 }
-                helper.publishProgress(col);
+                if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
@@ -121,14 +126,15 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             "date", "plate_id", "plate_name", "sample_id", "well_A01", "well_01A",
             "tissue_id", "dna_person", "notes", "tissue_type", "extraction"});
         {
-            final int cols = this.getCols(), rows = this.getRows();
+            final @android.support.annotation.IntRange(from = 1) int
+                cols = this.getCols(), rows = this.getRows();
 
-            for (int col = 1; col <= cols; col++)
+            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (int r = 0; r < rows; r++)
+                for (@android.support.annotation.IntRange(from = 0) int r = 0; r < rows; r++)
                 {
-                    final int                                           row        = r + 1;
-                    final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                    final @android.support.annotation.IntRange(from = 1) int row        = r + 1;
+                    final org.wheatgenetics.coordinate.model.EntryModel      entryModel =
                         this.getEntryModel(row, col);
                     if (null != entryModel)
                     {
@@ -157,7 +163,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         csvWriter.endRecord();
                     }
                 }
-                helper.publishProgress(col);
+                if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
@@ -195,7 +201,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         }
 
         {
-            final int              cols     = this.getCols(), rows = this.getRows();
+            final @android.support.annotation.IntRange(from = 1) int
+                cols = this.getCols(), rows = this.getRows();
             final java.lang.String values[] =
                 null == optionalFields ? null : optionalFields.values();
 
@@ -203,9 +210,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             final boolean
                 colNumbering = this.templateModel.getColNumbering(),
                 rowNumbering = this.templateModel.getRowNumbering();
-            for (int col = 1; col <= cols; col++)
+            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (int row = 1; row <= rows; row++)
+                for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
                 {
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.getEntryModel(row, col);
@@ -231,23 +238,20 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         csvWriter.endRecord();
                     }
                 }
-                helper.publishProgress(col);
+                if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
     }
     // endregion
 
-    private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
-    { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
-
-    private boolean isExcludedRow(final int row)
+    private boolean isExcludedRow(final @android.support.annotation.IntRange(from = 1) int row)
     {
         // noinspection SimplifiableConditionalExpression
         return null == this.templateModel ? true : this.templateModel.isExcludedRow(row);
     }
 
-    private boolean isExcludedCol(final int col)
+    private boolean isExcludedCol(final @android.support.annotation.IntRange(from = 1) int col)
     {
         // noinspection SimplifiableConditionalExpression
         return null == this.templateModel ? true : this.templateModel.isExcludedCol(col);
@@ -258,15 +262,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         if (null != result)
         {
-            final int rows = this.getRows(), cols = this.getCols();
+            final @android.support.annotation.IntRange(from = 1) int
+                rows = this.getRows(), cols = this.getCols();
 
-            for (int row = 1; row <= rows; row++) if (this.isExcludedRow(row))
-                for (int col = 1; col <= cols; col++) result.add(row, col);
+            for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+                if (this.isExcludedRow(row))
+                    for (@android.support.annotation.IntRange(from = 1) int col = 1;
+                    col <= cols; col++) result.add(row, col);
 
-            for (int col = 1; col <= cols; col++) if (this.isExcludedCol(col))
-                for (int row = 1; row <= rows; row++) result.add(row, col);
+            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+                if (this.isExcludedCol(col))
+                    for (@android.support.annotation.IntRange(from = 1) int row = 1;
+                    row <= rows; row++) result.add(row, col);
         }
     }
+
+    private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
+    { return null == this.templateModel ? null : this.templateModel.getExcludedCells(); }
 
     private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()
     {
@@ -287,17 +299,19 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private void makeEntryModelsFromExcludedCells(
     final org.wheatgenetics.coordinate.model.Cells excludedCells)
     {
-        final int rows = this.getRows(), cols = this.getCols();
+        final @android.support.annotation.IntRange(from = 1) int
+            rows = this.getRows(), cols = this.getCols();
         this.entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
             /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
-        for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
-            if (null == excludedCells)
-                this.entryModels.makeIncludedEntry(row, col);
-            else
-                if (excludedCells.contains(row, col))
-                    this.entryModels.makeExcludedEntry(row, col);
-                else
+        for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+                if (null == excludedCells)
                     this.entryModels.makeIncludedEntry(row, col);
+                else
+                    if (excludedCells.contains(row, col))
+                        this.entryModels.makeExcludedEntry(row, col);
+                    else
+                        this.entryModels.makeIncludedEntry(row, col);
     }
 
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
@@ -346,7 +360,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
     @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
     final java.lang.String initialExcludedCells,
-    final java.lang.String excludedRows, final java.lang.String excludedCols,
+    final java.lang.String excludedRows        , final java.lang.String excludedCols,
     @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
     @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
     final java.lang.String entryLabel       , final java.lang.String templateOptionalFields,
@@ -364,11 +378,21 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
-    @java.lang.Override public int getRows()
-    { return null == this.templateModel ? 0 : this.templateModel.getRows(); }
+    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getRows()
+    {
+        if (null == this.templateModel)
+            throw new java.lang.NullPointerException();
+        else
+            return this.templateModel.getRows();
+    }
 
-    @java.lang.Override public int getCols()
-    { return null == this.templateModel ? 0 : this.templateModel.getCols(); }
+    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getCols()
+    {
+        if (null == this.templateModel)
+            throw new java.lang.NullPointerException();
+        else
+            return this.templateModel.getCols();
+    }
 
     @java.lang.Override public boolean getColNumbering()
     { assert null != this.templateModel; return this.templateModel.getColNumbering(); }
@@ -391,9 +415,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
-        final org.wheatgenetics.coordinate.model.Cells result;
-
-        result = null == this.entryModels ?
+        final org.wheatgenetics.coordinate.model.Cells result = null == this.entryModels ?
             new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols()) :
             this.entryModels.excludedCells()                                             ;
         this.excludedCellsFromExcludedRowsAndCols(result);

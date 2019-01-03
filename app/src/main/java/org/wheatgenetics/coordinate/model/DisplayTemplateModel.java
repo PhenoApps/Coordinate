@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.os.Bundle
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -39,7 +40,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     // region Private Methods
     /** 0 means false and 1 means true. */
-    private static boolean valid(final int numbering)
+    private static boolean valid(
+    @android.support.annotation.IntRange(from = 0, to = 1) final int numbering)
     {
         if (numbering < 0 || numbering > 1)
             throw new java.lang.IllegalArgumentException();
@@ -195,9 +197,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String formatString()
+    @java.lang.Override java.lang.String formatString()
     {
         return java.lang.String.format(
             super.formatString() + ", excludedCells=%s, excludedRows=%s, excludedCols=%s",
@@ -257,9 +258,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         else return false;
     }
 
-    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
+    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
-    protected java.lang.Object clone()
+    @java.lang.Override protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel result;
         {
@@ -343,14 +344,15 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    static void writeElement(final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    static void writeElement(
+    @android.support.annotation.NonNull final org.xmlpull.v1.XmlSerializer xmlSerializer,
     final java.lang.String indent, final java.lang.String tagName, final java.lang.String text)
     throws java.io.IOException
     {
-        assert null != xmlSerializer; xmlSerializer.ignorableWhitespace(indent);
-        xmlSerializer.startTag(null, tagName);                      // throws java.io.IOException
-        xmlSerializer.text    (text);                                  // throws java.io.IOException
-        xmlSerializer.endTag  (null, tagName);                      // throws java.io.IOException
+        xmlSerializer.ignorableWhitespace(indent);
+        xmlSerializer.startTag           (null, tagName);   // throws java.io.IOException
+        xmlSerializer.text               (text);                       // throws java.io.IOException
+        xmlSerializer.endTag             (null, tagName);   // throws java.io.IOException
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -554,9 +556,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         return result;
     }
 
-    public void setExcludedCells(final android.os.Bundle bundle)
+    public void setExcludedCells(@android.support.annotation.NonNull final android.os.Bundle bundle)
     {
-        assert null != bundle;
         this.setExcludedCells(bundle.getString(
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY));
     }

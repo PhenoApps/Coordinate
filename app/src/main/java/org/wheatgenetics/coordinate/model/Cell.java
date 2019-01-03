@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.model;
 public class Cell extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable,
 org.wheatgenetics.coordinate.model.ElementModel
 {
-    private static final java.lang.String ROW_NAME = "row", COL_NAME = "col";
+    private static final java.lang.String ROW_JSON_NAME = "row", COL_JSON_NAME = "col";
 
     private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
@@ -48,8 +48,8 @@ org.wheatgenetics.coordinate.model.ElementModel
     Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
     {
         this(
-            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_NAME),           // throws
-            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.COL_NAME));          // throws
+            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_JSON_NAME),      // throws
+            jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.COL_JSON_NAME));     // throws
     }
     // endregion
 
@@ -116,9 +116,9 @@ org.wheatgenetics.coordinate.model.ElementModel
         final org.json.JSONObject result = new org.json.JSONObject();
 
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.ROW_NAME, this.getRowValue());
+            org.wheatgenetics.coordinate.model.Cell.ROW_JSON_NAME, this.getRowValue());
         result.put(                                                 // throws org.json.JSONException
-            org.wheatgenetics.coordinate.model.Cell.COL_NAME, this.getColValue());
+            org.wheatgenetics.coordinate.model.Cell.COL_JSON_NAME, this.getColValue());
 
         return result;
     }

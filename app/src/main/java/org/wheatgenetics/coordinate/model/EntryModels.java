@@ -25,17 +25,20 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Fields
-    private final long                                          gridId             ;
-    private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
+    private final @android.support.annotation.IntRange(from = 1) long gridId             ;
+    private final org.wheatgenetics.coordinate.model.EntryModel       entryModelArray[][];
     // endregion
 
     // region Private Methods
     private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
-    final int lastRow, final int lastCol, final int activeRow, final int activeCol,
+    @android.support.annotation.IntRange(from = 0) final int           lastRow      ,
+    @android.support.annotation.IntRange(from = 0) final int           lastCol      ,
+    @android.support.annotation.IntRange(from = 0) final int           activeRow    ,
+    @android.support.annotation.IntRange(from = 0) final int           activeCol    ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
-        final int     candidateRow, candidateCol ;
-        final boolean filledRowOrColNeedsChecking;
+        @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
+                                                       final boolean filledRowOrColNeedsChecking;
         {
             {
                 final boolean recursion = null == filledHandler;
@@ -93,8 +96,8 @@ public class EntryModels extends java.lang.Object
     final int lastRow, final int lastCol, final int activeRow, final int activeCol,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
-        final int     candidateRow, candidateCol ;
-        final boolean filledRowOrColNeedsChecking;
+        @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
+                                                       final boolean filledRowOrColNeedsChecking;
         {
             {
                 final boolean recursion = null == filledHandler;
@@ -204,7 +207,7 @@ public class EntryModels extends java.lang.Object
             return null;
         else
         {
-            final int
+            @android.support.annotation.IntRange(from = 0) final int
                 lastRow   = this.entryModelArray.length    - 1,
                 lastCol   = this.entryModelArray[0].length - 1,
                 activeRow = activeEntryModel.getRow()      - 1,

@@ -115,7 +115,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     {
         this(title, type, rows, cols, generatedExcludedCellsAmount,
             /* excludedCells => */null, /* excludedRows => */null,
-            /* excludedCols => */null, /* colNumbering  => */true,
+            /* excludedCols  => */null, /* colNumbering  => */true,
             rowNumbering, optionalFields,
             /* timestamp => */ type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
     }
@@ -248,14 +248,14 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 final org.xmlpull.v1.XmlSerializer xmlSerializer = android.util.Xml.newSerializer();
                 assert null != xmlSerializer; xmlSerializer.setOutput(writer);    // throws java.io-
                                                                                   //  .IOException
-                xmlSerializer.startDocument("UTF-8",true); // throws java.io.IOException
-                try
+                xmlSerializer.startDocument("UTF-8",true);    // throws java.io-
+                try                                                              //  .IOException
                 {
                     xmlSerializer.ignorableWhitespace("\n");
 
                     final java.lang.String templateTagName = "template";
-                    xmlSerializer.startTag(null, templateTagName);  // throws java.io.IOException
-
+                    xmlSerializer.startTag(null, templateTagName);     // throws java.io-
+                                                                                  //  .IOException
                     {
                         final java.lang.String indent = "\n    ";
                         if (!this.export(xmlSerializer, indent))

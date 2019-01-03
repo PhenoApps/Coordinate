@@ -9,7 +9,7 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Model extends java.lang.Object
 {
-    private long id;
+    private @android.support.annotation.IntRange(from = 1) long id;
 
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -49,7 +49,7 @@ public abstract class Model extends java.lang.Object
             return id;
     }
 
-    public long getId() { return this.id; }
+    public @android.support.annotation.IntRange(from = 1) long getId() { return this.id; }
 
     public void setId(@android.support.annotation.IntRange(from = 1) final long id)
     { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }

@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONArray
@@ -47,10 +48,8 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         if (null != object)
             try
             {
-                final org.wheatgenetics.coordinate.model.Cell cell =
-                    new org.wheatgenetics.coordinate.model.Cell(    // throws org.json.JSONException
-                        (org.json.JSONObject) object);
-                this.add(cell);
+                this.add(new org.wheatgenetics.coordinate.model.Cell(             // throws org.json
+                    (org.json.JSONObject) object));                               //  .JSONException
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
@@ -58,22 +57,24 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     private java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator()
     { return null == this.cellTreeSetInstance ? null : this.cellTreeSetInstance.iterator(); }
 
-    @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
     {
-        if (null == this.cellTreeSetInstance) this.cellTreeSetInstance =
-            new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>();
+        if (null == this.cellTreeSetInstance)
+            // noinspection Convert2Diamond
+            this.cellTreeSetInstance =
+                new java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>();
         return this.cellTreeSetInstance;
     }
     // endregion
 
     // region Constructors
     /** Assigns. */
-    private Cells(final org.wheatgenetics.coordinate.model.Cell maxCell)
-    { super(); this.maxCell = maxCell; }
+    private Cells(@android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.Cell maxCell) { super(); this.maxCell = maxCell; }
 
     /** Creates. */
-    private Cells(final org.wheatgenetics.coordinate.model.Cells cells)
+    private Cells(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells cells)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
 
     /** Creates. */
@@ -194,7 +195,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     }
 
     org.wheatgenetics.coordinate.model.Cells makeRandomCells(
-    @android.support.annotation.IntRange(from = 1)       int amount,
+    @android.support.annotation.IntRange(from = 0)       int amount,
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol) throws
     org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,

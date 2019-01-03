@@ -19,11 +19,8 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.BaseOptionalField
 {
-    // region Constants
     private static final java.lang.String NAME_JSON_NAME = "field",
-        HINT_JSON_NAME = "hint", VALUE_JSON_NAME = "value";
-    private static final java.lang.String CHECKED_JSON_NAME = "checked";
-    // endregion
+        HINT_JSON_NAME = "hint", VALUE_JSON_NAME = "value", CHECKED_JSON_NAME = "checked";
 
     private static void put(final org.json.JSONObject jsonObject,
     final java.lang.String name, java.lang.String value)
@@ -65,11 +62,11 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         final org.json.JSONObject result = new org.json.JSONObject();
 
         org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
-            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME, name);
+            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME , name );
         org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
             org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME, value);
         org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
-            org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME, hint);
+            org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME , hint );
 
         return result;
     }

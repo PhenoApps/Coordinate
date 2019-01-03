@@ -13,12 +13,16 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
+ * org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
  */
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
+    private static boolean useValue(final java.lang.String value)
+    { return null != value && value.trim().length() > 0; }
+
     // region Constructors
     public NonNullOptionalFields() { super(); }
 
@@ -364,14 +368,14 @@ implements java.lang.Cloneable
 
         {
             final java.lang.String name = "Tray", hint = "Tray ID";
-            if (null != trayId && trayId.trim().length() > 0)
+            if (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.useValue(trayId))
                 result.add(name, /* value => */ trayId, hint);
             else
                 result.add(name, hint);
         }
         {
             final java.lang.String name = "Person", hint = "Person name";
-            if (null != person && person.trim().length() > 0)
+            if (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.useValue(person))
                 result.add(name, /* value => */ person, hint);
             else
                 result.add(name, hint);
@@ -398,14 +402,15 @@ implements java.lang.Cloneable
 
         {
             final java.lang.String name = "Plate", hint = "Plate ID";
-            if (null != plateId && plateId.trim().length() > 0)
+            if (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.useValue(plateId))
                 result.add(name, /* value => */ plateId, hint);
             else
                 result.add(name, hint);                                                 // TODO: dna
         }
         {
             final java.lang.String name = "Plate Name";
-            if (null != plateName && plateName.trim().length() > 0)
+            if
+            (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.useValue(plateName))
                 result.add(name, /* value => */ plateName, /* hint => */null);
             else
                 result.add(name);
@@ -415,7 +420,7 @@ implements java.lang.Cloneable
         result.add("extraction" , /* value => */"CTAB", /* hint => */"");
         {
             final java.lang.String name = "person";
-            if (null != person && person.trim().length() > 0)
+            if (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.useValue(person))
                 result.add(name, /* value => */ person, /* hint => */null);
             else
                 result.add(name);

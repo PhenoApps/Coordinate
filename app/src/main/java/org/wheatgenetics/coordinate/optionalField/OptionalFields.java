@@ -77,11 +77,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
             baseOptionalField: this)
             {
                 if (firstOptionalField) firstOptionalField = false; else stringBuilder.append(", ");
-                stringBuilder.append(baseOptionalField.toString());
+                stringBuilder.append(baseOptionalField.toString());                  // polymorphism
             }
         }
-        stringBuilder.append("}");
-        return stringBuilder.toString();
+        return stringBuilder.append("}").toString();
     }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)

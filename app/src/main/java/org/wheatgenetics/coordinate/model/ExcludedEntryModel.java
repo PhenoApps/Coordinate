@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.DrawableRes
  * android.support.annotation.IntRange
  *
  * org.wheatgenetics.coordinate.R
@@ -40,7 +41,7 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override public java.lang.String getDatabaseValue()
     { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
 
-    @java.lang.Override public int backgroundResource()
+    @java.lang.Override public @android.support.annotation.DrawableRes int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
     // endregion
 }

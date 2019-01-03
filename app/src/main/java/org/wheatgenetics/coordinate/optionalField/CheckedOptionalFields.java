@@ -29,6 +29,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
             { super(arrayList); }
 
+            // region Overridden Methods
             @java.lang.Override public boolean hasNext()
             {
                 assert null != this.listIterator; assert null != this.arrayList;
@@ -50,6 +51,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
                 do result = super.next(); while (!result.getChecked());
                 return result;
             }
+            // endregion
         }
         return new Iterator(this.arrayList);
     }
