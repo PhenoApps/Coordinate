@@ -127,19 +127,9 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                             final android.widget.TextView textView = tableCell.findViewById(
                                 org.wheatgenetics.coordinate.R.id.topDisplayTextView);
 
-                            final java.lang.String text;
-                            if (0 == col)
-                                text = "";
-                            else
-                                if (colNumbering)
-                                    text = "" + col;
-                                else
-                                {
-                                    text =
-                                        org.wheatgenetics.coordinate.Utils.convert(offsetFromA++);
-                                    if (offsetFromA >= 26) offsetFromA = 0;
-                                }
-                            assert null != textView; textView.setText(text);
+                            assert null != textView;
+                            textView.setText(0 == col ? "" : colNumbering ? "" + col :
+                                org.wheatgenetics.coordinate.Utils.convert(offsetFromA++));
                         }
                         tableRow.addView(tableCell);
                     }
@@ -173,15 +163,9 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                             final android.widget.TextView textView = tableCell.findViewById(
                                 org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
 
-                            final java.lang.String text;
-                            if (rowNumbering)
-                                text = "" + row;
-                            else
-                            {
-                                text = java.lang.Character.toString((char) ('A' + offsetFromA++));
-                                if (offsetFromA >= 26) offsetFromA = 0;
-                            }
-                            assert null != textView; textView.setText(text);
+                            assert null != textView;
+                            textView.setText(rowNumbering ? "" + row :
+                                org.wheatgenetics.coordinate.Utils.convert(offsetFromA++));
                         }
                         tableRow.addView(tableCell);
                     }

@@ -238,5 +238,25 @@ public class Utils extends java.lang.Object
 
     public static java.lang.String convert(
     @android.support.annotation.IntRange(from = 0) final int offsetFromA)
-    { return java.lang.Character.toString((char) ('A' + offsetFromA)); }
+    {
+        if (offsetFromA < 0)
+            throw new java.lang.IllegalArgumentException();
+        else
+        {
+            final @android.support.annotation.IntRange(from = 0) int modulas     ;
+            final java.lang.String                                   rightPortion;
+            {
+                final int numberOfUppercaseLetters = 26;
+                modulas      = offsetFromA / numberOfUppercaseLetters;
+                rightPortion = java.lang.Character.toString(
+                    (char) ('A' + offsetFromA % numberOfUppercaseLetters));
+            }
+
+            if (0 == modulas)
+                return rightPortion;
+            else
+                return org.wheatgenetics.coordinate.Utils.convert(modulas - 1) + // recursion
+                    rightPortion;
+        }
+    }
 }
