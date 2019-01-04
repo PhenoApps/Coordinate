@@ -5,7 +5,7 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "org.wheatgenetics.coordinate"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 201
         versionName '2.0.1'
