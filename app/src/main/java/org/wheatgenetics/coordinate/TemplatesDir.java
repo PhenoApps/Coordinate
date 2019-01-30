@@ -19,7 +19,8 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
     @java.lang.Override public java.io.File createIfMissing()
     throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
     {
-        {
+        final java.io.File blankHiddenFile = super.createIfMissing();        // throws IOException,
+        {                                                                    //  PermissionException
             final java.io.File htpgFile = this.makeFile( // throws java.io.IOException, org.wheatge-
                 "HTPG.xml");                    //  netics.javalib.Dir.PermissionException
             if (!htpgFile.exists())
@@ -47,21 +48,16 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
                     finally { inputStream.close() /* throws java.io.IOException */; }
             }
         }
-        return super.createIfMissing();                  // throws java.io.IOException, org.wheatge-
-    }                                                    //  netics.javalib.Dir.PermissionException
+        return blankHiddenFile;
+    }
 
     boolean atLeastOneXmlFileExists() throws org.wheatgenetics.javalib.Dir.PermissionException
     {
         final java.lang.String fileNames[] = this.listXml();       // throws org.wheatgenetics.java-
-        // noinspection SimplifiableIfStatement                    //  lib.Dir.PermissionException
-        if (null == fileNames)
-            return false;
-        else
-            return fileNames.length > 0;
+        // noinspection SimplifiableConditionalExpression          //  lib.Dir.PermissionException
+        return null == fileNames ? false : fileNames.length > 0;
     }
 
     public java.lang.String[] listXml() throws org.wheatgenetics.javalib.Dir.PermissionException
-    {
-        return this.list(".+\\.xml");                       // throws org.wheatgenetics.java-
-    }                                                              //  lib.Dir.PermissionException
-}
+    { return this.list(".+\\.xml"); }                       // throws org.wheatgenetics.java-
+}                                                                  //  lib.Dir.PermissionException

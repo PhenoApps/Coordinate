@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.gc;
  */
 class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings("UnnecessaryInterfaceModifier")
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler { public abstract void chooseOld(); public abstract void chooseNew(); }
 
     private final org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler;
