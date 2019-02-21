@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject while OptionalField does.)
  *
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.wheatgenetics.javalib.Utils
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -16,54 +18,62 @@ public abstract class BaseOptionalField extends java.lang.Object
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
 
     // region Fields
-    private final java.lang.String name, hint    ;
-    private       java.lang.String value   = ""  ;
-    private       boolean          checked = true;
+    @android.support.annotation.NonNull private final java.lang.String name, hint    ;
+    @android.support.annotation.NonNull private       java.lang.String value   = ""  ;
+                                        private       boolean          checked = true;
     // endregion
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private static java.lang.String valid(final java.lang.String s)
-    { if (null == s || s.length() <= 0) throw new java.lang.AssertionError(); return s; }
+    {
+        if (null == s)
+            throw new java.lang.AssertionError();
+        else
+        {
+            final java.lang.String result = s.trim();
+            if (result.length() <= 0)
+                throw new java.lang.AssertionError();
+            else
+                return result;
+        }
+    }
 
     private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
     // endregion
 
     // region Constructors
-    BaseOptionalField(java.lang.String name, java.lang.String hint)
+    BaseOptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    final java.lang.String hint)
     {
         super();
 
-        if (null != name) name = name.trim();
-        this.name = org.wheatgenetics.coordinate.optionalField.BaseOptionalField.valid(name);
-
-        if (null != hint) hint = hint.trim();
-        this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(hint);
+        this.name = org.wheatgenetics.coordinate.optionalField.BaseOptionalField.valid(name)       ;
+        this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull                   (hint).trim();
     }
 
-    BaseOptionalField(final java.lang.String name) { this(name,""); }
+    BaseOptionalField(@android.support.annotation.NonNull final java.lang.String name)
+    { this(name,""); }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override public java.lang.String toString()
+    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getName(), super.toString()); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {
-        if (null == object)
-            return false;
-        else
-            if (object instanceof org.wheatgenetics.coordinate.optionalField.BaseOptionalField)
-            {
-                final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                    baseOptionalField =
-                        (org.wheatgenetics.coordinate.optionalField.BaseOptionalField) object;
-                return
-                    this.getName   ().equals(baseOptionalField.getName   ()) &&
-                    this.getValue  ().equals(baseOptionalField.getValue  ()) &&
-                    this.getHint   ().equals(baseOptionalField.getHint   ()) &&
-                    this.getChecked()   ==   baseOptionalField.getChecked()   ;
-            }
-            else return false;
+        if (object instanceof org.wheatgenetics.coordinate.optionalField.BaseOptionalField)
+        {
+            final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+                baseOptionalField =
+                    (org.wheatgenetics.coordinate.optionalField.BaseOptionalField) object;
+            return
+                this.getName   ().equals(baseOptionalField.getName   ()) &&
+                this.getValue  ().equals(baseOptionalField.getValue  ()) &&
+                this.getHint   ().equals(baseOptionalField.getHint   ()) &&
+                this.getChecked()   ==   baseOptionalField.getChecked()   ;
+        }
+        else return false;
     }
 
     /** Overridden just to elevate from protected to public. */
@@ -86,16 +96,14 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Public Methods
     // region Getter and Setter Public Methods
-    public java.lang.String getName() { return this.name; }
+    @android.support.annotation.NonNull public java.lang.String getName() { return this.name; }
 
-    public java.lang.String getValue() { return this.value; }
-    public void             setValue(java.lang.String value)
-    {
-        if (null != value) value = value.trim();
-        this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value);
-    }
+    @android.support.annotation.NonNull public java.lang.String getValue() { return this.value; }
 
-    public java.lang.String getHint() { return this.hint; }
+    public void setValue(final java.lang.String value)
+    { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value).trim(); }
+
+    @android.support.annotation.NonNull public java.lang.String getHint() { return this.hint; }
 
     public void setChecked(final boolean checked) { this.checked = checked; }
     // endregion

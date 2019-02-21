@@ -2,8 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * org.json.JSONObject
- *
+ * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -20,19 +19,18 @@ public class OtherOptionalFieldTest extends java.lang.Object
     public void constructorFails()
     throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
-        final org.json.JSONObject jsonObject =
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject("testName",
-                null, org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT);
-        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(jsonObject);
+        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
+            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                "testName",null,
+                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT));
     }
 
     @org.junit.Test() public void constructorSucceeds()
     throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
-        final org.json.JSONObject jsonObject =
+        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                "testName", null, "testHint");
-        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(jsonObject);
+                "testName",null,"testHint"));
     }
     // endregion
 
@@ -51,11 +49,13 @@ public class OtherOptionalFieldTest extends java.lang.Object
                 (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
                     otherOptionalField.clone();
 
-            org.junit.Assert.assertTrue(testName.equals (clonedOtherOptionalField.getName ()));
-            org.junit.Assert.assertTrue(testValue.equals(clonedOtherOptionalField.getValue()));
-            org.junit.Assert.assertTrue(testHint.equals (clonedOtherOptionalField.getHint ()));
+            org.junit.Assert.assertEquals(testName , clonedOtherOptionalField.getName ());
+            org.junit.Assert.assertEquals(testValue, clonedOtherOptionalField.getValue());
+            org.junit.Assert.assertEquals(testHint , clonedOtherOptionalField.getHint ());
         }
-        org.junit.Assert.assertFalse(clonedOtherOptionalField.getChecked()              );
-        org.junit.Assert.assertTrue (otherOptionalField.equals(clonedOtherOptionalField));
+        org.junit.Assert.assertFalse(clonedOtherOptionalField.getChecked());
+
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(otherOptionalField.equals(clonedOtherOptionalField));
     }
 }

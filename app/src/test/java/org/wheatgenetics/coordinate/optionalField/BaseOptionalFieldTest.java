@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.junit.Assert
  * org.junit.Test
  *
@@ -18,10 +20,12 @@ public class BaseOptionalFieldTest extends java.lang.Object
     private class ConcreteBaseOptionalField extends
     org.wheatgenetics.coordinate.optionalField.BaseOptionalField
     {
-        private ConcreteBaseOptionalField(final java.lang.String name, final java.lang.String hint)
-        { super(name, hint); }
+        private ConcreteBaseOptionalField(
+        @android.support.annotation.NonNull final java.lang.String name,
+                                            final java.lang.String hint) { super(name, hint); }
 
-        private ConcreteBaseOptionalField(final java.lang.String name) { super(name); }
+        private ConcreteBaseOptionalField(
+        @android.support.annotation.NonNull final java.lang.String name) { super(name); }
     }
 
     // region Constructor Tests
@@ -30,6 +34,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void firstConstructorNullNameParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField(null,null);
     }
@@ -55,6 +60,8 @@ public class BaseOptionalFieldTest extends java.lang.Object
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
                     testName,"testHint");
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(testName.equals(concreteBaseOptionalField.getName()));
     }
     // endregion
@@ -95,7 +102,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
                     "testName", testHint);
-        org.junit.Assert.assertTrue(testHint.equals(concreteBaseOptionalField.getHint()));
+        org.junit.Assert.assertEquals(testHint, concreteBaseOptionalField.getHint());
     }
     // endregion
     // endregion
@@ -105,6 +112,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void secondConstructorNullNameParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField(null);
     }
@@ -129,7 +137,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(testName);
-        org.junit.Assert.assertTrue(testName.equals(concreteBaseOptionalField.getName()));
+        org.junit.Assert.assertEquals(testName, concreteBaseOptionalField.getName());
     }
     // endregion
 
@@ -152,24 +160,28 @@ public class BaseOptionalFieldTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(testName);
-        org.junit.Assert.assertTrue(testName.equals(concreteBaseOptionalField.toString()));
+        org.junit.Assert.assertEquals(testName, concreteBaseOptionalField.toString());
     }
 
-    @org.junit.Test()
-    @java.lang.SuppressWarnings({"ObjectEqualsNull", "EqualsBetweenInconvertibleTypes"})
-    public void equalsFails()
+    @org.junit.Test() public void equalsFails()
     {
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField firstConcreteBaseOptionalField = new org.wheatgenetics
                 .coordinate.optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
                     "first");
-        org.junit.Assert.assertFalse(firstConcreteBaseOptionalField.equals(null        ));
+
+        // noinspection ConstantConditions, SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseOptionalField.equals(null));
+
+        // noinspection EqualsBetweenInconvertibleTypes, SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstConcreteBaseOptionalField.equals("any string"));
 
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField secondConcreteBaseOptionalField = new org.wheatgenetics
                 .coordinate.optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
                     "second");
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(
             firstConcreteBaseOptionalField.equals(secondConcreteBaseOptionalField));
     }
@@ -180,12 +192,16 @@ public class BaseOptionalFieldTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField firstConcreteBaseOptionalField = new org.wheatgenetics
                 .coordinate.optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(testName);
+
+        // noinspection EqualsWithItself, SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstConcreteBaseOptionalField.equals(
             firstConcreteBaseOptionalField));
 
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField secondConcreteBaseOptionalField = new org.wheatgenetics
                 .coordinate.optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(testName);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstConcreteBaseOptionalField.equals(
             secondConcreteBaseOptionalField));
     }
@@ -224,12 +240,11 @@ public class BaseOptionalFieldTest extends java.lang.Object
         {
             final java.lang.String testValue = "test value";
             concreteBaseOptionalField.setValue(testValue);
-            org.junit.Assert.assertTrue(testValue.equals(concreteBaseOptionalField.getSafeValue()));
+            org.junit.Assert.assertEquals(testValue, concreteBaseOptionalField.getSafeValue());
 
             safeTestValue = testValue.replace(" ","_");
         }
-        org.junit.Assert.assertFalse(
-            safeTestValue.equals(concreteBaseOptionalField.getSafeValue()));
+        org.junit.Assert.assertNotEquals(safeTestValue, concreteBaseOptionalField.getSafeValue());
     }
 
     @org.junit.Test() public void getSafeValueWhenNameIsAPerson()
@@ -243,12 +258,11 @@ public class BaseOptionalFieldTest extends java.lang.Object
         {
             final java.lang.String testValue = "test value";
             concreteBaseOptionalField.setValue(testValue);
-            org.junit.Assert.assertFalse(
-                testValue.equals(concreteBaseOptionalField.getSafeValue()));
+            org.junit.Assert.assertNotEquals(testValue, concreteBaseOptionalField.getSafeValue());
 
             safeTestValue = testValue.replace(" ","_");
         }
-        org.junit.Assert.assertTrue(safeTestValue.equals(concreteBaseOptionalField.getSafeValue()));
+        org.junit.Assert.assertEquals(safeTestValue, concreteBaseOptionalField.getSafeValue());
     }
 
     @org.junit.Test() public void getCheckedWorks()
@@ -274,9 +288,10 @@ public class BaseOptionalFieldTest extends java.lang.Object
         {
             final java.lang.String testValue = "testValue";
             concreteBaseOptionalField.setValue(testValue);
-            org.junit.Assert.assertTrue(testValue.equals(concreteBaseOptionalField.getValue()));
+            org.junit.Assert.assertEquals(testValue, concreteBaseOptionalField.getValue());
         }
-        org.junit.Assert.assertFalse(concreteBaseOptionalField.getValue().equals("any string"));
+        org.junit.Assert.assertNotEquals(
+            "any string", concreteBaseOptionalField.getValue());
     }
 
     @org.junit.Test() public void setValueIsAndIsNotEqual()
@@ -287,62 +302,55 @@ public class BaseOptionalFieldTest extends java.lang.Object
         {
             final java.lang.String testValue = "testValue";
             concreteBaseOptionalField.setValue(testValue);
-            org.junit.Assert.assertTrue(testValue.equals(concreteBaseOptionalField.getValue()));
+            org.junit.Assert.assertEquals(testValue, concreteBaseOptionalField.getValue());
         }
-        org.junit.Assert.assertFalse(concreteBaseOptionalField.getValue().equals("any string"));
+        org.junit.Assert.assertNotEquals(
+            "any string", concreteBaseOptionalField.getValue());
 
-        // noinspection ObjectEqualsNull
-        org.junit.Assert.assertFalse(concreteBaseOptionalField.getValue().equals(null));
+        org.junit.Assert.assertNotEquals(null, concreteBaseOptionalField.getValue());
 
         concreteBaseOptionalField.setValue(null);
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.getValue().equals(""));
+        org.junit.Assert.assertEquals("", concreteBaseOptionalField.getValue());
 
         concreteBaseOptionalField.setValue("  ");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.getValue().equals(""));
+        org.junit.Assert.assertEquals("", concreteBaseOptionalField.getValue());
 
         concreteBaseOptionalField.setValue(" abc ");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.getValue().equals("abc"));
+        org.junit.Assert.assertEquals("abc", concreteBaseOptionalField.getValue());
     }
 
     @org.junit.Test() public void getUnspecifiedHint()
     {
-        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("name").getHint().equals(""));
+        org.junit.Assert.assertEquals("", new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("name").getHint());
     }
 
     @org.junit.Test() public void getSpecifiedHint()
     {
         final java.lang.String hint = "hint";
-        org.junit.Assert.assertTrue(hint.equals(new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("name", hint).getHint()));
+        org.junit.Assert.assertEquals(hint, new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("name", hint).getHint());
     }
 
     @org.junit.Test() public void isAPersonWorks()
     {
-        org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField
-            concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-                .BaseOptionalFieldTest.ConcreteBaseOptionalField("Person");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("Person").isAPerson());
 
-        concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("person");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("person").isAPerson());
 
-        concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("pERSON");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("pERSON").isAPerson());
 
-        concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("Name");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("Name").isAPerson());
 
-        concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("nAME");
-        org.junit.Assert.assertTrue(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("nAME").isAPerson());
 
-        concreteBaseOptionalField = new org.wheatgenetics.coordinate.optionalField
-            .BaseOptionalFieldTest.ConcreteBaseOptionalField("testName");
-        org.junit.Assert.assertFalse(concreteBaseOptionalField.isAPerson());
+        org.junit.Assert.assertFalse(new org.wheatgenetics.coordinate.optionalField
+            .BaseOptionalFieldTest.ConcreteBaseOptionalField("testName").isAPerson());
     }
     // endregion
 }

@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
  *
@@ -19,19 +21,19 @@ public class CheckAndAddOptionalFieldsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler { public abstract void handleAddOptionalFieldDone(); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-    private final
+    @android.support.annotation.NonNull private final
         org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
             handler;
 
     private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
-        addOptionalFieldAlertDialog = null;
+        addOptionalFieldAlertDialog = null;                                             // lazy load
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
     private android.content.DialogInterface.OnMultiChoiceClickListener
-        onMultiChoiceClickListenerInstance = null;
+        onMultiChoiceClickListenerInstance = null;                                      // lazy load
     // endregion
 
     // region Private Methods
@@ -41,6 +43,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
         this.nonNullOptionalFields.setChecked(/* index => */ i, /* checked => */ b);
     }
 
+    @android.support.annotation.NonNull
     private android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener()
     {
         if (null == this.onMultiChoiceClickListenerInstance)
@@ -68,7 +71,8 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // endregion
 
     public CheckAndAddOptionalFieldsAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
         handler) { super(activity); this.handler = handler; }
 
     // region Overridden Methods
@@ -92,11 +96,11 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
     @java.lang.Override public void handleAddOptionalFieldDone()
-    { assert null != this.handler; this.handler.handleAddOptionalFieldDone(); }
+    { this.handler.handleAddOptionalFieldDone(); }
     // endregion
     // endregion
 
-    public void show(
+    public void show(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         if (null != nonNullOptionalFields)

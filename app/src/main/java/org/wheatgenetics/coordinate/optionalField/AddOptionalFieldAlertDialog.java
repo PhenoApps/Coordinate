@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
@@ -17,12 +19,12 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler { public abstract void handleAddOptionalFieldDone(); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
+    { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
-        handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler;
 
     private android.widget.EditText                             nameEditText, defaultValueEditText;
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
@@ -43,12 +45,13 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
                     this.defaultValueEditText),
                 /* hint => */null);
             this.cancelAlertDialog();
-            assert null != this.handler; this.handler.handleAddOptionalFieldDone();
+            this.handler.handleAddOptionalFieldDone();
         }
     }
 
     AddOptionalFieldAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
@@ -73,7 +76,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
-    void show(
+    void show(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         if (null != nonNullOptionalFields)

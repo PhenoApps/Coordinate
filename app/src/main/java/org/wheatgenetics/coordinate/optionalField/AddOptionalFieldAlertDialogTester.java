@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
@@ -12,26 +13,27 @@ package org.wheatgenetics.coordinate.optionalField;
 public class AddOptionalFieldAlertDialogTester extends java.lang.Object
 implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler { public abstract void handleAddOptionalFieldDone(); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-    private final android.app.Activity activity;
-    private final
+                                        private final android.app.Activity activity;
+    @android.support.annotation.NonNull private final
         org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
             handler;
 
     private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
-        addOptionalFieldAlertDialog = null;
+        addOptionalFieldAlertDialog = null;                                             // lazy load
     // endregion
 
     public AddOptionalFieldAlertDialogTester(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
         handler) { super(); this.activity = activity; this.handler = handler; }
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
     @java.lang.Override public void handleAddOptionalFieldDone()
-    { assert null != this.handler; this.handler.handleAddOptionalFieldDone(); }
+    { this.handler.handleAddOptionalFieldDone(); }
     // endregion
 
     public void test(final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields

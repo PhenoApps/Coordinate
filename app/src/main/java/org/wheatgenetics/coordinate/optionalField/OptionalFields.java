@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
@@ -17,25 +18,24 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
     {
         // region Fields
+        @android.support.annotation.NonNull @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             arrayList;
+
+        @android.support.annotation.NonNull @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             listIterator;
         // endregion
 
-        Iterator(final java.util.ArrayList<
+        Iterator(@android.support.annotation.NonNull final java.util.ArrayList<
         org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
-        {
-            super();
-
-            this.arrayList = arrayList;
-            assert null != this.arrayList; this.listIterator = this.arrayList.listIterator();
-        }
+        { super(); this.arrayList = arrayList; this.listIterator = this.arrayList.listIterator(); }
 
         // region java.util.Iterator<> Overridden Methods
         @java.lang.Override public boolean hasNext()
         {
-            assert null != this.listIterator; assert null != this.arrayList;
             while (this.listIterator.hasNext())
             {
                 final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -49,10 +49,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
         public org.wheatgenetics.coordinate.optionalField.BaseOptionalField next()
         {
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField result;
-
-            assert null != this.listIterator;
             do result = this.listIterator.next(); while (null == result);
-
             return result;
         }
 
@@ -61,14 +58,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
         // endregion
     }
 
-    @java.lang.SuppressWarnings({"Convert2Diamond"})
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @android.support.annotation.NonNull @android.annotation.SuppressLint({"RestrictedApi"})
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
     final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
         arrayList =
             new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
 
     // region Overridden Methods
-    @java.lang.Override public java.lang.String toString()
+    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
     {
         final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder("{");
         {
@@ -85,29 +83,26 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {
-        if (null == object)
-            return false;
-        else
-            if (object instanceof org.wheatgenetics.coordinate.optionalField.OptionalFields)
-            {
-                final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields =
-                    (org.wheatgenetics.coordinate.optionalField.OptionalFields) object;
+        if (object instanceof org.wheatgenetics.coordinate.optionalField.OptionalFields)
+        {
+            final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields =
+                (org.wheatgenetics.coordinate.optionalField.OptionalFields) object;
 
-                if (this.arrayList.size() != optionalFields.arrayList.size())
-                    return false;
-                else
+            if (this.arrayList.size() != optionalFields.arrayList.size())
+                return false;
+            else
+            {
                 {
-                    {
-                        int i = 0;
-                        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                        baseOptionalField: this)
-                            if (!baseOptionalField.equals(optionalFields.arrayList.get(i++)))
-                                return false;
-                    }
-                    return true;
+                    int i = 0;
+                    for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+                    baseOptionalField: this)
+                        if (!baseOptionalField.equals(optionalFields.arrayList.get(i++)))
+                            return false;
                 }
+                return true;
             }
-            else return false;
+        }
+        else return false;
     }
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }

@@ -16,10 +16,8 @@ public class CheckedOptionalFieldsTest extends java.lang.Object
     // region Constructor Tests
     @org.junit.Test() public void nullConstructorParameterSucceeds()
     {
-        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-            checkedOptionalFields =
-                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(null);
-        org.junit.Assert.assertEquals(0, checkedOptionalFields.size());
+        org.junit.Assert.assertEquals(0,
+            new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(null).size());
     }
 
     @org.junit.Test() public void constructorSucceeds()

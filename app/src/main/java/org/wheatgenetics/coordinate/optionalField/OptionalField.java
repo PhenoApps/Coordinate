@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject while OptionalField does.)
  *
  * Uses:
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.VisibleForTesting
@@ -35,9 +36,12 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     }
 
     // region Constructors
-    OptionalField(final java.lang.String name, final java.lang.String hint) { super(name, hint); }
-    OptionalField(final java.lang.String name                             ) { super(name      ); }
-    OptionalField(final org.json.JSONObject jsonObject                    )
+    OptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    final java.lang.String hint) { super(name, hint); }
+
+    OptionalField(@android.support.annotation.NonNull final java.lang.String name) { super(name); }
+
+    OptionalField(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
     {
         this(
             /* name => */ jsonObject.optString(
@@ -56,8 +60,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    static org.json.JSONObject makeJSONObject(final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint)
+    @android.support.annotation.NonNull static org.json.JSONObject makeJSONObject(
+    final java.lang.String name, final java.lang.String value, final java.lang.String hint)
     {
         final org.json.JSONObject result = new org.json.JSONObject();
 
@@ -74,8 +78,9 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    static org.json.JSONObject makeJSONObject(final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint, final boolean checked)
+    @android.support.annotation.NonNull static org.json.JSONObject makeJSONObject(
+    final java.lang.String name, final java.lang.String value, final java.lang.String hint,
+    final boolean checked)
     {
         final org.json.JSONObject result =
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
@@ -115,7 +120,7 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             catch (final org.json.JSONException e) { /* Don't put value. */ }
     }
 
-    org.json.JSONObject makeJSONObject()
+    @android.support.annotation.NonNull org.json.JSONObject makeJSONObject()
     {
         return org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
             this.getName(), this.getValue(), this.getHint(), this.getChecked());

@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * An OtherOptionalField is an optional field that is anything other than a date optional field.
  *
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.json.JSONObject
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -14,15 +16,17 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
 
     // region Constructors
-    OtherOptionalField(final java.lang.String name, final java.lang.String hint)
-    { super(name, hint); }
+    OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    final java.lang.String hint) { super(name, hint); }
 
-    OtherOptionalField(final java.lang.String name) { super(name); }
+    OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name)
+    { super(name); }
 
-    OtherOptionalField(final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint) { this(name, hint); this.setValue(value); }
+    OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    final java.lang.String value, final java.lang.String hint)
+    { this(name, hint); this.setValue(value); }
 
-    OtherOptionalField(final org.json.JSONObject jsonObject)
+    OtherOptionalField(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
     throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
     {
         super(jsonObject);
@@ -33,8 +37,7 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     }
     // endregion
 
-    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
-    public java.lang.Object clone()
+    @java.lang.Override public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.OtherOptionalField result =
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(

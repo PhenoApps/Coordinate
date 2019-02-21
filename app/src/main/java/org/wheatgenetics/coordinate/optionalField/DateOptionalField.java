@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
  * android.support.annotation.VisibleForTesting
  *
  * org.json.JSONObject
@@ -32,8 +33,7 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
-    public java.lang.Object clone()
+    @java.lang.Override public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
@@ -41,13 +41,13 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
         return result;
     }
 
-    @java.lang.Override public java.lang.String getValue()
+    @android.support.annotation.NonNull @java.lang.Override public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
     // endregion
 
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PACKAGE_PRIVATE)
-    public static java.lang.String getCurrentDate()
+    @android.support.annotation.NonNull public static java.lang.String getCurrentDate()
     {
         return org.wheatgenetics.androidlibrary.Utils.formatDate(
             java.lang.System.currentTimeMillis()).toString();
