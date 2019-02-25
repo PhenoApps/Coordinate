@@ -2,10 +2,10 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * org.junit.Assert
+ * _org.junit.Assert
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.model.TemplateModel
+ * _org.wheatgenetics.coordinate.model.TemplateModel
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class TemplateModelTest extends java.lang.Object
@@ -33,7 +33,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,
                 /* timestamp                    => */0);
-        org.junit.Assert.assertTrue(expectedString.equals(templateModel.toString()));
+        org.junit.Assert.assertEquals(expectedString, templateModel.toString());
     }
 
     @org.junit.Test() public void equalsAndHashCodeWork()
@@ -75,6 +75,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,                   // Notice.
                 /* timestamp                    => */ timestamp);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -94,6 +95,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */"",                         // Notice.
             /* timestamp                    => */ timestamp);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -113,6 +115,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */"  ",                       // Notice.
             /* timestamp                    => */ timestamp);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -132,6 +135,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */null,
             /* timestamp                    => */5087);                         // Notice.
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
@@ -157,6 +161,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* timestamp                    => */0);
         final org.wheatgenetics.coordinate.model.TemplateModel clonedTemplateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) templateModel.clone();
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(templateModel.equals(clonedTemplateModel));
     }
     // endregion
@@ -194,7 +199,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* timestamp                    => */0);
             org.junit.Assert.assertTrue(templateModel.export(stringWriter));
         }
-        org.junit.Assert.assertTrue(expectedString.equals(stringWriter.toString()));
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
 
     @org.junit.Test() public void entryLabelExportWorks()
@@ -231,7 +236,7 @@ public class TemplateModelTest extends java.lang.Object
             templateModel.setEntryLabel("testEntryLabel");
             org.junit.Assert.assertTrue(templateModel.export(stringWriter));
         }
-        org.junit.Assert.assertTrue(expectedString.equals(stringWriter.toString()));
+        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
     // endregion
 

@@ -8,7 +8,7 @@ public enum TemplateType
 {
     SEED(0), DNA(1), USERDEFINED(2);
 
-    private final int code;
+    @android.support.annotation.IntRange(from = 0, to = 2) private final int code;
 
     @java.lang.SuppressWarnings({"UnnecessaryEnumModifier"}) private TemplateType(
     @android.support.annotation.IntRange(from = 0, to = 2) final int code) { this.code = code; }
@@ -29,12 +29,13 @@ public enum TemplateType
     }
 
     // region Public Methods
-    public int getCode() { return this.code; }
+    @android.support.annotation.IntRange(from = 0, to = 2) public int getCode()
+    { return this.code; }
 
     public boolean isDefaultTemplate()
     {
         return this.code == org.wheatgenetics.coordinate.model.TemplateType.SEED.code
-            || this.code == org.wheatgenetics.coordinate.model.TemplateType.DNA.code;
+            || this.code == org.wheatgenetics.coordinate.model.TemplateType.DNA.code ;
     }
     // endregion
 }

@@ -46,10 +46,10 @@ public class TemplateModelsTest extends java.lang.Object
                     /* entryLabel                   => */null,
                     /* optionalFields               => */null,
                     /* timestamp                    => */0);
-            assert null != templateModels; templateModels.add(templateModel);
+            templateModels.add(templateModel);
             org.junit.Assert.assertEquals(templateModel, templateModels.get(2));
         }
-        org.junit.Assert.assertEquals(templateModels.size(),3);
+        org.junit.Assert.assertEquals(3, templateModels.size());
         org.junit.Assert.assertNull  (templateModels.get(999));
     }
 
@@ -58,8 +58,8 @@ public class TemplateModelsTest extends java.lang.Object
 
     @org.junit.Test() public void makeDefaultAndSizeSucceed()
     {
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault().size(),2);
+        org.junit.Assert.assertEquals(2,
+            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault().size());
     }
 
     @org.junit.Test() public void titlesWorks()
@@ -82,10 +82,10 @@ public class TemplateModelsTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
             org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-        org.junit.Assert.assertTrue(templateModels.get(0).equals(
-            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault()));
-        org.junit.Assert.assertTrue(templateModels.get(1).equals(
-            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault()));
+        org.junit.Assert.assertEquals(templateModels.get(0),
+            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
+        org.junit.Assert.assertEquals(templateModels.get(1),
+            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault());
     }
     // endregion
 }

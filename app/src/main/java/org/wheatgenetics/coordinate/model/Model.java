@@ -5,11 +5,13 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.RecentlyNonNull
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Model extends java.lang.Object
 {
-    private @android.support.annotation.IntRange(from = 1) long id;
+    @android.support.annotation.IntRange(from = 1) private long id;
 
     // region Constructors
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -20,19 +22,15 @@ public abstract class Model extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @java.lang.SuppressWarnings({"DefaultLocale"})
+    @java.lang.SuppressWarnings({"DefaultLocale", "NullableProblems"}) @java.lang.Override
     public java.lang.String toString() { return java.lang.String.format("id: %02d", this.getId()); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {
-        if (null == object)
-            return false;
+        if (object instanceof org.wheatgenetics.coordinate.model.Model)
+            return this.getId() == ((org.wheatgenetics.coordinate.model.Model) object).getId();
         else
-            // noinspection SimplifiableIfStatement
-            if (object instanceof org.wheatgenetics.coordinate.model.Model)
-                return this.getId() == ((org.wheatgenetics.coordinate.model.Model) object).getId();
-            else
-                return false;
+            return false;
     }
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }

@@ -35,12 +35,15 @@ public class BaseTemplateModelTest extends java.lang.Object
                 colNumbering, rowNumbering, timestamp);
         }
 
-        private ConcreteBaseTemplateModel(final java.lang.String title,
+        private ConcreteBaseTemplateModel(
+        @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String title,
         final org.wheatgenetics.coordinate.model.TemplateType type,
-        @android.support.annotation.IntRange(from = 1) final int rows                        ,
-        @android.support.annotation.IntRange(from = 1) final int cols                        ,
-        @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-        final boolean colNumbering, final boolean rowNumbering, final long timestamp)
+        @android.support.annotation.IntRange(from = 1) final int rows,
+        @android.support.annotation.IntRange(from = 1) final int cols,
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+        final boolean colNumbering, final boolean rowNumbering,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
         {
             super(title, type, rows, cols, generatedExcludedCellsAmount,
                 colNumbering, rowNumbering, timestamp);
@@ -203,8 +206,11 @@ public class BaseTemplateModelTest extends java.lang.Object
     // region Getter and Setter Public Method Tests
     @org.junit.Test() public void getAndSetTitleSucceed()
     {
-        final java.lang.String firstTestTitle = "firstTestTitle";
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
+            concreteBaseTemplateModel;
+        final java.lang.String secondTestTitle;
+        {
+            final java.lang.String firstTestTitle = "firstTestTitle";
             concreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id    => */5,
@@ -216,12 +222,13 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
                     /* timestamp                    => */0);
-        org.junit.Assert.assertEquals(firstTestTitle, concreteBaseTemplateModel.getTitle());
+            org.junit.Assert.assertEquals(firstTestTitle, concreteBaseTemplateModel.getTitle());
 
-        final java.lang.String secondTestTitle = "secondTestTitle";
-        concreteBaseTemplateModel.setTitle(secondTestTitle);
-        org.junit.Assert.assertFalse(firstTestTitle.equals (concreteBaseTemplateModel.getTitle()));
-        org.junit.Assert.assertTrue (secondTestTitle.equals(concreteBaseTemplateModel.getTitle()));
+            secondTestTitle = "secondTestTitle";
+            concreteBaseTemplateModel.setTitle(secondTestTitle);
+            org.junit.Assert.assertNotEquals(firstTestTitle, concreteBaseTemplateModel.getTitle());
+        }
+        org.junit.Assert.assertEquals(secondTestTitle, concreteBaseTemplateModel.getTitle());
     }
 
     @org.junit.Test() public void getAndSetTypeSucceed()
@@ -251,20 +258,21 @@ public class BaseTemplateModelTest extends java.lang.Object
 
     @org.junit.Test() public void getRowsAndGetColsSucceed()
     {
+        final int rows = 9, cols = 20;
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
             concreteBaseTemplateModel = new 
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id    => */5,
                     /* title => */"testTitle",
                     /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                    /* rows  => */9,
-                    /* cols  => */20,
+                    /* rows  => */rows,
+                    /* cols  => */cols,
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
                     /* timestamp                    => */0);
-        org.junit.Assert.assertEquals(9, concreteBaseTemplateModel.getRows());
-        org.junit.Assert.assertEquals(20, concreteBaseTemplateModel.getCols());
+        org.junit.Assert.assertEquals(rows, concreteBaseTemplateModel.getRows());
+        org.junit.Assert.assertEquals(cols, concreteBaseTemplateModel.getCols());
     }
 
     @org.junit.Test() public void getAndSetGeneratedExcludedCellsAmountSucceed()
@@ -384,8 +392,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         final java.lang.String testEntryLabel = "testEntryLabel";
         concreteBaseTemplateModel.setEntryLabel(testEntryLabel);
         org.junit.Assert.assertTrue(concreteBaseTemplateModel.entryLabelIsNotNull());
-        org.junit.Assert.assertTrue(
-            testEntryLabel.equals(concreteBaseTemplateModel.getEntryLabel()));
+        org.junit.Assert.assertEquals(testEntryLabel, concreteBaseTemplateModel.getEntryLabel());
     }
 
     @org.junit.Test() public void getTimestampSucceeds()
@@ -425,7 +432,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         final java.lang.String expectedString =
             "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcl" +
             "udedCellsAmount=9, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0]";
-        org.junit.Assert.assertTrue(expectedString.equals(concreteBaseTemplateModel.toString()));
+        org.junit.Assert.assertEquals(expectedString, concreteBaseTemplateModel.toString());
     }
 
     @org.junit.Test() public void equalsAndHashCodeWork()
@@ -438,7 +445,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         final boolean testColNumbering = true, testRowNumbering = false                ;
 
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
-            firstConcreteBasePartialTemplateModel = new
+            firstConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id                           => */ testId                          ,
                     /* title                        => */ testTitle                       ,
@@ -449,7 +456,7 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
                     /* timestamp                    => */0),
-            secondConcreteBasePartialTemplateModel = new
+            secondConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id                           => */ testId                          ,
                     /* title                        => */ testTitle                       ,
@@ -461,94 +468,94 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ testRowNumbering                ,
                     /* timestamp                    => */0);
 
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
-        secondConcreteBasePartialTemplateModel.setTitle("different");
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertNotEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
-        secondConcreteBasePartialTemplateModel.setTitle(testTitle);
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setTitle("different");
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setTitle(testTitle);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
-        secondConcreteBasePartialTemplateModel.setType(
+        secondConcreteBaseTemplateModel.setType(
             org.wheatgenetics.coordinate.model.TemplateType.SEED);
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertNotEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
-        secondConcreteBasePartialTemplateModel.setType(testTemplateType);
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setType(testTemplateType);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
-        secondConcreteBasePartialTemplateModel.setGeneratedExcludedCellsAmount(5);
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertNotEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
-        secondConcreteBasePartialTemplateModel.setGeneratedExcludedCellsAmount(
+        secondConcreteBaseTemplateModel.setGeneratedExcludedCellsAmount(5);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setGeneratedExcludedCellsAmount(
             testGeneratedExcludedCellsAmount);
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
-        secondConcreteBasePartialTemplateModel.setColNumbering(false);
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertNotEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
-        secondConcreteBasePartialTemplateModel.setColNumbering(testColNumbering);
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setColNumbering(false);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setColNumbering(testColNumbering);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
-        secondConcreteBasePartialTemplateModel.setRowNumbering(true);
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertNotEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
-        secondConcreteBasePartialTemplateModel.setRowNumbering(testRowNumbering);
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setRowNumbering(true);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
+        secondConcreteBaseTemplateModel.setRowNumbering(testRowNumbering);
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
 
         {
             final java.lang.String testEntryLabel = "testEntryLabel";
-            secondConcreteBasePartialTemplateModel.setEntryLabel(testEntryLabel);
-            org.junit.Assert.assertFalse(firstConcreteBasePartialTemplateModel.equals(
-                secondConcreteBasePartialTemplateModel));
-            org.junit.Assert.assertNotEquals(
-                firstConcreteBasePartialTemplateModel.hashCode (),
-                secondConcreteBasePartialTemplateModel.hashCode());
-            firstConcreteBasePartialTemplateModel.setEntryLabel(testEntryLabel);
+            secondConcreteBaseTemplateModel.setEntryLabel(testEntryLabel);
+            // noinspection SimplifiableJUnitAssertion
+            org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+                secondConcreteBaseTemplateModel));
+            org.junit.Assert.assertNotEquals(firstConcreteBaseTemplateModel.hashCode(),
+                secondConcreteBaseTemplateModel.hashCode());
+            firstConcreteBaseTemplateModel.setEntryLabel(testEntryLabel);
         }
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
-        org.junit.Assert.assertEquals(
-            firstConcreteBasePartialTemplateModel.hashCode (),
-            secondConcreteBasePartialTemplateModel.hashCode());
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
+        org.junit.Assert.assertEquals(firstConcreteBaseTemplateModel.hashCode(),
+            secondConcreteBaseTemplateModel.hashCode());
     }
     // endregion
 
@@ -569,8 +576,8 @@ public class BaseTemplateModelTest extends java.lang.Object
         final java.lang.String expectedFormatString =
             "%s [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcludedCel" +
             "lsAmount=0, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0";
-        org.junit.Assert.assertTrue
-            (expectedFormatString.equals(concreteBaseTemplateModel.formatString()));
+        org.junit.Assert.assertEquals(expectedFormatString,
+            concreteBaseTemplateModel.formatString());
     }
 
     // region Other Public Method Tests
@@ -585,7 +592,7 @@ public class BaseTemplateModelTest extends java.lang.Object
         final long    testTimestamp = 0;
 
         final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
-            firstConcreteBasePartialTemplateModel = new
+            firstConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id                           => */ testId                          ,
                     /* title                        => */ testTitle                       ,
@@ -596,7 +603,7 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
                     /* timestamp                    => */ testTimestamp                   ),
-            secondConcreteBasePartialTemplateModel = new
+            secondConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id    => */ testId,
                     /* title => */"different",
@@ -608,15 +615,17 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ testRowNumbering                ,
                     /* timestamp                    => */ testTimestamp                   ); // same
 
-        org.junit.Assert.assertFalse(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
 
-        secondConcreteBasePartialTemplateModel.assign(
+        secondConcreteBaseTemplateModel.assign(
             /* title => */ testTitle,
             /* rows  => */ testRows ,
             /* cols  => */ testCols );
-        org.junit.Assert.assertTrue(
-            firstConcreteBasePartialTemplateModel.equals(secondConcreteBasePartialTemplateModel));
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
+            secondConcreteBaseTemplateModel));
     }
 
     @org.junit.Test() public void isDefaultWorks()

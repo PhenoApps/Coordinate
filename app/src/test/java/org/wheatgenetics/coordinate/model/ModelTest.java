@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
  * org.junit.Assert
  * org.junit.Test
  *
@@ -16,7 +18,10 @@ public class ModelTest extends java.lang.Object
      * I can't instantiate it I can't test it.
      */
     private static class ConcreteModel extends org.wheatgenetics.coordinate.model.Model
-    { ConcreteModel() { super(); } ConcreteModel(final long id) { super(id); } }
+    {
+        ConcreteModel()                                                             { super()  ; }
+        ConcreteModel(@android.support.annotation.IntRange(from = 1) final long id) { super(id); }
+    }
 
     // region Constructor Tests
     @org.junit.Test() public void firstConstructorSucceeds()
@@ -63,6 +68,7 @@ public class ModelTest extends java.lang.Object
     @org.junit.Test() public void illegalSucceeds()
     {
         org.junit.Assert.assertFalse(org.wheatgenetics.coordinate.model.Model.illegal(+5));
+        org.junit.Assert.assertTrue (org.wheatgenetics.coordinate.model.Model.illegal( 0));
         org.junit.Assert.assertTrue (org.wheatgenetics.coordinate.model.Model.illegal(-5));
     }
 
@@ -78,15 +84,19 @@ public class ModelTest extends java.lang.Object
 
     @org.junit.Test() public void equalsAndSetIdWork()
     {
-        final long testId = 5;
+        final long                                                       testId = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel
             firstConcreteModel =
                 new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId),
             secondConcreteModel =
                 new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstConcreteModel.equals(secondConcreteModel));
 
         secondConcreteModel.setId(3);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstConcreteModel.equals(secondConcreteModel));
     }
 

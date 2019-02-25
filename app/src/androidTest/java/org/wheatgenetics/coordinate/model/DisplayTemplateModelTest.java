@@ -21,7 +21,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
         new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
             /* id                           => */5,
             /* title                        => */"testTitle",
-            /* code                         => */3,
+            /* code                         => */3,  // invalid
             /* rows                         => */5,
             /* cols                         => */2,
             /* generatedExcludedCellsAmount => */0,
@@ -47,7 +47,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* excludedCells                => */null,
             /* excludedRows                 => */null,
             /* excludedCols                 => */null,
-            /* colNumbering                 => */3,
+            /* colNumbering                 => */3,  // invalid
             /* rowNumbering                 => */0,
             /* entryLabel                   => */null,
             /* timestamp                    => */0);
@@ -67,7 +67,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* excludedRows                 => */null,
             /* excludedCols                 => */null,
             /* colNumbering                 => */1,
-            /* rowNumbering                 => */56,
+            /* rowNumbering                 => */56,  // invalid
             /* entryLabel                   => */null,
             /* timestamp                    => */0);
     }
@@ -95,7 +95,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
                 /* timestamp                    => */0);
-        org.junit.Assert.assertTrue(expectedString.equals(displayTemplateModel.toString()));
+        org.junit.Assert.assertEquals(expectedString, displayTemplateModel.toString());
     }
 
     @org.junit.Test() public void equalsAndHashCodeWork()
@@ -135,42 +135,51 @@ public class DisplayTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ rowNumbering,
                     /* entryLabel                   => */null,
                     /* timestamp                    => */ timestamp);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
         secondDisplayTemplateModel.setTitle("different");
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
         secondDisplayTemplateModel.setTitle(title);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
         secondDisplayTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
         secondDisplayTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.DNA);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
         secondDisplayTemplateModel.setColNumbering(false);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
         secondDisplayTemplateModel.setColNumbering(true);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
         secondDisplayTemplateModel.setRowNumbering(true);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
         secondDisplayTemplateModel.setRowNumbering(false);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
@@ -178,25 +187,29 @@ public class DisplayTemplateModelTest extends java.lang.Object
         {
             final int row = 5;
             firstDisplayTemplateModel.addExcludedRow(row);
-            org.junit.Assert.assertFalse(
-                firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
+            // noinspection SimplifiableJUnitAssertion
+            org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(
+                secondDisplayTemplateModel));
             org.junit.Assert.assertNotEquals(
                 firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
             secondDisplayTemplateModel.addExcludedRow(row);
-            org.junit.Assert.assertTrue(
-                firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
+            // noinspection SimplifiableJUnitAssertion
+            org.junit.Assert.assertTrue(firstDisplayTemplateModel.equals(
+                secondDisplayTemplateModel));
             org.junit.Assert.assertEquals(
                 firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
         }
 
         final int col = 1;
         firstDisplayTemplateModel.addExcludedCol(col);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertNotEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
 
         secondDisplayTemplateModel.addExcludedCol(col);
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
             firstDisplayTemplateModel.hashCode(), secondDisplayTemplateModel.hashCode());
@@ -223,6 +236,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
 
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel clonedDisplayTemplateModel =
             (org.wheatgenetics.coordinate.model.DisplayTemplateModel) displayTemplateModel.clone();
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(displayTemplateModel.equals(clonedDisplayTemplateModel));
     }
     // endregion
@@ -464,10 +478,10 @@ public class DisplayTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(rows, state.getInt("rows"));
         org.junit.Assert.assertEquals(cols, state.getInt("cols"));
 
-        org.junit.Assert.assertEquals(null, state.getString("excludedCells"));
+        org.junit.Assert.assertNull(state.getString("excludedCells"));
 
-        org.junit.Assert.assertEquals(null, state.getString("excludedRows"));
-        org.junit.Assert.assertEquals(null, state.getString("excludedCols"));
+        org.junit.Assert.assertNull(state.getString("excludedRows"));
+        org.junit.Assert.assertNull(state.getString("excludedCols"));
 
         org.junit.Assert.assertTrue (state.getBoolean("colNumbering"));
         org.junit.Assert.assertFalse(state.getBoolean("rowNumbering"));
@@ -517,7 +531,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
             excludedCellsBundle.putString("excludedCells", json);
             displayTemplateModel.setExcludedCells(excludedCellsBundle);
         }
-        org.junit.Assert.assertTrue(json.equals(displayTemplateModel.getExcludedCellsAsJson()));
+        org.junit.Assert.assertEquals(json, displayTemplateModel.getExcludedCellsAsJson());
     }
     // endregion
 }

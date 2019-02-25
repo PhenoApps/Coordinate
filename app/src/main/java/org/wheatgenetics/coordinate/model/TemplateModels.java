@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
@@ -12,9 +13,10 @@ public class TemplateModels extends java.lang.Object
 implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
 {
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel>
-        arrayListInstance = null;
+        arrayListInstance = null;                                                       // lazy load
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList()
     {
         if (null == this.arrayListInstance)
@@ -39,12 +41,13 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         class Iterator extends java.lang.Object
         implements java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel>
         {
-            private final java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
+            @android.support.annotation.NonNull private final
+                java.util.ListIterator<org.wheatgenetics.coordinate.model.TemplateModel>
                 listIterator;
 
-            private Iterator(
+            private Iterator(@android.support.annotation.NonNull
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.TemplateModel> arrayList)
-            { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
+            { super(); this.listIterator = arrayList.listIterator(); }
 
             // region Overridden Methods
             @java.lang.Override public boolean hasNext() { return this.listIterator.hasNext(); }
@@ -64,10 +67,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     public void add(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { if (null != templateModel) this.arrayList().add(templateModel); }
 
-    public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
+    @android.support.annotation.IntRange(from = 0) public int size()
+    { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
-    public org.wheatgenetics.coordinate.model.TemplateModel get(
-    @android.support.annotation.IntRange(from = 0) final int i)
+    @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.TemplateModel
+    get(@android.support.annotation.IntRange(from = 0) final int i)
     {
         if (null == this.arrayListInstance)
             return null;
@@ -75,9 +79,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
-    public java.lang.String[] titles()
+    @android.support.annotation.Nullable public java.lang.String[] titles()
     {
-        @android.support.annotation.IntRange(from = 0) final int size = this.size();
+        final int size = this.size();
 
         if (size <= 0)
             return null;
@@ -86,12 +90,18 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
             final java.lang.String result[] = new java.lang.String[size];
             {
                 final int first = 0, last = size - 1;
-                for (int i = first; i <= last; i++) result[i] = this.get(i).getTitle();
+                for (int i = first; i <= last; i++)
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+                        this.get(i);
+                    if (null != templateModel) result[i] = templateModel.getTitle();
+                }
             }
             return result;
         }
     }
 
+    @android.support.annotation.NonNull
     public static org.wheatgenetics.coordinate.model.TemplateModels makeDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels result =
