@@ -17,17 +17,19 @@ org.wheatgenetics.coordinate.model.ElementModel
 {
     private static final java.lang.String ROW_JSON_NAME = "row", COL_JSON_NAME = "col";
 
+    @android.support.annotation.NonNull
     private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
     // region Constructors
     /** Assigns. */
     private Cell(
-    final org.wheatgenetics.coordinate.model.RowOrCol row,
-    final org.wheatgenetics.coordinate.model.RowOrCol col)
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol row,
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol col)
     { super(); this.row = row; this.col = col; }
 
     /** Creates. */
-    Cell(final org.wheatgenetics.coordinate.model.Cell cell)
+    @java.lang.SuppressWarnings({"CopyConstructorMissesField"})
+    Cell(@android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
     {
         this(
             new org.wheatgenetics.coordinate.model.RowOrCol(/* rowOrCol => */ cell.getRow()),
@@ -45,7 +47,8 @@ org.wheatgenetics.coordinate.model.ElementModel
     }
 
     /** Creates. */
-    Cell(final org.json.JSONObject jsonObject) throws org.json.JSONException
+    Cell(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
+    throws org.json.JSONException
     {
         this(
             jsonObject.getInt(org.wheatgenetics.coordinate.model.Cell.ROW_JSON_NAME),      // throws
@@ -54,7 +57,7 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override public java.lang.String toString()
+    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
     {
         return java.lang.String.format("Cell(%s, %s)",
             this.getRow().toString(), this.getCol().toString());
@@ -76,9 +79,10 @@ org.wheatgenetics.coordinate.model.ElementModel
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
-    @java.lang.Override @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
+    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
         "CloneDoesntDeclareCloneNotSupportedException"})
-    protected java.lang.Object clone() { return new org.wheatgenetics.coordinate.model.Cell(this); }
+    @java.lang.Override protected java.lang.Object clone()
+    { return new org.wheatgenetics.coordinate.model.Cell(this); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override
@@ -98,20 +102,22 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Package Methods
-    org.wheatgenetics.coordinate.model.RowOrCol getRow() { return this.row; }
-    org.wheatgenetics.coordinate.model.RowOrCol getCol() { return this.col; }
+    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getRow()
+    { return this.row; }
 
-    org.wheatgenetics.coordinate.model.Cell inRange(
-    final org.wheatgenetics.coordinate.model.Cell maxCell)
+    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getCol()
+    { return this.col; }
+
+    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.Cell inRange(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell maxCell)
     {
-        assert null != maxCell;
         this.getRow().inRange(maxCell.getRow());        // throws java.lang.IllegalArgumentException
         this.getCol().inRange(maxCell.getCol());        // throws java.lang.IllegalArgumentException
 
         return this;
     }
 
-    org.json.JSONObject json() throws org.json.JSONException
+    @android.support.annotation.NonNull org.json.JSONObject json() throws org.json.JSONException
     {
         final org.json.JSONObject result = new org.json.JSONObject();
 
@@ -123,13 +129,14 @@ org.wheatgenetics.coordinate.model.ElementModel
         return result;
     }
 
+    @android.support.annotation.NonNull
     static org.wheatgenetics.coordinate.model.Cell makeWithRandomValues(
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
         return new org.wheatgenetics.coordinate.model.Cell(
-            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),
-            org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxCol));
+            /* row => */ org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),
+            /* col => */ org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxCol));
     }
     // endregion
 }

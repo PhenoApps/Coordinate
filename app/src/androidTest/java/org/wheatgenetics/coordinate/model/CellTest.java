@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.json.JSONException
  * org.json.JSONObject
  *
@@ -13,8 +15,8 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CellTest extends java.lang.Object
 {
-    static org.json.JSONObject makeJSONObject(final int row, final int col)
-    throws org.json.JSONException
+    @android.support.annotation.NonNull static org.json.JSONObject makeJSONObject(
+    final int row, final int col) throws org.json.JSONException
     {
         final org.json.JSONObject result = new org.json.JSONObject();
 
@@ -140,7 +142,7 @@ public class CellTest extends java.lang.Object
             expectedString = java.lang.String.format("Cell(%d, %d)", row, col)    ;
             cell           = new org.wheatgenetics.coordinate.model.Cell(row, col);
         }
-        org.junit.Assert.assertTrue  (expectedString.equals(cell.toString())    );
+        org.junit.Assert.assertEquals(expectedString           , cell.toString());
         org.junit.Assert.assertEquals(expectedString.hashCode(), cell.hashCode());
     }
 
@@ -150,10 +152,15 @@ public class CellTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(row, col);
 
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(cell.equals(
             new org.wheatgenetics.coordinate.model.Cell(row, col)));
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(cell.equals(
             new org.wheatgenetics.coordinate.model.Cell(3, col)));
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(cell.equals(
             new org.wheatgenetics.coordinate.model.Cell(row,4)));
     }
@@ -162,6 +169,9 @@ public class CellTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(23,999);
+
+        // noinspection SimplifiableJUnitAssertion
+
         org.junit.Assert.assertTrue(cell.equals(cell.clone()));
     }
 
@@ -282,8 +292,7 @@ public class CellTest extends java.lang.Object
                 row, col);                                                           //  .json.JSON-
             cell = new org.wheatgenetics.coordinate.model.Cell(row, col);            //  Exception
         }
-        assert null != jsonObject;
-        org.junit.Assert.assertTrue(jsonObject.toString().equals(cell.json().toString()));
+        org.junit.Assert.assertEquals(jsonObject.toString(), cell.json().toString());
     }
 
     // region makeWithRandomValues() Package Method Tests

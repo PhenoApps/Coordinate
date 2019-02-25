@@ -48,7 +48,7 @@ public class RowOrColTest extends java.lang.Object
             expectedString = java.lang.Integer.toString(value)                     ;
             rowOrCol       = new org.wheatgenetics.coordinate.model.RowOrCol(value);
         }
-        org.junit.Assert.assertTrue  (expectedString.equals(rowOrCol.toString())    );
+        org.junit.Assert.assertEquals(expectedString           , rowOrCol.toString());
         org.junit.Assert.assertEquals(expectedString.hashCode(), rowOrCol.hashCode());
     }
 
@@ -58,9 +58,12 @@ public class RowOrColTest extends java.lang.Object
         {
             final int value = 23;
             rowOrCol = new org.wheatgenetics.coordinate.model.RowOrCol(value);
+
+            // noinspection SimplifiableJUnitAssertion
             org.junit.Assert.assertTrue(rowOrCol.equals(
                 new org.wheatgenetics.coordinate.model.RowOrCol(value)));
         }
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(rowOrCol.equals(
             new org.wheatgenetics.coordinate.model.RowOrCol(16)));
     }
@@ -69,6 +72,8 @@ public class RowOrColTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol =
             new org.wheatgenetics.coordinate.model.RowOrCol(48);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(rowOrCol.equals(rowOrCol.clone()));
     }
 
@@ -98,9 +103,12 @@ public class RowOrColTest extends java.lang.Object
     }
 
     // region inRange() Package Method Tests
-    @org.junit.Test(expected = java.lang.AssertionError.class)
+    @org.junit.Test(expected = java.lang.NullPointerException.class)
     public void nullMaxRowOrColInRangeFails()
-    { new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(null); }
+    {
+        // noinspection ConstantConditions
+        new org.wheatgenetics.coordinate.model.RowOrCol(5).inRange(null);
+    }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void tooSmallMaxRowOrColInRangeFails()

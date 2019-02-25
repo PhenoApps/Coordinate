@@ -61,6 +61,8 @@ public class RowOrColsTest extends java.lang.Object
             firstRowOrCols =
                 new org.wheatgenetics.coordinate.model.RowOrCols(null,125),
             secondRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(125);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
     }
 
@@ -70,6 +72,8 @@ public class RowOrColsTest extends java.lang.Object
             firstRowOrCols =
                 new org.wheatgenetics.coordinate.model.RowOrCols("",125),
             secondRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(125);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
     }
 
@@ -79,6 +83,8 @@ public class RowOrColsTest extends java.lang.Object
             firstRowOrCols =
                 new org.wheatgenetics.coordinate.model.RowOrCols("  ",125),
             secondRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(125);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
     }
     // endregion
@@ -91,10 +97,10 @@ public class RowOrColsTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.RowOrCols(50);
         org.junit.Assert.assertEquals("null", rowOrCols.toString());
 
-        rowOrCols.add(34); org.junit.Assert.assertTrue("34".equals(rowOrCols.toString()));
+        rowOrCols.add(34); org.junit.Assert.assertEquals("34", rowOrCols.toString());
 
         rowOrCols.add(11);
-        org.junit.Assert.assertTrue("11, 34".equals(rowOrCols.toString() /* sorts! */));
+        org.junit.Assert.assertEquals("11, 34", rowOrCols.toString() /* sorts! */);
     }
 
     @org.junit.Test() public void equalsWorks()
@@ -102,17 +108,23 @@ public class RowOrColsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.RowOrCols
             firstRowOrCols  = new org.wheatgenetics.coordinate.model.RowOrCols(150),
             secondRowOrCols = new org.wheatgenetics.coordinate.model.RowOrCols(125);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
 
-        // noinspection EqualsBetweenInconvertibleTypes
+        // noinspection SimplifiableJUnitAssertion, EqualsBetweenInconvertibleTypes
         org.junit.Assert.assertFalse(firstRowOrCols.equals("nonsense"));
 
         {
             final int value = 123;
             firstRowOrCols.add(value);
+
+            // noinspection SimplifiableJUnitAssertion
             org.junit.Assert.assertFalse(firstRowOrCols.equals(secondRowOrCols));
+
             secondRowOrCols.add(value);
         }
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstRowOrCols.equals(secondRowOrCols));
     }
 
@@ -137,9 +149,14 @@ public class RowOrColsTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
             new org.wheatgenetics.coordinate.model.RowOrCols(5);
+
+        // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(rowOrCols.equals(rowOrCols.clone()));
 
-        rowOrCols.add(2); org.junit.Assert.assertTrue(rowOrCols.equals(rowOrCols.clone()));
+        rowOrCols.add(2);
+
+        // noinspection SimplifiableJUnitAssertion
+        org.junit.Assert.assertTrue(rowOrCols.equals(rowOrCols.clone()));
     }
     // endregion
 
@@ -166,7 +183,7 @@ public class RowOrColsTest extends java.lang.Object
             rowOrCols.add(value);
             rowOrCols.add(value);         // Does not add() but does not throw an exception, either.
         }
-        org.junit.Assert.assertTrue("123".equals(rowOrCols.toString()));      // Note: value add()ed
+        org.junit.Assert.assertEquals("123", rowOrCols.toString());  // Note: value add()ed
     }                                                                         //  only once.
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -193,7 +210,6 @@ public class RowOrColsTest extends java.lang.Object
         final int value = 123;
         rowOrCols.add(value); org.junit.Assert.assertTrue (rowOrCols.contains(value));
         rowOrCols.clear()   ; org.junit.Assert.assertFalse(rowOrCols.contains(value));
-
     }
     // endregion
 }
