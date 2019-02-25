@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -31,16 +33,16 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Private Methods
-    private android.database.Cursor query(
+    private android.database.Cursor query(@android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
-        assert null != templateType; return this.queryDistinct(/* selection => */
+        return this.queryDistinct(/* selection => */
             org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " = " +
                 templateType.getCode());
     }
 
-    private org.wheatgenetics.coordinate.model.TemplateModels makeTemplateModels(
-    final android.database.Cursor cursor)
+    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.model.TemplateModels
+    makeTemplateModels(@android.support.annotation.Nullable final android.database.Cursor cursor)
     {
         final org.wheatgenetics.coordinate.model.TemplateModels result;
         if (null == cursor)
@@ -71,8 +73,8 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     // region Overridden Methods
-    @java.lang.Override
-    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
+    @java.lang.Override org.wheatgenetics.coordinate.model.Model make(
+    final android.database.Cursor cursor)
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.TemplateModel(
             /* id => */ cursor.getLong(cursor.getColumnIndex(
@@ -105,15 +107,15 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME)));
     }
 
-    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model)
+    @java.lang.Override @android.support.annotation.NonNull
+    android.content.ContentValues getContentValuesForInsert(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
         {
             final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
                 (org.wheatgenetics.coordinate.model.TemplateModel) model;
 
-            assert null != templateModel;
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
                 templateModel.getTitle());
             result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
@@ -151,9 +153,11 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
     // endregion
 
     // region Operations
-    public boolean exists(final org.wheatgenetics.coordinate.model.TemplateType templateType)
+    public boolean exists(@android.support.annotation.NonNull
+    final org.wheatgenetics.coordinate.model.TemplateType templateType)
     { return org.wheatgenetics.coordinate.database.Table.exists(this.query(templateType)); }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)
     {
         return (org.wheatgenetics.coordinate.model.TemplateModel) this.makeFromFirst(this.queryAll(
@@ -161,19 +165,22 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          ));
     }
 
-    public org.wheatgenetics.coordinate.model.TemplateModel get(
+    @android.support.annotation.Nullable
+    public org.wheatgenetics.coordinate.model.TemplateModel get(@android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateType templateType)
     {
         return (org.wheatgenetics.coordinate.model.TemplateModel)
             this.makeFromFirst(this.query(templateType));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.TemplateModels load()
     {
         return this.makeTemplateModels(this.queryAll(/* orderBy => */
             org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC"));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.TemplateModels loadUserDefined()
     {
         return this.makeTemplateModels(this.query(

@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -33,11 +35,13 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     // region Fields
     private static java.lang.String idFieldName, joinedQuery;
 
-    private final android.content.Context                            context                    ;
-    private       org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;
+    private final android.content.Context                            context;
+    private       org.wheatgenetics.coordinate.database.EntriesTable
+        entriesTableInstance = null;                                                    // lazy load
     // endregion
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
         if (null == this.entriesTableInstance) this.entriesTableInstance =
@@ -45,8 +49,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return this.entriesTableInstance;
     }
 
-    private org.wheatgenetics.coordinate.model.JoinedGridModels makeJoinedGridModels(
-    final android.database.Cursor cursor)
+    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.model.JoinedGridModels
+    makeJoinedGridModels(@android.support.annotation.Nullable final android.database.Cursor cursor)
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels result;
         if (null == cursor)
@@ -208,15 +212,15 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
     }
 
-    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model)
+    @java.lang.Override @android.support.annotation.NonNull
+    android.content.ContentValues getContentValuesForInsert(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
         {
             final org.wheatgenetics.coordinate.model.GridModel gridModel =
                 (org.wheatgenetics.coordinate.model.GridModel) model;
 
-            assert null != gridModel;
             result.put(org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME,
                 gridModel.getTemplateId());
             result.put(org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME,
@@ -243,6 +247,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* selection => */ org.wheatgenetics.coordinate.database.Table.whereClause(id)));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.JoinedGridModel get(final long id)
     {
         return (org.wheatgenetics.coordinate.model.JoinedGridModel) this.makeFromFirst(
@@ -280,14 +285,15 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 " = " + projectId);
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.JoinedGridModels load()
     {
         return this.makeJoinedGridModels(this.rawQuery(/* sql => */
             org.wheatgenetics.coordinate.database.GridsTable.joinedQuery));
     }
 
-    public org.wheatgenetics.coordinate.model.JoinedGridModels loadByTemplateId(
-    final long templateId)
+    @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.JoinedGridModels
+    loadByTemplateId(final long templateId)
     {
         return this.makeJoinedGridModels(this.rawQuery(
             /* sql => */org.wheatgenetics.coordinate.database.GridsTable.joinedQuery + " AND " +
@@ -295,6 +301,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(templateId)));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.JoinedGridModels loadByProjectId(final long projectId)
     {
         return this.makeJoinedGridModels(this.rawQuery(

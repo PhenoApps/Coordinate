@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
+ * android.support.annotation.IntRange
  * android.support.annotation.RawRes
  * android.support.test.InstrumentationRegistry
  *
@@ -77,7 +78,7 @@ public class DatabaseTest extends java.lang.Object
         org.wheatgenetics.coordinate.database.DatabaseTest.logInfo('a','e');
         do
         {
-            int a, e;
+            @android.support.annotation.IntRange(from = -1) int a, e;
 
             do { a = actual.read() /* throws java.io.IOException */; }
             while (java.lang.Character.isWhitespace(a));

@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.sqlite.SQLiteDatabase
  * android.database.sqlite.SQLiteOpenHelper
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.RawRes
  * android.support.annotation.VisibleForTesting
  * android.util.Log
@@ -19,9 +21,9 @@ package org.wheatgenetics.coordinate.database;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class Database extends java.lang.Object
 {
-    private static android.database.sqlite.SQLiteDatabase dbInstance = null;            // singleton
+    private static android.database.sqlite.SQLiteDatabase dbInstance = null; // singleton, lazy load
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
     static android.database.sqlite.SQLiteDatabase db(final android.content.Context context,
@@ -32,20 +34,19 @@ class Database extends java.lang.Object
             class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper
             {
                 // region Fields
-                private final android.content.Context context                                      ;
-                private       boolean                 createNeeded = false, createSucceeded = false;
+                @android.support.annotation.NonNull private final android.content.Context context;
+                private boolean createNeeded = false, createSucceeded = false;
                 // endregion
 
                 // region Private Methods
                 private void logWarning(final java.lang.String msg)
                 { android.util.Log.w("SQLiteOpenHelper", msg); }
 
-                private org.w3c.dom.NodeList statementNodeList(
+                @android.support.annotation.Nullable private org.w3c.dom.NodeList statementNodeList(
                 @android.support.annotation.RawRes final int id)
                 {
                     final org.w3c.dom.Document document;
                     {
-                        assert null != this.context;
                         final java.io.InputStream inputStream =
                             this.context.getResources().openRawResource(id);
                         try
@@ -53,7 +54,7 @@ class Database extends java.lang.Object
                             final javax.xml.parsers.DocumentBuilder documentBuilder =
                                 javax.xml.parsers.DocumentBuilderFactory.newInstance()
                                     .newDocumentBuilder();           // throws java.xml.parsers.Par-
-                            assert null != documentBuilder;          //  serConfigurationException
+                            if (null == documentBuilder) return null;//  serConfigurationException
                             try
                             {
                                 document = documentBuilder.parse(         // throws org.xml.sax.SAX-
@@ -66,13 +67,13 @@ class Database extends java.lang.Object
                         catch (final javax.xml.parsers.ParserConfigurationException e)
                         { return null; }
                     }
-                    assert null != document; return document.getElementsByTagName("statement");
+                    return null == document ? null : document.getElementsByTagName("statement");
                 }
 
-                private void executeStatements(final org.w3c.dom.NodeList statementNodeList,
-                final android.database.sqlite.SQLiteDatabase db)
+                private void executeStatements(
+                @android.support.annotation.NonNull final org.w3c.dom.NodeList    statementNodeList,
+                @android.support.annotation.NonNull final android.database.sqlite.SQLiteDatabase db)
                 {
-                    assert null != statementNodeList; assert null != db;
                     final int length = statementNodeList.getLength();
                     for (int i = 0; i < length; i++)
                     {
@@ -84,8 +85,9 @@ class Database extends java.lang.Object
                 }
                 // endregion
 
-                private SQLiteOpenHelper(final android.content.Context context,
-                final java.lang.String fileName)
+                private SQLiteOpenHelper(
+                @android.support.annotation.NonNull final android.content.Context context ,
+                                                    final java.lang.String        fileName)
                 {
                     super(
                         /* context => */ context ,
@@ -111,8 +113,8 @@ class Database extends java.lang.Object
                     this.createSucceeded = true;
                 }
 
-                @java.lang.Override
-                public void onUpgrade(final android.database.sqlite.SQLiteDatabase db,
+                @java.lang.Override public void onUpgrade(
+                final android.database.sqlite.SQLiteDatabase db,
                 final int oldVersion, final int newVersion)
                 {
                     final org.w3c.dom.NodeList statementNodeList = this.statementNodeList(
@@ -154,6 +156,7 @@ class Database extends java.lang.Object
         return org.wheatgenetics.coordinate.database.Database.dbInstance;
     }
 
+    @android.support.annotation.NonNull
     static android.database.sqlite.SQLiteDatabase db(final android.content.Context context)
     { return org.wheatgenetics.coordinate.database.Database.db(context,"seedtray1.db"); }
 }

@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -37,8 +39,8 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id));
     }
 
-    private org.wheatgenetics.coordinate.model.ProjectModels makeProjectModels(
-    final android.database.Cursor cursor)
+    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.model.ProjectModels
+    makeProjectModels(@android.support.annotation.Nullable final android.database.Cursor cursor)
     {
         final org.wheatgenetics.coordinate.model.ProjectModels result;
         if (null == cursor)
@@ -81,15 +83,15 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME)));
     }
 
-    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model)
+    @java.lang.Override @android.support.annotation.NonNull
+    android.content.ContentValues getContentValuesForInsert(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
         {
             final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
                 (org.wheatgenetics.coordinate.model.ProjectModel) model;
 
-            assert null != projectModel;
             result.put(org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME,
                 projectModel.getTitle());
             result.put(org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME,
@@ -103,6 +105,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     public boolean exists(final long id)
     { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ProjectModel get(final long id)
     { return (org.wheatgenetics.coordinate.model.ProjectModel) this.makeFromFirst(this.query(id)); }
 
@@ -121,6 +124,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             return org.wheatgenetics.coordinate.database.Table.exists(this.exceptForQuery(id));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ProjectModels load()
     {
         return this.makeProjectModels(this.queryAll(/* orderBy => */
@@ -129,6 +133,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " ASC"));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ProjectModels loadExceptFor(final long id)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
@@ -137,6 +142,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             return this.makeProjectModels(this.exceptForQuery(id));
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
     {
         return this.makeProjectModels(this.queryDistinct(/* selection => */

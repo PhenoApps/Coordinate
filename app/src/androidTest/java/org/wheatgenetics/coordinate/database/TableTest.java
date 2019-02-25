@@ -37,9 +37,12 @@ public class TableTest extends java.lang.Object
                     org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
         }
 
-        @java.lang.Override
-        org.wheatgenetics.coordinate.model.Model make(android.database.Cursor cursor)
-        { return null; }
+        @android.support.annotation.NonNull @java.lang.Override
+        org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
+        {
+            // noinspection ConstantConditions
+            return null;
+        }
     }
 
     @org.junit.Test() public void secondConstructorSucceeds()
@@ -167,6 +170,7 @@ public class TableTest extends java.lang.Object
 
     @org.junit.Test() public void getContentValuesForInsertSucceeds()
     {
+        // noinspection ConstantConditions
         org.junit.Assert.assertNotNull(
             new org.wheatgenetics.coordinate.database.TableTest.ConcreteTable()
                 .getContentValuesForInsert(null));

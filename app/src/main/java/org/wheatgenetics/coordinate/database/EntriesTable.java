@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -56,34 +58,34 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                 org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME));
             final long timestamp = cursor.getLong(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
-            if (null != value)
-                if (value.equals(
-                org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE))
-                    return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                        /* id        => */ id       ,
-                        /* gridId    => */ gridId   ,
-                        /* row       => */ row      ,
-                        /* col       => */ col      ,
-                        /* timestamp => */ timestamp);
-            return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                /* id        => */ id       ,
-                /* gridId    => */ gridId   ,
-                /* row       => */ row      ,
-                /* col       => */ col      ,
-                /* value     => */ value    ,
-                /* timestamp => */ timestamp);
+            if (null != value
+            &&  value.equals(org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE))
+                return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
+                    /* id        => */ id       ,
+                    /* gridId    => */ gridId   ,
+                    /* row       => */ row      ,
+                    /* col       => */ col      ,
+                    /* timestamp => */ timestamp);
+            else
+                return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                    /* id        => */ id       ,
+                    /* gridId    => */ gridId   ,
+                    /* row       => */ row      ,
+                    /* col       => */ col      ,
+                    /* value     => */ value    ,
+                    /* timestamp => */ timestamp);
         }
     }
 
-    @java.lang.Override android.content.ContentValues getContentValuesForInsert(
-    final org.wheatgenetics.coordinate.model.Model model)
+    @java.lang.Override @android.support.annotation.NonNull
+    android.content.ContentValues getContentValuesForInsert(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
         {
             final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                 (org.wheatgenetics.coordinate.model.EntryModel) model;
 
-            assert null != entryModel;
             result.put(org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME,
                 entryModel.getGridId());
             result.put(org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME,
@@ -106,7 +108,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // endregion
 
     // region Operations
-    org.wheatgenetics.coordinate.model.EntryModels load(
+    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.EntryModels load(
     final long gridId, final int rows, final int cols)
     {
         final org.wheatgenetics.coordinate.model.EntryModels result;
