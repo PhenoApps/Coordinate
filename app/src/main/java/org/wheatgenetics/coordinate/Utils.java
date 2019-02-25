@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate;
  * android.content.SharedPreferences
  * android.preference.PreferenceManager
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -23,7 +25,8 @@ public class Utils extends java.lang.Object
            enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT }
     // endregion
 
-    private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;
+    private static android.content.SharedPreferences                                        // lazy
+        defaultSharedPreferencesInstance = null;                                            //  load
 
     // region AlertDialog Methods
     // region Overview
@@ -43,7 +46,8 @@ public class Utils extends java.lang.Object
     private static void alert(final android.content.Context context, final java.lang.String title,
     final java.lang.String message, final java.lang.String positiveButtonText,
     final android.content.DialogInterface.OnClickListener positiveButtonOnClickListener,
-    final android.content.DialogInterface.OnClickListener negativeButtonOnClickListener)
+    @android.support.annotation.Nullable final android.content.DialogInterface.OnClickListener
+        negativeButtonOnClickListener)
     {
         final android.app.AlertDialog.Builder builder =
             new android.app.AlertDialog.Builder(context);
@@ -54,29 +58,31 @@ public class Utils extends java.lang.Object
     }
 
     // region alert(title, message) AlertDialog Methods
-    public static void alert(final android.content.Context context,
+    public static void alert(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int title, final java.lang.String message)
     {
-        assert null != context;
         org.wheatgenetics.coordinate.Utils.alert(context, context.getString(title), message,
             "Ok",
             org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(),
             null);
     }
 
-    public static void alert(final android.content.Context context,
-    @android.support.annotation.StringRes final int message)
+    public static void alert(
+    @android.support.annotation.NonNull   final android.content.Context context,
+    @android.support.annotation.StringRes final int                     message)
     {
-        assert null != context; org.wheatgenetics.coordinate.Utils.alert(context,
+        org.wheatgenetics.coordinate.Utils.alert(context,
             org.wheatgenetics.coordinate.R.string.app_name, context.getString(message));
     }
     // endregion
 
     // region alert(title, message, yesRunnable) AlertDialog Method
-    public static void alert(final android.content.Context context,
+    public static void alert(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int message, final java.lang.Runnable yesRunnable)
     {
-        assert null != context; org.wheatgenetics.coordinate.Utils.alert(context,
+        org.wheatgenetics.coordinate.Utils.alert(context,
             context.getString(org.wheatgenetics.coordinate.R.string.app_name),
             context.getString(message),"Ok",
             new android.content.DialogInterface.OnClickListener()
@@ -93,11 +99,12 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region confirm() AlertDialog Methods
-    private static void confirm(final android.content.Context context,
+    private static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int title, final java.lang.String message,
-    final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
+                                          final java.lang.Runnable yesRunnable,
+    @android.support.annotation.Nullable  final java.lang.Runnable noRunnable )
     {
-        assert null != context;
         org.wheatgenetics.coordinate.Utils.alert(context, context.getString(title),
             message,"Yes", new android.content.DialogInterface.OnClickListener()
             {
@@ -118,37 +125,40 @@ public class Utils extends java.lang.Object
             });
     }
 
-    // region confirm(title, String message, yesRunnable) AlertDialog Methods
-    public static void confirm(final android.content.Context context,
+    // region confirm(title, String message, yesRunnable) AlertDialog Method
+    public static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int title, final java.lang.String message,
-    final java.lang.Runnable yesRunnable)
+                                          final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(
             context, title, message, yesRunnable,null);
     }
     // endregion
 
-    private static void confirm(final android.content.Context context,
-    @android.support.annotation.StringRes final int title  ,
-    @android.support.annotation.StringRes final int message,
-    final java.lang.Runnable yesRunnable, final java.lang.Runnable noRunnable)
+    // region confirm(title, int message, yesRunnable) AlertDialog Methods
+    private static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context    ,
+    @android.support.annotation.StringRes final int                     title      ,
+    @android.support.annotation.StringRes final int                     message    ,
+                                          final java.lang.Runnable      yesRunnable,
+    @android.support.annotation.Nullable  final java.lang.Runnable      noRunnable )
     {
-        assert null != context;
         org.wheatgenetics.coordinate.Utils.confirm(context, title,
             context.getString(message), yesRunnable, noRunnable);
     }
 
-    // region confirm(title, int message, yesRunnable) AlertDialog Methods
-    public static void confirm(final android.content.Context context,
-    @android.support.annotation.StringRes final int title  ,
-    @android.support.annotation.StringRes final int message,
-    final java.lang.Runnable yesRunnable)
+    public static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context,
+    @android.support.annotation.StringRes final int                     title  ,
+    @android.support.annotation.StringRes final int message, final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(
             context, title, message, yesRunnable,null);
     }
 
-    public static void confirm(final android.content.Context context,
+    public static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int message, final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(context,
@@ -157,9 +167,10 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region confirm(title, message, yesRunnable, noRunnable) AlertDialog Method
-    public static void confirm(final android.content.Context context,
+    public static void confirm(
+    @android.support.annotation.NonNull   final android.content.Context context,
     @android.support.annotation.StringRes final int message, final java.lang.Runnable yesRunnable,
-    final java.lang.Runnable noRunnable)
+                                          final java.lang.Runnable noRunnable)
     {
         org.wheatgenetics.coordinate.Utils.confirm(context,
             org.wheatgenetics.coordinate.R.string.app_name, message, yesRunnable, noRunnable);
@@ -188,24 +199,26 @@ public class Utils extends java.lang.Object
     }
 
     public static org.wheatgenetics.coordinate.Utils.Advancement getAdvancement(
-    final android.content.Context context)
+    @android.support.annotation.NonNull final android.content.Context context)
     {
-        assert null != context;
         final java.lang.String advancement =
             org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getString(
                 /* key      => */"Advancement",
                 /* defValue => */ context.getString(
                     org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDefault));
 
-        if (advancement.equals(context.getString(
-        org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
+        if (null == advancement)
             return org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS;
         else
             if (advancement.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
-                return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
+            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
+                return org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS;
             else
-                return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
+                if (advancement.equals(context.getString(
+                org.wheatgenetics.coordinate.R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
+                    return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
+                else
+                    return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
     }
 
     static boolean getSoundOn(final android.content.Context context)
@@ -215,24 +228,26 @@ public class Utils extends java.lang.Object
     }
 
     static org.wheatgenetics.coordinate.Utils.ProjectExport getProjectExport(
-    final android.content.Context context)
+    @android.support.annotation.NonNull final android.content.Context context)
     {
-        assert null != context;
         final java.lang.String projectExport =
             org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context).getString(
                 /* key      => */"ProjectExport",
                 /* defValue => */ context.getString(
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceDefault));
 
-        if (projectExport.equals(context.getString(
-        org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
+        if (null == projectExport)
             return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID;
         else
             if (projectExport.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFileEntireProject)))
-                return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
+            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
+                return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID;
             else
-                return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
+                if (projectExport.equals(context.getString(
+                org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFileEntireProject)))
+                    return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
+                else
+                    return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
     }
     // endregion
 
@@ -255,8 +270,8 @@ public class Utils extends java.lang.Object
             if (0 == modulas)
                 return rightPortion;
             else
-                return org.wheatgenetics.coordinate.Utils.convert(modulas - 1) + // recursion
-                    rightPortion;
+                return org.wheatgenetics.coordinate.Utils.convert(                      // recursion
+                    modulas - 1) + rightPortion;
         }
     }
 }

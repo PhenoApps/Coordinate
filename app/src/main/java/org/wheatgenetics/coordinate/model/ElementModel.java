@@ -6,6 +6,6 @@ package org.wheatgenetics.coordinate.model;
  */
 @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface ElementModel
 {
-    public abstract @android.support.annotation.IntRange(from = 1) int getRowValue();
-    public abstract @android.support.annotation.IntRange(from = 1) int getColValue();
+    @android.support.annotation.IntRange(from = 1) public abstract int getRowValue();
+    @android.support.annotation.IntRange(from = 1) public abstract int getColValue();
 }

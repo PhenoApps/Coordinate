@@ -22,7 +22,11 @@ public class ElementsTest extends java.lang.Object
      */
     private static class ConcreteElements extends org.wheatgenetics.coordinate.Elements
     {
-        private ConcreteElements() { super(null,null); }
+        private ConcreteElements()
+        {
+            //noinspection ConstantConditions
+            super(null,null);
+        }
 
         @java.lang.Override protected org.wheatgenetics.coordinate.Element makeElement(
         final org.wheatgenetics.coordinate.model.ElementModel elementModel,
@@ -38,6 +42,7 @@ public class ElementsTest extends java.lang.Object
 
     @org.junit.Test() public void getHandlerWorks()
     {
+        // noinspection ConstantConditions
         org.junit.Assert.assertNull(
             new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getHandler());
     }

@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.view.LayoutInflater
@@ -23,10 +25,12 @@ public abstract class Elements extends java.lang.Object
 implements org.wheatgenetics.coordinate.Element.Handler
 {
     // region Fields
-    private final android.app.Activity                         activity;
-    private final org.wheatgenetics.coordinate.Element.Handler handler ;
+                                        private final android.app.Activity activity;
+    @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.Element.Handler
+        handler;
 
-    private org.wheatgenetics.coordinate.Element elementArray[][];
+    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.Element
+        elementArray[][];
     // endregion
 
     // region Protected Methods
@@ -37,31 +41,34 @@ implements org.wheatgenetics.coordinate.Element.Handler
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected android.app.Activity getActivity() { return this.activity; }
+    @android.support.annotation.Nullable protected android.app.Activity getActivity()
+    { return this.activity; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @android.support.annotation.NonNull
     protected org.wheatgenetics.coordinate.Element.Handler getHandler() { return this.handler; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected org.wheatgenetics.coordinate.Element[][] getElementArray()
-    { return this.elementArray; }
+    @android.support.annotation.Nullable protected org.wheatgenetics.coordinate.Element[][]
+    getElementArray() { return this.elementArray; }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected Elements(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.Element.Handler handler)
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.Element.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
     // region org.wheatgenetics.coordinate.Element.Handler Overridden Method
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { assert null != this.handler; this.handler.toggle(elementModel); }
+    @java.lang.Override public void toggle(@android.support.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    { this.handler.toggle(elementModel); }
     // endregion
 
     // region Protected Methods
     protected void clear() { this.elementArray = null; }
 
-    @android.annotation.SuppressLint({"InflateParams"}) protected android.widget.LinearLayout add(
+    @android.annotation.SuppressLint({"InflateParams"}) @android.support.annotation.Nullable
+    protected android.widget.LinearLayout add(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (null == elementModel)
@@ -70,7 +77,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
         {
             final android.widget.LinearLayout result;
             {
-                assert null != this.activity;
+                if (null == this.activity) return null;
                 final android.view.LayoutInflater layoutInflater =
                     this.activity.getLayoutInflater();
 
@@ -78,11 +85,11 @@ implements org.wheatgenetics.coordinate.Element.Handler
                     org.wheatgenetics.coordinate.R.layout.display_table_cell,null);
             }
             {
-                assert null != result;
+                if (null == result) return null;
                 final org.wheatgenetics.coordinate.Element element =
                     this.makeElement(elementModel, (android.widget.TextView)
                         result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView));
-                assert null != element; assert null != this.elementArray;
+                if (null == element || null == this.elementArray) return null;
                 this.elementArray[element.getRow()][element.getCol()] = element;
             }
             return result;
