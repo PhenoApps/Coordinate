@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.DrawableRes
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -25,11 +26,11 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final long gridId   ,
     @android.support.annotation.IntRange(from = 1) final int  row      ,
     @android.support.annotation.IntRange(from = 1) final int  col      ,
-                                                   final long timestamp)
+    @android.support.annotation.IntRange(from = 0) final long timestamp)
     { super(id, gridId, row, col, timestamp); }
 
-    public ExcludedEntryModel(
-    final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel)
+    public ExcludedEntryModel(@android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel)
     { super(includedEntryModel); }
     // endregion
 
@@ -41,7 +42,7 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override public java.lang.String getDatabaseValue()
     { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
 
-    @java.lang.Override public @android.support.annotation.DrawableRes int backgroundResource()
+    @android.support.annotation.DrawableRes @java.lang.Override public int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
     // endregion
 }

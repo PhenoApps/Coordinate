@@ -3,7 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * org.junit.Assert
- * org.junit.Text
+ * org.junit.Test
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -33,11 +33,11 @@ public class IncludedEntryModelTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
             new org.wheatgenetics.coordinate.model.IncludedEntryModel(23,2,3);
-        org.junit.Assert.assertTrue("BLANK_".equals(includedEntryModel.getSeedExportValue()));
+        org.junit.Assert.assertEquals("BLANK_", includedEntryModel.getSeedExportValue());
 
         final java.lang.String value = "value";
         includedEntryModel.setValue(value);
-        org.junit.Assert.assertTrue(value.equals(includedEntryModel.getSeedExportValue()));
+        org.junit.Assert.assertEquals(value, includedEntryModel.getSeedExportValue());
     }
 
     @org.junit.Test() public void getDNAExportValueSucceeds()
@@ -47,16 +47,16 @@ public class IncludedEntryModelTest extends java.lang.Object
         final java.lang.String sample_id = "12";
         {
             final java.lang.String expected = "BLANK_" + sample_id;
-            org.junit.Assert.assertTrue(expected.equals(
-                includedEntryModel.getDNAExportValue(sample_id)));
+            org.junit.Assert.assertEquals(expected,
+                includedEntryModel.getDNAExportValue(sample_id));
 
             includedEntryModel.setValue("");
-            org.junit.Assert.assertTrue(expected.equals(
-                includedEntryModel.getDNAExportValue(sample_id)));
+            org.junit.Assert.assertEquals(expected,
+                includedEntryModel.getDNAExportValue(sample_id));
         }
         final java.lang.String value = "value";
         includedEntryModel.setValue(value);
-        org.junit.Assert.assertTrue(value.equals(includedEntryModel.getDNAExportValue(sample_id)));
+        org.junit.Assert.assertEquals(value, includedEntryModel.getDNAExportValue(sample_id));
     }
 
     @org.junit.Test() public void getUserDefinedExportValueSucceeds()
@@ -67,22 +67,22 @@ public class IncludedEntryModelTest extends java.lang.Object
 
         final java.lang.String value = "value";
         includedEntryModel.setValue(value);
-        org.junit.Assert.assertTrue(value.equals(includedEntryModel.getUserDefinedExportValue()));
+        org.junit.Assert.assertEquals(value, includedEntryModel.getUserDefinedExportValue());
     }
 
     @org.junit.Test() public void getValueSucceeds()
     {
         final java.lang.String value = "value";
-        org.junit.Assert.assertTrue(value.equals(new org.wheatgenetics.coordinate.model
-            .IncludedEntryModel(5,23,2,3, value,6).getValue()));
+        org.junit.Assert.assertEquals(value, new org.wheatgenetics.coordinate.model
+            .IncludedEntryModel(5,23,2,3, value,6).getValue());
     }
 
     @org.junit.Test() public void getDatabaseValueSucceeds()
     {
         final java.lang.String value = "value";
-        org.junit.Assert.assertTrue(value.equals(
+        org.junit.Assert.assertEquals(value,
             new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                5,23,2,3, value,6).getDatabaseValue()));
+                5,23,2,3, value,6).getDatabaseValue());
     }
 
     @org.junit.Test() public void backgroundResourceSucceeds()
@@ -109,7 +109,7 @@ public class IncludedEntryModelTest extends java.lang.Object
 
         final java.lang.String value = "value";
         includedEntryModel.setValue("  " + value + "   ");
-        org.junit.Assert.assertTrue(value.equals(includedEntryModel.getValue()));
+        org.junit.Assert.assertEquals(value, includedEntryModel.getValue());
     }
 
     @org.junit.Test() public void valueIsEmptySucceeds()

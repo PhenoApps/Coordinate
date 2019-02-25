@@ -108,9 +108,10 @@ public class EntryModelsTest extends java.lang.Object
         {
             final int rows = 5, cols = 5;
             expectedCells = new org.wheatgenetics.coordinate.model.Cells      (rows, cols);
-            entryModels   = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            entryModels   = new org.wheatgenetics.coordinate.model.EntryModels(
+                1, rows, cols);
         }
-        org.junit.Assert.assertTrue(expectedCells.equals(entryModels.excludedCells()));
+        org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
 
     @org.junit.Test() public void oneCellExcludedCellsWorks()
@@ -130,7 +131,7 @@ public class EntryModelsTest extends java.lang.Object
                 else
                     entryModels.makeIncludedEntry(row, col);
         }
-        org.junit.Assert.assertTrue(expectedCells.equals(entryModels.excludedCells()));
+        org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
     // endregion
 
@@ -353,7 +354,8 @@ public class EntryModelsTest extends java.lang.Object
                 (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModels.get(row, col);
             org.junit.Assert.assertNotEquals(unexpectedIncludedEntryModel.getValue(),
                 actualIncludedEntryModel.getValue());
-            org.junit.Assert.assertTrue("gobbledygook".equals(actualIncludedEntryModel.getValue()));
+            org.junit.Assert.assertEquals("gobbledygook",
+                actualIncludedEntryModel.getValue());
         }
         org.junit.Assert.assertNull(unexpectedIncludedEntryModel.getValue());
     }

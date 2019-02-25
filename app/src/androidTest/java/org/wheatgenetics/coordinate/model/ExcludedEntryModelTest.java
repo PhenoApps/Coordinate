@@ -31,16 +31,16 @@ public class ExcludedEntryModelTest extends java.lang.Object
     // region Overridden Method Tests
     @org.junit.Test() public void getSeedExportValueSucceeds()
     {
-        org.junit.Assert.assertTrue("exclude".equals(
+        org.junit.Assert.assertEquals("exclude",
             new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                1,1,1).getSeedExportValue()));
+                1,1,1).getSeedExportValue());
     }
 
     @org.junit.Test() public void getUserDefinedExportValueSucceeds()
     {
-        org.junit.Assert.assertTrue("exclude".equals(
+        org.junit.Assert.assertEquals("exclude",
             new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                1,1,1).getUserDefinedExportValue()));
+                1,1,1).getUserDefinedExportValue());
     }
 
     @org.junit.Test() public void getValueSucceeds()
@@ -51,9 +51,9 @@ public class ExcludedEntryModelTest extends java.lang.Object
 
     @org.junit.Test() public void getDatabaseValueSucceeds()
     {
-        org.junit.Assert.assertTrue("excluded".equals(
+        org.junit.Assert.assertEquals("excluded",
             new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                1,1,1).getDatabaseValue()));
+                1,1,1).getDatabaseValue());
     }
 
     @org.junit.Test() public void backgroundResourceSucceeds()

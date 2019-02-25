@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.DrawableRes
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -23,15 +25,16 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
 
     public IncludedEntryModel(
-    @android.support.annotation.IntRange(from = 1) final long id    ,
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  row   ,
-    @android.support.annotation.IntRange(from = 1) final int  col   ,
-    final java.lang.String value, final long timestamp)
+    @android.support.annotation.IntRange(from = 1) final long             id       ,
+    @android.support.annotation.IntRange(from = 1) final long             gridId   ,
+    @android.support.annotation.IntRange(from = 1) final int              row      ,
+    @android.support.annotation.IntRange(from = 1) final int              col      ,
+                                                   final java.lang.String value    ,
+    @android.support.annotation.IntRange(from = 0) final long             timestamp)
     { super(id, gridId, row, col, timestamp); this.value = value; }
 
-    public IncludedEntryModel(
-    final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
+    public IncludedEntryModel(@android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
     { super(excludedEntryModel); }
     // endregion
 
@@ -39,7 +42,8 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override java.lang.String getSeedExportValue()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(),"BLANK_"); }
 
-    @java.lang.Override java.lang.String getDNAExportValue(final java.lang.String sample_id)
+    @android.support.annotation.NonNull @java.lang.Override java.lang.String getDNAExportValue(
+    final java.lang.String sample_id)
     {
         final java.lang.String result = this.getValue();
         if (null == result || result.length() < 1)
@@ -54,7 +58,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override public java.lang.String getValue        () { return this.value     ; }
     @java.lang.Override public java.lang.String getDatabaseValue() { return this.getValue(); }
 
-    @java.lang.Override public @android.support.annotation.DrawableRes int backgroundResource()
+    @android.support.annotation.DrawableRes @java.lang.Override public int backgroundResource()
     {
         return this.valueIsEmpty() ?
             org.wheatgenetics.coordinate.R.drawable.empty_included_entry :
@@ -63,7 +67,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // endregion
 
     // region Public Methods
-    public void setValue(final java.lang.String value)
+    public void setValue(@android.support.annotation.Nullable final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
 
     public boolean valueIsEmpty()

@@ -2,6 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.DrawableRes
+ * android.support.annotation.IntRange
+ *
  * org.junit.Assert
  * org.junit.Test
  *
@@ -18,11 +21,19 @@ public class EntryModelTest extends java.lang.Object
     private static class ConcreteEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
     {
         // region Constructors
-        ConcreteEntryModel(final long gridId, final int row, final int col)
+        ConcreteEntryModel(
+        @android.support.annotation.IntRange(from = 1) final long gridId,
+        @android.support.annotation.IntRange(from = 1) final int  row   ,
+        @android.support.annotation.IntRange(from = 1) final int  col   )
         { super(gridId, row, col); }
 
-        ConcreteEntryModel(final long id, final long gridId, final int row, final int col,
-        final long timestamp) { super(id, gridId, row, col, timestamp); }
+        ConcreteEntryModel(
+        @android.support.annotation.IntRange(from = 1) final long id       ,
+        @android.support.annotation.IntRange(from = 1) final long gridId   ,
+        @android.support.annotation.IntRange(from = 1) final int row       ,
+        @android.support.annotation.IntRange(from = 1) final int col       ,
+        @android.support.annotation.IntRange(from = 0) final long timestamp)
+        { super(id, gridId, row, col, timestamp); }
         // endregion
 
         // region Overridden Methods
@@ -33,7 +44,9 @@ public class EntryModelTest extends java.lang.Object
 
         @java.lang.Override public java.lang.String getValue          () { return "value"        ; }
         @java.lang.Override public java.lang.String getDatabaseValue  () { return "databaseValue"; }
-        @java.lang.Override public int              backgroundResource() { return 0              ; }
+
+        @android.support.annotation.DrawableRes @java.lang.Override public int backgroundResource()
+        { return 0; }
         // endregion
     }
 
@@ -107,16 +120,16 @@ public class EntryModelTest extends java.lang.Object
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Method Tests
     @org.junit.Test() public void getRowValueSucceeds()
     {
-        org.junit.Assert.assertEquals(1,
+        org.junit.Assert.assertEquals(2,
             new org.wheatgenetics.coordinate.model.EntryModelTest.ConcreteEntryModel(
-                1,1,1).getRowValue());
+                1,2,3).getRowValue());
     }
 
     @org.junit.Test() public void getColValueSucceeds()
     {
-        org.junit.Assert.assertEquals(1,
+        org.junit.Assert.assertEquals(3,
             new org.wheatgenetics.coordinate.model.EntryModelTest.ConcreteEntryModel(
-                1,1,1).getRowValue());
+                1,2,3).getColValue());
     }
     // endregion
 

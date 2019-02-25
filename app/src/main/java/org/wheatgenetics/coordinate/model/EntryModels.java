@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
@@ -25,53 +27,48 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Fields
-    private final @android.support.annotation.IntRange(from = 1) long gridId             ;
-    private final org.wheatgenetics.coordinate.model.EntryModel       entryModelArray[][];
+    @android.support.annotation.IntRange(from = 1) private final long gridId;
+    @android.support.annotation.NonNull            private final
+        org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
 
     // region Private Methods
+    @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
-    @android.support.annotation.IntRange(from = 0) final int           lastRow      ,
-    @android.support.annotation.IntRange(from = 0) final int           lastCol      ,
-    @android.support.annotation.IntRange(from = 0) final int           activeRow    ,
-    @android.support.annotation.IntRange(from = 0) final int           activeCol    ,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    @android.support.annotation.IntRange(from = 0) final int lastRow  ,
+    @android.support.annotation.IntRange(from = 0) final int lastCol  ,
+    @android.support.annotation.IntRange(from = 0) final int activeRow,
+    @android.support.annotation.IntRange(from = 0) final int activeCol,
+    @android.support.annotation.Nullable
+        final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
                                                        final boolean filledRowOrColNeedsChecking;
         {
-            {
-                final boolean recursion = null == filledHandler;
-                if (!recursion && null == this.downThenAcrossNext(                      // recursion
-                lastRow, lastCol, activeRow, activeCol,null))
-                {
-                    filledHandler.handleFilledGrid();
-                    filledRowOrColNeedsChecking = false;
-                }
-                else
-                    if (activeRow < lastRow)
-                        filledRowOrColNeedsChecking = null != filledHandler;
-                    else
-                    {
-                        if (activeCol >= lastCol)
-                        {
-                            if (null != filledHandler) filledHandler.handleFilledGrid();
-                            return null;
-                        }
-
-                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                        filledRowOrColNeedsChecking = false;             // Since I just handled it.
-                    }
-            }
-
-            if (activeRow < lastRow)
-            {
-                candidateRow = activeRow + 1                         ;
-                candidateCol = java.lang.Math.min(activeCol, lastCol);
-            }
+            final boolean recursion = null == filledHandler;
+            if (!recursion && null == this.downThenAcrossNext(                          // recursion
+            lastRow, lastCol, activeRow, activeCol,null))
+                { filledHandler.handleFilledGrid(); filledRowOrColNeedsChecking = false; }
             else
-                { candidateRow = 0; candidateCol = activeCol + 1; }
+                if (activeRow < lastRow)
+                    filledRowOrColNeedsChecking = null != filledHandler;
+                else
+                {
+                    if (activeCol >= lastCol)
+                    {
+                        if (null != filledHandler) filledHandler.handleFilledGrid();
+                        return null;
+                    }
+
+                    if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                    filledRowOrColNeedsChecking = false;                 // Since I just handled it.
+                }
         }
+
+        if (activeRow < lastRow)
+            { candidateRow = activeRow + 1; candidateCol = java.lang.Math.min(activeCol, lastCol); }
+        else
+            { candidateRow = 0; candidateCol = activeCol + 1; }
 
         boolean onCandidateCol = true;
         for (int col = candidateCol; col <= lastCol; col++)
@@ -92,45 +89,42 @@ public class EntryModels extends java.lang.Object
         return null;
     }
 
+    @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel acrossThenDownNext(
-    final int lastRow, final int lastCol, final int activeRow, final int activeCol,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    @android.support.annotation.IntRange(from = 0) final int lastRow  ,
+    @android.support.annotation.IntRange(from = 0) final int lastCol  ,
+    @android.support.annotation.IntRange(from = 0) final int activeRow,
+    @android.support.annotation.IntRange(from = 0) final int activeCol,
+    @android.support.annotation.Nullable
+        final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
                                                        final boolean filledRowOrColNeedsChecking;
         {
-            {
-                final boolean recursion = null == filledHandler;
-                if (!recursion && null == this.acrossThenDownNext(                      // recursion
-                lastRow, lastCol, activeRow, activeCol,null))
-                {
-                    filledHandler.handleFilledGrid();
-                    filledRowOrColNeedsChecking = false;
-                }
-                else
-                    if (activeCol < lastCol)
-                        filledRowOrColNeedsChecking = null != filledHandler;
-                    else
-                    {
-                        if (activeRow >= lastRow)
-                        {
-                            if (null != filledHandler) filledHandler.handleFilledGrid();
-                            return null;
-                        }
-
-                        if (null != filledHandler) filledHandler.handleFilledRowOrCol();
-                        filledRowOrColNeedsChecking = false;             // Since I just handled it.
-                    }
-            }
-
-            if (activeCol < lastCol)
-            {
-                candidateRow = java.lang.Math.min(activeRow, lastRow);
-                candidateCol = activeCol + 1                         ;
-            }
+            final boolean recursion = null == filledHandler;
+            if (!recursion && null == this.acrossThenDownNext(                          // recursion
+            lastRow, lastCol, activeRow, activeCol,null))
+                { filledHandler.handleFilledGrid(); filledRowOrColNeedsChecking = false; }
             else
-                { candidateRow = activeRow + 1; candidateCol = 0; }
+                if (activeCol < lastCol)
+                    filledRowOrColNeedsChecking = null != filledHandler;
+                else
+                {
+                    if (activeRow >= lastRow)
+                    {
+                        if (null != filledHandler) filledHandler.handleFilledGrid();
+                        return null;
+                    }
+
+                    if (null != filledHandler) filledHandler.handleFilledRowOrCol();
+                    filledRowOrColNeedsChecking = false;                 // Since I just handled it.
+                }
         }
+
+        if (activeCol < lastCol)
+            { candidateRow = java.lang.Math.min(activeRow, lastRow); candidateCol = activeCol + 1; }
+        else
+            { candidateRow = activeRow + 1; candidateCol = 0; }
 
         boolean onCandidateRow = true;
         for (int row = candidateRow; row <= lastRow; row++)
@@ -181,24 +175,19 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
 
-    org.wheatgenetics.coordinate.model.Cells excludedCells()
+    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
-        if (null == this.entryModelArray)
-            return null;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.Cells result =
-                new org.wheatgenetics.coordinate.model.Cells(
-                    this.entryModelArray.length, this.entryModelArray[0].length);
-            for (final org.wheatgenetics.coordinate.model.EntryModel[] row: this.entryModelArray)
-                for (final org.wheatgenetics.coordinate.model.EntryModel entryModel: row)
-                    if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
-                        result.add(entryModel.getRow(), entryModel.getCol());
-            return result;
-        }
+        final org.wheatgenetics.coordinate.model.Cells result =
+            new org.wheatgenetics.coordinate.model.Cells(
+                this.entryModelArray.length, this.entryModelArray[0].length);
+        for (final org.wheatgenetics.coordinate.model.EntryModel[] row: this.entryModelArray)
+            for (final org.wheatgenetics.coordinate.model.EntryModel entryModel: row)
+                if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                    result.add(entryModel.getRow(), entryModel.getCol());
+        return result;
     }
 
-    org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
     final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )

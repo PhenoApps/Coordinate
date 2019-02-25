@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.DrawableRes
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -18,7 +19,7 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // region Fields
     @android.support.annotation.IntRange(from = 1) private final long gridId   ;
     @android.support.annotation.IntRange(from = 1) private final int  row, col ;
-                                                   private final long timestamp;
+    @android.support.annotation.IntRange(from = 0) private final long timestamp;
     // endregion
 
     // region Constructors
@@ -42,7 +43,7 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     @android.support.annotation.IntRange(from = 1) final long gridId   ,
     @android.support.annotation.IntRange(from = 1) final int  row      ,
     @android.support.annotation.IntRange(from = 1) final int  col      ,
-                                                   final long timestamp)
+    @android.support.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id);
 
@@ -53,7 +54,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    EntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    EntryModel(@android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         this(entryModel.getId(), entryModel.getGridId(), entryModel.getRow(), entryModel.getCol(),
             entryModel.getTimestamp());
@@ -71,22 +73,23 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // region Package Methods
     abstract java.lang.String getSeedExportValue();
 
-    java.lang.String getDNAExportValue(final java.lang.String sample_id)
-    { return "BLANK_" + sample_id; }
+    @android.support.annotation.NonNull java.lang.String
+    getDNAExportValue(final java.lang.String sample_id) { return "BLANK_" + sample_id; }
 
     abstract java.lang.String getUserDefinedExportValue();
     // endregion
 
     // region Public Methods
-    public @android.support.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
-    public @android.support.annotation.IntRange(from = 1) int  getRow   () { return this.row   ; }
-    public @android.support.annotation.IntRange(from = 1) int  getCol   () { return this.col   ; }
+    @android.support.annotation.IntRange(from = 1) public long getGridId() { return this.gridId; }
+    @android.support.annotation.IntRange(from = 1) public int  getRow   () { return this.row   ; }
+    @android.support.annotation.IntRange(from = 1) public int  getCol   () { return this.col   ; }
 
-    public long getTimestamp() { return this.timestamp; }
+    @android.support.annotation.IntRange(from = 0) public long getTimestamp()
+    { return this.timestamp; }
 
     public abstract java.lang.String getValue        ();
     public abstract java.lang.String getDatabaseValue();
 
-    public abstract @android.support.annotation.DrawableRes int backgroundResource();
+    @android.support.annotation.DrawableRes public abstract int backgroundResource();
     // endregion
 }
