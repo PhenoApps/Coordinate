@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -20,9 +21,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
     }
 
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel>
-        arrayListInstance = null;
+        arrayListInstance = null;                                                       // lazy load
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList()
     {
         if (null == this.arrayListInstance)
@@ -47,12 +49,13 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         class Iterator extends java.lang.Object
         implements java.util.Iterator<org.wheatgenetics.coordinate.model.JoinedGridModel>
         {
-            private final java.util.ListIterator<org.wheatgenetics.coordinate.model.JoinedGridModel>
-                listIterator;
+            @android.support.annotation.NonNull private final
+                java.util.ListIterator<org.wheatgenetics.coordinate.model.JoinedGridModel>
+                    listIterator;
 
-            private Iterator(
+            private Iterator(@android.support.annotation.NonNull
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList)
-            { super(); assert null != arrayList; this.listIterator = arrayList.listIterator(); }
+            { super(); this.listIterator = arrayList.listIterator(); }
 
             // region Overridden Methods
             @java.lang.Override public boolean hasNext() { return this.listIterator.hasNext(); }
@@ -113,9 +116,10 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         return null == joinedGridModel ? false : this.arrayList().add(joinedGridModel);
     }
 
-    public @android.support.annotation.IntRange(from = 0) int size()
+    @android.support.annotation.IntRange(from = 0) public int size()
     { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.JoinedGridModel get(
     @android.support.annotation.IntRange(from = 0) final int i)
     {
@@ -125,9 +129,9 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
-    public java.lang.String[] names()
+    @android.support.annotation.Nullable public java.lang.String[] names()
     {
-        final @android.support.annotation.IntRange(from = 0) int size = this.size();
+        @android.support.annotation.IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;
@@ -137,7 +141,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
             {
                 final int first = 0, last = size - 1;
                 for (@android.support.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                    result[i] = this.get(i).name();
+                {
+                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                        this.get(i);
+                    if (null != joinedGridModel) result[i] = joinedGridModel.name();
+                }
             }
             return result;
         }
@@ -151,11 +159,12 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
                 processor.process(joinedGridModel);
     }
 
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.Cells excludedCells(
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     {
-        final @android.support.annotation.IntRange(from = 0) int size = this.size();
+        @android.support.annotation.IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;
@@ -166,7 +175,12 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
             {
                 final int first = 0, last = size - 1;
                 for (@android.support.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                    result.accumulate(this.get(i).excludedCellsFromEntries());
+                {
+                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                        this.get(i);
+                    if (null != joinedGridModel)
+                        result.accumulate(joinedGridModel.excludedCellsFromEntries());
+                }
             }
             return result;
         }

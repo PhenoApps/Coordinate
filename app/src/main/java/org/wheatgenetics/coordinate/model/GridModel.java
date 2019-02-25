@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -17,21 +18,25 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    private final @android.support.annotation.IntRange(from = 1) long templateId           ;
-    private final @android.support.annotation.IntRange(from = 0) long projectId            ;
-    private final java.lang.String                                    person               ;
-    private       @android.support.annotation.IntRange(from = 0) int  activeRow, activeCol ;
-    private final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-        nonNullOptionalFieldsInstance;
-    private final long timestamp;
+    @android.support.annotation.IntRange(from = 1) private final long             templateId;
+    @android.support.annotation.IntRange(from = 0) private final long             projectId ;
+                                                   private final java.lang.String person    ;
+    @android.support.annotation.IntRange(from = 0) private       int    activeRow, activeCol;
+    @android.support.annotation.Nullable           private final
+        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+            nonNullOptionalFieldsInstance;
+    @android.support.annotation.IntRange(from = 0) private final long timestamp;
     // endregion
 
     // region Constructors
     /** Used by first JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    GridModel(@android.support.annotation.IntRange(from = 1) final long templateId,
-    final long projectId, final java.lang.String person,
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    GridModel(
+    @android.support.annotation.IntRange(from = 1) final long             templateId,
+    @android.support.annotation.IntRange(from = 0) final long             projectId ,
+                                                   final java.lang.String person    ,
+    @android.support.annotation.Nullable           final
+        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
@@ -49,13 +54,14 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by second JoinedGridModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(
-    @android.support.annotation.IntRange(from = 1) final long id                ,
-    @android.support.annotation.IntRange(from = 1) final long templateId        ,
-                                                   final long projectId         ,
-                                                   final java.lang.String person,
-    @android.support.annotation.IntRange(from = 0) final int activeRow          ,
-    @android.support.annotation.IntRange(from = 0) final int activeCol          ,
-    java.lang.String optionalFields, final long timestamp)
+    @android.support.annotation.IntRange(from = 1) final long             id                ,
+    @android.support.annotation.IntRange(from = 1) final long             templateId        ,
+    @android.support.annotation.IntRange(from = 0) final long             projectId         ,
+                                                   final java.lang.String person            ,
+    @android.support.annotation.IntRange(from = 0) final int              activeRow         ,
+    @android.support.annotation.IntRange(from = 0) final int              activeCol         ,
+    @android.support.annotation.Nullable                 java.lang.String optionalFields    ,
+    @android.support.annotation.IntRange(from = 0) final long             timestamp         )
     {
         super(id);
 
@@ -90,33 +96,35 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // endregion
 
     // region Public Methods
-    public @android.support.annotation.IntRange(from = 1) long getTemplateId()
+    @android.support.annotation.IntRange(from = 1) public long getTemplateId()
     { return this.templateId; }
 
-    public @android.support.annotation.IntRange(from = 0) long getProjectId()
+    @android.support.annotation.IntRange(from = 0) public long getProjectId()
     { return this.projectId; }
 
     public java.lang.String getPerson() { return this.person; }
 
-    public @android.support.annotation.IntRange(from = 0) int getActiveRow()
+    @android.support.annotation.IntRange(from = 0) public int getActiveRow()
     { return this.activeRow; }
 
-    public @android.support.annotation.IntRange(from = 0) int getActiveCol()
+    @android.support.annotation.IntRange(from = 0) public int getActiveCol()
     { return this.activeCol; }
 
-    public long getTimestamp() { return this.timestamp; }
+    @android.support.annotation.IntRange(from = 0) public long getTimestamp()
+    { return this.timestamp; }
 
     // region optionalFields Public Methods
+    @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 
-    public java.lang.String optionalFieldsAsJson()
+    @android.support.annotation.Nullable public java.lang.String optionalFieldsAsJson()
     {
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
 
-    public java.lang.String getFirstOptionalFieldDatedValue()
+    @android.support.annotation.Nullable public java.lang.String getFirstOptionalFieldDatedValue()
     {
         return null == this.nonNullOptionalFieldsInstance ? null :
             this.nonNullOptionalFieldsInstance.getDatedFirstValue();

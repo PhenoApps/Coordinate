@@ -37,7 +37,7 @@ public class GridModelTest extends java.lang.Object
             final java.lang.String person = "person";
             gridModel = new org.wheatgenetics.coordinate.model.GridModel(
                 templateId,0, person,null);
-            org.junit.Assert.assertTrue(person.equals(gridModel.getPerson()));
+            org.junit.Assert.assertEquals(person, gridModel.getPerson());
         }
         org.junit.Assert.assertEquals(templateId, gridModel.getTemplateId());
     }
@@ -88,7 +88,7 @@ public class GridModelTest extends java.lang.Object
             final java.lang.String person = "abc";
             gridModel = new org.wheatgenetics.coordinate.model.GridModel(1,1,
                 0, person,0,0,null, timestamp);
-            org.junit.Assert.assertTrue(person.equals(gridModel.getPerson()));
+            org.junit.Assert.assertEquals(person, gridModel.getPerson());
         }
         org.junit.Assert.assertEquals(timestamp, gridModel.getTimestamp());
     }

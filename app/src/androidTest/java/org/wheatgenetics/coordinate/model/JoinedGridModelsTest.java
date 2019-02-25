@@ -2,11 +2,14 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
+ *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
@@ -49,8 +52,8 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* templateTimestamp            => */333,
 
                     /* entryModels                  => */null);
-            org.junit.Assert.assertTrue(joinedGridModels.add(joinedGridModel)          );
-            org.junit.Assert.assertTrue(joinedGridModel.equals(joinedGridModels.get(0)));
+            org.junit.Assert.assertTrue  (joinedGridModels.add(joinedGridModel)   );
+            org.junit.Assert.assertEquals(joinedGridModel, joinedGridModels.get(0));
         }
         org.junit.Assert.assertEquals(1, joinedGridModels.size());
     }
@@ -110,15 +113,18 @@ public class JoinedGridModelsTest extends java.lang.Object
         class Processor extends java.lang.Object
         implements org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         {
-            private final long gridId;
+            @android.support.annotation.IntRange(from = 1) private final long gridId;
 
-            private Processor(final long gridId) { super(); this.gridId = gridId; }
+            private Processor(
+            @java.lang.SuppressWarnings         ({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1              ) final long gridId)
+            { super(); this.gridId = gridId; }
 
             @java.lang.Override public void process(
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
             {
-                assert null != joinedGridModel;
-                org.junit.Assert.assertEquals(this.gridId, joinedGridModel.getId());
+                org.junit.Assert.assertNotNull(joinedGridModel                     );
+                org.junit.Assert.assertEquals (this.gridId, joinedGridModel.getId());
             }
         }
         final Processor processor;
@@ -190,7 +196,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* cols                         => */ cols,
                     /* generatedExcludedCellsAmount => */0,
                     /* initialExcludedCells         => */null,
-                    /* excludedRows                 => */ excludedRows.json(),
+                    /* excludedRows                 => */ excludedRows.json(),          // Not null.
                     /* excludedCols                 => */null,
                     /* colNumbering                 => */1,
                     /* rowNumbering                 => */0,
@@ -202,7 +208,12 @@ public class JoinedGridModelsTest extends java.lang.Object
             }
             org.junit.Assert.assertTrue(joinedGridModels.add(joinedGridModel));
         }
-        org.junit.Assert.assertEquals(cols, joinedGridModels.excludedCells(rows, cols).size());
+        {
+            final org.wheatgenetics.coordinate.model.Cells excludedCells =
+                joinedGridModels.excludedCells(rows, cols);
+            org.junit.Assert.assertNotNull(excludedCells             );
+            org.junit.Assert.assertEquals (cols, excludedCells.size());
+        }
 
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
@@ -227,7 +238,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* initialExcludedCells         => */null,
                     /* excludedRows                 => */null,
-                    /* excludedCols                 => */ excludedCols.json(),
+                    /* excludedCols                 => */ excludedCols.json(),          // Not null.
                     /* colNumbering                 => */1,
                     /* rowNumbering                 => */0,
                     /* entryLabel                   => */null,
@@ -238,7 +249,9 @@ public class JoinedGridModelsTest extends java.lang.Object
             }
             org.junit.Assert.assertTrue(joinedGridModels.add(joinedGridModel));
         }
-        org.junit.Assert.assertEquals(5,
-            joinedGridModels.excludedCells(rows, cols).size());
+        final org.wheatgenetics.coordinate.model.Cells excludedCells =
+            joinedGridModels.excludedCells(rows, cols);
+        org.junit.Assert.assertNotNull(excludedCells);
+        org.junit.Assert.assertEquals (rows + cols - 1, excludedCells.size());
     }
 }
