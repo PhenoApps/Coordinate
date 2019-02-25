@@ -4,8 +4,9 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.content.Context
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
+ * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
- * android.support.annotation.RestrictTo.Scope.SUBCLASSES
  *
  * org.wheatgenetics.androidlibrary.RequestDir
  *
@@ -24,8 +25,8 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     {
         private final java.lang.String exportFileName;
 
-        AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String exportFileName)
+        AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        final java.io.File exportFile, final java.lang.String exportFileName)
         { super(context, exportFile); this.exportFileName = exportFileName; }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
@@ -51,15 +52,16 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
 
     // region Fields
     private final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels;
-    private final android.content.Context                             context         ;
-    private final org.wheatgenetics.androidlibrary.RequestDir         exportDir       ;
+    @android.support.annotation.NonNull private final android.content.Context context;
+                                        private final org.wheatgenetics.androidlibrary.RequestDir
+                                            exportDir;
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     ProjectExporter(
     final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
-    final android.content.Context                             context         ,
-    final org.wheatgenetics.androidlibrary.RequestDir         exportDir       )
+    @android.support.annotation.NonNull final android.content.Context                     context  ,
+                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir)
     {
         super();
 
@@ -74,7 +76,8 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     { return this.joinedGridModels; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.content.Context getContext() { return this.context; }
+    @android.support.annotation.NonNull android.content.Context getContext()
+    { return this.context; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.androidlibrary.RequestDir getExportDir() { return this.exportDir; }
@@ -82,7 +85,7 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     void unableToCreateFileAlert(final java.lang.String exportFileName)
     {
-        if (null != this.context) org.wheatgenetics.coordinate.Utils.alert(
+        org.wheatgenetics.coordinate.Utils.alert(
             /* context => */ this.context                                           ,
             /* title   => */ org.wheatgenetics.coordinate.R.string.ExporterFailTitle,
             /* message => */ java.lang.String.format(this.context.getString(

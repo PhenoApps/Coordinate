@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.content.Context
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -27,23 +28,26 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
         // region Fields
-        private final java.lang.String                                       exportFileName;
-        private final org.wheatgenetics.coordinate.model.GridExporter.Helper helper        ;
+                                            private final java.lang.String exportFileName;
+        @android.support.annotation.NonNull private final
+            org.wheatgenetics.coordinate.model.GridExporter.Helper helper;
         // endregion
 
-        private void deleteGrid() { assert null != this.helper; this.helper.deleteGrid(); }
+        private void deleteGrid() { this.helper.deleteGrid(); }
 
-        private AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String exportFileName,
-        final org.wheatgenetics.coordinate.model.GridExporter.Helper helper)
+        private AsyncTask(
+        @android.support.annotation.NonNull final android.content.Context context       ,
+                                            final java.io.File            exportFile    ,
+                                            final java.lang.String        exportFileName,
+        @android.support.annotation.NonNull final
+            org.wheatgenetics.coordinate.model.GridExporter.Helper helper)
         { super(context, exportFile); this.exportFileName = exportFileName; this.helper = helper; }
 
         // region Overridden Methods
-        @java.lang.Override @android.support.annotation.RestrictTo(
+        @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        boolean export()
+        @java.lang.Override boolean export()
         {
-            assert null != this.helper;
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                 this.helper.getJoinedGridModel();
 
@@ -99,11 +103,13 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     }
     // endregion
 
-    private final org.wheatgenetics.coordinate.model.GridExporter.AsyncTask asyncTask;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.GridExporter.AsyncTask asyncTask;
 
-    public GridExporter(final android.content.Context context, final java.io.File exportFile,
-    final java.lang.String exportFileName,
-    final org.wheatgenetics.coordinate.model.GridExporter.Helper helper)
+    public GridExporter(@android.support.annotation.NonNull final android.content.Context context,
+    final java.io.File exportFile, final java.lang.String exportFileName,
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
+        helper)
     {
         super();
         this.asyncTask = new org.wheatgenetics.coordinate.model.GridExporter.AsyncTask(

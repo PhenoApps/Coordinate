@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -23,8 +24,8 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     {
         private final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels;
 
-        private AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String                                   exportFileName   ,
+        private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        final java.io.File exportFile, final java.lang.String exportFileName,
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels)
         { super(context, exportFile, exportFileName); this.joinedGridModels = joinedGridModels; }
 
@@ -72,16 +73,16 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     }
 
     // region Fields
-    private final java.lang.String exportFileName;
-    private       org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask
+    @android.support.annotation.NonNull private final java.lang.String exportFileName;
+    private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask
         asyncTask = null;
     // endregion
 
     public EntireProjectProjectExporter(
     final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
-    final android.content.Context                             context         ,
-    final org.wheatgenetics.androidlibrary.RequestDir         exportDir       ,
-    final java.lang.String                                    exportFileName  )
+    @android.support.annotation.NonNull final android.content.Context                     context  ,
+                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir,
+                                        final java.lang.String exportFileName)
     { super(joinedGridModels, context, exportDir); this.exportFileName = exportFileName + ".csv"; }
 
     // region Overridden Methods

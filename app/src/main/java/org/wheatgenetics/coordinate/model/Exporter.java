@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.model;
  * android.content.Intent
  * android.net.Uri
  * android.os.AsyncTask
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  * android.support.annotation.StringRes
@@ -29,9 +31,10 @@ abstract class Exporter extends java.lang.Object
     implements android.content.DialogInterface.OnCancelListener
     {
         // region Fields
-        private final android.content.Context                         context       ;
-        private final org.wheatgenetics.androidlibrary.ProgressDialog progressDialog;
-        private final java.io.File                                    exportFile    ;
+        @android.support.annotation.NonNull private final android.content.Context context;
+        @android.support.annotation.NonNull
+            private final org.wheatgenetics.androidlibrary.ProgressDialog progressDialog;
+        private final java.io.File exportFile;
 
         private java.lang.String message = null;
         // endregion
@@ -51,7 +54,8 @@ abstract class Exporter extends java.lang.Object
 
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        AsyncTask(final android.content.Context context, final java.io.File exportFile)
+        AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        final java.io.File exportFile)
         {
             super();
 
@@ -123,7 +127,7 @@ abstract class Exporter extends java.lang.Object
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
         java.lang.String getString(@android.support.annotation.StringRes final int resId)
-        { assert null != this.context; return this.context.getString(resId); }
+        { return this.context.getString(resId); }
 
         void cancel() { this.cancel(/* mayInterruptIfRunning => */true); }
         // endregion
@@ -132,7 +136,8 @@ abstract class Exporter extends java.lang.Object
         // region export() Subclass Package Methods
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        java.io.File getExportFile() { return this.exportFile; }
+        @android.support.annotation.Nullable java.io.File getExportFile()
+        { return this.exportFile; }
 
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -158,7 +163,6 @@ abstract class Exporter extends java.lang.Object
                     android.net.Uri.parse(this.exportFile.getAbsolutePath()));
                 intent.setType("text/plain");
 
-                assert null != this.context;
                 this.context.startActivity(android.content.Intent.createChooser(intent,
                     this.getString(org.wheatgenetics.coordinate.R.string.ExporterShareTitle)));
             }
@@ -169,7 +173,8 @@ abstract class Exporter extends java.lang.Object
         // region GridExporter.AsyncTask Package Method
         @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        void alert(@android.support.annotation.StringRes final int message,
+        void alert(@java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.StringRes final int message,
         final java.lang.Runnable yesRunnable)
         {
             org.wheatgenetics.coordinate.Utils.alert(this.context,

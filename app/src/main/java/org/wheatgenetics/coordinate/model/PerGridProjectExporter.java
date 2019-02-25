@@ -2,7 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.content.Context context
+ * android.content.Context
+ * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -23,19 +25,22 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
     private static class AsyncTask
     extends org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
     {
-        @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-        private interface Client { public abstract void execute(); }
+        @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) private interface Client
+        { public abstract void execute(); }
 
         // region Fields
-        private final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
-        private final org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client
-            client;
+        @android.support.annotation.NonNull private final
+            org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+        @android.support.annotation.NonNull private final
+            org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client;
         // endregion
 
-        private AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final java.lang.String                                   exportFileName,
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel,
-        final org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
+        private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        final java.io.File exportFile, final java.lang.String exportFileName,
+        @android.support.annotation.NonNull
+            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel,
+        @android.support.annotation.NonNull
+            final org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
         {
             super(context, exportFile, exportFileName);
             this.joinedGridModel = joinedGridModel; this.client = client;
@@ -44,7 +49,6 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         // region Overridden Methods
         @java.lang.Override protected void onPostExecute(final java.lang.Boolean result)
         {
-            assert null != this.joinedGridModel;
             super.onPostExecute(this.setMessage(result, java.lang.String.format(
                 this.getString(org.wheatgenetics.coordinate
                     .R.string.PerGridProjectExporterAsyncTaskFailedMessage),
@@ -56,50 +60,44 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         boolean export()
         {
             boolean success;
-            if (null == this.joinedGridModel)
-                success = false;
-            else
+            try
             {
-                try
-                {
-                    if (this.joinedGridModel.export(                   // throws java.io.IOException
-                    /* exportFile     => */ this.getExportFile    (),
-                    /* exportFileName => */ this.getExportFileName(),
-                    /* helper         => */this))
-                        { this.makeExportFileDiscoverable(); success = true; }
-                    else
-                        success = false;
-                }
-                catch (final java.io.IOException e)
-                {
-                    e.printStackTrace();
-                    this.setMessage(
-                        org.wheatgenetics.coordinate.R.string.GridExporterFailedMessage);
+                if (this.joinedGridModel.export(                       // throws java.io.IOException
+                /* exportFile     => */ this.getExportFile    (),
+                /* exportFileName => */ this.getExportFileName(),
+                /* helper         => */this))
+                    { this.makeExportFileDiscoverable(); success = true; }
+                else
                     success = false;
-                }
+            }
+            catch (final java.io.IOException e)
+            {
+                e.printStackTrace();
+                this.setMessage(
+                    org.wheatgenetics.coordinate.R.string.GridExporterFailedMessage);
+                success = false;
             }
             return success;
         }
 
         @java.lang.Override @android.support.annotation.RestrictTo(
             android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        void handleExportSuccess(final java.io.File exportFile)
-        { assert null != this.client; this.client.execute(); }
+        void handleExportSuccess(final java.io.File exportFile) { this.client.execute(); }
         // endregion
     }
 
     // region Fields
     private final java.lang.String exportDirectoryName;
 
-    private @android.support.annotation.IntRange(from = 0) int                  i         = 0   ;
+    @android.support.annotation.IntRange(from = 0) private int                  i         = 0   ;
     private org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask asyncTask = null;
     // endregion
 
     public PerGridProjectExporter(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels   ,
-    final android.content.Context                             context            ,
-    final org.wheatgenetics.androidlibrary.RequestDir         exportDir          ,
-    final java.lang.String                                    exportDirectoryName)
+    final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
+    @android.support.annotation.NonNull final android.content.Context                     context  ,
+                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir,
+                                        final java.lang.String exportDirectoryName)
     { super(joinedGridModels, context, exportDir); this.exportDirectoryName = exportDirectoryName; }
 
     // region Overridden Methods
@@ -126,41 +124,37 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
                     if (null != exportDir)
                     {
                         final android.content.Context context = this.getContext();
-                        if (null != context)
+                        final org.wheatgenetics.coordinate.model.JoinedGridModel
+                            joinedGridModel = joinedGridModels.get(this.i++);
+                        if (null != joinedGridModel)
                         {
-                            final org.wheatgenetics.coordinate.model.JoinedGridModel
-                                joinedGridModel = joinedGridModels.get(this.i++);
-                            if (null != joinedGridModel)
+                            @java.lang.SuppressWarnings({"DefaultLocale"})
+                            final java.lang.String exportFileName = java.lang.String.format(
+                                "grid%d_%s.csv", joinedGridModel.getId(), this.exportDirectoryName);
+                            try
                             {
-                                @java.lang.SuppressWarnings({"DefaultLocale"})
-                                final java.lang.String exportFileName = java.lang.String.format(
-                                    "grid%d_%s.csv",
-                                    joinedGridModel.getId(), this.exportDirectoryName);
-                                try
-                                {
-                                    this.asyncTask = new org.wheatgenetics.coordinate.model
-                                        .PerGridProjectExporter.AsyncTask(
-                                            /* context    => */ context,
-                                            /* exportFile => */ exportDir.createNewFile( // throws
-                                                /* fileName => */ exportFileName),       //  IOE, PE
-                                            /* exportFileName  => */ exportFileName ,
-                                            /* joinedGridModel => */ joinedGridModel,
-                                            /* client => */ new org.wheatgenetics.coordinate.model
-                                                .PerGridProjectExporter.AsyncTask.Client()
+                                this.asyncTask = new org.wheatgenetics.coordinate.model
+                                    .PerGridProjectExporter.AsyncTask(
+                                        /* context    => */ context,
+                                        /* exportFile => */ exportDir.createNewFile(     // throws
+                                            /* fileName => */ exportFileName),           //  IOE, PE
+                                        /* exportFileName  => */ exportFileName ,
+                                        /* joinedGridModel => */ joinedGridModel,
+                                        /* client => */ new org.wheatgenetics.coordinate.model
+                                            .PerGridProjectExporter.AsyncTask.Client()
+                                            {
+                                                @java.lang.Override public void execute()
                                                 {
-                                                    @java.lang.Override public void execute()
-                                                    {
-                                                        org.wheatgenetics.coordinate.model
-                                                            .PerGridProjectExporter.this
-                                                            .execute();                 // recursion
-                                                    }
-                                                });
-                                    this.asyncTask.execute();
-                                }
-                                catch (final java.io.IOException |
-                                org.wheatgenetics.javalib.Dir.PermissionException e)
-                                { this.unableToCreateFileAlert(exportFileName); }
+                                                    org.wheatgenetics.coordinate.model
+                                                        .PerGridProjectExporter.this
+                                                        .execute();                     // recursion
+                                                }
+                                            });
+                                this.asyncTask.execute();
                             }
+                            catch (final java.io.IOException |
+                            org.wheatgenetics.javalib.Dir.PermissionException e)
+                            { this.unableToCreateFileAlert(exportFileName); }
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.NonNull
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -16,8 +17,11 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
     {
         private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-        private AsyncTask(final android.content.Context context, final java.io.File exportFile,
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+        private AsyncTask(
+        @android.support.annotation.NonNull final android.content.Context context   ,
+                                            final java.io.File            exportFile,
+                                            final org.wheatgenetics.coordinate.model.TemplateModel
+                                                templateModel)
         { super(context, exportFile); this.templateModel = templateModel; }
 
         // region Overridden Methods
@@ -30,11 +34,9 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
                 success = false;
             else
                 if (this.templateModel.export(this.getExportFile()))
-                {
-                    this.makeExportFileDiscoverable();
-                    success = true;
-                }
-                else success = false;
+                    { this.makeExportFileDiscoverable(); success = true; }
+                else
+                    success = false;
             return success;
         }
 
@@ -44,10 +46,14 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
         // endregion
     }
 
-    private final org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask asyncTask;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask asyncTask;
 
-    public TemplateExporter(final android.content.Context context, final java.io.File exportFile,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    public TemplateExporter(
+    @android.support.annotation.NonNull final android.content.Context context   ,
+                                        final java.io.File            exportFile,
+                                        final org.wheatgenetics.coordinate.model.TemplateModel
+                                            templateModel)
     {
         super();
         this.asyncTask = new org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask(
