@@ -11,7 +11,7 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectModelsTest extends java.lang.Object
 {
-    @org.junit.Test() public void addAndSizeAndGetWork()
+    @org.junit.Test() public void addAndGetAndSizeWork()
     {
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
             new org.wheatgenetics.coordinate.model.ProjectModels();

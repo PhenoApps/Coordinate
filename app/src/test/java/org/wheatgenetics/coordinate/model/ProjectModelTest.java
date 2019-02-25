@@ -13,8 +13,8 @@ public class ProjectModelTest extends java.lang.Object
     @org.junit.Test() public void secondConstructorAndGetTitleSucceed()
     {
         final java.lang.String testTitle = "testTitle";
-        org.junit.Assert.assertTrue(testTitle.equals(
-            new org.wheatgenetics.coordinate.model.ProjectModel(testTitle).getTitle()));
+        org.junit.Assert.assertEquals(testTitle,
+            new org.wheatgenetics.coordinate.model.ProjectModel(testTitle).getTitle());
     }
 
     @org.junit.Test() public void thirdConstructorAndGetIdSucceed()
