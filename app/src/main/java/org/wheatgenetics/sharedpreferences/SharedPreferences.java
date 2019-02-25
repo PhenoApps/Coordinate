@@ -16,10 +16,12 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     private static final java.lang.String GRID_ID = "CurrentGrid", PROJECT_ID = "CurrentProject";
 
     // region Private Methods
-    private void uncheckedSetGridId(final long gridId)
+    private void uncheckedSetGridId(
+    @android.support.annotation.IntRange(from = -1) final long gridId)
     { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID, gridId); }
 
-    private void uncheckedSetProjectId(final long projectId)
+    private void uncheckedSetProjectId(
+    @android.support.annotation.IntRange(from = -1) final long projectId)
     { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID, projectId); }
     // endregion
 
