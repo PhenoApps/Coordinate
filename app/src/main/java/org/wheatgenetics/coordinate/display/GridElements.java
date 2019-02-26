@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.display;
  * Uses:
  * android.app.Activity
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -20,18 +21,19 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
     private int activeRow, activeCol;
 
-    GridElements(final android.app.Activity activity,
+    GridElements(@android.support.annotation.NonNull final android.app.Activity activity,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols,
-    final int activeRow, final int activeCol,
-    final org.wheatgenetics.coordinate.display.GridElement.Handler handler)
+    final int activeRow, final int activeCol, @android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.display.GridElement.Handler handler)
     {
         super(activity, handler);                                   // TODO: Should handler be this?
         this.allocate(rows, cols, activeRow, activeCol);
     }
 
     // region Overridden Methods
-    @java.lang.Override protected org.wheatgenetics.coordinate.Element makeElement(
+    @java.lang.Override @android.support.annotation.NonNull
+    protected org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
     {
@@ -48,25 +50,25 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     { super.clear(); this.activeRow = this.activeCol = -1; }
 
     // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Method
-    @java.lang.Override
-    public void activate(final org.wheatgenetics.coordinate.display.GridElement gridElement)
+    @java.lang.Override public void activate(@android.support.annotation.NonNull
+    final org.wheatgenetics.coordinate.display.GridElement gridElement)
     {
-        if (null != gridElement)
+        final int newActiveRow = gridElement.getRow(), newActiveCol = gridElement.getCol();
+        if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
         {
-            final int newActiveRow = gridElement.getRow(), newActiveCol = gridElement.getCol();
-            if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
+            if (this.activeRow > -1 && this.activeCol > -1)
             {
-                if (this.activeRow > -1 && this.activeCol > -1)
-                {
+                final org.wheatgenetics.coordinate.Element[][] elementArray =
+                    this.getElementArray();
+                if (null != elementArray)
                     ((org.wheatgenetics.coordinate.display.GridElement)                    // TODO:?
-                        this.getElementArray()[this.activeRow][this.activeCol]).inactivate();
-                }
-
-                this.activeRow = newActiveRow; this.activeCol = newActiveCol;
-
-                ((org.wheatgenetics.coordinate.display.GridElement.Handler)
-                    this.getHandler()).activate(gridElement);
+                        elementArray[this.activeRow][this.activeCol]).inactivate();
             }
+
+            this.activeRow = newActiveRow; this.activeCol = newActiveCol;
+
+            ((org.wheatgenetics.coordinate.display.GridElement.Handler)
+                this.getHandler()).activate(gridElement);
         }
     }
     // endregion

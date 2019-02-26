@@ -1,12 +1,15 @@
+
 package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
  * android.content.Context
+ * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnLongClickListener
  * android.widget.TextView
  *
+ * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -21,9 +24,12 @@ implements android.view.View.OnLongClickListener
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler extends org.wheatgenetics.coordinate.Element.Handler
-    { public abstract void activate(org.wheatgenetics.coordinate.display.GridElement gridElement); }
+    {
+        public abstract void activate(@android.support.annotation.NonNull
+            org.wheatgenetics.coordinate.display.GridElement gridElement);
+    }
 
-    private final android.content.Context context;
+    @android.support.annotation.NonNull private final android.content.Context context;
 
     // region Private Methods
     private void activate()
@@ -35,18 +41,24 @@ implements android.view.View.OnLongClickListener
 
     private void exclude()
     {
-        this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-            (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
+        if (this.elementModelIsNotNull())
+            // noinspection ConstantConditions
+            this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
+                (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
         this.clearOnClickListener(); this.toggle();
     }
     // endregion
 
     GridElement(
-    final android.content.Context                                  context   ,
-    final org.wheatgenetics.coordinate.model.EntryModel            entryModel,
-    final android.widget.TextView                                  textView  ,
-    final org.wheatgenetics.coordinate.display.GridElement.Handler handler   ,
-          int activeRow,                                       int activeCol )
+    @android.support.annotation.NonNull final android.content.Context                       context,
+                                        final org.wheatgenetics.coordinate.model.EntryModel
+                                            entryModel,
+    @android.support.annotation.NonNull final android.widget.TextView
+                                            textView,
+    @android.support.annotation.NonNull final
+                                            org.wheatgenetics.coordinate.display.GridElement.Handler
+                                                handler,
+                                            int activeRow, int activeCol )
     {
         super(entryModel, textView, handler);
         this.context = context;
@@ -69,8 +81,10 @@ implements android.view.View.OnLongClickListener
 
     @java.lang.Override protected void setBackgroundResource()
     {
-        this.setBackgroundResource(((org.wheatgenetics.coordinate.model.EntryModel)
-            this.elementModel).backgroundResource());
+        if (this.elementModelIsNotNull())
+            // noinspection ConstantConditions
+            this.setBackgroundResource(((org.wheatgenetics.coordinate.model.EntryModel)
+                this.elementModel).backgroundResource());
     }
 
     // region android.view.View.OnLongClickListener Overridden Method
@@ -88,7 +102,6 @@ implements android.view.View.OnLongClickListener
                     this.exclude();
                 else
                 {
-                    assert null != this.context;
                     org.wheatgenetics.coordinate.Utils.confirm(
                         /* context => */ this.context                                             ,
                         /* title   => */ org.wheatgenetics.coordinate.R.string.ElementConfirmTitle,
@@ -105,8 +118,9 @@ implements android.view.View.OnLongClickListener
             }
             else
             {
+                // noinspection ConstantConditions
                 this.elementModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel);
+                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) elementModel);
                 this.setOnClickListener(); this.toggle();
             }
         }

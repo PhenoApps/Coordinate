@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
+ *
  * org.junit.Assert
  * org.junit.Test
  *
@@ -28,14 +30,21 @@ public class ElementsTest extends java.lang.Object
             super(null,null);
         }
 
-        @java.lang.Override protected org.wheatgenetics.coordinate.Element makeElement(
+        @java.lang.Override @android.support.annotation.NonNull
+        protected org.wheatgenetics.coordinate.Element makeElement(
         final org.wheatgenetics.coordinate.model.ElementModel elementModel,
-        final android.widget.TextView                         textView    ) { return null; }
+        final android.widget.TextView                         textView    )
+        {
+            // noinspection ConstantConditions
+            return null;
+        }
     }
 
     // region Protected Method Tests
     @org.junit.Test() public void getActivityWorks()
     {
+        //
+        // noinspection ConstantConditions
         org.junit.Assert.assertNull(
             new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getActivity());
     }

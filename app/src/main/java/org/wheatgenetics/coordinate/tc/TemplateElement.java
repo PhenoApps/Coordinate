@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.tc;
 
 /**
  * Uses:
+ * android.support.annotation.NonNull
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.Cell
@@ -17,9 +18,10 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     TemplateElement(
-    final org.wheatgenetics.coordinate.model.Cell                 cell    ,
-    final android.widget.TextView                                 textView,
-    final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler )
+                                        final org.wheatgenetics.coordinate.model.Cell cell    ,
+    @android.support.annotation.NonNull final android.widget.TextView                 textView,
+    @android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler )
     { super(cell, textView, handler); this.setBackgroundResource(); this.setOnClickListener(); }
 
     // region Overridden Methods
