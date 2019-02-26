@@ -35,9 +35,10 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     }
 
     // region Fields
-    protected org.wheatgenetics.coordinate.DisplayFragment.Handler handler    ;
-    private   android.widget.TableLayout                           tableLayout;
-    protected org.wheatgenetics.coordinate.Elements                elements   ;
+    @android.support.annotation.Nullable
+        protected org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
+    @android.support.annotation.Nullable private   android.widget.TableLayout tableLayout;
+    @android.support.annotation.Nullable protected org.wheatgenetics.coordinate.Elements elements;
     // endregion
 
     // region Protected Methods
@@ -51,7 +52,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { assert null != this.handler; this.handler.toggle(elementModel); }
+    { if (null != this.handler) this.handler.toggle(elementModel); }
     // endregion
 
     // region Overridden Methods
@@ -59,11 +60,8 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     {
         super.onAttach(context);
 
-        if (!this.setHandler(context))
-        {
-            assert null != context; throw new java.lang.RuntimeException(context.toString() +
-                " must implement Handler");
-        }
+        if (!this.setHandler(context)) throw new java.lang.RuntimeException(
+            null == context ? "context" : context.toString() + " must implement Handler");
     }
 
     @java.lang.Override public android.view.View onCreateView(
@@ -81,8 +79,11 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
         super.onActivityCreated(savedInstanceState);
 
         final android.app.Activity activity = this.getActivity();
-        assert null != activity; this.tableLayout =
-            activity.findViewById(org.wheatgenetics.coordinate.R.id.displayTableLayout);
+        if (null == activity)
+            this.tableLayout = null;
+        else
+            this.tableLayout =
+                activity.findViewById(org.wheatgenetics.coordinate.R.id.displayTableLayout);
 
         this.populate();
     }
@@ -93,7 +94,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     public void populate()
     {
         if (null != this.elements) this.elements.clear();
-        assert null != this.tableLayout; this.tableLayout.removeAllViews();
+        if (null == this.tableLayout) return; else this.tableLayout.removeAllViews();
 
         final org.wheatgenetics.coordinate.model.DisplayModel displayModel =
             null == this.handler ? null : this.handler.getDisplayModel();
@@ -103,7 +104,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
             final android.view.LayoutInflater layoutInflater                  ;
             {
                 final android.app.Activity activity = this.getActivity();
-                assert null != activity; layoutInflater = activity.getLayoutInflater();
+                if (null == activity) return; else layoutInflater = activity.getLayoutInflater();
             }
 
             // region Populate header row.
@@ -115,7 +116,8 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                 {
                     final boolean colNumbering = displayModel.getColNumbering();
                           byte    offsetFromA  = 0                             ;
-                    assert null != tableRow; for (int col = 0; col <= lastCol; col++)
+                    if (null == tableRow) return;
+                    for (int col = 0; col <= lastCol; col++)
                     {
                         @java.lang.SuppressWarnings({"InflateParams"})
                         final android.widget.LinearLayout tableCell =
@@ -123,11 +125,11 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                                 org.wheatgenetics.coordinate.R.layout.top_display_table_cell,
                                 null);
                         {
-                            assert null != tableCell;
+                            if (null == tableCell) return;
                             final android.widget.TextView textView = tableCell.findViewById(
                                 org.wheatgenetics.coordinate.R.id.topDisplayTextView);
 
-                            assert null != textView;
+                            if (null == textView) return;
                             textView.setText(0 == col ? "" : colNumbering ? "" + col :
                                 org.wheatgenetics.coordinate.Utils.convert(offsetFromA++));
                         }
@@ -140,7 +142,7 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
 
             // region Populate body rows.
             final int lastRow = displayModel.getRows();
-            this.allocateElements(lastRow, lastCol); assert null != this.elements;
+            this.allocateElements(lastRow, lastCol); if (null == this.elements) return;
 
             final boolean rowNumbering = displayModel.getRowNumbering();
                   byte    offsetFromA  = 0                             ;
@@ -150,7 +152,8 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                 final android.widget.TableRow tableRow =
                     (android.widget.TableRow) layoutInflater.inflate(
                         org.wheatgenetics.coordinate.R.layout.display_table_row,null);
-                assert null != tableRow; for (int col = 0; col <= lastCol; col++)
+                if (null == tableRow) return;
+                for (int col = 0; col <= lastCol; col++)
                     if (0 == col)
                     {
                         @java.lang.SuppressWarnings({"InflateParams"})
@@ -159,11 +162,11 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                                 org.wheatgenetics.coordinate.R.layout.left_display_table_cell,
                                 null);
                         {
-                            assert null != tableCell;
+                            if (null == tableCell) return;
                             final android.widget.TextView textView = tableCell.findViewById(
                                 org.wheatgenetics.coordinate.R.id.leftDisplayTextView);
 
-                            assert null != textView;
+                            if (null == textView) return;
                             textView.setText(rowNumbering ? "" + row :
                                 org.wheatgenetics.coordinate.Utils.convert(offsetFromA++));
                         }

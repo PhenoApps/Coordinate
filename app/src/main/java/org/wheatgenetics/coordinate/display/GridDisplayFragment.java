@@ -2,8 +2,10 @@ package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.Context
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
@@ -37,7 +39,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
                 (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) context;
             success = true;
         }
-        else success = false;
+        else { this.handler = null; success = false; }
 
         return success;
     }
@@ -50,12 +52,19 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
         {
             final org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler handler =
                 (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) this.handler;
-            activeRow = handler.getActiveRow(); activeCol = handler.getActiveCol();
+            if (null == handler)
+                return;
+            else
+                { activeRow = handler.getActiveRow(); activeCol = handler.getActiveCol(); }
         }
 
         if (null == this.elements)
-            this.elements = new org.wheatgenetics.coordinate.display.GridElements(
-                this.getActivity(), lastRow, lastCol, activeRow, activeCol,this);
+        {
+            final android.app.Activity activity = this.getActivity();
+            if (null != activity) this.elements =
+                new org.wheatgenetics.coordinate.display.GridElements(
+                    activity, lastRow, lastCol, activeRow, activeCol,this);
+        }
         else
             ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(
                 lastRow, lastCol, activeRow, activeCol);
@@ -66,12 +75,12 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     { super.toggle(elementModel); }
 
-    @java.lang.Override
-    public void activate(final org.wheatgenetics.coordinate.display.GridElement gridElement)
+    @java.lang.Override public void activate(@android.support.annotation.NonNull
+    final org.wheatgenetics.coordinate.display.GridElement gridElement)
     {
-        assert null != gridElement; assert null != this.handler;
-        ((org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler)
-            this.handler).activate(gridElement.getRow(), gridElement.getCol());
+        if (null != this.handler)
+            ((org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler)
+                this.handler).activate(gridElement.getRow(), gridElement.getCol());
     }
     // endregion
     // endregion
