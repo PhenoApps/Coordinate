@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.pc;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
@@ -14,19 +16,25 @@ package org.wheatgenetics.coordinate.pc;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectCreator extends java.lang.Object
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler { public abstract void handleCreateProjectDone(long projectId); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    {
+        public abstract void handleCreateProjectDone(
+        @android.support.annotation.IntRange(from = 1) long projectId);
+    }
 
     // region Fields
-    private final android.app.Activity                                   activity;
-    private final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler ;
+                                         private final android.app.Activity activity;
+    @android.support.annotation.Nullable private final
+        org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler ;
 
     private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
-        createProjectAlertDialog = null, createAndReturnProjectAlertDialog = null;
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;
+        createProjectAlertDialog = null, createAndReturnProjectAlertDialog = null;      // lazy load
+    private org.wheatgenetics.coordinate.database.ProjectsTable
+        projectsTableInstance = null;                                                   // lazy load
     // endregion
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
