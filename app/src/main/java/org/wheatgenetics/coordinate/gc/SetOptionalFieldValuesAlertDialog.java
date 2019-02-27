@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.gc;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.view.LayoutInflater
  * android.view.View
  * android.view.View.OnClickListener
@@ -27,9 +29,11 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler;
 
-    private java.util.ArrayList<android.widget.EditText>                  editTextArrayList = null;
+    @android.support.annotation.Nullable private java.util.ArrayList<android.widget.EditText>
+        editTextArrayList = null;
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields;
     private boolean                                                          firstCannotBeEmpty   ;
     // endregion
@@ -42,8 +46,8 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
 
         boolean firstWasEmptyWhenItWasNotSupposedToBe = false;
         {
-            final int first = 0;
-            int i = first; assert null != this.handler;
+            final int first = 0    ;
+                  int i     = first;
             for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
             baseOptionalField: this.checkedOptionalFields)
             {
@@ -82,7 +86,8 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     }
 
     SetOptionalFieldValuesAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler)
+    @android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
@@ -93,7 +98,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
             .setCancelNegativeButton();
     }
 
-    void show(final java.lang.String title,
+    void show(final java.lang.String title, @android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
     final boolean                                                          firstCannotBeEmpty   )
     {
@@ -115,8 +120,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
                 final android.view.LayoutInflater layoutInflater = this.layoutInflater();
 
 
-                assert null != checkedOptionalFields;
-                assert null != layoutInflater       ; assert null != linearLayout;
+                assert null != layoutInflater; assert null != linearLayout;
                 for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
                 baseOptionalField: checkedOptionalFields)
                 {
