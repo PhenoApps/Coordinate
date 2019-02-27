@@ -47,7 +47,7 @@ public abstract class Model extends java.lang.Object
             return id;
     }
 
-    public @android.support.annotation.IntRange(from = 1) long getId() { return this.id; }
+    @android.support.annotation.IntRange(from = 1) public long getId() { return this.id; }
 
     public void setId(@android.support.annotation.IntRange(from = 1) final long id)
     { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }

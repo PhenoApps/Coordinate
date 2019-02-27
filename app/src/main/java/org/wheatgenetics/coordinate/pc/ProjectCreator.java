@@ -67,8 +67,8 @@ public class ProjectCreator extends java.lang.Object
     public ProjectCreator(final android.app.Activity activity)
     { super(); this.activity = activity; this.handler = null; }
 
-    public ProjectCreator(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
+    public ProjectCreator(final android.app.Activity activity, @android.support.annotation.Nullable
+        final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
     // endregion
 
