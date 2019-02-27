@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  * android.os.Bundle
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
@@ -21,26 +22,28 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
-        public abstract void handleTemplateCreated(
+        public abstract void handleTemplateCreated(@android.support.annotation.NonNull
             org.wheatgenetics.coordinate.model.TemplateModel templateModel);
     }
 
     // region Fields
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    private final org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler;
+    @android.support.annotation.NonNull             private final
+        org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
-        assignTitleRowsColsAlertDialog = null;
+        assignTitleRowsColsAlertDialog = null;                                          // lazy load
     private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-        setExcludesOptionalFieldsNumberingAlertDialog = null;
+        setExcludesOptionalFieldsNumberingAlertDialog = null;                           // lazy load
     // endregion
 
     public TemplateCreator(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    final org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler)
+    @android.support.annotation.NonNull             final
+        org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
@@ -57,7 +60,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
     @java.lang.Override public void handleSetDone()
-    { assert null != this.handler; this.handler.handleTemplateCreated(this.templateModel); }
+    { this.handler.handleTemplateCreated(this.templateModel); }
     // endregion
     // endregion
 

@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
+ * android.support.annotation.NonNull
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
@@ -15,22 +16,27 @@ package org.wheatgenetics.coordinate.tc;
 class ExcludedRowsOrColsAlertDialog
 extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler { public abstract void excludeRowsOrCols(boolean checkedItems[]); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
+    {
+        public abstract void excludeRowsOrCols(
+            @android.support.annotation.NonNull boolean checkedItems[]);
+    }
 
     // region Fields
-    private final java.lang.String                                                      label  ;
-    private final org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler;
+                                        private final java.lang.String label;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler;
 
     private boolean titleHasBeenSet = false;
     // endregion
 
-    private void excludeRowsOrCols(final boolean checkedItems[])
-    { assert null != this.handler; this.handler.excludeRowsOrCols(checkedItems); }
+    private void excludeRowsOrCols(@android.support.annotation.NonNull final boolean checkedItems[])
+    { this.handler.excludeRowsOrCols(checkedItems); }
 
     ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
     @android.support.annotation.StringRes final int label,
-    final org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
+    @android.support.annotation.NonNull   final
+        org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     void show(final java.lang.String items[], final boolean checkedItems[])

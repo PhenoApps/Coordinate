@@ -21,7 +21,7 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-        setExcludesOptionalFieldsNumberingAlertDialog = null;
+        setExcludesOptionalFieldsNumberingAlertDialog = null;                           // lazy load
     // endregion
 
     public SetExcludesOptionalFieldsNumberingAlertDialogTester(final android.app.Activity activity,

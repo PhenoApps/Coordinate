@@ -15,7 +15,8 @@ public class SetNumberingAlertDialogTester extends java.lang.Object
     private final android.app.Activity                             activity     ;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog setNumberingAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog
+        setNumberingAlertDialog = null;                                                 // lazy load
     // endregion
 
     public SetNumberingAlertDialogTester(final android.app.Activity activity,

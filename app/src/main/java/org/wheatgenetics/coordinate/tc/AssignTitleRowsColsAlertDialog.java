@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
@@ -17,14 +19,15 @@ package org.wheatgenetics.coordinate.tc;
 class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     // region Types
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler { public abstract void handleAssignDone(); }
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
+    { public abstract void handleAssignDone(); }
 
     private static class Unspecified extends java.lang.Exception {}
     // endregion
 
     // region Fields
-    private final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler;
 
     private android.widget.EditText titleEditText, rowsEditText, colsEditText;
     private org.wheatgenetics.coordinate.model.TemplateModel    templateModel;
@@ -32,10 +35,12 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
 
     // region Private Methods
     // region convert() Private Methods
-    private static java.lang.String convert(final int integer)
+    private static java.lang.String convert(
+    @android.support.annotation.IntRange(from = 1) final int integer)
     { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
 
-    private static int convert(final android.widget.EditText editText)
+    @android.support.annotation.IntRange(from = 1) private static int convert(
+    final android.widget.EditText editText)
     throws org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified
     {
         final java.lang.String text = org.wheatgenetics.androidlibrary.Utils.getText(editText);
@@ -74,7 +79,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
                     assert null != this.templateModel; this.templateModel.assign(
                         /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();
-                    assert null != this.handler; this.handler.handleAssignDone();
+                    this.handler.handleAssignDone();
                 }
                 catch (
                 final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified e)
@@ -93,7 +98,8 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
     // endregion
 
     AssignTitleRowsColsAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler)
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()

@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.Intent
  * android.os.Bundle
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.v7.app.AppCompatActivity
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -24,22 +25,24 @@ package org.wheatgenetics.coordinate.tc;
 public class ExcludeCellsActivity extends android.support.v7.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 {
-    @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-    private static class DisplayModel extends java.lang.Object
-    implements org.wheatgenetics.coordinate.model.DisplayModel
+    @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) private static class DisplayModel
+    extends java.lang.Object implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         // region Fields
-        private final int     rows        , cols        ;
-        private final boolean colNumbering, rowNumbering;
+        @android.support.annotation.IntRange(from = 1) private final int     rows, cols;
+                                                       private final boolean
+                                                           colNumbering, rowNumbering;
         // endregion
 
-        private DisplayModel(final int rows, final int cols, final android.os.Bundle bundle)
+        private DisplayModel(
+        @android.support.annotation.IntRange(from = 1) final int               rows  ,
+        @android.support.annotation.IntRange(from = 1) final int               cols  ,
+        @android.support.annotation.NonNull            final android.os.Bundle bundle)
         {
             super();
 
             this.rows = rows; this.cols = cols;
 
-            assert null != bundle;
             this.colNumbering = bundle.getBoolean(
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY);
             this.rowNumbering = bundle.getBoolean(
@@ -47,14 +50,18 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         }
 
         // region Overridden Methods
-        @java.lang.Override public int     getRows        () { return this.rows        ; }
-        @java.lang.Override public int     getCols        () { return this.cols        ; }
+        @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRows()
+        { return this.rows; }
+
+        @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getCols()
+        { return this.cols; }
+
         @java.lang.Override public boolean getColNumbering() { return this.colNumbering; }
         @java.lang.Override public boolean getRowNumbering() { return this.rowNumbering; }
 
         @java.lang.Override public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-        @android.support.annotation.IntRange(from = 1) int row,
-        @android.support.annotation.IntRange(from = 1) int col)
+        @android.support.annotation.IntRange(from = 1) final int row,
+        @android.support.annotation.IntRange(from = 1) final int col)
         { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
         // endregion
     }
@@ -79,7 +86,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         return null == this.excludedCols ? false : this.excludedCols.contains(col);
     }
 
-    private boolean isExcludedCell(final org.wheatgenetics.coordinate.model.Cell cell)
+    private boolean isExcludedCell(
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
     {
         // noinspection SimplifiableConditionalExpression
         return null == this.excludedCells ? false : this.excludedCells.contains(cell);
@@ -96,7 +104,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         final android.os.Bundle bundle = this.getIntent().getExtras();
         assert null != bundle;
 
-        final int
+        @android.support.annotation.IntRange(from = 1) final int
             rows = bundle.getInt(
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY),
             cols = bundle.getInt(
@@ -130,6 +138,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 
     @java.lang.Override public void onBackPressed()
     {
+        if (null != this.excludedCells)
         {
             final android.content.Intent intent = new android.content.Intent();
             {
@@ -156,10 +165,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         {
             final org.wheatgenetics.coordinate.model.Cell cell =
                 (org.wheatgenetics.coordinate.model.Cell) elementModel;
-            if (this.isExcludedCell(cell))
-                this.excludedCells.remove(cell);
-            else
-                this.excludedCells.add(cell);
+            if (null != this.excludedCells)
+                if (this.isExcludedCell(cell))
+                    this.excludedCells.remove(cell);
+                else
+                    this.excludedCells.add(cell);
         }
     }
 
@@ -170,11 +180,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         if (this.isExcludedRow(cell.getRowValue()))
             return true;
         else
-            // noinspection SimplifiableIfStatement
-            if (this.isExcludedCol(cell.getColValue()))
-                return true;
-            else
-                return this.isExcludedCell(cell);
+            // noinspection SimplifiableConditionalExpression
+            return this.isExcludedCol(cell.getColValue()) ? true : this.isExcludedCell(cell);
     }
     // endregion
     // endregion

@@ -18,7 +18,8 @@ public class ExcludeAlertDialogTester extends java.lang.Object
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog excludeAlertDialog = null;
+    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
+        excludeAlertDialog = null;                                                      // lazy load
     // endregion
 
     public ExcludeAlertDialogTester(final android.app.Activity activity,

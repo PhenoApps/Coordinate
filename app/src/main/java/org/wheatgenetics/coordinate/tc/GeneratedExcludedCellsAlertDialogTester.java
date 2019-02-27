@@ -16,7 +16,7 @@ public class GeneratedExcludedCellsAlertDialogTester extends java.lang.Object
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
-        generatedExcludedCellsAlertDialog = null;
+        generatedExcludedCellsAlertDialog = null;                                       // lazy load
     // endregion
 
     public GeneratedExcludedCellsAlertDialogTester(final android.app.Activity activity,

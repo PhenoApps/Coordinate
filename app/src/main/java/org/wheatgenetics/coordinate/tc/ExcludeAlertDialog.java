@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.Intent
+ * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -27,19 +29,18 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
-        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;
-    private android.content.Intent intentInstance = null;
+        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;                   // lazy load
+    private android.content.Intent intentInstance = null;                               // lazy load
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
-        generatedExcludedCellsAlertDialog = null;
+        generatedExcludedCellsAlertDialog = null;                                       // lazy load
     // endregion
 
     // region Private Methods
     // region exclude(Rows|Cols)() Private Methods
-    private void excludeRows(final boolean checkedItems[])
+    private void excludeRows(@android.support.annotation.NonNull final boolean checkedItems[])
     {
         int i = 1;
         assert null != this.templateModel; this.templateModel.clearExcludedRows();
-        assert null != checkedItems      ;
         for (final boolean checkedItem: checkedItems)
         {
             if (checkedItem) this.templateModel.addExcludedRow(i);
@@ -47,11 +48,10 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         }
     }
 
-    private void excludeCols(final boolean checkedItems[])
+    private void excludeCols(@android.support.annotation.NonNull final boolean checkedItems[])
     {
         int i = 1;
         assert null != this.templateModel; this.templateModel.clearExcludedCols();
-        assert null != checkedItems      ;
         for (final boolean checkedItem: checkedItems)
         {
             if (checkedItem) this.templateModel.addExcludedCol(i);
@@ -60,7 +60,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     }
     // endregion
 
-    private android.content.Intent intent()
+    @android.support.annotation.NonNull private android.content.Intent intent()
     {
         if (null == this.intentInstance) this.intentInstance = new android.content.Intent(
             this.activity(), org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.class);
@@ -71,7 +71,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         return this.intentInstance;
     }
 
-    private void select(final int which)
+    private void select(@android.support.annotation.IntRange(from = 0, to = 3) final int which)
     {
         switch (which)
         {
@@ -82,8 +82,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                         org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
                         new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void excludeRowsOrCols(final boolean checkedItems[])
+                            @java.lang.Override public void excludeRowsOrCols(
+                            @android.support.annotation.NonNull final boolean checkedItems[])
                             {
                                 org.wheatgenetics.coordinate.tc.ExcludeAlertDialog.this.excludeRows(
                                     checkedItems);
@@ -103,8 +103,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                             .R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
                         new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
                         {
-                            @java.lang.Override
-                            public void excludeRowsOrCols(final boolean[] checkedItems)
+                            @java.lang.Override public void excludeRowsOrCols(
+                            @android.support.annotation.NonNull final boolean[] checkedItems)
                             {
                                 org.wheatgenetics.coordinate.tc.ExcludeAlertDialog.this.excludeCols(
                                     checkedItems);
