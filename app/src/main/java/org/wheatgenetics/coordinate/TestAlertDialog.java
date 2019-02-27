@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.Button
@@ -47,35 +48,35 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private org.wheatgenetics.coordinate.model.TemplateModel                 templateModel = null;
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-        nonNullOptionalFieldsInstance = null;
+        nonNullOptionalFieldsInstance = null;                                           // lazy load
     private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester
-        addOptionalFieldAlertDialogTester = null;
+        addOptionalFieldAlertDialogTester = null;                                       // lazy load
     private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
-        checkAndAddOptionalFieldsAlertDialog = null;
+        checkAndAddOptionalFieldsAlertDialog = null;                                    // lazy load
     private org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest
         optionalFieldAlertDialogUnderTest =
             org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest.NEITHER;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
-        excludedRowsOrColsAlertDialogTesterInstance = null;
+        excludedRowsOrColsAlertDialogTesterInstance = null;                             // lazy load
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
-        generatedExcludedCellsAlertDialogTester = null;
+        generatedExcludedCellsAlertDialogTester = null;                                 // lazy load
     private org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
-        excludeAlertDialogTester = null;
+        excludeAlertDialogTester = null;                                                // lazy load
     private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
-        setNumberingAlertDialogTester = null;
+        setNumberingAlertDialogTester = null;                                           // lazy load
     private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
-        setExcludesOptionalFieldsNumberingAlertDialogTester = null;
+        setExcludesOptionalFieldsNumberingAlertDialogTester = null;                     // lazy load
     private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
-        assignTitleRowsColsAlertDialogTester = null;
+        assignTitleRowsColsAlertDialogTester = null;                                    // lazy load
 
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;     // lazy load
     // endregion
 
     // region Private Methods
     @java.lang.SuppressWarnings({"DefaultLocale"}) private void refreshText()
     {
-        final java.lang.StringBuilder textBuilder = new java.lang.StringBuilder("");
+        final java.lang.StringBuilder textBuilder = new java.lang.StringBuilder();
 
         if (null != this.nonNullOptionalFieldsInstance)
             textBuilder.append(this.nonNullOptionalFieldsInstance.toJson());
@@ -149,6 +150,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
 
+    @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
     excludedRowsOrColsAlertDialogTester()
     {
@@ -216,7 +218,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
     // endregion
 
-    TestAlertDialog(final android.app.Activity activity,
+    @java.lang.SuppressWarnings({"unused"}) TestAlertDialog(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode)
     { super(activity); this.requestCode = requestCode; }
 
@@ -379,7 +381,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
-    @java.lang.Override public void handleTemplateCreated(
+    @java.lang.Override public void handleTemplateCreated(@android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { this.templateModel = templateModel; this.refreshText(); }
     // endregion
