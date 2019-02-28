@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.nisl;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.support.annotation.NonNull
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
@@ -25,15 +26,19 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler;
 
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance   = null;
-    private android.content.DialogInterface.OnClickListener     onClickListenerInstance = null;
+    private org.wheatgenetics.coordinate.database.ProjectsTable
+        projectsTableInstance = null;                                                   // lazy load
+    private android.content.DialogInterface.OnClickListener
+        onClickListenerInstance = null;                                                 // lazy load
 
     private boolean includedLoadProjectItem, includedClearProjectItem;
     // endregion
 
     // region Private Methods
+    @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -41,9 +46,9 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
         return this.projectsTableInstance;
     }
 
-    private void loadProject  () { assert null != this.handler; this.handler.loadProject  (); }
-    private void clearProject () { assert null != this.handler; this.handler.clearProject (); }
-    private void deleteProject() { assert null != this.handler; this.handler.deleteProject(); }
+    private void loadProject  () { this.handler.loadProject  (); }
+    private void clearProject () { this.handler.clearProject (); }
+    private void deleteProject() { this.handler.deleteProject(); }
 
     private void handleCase0()
     {
@@ -61,6 +66,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
             this.deleteProject();
     }
 
+    @android.support.annotation.NonNull
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
         if (null == this.onClickListenerInstance) this.onClickListenerInstance =
@@ -87,7 +93,8 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     // endregion
 
     ManageProjectAlertDialog(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler)
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
@@ -109,13 +116,9 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
                         projectsExists = projectsTable.exists();
 
                         if (projectsExists)
-                            if (projectModelIsLoaded)
-                            {
-                                assert null != this.handler;
-                                this.includedLoadProjectItem =
-                                    projectsTable.existsExceptFor(this.handler.getProjectId());
-                            }
-                            else this.includedLoadProjectItem = true;
+                            // noinspection SimplifiableConditionalExpression
+                            this.includedLoadProjectItem = projectModelIsLoaded ?
+                                projectsTable.existsExceptFor(this.handler.getProjectId()) : true;
                         else this.includedLoadProjectItem = false;
                     }
 

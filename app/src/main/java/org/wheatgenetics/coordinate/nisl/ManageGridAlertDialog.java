@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.nisl;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
+ * android.support.annotation.NonNull
  * android.support.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
@@ -24,15 +25,17 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         LOAD_ITEM[] = new int[]{
             org.wheatgenetics.coordinate.R.string.ManageGridAlertDialogLoad};
 
-    private final org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler handler;
 
-    private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;
-    // endregion
+    private android.content.DialogInterface.OnClickListener onClickListenerInstance = null; // lazy
+    // endregion                                                                            //  load
 
     // region Private Methods
-    private void loadGrid  () { assert null != this.handler; this.handler.loadGrid  (); }
-    private void deleteGrid() { assert null != this.handler; this.handler.deleteGrid(); }
+    private void loadGrid  () { this.handler.loadGrid  (); }
+    private void deleteGrid() { this.handler.deleteGrid(); }
 
+    @android.support.annotation.NonNull
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
         if (null == this.onClickListenerInstance) this.onClickListenerInstance =
@@ -58,7 +61,7 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     }
     // endregion
 
-    ManageGridAlertDialog(final android.app.Activity activity,
+    ManageGridAlertDialog(final android.app.Activity activity, @android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
