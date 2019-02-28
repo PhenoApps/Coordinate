@@ -38,8 +38,10 @@ abstract class Table extends java.lang.Object
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    Table(final android.content.Context context, final java.lang.String tableName,
-    final java.lang.String tag, final java.lang.String databaseName)
+    Table(                                              final android.content.Context context     ,
+    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String        tableName   ,
+    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String        tag         ,
+                                                        final java.lang.String        databaseName)
     {
         this(org.wheatgenetics.coordinate.database.Database.db(context, databaseName),
             tableName, tag);

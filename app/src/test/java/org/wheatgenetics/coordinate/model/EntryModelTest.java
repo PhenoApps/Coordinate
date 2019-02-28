@@ -28,11 +28,12 @@ public class EntryModelTest extends java.lang.Object
         { super(gridId, row, col); }
 
         ConcreteEntryModel(
-        @android.support.annotation.IntRange(from = 1) final long id       ,
-        @android.support.annotation.IntRange(from = 1) final long gridId   ,
-        @android.support.annotation.IntRange(from = 1) final int row       ,
-        @android.support.annotation.IntRange(from = 1) final int col       ,
-        @android.support.annotation.IntRange(from = 0) final long timestamp)
+        @android.support.annotation.IntRange(from = 1) final long id    ,
+        @android.support.annotation.IntRange(from = 1) final long gridId,
+        @android.support.annotation.IntRange(from = 1) final int row    ,
+        @android.support.annotation.IntRange(from = 1) final int col    ,
+        @android.support.annotation.IntRange(from = 0)
+            @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
         { super(id, gridId, row, col, timestamp); }
         // endregion
 

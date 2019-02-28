@@ -66,11 +66,8 @@ implements org.wheatgenetics.coordinate.Element.Handler
     { this.handler.toggle(elementModel); }
     // endregion
 
-    // region Protected Methods
-    protected void clear() { this.elementArray = null; }
-
     @android.annotation.SuppressLint({"InflateParams"}) @android.support.annotation.Nullable
-    protected android.widget.LinearLayout add(
+    android.widget.LinearLayout add(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (null == elementModel)
@@ -96,7 +93,8 @@ implements org.wheatgenetics.coordinate.Element.Handler
             return result;
         }
     }
-    // endregion
+
+    protected void clear() { this.elementArray = null; }
 
     public void allocate(
     @android.support.annotation.IntRange(from = 1) final int rows,

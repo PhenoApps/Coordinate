@@ -22,9 +22,9 @@ public class OptionalFieldTest extends java.lang.Object
     private class ConcreteOptionalField extends
     org.wheatgenetics.coordinate.optionalField.OptionalField
     {
-        private ConcreteOptionalField(
-        @android.support.annotation.NonNull final java.lang.String name,
-                                            final java.lang.String hint) { super(name, hint); }
+        private ConcreteOptionalField(@android.support.annotation.NonNull
+            @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String name,
+        final java.lang.String hint) { super(name, hint); }
 
         private ConcreteOptionalField(
         @android.support.annotation.NonNull final org.json.JSONObject jsonObject)
