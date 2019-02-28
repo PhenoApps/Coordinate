@@ -1,4 +1,3 @@
-
 package org.wheatgenetics.coordinate.display;
 
 /**
@@ -9,7 +8,6 @@ package org.wheatgenetics.coordinate.display;
  * android.view.View.OnLongClickListener
  * android.widget.TextView
  *
- * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
