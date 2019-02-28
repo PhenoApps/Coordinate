@@ -58,10 +58,8 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
         if (context instanceof org.wheatgenetics.coordinate.DataEntryFragment.Handler)
             this.handler = (org.wheatgenetics.coordinate.DataEntryFragment.Handler) context;
         else
-        {
-            assert null != context; throw new java.lang.RuntimeException(context.toString() +
-                " must implement Handler");
-        }
+            throw new java.lang.RuntimeException(null == context ?
+                "context" : context.toString() + " must implement Handler");
     }
 
     @java.lang.Override public android.view.View onCreateView(
@@ -70,7 +68,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     {
         // Inflate the layout for this fragment:
         return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_data_entry,
-            container, false);
+            container,false);
     }
 
     @java.lang.Override public void onActivityCreated(

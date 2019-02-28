@@ -54,7 +54,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             @android.support.annotation.IntRange(from = 1) long gridId);
 
         public abstract void loadProjectModel(
-            @android.support.annotation.IntRange(from = 1) long projectId);
+            @android.support.annotation.IntRange(from = 0) long projectId);
         public abstract void clearProjectModel();
     }
 
