@@ -186,11 +186,11 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         this.excludedColsInstance  = excludedCols ;
     }
 
-    /** Called by fourth TemplateModel constructor. */
+    /** Called by fourth and fifth TemplateModel constructors. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     DisplayTemplateModel() { super(); }
 
-    /** Called by fifth TemplateModel constructor. */
+    /** Called by sixth TemplateModel constructor. */
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     DisplayTemplateModel(
     @android.support.annotation.IntRange(from = 1        ) final long             id             ,

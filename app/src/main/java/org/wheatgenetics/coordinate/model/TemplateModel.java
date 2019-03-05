@@ -117,7 +117,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
-    /** Called by makeSeedDefault(), makeDNADefault(), and makeUserDefined(). */
+    /** Called by makeSeedDefault() and makeDNADefault(). */
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
     @android.support.annotation.IntRange(from = 1) final int     rows                        ,
@@ -131,7 +131,19 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             /* excludedCells => */null, /* excludedRows => */null,
             /* excludedCols  => */null, /* colNumbering  => */true,
             rowNumbering, optionalFields,
-            /* timestamp => */ type.isDefaultTemplate() ? 0 : java.lang.System.currentTimeMillis());
+            /* timestamp => */0);
+    }
+
+    /** Called by makeUserDefined(). */
+    private TemplateModel(@android.support.annotation.Nullable
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    {
+        super();
+
+        this.setGeneratedExcludedCellsAmount(1);
+        this.setColNumbering(true); this.setRowNumbering(false);
+
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
     /** Called by DefaultHandler class. */ private TemplateModel() { super(); }
@@ -371,14 +383,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title => */"",
-            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
-            /* rows  => */20,
-            /* cols  => */10,
-            /* generatedExcludedCellsAmount => */1,
-            /* rowNumbering                 => */false,
-            /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
-                .NonNullOptionalFields.makeNew());
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew());
     }
 
     @android.support.annotation.Nullable public static
