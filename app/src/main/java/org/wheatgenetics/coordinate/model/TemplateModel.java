@@ -91,7 +91,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     @android.support.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id, title, type, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows,excludedCols, colNumbering, rowNumbering, timestamp);
+            excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
         this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
@@ -333,6 +333,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     // endregion
 
     // region Make Public Methods
+    /** Called by TemplateModels. */
     @android.support.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
@@ -350,6 +351,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         return result;
     }
 
+    /** Called by TemplateModels. */
     @android.support.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
@@ -364,6 +366,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 .NonNullOptionalFields.makeDNADefault());
     }
 
+    /** Called by TemplateCreator. */
     @android.support.annotation.NonNull
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
     {
