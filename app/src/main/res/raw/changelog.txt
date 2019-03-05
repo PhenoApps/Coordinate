@@ -1,3 +1,9 @@
+6/2.0.4
+Fixed a bug with importing templates
+
+5/2.0.3
+Fixed a bug where the templates folder was not being created
+
 4/2.0.2
 Modified ABC naming rules
 
