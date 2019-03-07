@@ -13,6 +13,7 @@
         android:key="SoundOn"
         android:title="@string/SoundPreferenceTitle"
         android:summaryOn="@string/SoundPreferenceSummaryOn"
+        android:summaryOff="@string/SoundPreferenceSummaryOff"
         android:defaultValue="true" />
 
     <ListPreference
@@ -22,5 +23,13 @@
         android:entries="@array/ProjectExportPreferenceEntries"
         android:entryValues="@array/ProjectExportPreferenceEntryValues"
         android:defaultValue="@string/ProjectExportPreferenceDefault" />
+
+    <ListPreference
+        android:key="Uniqueness"
+        android:title="@string/UniquenessPreferenceTitle"
+        android:summary="@string/UniquenessPreferenceSummary"
+        android:entries="@array/UniquenessPreferenceEntries"
+        android:entryValues="@array/UniquenessPreferenceEntryValues"
+        android:defaultValue="@string/UniquenessPreferenceDefault" />
 
 </PreferenceScreen>
