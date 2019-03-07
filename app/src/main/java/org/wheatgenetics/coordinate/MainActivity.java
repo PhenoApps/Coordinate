@@ -1069,8 +1069,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler Overridden Methods
-    @java.lang.Override
-    public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
+    @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.getJoinedGridModel(); }
 
     @java.lang.Override

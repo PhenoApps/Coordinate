@@ -21,8 +21,9 @@ package org.wheatgenetics.coordinate;
 public class Utils extends java.lang.Object
 {
     // region Types
-    public enum Advancement   { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN        }
-           enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT }
+    public enum Advancement   { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                     }
+           enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT              }
+    public enum Uniqueness    { ERROR, ALLOW_DUPLICATES, UNIQUE_CURRENT_GRID, UNIQUE_ALL_GRIDS }
     // endregion
 
     private static android.content.SharedPreferences                                        // lazy
@@ -263,6 +264,34 @@ public class Utils extends java.lang.Object
                             .ProjectExport.ONE_FILE_ENTIRE_PROJECT;
                     else
                         return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
+        }
+    }
+
+    public static org.wheatgenetics.coordinate.Utils.Uniqueness getUniqueness(
+    @android.support.annotation.NonNull final android.content.Context context)
+    {
+        final android.content.SharedPreferences defaultSharedPreferences =
+            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context);
+        if (null == defaultSharedPreferences)
+            return org.wheatgenetics.coordinate.Utils.Uniqueness.ERROR;
+        else
+        {
+            final java.lang.String uniqueness = defaultSharedPreferences.getString(
+                /* key      => */"Uniqueness",
+                /* defValue => */ context.getString(
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDefault));
+            if (null == uniqueness)
+                return org.wheatgenetics.coordinate.Utils.Uniqueness.ALLOW_DUPLICATES;
+            else
+                if (uniqueness.equals(context.getString(
+                org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDuplicates)))
+                    return org.wheatgenetics.coordinate.Utils.Uniqueness.ALLOW_DUPLICATES;
+                else
+                    if (uniqueness.equals(context.getString(
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceUniqueCurrentGrid)))
+                        return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_CURRENT_GRID;
+                    else
+                        return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_ALL_GRIDS;
         }
     }
     // endregion

@@ -63,10 +63,10 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
-    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getRowValue()
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRowValue()
     { return this.getRow(); }
 
-    @java.lang.Override public @android.support.annotation.IntRange(from = 1) int getColValue()
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getColValue()
     { return this.getCol(); }
     // endregion
 
