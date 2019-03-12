@@ -9,18 +9,20 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ExcludedEntryModelTest extends java.lang.Object
 {
     @org.junit.Test() public void thirdConstructorSucceeds()
+    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final long                                                  gridId = 23       ;
         final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel;
         {
             final int row = 2, col = 3;
             excludedEntryModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                new org.wheatgenetics.coordinate.model.IncludedEntryModel(                 // throws
                     5, gridId, row, col,"value",6));
             org.junit.Assert.assertEquals(row, excludedEntryModel.getRow());
             org.junit.Assert.assertEquals(col, excludedEntryModel.getCol());

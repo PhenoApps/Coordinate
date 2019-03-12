@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
  * org.wheatgenetics.coordinate.model.RowOrCols
@@ -502,7 +503,8 @@ public class JoinedGridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
 
-    @org.junit.Test() public void someSeedExportSucceeds() throws java.io.IOException
+    @org.junit.Test() public void someSeedExportSucceeds()
+    throws java.io.IOException, org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final java.lang.String     expectedString                           ;
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
@@ -555,7 +557,7 @@ public class JoinedGridModelTest extends java.lang.Object
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
                                     gridId,2,2);
-                        includedEntryModel.setValue(value);
+                        includedEntryModel.setValue(value);                                // throws
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
                 }
@@ -736,7 +738,8 @@ public class JoinedGridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
 
-    @org.junit.Test() public void someDNAExportSucceeds() throws java.io.IOException
+    @org.junit.Test() public void someDNAExportSucceeds()
+    throws java.io.IOException, org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final java.lang.String     expectedString                             ;
         final java.io.StringWriter stringWriter   = new java.io.StringWriter();
@@ -789,7 +792,7 @@ public class JoinedGridModelTest extends java.lang.Object
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
                                     gridId,2,2);
-                        includedEntryModel.setValue(value);
+                        includedEntryModel.setValue(value);                                // throws
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
                 }
@@ -962,7 +965,8 @@ public class JoinedGridModelTest extends java.lang.Object
         org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
     }
 
-    @org.junit.Test() public void someUserDefinedExportSucceeds() throws java.io.IOException
+    @org.junit.Test() public void someUserDefinedExportSucceeds()
+    throws java.io.IOException, org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final java.lang.String     expectedString                           ;
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
@@ -1015,7 +1019,7 @@ public class JoinedGridModelTest extends java.lang.Object
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
                                     gridId,2,2);
-                        includedEntryModel.setValue(value);
+                        includedEntryModel.setValue(value);                                // throws
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
                 }
