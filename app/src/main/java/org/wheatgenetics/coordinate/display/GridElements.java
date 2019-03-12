@@ -21,7 +21,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
     private int activeRow, activeCol;
 
-    GridElements(@android.support.annotation.NonNull final android.app.Activity activity,
+    GridElements(
+    @android.support.annotation.NonNull            final android.app.Activity activity,
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols,
     final int activeRow, final int activeCol, @android.support.annotation.NonNull

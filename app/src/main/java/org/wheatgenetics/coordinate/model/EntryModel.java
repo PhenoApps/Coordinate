@@ -73,8 +73,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // region Package Methods
     abstract java.lang.String getSeedExportValue();
 
-    @android.support.annotation.NonNull java.lang.String
-    getDNAExportValue(final java.lang.String sample_id) { return "BLANK_" + sample_id; }
+    @android.support.annotation.NonNull java.lang.String getDNAExportValue(
+    final java.lang.String sample_id) { return "BLANK_" + sample_id; }
 
     abstract java.lang.String getUserDefinedExportValue();
     // endregion
