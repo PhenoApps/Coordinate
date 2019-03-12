@@ -31,7 +31,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 1) final int              col      ,
                                                    final java.lang.String value    ,
     @android.support.annotation.IntRange(from = 0) final long             timestamp)
-    { super(id, gridId, row, col, timestamp); this.value = value; }
+    { super(id, gridId, row, col, timestamp); this.setValue(value); }
 
     public IncludedEntryModel(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
