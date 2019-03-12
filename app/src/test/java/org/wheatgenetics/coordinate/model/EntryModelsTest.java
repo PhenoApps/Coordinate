@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModels.Processor
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class EntryModelsTest extends java.lang.Object
@@ -320,6 +321,7 @@ public class EntryModelsTest extends java.lang.Object
 
     // region Public Method Tests
     @org.junit.Test() public void setSucceeds()
+    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final long                                           gridId = 1 ;
         final org.wheatgenetics.coordinate.model.EntryModels entryModels;
@@ -347,8 +349,9 @@ public class EntryModelsTest extends java.lang.Object
         {
             final org.wheatgenetics.coordinate.model.IncludedEntryModel newIncludedEntryModel =
                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, row, col);
-            newIncludedEntryModel.setValue("gobbledygook"); entryModels.set(newIncludedEntryModel);
-        }
+            newIncludedEntryModel.setValue("gobbledygook");   // throws org.wheatgenetics.coordinate
+            entryModels.set(newIncludedEntryModel);           //  .model.IncludedEntryModel.CheckEx-
+        }                                                     //  ception
         {
             final org.wheatgenetics.coordinate.model.IncludedEntryModel actualIncludedEntryModel =
                 (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModels.get(row, col);

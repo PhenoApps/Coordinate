@@ -15,6 +15,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.EntryModels.Processor
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
@@ -67,13 +68,18 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                     /* col       => */ col      ,
                     /* timestamp => */ timestamp);
             else
-                return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                    /* id        => */ id       ,
-                    /* gridId    => */ gridId   ,
-                    /* row       => */ row      ,
-                    /* col       => */ col      ,
-                    /* value     => */ value    ,
-                    /* timestamp => */ timestamp);
+                try
+                {
+                    return new org.wheatgenetics.coordinate.model.IncludedEntryModel(      // throws
+                        /* id        => */ id       ,
+                        /* gridId    => */ gridId   ,
+                        /* row       => */ row      ,
+                        /* col       => */ col      ,
+                        /* value     => */ value    ,
+                        /* timestamp => */ timestamp);
+                }
+                catch (final org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException e)
+                { return null; }
         }
     }
 

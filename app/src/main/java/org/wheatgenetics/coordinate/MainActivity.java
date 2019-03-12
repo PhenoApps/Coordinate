@@ -1178,7 +1178,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel
                     activeIncludedEntryModel =
                         (org.wheatgenetics.coordinate.model.IncludedEntryModel) activeEntryModel;
-                activeIncludedEntryModel.setValue(entryValue);
+                try { activeIncludedEntryModel.setValue(entryValue) /* throws */; }
+                catch (final org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException e)
+                {}                                                            // TODO: Handle later.
                 this.entriesTable().insertOrUpdate(activeIncludedEntryModel);
             }
             this.goToNext(activeEntryModel);
