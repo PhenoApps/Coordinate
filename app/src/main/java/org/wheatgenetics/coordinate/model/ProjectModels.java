@@ -37,8 +37,8 @@ public class ProjectModels extends java.lang.Object
     public void add(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     { if (null != projectModel) this.arrayList().add(projectModel); }
 
-    @android.support.annotation.IntRange(from = 0)
-    public int size() { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
+    @android.support.annotation.IntRange(from = 0) public int size()
+    { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
     @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.ProjectModel get(
     @android.support.annotation.IntRange(from = 0) final int i)
