@@ -116,6 +116,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // region Operations
     @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.EntryModels load(
     final long gridId, final int rows, final int cols)
+    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final org.wheatgenetics.coordinate.model.EntryModels result;
         {
@@ -139,9 +140,16 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                     {
                         result =
                             new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
-                        while (cursor.moveToNext()) result.set(
-                            (org.wheatgenetics.coordinate.model.EntryModel) this.make(cursor));
-                    }
+                        while (cursor.moveToNext())
+                        {
+                            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                                (org.wheatgenetics.coordinate.model.EntryModel) this.make(cursor);
+                            if (null == entryModel)
+                                return null;
+                            else
+                                result.set(entryModel);    // throws org.wheatgenetics.coordinate
+                        }                                  //  .model.IncludedEntryModel.CheckExcep-
+                    }                                      //  tion
                 }
                 finally { cursor.close(); }
         }

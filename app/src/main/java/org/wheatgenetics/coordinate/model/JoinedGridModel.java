@@ -24,6 +24,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.GridModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
@@ -496,7 +497,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { if (null != this.entryModels) this.entryModels.set(entryModel); }
+    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    { if (null != this.entryModels) this.entryModels.set(entryModel) /* throws */; }
 
     @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()

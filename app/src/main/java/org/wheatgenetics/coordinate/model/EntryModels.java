@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.Model
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -33,6 +34,12 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Private Methods
+    private void uncheckedSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
+    }
+
     @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
     @android.support.annotation.IntRange(from = 0) final int lastRow  ,
@@ -163,12 +170,18 @@ public class EntryModels extends java.lang.Object
     void makeExcludedEntry(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { this.set(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(this.gridId, row, col)); }
+    {
+        this.uncheckedSet(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
+            this.gridId, row, col));
+    }
 
     void makeIncludedEntry(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { this.set(new org.wheatgenetics.coordinate.model.IncludedEntryModel(this.gridId, row, col)); }
+    {
+        this.uncheckedSet(new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            this.gridId, row, col));
+    }
 
     org.wheatgenetics.coordinate.model.EntryModel get(
     @android.support.annotation.IntRange(from = 1) final int row,
@@ -179,7 +192,8 @@ public class EntryModels extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(
-                this.entryModelArray.length, this.entryModelArray[0].length);
+                /* maxRow => */ this.entryModelArray.length   ,
+                /* maxCol => */ this.entryModelArray[0].length);
         for (final org.wheatgenetics.coordinate.model.EntryModel[] row: this.entryModelArray)
             for (final org.wheatgenetics.coordinate.model.EntryModel entryModel: row)
                 if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
@@ -216,10 +230,8 @@ public class EntryModels extends java.lang.Object
 
     // region Public Methods
     public void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        if (null != entryModel)
-            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
-    }
+    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    { this.uncheckedSet(entryModel); }
 
     public void processAll(final org.wheatgenetics.coordinate.model.EntryModels.Processor processor)
     {
