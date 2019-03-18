@@ -1079,9 +1079,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                 (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
-            try { this.joinedGridModel.setEntryModel(entryModel) /* throws */; }
-            catch (final org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException e)
-            {}                                                                // TODO: Handle later.
+            this.joinedGridModel.setEntryModel(entryModel);
             this.entriesTable().insertOrUpdate(entryModel);
             if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
                 if (this.joinedGridModel.getActiveEntryModel() == entryModel)
@@ -1180,9 +1178,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel
                     activeIncludedEntryModel =
                         (org.wheatgenetics.coordinate.model.IncludedEntryModel) activeEntryModel;
-                try { activeIncludedEntryModel.setValue(entryValue) /* throws */; }
-                catch (final org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException e)
-                {}                                                            // TODO: Handle later.
+                activeIncludedEntryModel.setValue(entryValue);
                 this.entriesTable().insertOrUpdate(activeIncludedEntryModel);
             }
             this.goToNext(activeEntryModel);

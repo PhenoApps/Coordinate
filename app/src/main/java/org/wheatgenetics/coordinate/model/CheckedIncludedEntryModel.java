@@ -8,18 +8,25 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
- * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  */
 public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.model.IncludedEntryModel
 {
+    // region Types
+    public abstract static class CheckException extends java.lang.Exception
+    {
+        CheckException(@android.support.annotation.NonNull final java.lang.String message)
+        { super(message); }
+    }
+
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Checker
     {
         @android.support.annotation.Nullable public abstract java.lang.String check(
         @android.support.annotation.IntRange(from = 1) int              rowIndex,
         @android.support.annotation.IntRange(from = 1) int              colIndex,
         @android.support.annotation.Nullable           java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException;
+        throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException;
     }
+    // endregion
 
     @android.support.annotation.NonNull private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
@@ -33,7 +40,7 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     { super(gridId, row, col); this.checker = checker; }
 
-    CheckedIncludedEntryModel(
+    public CheckedIncludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long             id       ,
     @android.support.annotation.IntRange(from = 1) final long             gridId   ,
     @android.support.annotation.IntRange(from = 1) final int              row      ,
@@ -42,13 +49,11 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
     @android.support.annotation.IntRange(from = 0) final long             timestamp,
     @android.support.annotation.NonNull            final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
-        super(id, gridId, row, col, timestamp);
-
+        super(id, gridId, row, col, checker.check(row, col, value) /* throws */, timestamp);
         this.checker = checker;
-        this.setValue(value);                           // throws org.wheatgenetics.coordinate.model
-    }                                                   //  .IncludedEntryModel.CheckException
+    }
 
     CheckedIncludedEntryModel(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
@@ -59,6 +64,9 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
 
     @java.lang.Override public void setValue(
     @android.support.annotation.Nullable final java.lang.String value)
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
-    { super.setValue(this.checker.check(this.getRow(), this.getCol(), value) /* throws */); }
+    { throw new java.lang.UnsupportedOperationException("Call checkThenSetValue() instead"); }
+
+    public void checkThenSetValue(@android.support.annotation.Nullable final java.lang.String value)
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    { this.uncheckedSetValue(this.checker.check(this.getRow(), this.getCol(), value) /* throws */); }
 }

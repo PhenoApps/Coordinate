@@ -7,6 +7,8 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -15,7 +17,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.EntryModels.Processor
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
- * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Table
@@ -29,13 +30,41 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
         COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
     // endregion
 
-    public EntriesTable(final android.content.Context context)
+    // region Constructors
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    EntriesTable(final android.content.Context context,
+    @android.support.annotation.NonNull final java.lang.String tag)
     {
         super(
             /* context   => */ context                                                      ,
             /* tableName => */ org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME,
-            /* tag       => */"EntriesTable");
+            /* tag       => */ tag                                                          );
     }
+
+    public EntriesTable(final android.content.Context context)
+    { this(/* context => */ context, /* tag => */"EntriesTable"); }
+    // endregion
+
+    // region Package Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    org.wheatgenetics.coordinate.model.IncludedEntryModel makeIncludedEntryModel(final long id,
+    final long gridId, final int row, final int col, final java.lang.String value,
+    final long timestamp)
+    {
+        return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            /* id        => */ id       ,
+            /* gridId    => */ gridId   ,
+            /* row       => */ row      ,
+            /* col       => */ col      ,
+            /* value     => */ value    ,
+            /* timestamp => */ timestamp);
+    }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
+    final long gridId, final int rows, final int cols)
+    { return new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols); }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override
@@ -68,18 +97,13 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                     /* col       => */ col      ,
                     /* timestamp => */ timestamp);
             else
-                try
-                {
-                    return new org.wheatgenetics.coordinate.model.IncludedEntryModel(      // throws
-                        /* id        => */ id       ,
-                        /* gridId    => */ gridId   ,
-                        /* row       => */ row      ,
-                        /* col       => */ col      ,
-                        /* value     => */ value    ,
-                        /* timestamp => */ timestamp);
-                }
-                catch (final org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException e)
-                { return null; }
+                return this.makeIncludedEntryModel(
+                    /* id        => */ id       ,
+                    /* gridId    => */ gridId   ,
+                    /* row       => */ row      ,
+                    /* col       => */ col      ,
+                    /* value     => */ value    ,
+                    /* timestamp => */ timestamp);
         }
     }
 
@@ -116,7 +140,6 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // region Operations
     @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.EntryModels load(
     final long gridId, final int rows, final int cols)
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     {
         final org.wheatgenetics.coordinate.model.EntryModels result;
         {
@@ -138,8 +161,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                         result = null;
                     else
                     {
-                        result =
-                            new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+                        result = this.makeEntryModels(gridId, rows, cols);
                         while (cursor.moveToNext())
                         {
                             final org.wheatgenetics.coordinate.model.EntryModel entryModel =

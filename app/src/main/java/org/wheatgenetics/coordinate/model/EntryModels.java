@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
@@ -13,7 +15,6 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
- * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.Model
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -34,12 +35,6 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Private Methods
-    private void uncheckedSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        if (null != entryModel)
-            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
-    }
-
     @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
     @android.support.annotation.IntRange(from = 0) final int lastRow  ,
@@ -153,6 +148,28 @@ public class EntryModels extends java.lang.Object
     }
     // endregion
 
+    // region Package Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @android.support.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    void uncheckedSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    {
+        if (null != entryModel)
+            this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
+    }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @android.support.annotation.NonNull
+    org.wheatgenetics.coordinate.model.IncludedEntryModel makeButDontSetIncludedEntry(
+        @android.support.annotation.IntRange(from = 1) final int row,
+        @android.support.annotation.IntRange(from = 1) final int col)
+    {
+        return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            this.getGridId(), row, col);
+    }
+    // endregion
+
     public EntryModels(
     @android.support.annotation.IntRange(from = 1) final long gridId,
     @android.support.annotation.IntRange(from = 1) final int  rows  ,
@@ -172,16 +189,13 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 1) final int col)
     {
         this.uncheckedSet(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-            this.gridId, row, col));
+            this.getGridId(), row, col));
     }
 
     void makeIncludedEntry(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    {
-        this.uncheckedSet(new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-            this.gridId, row, col));
-    }
+    { this.uncheckedSet(this.makeButDontSetIncludedEntry(row, col)); }
 
     org.wheatgenetics.coordinate.model.EntryModel get(
     @android.support.annotation.IntRange(from = 1) final int row,
@@ -230,7 +244,6 @@ public class EntryModels extends java.lang.Object
 
     // region Public Methods
     public void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
     { this.uncheckedSet(entryModel); }
 
     public void processAll(final org.wheatgenetics.coordinate.model.EntryModels.Processor processor)

@@ -11,24 +11,24 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- * org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CheckedIncludedEntryModelTest extends java.lang.Object
 {
     // region Types
     private static class MeanCheckException
-    extends org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     { MeanCheckException() { super("You will always fail the check"); } }
 
     private static class MeanChecker extends java.lang.Object
-        implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
+    implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     {
         @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
         @android.support.annotation.IntRange(from = 1) final int              rowIndex,
         @android.support.annotation.IntRange(from = 1) final int              colIndex,
         @android.support.annotation.Nullable           final java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+        throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
         {
             throw new org.wheatgenetics.coordinate.model
                 .CheckedIncludedEntryModelTest.MeanCheckException();
@@ -42,7 +42,6 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
         @android.support.annotation.IntRange(from = 1) final int              rowIndex,
         @android.support.annotation.IntRange(from = 1) final int              colIndex,
         @android.support.annotation.Nullable           final java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
         { return value; }
     }
     // endregion
@@ -76,14 +75,14 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
     @org.junit.Test(expected =
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.MeanCheckException.class)
     public void meanSecondConstructorThrows()
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
             1,1,1,1,"value",0, this.meanChecker());   // throws
     }
 
     @org.junit.Test() public void niceSecondConstructorWorks()
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         final java.lang.String value = "value";
         org.junit.Assert.assertEquals(value,
@@ -92,8 +91,25 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
     }
     // endregion
 
-    @org.junit.Test() public void setValueWorks()
-    throws org.wheatgenetics.coordinate.model.IncludedEntryModel.CheckException
+    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    public void setValueThrows()
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    {
+        final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            checkedIncludedEntryModel;
+        {
+            final java.lang.String firstValue = "firstValue";
+            checkedIncludedEntryModel = new
+                org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(       // throws Check-
+                    1,1,1,1, firstValue,0,           //  Exception
+                    this.niceChecker());
+            org.junit.Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
+        }
+        checkedIncludedEntryModel.setValue("secondValue");          // throws java.lang.Unsupported-
+    }                                                               //  OperationException
+
+    @org.junit.Test() public void checkThenSetValueWorks()
+    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
             checkedIncludedEntryModel;
@@ -106,7 +122,7 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
         }
 
         final java.lang.String secondValue = "secondValue";
-        checkedIncludedEntryModel.setValue(secondValue);
+        checkedIncludedEntryModel.checkThenSetValue(secondValue);                          // throws
         org.junit.Assert.assertEquals(secondValue, checkedIncludedEntryModel.getValue());
     }
 }
