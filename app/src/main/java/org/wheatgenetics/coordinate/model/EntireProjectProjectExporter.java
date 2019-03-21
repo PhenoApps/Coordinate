@@ -13,7 +13,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.model.JoinedGridModels
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.ProjectExporter
  * org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
  */
@@ -22,12 +22,15 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     private static class AsyncTask
     extends org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
     {
-        private final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels;
+        private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
 
         private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
         final java.io.File exportFile, final java.lang.String exportFileName,
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels)
-        { super(context, exportFile, exportFileName); this.joinedGridModels = joinedGridModels; }
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels)
+        {
+            super(context, exportFile, exportFileName);
+            this.baseJoinedGridModels = baseJoinedGridModels;
+        }
 
         // region Overridden Methods
         @java.lang.Override protected void onPostExecute(final java.lang.Boolean result)
@@ -41,13 +44,13 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
         boolean export()
         {
             boolean success;
-            if (null == this.joinedGridModels)
+            if (null == this.baseJoinedGridModels)
                 success = false;
             else
             {
                 try
                 {
-                    if (this.joinedGridModels.export(                  // throws java.io.IOException
+                    if (this.baseJoinedGridModels.export(              // throws java.io.IOException
                     /* exportFile     => */ this.getExportFile    (),
                     /* exportFileName => */ this.getExportFileName(),
                     /* helper         => */this))
@@ -79,18 +82,21 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     // endregion
 
     public EntireProjectProjectExporter(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
+    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
     @android.support.annotation.NonNull final android.content.Context                     context  ,
                                         final org.wheatgenetics.androidlibrary.RequestDir exportDir,
                                         final java.lang.String exportFileName)
-    { super(joinedGridModels, context, exportDir); this.exportFileName = exportFileName + ".csv"; }
+    {
+        super(baseJoinedGridModels, context, exportDir);
+        this.exportFileName = exportFileName + ".csv";
+    }
 
     // region Overridden Methods
     @java.lang.Override public void execute()
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            this.getJoinedGridModels();
-        if (null != joinedGridModels)
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
+            this.getBaseJoinedGridModels();
+        if (null != baseJoinedGridModels)
         {
             final org.wheatgenetics.androidlibrary.RequestDir exportDir = this.getExportDir();
             if (null != exportDir)
@@ -101,8 +107,8 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
                             /* context    => */ this.getContext(),
                             /* exportFile => */ exportDir.createNewFile(     // throws IOException,
                                 this.exportFileName),                        //  PermissionException
-                            /* exportFileName   => */ this.exportFileName,
-                            /* joinedGridModels => */ joinedGridModels   );
+                            /* exportFileName       => */ this.exportFileName ,
+                            /* baseJoinedGridModels => */ baseJoinedGridModels);
                     this.asyncTask.execute();
                 }
                 catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException

@@ -103,7 +103,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     private org.wheatgenetics.coordinate.model.BaseJoinedGridModels makeJoinedGridModels(
     @android.support.annotation.Nullable final android.database.Cursor cursor)
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels result;
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels result;
         if (null == cursor)
             result = null;
         else
@@ -113,8 +113,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                     result = null;
                 else
                 {
-                    result = (org.wheatgenetics.coordinate.model.JoinedGridModels)
-                        this.makeJoinedGridModels();
+                    result = this.makeJoinedGridModels();
                     while (cursor.moveToNext()) result.add(
                         (org.wheatgenetics.coordinate.model.JoinedGridModel) this.make(cursor));
                 }
@@ -346,33 +345,29 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     }
 
     @android.support.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.JoinedGridModels load()
+    public org.wheatgenetics.coordinate.model.BaseJoinedGridModels load()
     {
-        return (org.wheatgenetics.coordinate.model.JoinedGridModels) this.makeJoinedGridModels(
-            this.rawQuery(/* sql => */
-                org.wheatgenetics.coordinate.database.GridsTable.joinedQuery));
+        return this.makeJoinedGridModels(this.rawQuery(/* sql => */
+            org.wheatgenetics.coordinate.database.GridsTable.joinedQuery));
     }
 
-    @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.JoinedGridModels
-    loadByTemplateId(final long templateId)
+    @android.support.annotation.Nullable public
+    org.wheatgenetics.coordinate.model.BaseJoinedGridModels loadByTemplateId(final long templateId)
     {
-        return (org.wheatgenetics.coordinate.model.JoinedGridModels) this.makeJoinedGridModels(
-            this.rawQuery(
-                /* sql => */org.wheatgenetics.coordinate.database.GridsTable.joinedQuery +
-                    " AND " + org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME +
-                    " = ?",
-                /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(templateId)));
+        return this.makeJoinedGridModels(this.rawQuery(
+            /* sql => */org.wheatgenetics.coordinate.database.GridsTable.joinedQuery +
+                " AND " + org.wheatgenetics.coordinate.database.GridsTable.TEMP_FIELD_NAME + " = ?",
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(templateId)));
     }
 
-    @android.support.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.JoinedGridModels loadByProjectId(final long projectId)
+    @android.support.annotation.Nullable public
+    org.wheatgenetics.coordinate.model.BaseJoinedGridModels loadByProjectId(final long projectId)
     {
-        return (org.wheatgenetics.coordinate.model.JoinedGridModels) this.makeJoinedGridModels(
-            this.rawQuery(
-                /* sql => */org.wheatgenetics.coordinate.database.GridsTable.joinedQuery +
-                    " AND " +
-                    org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME + " = ?",
-                /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(projectId)));
+        return this.makeJoinedGridModels(this.rawQuery(
+            /* sql => */org.wheatgenetics.coordinate.database.GridsTable.joinedQuery +
+                " AND " + org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME +
+                " = ?",
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(projectId)));
     }
     // endregion
 }

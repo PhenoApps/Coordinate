@@ -19,10 +19,10 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
  * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -113,7 +113,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity);             // TODO
         return this.gridsTableInstance;
     }
 
@@ -129,7 +129,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
         if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
+            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);           // TODO
         return this.entriesTableInstance;
     }
 
@@ -161,12 +161,12 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     {
         final boolean success;
         {
-            final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
                 this.gridsTable().loadByProjectId(this.projectId);
-            if (null != joinedGridModels && joinedGridModels.size() > 0)
+            if (null != baseJoinedGridModels && baseJoinedGridModels.size() > 0)
             {
                 final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                    joinedGridModels.get(0);
+                    baseJoinedGridModels.get(0);
                 if (null == joinedGridModel)
                     success = false;
                 else
@@ -286,7 +286,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.Override public void handleSetValuesDone()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(                          // TODO
                 /* projectId      => */ this.projectId     ,
                 /* person         => */ this.person        ,
                 /* optionalFields => */ this.optionalFields,
@@ -307,17 +307,17 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     joinedGridModel.makeEntryModels();                    // throws AmountIsTooLarge
                 else
                 {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModels
-                        projectJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
-                    if (null == projectJoinedGridModels)
+                    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels
+                        baseJoinedGridModels = this.gridsTable().loadByProjectId(this.projectId);
+                    if (null == baseJoinedGridModels)
                         joinedGridModel.makeEntryModels();                // throws AmountIsTooLarge
                     else
-                        if (projectJoinedGridModels.size() <= 1)     // includes the just added grid
+                        if (baseJoinedGridModels.size() <= 1)        // includes the just added grid
                             joinedGridModel.makeEntryModels();            // throws AmountIsTooLarge
                         else
                         {
                             final org.wheatgenetics.coordinate.model.Cells excludedCells =
-                                projectJoinedGridModels.excludedCells(
+                                baseJoinedGridModels.excludedCells(
                                     joinedGridModel.getRows(), joinedGridModel.getCols());
                             if (null == excludedCells)
                                 joinedGridModel.makeEntryModels();

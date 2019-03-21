@@ -15,8 +15,8 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModels
  * org.wheatgenetics.coordinate.model.ProjectExporter
  * org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
  */
@@ -94,20 +94,23 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
     // endregion
 
     public PerGridProjectExporter(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
+    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
     @android.support.annotation.NonNull final android.content.Context                     context  ,
                                         final org.wheatgenetics.androidlibrary.RequestDir exportDir,
                                         final java.lang.String exportDirectoryName)
-    { super(joinedGridModels, context, exportDir); this.exportDirectoryName = exportDirectoryName; }
+    {
+        super(baseJoinedGridModels, context, exportDir);
+        this.exportDirectoryName = exportDirectoryName;
+    }
 
     // region Overridden Methods
     @java.lang.Override public void execute()
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            this.getJoinedGridModels();
-        if (null != joinedGridModels)
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
+            this.getBaseJoinedGridModels();
+        if (null != baseJoinedGridModels)
         {
-            final int size = joinedGridModels.size(), last = size - 1;
+            final int size = baseJoinedGridModels.size(), last = size - 1;
             if (this.i > last)
             {
                 this.i = 0;
@@ -125,7 +128,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
                     {
                         final android.content.Context context = this.getContext();
                         final org.wheatgenetics.coordinate.model.JoinedGridModel
-                            joinedGridModel = joinedGridModels.get(this.i++);
+                            joinedGridModel = baseJoinedGridModels.get(this.i++);
                         if (null != joinedGridModel)
                         {
                             @java.lang.SuppressWarnings({"DefaultLocale"})

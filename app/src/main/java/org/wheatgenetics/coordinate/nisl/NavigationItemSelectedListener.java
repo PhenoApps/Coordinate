@@ -29,9 +29,9 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModels
- * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -59,7 +59,7 @@ package org.wheatgenetics.coordinate.nisl;
 public class NavigationItemSelectedListener extends java.lang.Object implements
 android.support.design.widget.NavigationView.OnNavigationItemSelectedListener,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                      ,
-org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
+org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -188,9 +188,9 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
 
     private void loadGrid()
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
             this.gridsTable().load();
-        if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+        if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
         {
             final org.wheatgenetics.coordinate.SelectAlertDialog selectGridToLoadAlertDialog =
                 new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
@@ -199,12 +199,12 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
                         @java.lang.Override public void select(final int which)
                         {
                             org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                .this.loadGridAfterSelect(joinedGridModels.get(which));
+                                .this.loadGridAfterSelect(baseJoinedGridModels.get(which));
                         }
                     });
             selectGridToLoadAlertDialog.show(
                 org.wheatgenetics.coordinate.R.string.NavigationItemSelectedListenerLoadGridTitle,
-                joinedGridModels.names()                                                         );
+                baseJoinedGridModels.names()                                                     );
         }
     }
     // endregion
@@ -300,10 +300,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         final long    templateId = templateModel.getId();
 
         {
-            final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
                 this.gridsTable().loadByTemplateId(templateId);
-            if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete
-        }                                                                                //  entries
+            if (null != baseJoinedGridModels)
+                baseJoinedGridModels.processAll(this);                  // delete entries
+        }
 
         if (this.gridsTable().deleteByTemplateId(templateId))                     // delete grids
             this.showShortToast(org.wheatgenetics.coordinate
@@ -503,10 +504,11 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         final long    projectId = projectModel.getId();
 
         {
-            final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
                 this.gridsTable().loadByProjectId(projectId);
-            if (null != joinedGridModels) joinedGridModels.processAll(this);   // delete
-        }                                                                                //  entries
+            if (null != baseJoinedGridModels)
+                baseJoinedGridModels.processAll(this);                   // delete entries
+        }
 
         if (this.gridsTable().deleteByProjectId(projectId))                        // delete grids
             this.showShortToast(org.wheatgenetics.coordinate
@@ -771,7 +773,7 @@ org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
     }
     // endregion
 
-    // region org.wheatgenetics.coordinate.model.JoinedGridModels.Processor Overridden Method
+    // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { if (null != joinedGridModel) this.entriesTable().deleteByGridId(joinedGridModel.getId()); }

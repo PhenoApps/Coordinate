@@ -13,10 +13,10 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
- * org.wheatgenetics.coordinate.model.JoinedGridModels
  */
 abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
 {
@@ -51,7 +51,7 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels;
+    private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
     @android.support.annotation.NonNull private final android.content.Context context;
                                         private final org.wheatgenetics.androidlibrary.RequestDir
                                             exportDir;
@@ -59,21 +59,21 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     ProjectExporter(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels,
+    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
     @android.support.annotation.NonNull final android.content.Context                     context  ,
                                         final org.wheatgenetics.androidlibrary.RequestDir exportDir)
     {
         super();
 
-        this.joinedGridModels = joinedGridModels;
-        this.context          = context         ;
-        this.exportDir        = exportDir       ;
+        this.baseJoinedGridModels = baseJoinedGridModels;
+        this.context              = context         ;
+        this.exportDir            = exportDir       ;
     }
 
     // region Protected Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    org.wheatgenetics.coordinate.model.JoinedGridModels getJoinedGridModels()
-    { return this.joinedGridModels; }
+    org.wheatgenetics.coordinate.model.BaseJoinedGridModels getBaseJoinedGridModels()
+    { return this.baseJoinedGridModels; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @android.support.annotation.NonNull android.content.Context getContext()

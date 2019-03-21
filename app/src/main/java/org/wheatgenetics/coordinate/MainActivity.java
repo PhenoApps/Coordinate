@@ -538,9 +538,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void exportProject()
     {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
             this.gridsTable().loadByProjectId(this.projectId);
-        if (null != joinedGridModels) if (joinedGridModels.size() > 0)
+        if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
         {
             final org.wheatgenetics.coordinate.Utils.ProjectExport projectExport =
                 this.getProjectExport();
@@ -549,7 +549,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 org.wheatgenetics.androidlibrary.RequestDir exportDir;
 
                 final org.wheatgenetics.coordinate.model.JoinedGridModel firstJoinedGridModel =
-                    joinedGridModels.get(0);
+                    baseJoinedGridModels.get(0);
                 if (null == firstJoinedGridModel)
                     exportDir = null;
                 else
@@ -586,10 +586,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 {
                     this.perGridProjectExporter =
                         new org.wheatgenetics.coordinate.model.PerGridProjectExporter(
-                            /* joinedGridModels    => */ joinedGridModels,
-                            /* context             => */this,
-                            /* exportDir           => */ exportDir         ,
-                            /* exportDirectoryName => */ this.directoryName);
+                            /* baseJoinedGridModels => */ baseJoinedGridModels,
+                            /* context              => */this,
+                            /* exportDir            => */ exportDir         ,
+                            /* exportDirectoryName  => */ this.directoryName);
                     this.perGridProjectExporter.execute();
                 }
             }
@@ -600,8 +600,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     {
                         this.entireProjectProjectExporter =
                             new org.wheatgenetics.coordinate.model.EntireProjectProjectExporter(
-                                /* joinedGridModels => */ joinedGridModels,
-                                /* context          => */this,
+                                /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                /* context              => */this,
                                 /* exportDir => */ this.exportDir(org.wheatgenetics// throws IOE, PE
                                     .coordinate.MainActivity.EXPORT_PROJECT_REQUEST_CODE),
                                 /* exportFileName => */ this.directoryName);
