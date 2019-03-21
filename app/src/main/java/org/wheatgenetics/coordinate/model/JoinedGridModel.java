@@ -49,7 +49,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private org.wheatgenetics.coordinate.model.EntryModel getEntryModel(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
-    { return null == this.entryModels ? null : this.entryModels.get(row, col); }
+    {
+        // noinspection ConstantConditions
+        return this.entryModelsIsNull() ? null : this.getEntryModels().get(row, col);
+    }
 
     // region export*() Private Methods
     private void exportSeed(
@@ -318,7 +321,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
-        return null == this.entryModels ? null : this.entryModels.next(
+        // noinspection ConstantConditions
+        return this.entryModelsIsNull() ? null : this.getEntryModels().next(
             activeEntryModel, advancement, filledHandler);
     }
 
@@ -332,6 +336,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     // region Package Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    boolean entryModelsIsNull() { return null == this.getEntryModels(); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @android.support.annotation.NonNull
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     @android.support.annotation.IntRange(from = 1) final int rows,
@@ -340,10 +347,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         return new org.wheatgenetics.coordinate.model.EntryModels(
             /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
     }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void uncheckedSetEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { if (null != this.entryModels) this.entryModels.set(entryModel); }
     // endregion
 
     // region Constructors
@@ -430,9 +433,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @android.support.annotation.NonNull
     org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
-        final org.wheatgenetics.coordinate.model.Cells result = null == this.entryModels ?
+        // noinspection ConstantConditions
+        final org.wheatgenetics.coordinate.model.Cells result = this.entryModelsIsNull() ?
             new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols()) :
-            this.entryModels.excludedCells()                                             ;
+            this.getEntryModels().excludedCells()                                        ;
         this.excludedCellsFromExcludedRowsAndCols(result);
         return result;
     }
@@ -513,7 +517,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { this.uncheckedSetEntryModel(entryModel); }
+    {
+        if (!this.entryModelsIsNull())
+            // noinspection ConstantConditions
+            this.getEntryModels().set(entryModel);
+    }
 
     @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()
