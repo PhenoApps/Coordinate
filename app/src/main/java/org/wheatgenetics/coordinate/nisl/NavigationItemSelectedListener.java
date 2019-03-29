@@ -97,7 +97,8 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     // region Fields
     @android.support.annotation.NonNull             private final android.app.Activity activity;
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int createTemplateRequestCode;
+    @org.wheatgenetics.coordinate.Types.RequestCode private final int
+        createTemplateRequestCode, clickUniquenessRequestCode;
     @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.TemplatesDir
         templatesDir;
                                         private final java.lang.String versionName;
@@ -594,8 +595,9 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     public NavigationItemSelectedListener(
-    @android.support.annotation.NonNull             final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int createTemplateRequestCode,
+    @android.support.annotation.NonNull             final android.app.Activity activity ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int createTemplateRequestCode ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int clickUniquenessRequestCode,
     @android.support.annotation.NonNull             final org.wheatgenetics.coordinate.TemplatesDir
         templatesDir,
                                         final java.lang.String versionName,
@@ -605,12 +607,13 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     {
         super();
 
-        this.activity                  = activity                 ;
-        this.createTemplateRequestCode = createTemplateRequestCode;
-        this.templatesDir              = templatesDir             ;
-        this.versionName               = versionName              ;
-        this.handler                   = handler                  ;
-        this.versionOnClickListener    = versionOnClickListener   ;
+        this.activity                   = activity                  ;
+        this.createTemplateRequestCode  = createTemplateRequestCode ;
+        this.clickUniquenessRequestCode = clickUniquenessRequestCode;
+        this.templatesDir               = templatesDir              ;
+        this.versionName                = versionName               ;
+        this.handler                    = handler                   ;
+        this.versionOnClickListener     = versionOnClickListener    ;
     }
 
     // region Overridden Methods
@@ -732,7 +735,8 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
 
             case org.wheatgenetics.coordinate.R.id.nav_settings:
-                this.activity.startActivity(this.preferenceIntent()); break;
+                this.activity.startActivityForResult(this.preferenceIntent(),
+                    this.clickUniquenessRequestCode); break;
 
 
 

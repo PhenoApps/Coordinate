@@ -378,11 +378,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region loadJoinedGridModel() Private Methods
-    private void loadJoinedGridModel(
+    private void getJoinedGridModel(
     @android.support.annotation.IntRange(from = 0) final long gridId)
     {
         this.joinedGridModel = org.wheatgenetics.coordinate.model.Model.illegal(gridId) ?
             null : this.gridsTable().get(gridId);
+    }
+
+    private void loadJoinedGridModel(
+    @android.support.annotation.IntRange(from = 0) final long gridId)
+    {
+        this.getJoinedGridModel(gridId);
 
         assert null != this.sharedPreferences;
         if (this.joinedGridModelIsLoaded())
@@ -657,6 +663,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                         /* activity                  => */this,
                         /* createTemplateRequestCode => */
                             org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,
+                        /* clickUniquenessRequestCode => */
+                            org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED,
                         /* templatesDir => */ templatesDir    ,
                         /* versionName  => */ this.versionName,
                         /* handler      => */ new org.wheatgenetics.coordinate.nisl
@@ -1005,6 +1013,26 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     case org.wheatgenetics.coordinate.Types.CREATE_GRID:
                         assert null != this.gridCreator;
                         this.gridCreator.setExcludedCells(data.getExtras());
+                        break;
+
+                    case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:
+                        {
+                            final boolean uniquenessPreferenceWasClicked;
+                            {
+                                final android.os.Bundle bundle = data.getExtras();
+                                // noinspection SimplifiableConditionalExpression
+                                uniquenessPreferenceWasClicked = null == bundle ?
+                                    false : bundle.getBoolean(
+                                        org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
+                                        false);
+                            }
+                            if (uniquenessPreferenceWasClicked)
+                            {
+                                this.gridsTableInstance = null; this.entriesTableInstance = null;
+                                if (this.joinedGridModelIsLoaded())
+                                    this.getJoinedGridModel(this.joinedGridModel.getId());
+                            }
+                        }
                         break;
                 }
             }
