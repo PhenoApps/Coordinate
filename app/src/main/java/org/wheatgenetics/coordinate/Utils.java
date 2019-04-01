@@ -276,10 +276,15 @@ public class Utils extends java.lang.Object
             return org.wheatgenetics.coordinate.Utils.Uniqueness.ERROR;
         else
         {
-            final java.lang.String uniqueness = defaultSharedPreferences.getString(
-                /* key      => */"Uniqueness",
-                /* defValue => */ context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDefault));
+            final java.lang.String uniqueness;
+            {
+                final java.lang.String key = context.getString(
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle);
+                uniqueness = defaultSharedPreferences.getString(
+                    /* key      => */ key,
+                    /* defValue => */ context.getString(
+                        org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDefault));
+            }
             if (null == uniqueness)
                 return org.wheatgenetics.coordinate.Utils.Uniqueness.ALLOW_DUPLICATES;
             else

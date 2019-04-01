@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.nisl;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.Context
  * android.os.Bundle
  * android.preference.Fragment
@@ -37,8 +38,17 @@ public class PreferenceFragment extends android.preference.PreferenceFragment
         // Load the preferences from an XML resource.
         this.addPreferencesFromResource(org.wheatgenetics.coordinate.R.xml.preferences);
 
-        final android.preference.ListPreference listPreference =
-            (android.preference.ListPreference) this.findPreference("Uniqueness");
+        final android.preference.ListPreference listPreference;
+        {
+            final java.lang.String key;
+            {
+                final android.app.Activity activity = this.getActivity();
+                key = null == activity ? null : activity.getString(
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle);
+            }
+            listPreference = null == key ? null :
+                (android.preference.ListPreference) this.findPreference(key);
+        }
         if (null != listPreference)
             listPreference.setOnPreferenceClickListener(this.onPreferenceClickListener);
     }
