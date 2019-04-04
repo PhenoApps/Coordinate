@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.SharedPreferences
+ * android.content.SharedPreferences.Editor
  * android.preference.PreferenceManager
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
@@ -297,6 +298,29 @@ public class Utils extends java.lang.Object
                         return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_CURRENT_GRID;
                     else
                         return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_ALL_GRIDS;
+        }
+    }
+
+    static void setUniquenessToAllowDuplicates(
+    @android.support.annotation.NonNull final android.content.Context context)
+    {
+        final android.content.SharedPreferences defaultSharedPreferences =
+            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context);
+        if (null != defaultSharedPreferences)
+        {
+            final android.content.SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+            if (null != editor)
+            {
+                {
+                    final java.lang.String
+                        key = context.getString(
+                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle),
+                        value = context.getString(
+                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDuplicates);
+                    editor.putString(key, value);
+                }
+                editor.apply();
+            }
         }
     }
     // endregion

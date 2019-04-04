@@ -64,6 +64,14 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     final long gridId, final int rows, final int cols)
     { return new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols); }
+
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    boolean setEntryModel(
+    @android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.EntryModels entryModels,
+    @android.support.annotation.NonNull
+        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    { entryModels.set(entryModel); return false; }
     // endregion
 
     // region Overridden Methods
@@ -169,9 +177,9 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                             if (null == entryModel)
                                 return null;
                             else
-                                result.set(entryModel);    // throws org.wheatgenetics.coordinate
-                        }                                  //  .model.IncludedEntryModel.CheckExcep-
-                    }                                      //  tion
+                                if (this.setEntryModel(result, entryModel)) return null;
+                        }
+                    }
                 }
                 finally { cursor.close(); }
         }

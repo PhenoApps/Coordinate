@@ -162,8 +162,8 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @android.support.annotation.NonNull
     org.wheatgenetics.coordinate.model.IncludedEntryModel makeButDontSetIncludedEntry(
-        @android.support.annotation.IntRange(from = 1) final int row,
-        @android.support.annotation.IntRange(from = 1) final int col)
+    @android.support.annotation.IntRange(from = 1) final int row,
+    @android.support.annotation.IntRange(from = 1) final int col)
     {
         return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
             this.getGridId(), row, col);

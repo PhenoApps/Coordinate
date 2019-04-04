@@ -133,11 +133,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ tag                                                        );
         this.context = context;
-    }
-
-    public GridsTable(final android.content.Context context)
-    {
-        this(/* context => */ context, /* tag => */"GridsTable");
 
         final java.lang.String
             gridsTableName     = org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME    ,
@@ -207,6 +202,9 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                     " FROM "  + gridsTableName + ", " + templatesTableName +
                     " WHERE " + tempFieldName + " = " + templateIdFieldName;
     }
+
+    public GridsTable(final android.content.Context context)
+    { this(/* context => */ context, /* tag => */"GridsTable"); }
     // endregion
 
     // region Overridden Methods
