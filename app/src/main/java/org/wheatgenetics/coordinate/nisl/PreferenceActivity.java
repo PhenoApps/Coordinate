@@ -24,6 +24,19 @@ implements android.preference.Preference.OnPreferenceClickListener
 {
     private boolean uniquenessPreferenceWasClicked;
 
+    private void setResult()
+    {
+        final android.content.Intent intent = new android.content.Intent();
+        {
+            final android.os.Bundle bundle = new android.os.Bundle();
+            bundle.putBoolean(
+                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
+                this.uniquenessPreferenceWasClicked                     );
+            intent.putExtras(bundle);
+        }
+        this.setResult(android.app.Activity.RESULT_OK, intent);
+    }
+
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
     @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
@@ -67,20 +80,9 @@ implements android.preference.Preference.OnPreferenceClickListener
     }
 
     @java.lang.Override public boolean onOptionsItemSelected(final android.view.MenuItem item)
-    {
-        {
-            final android.content.Intent intent = new android.content.Intent();
-            {
-                final android.os.Bundle bundle = new android.os.Bundle();
-                bundle.putBoolean(
-                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                    this.uniquenessPreferenceWasClicked                     );
-                intent.putExtras(bundle);
-            }
-            this.setResult(android.app.Activity.RESULT_OK, intent);
-        }
-        this.finish(); return super.onOptionsItemSelected(item);
-    }
+    { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
+
+    @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }
 
     // region android.preference.Preference.OnPreferenceClickListener Overridden Method
     @java.lang.Override
