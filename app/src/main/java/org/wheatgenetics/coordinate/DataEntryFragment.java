@@ -111,8 +111,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     // region Package Methods
     void populate()
     {
-        assert null != this.handler; assert null != this.entryEditText;
-        this.entryEditText.setText(this.handler.getEntryValue());
+        assert null != this.handler; this.setEntry(this.handler.getEntryValue());
 
         assert null != this.projectTitleTextView;
         this.projectTitleTextView.setText(this.handler.getProjectTitle());

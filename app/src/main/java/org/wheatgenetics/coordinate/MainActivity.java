@@ -57,6 +57,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
@@ -85,6 +87,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
+ * org.wheatgenetics.coordinate.UniqueAlertDialog
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
@@ -144,6 +147,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private java.lang.String versionName, fileName, directoryName;
     @android.support.annotation.IntRange(from = 1) private long projectId;
+
+    private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog = null;// ll
     // endregion
 
     // region Private Methods
@@ -1173,7 +1178,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         // is also a Handler for the org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTa-
         // ble instance created inside gridsTable().  The CurrentGridUniqueGridsTable instance's
         // loadByProjectId() may cause handleCGUETCheckException() to be called.  loadByProjectId()
-        // is called MainActivity.exportProject().
+        // is called by MainActivity.exportProject().
         // TODO
     }
     // endregion
@@ -1294,7 +1299,46 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel
                     activeIncludedEntryModel =
                         (org.wheatgenetics.coordinate.model.IncludedEntryModel) activeEntryModel;
-                activeIncludedEntryModel.setValue(entryValue);                               // TODO
+                switch (this.getUniqueness())
+                {
+                    case ALLOW_DUPLICATES: activeIncludedEntryModel.setValue(entryValue); break;
+
+                    case UNIQUE_CURRENT_GRID: case UNIQUE_ALL_GRIDS:
+                        final java.lang.String oldEntryValue = activeIncludedEntryModel.getValue();
+                        {
+                            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+                                checkedIncludedEntryModel =
+                                    (org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel)
+                                        activeIncludedEntryModel;
+                            try
+                            {
+                                checkedIncludedEntryModel.checkThenSetValue(        // throws Check-
+                                    entryValue);                                    //  Exception
+                            }
+                            catch (final org.wheatgenetics.coordinate.model
+                            .CheckedIncludedEntryModel.CheckException e)
+                            {
+                                if (e instanceof org.wheatgenetics.coordinate.model
+                                .CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException)
+                                {
+                                    if (null == this.currentGridUniqueAlertDialog)
+                                        this.currentGridUniqueAlertDialog =
+                                            new org.wheatgenetics.coordinate.UniqueAlertDialog(
+                                                this);
+                                    this.currentGridUniqueAlertDialog.show(org.wheatgenetics
+                                        .coordinate.R.string.CurrentGridUniqueAlertDialogMessage);
+
+                                    assert null != this.dataEntryFragment;
+                                    this.dataEntryFragment.setEntry(oldEntryValue);
+
+                                    return;
+                                }
+                                else
+                                    ;                                                        // TODO
+                            }
+                        }
+                        break;
+                }
                 entriesTable.insertOrUpdate(activeIncludedEntryModel);
             }
             this.goToNext(activeEntryModel);
