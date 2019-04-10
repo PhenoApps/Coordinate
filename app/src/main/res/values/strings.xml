@@ -50,7 +50,7 @@
 
 
     <string name="UniquenessPreferenceTitle">Uniqueness</string>
-    <string name="UniquenessPreferenceSummary">During data entry, Coordinate can force cell values to be unique within the current grid or unique among all grids.</string>
+    <string name="UniquenessPreferenceSummary">During data entry, Coordinate can 1) allow duplicates, 2) force cell values to be unique within the current grid, or 3) force cell values to be unique among all grids.\n\ncurrent setting: %s</string>
 
     <string-array name="UniquenessPreferenceEntries">
         <item>Allow duplicates</item>
