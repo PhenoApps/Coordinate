@@ -148,7 +148,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private java.lang.String versionName, fileName, directoryName;
     @android.support.annotation.IntRange(from = 1) private long projectId;
 
-    private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog = null;// ll
+    private java.lang.Runnable                             exportProjectRunnableInstance = null;//ll
+    private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog  = null;//ll
     // endregion
 
     // region Private Methods
@@ -879,6 +880,21 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
+    private java.lang.Runnable exportProjectRunnable()
+    {
+        if (null == this.exportProjectRunnableInstance) this.exportProjectRunnableInstance =
+            new java.lang.Runnable()
+            {
+                @java.lang.Override public void run()
+                {
+                    org.wheatgenetics.coordinate.Utils.setUniquenessToAllowDuplicates(
+                        org.wheatgenetics.coordinate.MainActivity.this);
+                    org.wheatgenetics.coordinate.MainActivity.this.exportProject();
+                }
+            };
+        return this.exportProjectRunnableInstance;
+    }
+
     private void handleCurrentGridDuplicateCheckException()
     {
         if (this.getSoundOn())
@@ -1197,7 +1213,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         // ble instance created inside gridsTable().  The CurrentGridUniqueGridsTable instance's
         // loadByProjectId() may cause handleCGUETCheckException() to be called.  loadByProjectId()
         // is called by MainActivity.exportProject().
-        // TODO
+
+        org.wheatgenetics.coordinate.Utils.confirm(this,
+            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogTitle  ,
+            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogMessage,
+            this.exportProjectRunnable()                                                      );
     }
     // endregion
 

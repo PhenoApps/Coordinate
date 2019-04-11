@@ -287,6 +287,8 @@
 
 
     <!-- MainActivity -->
+    <string name="MainActivityCheckExceptionAlertDialogTitle">Duplicate Sample Encountered</string>
+    <string name="MainActivityCheckExceptionAlertDialogMessage">An attempt to load a grid from the database could not be completed because the grid violates the current Uniqueness setting.  Should I change the setting to "Allow duplicates" so that your next attempt will succeed?</string>
     <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
     <string name="MainActivityEntriesOfGridSuccessToast">Entries successfully deleted</string>
     <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
