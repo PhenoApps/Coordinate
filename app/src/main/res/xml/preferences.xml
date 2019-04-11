@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="Advancement"
+        android:key="@string/AdvancementPreferenceKey"
         android:title="@string/AdvancementPreferenceTitle"
         android:summary="@string/AdvancementPreferenceSummary"
         android:entries="@array/AdvancementPreferenceEntries"

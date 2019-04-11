@@ -7,13 +7,9 @@
 
 
     <!-- Preferences -->
-    <string name="SoundPreferenceTitle">Sound</string>
-    <string name="SoundPreferenceSummaryOn">Play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
-    <string name="SoundPreferenceSummaryOff">Do not play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
-
-
-    <string name="AdvancementPreferenceTitle">Advancement</string>
-    <string name="AdvancementPreferenceSummary">Method used when determining which cell to advance to after a value is saved.</string>
+    <string name="AdvancementPreferenceKey">Advancement</string>
+    <string name="AdvancementPreferenceTitle">@string/AdvancementPreferenceKey</string>
+    <string name="AdvancementPreferenceSummary">Method used when determining which cell to advance to after a value is saved.\n\ncurrent setting: %s</string>
 
     <string-array name="AdvancementPreferenceEntries">
         <item>Down each column</item>
@@ -27,7 +23,13 @@
         <item>@string/AdvancementPreferenceDownThenAcrossEntryValue</item>
         <item>@string/AdvancementPreferenceAcrossThenDownEntryValue</item>
     </string-array>
+
     <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
+
+
+    <string name="SoundPreferenceTitle">Sound</string>
+    <string name="SoundPreferenceSummaryOn">Play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
+    <string name="SoundPreferenceSummaryOff">Do not play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
 
 
     <string name="ProjectExportPreferenceKey">ProjectExport</string>

@@ -26,10 +26,12 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     private java.util.TreeMap<java.lang.String, java.lang.String>
         uniquenessTreeMap    = new java.util.TreeMap<java.lang.String, java.lang.String>(),
-        projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
+        projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>(),
+        advancementTreeMap   = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String                          uniquenessKey       , projectExportKey       ;
-    private android.preference.ListPreference         uniquenessPreference, projectExportPreference;
+    private java.lang.String                  uniquenessKey, projectExportKey, advancementKey;
+    private android.preference.ListPreference uniquenessPreference,
+        projectExportPreference, advancementPreference;
     private android.preference.Preference.OnPreferenceClickListener
         onUniquenessPreferenceClickListener = null; // TODO: Replace w/ onSharedPreferenceChanged()?
 
@@ -78,7 +80,15 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             this.projectExportTreeMap                                           );
     }
 
-    private void setSummaries() { this.setUniquenessSummary(); this.setProjectExportSummary(); }
+    private void setAdvancmentSummary()
+    {
+        this.setSummary(this.advancementPreference,
+            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceSummary,
+            this.advancementTreeMap                                           );
+    }
+
+    private void setSummaries()
+    { this.setUniquenessSummary(); this.setProjectExportSummary(); this.setAdvancmentSummary(); }
     // endregion
 
     // region Overridden Methods
@@ -117,17 +127,26 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                         org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntryValues,
                         org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntries    ,
                         this.projectExportTreeMap                                              );
+
+                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                        org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntryValues,
+                        org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntries    ,
+                        this.advancementTreeMap                                              );
                 }
 
                 this.uniquenessKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey);
                 this.projectExportKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
+                this.advancementKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.AdvancementPreferenceKey);
 
                 this.uniquenessPreference =
                     (android.preference.ListPreference) this.findPreference(this.uniquenessKey);
                 this.projectExportPreference =
                     (android.preference.ListPreference) this.findPreference(this.projectExportKey);
+                this.advancementPreference =
+                    (android.preference.ListPreference) this.findPreference(this.advancementKey);
 
                 this.setSummaries();
 
@@ -169,7 +188,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             if (key.equals(this.uniquenessKey))
                 this.setUniquenessSummary();
             else
-                if (key.equals(this.projectExportKey)) this.setProjectExportSummary();
+                if (key.equals(this.projectExportKey))
+                    this.setProjectExportSummary();
+                else
+                    if (key.equals(this.advancementKey)) this.setAdvancmentSummary();
     }
     // endregion
     // endregion
