@@ -116,8 +116,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         exportTemplateMenuItem = null, deleteTemplateMenuItem = null;
     private android.view.MenuItem projectMenuItem = null, manageProjectMenuItem = null,
         exportProjectMenuItem = null;
-    private android.media.MediaPlayer
-        gridEndMediaPlayer = null, rowOrColumnEndMediaPlayer = null;                   // lazy loads
+    private android.media.MediaPlayer gridEndMediaPlayer = null,
+        rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
 
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null; // ll
@@ -878,6 +878,22 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 this.populateFragments();
             }
     }
+
+    private void handleCurrentGridDuplicateCheckException()
+    {
+        if (this.getSoundOn())
+        {
+            if (null == this.disallowedDuplicateMediaPlayer)
+                this.disallowedDuplicateMediaPlayer = android.media.MediaPlayer.create(
+                    this, org.wheatgenetics.coordinate.R.raw.row_or_column_end);     // TODO
+            this.disallowedDuplicateMediaPlayer.start();
+        }
+
+        if (null == this.currentGridUniqueAlertDialog) this.currentGridUniqueAlertDialog =
+            new org.wheatgenetics.coordinate.UniqueAlertDialog(this);
+        this.currentGridUniqueAlertDialog.show(
+            org.wheatgenetics.coordinate.R.string.CurrentGridUniqueAlertDialogMessage);
+    }
     // endregion
 
     // region Overridden Methods
@@ -1133,6 +1149,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @java.lang.Override protected void onDestroy()
     {
+        if (null != this.disallowedDuplicateMediaPlayer)
+            this.disallowedDuplicateMediaPlayer.release();
         if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
         if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
 
@@ -1321,12 +1339,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 if (e instanceof org.wheatgenetics.coordinate.model
                                 .CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException)
                                 {
-                                    if (null == this.currentGridUniqueAlertDialog)
-                                        this.currentGridUniqueAlertDialog =
-                                            new org.wheatgenetics.coordinate.UniqueAlertDialog(
-                                                this);
-                                    this.currentGridUniqueAlertDialog.show(org.wheatgenetics
-                                        .coordinate.R.string.CurrentGridUniqueAlertDialogMessage);
+                                    this.handleCurrentGridDuplicateCheckException();
 
                                     assert null != this.dataEntryFragment;
                                     this.dataEntryFragment.setEntry(oldEntryValue);
