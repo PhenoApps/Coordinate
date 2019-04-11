@@ -12,7 +12,10 @@ package org.wheatgenetics.coordinate.nisl;
  * android.preference.ListPreference
  * android.preference.Preference.OnPreferenceClickListener
  * android.preference.PreferenceScreen
+ * android.support.annotation.ArrayRes
+ * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.StringRes
  *
  * org.wheatgenetics.coordinate.R
  */
@@ -21,23 +24,62 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 {
     // region Fields
     @java.lang.SuppressWarnings({"Convert2Diamond"})
-    private java.util.TreeMap<java.lang.String, java.lang.String> uniquenessTreeMap =
-        new java.util.TreeMap<java.lang.String, java.lang.String>();
+    private java.util.TreeMap<java.lang.String, java.lang.String>
+        uniquenessTreeMap    = new java.util.TreeMap<java.lang.String, java.lang.String>(),
+        projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String                                        uniquenessKey       ;
-    private android.preference.ListPreference                       uniquenessPreference;
+    private java.lang.String                          uniquenessKey       , projectExportKey       ;
+    private android.preference.ListPreference         uniquenessPreference, projectExportPreference;
     private android.preference.Preference.OnPreferenceClickListener
         onUniquenessPreferenceClickListener = null; // TODO: Replace w/ onSharedPreferenceChanged()?
 
     private android.content.SharedPreferences sharedPreferences;
     // endregion
 
+    // region Private Methods
+    private static void populateTreeMap(
+    @android.support.annotation.Nullable final android.content.res.Resources resources,
+    @android.support.annotation.ArrayRes final int                           keysRes  ,
+    @android.support.annotation.ArrayRes final int                           valuesRes,
+    @android.support.annotation.NonNull  final
+        java.util.TreeMap<java.lang.String, java.lang.String> treeMap)
+    {
+        if (null != resources)
+        {
+            final java.lang.String
+                keys  [] = resources.getStringArray(keysRes  ),
+                values[] = resources.getStringArray(valuesRes);
+            final int first = 0, last = keys.length - 1;
+            for (int i = first; i <= last; i++) treeMap.put(keys[i], values[i]);
+        }
+    }
+
+    private void setSummary(
+    @android.support.annotation.Nullable  final android.preference.ListPreference preference,
+    @android.support.annotation.StringRes final int                               summaryRes,
+    @android.support.annotation.NonNull   final
+        java.util.TreeMap<java.lang.String, java.lang.String> treeMap)
+    {
+        if (null != preference)
+            preference.setSummary(this.getString(summaryRes, treeMap.get(preference.getValue())));
+    }
+
     private void setUniquenessSummary()
     {
-        if (null != this.uniquenessPreference) this.uniquenessPreference.setSummary(
-            this.getString(org.wheatgenetics.coordinate.R.string.UniquenessPreferenceSummary,
-                this.uniquenessTreeMap.get(this.uniquenessPreference.getValue())));
+        this.setSummary(this.uniquenessPreference,
+            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceSummary,
+            this.uniquenessTreeMap                                          );
     }
+
+    private void setProjectExportSummary()
+    {
+        this.setSummary(this.projectExportPreference,
+            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceSummary,
+            this.projectExportTreeMap                                           );
+    }
+
+    private void setSummaries() { this.setUniquenessSummary(); this.setProjectExportSummary(); }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override public void onAttach(final android.content.Context context)
@@ -66,26 +108,32 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             {
                 {
                     final android.content.res.Resources resources = activity.getResources();
-                    if (null != resources)
-                    {
-                        final java.lang.String
-                            keys[] = resources.getStringArray(org.wheatgenetics
-                                .coordinate.R.array.UniquenessPreferenceEntryValues),
-                            values[] = resources.getStringArray(
-                                org.wheatgenetics.coordinate.R.array.UniquenessPreferenceEntries);
-                        final int first = 0, last = keys.length - 1;
-                        for (int i = first; i <= last; i++)
-                            this.uniquenessTreeMap.put(keys[i], values[i]);
-                    }
+                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                        org.wheatgenetics.coordinate.R.array.UniquenessPreferenceEntryValues,
+                        org.wheatgenetics.coordinate.R.array.UniquenessPreferenceEntries    ,
+                        this.uniquenessTreeMap                                              );
+
+                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                        org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntryValues,
+                        org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntries    ,
+                        this.projectExportTreeMap                                              );
                 }
+
                 this.uniquenessKey = activity.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle);
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey);
+                this.projectExportKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
+
                 this.uniquenessPreference =
                     (android.preference.ListPreference) this.findPreference(this.uniquenessKey);
+                this.projectExportPreference =
+                    (android.preference.ListPreference) this.findPreference(this.projectExportKey);
+
+                this.setSummaries();
+
                 if (null != this.uniquenessPreference)
                     this.uniquenessPreference.setOnPreferenceClickListener(
                         this.onUniquenessPreferenceClickListener);
-                this.setUniquenessSummary();
             }
         }
 
@@ -116,7 +164,13 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     // region android.content.SharedPreferences.OnSharedPreferenceChangeListener Overridden Method
     @java.lang.Override public void onSharedPreferenceChanged(
     final android.content.SharedPreferences sharedPreferences, final java.lang.String key)
-    { if (null != key) if (key.equals(this.uniquenessKey)) this.setUniquenessSummary(); }
+    {
+        if (null != key)
+            if (key.equals(this.uniquenessKey))
+                this.setUniquenessSummary();
+            else
+                if (key.equals(this.projectExportKey)) this.setProjectExportSummary();
+    }
     // endregion
     // endregion
 }

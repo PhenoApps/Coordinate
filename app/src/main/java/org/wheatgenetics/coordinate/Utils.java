@@ -280,7 +280,7 @@ public class Utils extends java.lang.Object
             final java.lang.String uniqueness;
             {
                 final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle);
+                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey);
                 uniqueness = defaultSharedPreferences.getString(
                     /* key      => */ key,
                     /* defValue => */ context.getString(
@@ -314,7 +314,7 @@ public class Utils extends java.lang.Object
                 {
                     final java.lang.String
                         key = context.getString(
-                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceTitle),
+                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey),
                         value = context.getString(
                             org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDuplicates);
                     editor.putString(key, value);

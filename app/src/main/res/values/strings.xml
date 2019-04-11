@@ -30,8 +30,9 @@
     <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
 
 
+    <string name="ProjectExportPreferenceKey">ProjectExport</string>
     <string name="ProjectExportPreferenceTitle">Project export</string>
-    <string name="ProjectExportPreferenceSummary">When exporting a project, Coordinate can create one file for each grid or combine grids and export a single file for the entire project.</string>
+    <string name="ProjectExportPreferenceSummary">When exporting a project, Coordinate can create one file for each grid or combine grids and export a single file for the entire project.\n\ncurrent setting: %s</string>
 
     <string-array name="ProjectExportPreferenceEntries">
         <item>One file per grid</item>
@@ -49,7 +50,8 @@
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
 
 
-    <string name="UniquenessPreferenceTitle">Uniqueness</string>
+    <string name="UniquenessPreferenceKey">Uniqueness</string>
+    <string name="UniquenessPreferenceTitle">@string/UniquenessPreferenceKey</string>
     <string name="UniquenessPreferenceSummary">During data entry, Coordinate can 1) allow duplicates, 2) force cell values to be unique within the current grid, or 3) force cell values to be unique among all grids.\n\ncurrent setting: %s</string>
 
     <string-array name="UniquenessPreferenceEntries">
