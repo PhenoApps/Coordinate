@@ -416,7 +416,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @java.lang.Override public boolean getRowNumbering()
     { return this.templateModel.getRowNumbering(); }
 
-    @java.lang.Override public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+    @java.lang.Override @android.support.annotation.Nullable
+    public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
     @android.support.annotation.IntRange(from = 1) int row,
     @android.support.annotation.IntRange(from = 1) int col) { return this.getEntryModel(row, col); }
     // endregion

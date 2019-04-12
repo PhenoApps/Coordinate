@@ -44,12 +44,12 @@ extends org.wheatgenetics.coordinate.database.EntriesTable
         try
         {
             return new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                /* id        => */ id,
-                /* gridId    => */ gridId,
-                /* row       => */ row,
-                /* col       => */ col,
-                /* value     => */ value,
-                /* timestamp => */ timestamp,
+                /* id        => */ id                               ,
+                /* gridId    => */ gridId                           ,
+                /* row       => */ row                              ,
+                /* col       => */ col                              ,
+                /* value     => */ value                            ,
+                /* timestamp => */ timestamp                        ,
                 /* checker   => */ this.currentGridUniqueEntryModels);
         }
         catch (final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)

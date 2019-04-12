@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.os.Bundle
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.v7.app.AppCompatActivity
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -59,7 +60,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         @java.lang.Override public boolean getColNumbering() { return this.colNumbering; }
         @java.lang.Override public boolean getRowNumbering() { return this.rowNumbering; }
 
-        @java.lang.Override public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
+        @java.lang.Override @android.support.annotation.Nullable
+        public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
         @android.support.annotation.IntRange(from = 1) final int row,
         @android.support.annotation.IntRange(from = 1) final int col)
         { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }

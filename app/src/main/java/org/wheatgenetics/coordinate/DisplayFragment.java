@@ -173,7 +173,14 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
                         tableRow.addView(tableCell);
                     }
                     else
-                        tableRow.addView(this.elements.add(displayModel.getElementModel(row, col)));
+                    {
+                        final org.wheatgenetics.coordinate.model.ElementModel elementModel =
+                            displayModel.getElementModel(row, col);
+                        if (null == elementModel)
+                            break;
+                        else
+                            tableRow.addView(this.elements.add(elementModel));
+                    }
                 this.tableLayout.addView(tableRow);
             }
             // endregion
