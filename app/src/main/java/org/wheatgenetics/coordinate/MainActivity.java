@@ -103,14 +103,16 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
     // region Constants
     private static final java.lang.String COORDINATE_DIR_NAME = "Coordinate",
-        BLANK_HIDDEN_FILE_NAME  = ".coordinate";
+        BLANK_HIDDEN_FILE_NAME = ".coordinate";
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, IMPORT_TEMPLATE = 11,
         EXPORT_TEMPLATE = 12, CONFIGURE_NAVIGATION_VIEW = 13, EXPORT_GRID_REQUEST_CODE = 30,
         EXPORT_PROJECT_REQUEST_CODE = 31;
     // endregion
 
+    private enum GridsTableSourceMethod { OTHER, UNIQUENESS_CLICKED, EXPORT_PROJECT }
+
     // region Fields
-    private android.support.v4.widget.DrawerLayout                        drawerLayout;
+    private android.support.v4.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem manageGridMenuItem = null, exportGridMenuItem = null;
     private android.view.MenuItem templateMenuItem = null, importTemplateMenuItem = null,
         exportTemplateMenuItem = null, deleteTemplateMenuItem = null;
@@ -148,8 +150,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private java.lang.String versionName, fileName, directoryName;
     @android.support.annotation.IntRange(from = 1) private long projectId;
 
-    private java.lang.Runnable                             exportProjectRunnableInstance = null;//ll
-    private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog  = null;//ll
+    private org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod
+        gridsTableSourceMethod =
+            org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
+    private java.lang.Runnable otherRunnableInstance = null,                               // lazy
+        exportProjectRunnableInstance = null;                                              //  loads
+    private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog = null;//ll
     // endregion
 
     // region Private Methods
@@ -396,7 +402,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         // hide keyboard
         final android.view.View view = this.getCurrentFocus();
-        if (null != view )
+        if (null != view)
         {
             final android.view.inputmethod.InputMethodManager imm =
                 (android.view.inputmethod.InputMethodManager) this.getSystemService(
@@ -427,7 +433,20 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         else
         {
             final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
-            this.joinedGridModel = null == gridsTable ? null : gridsTable.get(gridId);
+            if (null == gridsTable)
+                this.joinedGridModel = null;
+            else
+                try
+                {
+                    this.gridsTableSourceMethod = org.wheatgenetics.coordinate
+                        .MainActivity.GridsTableSourceMethod.UNIQUENESS_CLICKED;
+                    this.joinedGridModel = gridsTable.get(gridId);
+                }
+                finally
+                {
+                    this.gridsTableSourceMethod =
+                        org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
+                }
         }
     }
 
@@ -596,8 +615,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
         if (null != gridsTable)
         {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-                gridsTable.loadByProjectId(this.projectId);
+            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
+            try
+            {
+                this.gridsTableSourceMethod = org.wheatgenetics.coordinate
+                    .MainActivity.GridsTableSourceMethod.EXPORT_PROJECT;
+                baseJoinedGridModels = gridsTable.loadByProjectId(this.projectId);
+            }
+            finally
+            {
+                this.gridsTableSourceMethod =
+                    org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
+            }
             if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
             {
                 final org.wheatgenetics.coordinate.Utils.ProjectExport projectExport =
@@ -869,6 +898,73 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     { return org.wheatgenetics.coordinate.Utils.getUniqueness(this); }
     // endregion
 
+    // region reloadIfNecessary() Private Methods
+    private boolean gridsTableNeedsReloading()
+    {
+        if (this.gridsTableInstance == null)
+            return false;
+        else
+            switch (this.getUniqueness())
+            {
+                case ALLOW_DUPLICATES: return this.gridsTableInstance instanceof
+                    org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable;       // TODO
+
+                case UNIQUE_CURRENT_GRID: return !(this.gridsTableInstance instanceof
+                    org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable);
+
+                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
+
+                default: return true;
+            }
+    }
+
+    private boolean entriesTableNeedsReloading()
+    {
+        if (this.entriesTableInstance == null)
+            return false;
+        else
+            switch (this.getUniqueness())
+            {
+                case ALLOW_DUPLICATES: return this.entriesTableInstance instanceof
+                    org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable;     // TODO
+
+                case UNIQUE_CURRENT_GRID: return !(this.entriesTableInstance instanceof
+                    org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable);
+
+                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
+
+                default: return true;
+            }
+    }
+
+    private boolean joinedGridModelNeedsReloading()
+    {
+        if (!this.joinedGridModelIsLoaded())
+            return false;
+        else
+            switch (this.getUniqueness())
+            {
+                case ALLOW_DUPLICATES: return this.joinedGridModel instanceof
+                    org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel;     // TODO
+
+                case UNIQUE_CURRENT_GRID: return !(this.joinedGridModel instanceof
+                    org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel);
+
+                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
+
+                default: return true;
+            }
+    }
+
+    private void reloadIfNecessary()
+    {
+        if (this.gridsTableNeedsReloading     ()) this.gridsTableInstance   = null;
+        if (this.entriesTableNeedsReloading   ()) this.entriesTableInstance = null;
+        if (this.joinedGridModelNeedsReloading())
+            this.loadJoinedGridModelThenPopulate(this.joinedGridModel.getId());
+    }
+    // endregion
+
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
@@ -880,6 +976,27 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
+    // region handleCGUETCheckException() Private Methods
+    private void setUniquenessToAllowDuplicatesThenReload()
+    {
+        org.wheatgenetics.coordinate.Utils.setUniquenessToAllowDuplicates(this);
+        this.reloadIfNecessary();
+    }
+
+    private java.lang.Runnable otherRunnable()
+    {
+        if (null == this.otherRunnableInstance) this.otherRunnableInstance =
+            new java.lang.Runnable()
+            {
+                @java.lang.Override public void run()
+                {
+                    org.wheatgenetics.coordinate.MainActivity.this
+                        .setUniquenessToAllowDuplicatesThenReload();
+                }
+            };
+        return this.otherRunnableInstance;
+    }
+
     private java.lang.Runnable exportProjectRunnable()
     {
         if (null == this.exportProjectRunnableInstance) this.exportProjectRunnableInstance =
@@ -887,13 +1004,22 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             {
                 @java.lang.Override public void run()
                 {
-                    org.wheatgenetics.coordinate.Utils.setUniquenessToAllowDuplicates(
-                        org.wheatgenetics.coordinate.MainActivity.this);
+                    org.wheatgenetics.coordinate.MainActivity.this
+                        .setUniquenessToAllowDuplicatesThenReload();
                     org.wheatgenetics.coordinate.MainActivity.this.exportProject();
                 }
             };
         return this.exportProjectRunnableInstance;
     }
+
+    private void confirm(@android.support.annotation.NonNull final java.lang.Runnable runnable)
+    {
+        org.wheatgenetics.coordinate.Utils.confirm(this,
+            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogTitle  ,
+            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogMessage,
+            runnable                                                                          );
+    }
+    // endregion
 
     private void handleCurrentGridDuplicateCheckException()
     {
@@ -1117,12 +1243,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
                                         false);
                             }
-                            if (uniquenessPreferenceWasClicked)
-                            {
-                                this.gridsTableInstance = null; this.entriesTableInstance = null;
-                                if (this.joinedGridModelIsLoaded())
-                                    this.getJoinedGridModel(this.joinedGridModel.getId());
-                            }
+                            if (uniquenessPreferenceWasClicked) this.reloadIfNecessary();
                         }
                         break;
                 }
@@ -1211,13 +1332,16 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         // However, this is not only a Handler for the CurrentGridUniqueEntriesTable instance -- it
         // is also a Handler for the org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTa-
         // ble instance created inside gridsTable().  The CurrentGridUniqueGridsTable instance's
-        // loadByProjectId() may cause handleCGUETCheckException() to be called.  loadByProjectId()
-        // is called by MainActivity.exportProject().
+        // get() and loadByProjectId() may both cause handleCGUETCheckException() to be called.
+        // get() is called by MainActivity.getJoinedGridModel() [which is called by multiple methods
+        // but if this method is being executed then getJoinedGridModel() was probably called by
+        // onActivityResult()] and loadByProjectId() is called by MainActivity.exportProject().
 
-        org.wheatgenetics.coordinate.Utils.confirm(this,
-            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogTitle  ,
-            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogMessage,
-            this.exportProjectRunnable()                                                      );
+        switch (this.gridsTableSourceMethod)
+        {
+            case OTHER: case UNIQUENESS_CLICKED: this.confirm(this.otherRunnable        ()); break;
+            case EXPORT_PROJECT                : this.confirm(this.exportProjectRunnable()); break;
+        }
     }
     // endregion
 
