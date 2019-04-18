@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.display;
  * android.view.View.OnLongClickListener
  * android.widget.TextView
  *
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -16,6 +17,7 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.Utils.Uniqueness
  */
 class GridElement extends org.wheatgenetics.coordinate.Element
 implements android.view.View.OnLongClickListener
@@ -27,7 +29,11 @@ implements android.view.View.OnLongClickListener
             org.wheatgenetics.coordinate.display.GridElement gridElement);
     }
 
+    // region Fields
     @android.support.annotation.NonNull private final android.content.Context context;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
+    // endregion
 
     // region Private Methods
     private void activate()
@@ -51,15 +57,16 @@ implements android.view.View.OnLongClickListener
     @android.support.annotation.NonNull final android.content.Context                       context,
                                         final org.wheatgenetics.coordinate.model.EntryModel
                                             entryModel,
-    @android.support.annotation.NonNull final android.widget.TextView
-                                            textView,
+    @android.support.annotation.NonNull final android.widget.TextView textView,
     @android.support.annotation.NonNull final
                                             org.wheatgenetics.coordinate.display.GridElement.Handler
                                                 handler,
-                                            int activeRow, int activeCol )
+                                            int activeRow, int activeCol,
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(entryModel, textView, handler);
-        this.context = context;
+        this.context = context; this.checker = checker;
 
         activeRow = java.lang.Math.max(activeRow, -1);
         activeCol = java.lang.Math.max(activeCol, -1);
@@ -116,10 +123,21 @@ implements android.view.View.OnLongClickListener
             }
             else
             {
-                // noinspection ConstantConditions
-                this.elementModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) elementModel);
-                this.setOnClickListener(); this.toggle();
+                final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel =
+                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) entryModel;
+                if (null != excludedEntryModel)
+                {
+                    if (org.wheatgenetics.coordinate.Utils.getUniqueness(this.context)
+                    == org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_CURRENT_GRID)    // TODO
+                        this.elementModel =
+                            new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                                excludedEntryModel, this.checker);
+                    else
+                        this.elementModel =
+                            new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                                excludedEntryModel);
+                    this.setOnClickListener(); this.toggle();
+                }
             }
         }
         return true;

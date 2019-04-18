@@ -58,7 +58,9 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+ * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
@@ -1383,6 +1385,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             assert null != this.dataEntryFragment;
             this.dataEntryFragment.setEntry(this.getEntryValue());
         }
+    }
+
+    @java.lang.Override @android.support.annotation.Nullable
+    public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
+    {
+        if (this.joinedGridModel instanceof
+        org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel)                 // TODO
+            return (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
+                this.joinedGridModel.getEntryModels();
+        else
+            return null;
     }
     // endregion
 

@@ -20,9 +20,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public abstract class Elements extends java.lang.Object
-implements org.wheatgenetics.coordinate.Element.Handler
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public abstract class Elements
+extends java.lang.Object implements org.wheatgenetics.coordinate.Element.Handler
 {
     // region Fields
     @android.support.annotation.NonNull private final android.app.Activity activity;
@@ -86,8 +85,10 @@ implements org.wheatgenetics.coordinate.Element.Handler
                 final org.wheatgenetics.coordinate.Element element =
                     this.makeElement(elementModel, (android.widget.TextView)
                         result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView));
-                if (null == this.elementArray) return null;
-                this.elementArray[element.getRow()][element.getCol()] = element;
+                if (null == this.elementArray)
+                    return null;
+                else
+                    this.elementArray[element.getRow()][element.getCol()] = element;
             }
             return result;
         }

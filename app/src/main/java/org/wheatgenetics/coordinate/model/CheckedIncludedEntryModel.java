@@ -18,7 +18,7 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
         { super(message); }
     }
 
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Checker
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Checker
     {
         @android.support.annotation.Nullable public abstract java.lang.String check(
         @android.support.annotation.IntRange(from = 1) int              rowIndex,
@@ -55,7 +55,7 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
         this.checker = checker;
     }
 
-    CheckedIncludedEntryModel(@android.support.annotation.NonNull
+    public CheckedIncludedEntryModel(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
     @android.support.annotation.NonNull final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)

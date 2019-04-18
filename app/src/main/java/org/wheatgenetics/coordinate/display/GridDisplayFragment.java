@@ -6,7 +6,9 @@ package org.wheatgenetics.coordinate.display;
  * android.content.Context
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
  *
  * org.wheatgenetics.coordinate.DisplayFragment
@@ -24,6 +26,9 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     {
         public abstract int getActiveRow(); public abstract int getActiveCol();
         public abstract void activate(int row, int col);
+
+        @android.support.annotation.Nullable public abstract
+            org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker();
     }
 
     public GridDisplayFragment() { /* Required empty public constructor. */ }
@@ -48,26 +53,24 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     @android.support.annotation.IntRange(from = 1) final int lastRow,
     @android.support.annotation.IntRange(from = 1) final int lastCol)
     {
-        final int activeRow, activeCol;
+        final org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler handler =
+            (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) this.handler;
+        if (null != handler)
         {
-            final org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler handler =
-                (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) this.handler;
-            if (null == handler)
-                return;
+            final int activeRow = handler.getActiveRow(), activeCol = handler.getActiveCol();
+            if (null == this.elements)
+            {
+                final android.app.Activity activity = this.getActivity();
+                final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker =
+                    handler.getChecker();
+                if (null != activity && null != checker) this.elements =
+                    new org.wheatgenetics.coordinate.display.GridElements(
+                        activity, lastRow, lastCol, activeRow, activeCol,this, checker);
+            }
             else
-                { activeRow = handler.getActiveRow(); activeCol = handler.getActiveCol(); }
+                ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(
+                    lastRow, lastCol, activeRow, activeCol);
         }
-
-        if (null == this.elements)
-        {
-            final android.app.Activity activity = this.getActivity();
-            if (null != activity) this.elements =
-                new org.wheatgenetics.coordinate.display.GridElements(
-                    activity, lastRow, lastCol, activeRow, activeCol,this);
-        }
-        else
-            ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(
-                lastRow, lastCol, activeRow, activeCol);
     }
 
     // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Methods

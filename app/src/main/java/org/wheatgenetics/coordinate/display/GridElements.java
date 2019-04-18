@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.display;
  * android.support.annotation.NonNull
  * android.widget.TextView
  *
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
  *
@@ -19,17 +20,24 @@ package org.wheatgenetics.coordinate.display;
 class GridElements extends org.wheatgenetics.coordinate.Elements
 implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
+    // region Fields
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
+
     private int activeRow, activeCol;
+    // endregion
 
     GridElements(
     @android.support.annotation.NonNull            final android.app.Activity activity,
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols,
+    @android.support.annotation.IntRange(from = 1) final int                  rows    ,
+    @android.support.annotation.IntRange(from = 1) final int                  cols    ,
     final int activeRow, final int activeCol, @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.display.GridElement.Handler handler)
+        final org.wheatgenetics.coordinate.display.GridElement.Handler handler,
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(activity, handler);                                   // TODO: Should handler be this?
-        this.allocate(rows, cols, activeRow, activeCol);
+        this.checker = checker; this.allocate(rows, cols, activeRow, activeCol);
     }
 
     // region Overridden Methods
@@ -44,7 +52,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
             /* textView   => */ textView                                                    ,
             /* handler    => */this,                                                //TODO:?
             /* activeRow  => */ this.activeRow,
-            /* activeCol  => */ this.activeCol);
+            /* activeCol  => */ this.activeCol,
+            /* checker    => */ this.checker  );
     }
 
     @java.lang.Override protected void clear()
