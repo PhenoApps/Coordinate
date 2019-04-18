@@ -1359,7 +1359,23 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                 (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
-            this.joinedGridModel.setEntryModel(entryModel);                                  // TODO
+            if (this.joinedGridModel instanceof
+            org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel)             // TODO
+            {
+                final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+                    currentGridUniqueJoinedGridModel =
+                        (org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel)
+                            this.joinedGridModel;
+                try
+                {
+                    currentGridUniqueJoinedGridModel.checkThenSetEntryModel(entryModel);   // throws
+                }
+                catch (final
+                org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
+                { return; }
+            }
+            else
+                this.joinedGridModel.setEntryModel(entryModel);
             entriesTable.insertOrUpdate(entryModel);
             if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
                 if (this.joinedGridModel.getActiveEntryModel() == entryModel)
