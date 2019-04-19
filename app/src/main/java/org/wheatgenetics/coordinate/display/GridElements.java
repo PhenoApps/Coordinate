@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.display;
  * android.app.Activity
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
@@ -21,7 +22,7 @@ class GridElements extends org.wheatgenetics.coordinate.Elements
 implements org.wheatgenetics.coordinate.display.GridElement.Handler
 {
     // region Fields
-    @android.support.annotation.NonNull private final
+    @android.support.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
 
     private int activeRow, activeCol;
@@ -33,7 +34,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
     @android.support.annotation.IntRange(from = 1) final int                  cols    ,
     final int activeRow, final int activeCol, @android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.display.GridElement.Handler handler,
-    @android.support.annotation.NonNull final
+    @android.support.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(activity, handler);                                   // TODO: Should handler be this?

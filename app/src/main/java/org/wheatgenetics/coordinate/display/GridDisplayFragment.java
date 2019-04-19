@@ -61,11 +61,9 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
             if (null == this.elements)
             {
                 final android.app.Activity activity = this.getActivity();
-                final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker =
-                    handler.getChecker();
-                if (null != activity && null != checker) this.elements =
-                    new org.wheatgenetics.coordinate.display.GridElements(
-                        activity, lastRow, lastCol, activeRow, activeCol,this, checker);
+                if (null != activity) this.elements =
+                    new org.wheatgenetics.coordinate.display.GridElements(activity, lastRow,
+                        lastCol, activeRow, activeCol,this, handler.getChecker());
             }
             else
                 ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(

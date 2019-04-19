@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.display;
  * Uses:
  * android.content.Context
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.view.View
  * android.view.View.OnLongClickListener
  * android.widget.TextView
@@ -17,7 +18,6 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
- * org.wheatgenetics.coordinate.Utils.Uniqueness
  */
 class GridElement extends org.wheatgenetics.coordinate.Element
 implements android.view.View.OnLongClickListener
@@ -30,8 +30,8 @@ implements android.view.View.OnLongClickListener
     }
 
     // region Fields
-    @android.support.annotation.NonNull private final android.content.Context context;
-    @android.support.annotation.NonNull private final
+    @android.support.annotation.NonNull  private final android.content.Context context;
+    @android.support.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
     // endregion
 
@@ -62,7 +62,7 @@ implements android.view.View.OnLongClickListener
                                             org.wheatgenetics.coordinate.display.GridElement.Handler
                                                 handler,
                                             int activeRow, int activeCol,
-    @android.support.annotation.NonNull final
+    @android.support.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(entryModel, textView, handler);
@@ -127,15 +127,11 @@ implements android.view.View.OnLongClickListener
                     (org.wheatgenetics.coordinate.model.ExcludedEntryModel) entryModel;
                 if (null != excludedEntryModel)
                 {
-                    if (org.wheatgenetics.coordinate.Utils.getUniqueness(this.context)
-                    == org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_CURRENT_GRID)    // TODO
-                        this.elementModel =
-                            new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                                excludedEntryModel, this.checker);
-                    else
-                        this.elementModel =
-                            new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                                excludedEntryModel);
+                    this.elementModel = null == this.checker ?
+                        new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                            excludedEntryModel) :
+                        new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                            excludedEntryModel, this.checker);
                     this.setOnClickListener(); this.toggle();
                 }
             }
