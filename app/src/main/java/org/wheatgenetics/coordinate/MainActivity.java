@@ -1029,7 +1029,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             if (null == this.disallowedDuplicateMediaPlayer)
                 this.disallowedDuplicateMediaPlayer = android.media.MediaPlayer.create(
-                    this, org.wheatgenetics.coordinate.R.raw.row_or_column_end);     // TODO
+                    this, org.wheatgenetics.coordinate.R.raw.unsure);
             this.disallowedDuplicateMediaPlayer.start();
         }
 
