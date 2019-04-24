@@ -70,6 +70,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                 tray_id = person = date = null;
             else
             {
+                // noinspection CStyleArrayDeclaration
                 final java.lang.String values[] = optionalFields.values(
                     /* names[] => */ new java.lang.String[]{"Tray", "Person", "date"});
                 if (null == values)
@@ -126,6 +127,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                 date = plate_id = plate_name = dna_person = notes = tissue_type = extraction = null;
             else
             {
+                // noinspection CStyleArrayDeclaration
                 final java.lang.String values[] = optionalFields.values(
                     /* names[] => */ new java.lang.String[]{"date", "Plate",
                         "Plate Name", "person", "Notes", "tissue_type", "extraction"});
@@ -204,6 +206,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
             if (null != optionalFields)
             {
+                // noinspection CStyleArrayDeclaration
                 final java.lang.String names[] = optionalFields.names();
                 for (final java.lang.String name: names) csvWriter.write(name);
             }
@@ -213,6 +216,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         {
             @android.support.annotation.IntRange(from = 1) final int
                 cols = this.getCols(), rows = this.getRows();
+            // noinspection CStyleArrayDeclaration
             final java.lang.String values[] =
                 null == optionalFields ? null : optionalFields.values();
 

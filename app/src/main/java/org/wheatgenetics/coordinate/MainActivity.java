@@ -43,7 +43,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
- * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
@@ -96,11 +95,10 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Utils.Uniqueness
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
-org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler,
-org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler           ,
-org.wheatgenetics.coordinate.model.EntryModels.FilledHandler               ,
-org.wheatgenetics.coordinate.DataEntryFragment.Handler                     ,
-org.wheatgenetics.coordinate.gc.GridCreator.Handler                        ,
+org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
+org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
+org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
     // region Constants
@@ -110,8 +108,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         EXPORT_TEMPLATE = 12, CONFIGURE_NAVIGATION_VIEW = 13, EXPORT_GRID_REQUEST_CODE = 30,
         EXPORT_PROJECT_REQUEST_CODE = 31;
     // endregion
-
-    private enum GridsTableSourceMethod { OTHER, UNIQUENESS_CLICKED, EXPORT_PROJECT }
 
     // region Fields
     private android.support.v4.widget.DrawerLayout drawerLayout;
@@ -152,11 +148,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private java.lang.String versionName, fileName, directoryName;
     @android.support.annotation.IntRange(from = 1) private long projectId;
 
-    private org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod
-        gridsTableSourceMethod =
-            org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
-    private java.lang.Runnable otherRunnableInstance = null,                               // lazy
-        exportProjectRunnableInstance = null;                                              //  loads
     private org.wheatgenetics.coordinate.UniqueAlertDialog currentGridUniqueAlertDialog = null;//ll
     // endregion
 
@@ -189,7 +180,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
                 case UNIQUE_CURRENT_GRID: this.gridsTableInstance =
                     new org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable(
-                        this,this); break;
+                        this); break;
 
                 case UNIQUE_ALL_GRIDS: break;                                                // TODO
             }
@@ -207,7 +198,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
                 case UNIQUE_CURRENT_GRID: this.entriesTableInstance =
                     new org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
-                        this,this); break;
+                        this); break;
 
                 case UNIQUE_ALL_GRIDS: break;                                                // TODO
             }
@@ -427,7 +418,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region loadJoinedGridModel() Private Methods
-    private void getJoinedGridModel(
+    private void loadJoinedGridModel(
     @android.support.annotation.IntRange(from = 0) final long gridId)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(gridId))
@@ -435,27 +426,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         else
         {
             final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
-            if (null == gridsTable)
-                this.joinedGridModel = null;
-            else
-                try
-                {
-                    this.gridsTableSourceMethod = org.wheatgenetics.coordinate
-                        .MainActivity.GridsTableSourceMethod.UNIQUENESS_CLICKED;
-                    this.joinedGridModel = gridsTable.get(gridId);
-                }
-                finally
-                {
-                    this.gridsTableSourceMethod =
-                        org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
-                }
+            this.joinedGridModel = null == gridsTable ? null : gridsTable.get(gridId);
         }
-    }
-
-    private void loadJoinedGridModel(
-    @android.support.annotation.IntRange(from = 0) final long gridId)
-    {
-        this.getJoinedGridModel(gridId);
 
         assert null != this.sharedPreferences;
         if (this.joinedGridModelIsLoaded())
@@ -617,18 +589,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
         if (null != gridsTable)
         {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
-            try
-            {
-                this.gridsTableSourceMethod = org.wheatgenetics.coordinate
-                    .MainActivity.GridsTableSourceMethod.EXPORT_PROJECT;
-                baseJoinedGridModels = gridsTable.loadByProjectId(this.projectId);
-            }
-            finally
-            {
-                this.gridsTableSourceMethod =
-                    org.wheatgenetics.coordinate.MainActivity.GridsTableSourceMethod.OTHER;
-            }
+            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
+                gridsTable.loadByProjectId(this.projectId);
             if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
             {
                 final org.wheatgenetics.coordinate.Utils.ProjectExport projectExport =
@@ -978,51 +940,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
-    // region handleCGUETCheckException() Private Methods
-    private void setUniquenessToAllowDuplicatesThenReload()
-    {
-        org.wheatgenetics.coordinate.Utils.setUniquenessToAllowDuplicates(this);
-        this.reloadIfNecessary();
-    }
-
-    private java.lang.Runnable otherRunnable()
-    {
-        if (null == this.otherRunnableInstance) this.otherRunnableInstance =
-            new java.lang.Runnable()
-            {
-                @java.lang.Override public void run()
-                {
-                    org.wheatgenetics.coordinate.MainActivity.this
-                        .setUniquenessToAllowDuplicatesThenReload();
-                }
-            };
-        return this.otherRunnableInstance;
-    }
-
-    private java.lang.Runnable exportProjectRunnable()
-    {
-        if (null == this.exportProjectRunnableInstance) this.exportProjectRunnableInstance =
-            new java.lang.Runnable()
-            {
-                @java.lang.Override public void run()
-                {
-                    org.wheatgenetics.coordinate.MainActivity.this
-                        .setUniquenessToAllowDuplicatesThenReload();
-                    org.wheatgenetics.coordinate.MainActivity.this.exportProject();
-                }
-            };
-        return this.exportProjectRunnableInstance;
-    }
-
-    private void confirm(@android.support.annotation.NonNull final java.lang.Runnable runnable)
-    {
-        org.wheatgenetics.coordinate.Utils.confirm(this,
-            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogTitle  ,
-            org.wheatgenetics.coordinate.R.string.MainActivityCheckExceptionAlertDialogMessage,
-            runnable                                                                          );
-    }
-    // endregion
-
     private void handleCurrentGridDuplicateCheckException()
     {
         if (this.getSoundOn())
@@ -1252,10 +1169,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             }
     }
 
-    @java.lang.Override public void onRequestPermissionsResult(
-                                        final int              requestCode   ,
-    @android.support.annotation.NonNull final java.lang.String permissions [],
-    @android.support.annotation.NonNull final int              grantResults[])
+    @java.lang.Override public void onRequestPermissionsResult(final int requestCode,
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+        final java.lang.String permissions [],
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+        final int grantResults[])
     {
         boolean permissionFound = false;
         for (final java.lang.String permission: permissions)
@@ -1311,41 +1229,6 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         super.onDestroy();
     }
-
-    // region org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler Overridden Method
-    @java.lang.Override public void handleCGUETCheckException()
-    {
-        // Inside entriesTable() I have to create an org.wheatgenetics.coordinate.database.Current-
-        // GridUniqueEntriesTable instance.  To create a CurrentGridUniqueEntriesTable instance I
-        // need an org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler.
-        // Since I need a Handler I turn this instance (this) into a Handler and implement handle-
-        // CGUETCheckException().  If this was only a Handler for the CurrentGridUniqueEntriesTable
-        // instance then handleCGUETCheckException() could do nothing.  (It could do nothing because
-        // it should never be called.  This method is how the Handler handles an org.wheatgenetics.-
-        // coordinate.model.CheckedIncludedEntryModel.CheckException that occurs in org.wheatgene-
-        // tics.coordinate.database.CurrentGridUniqueEntriesTable.this.makeIncludedEntryModel().
-        // makeIncludedEntryModel() is only called by org.wheatgenetics.coordinate.database.Current-
-        // GridUniqueEntriesTable.this.make() which is only called by org.wheatgenetics.coordinate.-
-        // database.CurrentGridUniqueEntriesTable.this.load() which is never called by MainActivi-
-        // ty's CurrentGridUniqueEntriesTable instance.  Since MainActivity's CurrentGridUniqueEn-
-        // triesTable instance never calls load() handleCGUETCheckException() should never be called
-        // either so handleCGUETCheckException() doesn't need to do anything.)
-        //
-        // However, this is not only a Handler for the CurrentGridUniqueEntriesTable instance -- it
-        // is also a Handler for the org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTa-
-        // ble instance created inside gridsTable().  The CurrentGridUniqueGridsTable instance's
-        // get() and loadByProjectId() may both cause handleCGUETCheckException() to be called.
-        // get() is called by MainActivity.getJoinedGridModel() [which is called by multiple methods
-        // but if this method is being executed then getJoinedGridModel() was probably called by
-        // onActivityResult()] and loadByProjectId() is called by MainActivity.exportProject().
-
-        switch (this.gridsTableSourceMethod)
-        {
-            case OTHER: case UNIQUENESS_CLICKED: this.confirm(this.otherRunnable        ()); break;
-            case EXPORT_PROJECT                : this.confirm(this.exportProjectRunnable()); break;
-        }
-    }
-    // endregion
 
     // region org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler Overridden Methods
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()

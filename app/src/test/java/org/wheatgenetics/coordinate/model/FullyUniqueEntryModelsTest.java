@@ -7,22 +7,21 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
- * org.wheatgenetics.coordinate.model.UniqueEntryModels
- * org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
+ * org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
+ * org.wheatgenetics.coordinate.model.FullyUniqueEntryModels.DuplicateCheckException
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class UniqueEntryModelsTest extends java.lang.Object
+public class FullyUniqueEntryModelsTest extends java.lang.Object
 {
     // region Types
     private static class DuplicateCheckException
-    extends org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
+    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels.DuplicateCheckException
     { DuplicateCheckException() { super("A duplicate was simulated."); } }
 
 
     private static class MeanUniqueEntryModels
-    extends org.wheatgenetics.coordinate.model.UniqueEntryModels
+    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
     {
         MeanUniqueEntryModels(
         @android.support.annotation.IntRange(from = 1) final long gridId,
@@ -36,13 +35,13 @@ public class UniqueEntryModelsTest extends java.lang.Object
         @android.support.annotation.Nullable           final java.lang.String value   )
         throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
         {
-            throw new
-                org.wheatgenetics.coordinate.model.UniqueEntryModelsTest.DuplicateCheckException();
+            throw new org.wheatgenetics.coordinate.model
+                .FullyUniqueEntryModelsTest.DuplicateCheckException();
         }
     }
 
     private static class NiceUniqueEntryModels
-    extends org.wheatgenetics.coordinate.model.UniqueEntryModels
+    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
     {
         NiceUniqueEntryModels(
         @android.support.annotation.IntRange(from = 1) final long gridId,
@@ -58,26 +57,19 @@ public class UniqueEntryModelsTest extends java.lang.Object
     }
     // endregion
 
-    // region checkThenSet() Public Method Tests
-    @org.junit.Test(expected =
-        org.wheatgenetics.coordinate.model.UniqueEntryModelsTest.DuplicateCheckException.class)
-    public void meanCheckThenSetThrows()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    // region set() Overridden Method Tests
+    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    public void meanSetThrows()
     {
-        final org.wheatgenetics.coordinate.model.UniqueEntryModelsTest.MeanUniqueEntryModels
-            meanUniqueEntryModels =
-                new org.wheatgenetics.coordinate.model.UniqueEntryModelsTest.MeanUniqueEntryModels(
-                    1,1,1);
-        meanUniqueEntryModels.checkThenSet(                                                // throws
-            new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                1,1,1, meanUniqueEntryModels));
+        new org.wheatgenetics.coordinate.model.FullyUniqueEntryModelsTest.MeanUniqueEntryModels(
+            1,1,1).set(null) /* throws */;
     }
 
-    @org.junit.Test() public void niceCheckThenSetThrows()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    public void niceSetThrows()
     {
-        new org.wheatgenetics.coordinate.model.UniqueEntryModelsTest.NiceUniqueEntryModels(
-            1,1,1).checkThenSet(null) /* throws */;
+        new org.wheatgenetics.coordinate.model.FullyUniqueEntryModelsTest.NiceUniqueEntryModels(
+            1,1,1).set(null) /* throws */;
     }
     // endregion
 }

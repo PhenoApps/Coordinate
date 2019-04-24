@@ -268,7 +268,7 @@ public class Utils extends java.lang.Object
         }
     }
 
-    public static org.wheatgenetics.coordinate.Utils.Uniqueness getUniqueness(
+    static org.wheatgenetics.coordinate.Utils.Uniqueness getUniqueness(
     @android.support.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
@@ -301,7 +301,7 @@ public class Utils extends java.lang.Object
         }
     }
 
-    static void setUniquenessToAllowDuplicates(
+    /*static void setUniquenessToAllowDuplicates(
     @android.support.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
@@ -322,7 +322,7 @@ public class Utils extends java.lang.Object
                 editor.apply();
             }
         }
-    }
+    }*/
     // endregion
 
     public static java.lang.String convert(

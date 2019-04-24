@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
@@ -48,18 +50,12 @@ implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     @android.support.annotation.IntRange(from = 1) final int  rows  ,
     @android.support.annotation.IntRange(from = 1) final int  cols  ) { super(gridId, rows, cols); }
 
-    // region Overridden Methods
     // region org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker Overridden Method
     @java.lang.Override @android.support.annotation.Nullable abstract public java.lang.String check(
     @android.support.annotation.IntRange(from = 1) final int              rowIndex,
     @android.support.annotation.IntRange(from = 1) final int              colIndex,
     @android.support.annotation.Nullable           final java.lang.String value   )
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException;
-    // endregion
-
-    @java.lang.Override
-    public void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { throw new java.lang.UnsupportedOperationException("Call checkThenSet() instead"); }
     // endregion
 
     public void checkThenSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)

@@ -112,6 +112,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
             return null;
         else
         {
+            // noinspection CStyleArrayDeclaration
             final java.lang.String result[] = new java.lang.String[size];
             {
                 final int first = 0, last = size - 1;

@@ -12,30 +12,31 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+ * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
  * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  *
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
- * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  */
 public class CurrentGridUniqueGridsTable extends org.wheatgenetics.coordinate.database.GridsTable
 {
-    @android.support.annotation.NonNull private final
-        org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler handler;
+    // region Constructors
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    CurrentGridUniqueGridsTable(final android.content.Context context,
+    @android.support.annotation.NonNull final java.lang.String tag) { super(context, tag); }
 
-    public CurrentGridUniqueGridsTable(final android.content.Context context,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable.Handler handler)
-    { super(context,"CurrentGridUniqueGridsTable"); this.handler = handler; }
+    public CurrentGridUniqueGridsTable(final android.content.Context context)
+    { this(context,"CurrentGridUniqueGridsTable"); }
+    // endregion
 
     // region Overridden Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTables()
     {
         return new org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
-            this.getContext(), this.handler);
+            this.getContext());
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)

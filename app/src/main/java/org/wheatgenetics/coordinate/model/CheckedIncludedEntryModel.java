@@ -49,11 +49,7 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
     @android.support.annotation.IntRange(from = 0) final long             timestamp,
     @android.support.annotation.NonNull            final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
-        super(id, gridId, row, col, checker.check(row, col, value) /* throws */, timestamp);
-        this.checker = checker;
-    }
+    { super(id, gridId, row, col, value, timestamp); this.checker = checker; }
 
     public CheckedIncludedEntryModel(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
@@ -68,5 +64,8 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
 
     public void checkThenSetValue(@android.support.annotation.Nullable final java.lang.String value)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    { this.uncheckedSetValue(this.checker.check(this.getRow(), this.getCol(), value) /* throws */); }
+    {
+        this.uncheckedSetValue(
+            this.checker.check(this.getRow(), this.getCol(), value) /* throws */);
+    }
 }

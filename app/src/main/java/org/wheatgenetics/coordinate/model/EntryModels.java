@@ -30,8 +30,8 @@ public class EntryModels extends java.lang.Object
 
     // region Fields
     @android.support.annotation.IntRange(from = 1) private final long gridId;
-    @android.support.annotation.NonNull            private final
-        org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+        private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
 
     // region Private Methods
