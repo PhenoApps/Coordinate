@@ -24,10 +24,14 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 {
     // region Fields
     @java.lang.SuppressWarnings({"Convert2Diamond"})
-    private java.util.TreeMap<java.lang.String, java.lang.String>
-        uniquenessTreeMap    = new java.util.TreeMap<java.lang.String, java.lang.String>(),
-        projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>(),
-        advancementTreeMap   = new java.util.TreeMap<java.lang.String, java.lang.String>();
+    private final java.util.TreeMap<java.lang.String, java.lang.String>
+        uniquenessTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
+    private final java.util.TreeMap<java.lang.String, java.lang.String>
+        projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
+    @java.lang.SuppressWarnings({"Convert2Diamond"})
+    private final java.util.TreeMap<java.lang.String, java.lang.String>
+        advancementTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
     private java.lang.String                  uniquenessKey, projectExportKey, advancementKey;
     private android.preference.ListPreference uniquenessPreference,
@@ -48,6 +52,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     {
         if (null != resources)
         {
+            // noinspection CStyleArrayDeclaration
             final java.lang.String
                 keys  [] = resources.getStringArray(keysRes  ),
                 values[] = resources.getStringArray(valuesRes);
@@ -80,7 +85,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             this.projectExportTreeMap                                           );
     }
 
-    private void setAdvancmentSummary()
+    private void setAdvancementSummary()
     {
         this.setSummary(this.advancementPreference,
             org.wheatgenetics.coordinate.R.string.AdvancementPreferenceSummary,
@@ -88,7 +93,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     }
 
     private void setSummaries()
-    { this.setUniquenessSummary(); this.setProjectExportSummary(); this.setAdvancmentSummary(); }
+    { this.setUniquenessSummary(); this.setProjectExportSummary(); this.setAdvancementSummary(); }
     // endregion
 
     // region Overridden Methods
@@ -191,7 +196,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 if (key.equals(this.projectExportKey))
                     this.setProjectExportSummary();
                 else
-                    if (key.equals(this.advancementKey)) this.setAdvancmentSummary();
+                    if (key.equals(this.advancementKey)) this.setAdvancementSummary();
     }
     // endregion
     // endregion

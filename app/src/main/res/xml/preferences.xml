@@ -10,7 +10,7 @@
         android:defaultValue="@string/AdvancementPreferenceDefault" />
 
     <CheckBoxPreference
-        android:key="SoundOn"
+        android:key="@string/SoundPreferenceKey"
         android:title="@string/SoundPreferenceTitle"
         android:summaryOn="@string/SoundPreferenceSummaryOn"
         android:summaryOff="@string/SoundPreferenceSummaryOff"

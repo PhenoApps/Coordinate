@@ -27,6 +27,7 @@
     <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
 
 
+    <string name="SoundPreferenceKey">SoundOn</string>
     <string name="SoundPreferenceTitle">Sound</string>
     <string name="SoundPreferenceSummaryOn">Play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
     <string name="SoundPreferenceSummaryOff">Do not play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
