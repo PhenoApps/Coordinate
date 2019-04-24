@@ -92,7 +92,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
- * org.wheatgenetics.coordinate.Utils.Uniqueness
+ * org.wheatgenetics.coordinate.Utils.TypeOfUniqueness
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
@@ -173,17 +173,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance)
-            switch (this.getUniqueness())
-            {
-                case ALLOW_DUPLICATES: this.gridsTableInstance =
-                    new org.wheatgenetics.coordinate.database.GridsTable(this); break;
+            if (this.getUniqueness())
+                switch (this.getTypeOfUniqueness())
+                {
+                    case CURRENT_GRID: this.gridsTableInstance =
+                        new org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable(
+                            this); break;
 
-                case UNIQUE_CURRENT_GRID: this.gridsTableInstance =
-                    new org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable(
-                        this); break;
-
-                case UNIQUE_ALL_GRIDS: break;                                                // TODO
-            }
+                    case CURRENT_PROJECT: case ALL_GRIDS: break;                             // TODO
+                }
+            else
+                this.gridsTableInstance =
+                    new org.wheatgenetics.coordinate.database.GridsTable(this);
         return this.gridsTableInstance;
     }
 
@@ -191,17 +192,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
         if (null == this.entriesTableInstance)
-            switch (this.getUniqueness())
-            {
-                case ALLOW_DUPLICATES: this.entriesTableInstance =
-                    new org.wheatgenetics.coordinate.database.EntriesTable(this); break;
+            if (this.getUniqueness())
+                switch (this.getTypeOfUniqueness())
+                {
+                    case CURRENT_GRID: this.entriesTableInstance =
+                        new org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
+                            this); break;
 
-                case UNIQUE_CURRENT_GRID: this.entriesTableInstance =
-                    new org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
-                        this); break;
-
-                case UNIQUE_ALL_GRIDS: break;                                                // TODO
-            }
+                    case CURRENT_PROJECT: case ALL_GRIDS: break;                             // TODO
+                }
+            else
+                this.entriesTableInstance =
+                    new org.wheatgenetics.coordinate.database.EntriesTable(this);
         return this.entriesTableInstance;
     }
     // endregion
@@ -858,8 +860,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.Utils.ProjectExport getProjectExport()
     { return org.wheatgenetics.coordinate.Utils.getProjectExport(this); }
 
-    private org.wheatgenetics.coordinate.Utils.Uniqueness getUniqueness()
+    private boolean getUniqueness()
     { return org.wheatgenetics.coordinate.Utils.getUniqueness(this); }
+
+    private org.wheatgenetics.coordinate.Utils.TypeOfUniqueness getTypeOfUniqueness()
+    { return org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(this); }
     // endregion
 
     // region reloadIfNecessary() Private Methods
@@ -868,18 +873,17 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (this.gridsTableInstance == null)
             return false;
         else
-            switch (this.getUniqueness())
-            {
-                case ALLOW_DUPLICATES: return this.gridsTableInstance instanceof
+            if (this.getUniqueness())
+                switch (this.getTypeOfUniqueness())
+                {
+                    case CURRENT_GRID: return !(this.gridsTableInstance instanceof
+                        org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable);
+
+                    case CURRENT_PROJECT: case ALL_GRIDS: default: return true;              // TODO
+                }
+            else
+                return this.gridsTableInstance instanceof
                     org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable;       // TODO
-
-                case UNIQUE_CURRENT_GRID: return !(this.gridsTableInstance instanceof
-                    org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable);
-
-                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
-
-                default: return true;
-            }
     }
 
     private boolean entriesTableNeedsReloading()
@@ -887,37 +891,36 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         if (this.entriesTableInstance == null)
             return false;
         else
-            switch (this.getUniqueness())
-            {
-                case ALLOW_DUPLICATES: return this.entriesTableInstance instanceof
+            if (this.getUniqueness())
+                switch (this.getTypeOfUniqueness())
+                {
+                    case CURRENT_GRID: return !(this.entriesTableInstance instanceof
+                        org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable);
+
+                    case CURRENT_PROJECT: case ALL_GRIDS: default: return true;              // TODO
+                }
+            else
+                return this.entriesTableInstance instanceof
                     org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable;     // TODO
-
-                case UNIQUE_CURRENT_GRID: return !(this.entriesTableInstance instanceof
-                    org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable);
-
-                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
-
-                default: return true;
-            }
     }
 
     private boolean joinedGridModelNeedsReloading()
     {
-        if (!this.joinedGridModelIsLoaded())
-            return false;
-        else
-            switch (this.getUniqueness())
-            {
-                case ALLOW_DUPLICATES: return this.joinedGridModel instanceof
+        if (this.joinedGridModelIsLoaded())
+            if (this.getUniqueness())
+                switch (this.getTypeOfUniqueness())
+                {
+                    case CURRENT_GRID: return !(this.joinedGridModel instanceof
+                        org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel);
+
+                    case CURRENT_PROJECT: case ALL_GRIDS: return true;                       // TODO
+
+                    default: return true;
+                }
+            else
+                return this.joinedGridModel instanceof
                     org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel;     // TODO
-
-                case UNIQUE_CURRENT_GRID: return !(this.joinedGridModel instanceof
-                    org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel);
-
-                case UNIQUE_ALL_GRIDS: return true;                                          // TODO
-
-                default: return true;
-            }
+        else return false;
     }
 
     private void reloadIfNecessary()
@@ -1257,8 +1260,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
                 { return; }
             }
-            else
-                this.joinedGridModel.setEntryModel(entryModel);
+            else this.joinedGridModel.setEntryModel(entryModel);
             entriesTable.insertOrUpdate(entryModel);
             if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
                 if (this.joinedGridModel.getActiveEntryModel() == entryModel)
@@ -1373,41 +1375,32 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel
                     activeIncludedEntryModel =
                         (org.wheatgenetics.coordinate.model.IncludedEntryModel) activeEntryModel;
-                switch (this.getUniqueness())
+                if (this.getUniqueness())
                 {
-                    case ALLOW_DUPLICATES: activeIncludedEntryModel.setValue(entryValue); break;
-
-                    case UNIQUE_CURRENT_GRID: case UNIQUE_ALL_GRIDS:
-                        final java.lang.String oldEntryValue = activeIncludedEntryModel.getValue();
+                    final java.lang.String oldEntryValue = activeIncludedEntryModel.getValue();
+                    final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+                        checkedIncludedEntryModel =
+                            (org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel)
+                                activeIncludedEntryModel;
+                    try { checkedIncludedEntryModel.checkThenSetValue(entryValue) /* throws */; }
+                    catch (final
+                    org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
+                    {
+                        if (e instanceof org.wheatgenetics.coordinate.model
+                        .CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException)
                         {
-                            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
-                                checkedIncludedEntryModel =
-                                    (org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel)
-                                        activeIncludedEntryModel;
-                            try
-                            {
-                                checkedIncludedEntryModel.checkThenSetValue(        // throws Check-
-                                    entryValue);                                    //  Exception
-                            }
-                            catch (final org.wheatgenetics.coordinate.model
-                            .CheckedIncludedEntryModel.CheckException e)
-                            {
-                                if (e instanceof org.wheatgenetics.coordinate.model
-                                .CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException)
-                                {
-                                    this.handleCurrentGridDuplicateCheckException();
+                            this.handleCurrentGridDuplicateCheckException();
 
-                                    assert null != this.dataEntryFragment;
-                                    this.dataEntryFragment.setEntry(oldEntryValue);
+                            assert null != this.dataEntryFragment;
+                            this.dataEntryFragment.setEntry(oldEntryValue);
 
-                                    return;
-                                }
-                                else
-                                    ;                                                        // TODO
-                            }
+                            return;
                         }
-                        break;
+                        else
+                            ;                                                                // TODO
+                    }
                 }
+                else activeIncludedEntryModel.setValue(entryValue);
                 entriesTable.insertOrUpdate(activeIncludedEntryModel);
             }
             this.goToNext(activeEntryModel);

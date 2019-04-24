@@ -24,12 +24,19 @@
         android:entryValues="@array/ProjectExportPreferenceEntryValues"
         android:defaultValue="@string/ProjectExportPreferenceDefault" />
 
+    <CheckBoxPreference
+        android:key="@string/UniquenessCheckBoxPreferenceKey"
+        android:title="@string/UniquenessCheckBoxPreferenceTitle"
+        android:summary="@string/UniquenessCheckBoxPreferenceSummary"
+        android:defaultValue="false" />
+
     <ListPreference
-        android:key="@string/UniquenessPreferenceKey"
-        android:title="@string/UniquenessPreferenceTitle"
-        android:summary="@string/UniquenessPreferenceSummary"
-        android:entries="@array/UniquenessPreferenceEntries"
-        android:entryValues="@array/UniquenessPreferenceEntryValues"
-        android:defaultValue="@string/UniquenessPreferenceDefault" />
+        android:key="@string/UniquenessListPreferenceKey"
+        android:title="@string/UniquenessListPreferenceTitle"
+        android:summary="@string/UniquenessListPreferenceSummary"
+        android:entries="@array/UniquenessListPreferenceEntries"
+        android:entryValues="@array/UniquenessListPreferenceEntryValues"
+        android:defaultValue="@string/UniquenessListPreferenceDefault"
+        android:enabled="false" />
 
 </PreferenceScreen>

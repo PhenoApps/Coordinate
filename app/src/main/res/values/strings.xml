@@ -53,27 +53,32 @@
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
 
 
-    <string name="UniquenessPreferenceKey">Uniqueness</string>
-    <string name="UniquenessPreferenceTitle">@string/UniquenessPreferenceKey</string>
-    <string name="UniquenessPreferenceSummary">During data entry, Coordinate can 1) allow duplicates, 2) force cell values to be unique within the current grid, or 3) force cell values to be unique among all grids.\n\ncurrent setting: %s</string>
+    <string name="UniquenessCheckBoxPreferenceKey">UniquenessCheckBox</string>
+    <string name="UniquenessCheckBoxPreferenceTitle">Uniqueness</string>
+    <string name="UniquenessCheckBoxPreferenceSummary">Enforce uniqueness.</string>
 
-    <string-array name="UniquenessPreferenceEntries">
-        <item>Allow duplicates</item>
+
+    <string name="UniquenessListPreferenceKey">UniquenessList</string>
+    <string name="UniquenessListPreferenceTitle">Type of Uniqueness</string>
+    <string name="UniquenessListPreferenceSummary">During data entry, Coordinate can 1) force cell values to be unique within the current grid, 2) force cell values to be unique among all grids of the current project, or 3) force cell values to be unique among all grids.\n\ncurrent setting: %s</string>
+
+    <string-array name="UniquenessListPreferenceEntries">
         <item>Force uniqueness within current grid</item>
+        <item>Force uniqueness among all grids of current project</item>
         <item>Force uniqueness among all grids</item>
     </string-array>
 
-    <string name="UniquenessPreferenceDuplicates">AllowDuplicates</string>
-    <string name="UniquenessPreferenceUniqueCurrentGrid">UniqueCurrentGrid</string>
-    <string name="UniquenessPreferenceUniqueAllGrids">UniqueAllGrids</string>
+    <string name="UniquenessListPreferenceCurrentGrid">UniqueCurrentGrid</string>
+    <string name="UniquenessListPreferenceCurrentProject">UniqueCurrentProject</string>
+    <string name="UniquenessListPreferenceAllGrids">UniqueAllGrids</string>
 
-    <string-array name="UniquenessPreferenceEntryValues">
-        <item>@string/UniquenessPreferenceDuplicates</item>
-        <item>@string/UniquenessPreferenceUniqueCurrentGrid</item>
-        <item>@string/UniquenessPreferenceUniqueAllGrids</item>
+    <string-array name="UniquenessListPreferenceEntryValues">
+        <item>@string/UniquenessListPreferenceCurrentGrid</item>
+        <item>@string/UniquenessListPreferenceCurrentProject</item>
+        <item>@string/UniquenessListPreferenceAllGrids</item>
     </string-array>
 
-    <string name="UniquenessPreferenceDefault">@string/UniquenessPreferenceDuplicates</string>
+    <string name="UniquenessListPreferenceDefault">@string/UniquenessListPreferenceCurrentGrid</string>
 
 
 

@@ -22,9 +22,9 @@ package org.wheatgenetics.coordinate;
 public class Utils extends java.lang.Object
 {
     // region Types
-    public enum Advancement   { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                     }
-           enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT              }
-    public enum Uniqueness    { ERROR, ALLOW_DUPLICATES, UNIQUE_CURRENT_GRID, UNIQUE_ALL_GRIDS }
+    public enum Advancement      { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN        }
+           enum ProjectExport    { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT }
+    public enum TypeOfUniqueness { ERROR, CURRENT_GRID, CURRENT_PROJECT, ALL_GRIDS   }
     // endregion
 
     private static android.content.SharedPreferences                                        // lazy
@@ -281,61 +281,53 @@ public class Utils extends java.lang.Object
         }
     }
 
-    static org.wheatgenetics.coordinate.Utils.Uniqueness getUniqueness(
+    static boolean getUniqueness(
     @android.support.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
             org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.Utils.Uniqueness.ERROR;
+            return false;
+        else
+        {
+            final java.lang.String key = context.getString(
+                org.wheatgenetics.coordinate.R.string.UniquenessCheckBoxPreferenceKey);
+            return defaultSharedPreferences.getBoolean(key, /* defValue => */false);
+        }
+    }
+
+    static org.wheatgenetics.coordinate.Utils.TypeOfUniqueness getTypeOfUniqueness(
+    @android.support.annotation.NonNull final android.content.Context context)
+    {
+        final android.content.SharedPreferences defaultSharedPreferences =
+            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context);
+        if (null == defaultSharedPreferences)
+            return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.ERROR;
         else
         {
             final java.lang.String uniqueness;
             {
                 final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey);
+                    org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
                 uniqueness = defaultSharedPreferences.getString(
                     /* key      => */ key,
                     /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDefault));
+                        org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceDefault));
             }
             if (null == uniqueness)
-                return org.wheatgenetics.coordinate.Utils.Uniqueness.ALLOW_DUPLICATES;
+                return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_GRID;
             else
                 if (uniqueness.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDuplicates)))
-                    return org.wheatgenetics.coordinate.Utils.Uniqueness.ALLOW_DUPLICATES;
+                org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentGrid)))
+                    return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_GRID;
                 else
-                    if (uniqueness.equals(context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessPreferenceUniqueCurrentGrid)))
-                        return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_CURRENT_GRID;
+                    if (uniqueness.equals(context.getString(org.wheatgenetics
+                    .coordinate.R.string.UniquenessListPreferenceCurrentProject)))
+                        return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_PROJECT;
                     else
-                        return org.wheatgenetics.coordinate.Utils.Uniqueness.UNIQUE_ALL_GRIDS;
+                        return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.ALL_GRIDS;
         }
     }
-
-    /*static void setUniquenessToAllowDuplicates(
-    @android.support.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.Utils.getDefaultSharedPreferences(context);
-        if (null != defaultSharedPreferences)
-        {
-            final android.content.SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            if (null != editor)
-            {
-                {
-                    final java.lang.String
-                        key = context.getString(
-                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceKey),
-                        value = context.getString(
-                            org.wheatgenetics.coordinate.R.string.UniquenessPreferenceDuplicates);
-                    editor.putString(key, value);
-                }
-                editor.apply();
-            }
-        }
-    }*/
     // endregion
 
     public static java.lang.String convert(
