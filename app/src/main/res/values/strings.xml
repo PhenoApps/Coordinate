@@ -283,7 +283,6 @@
 
     <!-- UniqueAlertDialog -->
     <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
-    <string name="CurrentGridUniqueAlertDialogMessage">This entry has already been saved in this grid.</string>
 
 
 

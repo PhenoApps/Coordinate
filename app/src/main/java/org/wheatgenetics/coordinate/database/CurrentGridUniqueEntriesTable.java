@@ -7,15 +7,14 @@ package org.wheatgenetics.coordinate.database;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
  * org.wheatgenetics.coordinate.model.EntryModels
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
  *
- * org.wheatgenetics.coordinate.database.EntriesTable
+ * org.wheatgenetics.coordinate.database.CheckedEntriesTable
  */
 public class CurrentGridUniqueEntriesTable
-extends org.wheatgenetics.coordinate.database.EntriesTable
+extends org.wheatgenetics.coordinate.database.CheckedEntriesTable
 {
     private org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
         currentGridUniqueEntryModels = null;
@@ -35,19 +34,9 @@ extends org.wheatgenetics.coordinate.database.EntriesTable
 
     // region Overridden Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override org.wheatgenetics.coordinate.model.IncludedEntryModel
-    makeIncludedEntryModel(final long id, final long gridId, final int row, final int col,
-    final java.lang.String value, final long timestamp)
-    {
-        return new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-            /* id        => */ id                                    ,
-            /* gridId    => */ gridId                                ,
-            /* row       => */ row                                   ,
-            /* col       => */ col                                   ,
-            /* value     => */ value                                 ,
-            /* timestamp => */ timestamp                             ,
-            /* checker   => */ this.getCurrentGridUniqueEntryModels());
-    }
+    @java.lang.Override @android.support.annotation.NonNull
+    org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker()
+    { return this.getCurrentGridUniqueEntryModels(); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(

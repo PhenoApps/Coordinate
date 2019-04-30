@@ -18,7 +18,7 @@ package org.wheatgenetics.coordinate.model;
 public abstract class UniqueEntryModels extends org.wheatgenetics.coordinate.model.EntryModels
 implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
 {
-    abstract static class DuplicateCheckException
+    public abstract static class DuplicateCheckException
     extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         DuplicateCheckException(@android.support.annotation.NonNull final java.lang.String message)
@@ -60,5 +60,5 @@ implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
 
     public void checkThenSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    { this.uncheckedSet(this.check(entryModel) /* throws */); }
+    { this.uncheckedSet(this.check(entryModel) /* throws CheckException */); }
 }

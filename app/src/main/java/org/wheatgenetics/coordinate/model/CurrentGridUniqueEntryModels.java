@@ -3,7 +3,10 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.support.annotation.IntRange
+ * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -15,11 +18,16 @@ package org.wheatgenetics.coordinate.model;
 public class CurrentGridUniqueEntryModels
 extends org.wheatgenetics.coordinate.model.UniqueEntryModels
 {
-    public static class CurrentGridDuplicateCheckException
+    static class CurrentGridDuplicateCheckException
     extends org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
     {
-        CurrentGridDuplicateCheckException()
-        { super("The current grid already has an entry with that value."); }
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        CurrentGridDuplicateCheckException(
+        @android.support.annotation.NonNull final java.lang.String scope)
+        { super(java.lang.String.format("The %s already has an entry with that value.", scope)); }
+
+        CurrentGridDuplicateCheckException() { this("current grid"); }
     }
 
     public CurrentGridUniqueEntryModels(

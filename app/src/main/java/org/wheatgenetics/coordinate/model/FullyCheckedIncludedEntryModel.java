@@ -12,7 +12,6 @@ package org.wheatgenetics.coordinate.model;
 public class FullyCheckedIncludedEntryModel
 extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
 {
-    // region Constructors
     FullyCheckedIncludedEntryModel(
     @android.support.annotation.IntRange(from = 1) final long gridId,
     @android.support.annotation.IntRange(from = 1) final int  row   ,
@@ -32,8 +31,7 @@ extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
-        super(id, gridId, row, col, checker.check( /* throws */
-                row, col, value), timestamp, checker);
+        super(id, gridId, row, col, checker.check( /* throws CheckException */
+            row, col, value), timestamp, checker);
     }
-    // endregion
 }

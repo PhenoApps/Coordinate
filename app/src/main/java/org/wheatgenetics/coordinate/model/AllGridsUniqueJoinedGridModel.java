@@ -8,27 +8,29 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
- * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
- * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels
+ * org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
+ * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.EntryModels
- * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
-public class CurrentGridUniqueJoinedGridModel
-extends org.wheatgenetics.coordinate.model.JoinedGridModel
+public class AllGridsUniqueJoinedGridModel
+extends org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
 {
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker checker;
+
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @android.support.annotation.NonNull
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     @android.support.annotation.IntRange(from = 1) final int rows,
     @android.support.annotation.IntRange(from = 1) final int cols)
     {
-        return new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
-            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
+        return new org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels(
+            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols, this.checker);
     }
 
-    /** Used by CurrentGridUniqueGridsTable. */
-    public CurrentGridUniqueJoinedGridModel(
+    /** Used by AllGridsUniqueGridsTable. */
+    public AllGridsUniqueJoinedGridModel(
     @android.support.annotation.IntRange(from = 1) final long             id            ,
     @android.support.annotation.IntRange(from = 0) final long             projectId     ,
                                                    final java.lang.String person        ,
@@ -52,30 +54,14 @@ extends org.wheatgenetics.coordinate.model.JoinedGridModel
     @android.support.annotation.Nullable           final java.lang.String templateOptionalFields,
     @android.support.annotation.IntRange(from = 0) final long             templateTimestamp     ,
 
-    final org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
-        currentGridUniqueEntryModels)
+    final org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels allGridsUniqueEntryModels,
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker checker)
     {
         super(id, projectId, person, activeRow, activeCol, optionalFields, timestamp, templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
-            templateOptionalFields, templateTimestamp, currentGridUniqueEntryModels);
-    }
-
-    @java.lang.Override
-    public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { throw new java.lang.UnsupportedOperationException("Call checkThenSetEntryModel() instead"); }
-
-    public void checkThenSetEntryModel(
-    final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
-        if (!this.entryModelsIsNull())
-        {
-            final CurrentGridUniqueEntryModels currentGridUniqueEntryModels =
-                (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
-                    this.getEntryModels();
-            // noinspection ConstantConditions
-            currentGridUniqueEntryModels.checkThenSet(entryModel);                         // throws
-        }
+            templateOptionalFields, templateTimestamp, allGridsUniqueEntryModels);
+        this.checker = checker;
     }
 }

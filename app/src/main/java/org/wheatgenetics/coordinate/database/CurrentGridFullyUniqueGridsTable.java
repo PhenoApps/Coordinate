@@ -24,7 +24,7 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable
     { super(context,"CurrentGridFullyUniqueGridsTable"); this.handler = handler; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTables()
+    @java.lang.Override org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTable()
     {
         return new org.wheatgenetics.coordinate.database.CurrentGridFullyUniqueEntriesTable(
             this.getContext(), this.handler);

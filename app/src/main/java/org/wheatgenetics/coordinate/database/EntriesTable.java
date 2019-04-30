@@ -25,9 +25,10 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 implements org.wheatgenetics.coordinate.model.EntryModels.Processor
 {
     // region Constants
-    private static final java.lang.String TABLE_NAME      = "entries";
-    private static final java.lang.String GRID_FIELD_NAME = "grid", ROW_FIELD_NAME = "row",
-        COL_FIELD_NAME = "col", EDATA_FIELD_NAME = "edata", STAMP_FIELD_NAME = "stamp";
+            static final java.lang.String TABLE_NAME      = "entries";
+            static final java.lang.String GRID_FIELD_NAME = "grid"   , EDATA_FIELD_NAME = "edata";
+    private static final java.lang.String ROW_FIELD_NAME  = "row"    , COL_FIELD_NAME   = "col"  ,
+        STAMP_FIELD_NAME = "stamp";
     // endregion
 
     // region Constructors

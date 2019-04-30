@@ -57,7 +57,8 @@ abstract class Table extends java.lang.Object
     private void logInfo(final java.lang.String msg) { android.util.Log.i(this.tag, msg); }
 
     private android.database.Cursor query(final boolean distinct, final java.lang.String selection,
-    final java.lang.String selectionArgs[], final java.lang.String orderBy)
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[],
+    final java.lang.String orderBy)
     {
         return this.db.query(
             /* distinct      => */ distinct      ,
@@ -103,7 +104,8 @@ abstract class Table extends java.lang.Object
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String selection,
-    final java.lang.String selectionArgs[], final java.lang.String orderBy)
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[],
+    final java.lang.String orderBy)
     {
         return this.query(
             /* distinct      => */false,
@@ -114,7 +116,7 @@ abstract class Table extends java.lang.Object
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String selection,
-    final java.lang.String selectionArgs[])
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[])
     {
         return this.queryAll(
             /* selection     => */ selection    ,
@@ -143,7 +145,7 @@ abstract class Table extends java.lang.Object
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor rawQuery(final java.lang.String sql,
-    final java.lang.String selectionArgs[])
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[])
     { return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ selectionArgs); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)

@@ -26,10 +26,13 @@ package org.wheatgenetics.coordinate.database;
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
 {
     // region Constants
-    private static final java.lang.String TABLE_NAME = "grids";
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        static final java.lang.String TABLE_NAME = "grids";
 
-    private static final java.lang.String TEMP_FIELD_NAME = "temp",
-        PROJECTID_FIELD_NAME = "projectId", PERSON_FIELD_NAME = "person",
+    private static final java.lang.String TEMP_FIELD_NAME = "temp";
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        static final java.lang.String PROJECTID_FIELD_NAME = "projectId";
+    private static final java.lang.String PERSON_FIELD_NAME = "person",
         ACTIVEROW_FIELD_NAME = "activeRow", ACTIVECOL_FIELD_NAME = "activeCol",
         OPTIONS_FIELD_NAME = "options", STAMP_FIELD_NAME = "stamp";
     private static final java.lang.String TEMPLATEOPTIONS_FIELD_NAME = "templateOptions",
@@ -49,7 +52,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     android.content.Context getContext() { return this.context; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTables()
+    org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTable()
     { return new org.wheatgenetics.coordinate.database.EntriesTable(this.getContext()); }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -95,7 +98,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
-        if (null == this.entriesTableInstance) this.entriesTableInstance = this.makeEntriesTables();
+        if (null == this.entriesTableInstance) this.entriesTableInstance = this.makeEntriesTable();
         return this.entriesTableInstance;
     }
 
