@@ -20,6 +20,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
     }
 
+    // region Package Methods
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract boolean isInRange(final int i);
 
@@ -93,6 +94,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         }
         return success;
     }
+    // endregion
 
     // region Public Methods
     public abstract boolean add(
