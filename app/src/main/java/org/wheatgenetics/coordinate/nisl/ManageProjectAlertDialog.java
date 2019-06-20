@@ -103,6 +103,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     void show(final boolean projectModelIsLoaded)
     {
         {
+            @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
             @android.support.annotation.StringRes final int items[];
             {
                 @java.lang.SuppressWarnings({"Convert2Diamond"})

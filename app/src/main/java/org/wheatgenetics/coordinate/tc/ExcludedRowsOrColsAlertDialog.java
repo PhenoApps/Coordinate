@@ -19,7 +19,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     {
         public abstract void excludeRowsOrCols(
-            @android.support.annotation.NonNull boolean checkedItems[]);
+        @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+        @android.support.annotation.NonNull boolean checkedItems[]);
     }
 
     // region Fields
@@ -30,7 +31,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     private boolean titleHasBeenSet = false;
     // endregion
 
-    private void excludeRowsOrCols(@android.support.annotation.NonNull final boolean checkedItems[])
+    private void excludeRowsOrCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+    @android.support.annotation.NonNull final boolean checkedItems[])
     { this.handler.excludeRowsOrCols(checkedItems); }
 
     ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
@@ -39,7 +41,9 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
         org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
-    void show(final java.lang.String items[], final boolean checkedItems[])
+    void show(
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String items       [],
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final boolean          checkedItems[])
     {
         if (null != items && null != checkedItems)
         {

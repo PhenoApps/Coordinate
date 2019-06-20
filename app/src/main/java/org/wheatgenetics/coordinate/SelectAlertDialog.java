@@ -36,7 +36,9 @@ public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAle
             });
     }
 
+
     public void show(@android.support.annotation.StringRes final int title,
-    @android.support.annotation.Size(min = 1) final java.lang.String items[])
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+        @android.support.annotation.Size(min = 1) final java.lang.String items[])
     { this.setTitle(title); this.show(items); }
 }

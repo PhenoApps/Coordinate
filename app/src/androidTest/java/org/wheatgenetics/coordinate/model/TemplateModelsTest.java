@@ -70,6 +70,7 @@ public class TemplateModelsTest extends java.lang.Object
 
     @org.junit.Test() public void titlesAndMakeDefaultSucceed()
     {
+        // noinspection CStyleArrayDeclaration
         final java.lang.String expected[] = new java.lang.String[]{
             org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault().getTitle(),
             org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ().getTitle()};

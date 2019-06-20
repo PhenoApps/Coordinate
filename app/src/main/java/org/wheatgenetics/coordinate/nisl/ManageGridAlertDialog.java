@@ -18,6 +18,7 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     { public void loadGrid(); public void deleteGrid(); }
 
     // region Fields
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration", "RedundantSuppression"})
     @android.support.annotation.StringRes private static final int
         BOTH_ITEMS[] = new int[]{
             org.wheatgenetics.coordinate.R.string.ManageGridAlertDialogLoad  ,

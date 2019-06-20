@@ -36,6 +36,7 @@ public class ProjectModelsTest extends java.lang.Object
 
     @org.junit.Test() public void titlesSucceeds()
     {
+        // noinspection CStyleArrayDeclaration
         final java.lang.String                                 expected[];
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
             new org.wheatgenetics.coordinate.model.ProjectModels();

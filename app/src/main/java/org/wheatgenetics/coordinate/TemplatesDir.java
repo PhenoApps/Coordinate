@@ -40,6 +40,7 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
                     // noinspection TryFinallyCanBeTryWithResources          //  NotFoundException
                     try
                     {
+                        // noinspection CStyleArrayDeclaration
                         final byte buffer[]          = new byte[1024];
                               int  numberOfBytesRead                 ;
                         while ((numberOfBytesRead = inputStream.read(buffer) /* throws */) > 0)
@@ -55,6 +56,7 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
 
     boolean atLeastOneXmlFileExists() throws org.wheatgenetics.javalib.Dir.PermissionException
     {
+        // noinspection CStyleArrayDeclaration
         final java.lang.String fileNames[] = this.listXml();       // throws org.wheatgenetics.java-
         // noinspection SimplifiableConditionalExpression          //  lib.Dir.PermissionException
         return null == fileNames ? false : fileNames.length > 0;

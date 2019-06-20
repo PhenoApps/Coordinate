@@ -240,6 +240,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     private void selectExportedTemplate()
     {
+        // noinspection CStyleArrayDeclaration
         final java.lang.String fileNames[];
         try { fileNames = this.templatesDir.listXml() /* throws PermissionException */; }
         catch (final org.wheatgenetics.javalib.Dir.PermissionException e)
@@ -743,6 +744,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             case org.wheatgenetics.coordinate.R.id.nav_show_about:
                 if (null == this.aboutAlertDialog)
                 {
+                    // noinspection CStyleArrayDeclaration
                     final java.lang.String title, msgs[];
                     {
                         final android.content.res.Resources resources =

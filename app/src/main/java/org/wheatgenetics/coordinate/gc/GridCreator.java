@@ -417,6 +417,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     { org.wheatgenetics.coordinate.gc.GridCreator.this.handleProjectChoice(which); }
                 });
 
+        // noinspection CStyleArrayDeclaration
         final java.lang.String items[];
         {
             final java.lang.String

@@ -416,7 +416,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 final org.xml.sax.Attributes attributes) { this.elementName = qName; }
 
                 @java.lang.Override
-                public void characters(final char ch[], final int start, final int length)
+                public void characters(
+                @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final char ch[],
+                final int start, final int length)
                 {
                     this.templateModel().assignCharacterData(this.elementName,
                         /* characterData => */ new java.lang.String(ch, start, length));

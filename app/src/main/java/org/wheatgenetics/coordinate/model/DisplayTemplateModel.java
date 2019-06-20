@@ -525,6 +525,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     // region checkedItems Public Methods
     @android.support.annotation.NonNull public boolean[] rowCheckedItems()
     {
+        // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
             final int rows = this.getRows();
@@ -536,6 +537,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     @android.support.annotation.NonNull public boolean[] colCheckedItems()
     {
+        // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
             final int cols = this.getCols();

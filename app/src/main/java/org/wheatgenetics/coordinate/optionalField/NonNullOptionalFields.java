@@ -138,6 +138,7 @@ implements java.lang.Cloneable
 
     @android.support.annotation.NonNull boolean[] checks()
     {
+        // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
             @java.lang.SuppressWarnings({"Convert2Diamond"})
@@ -232,6 +233,7 @@ implements java.lang.Cloneable
         this)
             nameArrayList.add(baseOptionalField.getName());
 
+        // noinspection CStyleArrayDeclaration
         final java.lang.String result[] = new java.lang.String[nameArrayList.size()];
         return nameArrayList.toArray(result);
     }
@@ -263,11 +265,12 @@ implements java.lang.Cloneable
                     valueArrayList.add(otherOptionalField.getValue());
                 }
 
+        // noinspection CStyleArrayDeclaration
         final java.lang.String result[] = new java.lang.String[valueArrayList.size()];
         return valueArrayList.toArray(result);
     }
 
-    @android.support.annotation.Nullable
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.Nullable
     public java.lang.String[] values(final java.lang.String names[])
     {
         if (null == names)
@@ -316,6 +319,7 @@ implements java.lang.Cloneable
                     if (!nameFound) valueArrayList.add("");
                 }
 
+                // noinspection CStyleArrayDeclaration
                 final java.lang.String result[] = new java.lang.String[valueArrayList.size()];
                 return valueArrayList.toArray(result);
             }

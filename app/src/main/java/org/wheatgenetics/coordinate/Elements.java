@@ -28,8 +28,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.Element.Handler
     @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.Element.Handler
         handler;
 
-    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.Element
-        elementArray[][];
+    @android.support.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+    private org.wheatgenetics.coordinate.Element elementArray[][];
     // endregion
 
     // region Protected Methods
