@@ -12,14 +12,11 @@
     <CheckBoxPreference
         android:key="@string/SoundPreferenceKey"
         android:title="@string/SoundPreferenceTitle"
-        android:summaryOn="@string/SoundPreferenceSummaryOn"
-        android:summaryOff="@string/SoundPreferenceSummaryOff"
         android:defaultValue="true" />
 
     <ListPreference
         android:key="@string/ProjectExportPreferenceKey"
         android:title="@string/ProjectExportPreferenceTitle"
-        android:summary="@string/ProjectExportPreferenceSummary"
         android:entries="@array/ProjectExportPreferenceEntries"
         android:entryValues="@array/ProjectExportPreferenceEntryValues"
         android:defaultValue="@string/ProjectExportPreferenceDefault" />
@@ -27,7 +24,6 @@
     <CheckBoxPreference
         android:key="@string/UniquenessCheckBoxPreferenceKey"
         android:title="@string/UniquenessCheckBoxPreferenceTitle"
-        android:summary="@string/UniquenessCheckBoxPreferenceSummary"
         android:defaultValue="false" />
 
     <ListPreference
