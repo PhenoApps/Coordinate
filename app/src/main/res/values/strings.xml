@@ -7,13 +7,13 @@
 
 
     <!-- Preferences -->
-    <string name="AdvancementPreferenceKey">Advancement</string>
+    <string name="AdvancementPreferenceKey">Workflow</string>
     <string name="AdvancementPreferenceTitle">@string/AdvancementPreferenceKey</string>
-    <string name="AdvancementPreferenceSummary">Method used when determining which cell to advance to after a value is saved.\n\ncurrent setting: %s</string>
+    <string name="AdvancementPreferenceSummary">Advance %s</string>
 
     <string-array name="AdvancementPreferenceEntries">
-        <item>Down each column</item>
-        <item>Across each row</item>
+        <item>down each column</item>
+        <item>across each row</item>
     </string-array>
 
     <string name="AdvancementPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
@@ -28,18 +28,15 @@
 
 
     <string name="SoundPreferenceKey">SoundOn</string>
-    <string name="SoundPreferenceTitle">Sound</string>
-    <string name="SoundPreferenceSummaryOn">Play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
-    <string name="SoundPreferenceSummaryOff">Do not play sound 1) at the end of each row/column, 2) when the grid is completed, and 3) if an attempt to violate uniqueness was halted.</string>
-
+    <string name="SoundPreferenceTitle">Notification sounds</string>
 
     <string name="ProjectExportPreferenceKey">ProjectExport</string>
-    <string name="ProjectExportPreferenceTitle">Project export</string>
-    <string name="ProjectExportPreferenceSummary">When exporting a project, Coordinate can create one file for each grid or combine grids and export a single file for the entire project.\n\ncurrent setting: %s</string>
+    <string name="ProjectExportPreferenceTitle">Project Export</string>
+    <string name="ProjectExportPreferenceSummary">Projects export as %s</string>
 
     <string-array name="ProjectExportPreferenceEntries">
-        <item>One file per grid</item>
-        <item>One file per project</item>
+        <item>one file per grid</item>
+        <item>one file per project</item>
     </string-array>
 
     <string name="ProjectExportPreferenceOneFilePerGrid">OneFilePerGrid</string>
@@ -54,18 +51,17 @@
 
 
     <string name="UniquenessCheckBoxPreferenceKey">UniquenessCheckBox</string>
-    <string name="UniquenessCheckBoxPreferenceTitle">Uniqueness</string>
-    <string name="UniquenessCheckBoxPreferenceSummary">Enforce uniqueness.</string>
+    <string name="UniquenessCheckBoxPreferenceTitle">Unique Values Required</string>
 
 
     <string name="UniquenessListPreferenceKey">UniquenessList</string>
-    <string name="UniquenessListPreferenceTitle">Type of Uniqueness</string>
-    <string name="UniquenessListPreferenceSummary">During data entry, Coordinate can 1) force cell values to be unique within the current grid, 2) force cell values to be unique among all grids of the current project, or 3) force cell values to be unique among all grids.\n\ncurrent setting: %s</string>
+    <string name="UniquenessListPreferenceTitle">Unique Options</string>
+    <string name="UniquenessListPreferenceSummary">Samples must be unique %s</string>
 
     <string-array name="UniquenessListPreferenceEntries">
-        <item>Force uniqueness within current grid</item>
-        <item>Force uniqueness among all grids of current project</item>
-        <item>Force uniqueness among all grids</item>
+        <item>within current grid</item>
+        <item>among all grids of current project</item>
+        <item>among all grids</item>
     </string-array>
 
     <string name="UniquenessListPreferenceCurrentGrid">UniqueCurrentGrid</string>

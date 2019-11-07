@@ -1,3 +1,6 @@
+7/2.1.0
+Added option to force unique scans
+
 6/2.0.4
 Fixed a bug with importing templates
 
