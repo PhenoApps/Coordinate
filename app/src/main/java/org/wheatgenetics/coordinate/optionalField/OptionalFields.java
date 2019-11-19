@@ -66,7 +66,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
             new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     {
         final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder("{");
         {
@@ -108,11 +108,11 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     // region java.lang.Iterable<> Overridden Method
-    @android.support.annotation.NonNull @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
-        return
-            new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(this.arrayList);
+        return new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(
+            this.arrayList);
     }
     // endregion
     // endregion

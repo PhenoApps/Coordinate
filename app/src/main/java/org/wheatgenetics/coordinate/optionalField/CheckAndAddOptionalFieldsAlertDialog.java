@@ -37,10 +37,10 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // endregion
 
     // region Private Methods
-    private void checkOptionalField(final int i, final boolean b)
+    private void checkOptionalField(final int index, final boolean checked)
     {
-        assert null != this.nonNullOptionalFields;
-        this.nonNullOptionalFields.setChecked(/* index => */ i, /* checked => */ b);
+        if (null != this.nonNullOptionalFields)
+            this.nonNullOptionalFields.setChecked(/* index => */ index, /* checked => */ checked);
     }
 
     @android.support.annotation.NonNull
@@ -52,10 +52,11 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
                 {
                     @java.lang.Override
                     public void onClick(final android.content.DialogInterface dialogInterface,
-                    final int i, final boolean b)
+                    final int which, final boolean isChecked)
                     {
                         org.wheatgenetics.coordinate.optionalField
-                            .CheckAndAddOptionalFieldsAlertDialog.this.checkOptionalField(i, b);
+                            .CheckAndAddOptionalFieldsAlertDialog.this.checkOptionalField(
+                                which, isChecked);
                     }
                 };
         return this.onMultiChoiceClickListenerInstance;
@@ -78,8 +79,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // region Overridden Methods
     @java.lang.Override public void configure()
     {
-        super.configure();
-        this.setTitle(
+        super.configure(); this.setTitle(
                 org.wheatgenetics.coordinate.R.string.CheckAndAddOptionalFieldsAlertDialogTitle)
             .setOKPositiveButton().setNeutralButton(org.wheatgenetics.coordinate
                     .R.string.CheckAndAddOptionalFieldsAlertDialogButtonText,

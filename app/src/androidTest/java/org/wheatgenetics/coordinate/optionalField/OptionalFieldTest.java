@@ -82,7 +82,7 @@ public class OptionalFieldTest extends java.lang.Object
             concreteOptionalField = new
                 org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
                     org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                        testName, null, testHint));
+                        testName,null, testHint));
             org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
         }
         org.junit.Assert.assertEquals("", concreteOptionalField.getValue());

@@ -25,13 +25,13 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Private Methods
     @android.support.annotation.NonNull
-    private static java.lang.String valid(final java.lang.String s)
+    private static java.lang.String valid(final java.lang.String name)
     {
-        if (null == s)
+        if (null == name)
             throw new java.lang.AssertionError();
         else
         {
-            final java.lang.String result = s.trim();
+            final java.lang.String result = name.trim();
             if (result.length() <= 0)
                 throw new java.lang.AssertionError();
             else
@@ -57,8 +57,8 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
-    { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getName(), super.toString()); }
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    { return this.getName(); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {

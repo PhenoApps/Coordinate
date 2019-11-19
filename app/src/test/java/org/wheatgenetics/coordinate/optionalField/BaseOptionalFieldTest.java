@@ -61,8 +61,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
                     testName,"testHint");
 
-        // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue(testName.equals(concreteBaseOptionalField.getName()));
+        org.junit.Assert.assertEquals(testName, concreteBaseOptionalField.getName());
     }
     // endregion
 
@@ -270,12 +269,13 @@ public class BaseOptionalFieldTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField("testName");
-
-        concreteBaseOptionalField.setChecked(true);
         org.junit.Assert.assertTrue(concreteBaseOptionalField.getChecked());
 
         concreteBaseOptionalField.setChecked(false);
         org.junit.Assert.assertFalse(concreteBaseOptionalField.getChecked());
+
+        concreteBaseOptionalField.setChecked(true);
+        org.junit.Assert.assertTrue(concreteBaseOptionalField.getChecked());
     }
     // endregion
 

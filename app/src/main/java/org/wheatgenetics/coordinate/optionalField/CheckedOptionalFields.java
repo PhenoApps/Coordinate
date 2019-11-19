@@ -16,7 +16,7 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
     final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields)
     { super(); if (null != optionalFields) this.arrayList.addAll(optionalFields.arrayList); }
 
-    @android.support.annotation.NonNull @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
         // Only iterates over checked optional fields.
@@ -33,8 +33,6 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
                 {
                     final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
                         baseOptionalField = this.arrayList.get(this.listIterator.nextIndex());
-
-                    assert null != baseOptionalField;
                     if (baseOptionalField.getChecked()) return true; else super.next();
                 }
                 return false;

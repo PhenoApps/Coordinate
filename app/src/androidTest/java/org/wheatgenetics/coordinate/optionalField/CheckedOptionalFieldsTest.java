@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.optionalField;
 public class CheckedOptionalFieldsTest extends java.lang.Object
 {
     // region Constructor Tests
-    @org.junit.Test() public void nullConstructorParameterSucceeds()
+    @org.junit.Test() public void constructorNullParameterSucceeds()
     {
         org.junit.Assert.assertEquals(0,
             new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(null).size());

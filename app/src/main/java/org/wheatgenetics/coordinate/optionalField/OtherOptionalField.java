@@ -37,7 +37,7 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     }
     // endregion
 
-    @java.lang.Override public java.lang.Object clone()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.OtherOptionalField result =
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(

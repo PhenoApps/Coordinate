@@ -36,17 +36,16 @@ public class DateOptionalFieldTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
-        final org.wheatgenetics.coordinate.optionalField.DateOptionalField
-            clonedBaseDateOptionalField =
-                (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+        final org.wheatgenetics.coordinate.optionalField.DateOptionalField clonedDateOptionalField =
+            (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
                     dateOptionalField.clone();
-        org.junit.Assert.assertEquals("Date", clonedBaseDateOptionalField.getName());
+        org.junit.Assert.assertEquals("Date", clonedDateOptionalField.getName());
         org.junit.Assert.assertEquals(
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
-            clonedBaseDateOptionalField.getHint()                                 );
+            clonedDateOptionalField.getHint()                                     );
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue(dateOptionalField.equals(clonedBaseDateOptionalField));
+        org.junit.Assert.assertTrue(dateOptionalField.equals(clonedDateOptionalField));
     }
 
     @org.junit.Test() public void getValue()

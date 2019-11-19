@@ -2,10 +2,10 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  * android.annotation.SuppressLint
- * android.app.Activity
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
@@ -39,13 +39,12 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
             this.showToast(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogToast);
         else
         {
-            assert null != this.nonNullOptionalFields; this.nonNullOptionalFields.add(
+            if (null != this.nonNullOptionalFields) this.nonNullOptionalFields.add(
                 /* name  => */ name,
                 /* value => */ org.wheatgenetics.androidlibrary.Utils.getText(
                     this.defaultValueEditText),
                 /* hint => */null);
-            this.cancelAlertDialog();
-            this.handler.handleAddOptionalFieldDone();
+            this.cancelAlertDialog(); this.handler.handleAddOptionalFieldDone();
         }
     }
 
@@ -64,11 +63,13 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
                 this.layoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.add_optional_field,null);
 
-            assert null != view;
-            if (null == this.nameEditText) this.nameEditText = view.findViewById(
-                org.wheatgenetics.coordinate.R.id.nameEditText);
-            if (null == this.defaultValueEditText) this.defaultValueEditText =
-                view.findViewById(org.wheatgenetics.coordinate.R.id.defaultValueEditText);
+            if (null != view)
+            {
+                if (null == this.nameEditText) this.nameEditText = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.nameEditText);
+                if (null == this.defaultValueEditText) this.defaultValueEditText =
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.defaultValueEditText);
+            }
 
             this.setView(view);
         }
@@ -81,8 +82,8 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     {
         if (null != nonNullOptionalFields)
         {
-            assert null != this.nameEditText        ; this.nameEditText.setText        ("");
-            assert null != this.defaultValueEditText; this.defaultValueEditText.setText("");
+            if (null != this.nameEditText        ) this.nameEditText.setText        ("");
+            if (null != this.defaultValueEditText) this.defaultValueEditText.setText("");
             this.nonNullOptionalFields = nonNullOptionalFields; this.show();
 
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(

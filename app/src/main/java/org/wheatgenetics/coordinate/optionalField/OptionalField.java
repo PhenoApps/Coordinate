@@ -20,19 +20,83 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.BaseOptionalField
 {
-    private static final java.lang.String NAME_JSON_NAME = "field",
-        HINT_JSON_NAME = "hint", VALUE_JSON_NAME = "value", CHECKED_JSON_NAME = "checked";
+    private static final java.lang.String NAME_JSON_NAME = "field", HINT_JSON_NAME = "hint";
 
-    private static void put(final org.json.JSONObject jsonObject,
-    final java.lang.String name, java.lang.String value)
+    @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
+    private static class JSONObject extends java.lang.Object
     {
-        if (null != jsonObject) if (null != value)
+        private static final java.lang.String VALUE_JSON_NAME = "value",
+            CHECKED_JSON_NAME = "checked";
+
+        @android.support.annotation.NonNull private final org.json.JSONObject jsonObject;
+
+        // region Private Methods
+        private void put(final java.lang.String name, java.lang.String value)
         {
-            value = value.trim();
-            if (value.length() > 0)
-                try { jsonObject.put(name, value) /* throws org.json.JSONException */; }
-                catch (final org.json.JSONException e) { /* Don't put value. */ }
+            if (null != value)
+            {
+                value = value.trim();
+                if (value.length() > 0)
+                    try { this.jsonObject.put(name, value) /* throws org.json.JSONException */; }
+                    catch (final org.json.JSONException e) { /* Don't put value. */ }
+            }
         }
+
+        void putChecked(final boolean checked)
+        {
+            try
+            {
+                this.jsonObject.put(org.wheatgenetics               // throws org.json.JSONException
+                        .coordinate.optionalField.OptionalField.JSONObject.CHECKED_JSON_NAME,
+                    checked                                                                 );
+            }
+            catch (final org.json.JSONException e) { /* Don't put checked. */ }
+        }
+        // endregion
+
+        // region Constructors
+        private JSONObject(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
+        { super(); this.jsonObject = jsonObject; }
+
+        private JSONObject(final java.lang.String name, final java.lang.String value,
+        final java.lang.String hint)
+        {
+            super(); this.jsonObject = new org.json.JSONObject();
+
+            this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME, name);
+            this.put(
+                org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject.VALUE_JSON_NAME,
+                value);
+            this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME, hint);
+        }
+
+
+        private JSONObject(final java.lang.String name, final java.lang.String value,
+        final java.lang.String hint, final boolean checked)
+        { this(name, value, hint); this.putChecked(checked); }
+
+        private JSONObject(@android.support.annotation.NonNull final org.json.JSONObject jsonObject,
+        final boolean checked) { this(jsonObject); this.putChecked(checked); }
+        // endregion
+
+        private java.lang.String getValue()
+        {
+            return this.jsonObject.optString(org.wheatgenetics.coordinate
+                .optionalField.OptionalField.JSONObject.VALUE_JSON_NAME);
+        }
+
+        private boolean getChecked()
+        {
+            try
+            {
+                return this.jsonObject.getBoolean(org.wheatgenetics // throws org.json.JSONException
+                    .coordinate.optionalField.OptionalField.JSONObject.CHECKED_JSON_NAME);
+            }
+            catch (final org.json.JSONException e) { return true; }
+        }
+
+        @android.support.annotation.NonNull private org.json.JSONObject jsonObject()
+        { return this.jsonObject; }
     }
 
     // region Constructors
@@ -49,10 +113,9 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             /* hint => */ jsonObject.optString(
                 org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME));
 
-        this.setValue(jsonObject.optString(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME));
-        this.setChecked(org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(
-            jsonObject));
+        final org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject customJSONObject =
+            new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(jsonObject);
+        this.setValue(customJSONObject.getValue()); this.setChecked(customJSONObject.getChecked());
     }
     // endregion
 
@@ -63,16 +126,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     @android.support.annotation.NonNull static org.json.JSONObject makeJSONObject(
     final java.lang.String name, final java.lang.String value, final java.lang.String hint)
     {
-        final org.json.JSONObject result = new org.json.JSONObject();
-
-        org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
-            org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME , name );
-        org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
-            org.wheatgenetics.coordinate.optionalField.OptionalField.VALUE_JSON_NAME, value);
-        org.wheatgenetics.coordinate.optionalField.OptionalField.put(result,
-            org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME , hint );
-
-        return result;
+        return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
+            name, value, hint).jsonObject();
     }
 
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
@@ -82,11 +137,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
     final java.lang.String name, final java.lang.String value, final java.lang.String hint,
     final boolean checked)
     {
-        final org.json.JSONObject result =
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                name, value, hint);
-        org.wheatgenetics.coordinate.optionalField.OptionalField.putChecked(result, checked);
-        return result;
+        return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
+            name, value, hint, checked).jsonObject();
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -95,29 +147,18 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         if (null == jsonObject)
             return true;
         else
-        {
-            try
-            {
-                return jsonObject.getBoolean(                       // throws org.json.JSONException
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME);
-            }
-            catch (final org.json.JSONException e) { return true; }
-        }
+            return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
+                jsonObject).getChecked();
     }
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam", "SameParameterValue"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    static void putChecked(final org.json.JSONObject jsonObject, final boolean value)
+    static void putChecked(final org.json.JSONObject jsonObject, final boolean checked)
     {
         if (null != jsonObject)
-            try
-            {
-                jsonObject.put(                                     // throws org.json.JSONException
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.CHECKED_JSON_NAME,
-                    value                                                                     );
-            }
-            catch (final org.json.JSONException e) { /* Don't put value. */ }
+            new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
+                jsonObject, checked);
     }
 
     @android.support.annotation.NonNull org.json.JSONObject makeJSONObject()

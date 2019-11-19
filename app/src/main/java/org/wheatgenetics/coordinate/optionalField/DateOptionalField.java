@@ -26,14 +26,13 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
 
     DateOptionalField(final org.json.JSONObject jsonObject)
     {
-        this();
-        this.setChecked(org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(
+        this(); this.setChecked(org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(
             jsonObject));
     }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override public java.lang.Object clone()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
@@ -41,7 +40,7 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
         return result;
     }
 
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String getValue()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
     // endregion
 

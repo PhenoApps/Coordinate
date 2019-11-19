@@ -349,8 +349,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             newNonNullOptionalFields =
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew();
-        org.junit.Assert.assertFalse (newNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(3,
+        org.junit.Assert.assertNotNull(newNonNullOptionalFields          );
+        org.junit.Assert.assertFalse  (newNonNullOptionalFields.isEmpty());
+        org.junit.Assert.assertEquals (3,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
                 newNonNullOptionalFields));
         org.junit.Assert.assertEquals("Identification",
@@ -364,8 +365,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             seedDefaultNonNullOptionalFields =
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeSeedDefault();
-        org.junit.Assert.assertFalse (seedDefaultNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(3,
+        org.junit.Assert.assertNotNull(seedDefaultNonNullOptionalFields          );
+        org.junit.Assert.assertFalse  (seedDefaultNonNullOptionalFields.isEmpty());
+        org.junit.Assert.assertEquals (3,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
                 seedDefaultNonNullOptionalFields));
         org.junit.Assert.assertEquals("Tray",
@@ -381,8 +383,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
             dnaDefaultNonNullOptionalFields =
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeDNADefault();
-        org.junit.Assert.assertFalse (dnaDefaultNonNullOptionalFields.isEmpty());
-        org.junit.Assert.assertEquals(7,
+        org.junit.Assert.assertNotNull(dnaDefaultNonNullOptionalFields          );
+        org.junit.Assert.assertFalse  (dnaDefaultNonNullOptionalFields.isEmpty());
+        org.junit.Assert.assertEquals (7,
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.size(
                 dnaDefaultNonNullOptionalFields));
         org.junit.Assert.assertEquals("Plate",
