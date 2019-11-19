@@ -171,7 +171,6 @@ public class CellTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cell(23,999);
 
         // noinspection SimplifiableJUnitAssertion
-
         org.junit.Assert.assertTrue(cell.equals(cell.clone()));
     }
 
@@ -181,16 +180,16 @@ public class CellTest extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cell(5,5);
 
         // Same col:
-        org.junit.Assert.assertEquals(0,
-            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5,5)));
+        org.junit.Assert.assertEquals(0, cell.compareTo(
+            new org.wheatgenetics.coordinate.model.Cell(5,5)));
         org.junit.Assert.assertTrue(cell.compareTo(
             new org.wheatgenetics.coordinate.model.Cell(1,5)) > 0);
         org.junit.Assert.assertTrue(cell.compareTo(
             new org.wheatgenetics.coordinate.model.Cell(9,5)) < 0);
 
         // Same row:
-        org.junit.Assert.assertEquals(0,
-            cell.compareTo(new org.wheatgenetics.coordinate.model.Cell(5,5)));
+        org.junit.Assert.assertEquals(0, cell.compareTo(
+            new org.wheatgenetics.coordinate.model.Cell(5,5)));
         org.junit.Assert.assertTrue(cell.compareTo(
             new org.wheatgenetics.coordinate.model.Cell(5,1)) > 0);
         org.junit.Assert.assertTrue(cell.compareTo(

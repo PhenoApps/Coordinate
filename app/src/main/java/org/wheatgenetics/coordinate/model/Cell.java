@@ -21,13 +21,13 @@ org.wheatgenetics.coordinate.model.ElementModel
     private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
     // region Constructors
-    /** Assigns. */
+    /** Assigns this.row and this.col. */
     private Cell(
     @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol row,
     @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol col)
     { super(); this.row = row; this.col = col; }
 
-    /** Creates. */
+    /** Creates this.row and this.col. */
     @java.lang.SuppressWarnings({"CopyConstructorMissesField"})
     Cell(@android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
     {
@@ -36,7 +36,7 @@ org.wheatgenetics.coordinate.model.ElementModel
             new org.wheatgenetics.coordinate.model.RowOrCol(/* rowOrCol => */ cell.getCol()));
     }
 
-    /** Creates. */
+    /** Creates this.row and this.col. */
     public Cell(
     @android.support.annotation.IntRange(from = 1) final int row,
     @android.support.annotation.IntRange(from = 1) final int col)
@@ -46,7 +46,7 @@ org.wheatgenetics.coordinate.model.ElementModel
             new org.wheatgenetics.coordinate.model.RowOrCol(/* value => */ col));
     }
 
-    /** Creates. */
+    /** Creates this.row and this.col. */
     Cell(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
     throws org.json.JSONException
     {
@@ -57,7 +57,7 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     {
         return java.lang.String.format("Cell(%s, %s)",
             this.getRow().toString(), this.getCol().toString());
@@ -79,9 +79,8 @@ org.wheatgenetics.coordinate.model.ElementModel
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override protected java.lang.Object clone()
+    @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
+    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
     { return new org.wheatgenetics.coordinate.model.Cell(this); }
 
     // region java.lang.Comparable Overridden Method
@@ -96,8 +95,11 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
-    @java.lang.Override public int getRowValue() { return this.getRow().getValue(); }
-    @java.lang.Override public int getColValue() { return this.getCol().getValue(); }
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRowValue()
+    { return this.getRow().getValue(); }
+
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getColValue()
+    { return this.getCol().getValue(); }
     // endregion
     // endregion
 

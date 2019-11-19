@@ -42,16 +42,16 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Constructors
-    /** Assigns. */
+    /** Assigns this.maxRowOrCol. */
     private RowOrCols(@android.support.annotation.NonNull
         final org.wheatgenetics.coordinate.model.RowOrCol maxRowOrCol)
     { super(); this.maxRowOrCol = maxRowOrCol; }
 
-    /** Creates. */
+    /** Creates this.maxRowOrCol. */
     RowOrCols(@android.support.annotation.IntRange(from = 1) final int maxValue)
     { this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(maxValue)); }
 
-    /** Creates. */
+    /** Creates this.maxRowOrCol. */
     public RowOrCols(                              final java.lang.String json    ,
     @android.support.annotation.IntRange(from = 1) final int              maxValue)
     {
@@ -83,7 +83,7 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     {
         if (null == this.rowOrColTreeSetInstance)
             return "null";
@@ -137,9 +137,8 @@ public class RowOrCols extends java.lang.Object
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override protected java.lang.Object clone()
+    @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
+    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols result =
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxRowOrCol => */
@@ -147,9 +146,8 @@ public class RowOrCols extends java.lang.Object
 
         if (null != this.rowOrColTreeSetInstance)
             // noinspection Convert2Diamond
-            result.rowOrColTreeSetInstance =
-                new java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>(
-                    this.rowOrColTreeSetInstance);
+            result.rowOrColTreeSetInstance = new java.util.TreeSet<
+                org.wheatgenetics.coordinate.model.RowOrCol>(this.rowOrColTreeSetInstance);
 
         return result;
     }

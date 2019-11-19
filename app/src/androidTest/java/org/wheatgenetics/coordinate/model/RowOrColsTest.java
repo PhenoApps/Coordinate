@@ -174,7 +174,7 @@ public class RowOrColsTest extends java.lang.Object
         org.junit.Assert.assertFalse(rowOrCols.contains(456));
     }
 
-    @org.junit.Test() public void duplicateAddFails()
+    @org.junit.Test() public void duplicateAddDoesNotAdd()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
             new org.wheatgenetics.coordinate.model.RowOrCols(125);
@@ -186,21 +186,12 @@ public class RowOrColsTest extends java.lang.Object
         org.junit.Assert.assertEquals("123", rowOrCols.toString());  // Note: value add()ed
     }                                                                         //  only once.
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void zeroAddFails()
-    {
-        final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
-            new org.wheatgenetics.coordinate.model.RowOrCols(12);
-        rowOrCols.add(0);
-    }
+    @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void zeroAddFails()
+    { new org.wheatgenetics.coordinate.model.RowOrCols(12).add(0); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void negativeAddFails()
-    {
-        final org.wheatgenetics.coordinate.model.RowOrCols rowOrCols =
-            new org.wheatgenetics.coordinate.model.RowOrCols(12);
-        rowOrCols.add(-20);
-    }
+    { new org.wheatgenetics.coordinate.model.RowOrCols(12).add(-20); }
     // endregion
 
     @org.junit.Test() public void clearSucceeds()

@@ -36,12 +36,12 @@ public class CellsTest extends java.lang.Object
     public void negativeMaxColSecondConstructorFails()
     { new org.wheatgenetics.coordinate.model.Cells(5,-5); }
 
-    @org.junit.Test public void secondConstructorSucceeds()
+    @org.junit.Test() public void secondConstructorSucceeds()
     { new org.wheatgenetics.coordinate.model.Cells(5,5); }
     // endregion
 
     // region Fourth Constructor Tests
-    @org.junit.Test public void fourthConstructorAndJSONSucceed() throws org.json.JSONException
+    @org.junit.Test() public void fourthConstructorAndJSONSucceed() throws org.json.JSONException
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
         jsonArray.put(
@@ -55,13 +55,13 @@ public class CellsTest extends java.lang.Object
         org.junit.Assert.assertEquals(jsonArray.toString(), cells.json());
     }
 
-    @org.junit.Test public void nullInputFourthConstructorSucceeds()
+    @org.junit.Test() public void nullInputFourthConstructorSucceeds()
     { new org.wheatgenetics.coordinate.model.Cells(null,5,5); }
 
-    @org.junit.Test public void emptyInputFourthConstructorSucceeds()
+    @org.junit.Test() public void emptyInputFourthConstructorSucceeds()
     { new org.wheatgenetics.coordinate.model.Cells("",5,5); }
 
-    @org.junit.Test public void spacesInputFourthConstructorSucceeds()
+    @org.junit.Test() public void spacesInputFourthConstructorSucceeds()
     { new org.wheatgenetics.coordinate.model.Cells("   ",5,5); }
     // endregion
     // endregion
@@ -276,7 +276,7 @@ public class CellsTest extends java.lang.Object
     public void tooBigColAddFails()
     { new org.wheatgenetics.coordinate.model.Cells(25,50).add(5,100); }
 
-    @org.junit.Test() public void duplicateAddFails()
+    @org.junit.Test() public void duplicateAddDoesNotAdd()
     {
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells(5,5);

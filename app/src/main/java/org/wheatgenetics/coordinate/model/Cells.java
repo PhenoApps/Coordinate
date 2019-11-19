@@ -18,11 +18,11 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Types
     class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
-    { MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
+    { private MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
 
     public class AmountIsTooLarge extends java.lang.IllegalArgumentException
     {
-        AmountIsTooLarge(final int maxAmount)
+        private AmountIsTooLarge(final int maxAmount)
         {
             super(java.lang.String.format(
                 /* format => */ maxAmount <= 0 ?
@@ -70,22 +70,22 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Constructors
-    /** Assigns. */
+    /** Assigns this.maxCell. */
     private Cells(@android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell
         maxCell) { super(); this.maxCell = maxCell; }
 
-    /** Creates. */
+    /** Creates this.maxCell. */
     @java.lang.SuppressWarnings({"CopyConstructorMissesField"}) private Cells(
     @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells cells)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
 
-    /** Creates. */
+    /** Creates this.maxCell. */
     Cells(
     @android.support.annotation.IntRange(from = 1) final int maxRow,
     @android.support.annotation.IntRange(from = 1) final int maxCol)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
 
-    /** Creates. */
+    /** Creates this.maxCell. */
     public Cells(                                  final java.lang.String json  ,
     @android.support.annotation.IntRange(from = 1) final int              maxRow,
     @android.support.annotation.IntRange(from = 1) final int              maxCol)
@@ -99,9 +99,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                 final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
                 try { jsonArray = (org.json.JSONArray) jsonTokener.nextValue(); }    // throws org.-
                 catch (final org.json.JSONException e)                               //  json.JSON-
-                {
-                    return /* Leave cellTreeSetInstance == null. */;
-                }                 //  Exception
+                { return /* Leave cellTreeSetInstance == null. */; }                 //  Exception
             }
 
             if (null != jsonArray)
@@ -120,7 +118,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     {
         if (null == this.cellTreeSetInstance)
             return "null";
@@ -172,9 +170,8 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override protected java.lang.Object clone()
+    @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
+    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(this);
@@ -195,12 +192,11 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         {
             final java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator =
                 cells.iterator();
-            if (null != iterator)
-                while (iterator.hasNext())
-                {
-                    final org.wheatgenetics.coordinate.model.Cell cell = iterator.next();
-                    if (null != cell) this.add(cell.getRowValue(), cell.getColValue());
-                }
+            if (null != iterator) while (iterator.hasNext())
+            {
+                final org.wheatgenetics.coordinate.model.Cell cell = iterator.next();
+                if (null != cell) this.add(cell.getRowValue(), cell.getColValue());
+            }
         }
     }
 
@@ -261,7 +257,6 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Public Methods
-    @java.lang.SuppressWarnings({"SimplifiableConditionalExpression"})
     public boolean contains(
     @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell candidateCell)
     {
@@ -273,6 +268,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         try { candidateCell.inRange(this.maxCell) /* throws java.lang.IllegalArgumentException */; }
         catch (final java.lang.IllegalArgumentException e) { return false; }
 
+        // noinspection SimplifiableConditionalExpression
         return null == this.cellTreeSetInstance ? false :
             this.cellTreeSetInstance.contains(candidateCell);
     }
@@ -305,10 +301,9 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                     final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
                     for (final org.wheatgenetics.coordinate.model.Cell cell:
-                    this.cellTreeSetInstance)
-                        if (null != cell)
-                            try                                    { jsonArray.put(cell.json()); }
-                            catch (final org.json.JSONException e) { /* Skip this JSONObject. */ }
+                    this.cellTreeSetInstance) if (null != cell)
+                        try                                    { jsonArray.put(cell.json()); }
+                        catch (final org.json.JSONException e) { /* Skip this JSONObject. */ }
 
                     result = jsonArray.toString();
                 }

@@ -19,12 +19,13 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
         this.value = org.wheatgenetics.coordinate.Utils.valid(value,1);    // throws java
     }                                                                               //  .lang.Ille-
                                                                                     //  galArgument-
-    RowOrCol(final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)            //  Exception
+    RowOrCol(                                                                       //  Exception
+    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
     { this(rowOrCol.getValue()) /* throws java.lang.IllegalArgumentException */; }
     // endregion
 
     // region Overridden Methods
-    @android.support.annotation.NonNull @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     { return java.lang.Integer.toString(this.getValue()); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -40,9 +41,8 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
 
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override protected java.lang.Object clone()
+    @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
+    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
     { return new org.wheatgenetics.coordinate.model.RowOrCol(this); }
 
     // region java.lang.Comparable Overridden Method
