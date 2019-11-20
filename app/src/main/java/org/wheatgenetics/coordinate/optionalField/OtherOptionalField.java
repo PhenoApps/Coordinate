@@ -16,7 +16,7 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
 
     // region Constructors
-    OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    private OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name,
     final java.lang.String hint) { super(name, hint); }
 
     OtherOptionalField(@android.support.annotation.NonNull final java.lang.String name)

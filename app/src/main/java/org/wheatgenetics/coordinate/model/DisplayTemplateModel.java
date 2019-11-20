@@ -147,12 +147,12 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     @android.support.annotation.IntRange(from = 1) final int rows                        ,
     @android.support.annotation.IntRange(from = 1) final int cols                        ,
     @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.Cells excludedCells,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.RowOrCols excludedRows,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.RowOrCols excludedCols,
+    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells
+        excludedCells,
+    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
+        excludedRows,
+    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
+        excludedCols,
     final boolean colNumbering, final boolean rowNumbering,
     @android.support.annotation.IntRange(from = 0) final long timestamp)
     {
@@ -205,16 +205,15 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     @android.support.annotation.IntRange(from = 0, to = 1) final int              colNumbering ,
     @android.support.annotation.IntRange(from = 0, to = 1) final int              rowNumbering ,
                                                            final java.lang.String entryLabel   ,
-    @android.support.annotation.IntRange(from = 0)         final long             timestamp    )
+    @android.support.annotation.IntRange(from = 0        ) final long             timestamp    )
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
             generatedExcludedCellsAmount,
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(rowNumbering), timestamp);
 
-        this.setExcludedCells(excludedCells);
-        this.setExcludedRows (excludedRows ); this.setExcludedCols(excludedCols);
-        this.setEntryLabel   (entryLabel   );
+        this.setExcludedCells(excludedCells); this.setExcludedRows(excludedRows);
+        this.setExcludedCols (excludedCols ); this.setEntryLabel  (entryLabel  );
     }
     // endregion
 
@@ -227,8 +226,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
             "%s", this.getExcludedCells(), this.excludedRowsInstance, this.excludedColsInstance);
     }
 
-    @java.lang.SuppressWarnings({"NullableProblems"})
-    @java.lang.Override public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "DisplayTemplateModel"); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -270,6 +268,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                     if (null != this.excludedColsInstance
                     &&  null == displayTemplateModel.excludedColsInstance)
                         return false;
+
                 // noinspection SimplifiableConditionalExpression
                 return null == this.excludedColsInstance ? true :
                     this.excludedColsInstance.equals(displayTemplateModel.excludedColsInstance);
@@ -278,9 +277,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         else return false;
     }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone",
-        "CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override protected java.lang.Object clone()
+    @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
+    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel result;
         {
@@ -292,31 +290,31 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
             if (org.wheatgenetics.coordinate.model.Model.illegal(id))
                 result = new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                    /* title                        => */ this.getTitle()                       ,
-                    /* type                         => */ this.getType()                        ,
-                    /* rows                         => */ this.getRows()                        ,
-                    /* cols                         => */ this.getCols()                        ,
+                    /* title                        => */ this.getTitle                       (),
+                    /* type                         => */ this.getType                        (),
+                    /* rows                         => */ this.getRows                        (),
+                    /* cols                         => */ this.getCols                        (),
                     /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
                     /* excludedCells                => */ excludedCells                         ,
                     /* excludedRows                 => */ excludedRows                          ,
                     /* excludedCols                 => */ excludedCols                          ,
                     /* colNumbering                 => */ this.getColNumbering()                ,
                     /* rowNumbering                 => */ this.getRowNumbering()                ,
-                    /* timestamp                    => */ this.getTimestamp()                   );
+                    /* timestamp                    => */ this.getTimestamp   ()                );
             else
                 result = new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
                     /* id                           => */ id                                    ,
-                    /* title                        => */ this.getTitle()                       ,
-                    /* type                         => */ this.getType()                        ,
-                    /* rows                         => */ this.getRows()                        ,
-                    /* cols                         => */ this.getCols()                        ,
+                    /* title                        => */ this.getTitle                       (),
+                    /* type                         => */ this.getType                        (),
+                    /* rows                         => */ this.getRows                        (),
+                    /* cols                         => */ this.getCols                        (),
                     /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
                     /* excludedCells                => */ excludedCells                         ,
                     /* excludedRows                 => */ excludedRows                          ,
                     /* excludedCols                 => */ excludedCols                          ,
                     /* colNumbering                 => */ this.getColNumbering()                ,
                     /* rowNumbering                 => */ this.getRowNumbering()                ,
-                    /* timestamp                    => */ this.getTimestamp()                   );
+                    /* timestamp                    => */ this.getTimestamp   ()                );
         }
         if (this.entryLabelIsNotNull()) result.setEntryLabel(this.getEntryLabel());
         return result;
@@ -375,15 +373,15 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     throws java.io.IOException
     {
         xmlSerializer.ignorableWhitespace(indent);
-        xmlSerializer.startTag           (null, tagName);   // throws java.io.IOException
+        xmlSerializer.startTag           (null, tagName);           // throws java.io.IOException
         xmlSerializer.text               (text);                       // throws java.io.IOException
-        xmlSerializer.endTag             (null, tagName);   // throws java.io.IOException
+        xmlSerializer.endTag             (null, tagName);           // throws java.io.IOException
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean export(
-    @android.support.annotation.Nullable final org.xmlpull.v1.XmlSerializer    xmlSerializer,
-    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String indent       )
+    @android.support.annotation.Nullable final org.xmlpull.v1.XmlSerializer xmlSerializer,
+                                         final java.lang.String             indent       )
     {
         boolean success;
 
@@ -395,58 +393,57 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                 {
                     final java.lang.String title = this.getTitle();
                     if (null != title) if (title.length() > 0) org.wheatgenetics.coordinate.model
-                        .DisplayTemplateModel.writeElement(                                // throws
-                            xmlSerializer, indent,
+                        .DisplayTemplateModel.writeElement(xmlSerializer, indent,          // throws
                             org.wheatgenetics.coordinate.model.DisplayTemplateModel.TITLE_TAG_NAME,
-                            title);
+                            title                                                                 );
                 }
 
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent,
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_TAG_NAME,
-                    this.getRows());
+                    this.getRows()                                                       );
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent,
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_TAG_NAME,
-                    this.getCols());
+                    this.getCols()                                                       );
 
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent, org.wheatgenetics.coordinate.model
                         .DisplayTemplateModel.GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME,
-                    this.getGeneratedExcludedCellsAmount());
+                    this.getGeneratedExcludedCellsAmount()                            );
 
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent,
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_TAG_NAME,
-                    this.getColNumbering());
+                    this.getColNumbering()                                                        );
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent,
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_TAG_NAME,
-                    this.getRowNumbering());
+                    this.getRowNumbering()                                                        );
 
                 if (this.entryLabelIsNotNull())
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
                             .DisplayTemplateModel.ENTRY_LABEL_TAG_NAME,
-                        this.getEntryLabel());
+                        this.getEntryLabel()                          );
 
                 if (null != this.excludedCellsInstance)
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
                             .DisplayTemplateModel.EXCLUDED_CELLS_TAG_NAME,
-                        this.excludedCellsInstance.json());
+                        this.excludedCellsInstance.json()                );
 
                 if (null != this.excludedRowsInstance)
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
                             .DisplayTemplateModel.EXCLUDED_ROWS_TAG_NAME,
-                        this.excludedRowsInstance.json());
+                        this.excludedRowsInstance.json()                );
 
                 if (null != this.excludedColsInstance)
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(  // throws
                         xmlSerializer, indent, org.wheatgenetics.coordinate.model
                             .DisplayTemplateModel.EXCLUDED_COLS_TAG_NAME,
-                        this.excludedColsInstance.json());
+                        this.excludedColsInstance.json()                );
 
                 success = true;
             }
@@ -528,7 +525,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
-            final int rows = this.getRows();
+            @android.support.annotation.IntRange(from = 1) final int rows = this.getRows();
             result = new boolean[rows];
             for (int i = 0; i < rows; i++) result[i] = this.isExcludedRow(i + 1);
         }
@@ -540,7 +537,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
-            final int cols = this.getCols();
+            @android.support.annotation.IntRange(from = 1) final int cols = this.getCols();
             result = new boolean[cols];
             for (int i = 0; i < cols; i++) result[i] = this.isExcludedCol(i + 1);
         }
@@ -581,8 +578,10 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     public void setExcludedCells(@android.support.annotation.NonNull final android.os.Bundle bundle)
     {
-        this.setExcludedCells(bundle.getString(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY));
+        final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY =
+            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY;
+        this.setExcludedCells(bundle.containsKey(EXCLUDED_CELLS_BUNDLE_KEY) ?
+            bundle.getString(EXCLUDED_CELLS_BUNDLE_KEY) : null);
     }
     // endregion
 }

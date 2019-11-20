@@ -77,8 +77,8 @@ public abstract class BaseOptionalField extends java.lang.Object
     }
 
     /** Overridden just to elevate from protected to public. */
-    @java.lang.Override public java.lang.Object clone() throws java.lang.CloneNotSupportedException
-    { return super.clone(); }
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
+    throws java.lang.CloneNotSupportedException { return super.clone(); }
     // endregion
 
     // region Package Methods

@@ -135,6 +135,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */ rowNumbering,
                     /* entryLabel                   => */null,
                     /* timestamp                    => */ timestamp);
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
         org.junit.Assert.assertEquals(
@@ -242,7 +243,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
     // endregion
 
     // region Package Method Tests
-    @org.junit.Test() public void isExcludedRowSucceeds()
+    @org.junit.Test() public void isExcludedRowWorks()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
             new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
@@ -262,7 +263,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(1));
     }
 
-    @org.junit.Test() public void isExcludedColSucceeds()
+    @org.junit.Test() public void isExcludedColWorks()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
             new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
@@ -284,7 +285,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
     // endregion
 
     // region Public Method Tests
-    @org.junit.Test() public void getExcludedCellsAsJsonSucceeds()
+    @org.junit.Test() public void getExcludedCellsAsJsonWorks()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
             new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
@@ -332,7 +333,7 @@ public class DisplayTemplateModelTest extends java.lang.Object
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(row));
     }
 
-    @org.junit.Test() public void getExcludedRowsAsJsonSucceeds()
+    @org.junit.Test() public void getExcludedRowsAsJsonWorks()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
             new org.wheatgenetics.coordinate.model.DisplayTemplateModel(

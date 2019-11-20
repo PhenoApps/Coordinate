@@ -16,13 +16,13 @@ public enum TemplateType
     static org.wheatgenetics.coordinate.model.TemplateType get(
     @android.support.annotation.IntRange(from = 0, to = 2) final int code)
     {
-        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.code == code)
+        if (org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode() == code)
             return org.wheatgenetics.coordinate.model.TemplateType.SEED;
         else
-            if (org.wheatgenetics.coordinate.model.TemplateType.DNA.code == code)
+            if (org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode() == code)
                 return org.wheatgenetics.coordinate.model.TemplateType.DNA;
             else
-                if (org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.code == code)
+                if (org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED.getCode() == code)
                     return org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
                 else
                     throw new java.lang.IllegalArgumentException();
@@ -34,8 +34,9 @@ public enum TemplateType
 
     public boolean isDefaultTemplate()
     {
-        return this.code == org.wheatgenetics.coordinate.model.TemplateType.SEED.code
-            || this.code == org.wheatgenetics.coordinate.model.TemplateType.DNA.code ;
+        @android.support.annotation.IntRange(from = 0, to = 2) final int code = this.getCode();
+        return code == org.wheatgenetics.coordinate.model.TemplateType.SEED.getCode()
+            || code == org.wheatgenetics.coordinate.model.TemplateType.DNA.getCode ();
     }
     // endregion
 }

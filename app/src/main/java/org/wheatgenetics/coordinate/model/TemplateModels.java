@@ -35,7 +35,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     // endregion
 
     // region java.lang.Iterable<> Overridden Method
-    @android.support.annotation.NonNull @java.lang.Override
+    @java.lang.Override @android.support.annotation.NonNull
     public java.util.Iterator<org.wheatgenetics.coordinate.model.TemplateModel> iterator()
     {
         class Iterator extends java.lang.Object

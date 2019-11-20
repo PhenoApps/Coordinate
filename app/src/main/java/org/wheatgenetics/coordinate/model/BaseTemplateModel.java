@@ -1,7 +1,7 @@
 package org.wheatgenetics.coordinate.model;
 
 /**
- * BaseTemplateModel, DisplayTemplateModel and TemplateModel used to be one class that used
+ * BaseTemplateModel, DisplayTemplateModel, and TemplateModel used to be one class that used
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.  The one class was split into
  * three partly to do as much local unit testing as possible (BaseTemplateModelTest) and as little
  * instrumented testing as possible (DisplayTemplateModelTest and TemplateModelTest).
@@ -56,7 +56,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
-    @android.support.annotation.Nullable @java.lang.SuppressWarnings({"DefaultLocale"})
+    @java.lang.SuppressWarnings({"DefaultLocale"}) @android.support.annotation.Nullable
     private static java.lang.String[] items(
     @android.support.annotation.IntRange(from = 1) final int length, final java.lang.String label)
     {
@@ -118,8 +118,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Overridden Methods
-    @java.lang.SuppressWarnings({"NullableProblems"}) @java.lang.Override
-    public java.lang.String toString()
+    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "BaseTemplateModel") + "]"; }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -278,18 +277,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     public boolean isDefaultTemplate() { return this.getType().isDefaultTemplate(); }
 
 
-    @android.support.annotation.NonNull
+    @android.support.annotation.Nullable
     public java.lang.String[] rowItems(final java.lang.String label)
-    {
-        // noinspection ConstantConditions
-        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getRows(), label);
-    }
+    { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getRows(), label); }
 
-    @android.support.annotation.NonNull
+    @android.support.annotation.Nullable
     public java.lang.String[] colItems(final java.lang.String label)
-    {
-        // noinspection ConstantConditions
-        return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getCols(), label);
-    }
+    { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getCols(), label); }
     // endregion
 }

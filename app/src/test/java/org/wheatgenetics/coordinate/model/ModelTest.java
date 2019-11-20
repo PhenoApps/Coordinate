@@ -26,9 +26,8 @@ public class ModelTest extends java.lang.Object
     // region Constructor Tests
     @org.junit.Test() public void firstConstructorSucceeds()
     {
-        final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel();
-        org.junit.Assert.assertEquals(0, concreteModel.getId());
+        org.junit.Assert.assertEquals(0,
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel().getId());
     }
 
     @org.junit.Test() public void secondConstructorSucceeds()
@@ -65,7 +64,7 @@ public class ModelTest extends java.lang.Object
     // endregion
 
     // region Public Method Tests
-    @org.junit.Test() public void illegalSucceeds()
+    @org.junit.Test() public void illegalWorks()
     {
         org.junit.Assert.assertFalse(org.wheatgenetics.coordinate.model.Model.illegal(+5));
         org.junit.Assert.assertTrue (org.wheatgenetics.coordinate.model.Model.illegal( 0));
@@ -110,10 +109,6 @@ public class ModelTest extends java.lang.Object
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void setIdFails()
-    {
-        final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel();
-        concreteModel.setId(-9);
-    }
+    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel().setId(-9); }
     // endregion
 }

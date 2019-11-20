@@ -305,19 +305,16 @@ public class BaseTemplateModelTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void setGeneratedExcludedCellsAmountFails()
     {
-        final org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel
-            concreteBaseTemplateModel = new
-                org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
-                    /* id    => */5,
-                    /* title => */"testTitle",
-                    /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                    /* rows  => */9,
-                    /* cols  => */20,
-                    /* generatedExcludedCellsAmount => */0,
-                    /* colNumbering                 => */false,
-                    /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
-        concreteBaseTemplateModel.setGeneratedExcludedCellsAmount(-7);
+        new org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
+            /* id    => */5,
+            /* title => */"testTitle",
+            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+            /* rows  => */9,
+            /* cols  => */20,
+            /* generatedExcludedCellsAmount => */0,
+            /* colNumbering                 => */false,
+            /* rowNumbering                 => */true,
+            /* timestamp                    => */0).setGeneratedExcludedCellsAmount(-7);
     }
 
     @org.junit.Test() public void getAndSetColNumberingSucceed()

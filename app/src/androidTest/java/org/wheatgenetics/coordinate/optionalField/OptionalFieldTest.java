@@ -150,10 +150,13 @@ public class OptionalFieldTest extends java.lang.Object
             {
                 final java.lang.String testName = "testName",
                     testHint = null, testValue = "testValue";
+
+                // noinspection ConstantConditions
                 concreteOptionalField = new org.wheatgenetics.coordinate.optionalField
                     .OptionalFieldTest.ConcreteOptionalField(testName, testHint);
                 concreteOptionalField.setValue(testValue);
 
+                // noinspection ConstantConditions
                 jsonObject =
                     org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                         testName, testValue, testHint);

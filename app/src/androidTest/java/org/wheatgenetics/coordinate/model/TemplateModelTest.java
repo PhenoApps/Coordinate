@@ -2,10 +2,10 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * _org.junit.Assert
+ * org.junit.Assert
  * org.junit.Test
  *
- * _org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModel
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class TemplateModelTest extends java.lang.Object
@@ -75,6 +75,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,                   // Notice.
                 /* timestamp                    => */ timestamp);
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
@@ -95,6 +96,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */"",                         // Notice.
             /* timestamp                    => */ timestamp);
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
@@ -115,6 +117,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */"  ",                       // Notice.
             /* timestamp                    => */ timestamp);
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertEquals(
@@ -135,6 +138,7 @@ public class TemplateModelTest extends java.lang.Object
             /* entryLabel                   => */null,
             /* optionalFields               => */null,
             /* timestamp                    => */5087);                         // Notice.
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
         org.junit.Assert.assertNotEquals(
@@ -161,6 +165,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* timestamp                    => */0);
         final org.wheatgenetics.coordinate.model.TemplateModel clonedTemplateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) templateModel.clone();
+
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(templateModel.equals(clonedTemplateModel));
     }
