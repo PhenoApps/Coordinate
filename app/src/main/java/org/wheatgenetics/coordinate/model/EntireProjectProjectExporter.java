@@ -69,14 +69,15 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
             return success;
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
         void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
         // endregion
     }
 
     // region Fields
     @android.support.annotation.NonNull private final java.lang.String exportFileName;
+
     private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask
         asyncTask = null;
     // endregion
@@ -85,7 +86,7 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
     @android.support.annotation.NonNull final android.content.Context                     context  ,
                                         final org.wheatgenetics.androidlibrary.RequestDir exportDir,
-                                        final java.lang.String exportFileName)
+                                        final java.lang.String                       exportFileName)
     {
         super(baseJoinedGridModels, context, exportDir);
         this.exportFileName = exportFileName + ".csv";

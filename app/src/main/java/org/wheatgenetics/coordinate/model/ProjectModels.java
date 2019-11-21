@@ -51,7 +51,7 @@ public class ProjectModels extends java.lang.Object
 
     @android.support.annotation.Nullable public java.lang.String[] titles()
     {
-        final int size = this.size();
+        @android.support.annotation.IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;

@@ -37,10 +37,10 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
 
         private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
         final java.io.File exportFile, final java.lang.String exportFileName,
-        @android.support.annotation.NonNull
-            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel,
-        @android.support.annotation.NonNull
-            final org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
+        @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.JoinedGridModel
+            joinedGridModel,
+        @android.support.annotation.NonNull final
+            org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
         {
             super(context, exportFile, exportFileName);
             this.joinedGridModel = joinedGridModel; this.client = client;
@@ -55,8 +55,8 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
                 this.joinedGridModel.getId())));
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
         boolean export()
         {
             boolean success;
@@ -80,8 +80,8 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
             return success;
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
         void handleExportSuccess(final java.io.File exportFile) { this.client.execute(); }
         // endregion
     }
@@ -89,7 +89,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
     // region Fields
     private final java.lang.String exportDirectoryName;
 
-    @android.support.annotation.IntRange(from = 0) private int                  i         = 0   ;
+    @android.support.annotation.IntRange(from = 0) private int                  i         =    0;
     private org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask asyncTask = null;
     // endregion
 
@@ -97,7 +97,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
     final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
     @android.support.annotation.NonNull final android.content.Context                     context  ,
                                         final org.wheatgenetics.androidlibrary.RequestDir exportDir,
-                                        final java.lang.String exportDirectoryName)
+                                        final java.lang.String                  exportDirectoryName)
     {
         super(baseJoinedGridModels, context, exportDir);
         this.exportDirectoryName = exportDirectoryName;

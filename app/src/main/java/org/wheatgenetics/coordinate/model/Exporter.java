@@ -32,8 +32,8 @@ abstract class Exporter extends java.lang.Object
     {
         // region Fields
         @android.support.annotation.NonNull private final android.content.Context context;
-        @android.support.annotation.NonNull
-            private final org.wheatgenetics.androidlibrary.ProgressDialog progressDialog;
+        @android.support.annotation.NonNull private final
+            org.wheatgenetics.androidlibrary.ProgressDialog progressDialog;
         private final java.io.File exportFile;
 
         private java.lang.String message = null;
@@ -156,12 +156,11 @@ abstract class Exporter extends java.lang.Object
             if (null != this.exportFile)
             {
                 final android.content.Intent intent =
-                    new android.content.Intent(android.content.Intent.ACTION_SEND);
-
-                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                intent.putExtra(android.content.Intent.EXTRA_STREAM,
-                    android.net.Uri.parse(this.exportFile.getAbsolutePath()));
-                intent.setType("text/plain");
+                    new android.content.Intent(android.content.Intent.ACTION_SEND)
+                        .addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
+                        .putExtra(android.content.Intent.EXTRA_STREAM,
+                            android.net.Uri.parse(this.exportFile.getAbsolutePath()))
+                        .setType("text/plain");
 
                 this.context.startActivity(android.content.Intent.createChooser(intent,
                     this.getString(org.wheatgenetics.coordinate.R.string.ExporterShareTitle)));

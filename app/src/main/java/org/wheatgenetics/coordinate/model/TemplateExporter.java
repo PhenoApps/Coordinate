@@ -40,8 +40,8 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
             return success;
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @android.support.annotation.RestrictTo(
+            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
         void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
         // endregion
     }

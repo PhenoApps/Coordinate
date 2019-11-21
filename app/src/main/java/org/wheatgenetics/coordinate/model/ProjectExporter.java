@@ -51,8 +51,8 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
-    @android.support.annotation.NonNull private final android.content.Context context;
+    private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels     baseJoinedGridModels;
+    @android.support.annotation.NonNull private final android.content.Context context             ;
                                         private final org.wheatgenetics.androidlibrary.RequestDir
                                             exportDir;
     // endregion
