@@ -70,12 +70,8 @@ extends org.wheatgenetics.coordinate.model.JoinedGridModel
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         if (!this.entryModelsIsNull())
-        {
-            final CurrentGridUniqueEntryModels currentGridUniqueEntryModels =
-                (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
-                    this.getEntryModels();
             // noinspection ConstantConditions
-            currentGridUniqueEntryModels.checkThenSet(entryModel);                         // throws
-        }
+            ((org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
+                this.getEntryModels()).checkThenSet(entryModel);                           // throws
     }
 }

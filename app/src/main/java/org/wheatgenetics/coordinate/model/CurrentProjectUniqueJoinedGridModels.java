@@ -2,7 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -75,7 +77,7 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
         org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel)
             return this.arrayList().add(
                 (org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel)
-                    joinedGridModel);
+                joinedGridModel);
         else
             return false;
     }
@@ -93,8 +95,8 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
-    @java.lang.Override public void processAll(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels.Processor processor)
+    @java.lang.Override public void processAll(final
+    org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModels.Processor processor)
     {
         if (null != processor)
             for (final org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel

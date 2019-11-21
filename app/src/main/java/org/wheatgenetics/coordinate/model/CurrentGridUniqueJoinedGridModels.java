@@ -2,7 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
@@ -92,7 +94,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentGridUniq
     }
 
     @java.lang.Override public void processAll(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels.Processor processor)
+    final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels.Processor processor)
     {
         if (null != processor)
             for (final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel

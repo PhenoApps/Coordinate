@@ -39,8 +39,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     // region Fields
-    @android.support.annotation.NonNull
-        private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.model.TemplateModel templateModel;
     private org.wheatgenetics.coordinate.model.EntryModels entryModels = null;
     // endregion
 
@@ -360,8 +360,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                                                    final java.lang.String person   ,
     @android.support.annotation.Nullable           final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         super(
             /* templateId     => */ templateModel.getId(),
@@ -408,10 +408,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
-    @android.support.annotation.IntRange(from = 1) @java.lang.Override public int getRows()
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRows()
     { return this.templateModel.getRows(); }
 
-    @android.support.annotation.IntRange(from = 1) @java.lang.Override public int getCols()
+    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getCols()
     { return this.templateModel.getCols(); }
 
     @java.lang.Override public boolean getColNumbering()
@@ -447,8 +447,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     void export(final java.io.Writer writer, final java.lang.String exportFileName,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    @android.support.annotation.Nullable final
+        org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
     final boolean includeHeader) throws java.io.IOException
     {
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
@@ -499,8 +499,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         this.makeEntryModelsFromExcludedCells(excludedCells);
     }
 
-    public void makeEntryModels(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.Cells projectExcludedCells) throws
+    public void makeEntryModels(@android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.Cells projectExcludedCells) throws
     org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
     org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
@@ -550,12 +550,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     getEntryModels() { return this.entryModels; }
 
     public boolean goToNext(
-    final org.wheatgenetics.coordinate.model.EntryModel                entryModel   ,
-    final org.wheatgenetics.coordinate.Utils.Advancement               advancement  ,
-    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
+    final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
+    final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         final org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
-            this.next(entryModel, advancement, filledHandler);
+            this.next(activeEntryModel, advancement, filledHandler);
         // noinspection SimplifiableConditionalExpression
         return null == nextIncludedEntryModel ? false :
             this.setActiveRowAndActiveCol(nextIncludedEntryModel);

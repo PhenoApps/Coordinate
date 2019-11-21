@@ -46,7 +46,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.JoinedGridModel
         {
             @android.support.annotation.NonNull private final
                 java.util.ListIterator<org.wheatgenetics.coordinate.model.JoinedGridModel>
-                    listIterator;
+                listIterator;
 
             private Iterator(@android.support.annotation.NonNull
             final java.util.ArrayList<org.wheatgenetics.coordinate.model.JoinedGridModel> arrayList)

@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.model;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
  * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Cells
@@ -41,8 +42,10 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
                     {
                         // region Fields
                         private final java.lang.String exportFileName;
+
                         @android.support.annotation.NonNull private final java.lang.StringBuilder
                             stringBuilder = new java.lang.StringBuilder();
+
                         @android.support.annotation.NonNull private final
                             org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper;
 
@@ -55,6 +58,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
                         { super(); this.exportFileName = exportFileName; this.helper = helper; }
 
                         // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
+                        @java.lang.SuppressWarnings({"unused"})
                         @java.lang.Override public void process(
                         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
                         {
@@ -86,6 +90,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
 
                 final java.io.FileOutputStream fileOutputStream =
                     new java.io.FileOutputStream(exportFile);
+
                 // noinspection TryFinallyCanBeTryWithResources
                 try     { fileOutputStream.write(string.getBytes()); }
                 finally { fileOutputStream.close()                 ; }
@@ -130,7 +135,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
     }
 
     public abstract void processAll(
-    final org.wheatgenetics.coordinate.model.JoinedGridModels.Processor processor);
+    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor processor);
 
     @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.Cells excludedCells(

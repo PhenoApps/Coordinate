@@ -97,8 +97,8 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
         }
-
         {
+            // Not a duplicate because although value is the same the new entry *replaces* the old.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
@@ -107,8 +107,8 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
         }
-
         {
+            // Not a duplicate because value is different.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
@@ -138,46 +138,45 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
 
         final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
             currentGridUniqueJoinedGridModel =
-            new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
-                /* id                            => */5,
-                /* projectId                     => */0,
-                /* person                        => */"testPerson",
-                /* activeRow                     => */0,
-                /* activeCol                     => */0,
-                /* optionalFields                => */null,
-                /* timestamp                     => */123,
+                new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
+                    /* id                            => */5,
+                    /* projectId                     => */0,
+                    /* person                        => */"testPerson",
+                    /* activeRow                     => */0,
+                    /* activeCol                     => */0,
+                    /* optionalFields                => */null,
+                    /* timestamp                     => */123,
 
-                /* templateId                    => */6,
-                /* title                         => */"testTitle",
-                /* code                          => */1,
-                /* rows                          => */5,
-                /* cols                          => */2,
-                /* generatedExcludedCellsAmount  => */0,
-                /* initialExcludedCells          => */null,
-                /* excludedRows                  => */null,
-                /* excludedCols                  => */null,
-                /* colNumbering                  => */1,
-                /* rowNumbering                  => */0,
-                /* entryLabel                    => */null,
-                /* templateOptionalFields        => */null,
-                /* templateTimestamp             => */333,
+                    /* templateId                    => */6,
+                    /* title                         => */"testTitle",
+                    /* code                          => */1,
+                    /* rows                          => */5,
+                    /* cols                          => */2,
+                    /* generatedExcludedCellsAmount  => */0,
+                    /* initialExcludedCells          => */null,
+                    /* excludedRows                  => */null,
+                    /* excludedCols                  => */null,
+                    /* colNumbering                  => */1,
+                    /* rowNumbering                  => */0,
+                    /* entryLabel                    => */null,
+                    /* templateOptionalFields        => */null,
+                    /* templateTimestamp             => */333,
 
-                /* currentGridUniqueEEntryModels => */ currentGridUniqueEntryModels);
+                    /* currentGridUniqueEEntryModels => */ currentGridUniqueEntryModels);
         {
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    gridId,1,1, currentGridUniqueEntryModels);
+                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                        gridId,1,1, currentGridUniqueEntryModels);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
         }
-
         {
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    gridId,2,2, currentGridUniqueEntryModels);
+                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                        gridId,2,2, currentGridUniqueEntryModels);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);

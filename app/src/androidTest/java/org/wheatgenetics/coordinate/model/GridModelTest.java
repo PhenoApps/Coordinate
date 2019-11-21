@@ -23,10 +23,8 @@ public class GridModelTest extends java.lang.Object
 
     @org.junit.Test() public void badProjectIdFirstConstructorWorks()
     {
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(
-                8,-10,"person",null);
-        org.junit.Assert.assertEquals(0, gridModel.getProjectId());
+        org.junit.Assert.assertEquals(0, new org.wheatgenetics.coordinate.model.GridModel(
+            8,-10,"person",null).getProjectId());
     }
 
     @org.junit.Test() public void firstConstructorAndGettersSucceed()
@@ -60,10 +58,9 @@ public class GridModelTest extends java.lang.Object
 
     @org.junit.Test() public void badProjectIdSecondConstructorWorks()
     {
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(1,1,-10,
-                "abc",0,0,null,888);
-        org.junit.Assert.assertEquals(0, gridModel.getProjectId());
+        org.junit.Assert.assertEquals(0, new org.wheatgenetics.coordinate.model.GridModel(
+            1,1,-10,"abc",0,0,
+            null,888).getProjectId());
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)

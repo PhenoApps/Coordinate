@@ -115,9 +115,8 @@ public class JoinedGridModelsTest extends java.lang.Object
         {
             @android.support.annotation.IntRange(from = 1) private final long gridId;
 
-            private Processor(
-            @java.lang.SuppressWarnings         ({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1              ) final long gridId)
+            private Processor(@java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final long gridId)
             { super(); this.gridId = gridId; }
 
             @java.lang.Override public void process(
