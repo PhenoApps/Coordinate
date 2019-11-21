@@ -25,9 +25,12 @@ public class UniqueEntryModelsTest extends java.lang.Object
     extends org.wheatgenetics.coordinate.model.UniqueEntryModels
     {
         MeanUniqueEntryModels(
-        @android.support.annotation.IntRange(from = 1) final long gridId,
-        @android.support.annotation.IntRange(from = 1) final int  rows  ,
-        @android.support.annotation.IntRange(from = 1) final int  cols  )
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final long gridId,
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final int rows,
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final int cols)
         { super(gridId, rows, cols); }
 
         @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
@@ -45,9 +48,12 @@ public class UniqueEntryModelsTest extends java.lang.Object
     extends org.wheatgenetics.coordinate.model.UniqueEntryModels
     {
         NiceUniqueEntryModels(
-        @android.support.annotation.IntRange(from = 1) final long gridId,
-        @android.support.annotation.IntRange(from = 1) final int  rows  ,
-        @android.support.annotation.IntRange(from = 1) final int  cols  )
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final long gridId,
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final int rows,
+        @java.lang.SuppressWarnings({"SameParameterValue"})
+            @android.support.annotation.IntRange(from = 1) final int cols)
         { super(gridId, rows, cols); }
 
         @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(

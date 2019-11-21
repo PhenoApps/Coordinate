@@ -52,10 +52,9 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
             checkedIncludedEntryModel;
         {
             final java.lang.String firstValue = "firstValue";
-            checkedIncludedEntryModel = new
-                org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    1,1,1,1, firstValue,0,
-                    this.niceChecker());
+            checkedIncludedEntryModel =
+                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    1,1,1,1, firstValue,0, this.niceChecker());
             org.junit.Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
         }
         checkedIncludedEntryModel.setValue("secondValue");          // throws java.lang.Unsupported-

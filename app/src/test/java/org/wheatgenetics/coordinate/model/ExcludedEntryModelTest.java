@@ -43,7 +43,7 @@ public class ExcludedEntryModelTest extends java.lang.Object
                 1,1,1).getUserDefinedExportValue());
     }
 
-    @org.junit.Test() public void getValueSucceeds()
+    @org.junit.Test() public void getValueWorks()
     {
         org.junit.Assert.assertNull(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
             1,1,1).getValue());

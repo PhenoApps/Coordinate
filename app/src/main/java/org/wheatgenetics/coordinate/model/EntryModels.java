@@ -41,8 +41,8 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 0) final int lastCol  ,
     @android.support.annotation.IntRange(from = 0) final int activeRow,
     @android.support.annotation.IntRange(from = 0) final int activeCol,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    @android.support.annotation.Nullable           final
+        org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
                                                        final boolean filledRowOrColNeedsChecking;
@@ -97,8 +97,8 @@ public class EntryModels extends java.lang.Object
     @android.support.annotation.IntRange(from = 0) final int lastCol  ,
     @android.support.annotation.IntRange(from = 0) final int activeRow,
     @android.support.annotation.IntRange(from = 0) final int activeCol,
-    @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
+    @android.support.annotation.Nullable           final
+        org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
         @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
                                                        final boolean filledRowOrColNeedsChecking;

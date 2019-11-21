@@ -27,7 +27,7 @@ public class EntryModelsTest extends java.lang.Object
 
     // region Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
-    public void badIdConstructorFails()
+    public void badGridIdConstructorFails()
     { new org.wheatgenetics.coordinate.model.EntryModels(0,5,5); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)

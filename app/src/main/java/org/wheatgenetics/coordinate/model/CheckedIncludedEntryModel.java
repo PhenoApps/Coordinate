@@ -51,8 +51,8 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     { super(id, gridId, row, col, value, timestamp); this.checker = checker; }
 
-    public CheckedIncludedEntryModel(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
+    public CheckedIncludedEntryModel(@android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
     @android.support.annotation.NonNull final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     { super(excludedEntryModel); this.checker = checker; }

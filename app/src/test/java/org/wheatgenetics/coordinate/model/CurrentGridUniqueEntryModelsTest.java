@@ -22,6 +22,7 @@ public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
                 new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
                     1,1,2);
         {
+            // Set first entry.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
@@ -30,6 +31,7 @@ public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
         {
+            // Set same value but is not a duplicate since entry *replaces* first entry.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
@@ -38,6 +40,7 @@ public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
         {
+            // Set different value so is not a duplicate.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
@@ -46,6 +49,7 @@ public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
         {
+            // Set same value in a different location: duplicate!
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                 new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(

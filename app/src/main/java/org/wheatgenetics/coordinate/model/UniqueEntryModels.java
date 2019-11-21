@@ -26,8 +26,8 @@ implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     }
 
     @android.support.annotation.Nullable private org.wheatgenetics.coordinate.model.EntryModel
-    check(@android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    check(@android.support.annotation.Nullable final
+        org.wheatgenetics.coordinate.model.EntryModel entryModel)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         if (null != entryModel)

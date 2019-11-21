@@ -30,8 +30,8 @@ public class EntryModelTest extends java.lang.Object
         ConcreteEntryModel(
         @android.support.annotation.IntRange(from = 1) final long id    ,
         @android.support.annotation.IntRange(from = 1) final long gridId,
-        @android.support.annotation.IntRange(from = 1) final int row    ,
-        @android.support.annotation.IntRange(from = 1) final int col    ,
+        @android.support.annotation.IntRange(from = 1) final int  row   ,
+        @android.support.annotation.IntRange(from = 1) final int  col   ,
         @android.support.annotation.IntRange(from = 0)
             @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
         { super(id, gridId, row, col, timestamp); }
@@ -46,7 +46,7 @@ public class EntryModelTest extends java.lang.Object
         @java.lang.Override public java.lang.String getValue          () { return "value"        ; }
         @java.lang.Override public java.lang.String getDatabaseValue  () { return "databaseValue"; }
 
-        @android.support.annotation.DrawableRes @java.lang.Override public int backgroundResource()
+        @java.lang.Override @android.support.annotation.DrawableRes public int backgroundResource()
         { return 0; }
         // endregion
     }

@@ -109,7 +109,7 @@ public class IncludedEntryModelTest extends java.lang.Object
         org.junit.Assert.assertNull(includedEntryModel.getValue());
 
         final java.lang.String value = "value";
-        includedEntryModel.setValue("  " + value + "   ");
+        includedEntryModel.setValue("  " + value + "   ");                                 // Trims.
         org.junit.Assert.assertEquals(value, includedEntryModel.getValue());
     }
 

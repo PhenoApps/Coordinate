@@ -39,8 +39,8 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @android.support.annotation.IntRange(from = 0) final long             timestamp)
     { super(id, gridId, row, col, timestamp); this.uncheckedSetValue(value); }
 
-    public IncludedEntryModel(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
+    public IncludedEntryModel(@android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
     { super(excludedEntryModel); }
     // endregion
 
@@ -48,14 +48,14 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override java.lang.String getSeedExportValue()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(),"BLANK_"); }
 
-    @android.support.annotation.NonNull @java.lang.Override java.lang.String getDNAExportValue(
+    @java.lang.Override @android.support.annotation.NonNull java.lang.String getDNAExportValue(
     final java.lang.String sample_id)
     {
-        final java.lang.String result = this.getValue();
-        if (null == result || result.length() < 1)
+        final java.lang.String value = this.getValue();
+        if (null == value || value.length() < 1)
             return super.getDNAExportValue(sample_id);
         else
-            return result;
+            return value;
     }
 
     @java.lang.Override java.lang.String getUserDefinedExportValue()

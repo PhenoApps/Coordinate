@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel
@@ -47,12 +46,12 @@ public class FullyCheckedIncludedEntryModelTest extends java.lang.Object
         return this.meanCheckerInstance;
     }
 
-    @org.junit.Test(expected = org.wheatgenetics.coordinate
-        .model.FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
+    @org.junit.Test(expected =
+    org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
     public void meanSecondConstructorThrows()
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(
-            1,1,1,1,"value",0, this.meanChecker());   // throws
+            1,1,1,1,"value",0, this.meanChecker());  // throws
     }
 }

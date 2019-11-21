@@ -54,8 +54,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    EntryModel(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    EntryModel(@android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         this(entryModel.getId(), entryModel.getGridId(), entryModel.getRow(), entryModel.getCol(),
             entryModel.getTimestamp());
