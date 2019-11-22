@@ -7,7 +7,6 @@ package org.wheatgenetics.coordinate;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.SharedPreferences
- * android.content.SharedPreferences.Editor
  * android.preference.PreferenceManager
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
@@ -90,9 +89,9 @@ public class Utils extends java.lang.Object
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int id)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    assert null != dialog; dialog.cancel();
+                    if (null != dialog) dialog.cancel();
                     if (null != yesRunnable) yesRunnable.run();
                 }
             },null);
@@ -111,17 +110,17 @@ public class Utils extends java.lang.Object
             message,"Yes", new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int id)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    assert null != dialog; dialog.cancel();
+                    if (null != dialog) dialog.cancel();
                     if (null != yesRunnable) yesRunnable.run();
                 }
             }, new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int id)
+                public void onClick(final android.content.DialogInterface dialog, final int which)
                 {
-                    assert null != dialog; dialog.cancel();
+                    if (null != dialog) dialog.cancel();
                     if (null != noRunnable) noRunnable.run();
                 }
             });
@@ -218,18 +217,15 @@ public class Utils extends java.lang.Object
                     /* defValue => */ context.getString(
                         org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDefault));
             }
-            if (null == advancement)
+            if (advancement.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
                 return org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS;
             else
                 if (advancement.equals(context.getString(org.wheatgenetics.coordinate
-                .R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
-                    return org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS;
+                .R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
+                    return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
                 else
-                    if (advancement.equals(context.getString(org.wheatgenetics.coordinate
-                    .R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
-                        return org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN;
-                    else
-                        return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
+                    return org.wheatgenetics.coordinate.Utils.Advancement.ERROR;
         }
     }
 
@@ -265,19 +261,15 @@ public class Utils extends java.lang.Object
                     /* defValue => */ context.getString(
                         org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceDefault));
             }
-            if (null == projectExport)
+            if (projectExport.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
                 return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID;
             else
                 if (projectExport.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
-                    return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID;
+                org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFileEntireProject)))
+                    return org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
                 else
-                    if (projectExport.equals(context.getString(org.wheatgenetics.coordinate
-                    .R.string.ProjectExportPreferenceOneFileEntireProject)))
-                        return org.wheatgenetics.coordinate.Utils
-                            .ProjectExport.ONE_FILE_ENTIRE_PROJECT;
-                    else
-                        return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
+                    return org.wheatgenetics.coordinate.Utils.ProjectExport.ERROR;
         }
     }
 
@@ -314,18 +306,15 @@ public class Utils extends java.lang.Object
                     /* defValue => */ context.getString(
                         org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceDefault));
             }
-            if (null == uniqueness)
+            if (uniqueness.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentGrid)))
                 return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_GRID;
             else
                 if (uniqueness.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentGrid)))
-                    return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_GRID;
+                org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentProject)))
+                    return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_PROJECT;
                 else
-                    if (uniqueness.equals(context.getString(org.wheatgenetics
-                    .coordinate.R.string.UniquenessListPreferenceCurrentProject)))
-                        return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.CURRENT_PROJECT;
-                    else
-                        return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.ALL_GRIDS;
+                    return org.wheatgenetics.coordinate.Utils.TypeOfUniqueness.ALL_GRIDS;
         }
     }
     // endregion

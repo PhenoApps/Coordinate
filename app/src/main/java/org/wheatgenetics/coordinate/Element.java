@@ -22,11 +22,11 @@ public abstract class Element extends java.lang.Object implements android.view.V
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void toggle(@android.support.annotation.Nullable
-            org.wheatgenetics.coordinate.model.ElementModel elementModel);
+        org.wheatgenetics.coordinate.model.ElementModel elementModel);
     }
 
     // region Fields
-    @android.support.annotation.NonNull private final android.widget.TextView textView;
+    @android.support.annotation.NonNull private final android.widget.TextView              textView;
     @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.Element.Handler
                                             handler;
 
@@ -83,8 +83,8 @@ public abstract class Element extends java.lang.Object implements android.view.V
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected Element(@android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.ElementModel elementModel,
+    protected Element(@android.support.annotation.Nullable final
+        org.wheatgenetics.coordinate.model.ElementModel elementModel,
     @android.support.annotation.NonNull final android.widget.TextView                      textView,
     @android.support.annotation.NonNull final org.wheatgenetics.coordinate.Element.Handler handler )
     { super(); this.elementModel = elementModel; this.textView = textView; this.handler = handler; }

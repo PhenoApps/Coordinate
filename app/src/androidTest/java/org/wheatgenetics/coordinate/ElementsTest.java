@@ -43,7 +43,6 @@ public class ElementsTest extends java.lang.Object
     // region Protected Method Tests
     @org.junit.Test() public void getActivityWorks()
     {
-        //
         // noinspection ConstantConditions
         org.junit.Assert.assertNull(
             new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getActivity());

@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
- * java.lang.Override @android.support.annotation.IntRange
+ * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  *
