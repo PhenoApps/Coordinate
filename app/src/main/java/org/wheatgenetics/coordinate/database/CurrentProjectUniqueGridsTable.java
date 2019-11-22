@@ -22,7 +22,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.CurrentProjectUniqueEntriesTable
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
- * org.wheatgenetics.coordinate.database.Table.exists
  */
 public class CurrentProjectUniqueGridsTable extends org.wheatgenetics.coordinate.database.GridsTable
 implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
@@ -33,12 +32,14 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     {
         final java.lang.String
             GRIDS_TABLE = '[' +
-                org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable.TABLE_NAME + ']',
+                org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.TABLE_NAME +
+                ']',
             ENTRIES_TABLE = '[' +
                 org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + ']';
         final java.lang.String
             GRIDS_TABLE_ID_FIELD = GRIDS_TABLE + ".[" +
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + ']',
+                org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.ID_FIELD_NAME +
+                ']',
             ENTRIES_TABLE_EDATA_FIELD = ENTRIES_TABLE + ".[" +
                 org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME + ']',
             ENTRIES_TABLE_GRID_FIELD = ENTRIES_TABLE + ".[" +
@@ -59,9 +60,11 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
                 "SELECT ALL %s, %s " +
                     "FROM %s INNER JOIN %s ON %s = %s " +
                     "WHERE %s <> ? AND %s = ? AND (%s IS NULL OR %s <= 0)");
-        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
-            /* sql           => */ sql                                                        ,
-            /* selectionArgs => */ new java.lang.String[]{java.lang.String.valueOf(id), value}));
+        return org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.exists(
+            this.rawQuery(
+                /* sql           => */ sql,
+                /* selectionArgs => */
+                    new java.lang.String[]{java.lang.String.valueOf(id), value}));
     }
 
     private boolean existsInsideProject(final long id, final java.lang.String value)
@@ -71,9 +74,11 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
                 "SELECT ALL %s, %s " +
                     "FROM %s INNER JOIN %s ON %s = %s " +
                     "WHERE %s <> ? AND %s = ? AND (%s IS NOT NULL and %s >= 1)");
-        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
-            /* sql           => */ sql                                                        ,
-            /* selectionArgs => */ new java.lang.String[]{java.lang.String.valueOf(id), value}));
+        return org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.exists(
+            this.rawQuery(
+                /* sql           => */ sql,
+                /* selectionArgs => */
+                    new java.lang.String[]{java.lang.String.valueOf(id), value}));
     }
     // endregion
 

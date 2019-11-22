@@ -16,7 +16,7 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
  */
-public class CurrentGridFullyUniqueEntriesTable
+class CurrentGridFullyUniqueEntriesTable
 extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -38,7 +38,7 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
     {
         try
         {
-            return new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(
+            return new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(  // throws
                 /* id        => */ id                                    ,
                 /* gridId    => */ gridId                                ,
                 /* row       => */ row                                   ,
@@ -66,8 +66,7 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
             }
             catch (final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
             e) { return true; }
-        else
-            return true;
+        else return true;
     }
     // endregion
 }

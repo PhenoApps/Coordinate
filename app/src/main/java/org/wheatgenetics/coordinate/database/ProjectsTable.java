@@ -27,14 +27,15 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     private android.database.Cursor query(final long id)
     {
         return this.queryAll(
-            /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)          );
+            /* selection  => */ org.wheatgenetics.coordinate.database.ProjectsTable.whereClause(),
+            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)               );
     }
 
     private android.database.Cursor exceptForQuery(final long id)
     {
         return this.queryAll(
-            /* selection => */org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME +
+            /* selection => */
+                org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME +
                 " <> ?",
             /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id));
     }
@@ -76,7 +77,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     {
         return null == cursor ? null : new org.wheatgenetics.coordinate.model.ProjectModel(
             /* id => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
+                org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME)),
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME)),
             /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
@@ -103,7 +104,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
 
     // region Public Methods
     public boolean exists(final long id)
-    { return org.wheatgenetics.coordinate.database.Table.exists(this.query(id)); }
+    { return org.wheatgenetics.coordinate.database.ProjectsTable.exists(this.query(id)); }
 
     @android.support.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ProjectModel get(final long id)
@@ -111,7 +112,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
 
     public boolean exists()
     {
-        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
+        return org.wheatgenetics.coordinate.database.ProjectsTable.exists(this.rawQuery(
             "SELECT ALL * FROM " +
                 org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME));
     }
@@ -121,7 +122,8 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
             return this.exists();
         else
-            return org.wheatgenetics.coordinate.database.Table.exists(this.exceptForQuery(id));
+            return org.wheatgenetics.coordinate.database.ProjectsTable.exists(
+                this.exceptForQuery(id));
     }
 
     @android.support.annotation.Nullable
@@ -130,7 +132,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
         return this.makeProjectModels(this.queryAll(/* orderBy => */
             org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME +
                 " ASC, " +
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " ASC"));
+            org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME + " ASC"));
     }
 
     @android.support.annotation.Nullable
@@ -146,7 +148,7 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
     public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
     {
         return this.makeProjectModels(this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME +
+            org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME +
                 " IN (SELECT DISTINCT projectId FROM grids WH" +
                 "ERE projectId IS NOT NULL AND projectId > 0)"));
     }

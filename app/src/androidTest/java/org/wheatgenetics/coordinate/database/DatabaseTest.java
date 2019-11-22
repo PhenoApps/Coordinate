@@ -110,7 +110,9 @@ public class DatabaseTest extends java.lang.Object
                 // noinspection ResultOfMethodCallIgnored
                 this.journalFile.delete();
 
-            if (parent.list().length <= 0)
+            // noinspection CStyleArrayDeclaration
+            final java.lang.String list[] = parent.list();
+            if (null != list) if (list.length <= 0)
                 // noinspection ResultOfMethodCallIgnored
                 parent.delete();
         }
@@ -141,14 +143,11 @@ public class DatabaseTest extends java.lang.Object
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
             "templates", db, org.wheatgenetics.coordinate.R.raw.create_templates_table);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "projects",
-            db, org.wheatgenetics.coordinate.R.raw.create_projects_table);
+            "projects", db, org.wheatgenetics.coordinate.R.raw.create_projects_table);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "grids",
-            db, org.wheatgenetics.coordinate.R.raw.create_grids_table);
+            "grids", db, org.wheatgenetics.coordinate.R.raw.create_grids_table);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "entries",
-            db, org.wheatgenetics.coordinate.R.raw.create_entries_table);
+            "entries", db, org.wheatgenetics.coordinate.R.raw.create_entries_table);
     }
     // endregion
 

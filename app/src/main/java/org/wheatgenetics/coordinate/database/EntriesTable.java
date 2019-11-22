@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.database;
  * android.content.ContentValues
  * android.content.Context
  * android.database.Cursor
+ * android.database.CursorWrapper
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  * android.support.annotation.RestrictTo
@@ -25,9 +26,10 @@ public class EntriesTable extends org.wheatgenetics.coordinate.database.Table
 implements org.wheatgenetics.coordinate.model.EntryModels.Processor
 {
     // region Constants
-            static final java.lang.String TABLE_NAME      = "entries";
-            static final java.lang.String GRID_FIELD_NAME = "grid"   , EDATA_FIELD_NAME = "edata";
-    private static final java.lang.String ROW_FIELD_NAME  = "row"    , COL_FIELD_NAME   = "col"  ,
+    static final java.lang.String TABLE_NAME = "entries";
+
+            static final java.lang.String GRID_FIELD_NAME = "grid", EDATA_FIELD_NAME = "edata";
+    private static final java.lang.String ROW_FIELD_NAME  = "row" , COL_FIELD_NAME   = "col"  ,
         STAMP_FIELD_NAME = "stamp";
     // endregion
 
@@ -83,36 +85,73 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
             return null;
         else
         {
-            final long
-                id = cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME)),
-                gridId = cursor.getLong(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME));
-            final int
-                row = cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME)),
-                col = cursor.getInt(cursor.getColumnIndex(
-                    org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME));
-            final java.lang.String value = cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME));
-            final long timestamp = cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
-            if (null != value
-            &&  value.equals(org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE))
+            class CursorWrapper extends android.database.CursorWrapper
+            {
+                private CursorWrapper(
+                @android.support.annotation.NonNull final android.database.Cursor cursor)
+                { super(cursor); }
+
+                // region get() Methods
+                private long id()
+                {
+                    return this.getLong(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.ID_FIELD_NAME));
+                }
+
+                private long gridId()
+                {
+                    return this.getLong(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.GRID_FIELD_NAME));
+                }
+
+                private int row()
+                {
+                    return this.getInt(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.ROW_FIELD_NAME));
+                }
+
+                private int col()
+                {
+                    return this.getInt(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.COL_FIELD_NAME));
+                }
+
+                private java.lang.String value()
+                {
+                    return this.getString(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME));
+                }
+
+                private long timestamp()
+                {
+                    return this.getLong(this.getColumnIndex(
+                        org.wheatgenetics.coordinate.database.EntriesTable.STAMP_FIELD_NAME));
+                }
+                // endregion
+
+                private boolean excluded()
+                {
+                    final java.lang.String value = this.value();
+                    return null != value && value.equals(
+                        org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE);
+                }
+            }
+            final CursorWrapper cursorWrapper = new CursorWrapper(cursor);
+            if (cursorWrapper.excluded())
                 return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                    /* id        => */ id       ,
-                    /* gridId    => */ gridId   ,
-                    /* row       => */ row      ,
-                    /* col       => */ col      ,
-                    /* timestamp => */ timestamp);
+                    /* id        => */ cursorWrapper.id       (),
+                    /* gridId    => */ cursorWrapper.gridId   (),
+                    /* row       => */ cursorWrapper.row      (),
+                    /* col       => */ cursorWrapper.col      (),
+                    /* timestamp => */ cursorWrapper.timestamp());
             else
                 return this.makeIncludedEntryModel(
-                    /* id        => */ id       ,
-                    /* gridId    => */ gridId   ,
-                    /* row       => */ row      ,
-                    /* col       => */ col      ,
-                    /* value     => */ value    ,
-                    /* timestamp => */ timestamp);
+                    /* id        => */ cursorWrapper.id       (),
+                    /* gridId    => */ cursorWrapper.gridId   (),
+                    /* row       => */ cursorWrapper.row      (),
+                    /* col       => */ cursorWrapper.col      (),
+                    /* value     => */ cursorWrapper.value    (),
+                    /* timestamp => */ cursorWrapper.timestamp());
         }
     }
 
@@ -195,10 +234,12 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     {
         if (null != entryModel)
         {
-            final boolean exists = org.wheatgenetics.coordinate.database.Table.exists(this.queryAll(
-                /* selection     => */ org.wheatgenetics.coordinate.database.Table.whereClause(),
-                /* selectionArgs => */
-                    org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
+            final boolean exists = org.wheatgenetics.coordinate.database.EntriesTable.exists(
+                this.queryAll(
+                    /* selection => */
+                        org.wheatgenetics.coordinate.database.EntriesTable.whereClause(),
+                    /* selectionArgs => */
+                        org.wheatgenetics.javalib.Utils.stringArray(entryModel.getId())));
             if (exists) this.update(entryModel); else this.insert(entryModel);
         }
     }

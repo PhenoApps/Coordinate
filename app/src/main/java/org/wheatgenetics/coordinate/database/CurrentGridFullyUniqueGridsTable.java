@@ -12,7 +12,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable
  * org.wheatgenetics.coordinate.database.EntriesTable
  */
-public class CurrentGridFullyUniqueGridsTable
+@java.lang.SuppressWarnings({"unused"}) public class CurrentGridFullyUniqueGridsTable
 extends org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable
 {
     @android.support.annotation.NonNull private final

@@ -380,8 +380,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean export(
-    @android.support.annotation.Nullable final org.xmlpull.v1.XmlSerializer xmlSerializer,
-                                         final java.lang.String             indent       )
+    @android.support.annotation.Nullable           final org.xmlpull.v1.XmlSerializer xmlSerializer,
+    @java.lang.SuppressWarnings({"SameParameterValue"}) final        java.lang.String indent       )
     {
         boolean success;
 

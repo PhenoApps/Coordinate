@@ -23,11 +23,11 @@ class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase dbInstance = null; // singleton, lazy load
 
-    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
     @android.support.annotation.VisibleForTesting(
         otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    static android.database.sqlite.SQLiteDatabase db(final android.content.Context context,
-    final java.lang.String fileName)
+    @android.support.annotation.NonNull static android.database.sqlite.SQLiteDatabase db(
+    final android.content.Context context, final java.lang.String fileName)
     {
         if (null == org.wheatgenetics.coordinate.database.Database.dbInstance)
         {

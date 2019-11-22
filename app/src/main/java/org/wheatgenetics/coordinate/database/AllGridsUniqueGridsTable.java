@@ -21,7 +21,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
- * org.wheatgenetics.coordinate.database.Table
  */
 public class AllGridsUniqueGridsTable extends org.wheatgenetics.coordinate.database.GridsTable
 implements org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
@@ -37,7 +36,8 @@ implements org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
                     org.wheatgenetics.coordinate.database.EntriesTable.TABLE_NAME + ']';
             final java.lang.String
                 GRIDS_TABLE_ID_FIELD = GRIDS_TABLE + ".[" +
-                    org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + ']',
+                    org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable.ID_FIELD_NAME +
+                    ']',
                 ENTRIES_TABLE_EDATA_FIELD = ENTRIES_TABLE + ".[" +
                     org.wheatgenetics.coordinate.database.EntriesTable.EDATA_FIELD_NAME + ']',
                 ENTRIES_TABLE_GRID_FIELD = ENTRIES_TABLE + ".[" +
@@ -49,7 +49,7 @@ implements org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
                     GRIDS_TABLE, ENTRIES_TABLE, GRIDS_TABLE_ID_FIELD, ENTRIES_TABLE_GRID_FIELD,
                     GRIDS_TABLE_ID_FIELD, ENTRIES_TABLE_EDATA_FIELD);
         }
-        return org.wheatgenetics.coordinate.database.Table.exists(this.rawQuery(
+        return org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable.exists(this.rawQuery(
             /* sql           => */ sql                                                        ,
             /* selectionArgs => */ new java.lang.String[]{java.lang.String.valueOf(id), value}));
     }
