@@ -71,7 +71,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     // region Fields
     private org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel displayModel;
 
-    private org.wheatgenetics.coordinate.model.Cells     excludedCells = null;
+    private org.wheatgenetics.coordinate.model.Cells     excludedCells = null                     ;
     private org.wheatgenetics.coordinate.model.RowOrCols excludedRows  = null, excludedCols = null;
     // endregion
 
@@ -104,31 +104,33 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 
 
         final android.os.Bundle bundle = this.getIntent().getExtras();
-        assert null != bundle;
+        if (null != bundle)
+        {
+            @android.support.annotation.IntRange(from = 1) final int
+                rows = bundle.getInt(
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY),
+                cols = bundle.getInt(
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY);
 
-        @android.support.annotation.IntRange(from = 1) final int
-            rows = bundle.getInt(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY),
-            cols = bundle.getInt(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY);
+            this.displayModel =
+                new org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel(
+                    rows, cols, bundle);
 
-        this.displayModel = new org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel(
-            rows, cols, bundle);
+            this.excludedCells = new org.wheatgenetics.coordinate.model.Cells(
+                /* json => */ bundle.getString(org.wheatgenetics.coordinate
+                    .model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY),
+                /* maxRow => */ rows,
+                /* maxCol => */ cols);
 
-        this.excludedCells = new org.wheatgenetics.coordinate.model.Cells(
-            /* json => */ bundle.getString(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY),
-            /* maxRow => */ rows,
-            /* maxCol => */ cols);
-
-        this.excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(
-            /* json => */ bundle.getString(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY),
-            /* maxValue => */ rows);
-        this.excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(
-            /* json => */ bundle.getString(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY),
-            /* maxValue => */ cols);
+            this.excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(
+                /* json => */ bundle.getString(org.wheatgenetics.coordinate
+                    .model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY),
+                /* maxValue => */ rows);
+            this.excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(
+                /* json => */ bundle.getString(org.wheatgenetics.coordinate
+                    .model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY),
+                /* maxValue => */ cols);
+        }
     }
 
     @java.lang.Override protected void onStart()
@@ -178,12 +180,14 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     @java.lang.Override
     public boolean isExcluded(final org.wheatgenetics.coordinate.model.Cell cell)
     {
-        assert null != cell;
-        if (this.isExcludedRow(cell.getRowValue()))
-            return true;
+        if (null == cell)
+            return false;
         else
-            // noinspection SimplifiableConditionalExpression
-            return this.isExcludedCol(cell.getColValue()) ? true : this.isExcludedCell(cell);
+            if (this.isExcludedRow(cell.getRowValue()))
+                return true;
+            else
+                // noinspection SimplifiableConditionalExpression
+                return this.isExcludedCol(cell.getColValue()) ? true : this.isExcludedCell(cell);
     }
     // endregion
     // endregion

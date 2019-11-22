@@ -31,20 +31,21 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
         final int amount = org.wheatgenetics.javalib.Utils.convert(
             org.wheatgenetics.androidlibrary.Utils.getText(this.editText));
 
-        assert null != this.templateModel;
-        try
-        {
-            this.templateModel.setGeneratedExcludedCellsAmount(amount);    // throws java.lang.Ille-
-            this.cancelAlertDialog();                                      //  galArgumentException
-        }
-        catch (final java.lang.IllegalArgumentException e)
-        {
-            assert null != this.exceptionTextView;
-            this.exceptionTextView.setText      (e.getMessage()          );
-            this.exceptionTextView.setVisibility(android.view.View.VISIBLE);
-
-            assert null != this.editText; this.editText.selectAll();
-        }
+        if (null != this.templateModel)
+            try
+            {
+                this.templateModel.setGeneratedExcludedCellsAmount(amount);// throws java.lang.Ille-
+                this.cancelAlertDialog();                                  //  galArgumentException
+            }
+            catch (final java.lang.IllegalArgumentException e)
+            {
+                if (null != this.exceptionTextView)
+                {
+                    this.exceptionTextView.setText(e.getMessage());
+                    this.exceptionTextView.setVisibility(android.view.View.VISIBLE);
+                }
+                if (null != this.editText) this.editText.selectAll();
+            }
     }
 
     GeneratedExcludedCellsAlertDialog(final android.app.Activity activity) { super(activity); }
@@ -58,14 +59,13 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
                 this.layoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.generated_excluded_cells,null);
-
-            assert null != view;
-            if (null == this.editText) this.editText = view.findViewById(
-                org.wheatgenetics.coordinate.R.id.generatedExcludedCellsEditText);
-
-            if (null == this.exceptionTextView) this.exceptionTextView = view.findViewById(
-                org.wheatgenetics.coordinate.R.id.generatedExcludedCellsExceptionTextView);
-
+            if (null != view)
+            {
+                if (null == this.editText) this.editText = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.generatedExcludedCellsEditText);
+                if (null == this.exceptionTextView) this.exceptionTextView = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.generatedExcludedCellsExceptionTextView);
+            }
             this.setView(view);
         }
 
@@ -78,10 +78,10 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
         {
             this.templateModel = templateModel;
 
-            assert null != this.editText; this.editText.selectAll();
+            if (null != this.editText) this.editText.selectAll();
 
-            assert null != this.exceptionTextView;
-            this.exceptionTextView.setVisibility(android.view.View.INVISIBLE);
+            if (null != this.exceptionTextView)
+                this.exceptionTextView.setVisibility(android.view.View.INVISIBLE);
 
             this.show();
 

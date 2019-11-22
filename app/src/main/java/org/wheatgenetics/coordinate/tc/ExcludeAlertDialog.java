@@ -29,7 +29,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
-        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;                   // lazy load
+        excludeRowsAlertDialog = null, excludeColsAlertDialog = null;                  // lazy loads
     private android.content.Intent intentInstance = null;                               // lazy load
     private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
         generatedExcludedCellsAlertDialog = null;                                       // lazy load
@@ -40,24 +40,28 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private void excludeRows(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
     @android.support.annotation.NonNull final boolean checkedItems[])
     {
-        int i = 1;
-        assert null != this.templateModel; this.templateModel.clearExcludedRows();
-        for (final boolean checkedItem: checkedItems)
+        if (null != this.templateModel)
         {
-            if (checkedItem) this.templateModel.addExcludedRow(i);
-            i++;
+            int i = 1; this.templateModel.clearExcludedRows();
+            for (final boolean checkedItem: checkedItems)
+            {
+                if (checkedItem) this.templateModel.addExcludedRow(i);
+                i++;
+            }
         }
     }
 
     private void excludeCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
     @android.support.annotation.NonNull final boolean checkedItems[])
     {
-        int i = 1;
-        assert null != this.templateModel; this.templateModel.clearExcludedCols();
-        for (final boolean checkedItem: checkedItems)
+        if (null != this.templateModel)
         {
-            if (checkedItem) this.templateModel.addExcludedCol(i);
-            i++;
+            int i = 1; this.templateModel.clearExcludedCols();
+            for (final boolean checkedItem: checkedItems)
+            {
+                if (checkedItem) this.templateModel.addExcludedCol(i);
+                i++;
+            }
         }
     }
     // endregion
@@ -67,8 +71,8 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         if (null == this.intentInstance) this.intentInstance = new android.content.Intent(
             this.activity(), org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.class);
 
-        assert null != this.templateModel;
-        this.intentInstance.putExtras(this.templateModel.getState());
+        if (null != this.templateModel)
+            this.intentInstance.putExtras(this.templateModel.getState());
 
         return this.intentInstance;
     }
@@ -92,7 +96,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                                     checkedItems);
                             }
                         });
-                assert null != this.templateModel; this.excludeRowsAlertDialog.show(
+                if (null != this.templateModel) this.excludeRowsAlertDialog.show(
                     this.templateModel.rowItems(this.getString(org.wheatgenetics.coordinate
                         .R.string.ExcludedRowsOrColsAlertDialogRowLabel)),
                     this.templateModel.rowCheckedItems()                 );
@@ -113,7 +117,7 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
                                     checkedItems);
                             }
                         });
-                assert null != this.templateModel; this.excludeColsAlertDialog.show(
+                if (null != this.templateModel) this.excludeColsAlertDialog.show(
                     this.templateModel.colItems(this.getString(org.wheatgenetics.coordinate
                         .R.string.ExcludedRowsOrColsAlertDialogColumnLabel)),
                     this.templateModel.colCheckedItems()                    );

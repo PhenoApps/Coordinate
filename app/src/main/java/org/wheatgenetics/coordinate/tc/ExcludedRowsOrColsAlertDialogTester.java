@@ -21,7 +21,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
         org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
-        excludedRowsAlertDialog = null, excludedColsAlertDialog = null;                 // lazy load
+        excludedRowsAlertDialog = null, excludedColsAlertDialog = null;                // lazy loads
     private java.lang.String rowLabel = null, colLabel = null;
     // endregion
 

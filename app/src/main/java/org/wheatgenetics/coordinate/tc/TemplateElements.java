@@ -22,8 +22,8 @@ class TemplateElements extends org.wheatgenetics.coordinate.Elements
     @android.support.annotation.NonNull            final android.app.Activity activity,
     @android.support.annotation.IntRange(from = 1) final int                  rows    ,
     @android.support.annotation.IntRange(from = 1) final int                  cols    ,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler)
+    @android.support.annotation.NonNull            final
+        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler)
     { super(activity, handler); this.allocate(rows, cols); }
 
     @java.lang.Override @android.support.annotation.NonNull

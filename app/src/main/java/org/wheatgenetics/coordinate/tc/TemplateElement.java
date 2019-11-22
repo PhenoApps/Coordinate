@@ -17,11 +17,10 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
     interface Handler extends org.wheatgenetics.coordinate.Element.Handler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
-    TemplateElement(
-                                        final org.wheatgenetics.coordinate.model.Cell cell    ,
+    TemplateElement(                    final org.wheatgenetics.coordinate.model.Cell cell    ,
     @android.support.annotation.NonNull final android.widget.TextView                 textView,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler )
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler)
     { super(cell, textView, handler); this.setBackgroundResource(); this.setOnClickListener(); }
 
     // region Overridden Methods

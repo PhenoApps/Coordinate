@@ -35,9 +35,9 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     }
 
     // region Fields
-    @android.support.annotation.Nullable
-        protected org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
-    @android.support.annotation.Nullable private   android.widget.TableLayout tableLayout;
+    @android.support.annotation.Nullable protected
+        org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
+    @android.support.annotation.Nullable private   android.widget.TableLayout         tableLayout;
     @android.support.annotation.Nullable protected org.wheatgenetics.coordinate.Elements elements;
     // endregion
 

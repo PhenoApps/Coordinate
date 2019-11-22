@@ -44,7 +44,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
     throws org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified
     {
         final java.lang.String text = org.wheatgenetics.androidlibrary.Utils.getText(editText);
-        if (0 == text.length())
+        if (text.length() < 1)
             throw new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();
         else
         {
@@ -61,7 +61,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
     {
         final java.lang.String title =
             org.wheatgenetics.androidlibrary.Utils.getText(this.titleEditText);
-        if (0 == title.length())
+        if (title.length() < 1)
             this.showToast(
                 org.wheatgenetics.coordinate.R.string.AssignTitleRowsColsAlertDialogTitleToast);
         else
@@ -76,7 +76,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
                         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
                             this.colsEditText);      // throws org.wheatgenetics.coordinate.tc
                                                      //  .AssignTitleRowsColsAlertDialog.Unspecified
-                    assert null != this.templateModel; this.templateModel.assign(
+                    if (null != this.templateModel) this.templateModel.assign(
                         /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();
                     this.handler.handleAssignDone();
@@ -110,14 +110,15 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
             final android.view.View view =
                 this.inflate(org.wheatgenetics.coordinate.R.layout.assign_title_rows_cols);
 
-            assert null != view;
-            if (null == this.titleEditText) this.titleEditText =
-                view.findViewById(org.wheatgenetics.coordinate.R.id.titleEditText);
-            if (null == this.rowsEditText) this.rowsEditText =
-                view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEditText);
-            if (null == this.colsEditText) this.colsEditText =
-                view.findViewById(org.wheatgenetics.coordinate.R.id.colsEditText);
-
+            if (null != view)
+            {
+                if (null == this.titleEditText) this.titleEditText =
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.titleEditText);
+                if (null == this.rowsEditText) this.rowsEditText =
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEditText);
+                if (null == this.colsEditText) this.colsEditText =
+                    view.findViewById(org.wheatgenetics.coordinate.R.id.colsEditText);
+            }
             this.setView(view);
         }
 
@@ -131,11 +132,11 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
         if (null != templateModel)
         {
             this.templateModel = templateModel;
-            assert null != this.titleEditText; this.titleEditText.setText("");
-            assert null != this.rowsEditText ; this.rowsEditText.setText(
+            if (null != this.titleEditText) this.titleEditText.setText("");
+            if (null != this.rowsEditText ) this.rowsEditText.setText(
                 org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
                     this.templateModel.getRows()));
-            assert null != this.colsEditText; this.colsEditText.setText(
+            if (null != this.colsEditText) this.colsEditText.setText(
                 org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
                     this.templateModel.getCols()));
             this.show();

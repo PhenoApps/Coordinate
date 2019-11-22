@@ -23,7 +23,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void handleTemplateCreated(@android.support.annotation.NonNull
-            org.wheatgenetics.coordinate.model.TemplateModel templateModel);
+        org.wheatgenetics.coordinate.model.TemplateModel templateModel);
     }
 
     // region Fields

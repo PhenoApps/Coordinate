@@ -24,11 +24,14 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 
     private void setNumbering()
     {
-        assert null != this.rowSpinner; assert null != this.templateModel;
-        this.templateModel.setRowNumbering(this.rowSpinner.getSelectedItemPosition() == 0);
+        if (null != this.templateModel)
+        {
+            if (null != this.rowSpinner)
+                this.templateModel.setRowNumbering(this.rowSpinner.getSelectedItemPosition() == 0);
 
-        assert null != this.colSpinner;
-        this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
+            if (null != this.colSpinner)
+                this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
+        }
     }
 
     SetNumberingAlertDialog(final android.app.Activity activity) { super(activity); }
@@ -43,12 +46,13 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
                 this.layoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.set_numbering,null);
 
-            assert null != view;
-            if (null == this.rowSpinner) this.rowSpinner = view.findViewById(
-                org.wheatgenetics.coordinate.R.id.rowSpinner);
-            if (null == this.colSpinner) this.colSpinner = view.findViewById(
-                org.wheatgenetics.coordinate.R.id.colSpinner);
-
+            if (null != view)
+            {
+                if (null == this.rowSpinner) this.rowSpinner = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.rowSpinner);
+                if (null == this.colSpinner) this.colSpinner = view.findViewById(
+                    org.wheatgenetics.coordinate.R.id.colSpinner);
+            }
             this.setView(view);
         }
 
@@ -66,11 +70,11 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         {
             this.templateModel = templateModel;
 
-            assert null != this.rowSpinner;
-            this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
+            if (null != this.rowSpinner)
+                this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
 
-            assert null != this.colSpinner;
-            this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+            if (null != this.colSpinner)
+                this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
 
             this.show();
         }

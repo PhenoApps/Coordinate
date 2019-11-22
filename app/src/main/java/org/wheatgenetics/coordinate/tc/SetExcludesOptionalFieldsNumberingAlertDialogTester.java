@@ -38,8 +38,8 @@ implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAle
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler Overridden Method
     @java.lang.Override public void handleSetDone()
     {
-        assert null != this.setExcludesOptionalFieldsNumberingAlertDialog;
-        this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
+        if (null != this.setExcludesOptionalFieldsNumberingAlertDialog)
+            this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
 
