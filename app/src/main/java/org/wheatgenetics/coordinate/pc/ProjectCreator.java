@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.pc;
 /**
  * Uses:
  * android.app.Activity
+ * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  *
@@ -25,10 +26,10 @@ public class ProjectCreator extends java.lang.Object
     // region Fields
                                          private final android.app.Activity activity;
     @android.support.annotation.Nullable private final
-        org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler ;
+        org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
-        createProjectAlertDialog = null, createAndReturnProjectAlertDialog = null;      // lazy load
+        createProjectAlertDialog = null, createAndReturnProjectAlertDialog = null;     // lazy loads
     private org.wheatgenetics.coordinate.database.ProjectsTable
         projectsTableInstance = null;                                                   // lazy load
     // endregion
@@ -56,7 +57,7 @@ public class ProjectCreator extends java.lang.Object
         final long projectId = this.sharedInsert(projectTitle);
         if (projectId > 0)
         {
-            assert null != this.handler; this.handler.handleCreateProjectDone(projectId);
+            if (null != this.handler) this.handler.handleCreateProjectDone(projectId);
             return true;
         }
         else return false;
@@ -68,7 +69,7 @@ public class ProjectCreator extends java.lang.Object
     { super(); this.activity = activity; this.handler = null; }
 
     public ProjectCreator(final android.app.Activity activity, @android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
+    final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
     // endregion
 

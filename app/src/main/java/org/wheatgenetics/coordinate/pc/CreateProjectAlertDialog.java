@@ -28,7 +28,7 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     {
         final java.lang.String projectTitle =
             org.wheatgenetics.androidlibrary.Utils.getText(this.projectTitleEditText);
-        if (0 == projectTitle.length())
+        if (projectTitle.length() < 1)
             this.showToast(
                 org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogEmptyToast);
         else
@@ -40,8 +40,8 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     }
 
     CreateProjectAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     // region Overridden Methods
@@ -53,12 +53,8 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
             final android.view.View view =
                 this.inflate(org.wheatgenetics.coordinate.R.layout.create_project);
 
-            if (null == this.projectTitleEditText)
-            {
-                assert null != view;
-                this.projectTitleEditText = view.findViewById(
-                    org.wheatgenetics.coordinate.R.id.projectTitleEditText);
-            }
+            if (null == this.projectTitleEditText && null != view) this.projectTitleEditText =
+                view.findViewById(org.wheatgenetics.coordinate.R.id.projectTitleEditText);
 
             this.setView(view);
         }

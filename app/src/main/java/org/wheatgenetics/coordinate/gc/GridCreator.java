@@ -51,10 +51,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void handleGridCreated(
-            @android.support.annotation.IntRange(from = 1) long gridId);
+        @android.support.annotation.IntRange(from = 1) long gridId);
 
         public abstract void loadProjectModel(
-            @android.support.annotation.IntRange(from = 0) long projectId);
+        @android.support.annotation.IntRange(from = 1) long projectId);
         public abstract void clearProjectModel();
     }
 
@@ -86,8 +86,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.model.TemplateModel     templateModel                ;
     private java.lang.String                                     person                       ;
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields  optionalFields;
-    private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance = null;  // ll
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields;
+    private org.wheatgenetics.coordinate.database.EntriesTable  entriesTableInstance = null;   // ll
     private org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog
         setOptionalFieldValuesAlertDialog = null;                                       // lazy load
     // endregion
@@ -108,6 +108,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         this.getTemplateChoice();
     }
 
+    // region *Table() Lazy Load Private Methods
     @android.support.annotation.NonNull
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
@@ -131,31 +132,33 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
         return this.entriesTableInstance;
     }
+    // endregion
 
     private void clearPerson() { this.setPerson(null); }
 
+    /**
+     * This method's mission is to 1) set this.optionalFields and 2) pass control to
+     * this.handleSetValuesDone().
+     */
     private void setValues()
     {
         this.clearPerson();
 
-        assert null != this.templateModel;
-        if (this.templateModel.optionalFieldsIsEmpty())
-        {
-            this.optionalFields = null;
-            this.handleSetValuesDone();
-        }
-        else
-        {
-            this.optionalFields = this.templateModel.optionalFieldsClone();
-            if (null == this.setOptionalFieldValuesAlertDialog)
-                this.setOptionalFieldValuesAlertDialog =
-                    new org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog(
-                        this.activity,this);
-            this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
-                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
-                    this.optionalFields),
-                /* firstCannotBeEmpty => */ this.templateModel.isDefaultTemplate());
-        }
+        if (null != this.templateModel)
+            if (this.templateModel.optionalFieldsIsEmpty())
+                { this.optionalFields = null; this.handleSetValuesDone(); }
+            else
+            {
+                this.optionalFields = this.templateModel.optionalFieldsClone();
+                if (null == this.setOptionalFieldValuesAlertDialog)
+                    this.setOptionalFieldValuesAlertDialog =
+                        new org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog(
+                            this.activity,this);
+                this.setOptionalFieldValuesAlertDialog.show(this.templateModel.getTitle(),
+                    new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                        this.optionalFields),
+                    /* firstCannotBeEmpty => */ this.templateModel.isDefaultTemplate());
+            }
     }
 
     private boolean setTemplateFromOtherGrids()
@@ -191,6 +194,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
 
     /**
+     * This method's mission is to 1) set this.projectId, 2) sometimes cause a side effect, 3) set
+     * this.templateModel and pass control to setValues() (if able to set this.templateModel), or
+     * 4) pass control to this.getTemplateChoiceAlertDialog (if not able to set this.templateModel).
+     *
      * which               item
      * ===== =================================
      *   0   Don't put this grid in a project.
@@ -219,8 +226,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                             new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                             {
                                 @java.lang.Override public void handleCreateProjectDone(
-                                @android.support.annotation.IntRange(from = 1)
-                                    final long projectId)
+                                @android.support.annotation.IntRange(from = 1) final long projectId)
                                 {
                                     org.wheatgenetics.coordinate.gc.GridCreator
                                         .this.clearedHandleCreateProjectDone(projectId);
@@ -241,8 +247,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                             new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                             {
                                 @java.lang.Override public void handleCreateProjectDone(
-                                @android.support.annotation.IntRange(from = 1)
-                                    final long projectId)
+                                @android.support.annotation.IntRange(from = 1) final long projectId)
                                 {
                                     org.wheatgenetics.coordinate.gc.GridCreator
                                         .this.loadedHandleCreateProjectDone(projectId);
@@ -262,9 +267,12 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     private void chooseOldAfterSelect(final int which)
     {
-        assert null != this.templateModels; this.templateModel = this.templateModels.get(which);
-        this.templateModels = null;
-        this.setValues();
+        if (null != this.templateModels)
+        {
+            this.templateModel  = this.templateModels.get(which);
+            this.templateModels = null;
+            this.setValues();
+        }
     }
     // endregion
 
@@ -359,10 +367,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         {
             final long templateId = this.templatesTable().insert(this.templateModel);
             if (templateId > 0)
-            {
-                assert null != this.templateModel; this.templateModel.setId(templateId);
-                inserted = true;
-            }
+                { this.templateModel.setId(templateId); inserted = true; }
             else
             {
                 org.wheatgenetics.coordinate.Utils.alert(this.activity,
@@ -388,7 +393,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     }
                 });
         this.templateModels = this.templatesTable().load();
-        assert null != this.templateModels; this.chooseOldAlertDialog.show(
+        if (null != this.templateModels) this.chooseOldAlertDialog.show(
             org.wheatgenetics.coordinate.R.string.GridCreatorChooseOldAlertDialogTitle,
             this.templateModels.titles()                                              );
     }
@@ -404,8 +409,12 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
 
     // region Public Methods
+    /**
+     * This method's mission is to 1) set this.projectModel and 2) pass control to
+     * this.getProjectChoiceAlertDialog.
+     */
     public void create(@android.support.annotation.Nullable
-        final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         this.projectModel = projectModel;
 
