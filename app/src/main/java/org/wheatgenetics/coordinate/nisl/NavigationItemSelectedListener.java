@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.nisl;
  * android.os.Bundle
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.Nullable
  * android.support.annotation.StringRes
  * android.support.design.widget.NavigationView.OnNavigationItemSelectedListener
  * android.view.MenuItem
@@ -104,7 +105,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                                         private final java.lang.String versionName;
     @android.support.annotation.NonNull private final
         org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler;
-    private final android.view.View.OnClickListener versionOnClickListener;
+    private final android.view.View.OnClickListener               versionOnClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
@@ -183,7 +184,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     // region Grid Private Methods
     // region loadGrid() Grid Private Methods
-    private void loadGridAfterSelect(
+    private void loadGridAfterSelect(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { if (null != joinedGridModel) this.handler.loadGrid(joinedGridModel.getId()); }
 
@@ -271,7 +272,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     final java.lang.String                                 fileName     )
     { this.handler.exportTemplate(templateModel, fileName); }
 
-    private void exportTemplateAfterSelect(
+    private void exportTemplateAfterSelect(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)
@@ -296,10 +297,11 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     // region Delete Template Private Methods
     private void deleteTemplateAfterConfirm(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        final boolean success                           ;
-        final long    templateId = templateModel.getId();
+                                                       final boolean success;
+        @android.support.annotation.IntRange(from = 1) final long    templateId =
+            templateModel.getId();
 
         {
             final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
@@ -328,7 +330,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
 
     private void deleteTemplateAfterSelect(
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel) org.wheatgenetics.coordinate.Utils.confirm(
             /* context => */ this.activity,
@@ -485,7 +487,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
 
     // region Load Project Private Methods
-    private void loadProjectAfterSelect(
+    private void loadProjectAfterSelect(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     { if (null != projectModel) this.handler.loadProject(projectModel.getId()); }
 
@@ -502,8 +504,9 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     private void deleteProjectAfterConfirm(@android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
-        final boolean success                         ;
-        final long    projectId = projectModel.getId();
+                                                       final boolean success;
+        @android.support.annotation.IntRange(from = 1) final long    projectId =
+            projectModel.getId();
 
         {
             final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
@@ -531,7 +534,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
     }
 
-    private void deleteProjectAfterSelect(
+    private void deleteProjectAfterSelect(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
@@ -560,9 +563,10 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // region Export Project Private Methods
     @android.annotation.SuppressLint({"Range"})
     private void exportProjectAfterGettingDirectoryName(final java.lang.String directoryName)
-    { this.handler.exportProject(this.exportProjectId, directoryName);  this.exportProjectId = 0; }
+    { this.handler.exportProject(this.exportProjectId, directoryName); this.exportProjectId = 0; }
 
-    @android.annotation.SuppressLint({"Range"}) private void exportProjectAfterSelect(
+    @android.annotation.SuppressLint({"Range"})
+    private void exportProjectAfterSelect(@android.support.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel)
@@ -596,12 +600,11 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     public NavigationItemSelectedListener(
-    @android.support.annotation.NonNull             final android.app.Activity activity ,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int createTemplateRequestCode ,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int clickUniquenessRequestCode,
+    @android.support.annotation.NonNull             final android.app.Activity             activity,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int            createTemplateRequestCode ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int            clickUniquenessRequestCode,
     @android.support.annotation.NonNull             final org.wheatgenetics.coordinate.TemplatesDir
-        templatesDir,
-                                        final java.lang.String versionName,
+        templatesDir,                   final java.lang.String versionName,
     @android.support.annotation.NonNull final
         org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler,
     final android.view.View.OnClickListener versionOnClickListener)
@@ -750,10 +753,15 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                         final android.content.res.Resources resources =
                             this.activity.getResources();
 
-                        assert null != resources; title = resources.getString(
-                            org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
-                        msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
-                            org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
+                        if (null == resources)
+                            break;
+                        else
+                        {
+                            title = resources.getString(
+                                org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
+                            msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
+                                org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
+                        }
                     }
 
                     this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(

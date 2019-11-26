@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.nisl;
  * android.os.Bundle
  * android.preference.Preference
  * android.preference.Preference.OnPreferenceClickListener
+ * android.support.annotation.NonNull
  * android.support.annotation.Nullable
  * android.support.v7.app.ActionBar
  * android.support.v7.app.AppCompatActivity
@@ -66,8 +67,7 @@ implements android.preference.Preference.OnPreferenceClickListener
 
     @java.lang.Override protected void onStart()
     {
-        super.onStart();
-        org.wheatgenetics.androidlibrary.Utils.showLongToast(
+        super.onStart(); org.wheatgenetics.androidlibrary.Utils.showLongToast(
             this,"Press \"Back\" when done.");
     }
 
@@ -79,7 +79,8 @@ implements android.preference.Preference.OnPreferenceClickListener
         super.onSaveInstanceState(outState);
     }
 
-    @java.lang.Override public boolean onOptionsItemSelected(final android.view.MenuItem item)
+    @java.lang.Override public boolean onOptionsItemSelected(
+    @android.support.annotation.NonNull final android.view.MenuItem item)
     { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
 
     @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }

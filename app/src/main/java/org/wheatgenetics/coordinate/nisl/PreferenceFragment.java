@@ -50,8 +50,8 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     @android.support.annotation.Nullable final android.content.res.Resources resources,
     @android.support.annotation.ArrayRes final int                           keysRes  ,
     @android.support.annotation.ArrayRes final int                           valuesRes,
-    @android.support.annotation.NonNull  final
-        java.util.TreeMap<java.lang.String, java.lang.String> treeMap)
+    @android.support.annotation.NonNull  final java.util.TreeMap<java.lang.String, java.lang.String>
+        treeMap)
     {
         if (null != resources)
         {
