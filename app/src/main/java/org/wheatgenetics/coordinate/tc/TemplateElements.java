@@ -5,6 +5,8 @@ package org.wheatgenetics.coordinate.tc;
  * android.app.Activity
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.Cell
@@ -15,26 +17,40 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.tc.TemplateElement
  * org.wheatgenetics.coordinate.tc.TemplateElement.Handler
+ * org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
  */
 class TemplateElements extends org.wheatgenetics.coordinate.Elements
 {
+    // region Fields
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler;
+    @android.support.annotation.NonNull private final
+        org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler;
+    // endregion
+
     TemplateElements(
     @android.support.annotation.NonNull            final android.app.Activity activity,
     @android.support.annotation.IntRange(from = 1) final int                  rows    ,
     @android.support.annotation.IntRange(from = 1) final int                  cols    ,
     @android.support.annotation.NonNull            final
-        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler)
-    { super(activity, handler); this.allocate(rows, cols); }
+        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler,
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler)
+    {
+        super(activity);
+        this.handler = handler; this.templateHandler = templateHandler; this.allocate(rows, cols);
+    }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @android.support.annotation.NonNull
     protected org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
     {
         return new org.wheatgenetics.coordinate.tc.TemplateElement(
-            /* cell     => */ (org.wheatgenetics.coordinate.model.Cell) elementModel,
-            /* textView => */ textView                                              ,
-            /* handler  => */
-                (org.wheatgenetics.coordinate.tc.TemplateElement.Handler) this.getHandler());
+            /* cell            => */ (org.wheatgenetics.coordinate.model.Cell) elementModel,
+            /* textView        => */ textView                                              ,
+            /* handler         => */ this.handler                                          ,
+            /* templateHandler => */ this.templateHandler                                  );
     }
 }

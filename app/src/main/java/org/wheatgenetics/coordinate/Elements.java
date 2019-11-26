@@ -16,17 +16,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.ElementModel
  *
  * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public abstract class Elements
-extends java.lang.Object implements org.wheatgenetics.coordinate.Element.Handler
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public abstract class Elements extends java.lang.Object
 {
     // region Fields
     @android.support.annotation.NonNull private final android.app.Activity activity;
-    @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.Element.Handler
-        handler;
 
     @android.support.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
     private org.wheatgenetics.coordinate.Element elementArray[][];
@@ -45,24 +42,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.Element.Handler
     { return this.activity; }
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull
-    protected org.wheatgenetics.coordinate.Element.Handler getHandler() { return this.handler; }
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @android.support.annotation.Nullable protected org.wheatgenetics.coordinate.Element[][]
     getElementArray() { return this.elementArray; }
     // endregion
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected Elements(@android.support.annotation.NonNull final android.app.Activity activity,
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.Element.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
-
-    // region org.wheatgenetics.coordinate.Element.Handler Overridden Method
-    @java.lang.Override public void toggle(@android.support.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { this.handler.toggle(elementModel); }
-    // endregion
+    protected Elements(@android.support.annotation.NonNull final android.app.Activity activity)
+    { super(); this.activity = activity; }
 
     @android.annotation.SuppressLint({"InflateParams"}) @android.support.annotation.Nullable
     android.widget.LinearLayout add(

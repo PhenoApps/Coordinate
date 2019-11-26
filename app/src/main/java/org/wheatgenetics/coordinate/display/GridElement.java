@@ -15,22 +15,22 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  *
  * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
 class GridElement extends org.wheatgenetics.coordinate.Element
 implements android.view.View.OnLongClickListener
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler extends org.wheatgenetics.coordinate.Element.Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface GridHandler
     {
         public abstract void activate(@android.support.annotation.NonNull
-            org.wheatgenetics.coordinate.display.GridElement gridElement);
+        org.wheatgenetics.coordinate.display.GridElement gridElement);
     }
 
     // region Fields
     @android.support.annotation.NonNull  private final android.content.Context context;
+    @android.support.annotation.NonNull  private final
+        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler;
     @android.support.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
     // endregion
@@ -39,8 +39,7 @@ implements android.view.View.OnLongClickListener
     private void activate()
     {
         this.setBackgroundResource(org.wheatgenetics.coordinate.R.drawable.active_entry);
-        ((org.wheatgenetics.coordinate.display.GridElement.Handler) this.getHandler()).activate(
-            this);
+        this.gridHandler.activate(this);
     }
 
     private void exclude()
@@ -59,14 +58,15 @@ implements android.view.View.OnLongClickListener
                                             entryModel,
     @android.support.annotation.NonNull final android.widget.TextView textView,
     @android.support.annotation.NonNull final
-                                            org.wheatgenetics.coordinate.display.GridElement.Handler
-                                                handler,
-                                            int activeRow, int activeCol,
+        org.wheatgenetics.coordinate.display.GridElement.Handler handler,
+    @android.support.annotation.NonNull final
+        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler,
+    int activeRow, int activeCol,
     @android.support.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(entryModel, textView, handler);
-        this.context = context; this.checker = checker;
+        this.context = context; this.gridHandler = gridHandler; this.checker = checker;
 
         activeRow = java.lang.Math.max(activeRow, -1);
         activeCol = java.lang.Math.max(activeCol, -1);

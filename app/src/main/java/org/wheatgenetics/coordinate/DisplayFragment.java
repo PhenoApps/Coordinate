@@ -22,11 +22,13 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  *
+ * org.wheatgenetics.coordinate.Element.Handler
  * org.wheatgenetics.coordinate.Elements
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
 public abstract class DisplayFragment extends android.support.v4.app.Fragment
+implements org.wheatgenetics.coordinate.Element.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
     {
@@ -49,10 +51,6 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     protected abstract void allocateElements(
     @android.support.annotation.IntRange(from = 1) final int lastRow,
     @android.support.annotation.IntRange(from = 1) final int lastCol);
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { if (null != this.handler) this.handler.toggle(elementModel); }
     // endregion
 
     // region Overridden Methods
@@ -89,6 +87,12 @@ public abstract class DisplayFragment extends android.support.v4.app.Fragment
     }
 
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
+
+    // region org.wheatgenetics.coordinate.Element.Handler Overridden Method
+    public void toggle(@android.support.annotation.Nullable final
+    org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    { if (null != this.handler) this.handler.toggle(elementModel); }
+    // endregion
     // endregion
 
     public void populate()

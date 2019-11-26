@@ -58,11 +58,6 @@ public abstract class Element extends java.lang.Object implements android.view.V
 
 
     @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull
-    protected org.wheatgenetics.coordinate.Element.Handler getHandler() { return this.handler; }
-
-
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     protected boolean elementModelIsNotNull() { return null != this.elementModel; }
 
 

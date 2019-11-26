@@ -7,19 +7,20 @@ package org.wheatgenetics.coordinate.display;
  * android.support.annotation.IntRange
  * android.support.annotation.NonNull
  * android.support.annotation.Nullable
+ * android.support.annotation.RestrictTo
+ * android.support.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- * org.wheatgenetics.coordinate.model.ElementModel
  *
  * org.wheatgenetics.coordinate.DisplayFragment
  * org.wheatgenetics.coordinate.DisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.display.GridElement
- * org.wheatgenetics.coordinate.display.GridElement.Handler
+ * org.wheatgenetics.coordinate.display.GridElement.GridHandler
  * org.wheatgenetics.coordinate.display.GridElements
  */
 public class GridDisplayFragment extends org.wheatgenetics.coordinate.DisplayFragment
-implements org.wheatgenetics.coordinate.display.GridElement.Handler
+implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler extends org.wheatgenetics.coordinate.DisplayFragment.Handler
@@ -28,12 +29,13 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
         public abstract void activate(int row, int col);
 
         @android.support.annotation.Nullable public abstract
-            org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker();
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker();
     }
 
     public GridDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected boolean setHandler(final android.content.Context context)
     {
         final boolean success;
@@ -49,6 +51,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
         return success;
     }
 
+    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void allocateElements(
     @android.support.annotation.IntRange(from = 1) final int lastRow,
     @android.support.annotation.IntRange(from = 1) final int lastCol)
@@ -63,7 +66,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
                 final android.app.Activity activity = this.getActivity();
                 if (null != activity) this.elements =
                     new org.wheatgenetics.coordinate.display.GridElements(activity, lastRow,
-                        lastCol, activeRow, activeCol,this, handler.getChecker());
+                        lastCol, activeRow, activeCol,this,this,
+                        handler.getChecker());
             }
             else
                 ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(
@@ -71,11 +75,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.Handler
         }
     }
 
-    // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Methods
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { super.toggle(elementModel); }
-
+    // region org.wheatgenetics.coordinate.display.GridElement.GridHandler Overridden Method
     @java.lang.Override public void activate(@android.support.annotation.NonNull
     final org.wheatgenetics.coordinate.display.GridElement gridElement)
     {
