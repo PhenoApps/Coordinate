@@ -12,10 +12,8 @@ package org.wheatgenetics.coordinate;
  */
 public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
 {
-    TemplatesDir(                                       final android.app.Activity activity,
-    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String     name    ,
-    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String blankHiddenFileName,
-                                                        final int              requestCode        )
+    TemplatesDir(final android.app.Activity activity, final java.lang.String name,
+    final java.lang.String blankHiddenFileName, final int requestCode)
     { super(activity, name, blankHiddenFileName, requestCode); }
 
     @java.lang.Override public java.io.File createIfMissing()
@@ -28,27 +26,28 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
             if (!htpgFile.exists())
             {
                 final android.app.Activity activity = this.getActivity();
-
-                assert null != activity;
-                final java.io.InputStream inputStream = activity.getResources().openRawResource(
-                    org.wheatgenetics.coordinate.R.raw.htpg);
-                // noinspection TryFinallyCanBeTryWithResources
-                try
+                if (null != activity)
                 {
-                    final java.io.FileOutputStream outputStream =
-                        new java.io.FileOutputStream(htpgFile);              // throws java.io.File-
-                    // noinspection TryFinallyCanBeTryWithResources          //  NotFoundException
+                    final java.io.InputStream inputStream = activity.getResources().openRawResource(
+                        org.wheatgenetics.coordinate.R.raw.htpg);
+                    // noinspection TryFinallyCanBeTryWithResources
                     try
                     {
-                        // noinspection CStyleArrayDeclaration
-                        final byte buffer[]          = new byte[1024];
-                              int  numberOfBytesRead                 ;
-                        while ((numberOfBytesRead = inputStream.read(buffer) /* throws */) > 0)
-                            outputStream.write(buffer,0, numberOfBytesRead) /* throws */;
+                        final java.io.FileOutputStream outputStream =
+                            new java.io.FileOutputStream(htpgFile);          // throws java.io.File-
+                        // noinspection TryFinallyCanBeTryWithResources      //  NotFoundException
+                        try
+                        {
+                            // noinspection CStyleArrayDeclaration
+                            final byte buffer[]          = new byte[1024];
+                                  int  numberOfBytesRead                 ;
+                            while ((numberOfBytesRead = inputStream.read(buffer) /* throws */) > 0)
+                                outputStream.write(buffer,0, numberOfBytesRead) /* throws */;
+                        }
+                        finally { outputStream.close() /* throws java.io.IOException */; }
                     }
-                    finally { outputStream.close() /* throws java.io.IOException */; }
+                    finally { inputStream.close() /* throws java.io.IOException */; }
                 }
-                finally { inputStream.close() /* throws java.io.IOException */; }
             }
         }
         return blankHiddenFile;

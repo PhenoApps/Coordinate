@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate;
  * android.support.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
+ *
+ * org.wheatgenetics.coordinate.R
  */
 class UniqueAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {

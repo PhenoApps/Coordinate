@@ -44,7 +44,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     private org.wheatgenetics.coordinate.DataEntryFragment.Handler handler;
 
     private android.widget.EditText     entryEditText                              ;
-    private android.widget.TextView     templateTitleTextView, projectTitleTextView;
+    private android.widget.TextView     projectTitleTextView, templateTitleTextView;
     private android.widget.LinearLayout optionalFieldsLayout                       ;
     // endregion
 
@@ -76,23 +76,25 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     {
         super.onActivityCreated(savedInstanceState);
 
-
         final android.app.Activity activity = this.getActivity();
-        assert null != activity; this.entryEditText = activity.findViewById(
-            org.wheatgenetics.coordinate.R.id.entryEditText);
-        assert null != this.entryEditText; this.entryEditText.setOnEditorActionListener(
-            new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
-                this.entryEditText,this, org.wheatgenetics.coordinate.BuildConfig.DEBUG));
+        if (null != activity)
+        {
+            this.entryEditText = activity.findViewById(
+                org.wheatgenetics.coordinate.R.id.entryEditText);
+            if (null != this.entryEditText) this.entryEditText.setOnEditorActionListener(
+                new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
+                    this.entryEditText,this,
+                    org.wheatgenetics.coordinate.BuildConfig.DEBUG));
 
-        this.projectTitleTextView = activity.findViewById(
-            org.wheatgenetics.coordinate.R.id.projectTitleTextView);
+            this.projectTitleTextView = activity.findViewById(
+                org.wheatgenetics.coordinate.R.id.projectTitleTextView);
 
-        this.templateTitleTextView = activity.findViewById(
-            org.wheatgenetics.coordinate.R.id.templateTitleTextView);
+            this.templateTitleTextView = activity.findViewById(
+                org.wheatgenetics.coordinate.R.id.templateTitleTextView);
 
-        this.optionalFieldsLayout = activity.findViewById(
-            org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
-
+            this.optionalFieldsLayout = activity.findViewById(
+                org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
+        }
 
         this.populate();
     }
@@ -101,59 +103,68 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
 
     // region org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver Overridden Methods
     @java.lang.Override public void receiveText(final java.lang.String text)
-    { assert null != this.handler; this.handler.saveEntry(text); }
+    { if (null != this.handler) this.handler.saveEntry(text); }
 
     @java.lang.Override public void clearText()
-    { assert null != this.handler; this.handler.clearEntry(); }
+    { if (null != this.handler) this.handler.clearEntry(); }
     // endregion
     // endregion
 
     // region Package Methods
     void populate()
     {
-        assert null != this.handler; this.setEntry(this.handler.getEntryValue());
-
-        assert null != this.projectTitleTextView;
-        this.projectTitleTextView.setText(this.handler.getProjectTitle());
-
-        assert null != this.templateTitleTextView;
-        this.templateTitleTextView.setText(this.handler.getTemplateTitle());
-
-
-        assert null != this.optionalFieldsLayout; this.optionalFieldsLayout.removeAllViews();
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            nonNullOptionalFields = this.handler.getOptionalFields();
-        if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty())
+        if (null != this.handler)
         {
-            final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-                checkedOptionalFields =
-                    new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
-                        nonNullOptionalFields);
+            this.setEntry(this.handler.getEntryValue());
 
-            final android.app.Activity activity = this.getActivity();
+            if (null != this.projectTitleTextView)
+                this.projectTitleTextView.setText(this.handler.getProjectTitle());
 
-            assert null != activity;
-            final android.view.LayoutInflater layoutInflater = activity.getLayoutInflater();
+            if (null != this.templateTitleTextView)
+                this.templateTitleTextView.setText(this.handler.getTemplateTitle());
 
-            for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-            baseOptionalField: checkedOptionalFields)
+
+            if (null != this.optionalFieldsLayout)
             {
-                final android.view.View view = layoutInflater.inflate(
-                    org.wheatgenetics.coordinate.R.layout.optional_field_show,
-                    new android.widget.LinearLayout(activity),false);
+                this.optionalFieldsLayout.removeAllViews();
+                final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+                    nonNullOptionalFields = this.handler.getOptionalFields();
+                if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty())
                 {
-                    assert null != view;
-                    final android.widget.TextView nameTextView = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.nameTextView);
-                    assert null != nameTextView; nameTextView.setText(baseOptionalField.getName());
+                    final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+                        checkedOptionalFields =
+                            new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                                nonNullOptionalFields);
+
+                    final android.app.Activity        activity       = this.getActivity();
+                    final android.view.LayoutInflater layoutInflater =
+                        null == activity ? null : activity.getLayoutInflater();
+
+                    if (null != layoutInflater)
+                        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
+                        baseOptionalField: checkedOptionalFields)
+                        {
+                            final android.view.View view = layoutInflater.inflate(
+                                org.wheatgenetics.coordinate.R.layout.optional_field_show,
+                                new android.widget.LinearLayout(activity),false);
+                            if (null != view)
+                            {
+                                {
+                                    final android.widget.TextView nameTextView = view.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.nameTextView);
+                                    if (null != nameTextView)
+                                        nameTextView.setText(baseOptionalField.getName());
+                                }
+                                {
+                                    final android.widget.TextView valueTextView = view.findViewById(
+                                        org.wheatgenetics.coordinate.R.id.valueTextView);
+                                    if (null != valueTextView)
+                                        valueTextView.setText(baseOptionalField.getValue());
+                                }
+                            }
+                            this.optionalFieldsLayout.addView(view);
+                        }
                 }
-                {
-                    final android.widget.TextView valueTextView = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.valueTextView);
-                    assert null != valueTextView;
-                    valueTextView.setText(baseOptionalField.getValue());
-                }
-                this.optionalFieldsLayout.addView(view);
             }
         }
     }
