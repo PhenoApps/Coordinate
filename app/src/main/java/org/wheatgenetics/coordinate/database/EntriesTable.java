@@ -87,9 +87,12 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
         {
             class CursorWrapper extends android.database.CursorWrapper
             {
-                private CursorWrapper(
-                @android.support.annotation.NonNull final android.database.Cursor cursor)
-                { super(cursor); }
+                private boolean excluded()
+                {
+                    final java.lang.String value = this.value();
+                    return null != value && value.equals(
+                        org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE);
+                }
 
                 // region get() Methods
                 private long id()
@@ -129,29 +132,30 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                 }
                 // endregion
 
-                private boolean excluded()
+                private CursorWrapper(
+                @android.support.annotation.NonNull final android.database.Cursor cursor)
+                { super(cursor); }
+
+                private org.wheatgenetics.coordinate.model.EntryModel make()
                 {
-                    final java.lang.String value = this.value();
-                    return null != value && value.equals(
-                        org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE);
+                    if (this.excluded())
+                        return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
+                            /* id        => */ this.id       (),
+                            /* gridId    => */ this.gridId   (),
+                            /* row       => */ this.row      (),
+                            /* col       => */ this.col      (),
+                            /* timestamp => */ this.timestamp());
+                    else return org.wheatgenetics.coordinate.database
+                        .EntriesTable.this.makeIncludedEntryModel(
+                            /* id        => */ this.id       (),
+                            /* gridId    => */ this.gridId   (),
+                            /* row       => */ this.row      (),
+                            /* col       => */ this.col      (),
+                            /* value     => */ this.value    (),
+                            /* timestamp => */ this.timestamp());
                 }
             }
-            final CursorWrapper cursorWrapper = new CursorWrapper(cursor);
-            if (cursorWrapper.excluded())
-                return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                    /* id        => */ cursorWrapper.id       (),
-                    /* gridId    => */ cursorWrapper.gridId   (),
-                    /* row       => */ cursorWrapper.row      (),
-                    /* col       => */ cursorWrapper.col      (),
-                    /* timestamp => */ cursorWrapper.timestamp());
-            else
-                return this.makeIncludedEntryModel(
-                    /* id        => */ cursorWrapper.id       (),
-                    /* gridId    => */ cursorWrapper.gridId   (),
-                    /* row       => */ cursorWrapper.row      (),
-                    /* col       => */ cursorWrapper.col      (),
-                    /* value     => */ cursorWrapper.value    (),
-                    /* timestamp => */ cursorWrapper.timestamp());
+            return new CursorWrapper(cursor).make();
         }
     }
 

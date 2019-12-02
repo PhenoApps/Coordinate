@@ -222,10 +222,6 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         {
             class CursorWrapper extends android.database.CursorWrapper
             {
-                private CursorWrapper(
-                @android.support.annotation.NonNull final android.database.Cursor cursor)
-                { super(cursor); }
-
                 // region get() Methods
                 private long gridId()
                 {
@@ -353,35 +349,46 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                         org.wheatgenetics.coordinate.database.GridsTable.TEMPLATESTAMP_FIELD_NAME));
                 }
                 // endregion
+
+                private CursorWrapper(
+                @android.support.annotation.NonNull final android.database.Cursor cursor)
+                { super(cursor); }
+
+                private org.wheatgenetics.coordinate.model.JoinedGridModel make()
+                {
+                    final long gridId = this.gridId()                  ;
+                    final int  rows   = this.rows(), cols = this.cols();
+                    return
+                        org.wheatgenetics.coordinate.database.GridsTable.this.makeJoinedGridModel(
+                            /* id             => */ gridId               ,
+                            /* projectId      => */ this.projectId     (),
+                            /* person         => */ this.person        (),
+                            /* activeRow      => */ this.activeRow     (),
+                            /* activeCol      => */ this.activeCol     (),
+                            /* optionalFields => */ this.optionalFields(),
+                            /* timestamp      => */ this.timestamp     (),
+
+                            /* templateId                   => */ this.templateId(),
+                            /* title                        => */ this.title     (),
+                            /* code                         => */ this.code      (),
+                            /* rows                         => */ rows             ,
+                            /* cols                         => */ cols             ,
+                            /* generatedExcludedCellsAmount => */
+                                this.generatedExcludedCellsAmount(),
+                            /* initialExcludedCells   => */ this.initialExcludedCells  (),
+                            /* excludedRows           => */ this.excludedRows          (),
+                            /* excludedCols           => */ this.excludedCols          (),
+                            /* colNumbering           => */ this.colNumbering          (),
+                            /* rowNumbering           => */ this.rowNumbering          (),
+                            /* entryLabel             => */ this.entryLabel            (),
+                            /* templateOptionalFields => */ this.templateOptionalFields(),
+                            /* templateTimestamp      => */ this.templateTimestamp     (),
+
+                            /* entryModels => */ org.wheatgenetics.coordinate.database
+                                .GridsTable.this.entriesTable().load(gridId, rows, cols));
+                }
             }
-            final CursorWrapper cursorWrapper = new CursorWrapper(cursor)                        ;
-            final long          gridId        = cursorWrapper.gridId()                           ;
-            final int           rows          = cursorWrapper.rows(), cols = cursorWrapper.cols();
-            return this.makeJoinedGridModel(
-                /* id             => */ gridId                        ,
-                /* projectId      => */ cursorWrapper.projectId     (),
-                /* person         => */ cursorWrapper.person        (),
-                /* activeRow      => */ cursorWrapper.activeRow     (),
-                /* activeCol      => */ cursorWrapper.activeCol     (),
-                /* optionalFields => */ cursorWrapper.optionalFields(),
-                /* timestamp      => */ cursorWrapper.timestamp     (),
-
-                /* templateId                   => */ cursorWrapper.templateId                  (),
-                /* title                        => */ cursorWrapper.title                       (),
-                /* code                         => */ cursorWrapper.code                        (),
-                /* rows                         => */ rows                                        ,
-                /* cols                         => */ cols                                        ,
-                /* generatedExcludedCellsAmount => */ cursorWrapper.generatedExcludedCellsAmount(),
-                /* initialExcludedCells         => */ cursorWrapper.initialExcludedCells        (),
-                /* excludedRows                 => */ cursorWrapper.excludedRows                (),
-                /* excludedCols                 => */ cursorWrapper.excludedCols                (),
-                /* colNumbering                 => */ cursorWrapper.colNumbering                (),
-                /* rowNumbering                 => */ cursorWrapper.rowNumbering                (),
-                /* entryLabel                   => */ cursorWrapper.entryLabel                  (),
-                /* templateOptionalFields       => */ cursorWrapper.templateOptionalFields      (),
-                /* templateTimestamp            => */ cursorWrapper.templateTimestamp           (),
-
-                /* entryModels => */ this.entriesTable().load(gridId, rows, cols));
+            return new CursorWrapper(cursor).make();
         }
     }
 

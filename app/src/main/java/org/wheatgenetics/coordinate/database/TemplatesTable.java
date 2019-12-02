@@ -83,10 +83,6 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
         {
             class CursorWrapper extends android.database.CursorWrapper
             {
-                private CursorWrapper(
-                @android.support.annotation.NonNull final android.database.Cursor cursor)
-                { super(cursor); }
-
                 // region get() Methods
                 private long id()
                 {
@@ -172,24 +168,31 @@ public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
                         org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME));
                 }
                 // endregion
+
+                private CursorWrapper(
+                @android.support.annotation.NonNull final android.database.Cursor cursor)
+                { super(cursor); }
+
+                private org.wheatgenetics.coordinate.model.TemplateModel make()
+                {
+                    return new org.wheatgenetics.coordinate.model.TemplateModel(
+                        /* id                           => */ this.id                          (),
+                        /* title                        => */ this.title                       (),
+                        /* code                         => */ this.code                        (),
+                        /* rows                         => */ this.rows                        (),
+                        /* cols                         => */ this.cols                        (),
+                        /* generatedExcludedCellsAmount => */ this.generatedExcludedCellsAmount(),
+                        /* excludeCells                 => */ this.excludeCells                (),
+                        /* excludeRows                  => */ this.excludeRows                 (),
+                        /* excludeCols                  => */ this.excludeCols                 (),
+                        /* colNumbering                 => */ this.colNumbering                (),
+                        /* rowNumbering                 => */ this.rowNumbering                (),
+                        /* entryLabel                   => */ this.entryLabel                  (),
+                        /* optionalFields               => */ this.optionalFields              (),
+                        /* timestamp                    => */ this.timestamp                   ());
+                }
             }
-            final CursorWrapper cursorWrapper = new CursorWrapper(cursor);
-            return new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ cursorWrapper.id   (),
-                /* title                        => */ cursorWrapper.title(),
-                /* code                         => */ cursorWrapper.code (),
-                /* rows                         => */ cursorWrapper.rows (),
-                /* cols                         => */ cursorWrapper.cols (),
-                /* generatedExcludedCellsAmount => */
-                    cursorWrapper.generatedExcludedCellsAmount(),
-                /* excludeCells   => */ cursorWrapper.excludeCells  (),
-                /* excludeRows    => */ cursorWrapper.excludeRows   (),
-                /* excludeCols    => */ cursorWrapper.excludeCols   (),
-                /* colNumbering   => */ cursorWrapper.colNumbering  (),
-                /* rowNumbering   => */ cursorWrapper.rowNumbering  (),
-                /* entryLabel     => */ cursorWrapper.entryLabel    (),
-                /* optionalFields => */ cursorWrapper.optionalFields(),
-                /* timestamp      => */ cursorWrapper.timestamp     ());
+            return new CursorWrapper(cursor).make();
         }
     }
 

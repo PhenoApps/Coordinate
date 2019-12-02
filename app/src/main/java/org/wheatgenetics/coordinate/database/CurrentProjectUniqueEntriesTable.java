@@ -25,7 +25,6 @@ extends org.wheatgenetics.coordinate.database.CheckedEntriesTable
         currentProjectUniqueEntryModels = null;
     // endregion
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     private org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels
     getCurrentProjectUniqueEntryModels() { return this.currentProjectUniqueEntryModels; }
 

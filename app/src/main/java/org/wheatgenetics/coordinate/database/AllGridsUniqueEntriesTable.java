@@ -24,7 +24,6 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     private org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels
         allGridsUniqueEntryModels = null;
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
     private org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels
     getAllGridsUniqueEntryModels() { return this.allGridsUniqueEntryModels; }
 
