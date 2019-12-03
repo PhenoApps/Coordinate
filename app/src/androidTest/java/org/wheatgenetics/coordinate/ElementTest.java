@@ -39,6 +39,26 @@ public class ElementTest extends java.lang.Object
         // endregion
     }
 
+    // region clearOnLongClickListener() Package Method Tests
+    @org.junit.Test(expected = java.lang.NullPointerException.class)
+    public void clearOnLongClickListenerFails()
+    {
+        // noinspection ConstantConditions
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            null,null,null).clearOnLongClickListener();
+    }
+
+    @org.junit.Test() public void clearOnLongClickListenerSucceeds()
+    {
+        // noinspection ConstantConditions
+        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            /* elementModel => */null,
+            /* textView     => */ new android.widget.TextView(
+            android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* handler => */null).clearOnLongClickListener();
+    }
+    // endregion
+
     // region Protected Method Tests
     // region setOnClickListener() Protected Method Tests
     @org.junit.Test(expected = java.lang.NullPointerException.class)
@@ -99,46 +119,6 @@ public class ElementTest extends java.lang.Object
             /* handler => */null).setOnLongClickListener(null);
     }
     // endregion
-
-    // region clearOnLongClickListener() Protected Method Tests
-    @org.junit.Test(expected = java.lang.NullPointerException.class)
-    public void clearOnLongClickListenerFails()
-    {
-        // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
-            null,null,null).clearOnLongClickListener();
-    }
-
-    @org.junit.Test() public void clearOnLongClickListenerSucceeds()
-    {
-        // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
-            /* elementModel => */null,
-            /* textView     => */ new android.widget.TextView(
-                android.support.test.InstrumentationRegistry.getTargetContext()),
-            /* handler => */null).clearOnLongClickListener();
-    }
-    // endregion
-
-    @org.junit.Test() public void getHandlerWorks()
-    {
-        // noinspection ConstantConditions
-        org.junit.Assert.assertNull(new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
-            null,null,null).getHandler());
-
-        class Handler extends java.lang.Object
-        implements org.wheatgenetics.coordinate.Element.Handler
-        {
-            @java.lang.Override public void toggle(@android.support.annotation.Nullable
-            final org.wheatgenetics.coordinate.model.ElementModel elementModel) {}
-        }
-        final Handler handler = new Handler();
-
-        final org.wheatgenetics.coordinate.ElementTest.ConcreteElement concreteElement =
-            new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
-                null,null, handler);
-        org.junit.Assert.assertEquals(handler, concreteElement.getHandler());
-    }
 
     @org.junit.Test() public void elementModelIsNotNullWorks()
     {

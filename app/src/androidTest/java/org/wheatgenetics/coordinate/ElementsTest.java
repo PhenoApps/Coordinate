@@ -27,7 +27,7 @@ public class ElementsTest extends java.lang.Object
         private ConcreteElements()
         {
             //noinspection ConstantConditions
-            super(null,null);
+            super(null);
         }
 
         @java.lang.Override @android.support.annotation.NonNull
@@ -48,22 +48,12 @@ public class ElementsTest extends java.lang.Object
             new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getActivity());
     }
 
-    @org.junit.Test() public void getHandlerWorks()
-    {
-        // noinspection ConstantConditions
-        org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getHandler());
-    }
-
     @org.junit.Test() public void getElementArrayWorks()
     {
         org.junit.Assert.assertNull(
             new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getElementArray());
     }
     // endregion
-
-    @org.junit.Test(expected = java.lang.NullPointerException.class) public void toggleFails()
-    { new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().toggle(null); }
 
     @org.junit.Test() public void clearAndAllocateWork()
     {
