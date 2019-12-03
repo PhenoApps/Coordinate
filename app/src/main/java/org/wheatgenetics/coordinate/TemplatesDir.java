@@ -12,8 +12,10 @@ package org.wheatgenetics.coordinate;
  */
 public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
 {
-    TemplatesDir(final android.app.Activity activity, final java.lang.String name,
-    final java.lang.String blankHiddenFileName, final int requestCode)
+    TemplatesDir(final android.app.Activity activity,
+    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String name               ,
+    @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String blankHiddenFileName,
+                                                        final int              requestCode        )
     { super(activity, name, blankHiddenFileName, requestCode); }
 
     @java.lang.Override public java.io.File createIfMissing()
