@@ -43,12 +43,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  * org.wheatgenetics.zxing.BarcodeScanner
  *
- * org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable
- * org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable
- * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
- * org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable
- * org.wheatgenetics.coordinate.database.CurrentProjectUniqueEntriesTable
- * org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
@@ -60,14 +54,12 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
- * org.wheatgenetics.coordinate.model.AllGridsUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
- * org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
@@ -101,7 +93,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
- * org.wheatgenetics.coordinate.Utils.TypeOfUniqueness
  */
 public class MainActivity extends android.support.v7.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
@@ -180,57 +171,13 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
-        if (null == this.gridsTableInstance)
-            if (this.getUniqueness())
-                switch (this.getTypeOfUniqueness())
-                {
-                    case CURRENT_GRID: this.gridsTableInstance =
-                        new org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable(
-                            this); break;
-
-                    case CURRENT_PROJECT: this.gridsTableInstance =
-                        new org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable(
-                            this); break;
-
-                    case ALL_GRIDS: this.gridsTableInstance =
-                        new org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable(
-                            this); break;
-                }
-            else this.gridsTableInstance =
-                new org.wheatgenetics.coordinate.database.GridsTable(this);
-        return this.gridsTableInstance;
-    }
+    { return org.wheatgenetics.coordinate.Utils.gridsTable(this.gridsTableInstance,this); }
 
     @android.support.annotation.Nullable
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
-        if (null == this.entriesTableInstance)
-            if (this.getUniqueness())
-                switch (this.getTypeOfUniqueness())
-                {
-                    case CURRENT_GRID: this.entriesTableInstance =
-                        new org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
-                            this); break;
-
-                    case CURRENT_PROJECT:
-                        final org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable
-                            currentProjectUniqueGridsTable = (org.wheatgenetics.coordinate
-                                .database.CurrentProjectUniqueGridsTable) this.gridsTable();
-                        if (null != currentProjectUniqueGridsTable)
-                        {
-                            this.entriesTableInstance = new org.wheatgenetics
-                                .coordinate.database.CurrentProjectUniqueEntriesTable(
-                                    this, currentProjectUniqueGridsTable);
-                        } break;
-
-                    case ALL_GRIDS: this.entriesTableInstance =
-                        new org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable(
-                            this); break;
-                }
-            else this.entriesTableInstance =
-                new org.wheatgenetics.coordinate.database.EntriesTable(this);
-        return this.entriesTableInstance;
+        return org.wheatgenetics.coordinate.Utils.entriesTable(
+            this.entriesTableInstance, this.gridsTable(),this);
     }
     // endregion
 
@@ -904,105 +851,22 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private boolean getUniqueness()
     { return org.wheatgenetics.coordinate.Utils.getUniqueness(this); }
-
-    private org.wheatgenetics.coordinate.Utils.TypeOfUniqueness getTypeOfUniqueness()
-    { return org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(this); }
     // endregion
-
-    // region reloadIfNecessary() Private Methods
-    private boolean gridsTableNeedsReloading()
-    {
-        if (null == this.gridsTableInstance)
-            return false;
-        else
-            if (this.getUniqueness())
-                switch (this.getTypeOfUniqueness())
-                {
-                    case CURRENT_GRID: return !(this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable);
-
-                    case CURRENT_PROJECT: return !(this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable);
-
-                    case ALL_GRIDS: return !(this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable);
-
-                    default: return true;
-                }
-            else
-                return
-                    this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable ||
-                    this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable ||
-                    this.gridsTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable;
-    }
-
-    private boolean entriesTableNeedsReloading()
-    {
-        if (null == this.entriesTableInstance)
-            return false;
-        else
-            if (this.getUniqueness())
-                switch (this.getTypeOfUniqueness())
-                {
-                    case CURRENT_GRID: return !(this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable);
-
-                    case CURRENT_PROJECT: return !(this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentProjectUniqueEntriesTable);
-
-                    case ALL_GRIDS: return !(this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable);
-
-                    default: return true;
-                }
-            else
-                return
-                    this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable ||
-                    this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.CurrentProjectUniqueEntriesTable ||
-                    this.entriesTableInstance instanceof
-                        org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable;
-    }
-
-    private boolean joinedGridModelNeedsReloading()
-    {
-        if (this.joinedGridModelIsLoaded())
-            if (this.getUniqueness())
-                switch (this.getTypeOfUniqueness())
-                {
-                    case CURRENT_GRID: return
-                        this.joinedGridModel instanceof org.wheatgenetics.coordinate
-                            .model.CurrentGridUniqueJoinedGridModel &&
-                        !(this.joinedGridModel instanceof org.wheatgenetics.coordinate
-                            .model.CurrentProjectUniqueJoinedGridModel) &&
-                        !(this.joinedGridModel instanceof org.wheatgenetics.coordinate
-                            .model.AllGridsUniqueJoinedGridModel);
-
-                    case CURRENT_PROJECT: return !(this.joinedGridModel instanceof
-                        org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel);
-
-                    case ALL_GRIDS: return !(this.joinedGridModel instanceof
-                        org.wheatgenetics.coordinate.model.AllGridsUniqueJoinedGridModel);
-
-                    default: return true;
-                }
-            else return this.joinedGridModel instanceof
-                org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel;
-        else return false;
-    }
 
     private void reloadIfNecessary()
     {
-        if (this.gridsTableNeedsReloading     ()) this.gridsTableInstance   = null;
-        if (this.entriesTableNeedsReloading   ()) this.entriesTableInstance = null;
-        if (this.joinedGridModelNeedsReloading())
+        if (org.wheatgenetics.coordinate.Utils.gridsTableNeedsReloading(
+        this.gridsTableInstance,this))
+            this.gridsTableInstance = null;
+
+        if (org.wheatgenetics.coordinate.Utils.entriesTableNeedsReloading(
+        this.entriesTableInstance,this))
+            this.entriesTableInstance = null;
+
+        if (org.wheatgenetics.coordinate.Utils.joinedGridModelNeedsReloading(
+        this.joinedGridModel,this))
             this.loadJoinedGridModelThenPopulate(this.joinedGridModel.getId());
     }
-    // endregion
 
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
