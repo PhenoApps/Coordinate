@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.DrawableRes
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.DrawableRes
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.Utils
  *
@@ -17,17 +17,17 @@ public abstract class EntryModel extends org.wheatgenetics.coordinate.model.Mode
 implements org.wheatgenetics.coordinate.model.ElementModel
 {
     // region Fields
-    @android.support.annotation.IntRange(from = 1) private final long gridId   ;
-    @android.support.annotation.IntRange(from = 1) private final int  row, col ;
-    @android.support.annotation.IntRange(from = 0) private final long timestamp;
+    @androidx.annotation.IntRange(from = 1) private final long gridId   ;
+    @androidx.annotation.IntRange(from = 1) private final int  row, col ;
+    @androidx.annotation.IntRange(from = 0) private final long timestamp;
     // endregion
 
     // region Constructors
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntryModel(
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  row   ,
-    @android.support.annotation.IntRange(from = 1) final int  col   )
+    @androidx.annotation.IntRange(from = 1) final long gridId,
+    @androidx.annotation.IntRange(from = 1) final int  row   ,
+    @androidx.annotation.IntRange(from = 1) final int  col   )
     {
         super();
 
@@ -37,13 +37,13 @@ implements org.wheatgenetics.coordinate.model.ElementModel
         this.timestamp = java.lang.System.currentTimeMillis();
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntryModel(
-    @android.support.annotation.IntRange(from = 1) final long id       ,
-    @android.support.annotation.IntRange(from = 1) final long gridId   ,
-    @android.support.annotation.IntRange(from = 1) final int  row      ,
-    @android.support.annotation.IntRange(from = 1) final int  col      ,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 1) final long id       ,
+    @androidx.annotation.IntRange(from = 1) final long gridId   ,
+    @androidx.annotation.IntRange(from = 1) final int  row      ,
+    @androidx.annotation.IntRange(from = 1) final int  col      ,
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id);
 
@@ -53,9 +53,9 @@ implements org.wheatgenetics.coordinate.model.ElementModel
         this.timestamp = timestamp;
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    EntryModel(@android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    EntryModel(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         this(entryModel.getId(), entryModel.getGridId(), entryModel.getRow(), entryModel.getCol(),
             entryModel.getTimestamp());
@@ -63,33 +63,31 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRowValue()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRowValue()
     { return this.getRow(); }
 
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getColValue()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getColValue()
     { return this.getCol(); }
     // endregion
 
     // region Package Methods
     abstract java.lang.String getSeedExportValue();
 
-    @android.support.annotation.NonNull java.lang.String getDNAExportValue(
+    @androidx.annotation.NonNull java.lang.String getDNAExportValue(
     final java.lang.String sample_id) { return "BLANK_" + sample_id; }
 
     abstract java.lang.String getUserDefinedExportValue();
     // endregion
 
     // region Public Methods
-    @android.support.annotation.IntRange(from = 1) public long getGridId() { return this.gridId; }
-    @android.support.annotation.IntRange(from = 1) public int  getRow   () { return this.row   ; }
-    @android.support.annotation.IntRange(from = 1) public int  getCol   () { return this.col   ; }
-
-    @android.support.annotation.IntRange(from = 0) public long getTimestamp()
-    { return this.timestamp; }
+    @androidx.annotation.IntRange(from = 1) public long getGridId   () { return this.gridId   ; }
+    @androidx.annotation.IntRange(from = 1) public int  getRow      () { return this.row      ; }
+    @androidx.annotation.IntRange(from = 1) public int  getCol      () { return this.col      ; }
+    @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
 
     public abstract java.lang.String getValue        ();
     public abstract java.lang.String getDatabaseValue();
 
-    @android.support.annotation.DrawableRes public abstract int backgroundResource();
+    @androidx.annotation.DrawableRes public abstract int backgroundResource();
     // endregion
 }

@@ -6,13 +6,14 @@ package org.wheatgenetics.coordinate.nisl;
  * android.content.Intent
  * android.R
  * android.os.Bundle
- * android.preference.Preference
- * android.preference.Preference.OnPreferenceClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.v7.app.ActionBar
- * android.support.v7.app.AppCompatActivity
  * android.view.MenuItem
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.appcompat.app.ActionBar
+ * androidx.appcompat.app.AppCompatActivity
+ * androidx.preference.Preference
+ * androidx.preference.Preference.OnPreferenceClickListener
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -20,8 +21,8 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.nisl.PreferenceFragment
  */
-public class PreferenceActivity extends android.support.v7.app.AppCompatActivity
-implements android.preference.Preference.OnPreferenceClickListener
+public class PreferenceActivity extends androidx.appcompat.app.AppCompatActivity
+implements androidx.preference.Preference.OnPreferenceClickListener
 {
     private boolean uniquenessPreferenceWasClicked;
 
@@ -40,7 +41,7 @@ implements android.preference.Preference.OnPreferenceClickListener
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
-    @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
@@ -51,8 +52,7 @@ implements android.preference.Preference.OnPreferenceClickListener
                 org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
 
         {
-            final android.support.v7.app.ActionBar supportActionBar =
-                this.getSupportActionBar();
+            final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
             if (null != supportActionBar)
             {
                 supportActionBar.setTitle                 (/* title        => */ null);
@@ -61,7 +61,7 @@ implements android.preference.Preference.OnPreferenceClickListener
         }
 
         // Display PreferenceFragment as the main content.
-        this.getFragmentManager().beginTransaction().replace(android.R.id.content,
+        this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
             new org.wheatgenetics.coordinate.nisl.PreferenceFragment()).commit();
     }
 
@@ -71,23 +71,24 @@ implements android.preference.Preference.OnPreferenceClickListener
             this,"Press \"Back\" when done.");
     }
 
-    @java.lang.Override protected void onSaveInstanceState(final android.os.Bundle outState)
+    @java.lang.Override protected void onSaveInstanceState(
+    @androidx.annotation.NonNull final android.os.Bundle outState)
     {
-        if (null != outState) outState.putBoolean(
+        outState.putBoolean(
             org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
             this.uniquenessPreferenceWasClicked                     );
         super.onSaveInstanceState(outState);
     }
 
     @java.lang.Override public boolean onOptionsItemSelected(
-    @android.support.annotation.NonNull final android.view.MenuItem item)
+    @androidx.annotation.NonNull final android.view.MenuItem item)
     { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
 
     @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }
 
-    // region android.preference.Preference.OnPreferenceClickListener Overridden Method
+    // region androidx.preference.Preference.OnPreferenceClickListener Overridden Method
     @java.lang.Override
-    public boolean onPreferenceClick(final android.preference.Preference preference)
+    public boolean onPreferenceClick(final androidx.preference.Preference preference)
     { this.uniquenessPreferenceWasClicked = true; return true; }
     // endregion
     // endregion

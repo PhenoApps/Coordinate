@@ -2,27 +2,27 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Model extends java.lang.Object implements java.lang.Cloneable
 {
-    @android.support.annotation.IntRange(from = 1) private long id;
+    @androidx.annotation.IntRange(from = 1) private long id;
 
     // region Constructors
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     Model() { super(); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model(@android.support.annotation.IntRange(from = 1) final long id) { this(); this.setId(id); }
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    Model(@androidx.annotation.IntRange(from = 1) final long id) { this(); this.setId(id); }
     // endregion
 
     // region Overridden Methods
-    @java.lang.SuppressWarnings({"DefaultLocale"}) @java.lang.Override
-    @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.SuppressWarnings({"DefaultLocale"}) @java.lang.Override @androidx.annotation.NonNull
+    public java.lang.String toString()
     { return java.lang.String.format("id: %02d", this.getId()); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -47,9 +47,9 @@ public abstract class Model extends java.lang.Object implements java.lang.Clonea
             return id;
     }
 
-    @android.support.annotation.IntRange(from = 1) public long getId() { return this.id; }
+    @androidx.annotation.IntRange(from = 1) public long getId() { return this.id; }
 
-    public void setId(@android.support.annotation.IntRange(from = 1) final long id)
+    public void setId(@androidx.annotation.IntRange(from = 1) final long id)
     { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }
     // endregion
 }

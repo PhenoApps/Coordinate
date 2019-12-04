@@ -3,7 +3,8 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
@@ -20,7 +21,7 @@ implements org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handle
     // region Fields
     private final android.app.Activity                             activity     ;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler handler;
 
     private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
@@ -29,7 +30,7 @@ implements org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handle
 
     public AssignTitleRowsColsAlertDialogTester(final android.app.Activity activity,
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler handler)
     {
         super();

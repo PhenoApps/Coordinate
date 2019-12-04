@@ -5,9 +5,10 @@ package org.wheatgenetics.coordinate.gc;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.os.Bundle
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
@@ -50,11 +51,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
-        public abstract void handleGridCreated(
-        @android.support.annotation.IntRange(from = 1) long gridId);
+        public abstract void handleGridCreated(@androidx.annotation.IntRange(from = 1) long gridId);
 
         public abstract void loadProjectModel(
-        @android.support.annotation.IntRange(from = 1) long projectId);
+        @androidx.annotation.IntRange(from = 1) long projectId);
         public abstract void clearProjectModel();
     }
 
@@ -62,7 +62,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // ll == lazy load
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    @android.support.annotation.NonNull             private final
+    @androidx.annotation.NonNull                    private final
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;     // lazy load
@@ -73,12 +73,12 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog
         getTemplateChoiceAlertDialog = null;                                            // lazy load
 
-    @android.support.annotation.Nullable private org.wheatgenetics.coordinate.model.ProjectModel
+    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.ProjectModel
         projectModel = null;
     private org.wheatgenetics.coordinate.SelectAlertDialog getProjectChoiceAlertDialog = null; // ll
 
     /** 0 means no projectId. */
-    @android.support.annotation.IntRange(from = 0) private long projectId;
+    @androidx.annotation.IntRange(from = 0) private long projectId;
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator                                 // lazy
         clearedProjectCreator = null, loadedProjectCreator = null;                         //  loads
@@ -102,14 +102,14 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
 
     private void clearedHandleCreateProjectDone(
-    @android.support.annotation.IntRange(from = 1) final long projectId)
+    @androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.projectId = projectId; this.handler.loadProjectModel(projectId);
         this.getTemplateChoice();
     }
 
     // region *Table() Lazy Load Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
@@ -117,7 +117,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         return this.gridsTableInstance;
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -125,7 +125,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         return this.templatesTableInstance;
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
         if (null == this.entriesTableInstance) this.entriesTableInstance =
@@ -187,7 +187,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
 
     private void loadedHandleCreateProjectDone(
-    @android.support.annotation.IntRange(from = 1) final long projectId)
+    @androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.projectId = projectId; this.handler.loadProjectModel(projectId);
         if (!this.setTemplateFromOtherGrids()) this.getTemplateChoice();
@@ -213,7 +213,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
      *   != null      2   none
      */
     @android.annotation.SuppressLint({"Range"}) private void handleProjectChoice(
-    @android.support.annotation.IntRange(from = 0, to = 2) final int which)
+    @androidx.annotation.IntRange(from = 0, to = 2) final int which)
     {
         if (null == this.projectModel)
             switch (which)
@@ -226,7 +226,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                             new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                             {
                                 @java.lang.Override public void handleCreateProjectDone(
-                                @android.support.annotation.IntRange(from = 1) final long projectId)
+                                @androidx.annotation.IntRange(from = 1) final long projectId)
                                 {
                                     org.wheatgenetics.coordinate.gc.GridCreator
                                         .this.clearedHandleCreateProjectDone(projectId);
@@ -247,7 +247,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                             new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                             {
                                 @java.lang.Override public void handleCreateProjectDone(
-                                @android.support.annotation.IntRange(from = 1) final long projectId)
+                                @androidx.annotation.IntRange(from = 1) final long projectId)
                                 {
                                     org.wheatgenetics.coordinate.gc.GridCreator
                                         .this.loadedHandleCreateProjectDone(projectId);
@@ -277,9 +277,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
 
     public GridCreator(final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    @android.support.annotation.NonNull             final
-        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
+    @org.wheatgenetics.coordinate.Types.RequestCode final int                          requestCode,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
@@ -358,7 +357,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
-    @java.lang.Override public void handleTemplateCreated(@android.support.annotation.NonNull
+    @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         this.templateModel = templateModel;
@@ -413,7 +412,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
      * This method's mission is to 1) set this.projectModel and 2) pass control to
      * this.getProjectChoiceAlertDialog.
      */
-    public void create(@android.support.annotation.Nullable
+    public void create(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         this.projectModel = projectModel;

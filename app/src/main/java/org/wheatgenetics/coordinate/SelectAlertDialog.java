@@ -5,9 +5,10 @@ package org.wheatgenetics.coordinate;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.Size
- * android.support.annotation.StringRes
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Size
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.ItemsAlertDialog
  */
@@ -16,14 +17,13 @@ public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAle
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     { public abstract void select(int which); }
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
 
     private void select(final int which) { this.handler.select(which); }
 
-    public SelectAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.SelectAlertDialog.Handler
-        handler)
+    public SelectAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
+    org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
@@ -36,8 +36,8 @@ public class SelectAlertDialog extends org.wheatgenetics.androidlibrary.ItemsAle
             });
     }
 
-    public void show(@android.support.annotation.StringRes final int title,
+    public void show(@androidx.annotation.StringRes final int title,
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-        @android.support.annotation.Size(min = 1) final java.lang.String items[])
+        @androidx.annotation.Size(min = 1) final java.lang.String items[])
     { this.setTitle(title); this.show(items); }
 }

@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
@@ -19,38 +19,38 @@ extends org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
     .coordinate.model.CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException
     {
         public DatabaseDuplicateCheckException(
-        @android.support.annotation.NonNull final java.lang.String scope) { super(scope); }
+        @androidx.annotation.NonNull final java.lang.String scope) { super(scope); }
     }
 
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Checker
     {
-        @android.support.annotation.Nullable public java.lang.String check(
-        @android.support.annotation.IntRange(from = 1) long             gridId,
-        @android.support.annotation.Nullable           java.lang.String value ,
-        @android.support.annotation.NonNull            java.lang.String scope ) throws org
+        @androidx.annotation.Nullable public java.lang.String check(
+        @androidx.annotation.IntRange(from = 1) long             gridId,
+        @androidx.annotation.Nullable           java.lang.String value ,
+        @androidx.annotation.NonNull            java.lang.String scope ) throws org
         .wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.DatabaseDuplicateCheckException;
     }
     // endregion
 
     // region Fields
-    @android.support.annotation.NonNull private final java.lang.String scope;
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final java.lang.String scope;
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker checker;
     // endregion
 
     DatabaseUniqueEntryModels(
-    @android.support.annotation.IntRange(from = 1) final long             gridId,
-    @android.support.annotation.IntRange(from = 1) final int              rows  ,
-    @android.support.annotation.IntRange(from = 1) final int              cols  ,
-    @android.support.annotation.NonNull            final java.lang.String scope ,
-    @android.support.annotation.NonNull            final
+    @androidx.annotation.IntRange(from = 1) final long             gridId,
+    @androidx.annotation.IntRange(from = 1) final int              rows  ,
+    @androidx.annotation.IntRange(from = 1) final int              cols  ,
+    @androidx.annotation.NonNull            final java.lang.String scope ,
+    @androidx.annotation.NonNull            final
         org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker checker)
     { super(gridId, rows, cols); this.scope = scope; this.checker = checker; }
 
-    @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-    @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-    @android.support.annotation.IntRange(from = 1) final int              colIndex,
-    @android.support.annotation.Nullable           final java.lang.String value   )
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+    @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+    @androidx.annotation.IntRange(from = 1) final int              colIndex,
+    @androidx.annotation.Nullable           final java.lang.String value   )
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         if (null == super.check(rowIndex, colIndex, value))                // throws CurrentGridDu-

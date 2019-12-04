@@ -7,8 +7,8 @@
 
 
     <!-- Preferences -->
-    <string name="AdvancementPreferenceKey">Workflow</string>
-    <string name="AdvancementPreferenceTitle">@string/AdvancementPreferenceKey</string>
+    <string name="AdvancementPreferenceKey">Advancement</string>
+    <string name="AdvancementPreferenceTitle">Workflow</string>
     <string name="AdvancementPreferenceSummary">Advance %s</string>
 
     <string-array name="AdvancementPreferenceEntries">
@@ -27,8 +27,9 @@
     <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
 
 
-    <string name="SoundPreferenceKey">SoundOn</string>
-    <string name="SoundPreferenceTitle">Notification sounds</string>
+    <string name="SoundOnPreferenceKey">SoundOn</string>
+    <string name="SoundOnPreferenceTitle">Notification sounds</string>
+
 
     <string name="ProjectExportPreferenceKey">ProjectExport</string>
     <string name="ProjectExportPreferenceTitle">Project Export</string>

@@ -4,9 +4,10 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  * android.content.Context
- * android.support.annotation.IntRange
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Cell
  *
@@ -26,7 +27,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
     public TemplateDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected boolean setHandler(final android.content.Context context)
     {
         final boolean success;
@@ -42,10 +43,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
         return success;
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void allocateElements(
-    @android.support.annotation.IntRange(from = 1) final int lastRow,
-    @android.support.annotation.IntRange(from = 1) final int lastCol)
+    @androidx.annotation.IntRange(from = 1) final int lastRow,
+    @androidx.annotation.IntRange(from = 1) final int lastCol)
     {
         if (null == this.elements)
         {

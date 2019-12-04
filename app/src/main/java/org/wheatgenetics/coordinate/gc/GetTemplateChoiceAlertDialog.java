@@ -5,7 +5,8 @@ package org.wheatgenetics.coordinate.gc;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.support.annotation.NonNull
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -16,7 +17,7 @@ class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.Aler
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     { public abstract void chooseOld(); public abstract void chooseNew(); }
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler;
 
     private void choose(final int which)
@@ -28,9 +29,8 @@ class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.Aler
         }
     }
 
-    GetTemplateChoiceAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler)
+    GetTemplateChoiceAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()

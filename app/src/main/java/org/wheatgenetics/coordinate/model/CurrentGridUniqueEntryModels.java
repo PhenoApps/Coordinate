@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -21,24 +21,23 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
     static class CurrentGridDuplicateCheckException
     extends org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
     {
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         CurrentGridDuplicateCheckException(
-        @android.support.annotation.NonNull final java.lang.String scope)
+        @androidx.annotation.NonNull final java.lang.String scope)
         { super(java.lang.String.format("The %s already has an entry with that value.", scope)); }
 
         CurrentGridDuplicateCheckException() { this("current grid"); }
     }
 
     public CurrentGridUniqueEntryModels(
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  rows  ,
-    @android.support.annotation.IntRange(from = 1) final int  cols  ) { super(gridId, rows, cols); }
+    @androidx.annotation.IntRange(from = 1) final long gridId,
+    @androidx.annotation.IntRange(from = 1) final int  rows  ,
+    @androidx.annotation.IntRange(from = 1) final int  cols  ) { super(gridId, rows, cols); }
 
-    @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-    @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-    @android.support.annotation.IntRange(from = 1) final int              colIndex,
-    @android.support.annotation.Nullable           final java.lang.String value   )
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+    @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+    @androidx.annotation.IntRange(from = 1) final int              colIndex,
+    @androidx.annotation.Nullable           final java.lang.String value   )
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         if (null == value)
@@ -50,16 +49,16 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
             implements org.wheatgenetics.coordinate.model.EntryModels.Processor
             {
                 // region Fields
-                @android.support.annotation.IntRange(from = 1) private final int rowIndex, colIndex;
-                @android.support.annotation.Nullable           private final java.lang.String value;
+                @androidx.annotation.IntRange(from = 1) private final int rowIndex, colIndex;
+                @androidx.annotation.Nullable           private final java.lang.String value;
 
                 private boolean duplicateFound = false;
                 // endregion
 
                 private Processor(
-                @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-                @android.support.annotation.IntRange(from = 1) final int              colIndex,
-                @android.support.annotation.Nullable           final java.lang.String value   )
+                @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+                @androidx.annotation.IntRange(from = 1) final int              colIndex,
+                @androidx.annotation.Nullable           final java.lang.String value   )
                 { super(); this.rowIndex = rowIndex; this.colIndex = colIndex; this.value = value; }
 
                 @java.lang.Override public void process(

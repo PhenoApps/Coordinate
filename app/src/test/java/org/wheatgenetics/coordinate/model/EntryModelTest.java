@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.DrawableRes
- * android.support.annotation.IntRange
+ * androidx.annotation.DrawableRes
+ * androidx.annotation.IntRange
  *
  * org.junit.Assert
  * org.junit.Test
@@ -22,19 +22,18 @@ public class EntryModelTest extends java.lang.Object
     {
         // region Constructors
         ConcreteEntryModel(
-        @android.support.annotation.IntRange(from = 1) final long gridId,
-        @android.support.annotation.IntRange(from = 1) final int  row   ,
-        @android.support.annotation.IntRange(from = 1) final int  col   )
+        @androidx.annotation.IntRange(from = 1) final long gridId,
+        @androidx.annotation.IntRange(from = 1) final int  row   ,
+        @androidx.annotation.IntRange(from = 1) final int  col   )
         { super(gridId, row, col); }
 
         ConcreteEntryModel(
-        @android.support.annotation.IntRange(from = 1) final long id    ,
-        @android.support.annotation.IntRange(from = 1) final long gridId,
-        @android.support.annotation.IntRange(from = 1) final int  row   ,
-        @android.support.annotation.IntRange(from = 1) final int  col   ,
-        @android.support.annotation.IntRange(from = 0)
-            @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
-        { super(id, gridId, row, col, timestamp); }
+        @androidx.annotation.IntRange(from = 1) final long id    ,
+        @androidx.annotation.IntRange(from = 1) final long gridId,
+        @androidx.annotation.IntRange(from = 1) final int  row   ,
+        @androidx.annotation.IntRange(from = 1) final int  col   ,
+        @androidx.annotation.IntRange(from = 0) @java.lang.SuppressWarnings({"SameParameterValue"})
+            final long timestamp) { super(id, gridId, row, col, timestamp); }
         // endregion
 
         // region Overridden Methods
@@ -46,7 +45,7 @@ public class EntryModelTest extends java.lang.Object
         @java.lang.Override public java.lang.String getValue          () { return "value"        ; }
         @java.lang.Override public java.lang.String getDatabaseValue  () { return "databaseValue"; }
 
-        @java.lang.Override @android.support.annotation.DrawableRes public int backgroundResource()
+        @java.lang.Override @androidx.annotation.DrawableRes public int backgroundResource()
         { return 0; }
         // endregion
     }

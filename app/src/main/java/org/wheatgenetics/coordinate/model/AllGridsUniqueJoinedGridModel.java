@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels
  * org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
@@ -16,14 +16,14 @@ package org.wheatgenetics.coordinate.model;
 public class AllGridsUniqueJoinedGridModel
 extends org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
 {
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker checker;
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols)
+    @androidx.annotation.IntRange(from = 1) final int rows,
+    @androidx.annotation.IntRange(from = 1) final int cols)
     {
         return new org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels(
             /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols, this.checker);
@@ -31,31 +31,31 @@ extends org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
 
     /** Used by AllGridsUniqueGridsTable. */
     public AllGridsUniqueJoinedGridModel(
-    @android.support.annotation.IntRange(from = 1) final long             id            ,
-    @android.support.annotation.IntRange(from = 0) final long             projectId     ,
-                                                   final java.lang.String person        ,
-    @android.support.annotation.IntRange(from = 0) final int              activeRow     ,
-    @android.support.annotation.IntRange(from = 0) final int              activeCol     ,
-    @android.support.annotation.Nullable           final java.lang.String optionalFields,
-    @android.support.annotation.IntRange(from = 0) final long             timestamp     ,
+    @androidx.annotation.IntRange(from = 1) final long             id            ,
+    @androidx.annotation.IntRange(from = 0) final long             projectId     ,
+                                            final java.lang.String person        ,
+    @androidx.annotation.IntRange(from = 0) final int              activeRow     ,
+    @androidx.annotation.IntRange(from = 0) final int              activeCol     ,
+    @androidx.annotation.Nullable           final java.lang.String optionalFields,
+    @androidx.annotation.IntRange(from = 0) final long             timestamp     ,
 
-    @android.support.annotation.IntRange(from = 1        ) final long             templateId     ,
-                                                           final java.lang.String title          ,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
-    @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable final java.lang.String initialExcludedCells,
-    @android.support.annotation.Nullable final java.lang.String excludedRows        ,
-    @android.support.annotation.Nullable final java.lang.String excludedCols        ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int colNumbering,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int rowNumbering,
-                                                   final java.lang.String entryLabel            ,
-    @android.support.annotation.Nullable           final java.lang.String templateOptionalFields,
-    @android.support.annotation.IntRange(from = 0) final long             templateTimestamp     ,
+    @androidx.annotation.IntRange(from = 1        ) final long             templateId     ,
+                                                    final java.lang.String title          ,
+    @androidx.annotation.IntRange(from = 0, to = 2) final int              code           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              rows           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              cols           ,
+    @androidx.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable                   final java.lang.String initialExcludedCells  ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedRows          ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedCols          ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              colNumbering          ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              rowNumbering          ,
+                                                    final java.lang.String entryLabel            ,
+    @androidx.annotation.Nullable                   final java.lang.String templateOptionalFields,
+    @androidx.annotation.IntRange(from = 0)         final long             templateTimestamp     ,
 
     final org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels allGridsUniqueEntryModels,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker checker)
     {
         super(id, projectId, person, activeRow, activeCol, optionalFields, timestamp, templateId,

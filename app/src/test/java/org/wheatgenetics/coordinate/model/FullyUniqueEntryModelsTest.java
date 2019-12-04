@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
  *
  * org.junit.Test
  *
@@ -24,18 +24,18 @@ public class FullyUniqueEntryModelsTest extends java.lang.Object
     extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
     {
         MeanUniqueEntryModels(
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final long gridId,
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final int rows,
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final int cols)
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final long gridId,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final int rows,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final int cols)
         { super(gridId, rows, cols); }
 
-        @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-        @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-        @android.support.annotation.IntRange(from = 1) final int              colIndex,
-        @android.support.annotation.Nullable           final java.lang.String value   )
+        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+        @androidx.annotation.IntRange(from = 1) final int              colIndex,
+        @androidx.annotation.Nullable           final java.lang.String value   )
         throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
         {
             throw new org.wheatgenetics.coordinate.model
@@ -47,19 +47,18 @@ public class FullyUniqueEntryModelsTest extends java.lang.Object
     extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
     {
         NiceUniqueEntryModels(
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final long gridId,
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final int rows,
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final int cols)
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final long gridId,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final int rows,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+            final int cols)
         { super(gridId, rows, cols); }
 
-        @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-        @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-        @android.support.annotation.IntRange(from = 1) final int              colIndex,
-        @android.support.annotation.Nullable           final java.lang.String value   )
-        { return value; }
+        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+        @androidx.annotation.IntRange(from = 1) final int              colIndex,
+        @androidx.annotation.Nullable           final java.lang.String value   ) { return value; }
     }
     // endregion
 

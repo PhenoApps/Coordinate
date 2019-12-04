@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Exporter
  * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
@@ -18,15 +19,14 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
         private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
         private AsyncTask(
-        @android.support.annotation.NonNull final android.content.Context context   ,
-                                            final java.io.File            exportFile,
-                                            final org.wheatgenetics.coordinate.model.TemplateModel
-                                                templateModel)
+        @androidx.annotation.NonNull final android.content.Context context   ,
+                                     final java.io.File            exportFile,
+                                     final org.wheatgenetics.coordinate.model.TemplateModel
+                                         templateModel)
         { super(context, exportFile); this.templateModel = templateModel; }
 
         // region Overridden Methods
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         @java.lang.Override boolean export()
         {
             final boolean success;
@@ -40,20 +40,20 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
             return success;
         }
 
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
-        void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override void handleExportSuccess(final java.io.File exportFile)
+        { this.alert(); this.share(); }
         // endregion
     }
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask asyncTask;
 
     public TemplateExporter(
-    @android.support.annotation.NonNull final android.content.Context context   ,
-                                        final java.io.File            exportFile,
-                                        final org.wheatgenetics.coordinate.model.TemplateModel
-                                            templateModel)
+    @androidx.annotation.NonNull final android.content.Context context   ,
+                                 final java.io.File            exportFile,
+                                 final org.wheatgenetics.coordinate.model.TemplateModel
+                                    templateModel)
     {
         super();
         this.asyncTask = new org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask(

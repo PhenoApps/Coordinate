@@ -3,11 +3,12 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
  * android.widget.TextView
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -22,27 +23,27 @@ package org.wheatgenetics.coordinate.tc;
 class TemplateElements extends org.wheatgenetics.coordinate.Elements
 {
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler;
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler;
     // endregion
 
     TemplateElements(
-    @android.support.annotation.NonNull            final android.app.Activity activity,
-    @android.support.annotation.IntRange(from = 1) final int                  rows    ,
-    @android.support.annotation.IntRange(from = 1) final int                  cols    ,
-    @android.support.annotation.NonNull            final
+    @androidx.annotation.NonNull            final android.app.Activity activity,
+    @androidx.annotation.IntRange(from = 1) final int                  rows    ,
+    @androidx.annotation.IntRange(from = 1) final int                  cols    ,
+    @androidx.annotation.NonNull            final
         org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler)
     {
         super(activity);
         this.handler = handler; this.templateHandler = templateHandler; this.allocate(rows, cols);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
     protected org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )

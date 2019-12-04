@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -16,14 +16,14 @@ package org.wheatgenetics.coordinate.model;
 public class RowOrCols extends java.lang.Object
 {
     // region Fields
-    @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.model.RowOrCol
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.RowOrCol
         maxRowOrCol;
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>
         rowOrColTreeSetInstance = null;                                                 // lazy load
     // endregion
 
     // region Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol> rowOrColTreeSet()
     {
         if (null == this.rowOrColTreeSetInstance)
@@ -34,7 +34,7 @@ public class RowOrCols extends java.lang.Object
     }
 
     private void add(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
     {
         this.rowOrColTreeSet().add(rowOrCol.inRange(    // throws java.lang.IllegalArgumentException
             this.maxRowOrCol));
@@ -43,17 +43,17 @@ public class RowOrCols extends java.lang.Object
 
     // region Constructors
     /** Assigns this.maxRowOrCol. */
-    private RowOrCols(@android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.RowOrCol maxRowOrCol)
+    private RowOrCols(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol
+        maxRowOrCol)
     { super(); this.maxRowOrCol = maxRowOrCol; }
 
     /** Creates this.maxRowOrCol. */
-    RowOrCols(@android.support.annotation.IntRange(from = 1) final int maxValue)
+    RowOrCols(@androidx.annotation.IntRange(from = 1) final int maxValue)
     { this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(maxValue)); }
 
     /** Creates this.maxRowOrCol. */
-    public RowOrCols(                              final java.lang.String json    ,
-    @android.support.annotation.IntRange(from = 1) final int              maxValue)
+    public RowOrCols(                       final java.lang.String json    ,
+    @androidx.annotation.IntRange(from = 1) final int              maxValue)
     {
         this(maxValue);
 
@@ -83,7 +83,7 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     {
         if (null == this.rowOrColTreeSetInstance)
             return "null";
@@ -138,7 +138,7 @@ public class RowOrCols extends java.lang.Object
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols result =
             new org.wheatgenetics.coordinate.model.RowOrCols(/* maxRowOrCol => */
@@ -154,12 +154,12 @@ public class RowOrCols extends java.lang.Object
     // endregion
 
     // region Package Methods
-    void add(@android.support.annotation.IntRange(from = 1) final int value)
+    void add(@androidx.annotation.IntRange(from = 1) final int value)
     { this.add(/* rowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(value)); }
 
     void clear() { if (null != this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance.clear(); }
 
-    @android.support.annotation.Nullable java.lang.String json()
+    @androidx.annotation.Nullable java.lang.String json()
     {
         if (null == this.rowOrColTreeSetInstance)
             return null;
@@ -179,7 +179,7 @@ public class RowOrCols extends java.lang.Object
     }
     // endregion
 
-    public boolean contains(@android.support.annotation.IntRange(from = 1) final int candidateValue)
+    public boolean contains(@androidx.annotation.IntRange(from = 1) final int candidateValue)
     {
         if (null == this.rowOrColTreeSetInstance)
             return false;

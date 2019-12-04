@@ -5,11 +5,12 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.sqlite.SQLiteDatabase
  * android.database.sqlite.SQLiteOpenHelper
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RawRes
- * android.support.annotation.VisibleForTesting
  * android.util.Log
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RawRes
+ * androidx.annotation.VisibleForTesting
  *
  * org.w3c.dom.Document
  * org.w3c.dom.NodeList
@@ -23,10 +24,9 @@ class Database extends java.lang.Object
 {
     private static android.database.sqlite.SQLiteDatabase dbInstance = null; // singleton, lazy load
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    @android.support.annotation.NonNull static android.database.sqlite.SQLiteDatabase db(
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE) @androidx.annotation.NonNull
+    static android.database.sqlite.SQLiteDatabase db(
     final android.content.Context context, final java.lang.String fileName)
     {
         if (null == org.wheatgenetics.coordinate.database.Database.dbInstance)
@@ -34,7 +34,7 @@ class Database extends java.lang.Object
             class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper
             {
                 // region Fields
-                @android.support.annotation.NonNull private final android.content.Context context;
+                @androidx.annotation.NonNull private final android.content.Context context;
                 private boolean createNeeded = false, createSucceeded = false;
                 // endregion
 
@@ -42,8 +42,8 @@ class Database extends java.lang.Object
                 private void logWarning(final java.lang.String msg)
                 { android.util.Log.w("SQLiteOpenHelper", msg); }
 
-                @android.support.annotation.Nullable private org.w3c.dom.NodeList statementNodeList(
-                @android.support.annotation.RawRes final int id)
+                @androidx.annotation.Nullable private org.w3c.dom.NodeList statementNodeList(
+                @androidx.annotation.RawRes final int id)
                 {
                     final org.w3c.dom.Document document;
                     {
@@ -71,8 +71,8 @@ class Database extends java.lang.Object
                 }
 
                 private void executeStatements(
-                @android.support.annotation.NonNull final org.w3c.dom.NodeList    statementNodeList,
-                @android.support.annotation.NonNull final android.database.sqlite.SQLiteDatabase db)
+                @androidx.annotation.NonNull final org.w3c.dom.NodeList    statementNodeList,
+                @androidx.annotation.NonNull final android.database.sqlite.SQLiteDatabase db)
                 {
                     final int length = statementNodeList.getLength();
                     for (int i = 0; i < length; i++)
@@ -86,8 +86,8 @@ class Database extends java.lang.Object
                 // endregion
 
                 private SQLiteOpenHelper(
-                @android.support.annotation.NonNull final android.content.Context context ,
-                                                    final java.lang.String        fileName)
+                @androidx.annotation.NonNull final android.content.Context context ,
+                                             final java.lang.String        fileName)
                 {
                     super(
                         /* context => */ context ,
@@ -156,7 +156,7 @@ class Database extends java.lang.Object
         return org.wheatgenetics.coordinate.database.Database.dbInstance;
     }
 
-    @android.support.annotation.NonNull
-    static android.database.sqlite.SQLiteDatabase db(final android.content.Context context)
+    @androidx.annotation.NonNull static android.database.sqlite.SQLiteDatabase db(
+    final android.content.Context context)
     { return org.wheatgenetics.coordinate.database.Database.db(context,"seedtray1.db"); }
 }

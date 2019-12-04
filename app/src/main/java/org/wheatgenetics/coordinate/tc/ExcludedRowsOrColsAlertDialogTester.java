@@ -3,7 +3,8 @@ package org.wheatgenetics.coordinate.tc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -16,9 +17,9 @@ package org.wheatgenetics.coordinate.tc;
 public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
 {
     // region Fields
-    @android.support.annotation.NonNull private final android.app.Activity activity;
-    @android.support.annotation.NonNull private final
-        org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+    @androidx.annotation.NonNull private final android.app.Activity activity;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
+        templateModel;
 
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
         excludedRowsAlertDialog = null, excludedColsAlertDialog = null;                // lazy loads
@@ -27,7 +28,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
 
     // region Private Methods
     private void excludeRows(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @android.support.annotation.NonNull final boolean checkedItems[])
+    @androidx.annotation.NonNull final boolean checkedItems[])
     {
         int i = 1;
         for (final boolean checkedItem: checkedItems)
@@ -38,7 +39,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
     }
 
     private void excludeCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @android.support.annotation.NonNull final boolean checkedItems[])
+    @androidx.annotation.NonNull final boolean checkedItems[])
     {
         int i = 1;
         for (final boolean checkedItem: checkedItems)
@@ -50,8 +51,8 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
     // endregion
 
     public ExcludedRowsOrColsAlertDialogTester(
-    @android.support.annotation.NonNull final android.app.Activity activity,
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
+    @androidx.annotation.NonNull final android.app.Activity activity,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
         templateModel)
     { super(); this.activity = activity; this.templateModel = templateModel; }
 
@@ -65,7 +66,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
                 {
                     @java.lang.Override public void excludeRowsOrCols(
                     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-                    @android.support.annotation.NonNull final boolean checkedItems[])
+                    @androidx.annotation.NonNull final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
                             .ExcludedRowsOrColsAlertDialogTester.this.excludeRows(checkedItems);
@@ -89,7 +90,7 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
                 {
                     @java.lang.Override public void excludeRowsOrCols(
                     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-                    @android.support.annotation.NonNull final boolean checkedItems[])
+                    @androidx.annotation.NonNull final boolean checkedItems[])
                     {
                         org.wheatgenetics.coordinate.tc
                             .ExcludedRowsOrColsAlertDialogTester.this.excludeCols(checkedItems);

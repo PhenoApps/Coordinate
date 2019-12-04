@@ -8,19 +8,20 @@ package org.wheatgenetics.coordinate.nisl;
  * android.content.SharedPreferences.OnSharedPreferenceChangeListener
  * android.content.res.Resources
  * android.os.Bundle
- * android.preference.CheckBoxPreference
- * android.preference.Fragment
- * android.preference.ListPreference
- * android.preference.Preference.OnPreferenceClickListener
- * android.preference.PreferenceScreen
- * android.support.annotation.ArrayRes
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.StringRes
+ *
+ * androidx.annotation.ArrayRes
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ * androidx.preference.CheckBoxPreference
+ * androidx.preference.ListPreference
+ * androidx.preference.Preference.OnPreferenceClickListener
+ * androidx.preference.PreferenceFragmentCompat
+ * androidx.preference.PreferenceScreen
  *
  * org.wheatgenetics.coordinate.R
  */
-public class PreferenceFragment extends android.preference.PreferenceFragment
+public class PreferenceFragment extends androidx.preference.PreferenceFragmentCompat
 implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 {
     // region Fields
@@ -36,10 +37,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
     private java.lang.String advancementKey, projectExportKey,
         uniquenessCheckBoxKey, uniquenessListKey;
-    private android.preference.ListPreference advancementPreference,
+    private androidx.preference.ListPreference advancementPreference,
         projectExportPreference, uniquenessListPreference;
-    private android.preference.CheckBoxPreference                   uniquenessCheckBoxPreference;
-    private android.preference.Preference.OnPreferenceClickListener
+    private androidx.preference.CheckBoxPreference                   uniquenessCheckBoxPreference;
+    private androidx.preference.Preference.OnPreferenceClickListener
         onUniquenessPreferenceClickListener = null; // TODO: Replace w/ onSharedPreferenceChanged()?
 
     private android.content.SharedPreferences sharedPreferences;
@@ -47,10 +48,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
     // region Private Methods
     private static void populateTreeMap(
-    @android.support.annotation.Nullable final android.content.res.Resources resources,
-    @android.support.annotation.ArrayRes final int                           keysRes  ,
-    @android.support.annotation.ArrayRes final int                           valuesRes,
-    @android.support.annotation.NonNull  final java.util.TreeMap<java.lang.String, java.lang.String>
+    @androidx.annotation.Nullable final android.content.res.Resources resources,
+    @androidx.annotation.ArrayRes final int                           keysRes  ,
+    @androidx.annotation.ArrayRes final int                           valuesRes,
+    @androidx.annotation.NonNull  final java.util.TreeMap<java.lang.String, java.lang.String>
         treeMap)
     {
         if (null != resources)
@@ -70,11 +71,12 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             this.uniquenessListPreference.setEnabled(this.uniquenessCheckBoxPreference.isChecked());
     }
 
+    // region setSummaries() Private Methods
     private void setSummary(
-    @android.support.annotation.Nullable  final android.preference.ListPreference preference,
-    @android.support.annotation.StringRes final int                               summaryRes,
-    @android.support.annotation.NonNull   final
-        java.util.TreeMap<java.lang.String, java.lang.String> treeMap)
+    @androidx.annotation.Nullable  final androidx.preference.ListPreference preference,
+    @androidx.annotation.StringRes final int                                summaryRes,
+    @androidx.annotation.NonNull   final java.util.TreeMap<java.lang.String, java.lang.String>
+        treeMap)
     {
         if (null != preference)
             preference.setSummary(this.getString(summaryRes, treeMap.get(preference.getValue())));
@@ -104,28 +106,25 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     private void setSummaries()
     { this.setAdvancementSummary(); this.setProjectExportSummary(); this.setUniquenessSummary(); }
     // endregion
+    // endregion
 
     // region Overridden Methods
-    @java.lang.Override public void onAttach(final android.content.Context context)
+    @java.lang.Override public void onAttach(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         super.onAttach(context);
 
-        if (context instanceof android.preference.Preference.OnPreferenceClickListener)
+        if (context instanceof androidx.preference.Preference.OnPreferenceClickListener)
             this.onUniquenessPreferenceClickListener =
-                (android.preference.Preference.OnPreferenceClickListener) context;
-        else
-            throw new java.lang.RuntimeException(null == context ?
-                "context" : context.toString() + " must implement OnPreferenceClickListener");
+                (androidx.preference.Preference.OnPreferenceClickListener) context;
+        else throw new java.lang.RuntimeException(
+            context.toString() + " must implement OnPreferenceClickListener");
     }
 
-    @java.lang.Override public void onCreate(
-    @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
+    @java.lang.Override public void onCreatePreferences(
+    final android.os.Bundle savedInstanceState, final java.lang.String rootKey)
     {
-        super.onCreate(savedInstanceState);
-
-        // Load the preferences from an XML resource.
         this.addPreferencesFromResource(org.wheatgenetics.coordinate.R.xml.preferences);
-
         {
             final android.app.Activity activity = this.getActivity();
             if (null != activity)
@@ -157,15 +156,11 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 this.uniquenessListKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
 
-                this.advancementPreference =
-                    (android.preference.ListPreference) this.findPreference(this.advancementKey);
-                this.projectExportPreference =
-                    (android.preference.ListPreference) this.findPreference(this.projectExportKey);
-                this.uniquenessListPreference =
-                    (android.preference.ListPreference) this.findPreference(this.uniquenessListKey);
+                this.advancementPreference    = this.findPreference(this.advancementKey   );
+                this.projectExportPreference  = this.findPreference(this.projectExportKey );
+                this.uniquenessListPreference = this.findPreference(this.uniquenessListKey);
 
-                this.uniquenessCheckBoxPreference = (android.preference.CheckBoxPreference)
-                    this.findPreference(this.uniquenessCheckBoxKey);
+                this.uniquenessCheckBoxPreference = this.findPreference(this.uniquenessCheckBoxKey);
 
                 this.setUniquenessListPreferenceEnabled(); this.setSummaries();
 
@@ -174,9 +169,9 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                         this.onUniquenessPreferenceClickListener);
             }
         }
-
         {
-            final android.preference.PreferenceScreen preferenceScreen = this.getPreferenceScreen();
+            final androidx.preference.PreferenceScreen preferenceScreen =
+                this.getPreferenceScreen();
             this.sharedPreferences = null == preferenceScreen ?
                 null : preferenceScreen.getSharedPreferences();
         }
@@ -217,8 +212,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                             this.onUniquenessPreferenceClickListener.onPreferenceClick(
                                 this.uniquenessCheckBoxPreference);
                     }
-                    else
-                        if (key.equals(this.uniquenessListKey)) this.setUniquenessSummary();
+                    else if (key.equals(this.uniquenessListKey)) this.setUniquenessSummary();
     }
     // endregion
     // endregion

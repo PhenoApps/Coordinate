@@ -3,10 +3,11 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.androidlibrary.RequestDir
  *
@@ -25,13 +26,13 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     {
         private final java.lang.String exportFileName;
 
-        AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        AsyncTask(@androidx.annotation.NonNull final android.content.Context context,
         final java.io.File exportFile, final java.lang.String exportFileName)
         { super(context, exportFile); this.exportFileName = exportFileName; }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
-        @java.lang.Override public void publishProgress(
-        @android.support.annotation.IntRange(from = 1) final int col)
+        @java.lang.Override
+        public void publishProgress(@androidx.annotation.IntRange(from = 1) final int col)
         {
             this.publishProgress(this.getString(
                 org.wheatgenetics.coordinate.R.string.GridExporterProgressDialogMessage) + col);
@@ -39,29 +40,27 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
         // endregion
 
         // region Package Methods
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         java.lang.String getExportFileName() { return this.exportFileName; }
 
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         java.lang.Boolean setMessage(final java.lang.Boolean result, final java.lang.String message)
         { if (null == result || !result) this.setMessage(message); return result; }
         // endregion
     }
 
     // region Fields
-    private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels     baseJoinedGridModels;
-    @android.support.annotation.NonNull private final android.content.Context context             ;
-                                        private final org.wheatgenetics.androidlibrary.RequestDir
-                                            exportDir;
+    private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
+    @androidx.annotation.NonNull private final android.content.Context    context             ;
+                                 private final org.wheatgenetics.androidlibrary.RequestDir
+                                    exportDir;
     // endregion
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     ProjectExporter(
     final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
-    @android.support.annotation.NonNull final android.content.Context                     context  ,
-                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir)
+    @androidx.annotation.NonNull final android.content.Context                     context  ,
+                                 final org.wheatgenetics.androidlibrary.RequestDir exportDir)
     {
         super();
 
@@ -71,18 +70,17 @@ abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Export
     }
 
     // region Protected Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels getBaseJoinedGridModels()
     { return this.baseJoinedGridModels; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull android.content.Context getContext()
-    { return this.context; }
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull android.content.Context getContext() { return this.context; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.androidlibrary.RequestDir getExportDir() { return this.exportDir; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void unableToCreateFileAlert(final java.lang.String exportFileName)
     {
         org.wheatgenetics.coordinate.Utils.alert(

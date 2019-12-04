@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.junit.Assert
  * org.junit.Test
@@ -19,17 +19,17 @@ public class CheckedIncludedEntryModelTest extends java.lang.Object
     private static class NiceChecker extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     {
-        @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-        @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-        @android.support.annotation.IntRange(from = 1) final int              colIndex,
-        @android.support.annotation.Nullable           final java.lang.String value   )
+        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+        @androidx.annotation.IntRange(from = 1) final int              colIndex,
+        @androidx.annotation.Nullable           final java.lang.String value   )
         { return value; }
     }
 
     private org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.NiceChecker
         niceCheckerInstance = null;                                                     // lazy load
 
-    @android.support.annotation.NonNull private
+    @androidx.annotation.NonNull private
     org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.NiceChecker niceChecker()
     {
         if (null == this.niceCheckerInstance) this.niceCheckerInstance =

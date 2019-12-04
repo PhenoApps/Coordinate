@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         android:key="@string/AdvancementPreferenceKey"
         android:title="@string/AdvancementPreferenceTitle"
+        app:useSimpleSummaryProvider="false"
         android:summary="@string/AdvancementPreferenceSummary"
         android:entries="@array/AdvancementPreferenceEntries"
         android:entryValues="@array/AdvancementPreferenceEntryValues"
         android:defaultValue="@string/AdvancementPreferenceDefault" />
 
     <CheckBoxPreference
-        android:key="@string/SoundPreferenceKey"
-        android:title="@string/SoundPreferenceTitle"
+        android:key="@string/SoundOnPreferenceKey"
+        android:title="@string/SoundOnPreferenceTitle"
         android:defaultValue="true" />
 
     <ListPreference
         android:key="@string/ProjectExportPreferenceKey"
         android:title="@string/ProjectExportPreferenceTitle"
+        app:useSimpleSummaryProvider="false"
+        android:summary="@string/ProjectExportPreferenceSummary"
         android:entries="@array/ProjectExportPreferenceEntries"
         android:entryValues="@array/ProjectExportPreferenceEntryValues"
         android:defaultValue="@string/ProjectExportPreferenceDefault" />
@@ -29,10 +34,11 @@
     <ListPreference
         android:key="@string/UniquenessListPreferenceKey"
         android:title="@string/UniquenessListPreferenceTitle"
+        app:useSimpleSummaryProvider="false"
         android:summary="@string/UniquenessListPreferenceSummary"
         android:entries="@array/UniquenessListPreferenceEntries"
         android:entryValues="@array/UniquenessListPreferenceEntryValues"
         android:defaultValue="@string/UniquenessListPreferenceDefault"
         android:enabled="false" />
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

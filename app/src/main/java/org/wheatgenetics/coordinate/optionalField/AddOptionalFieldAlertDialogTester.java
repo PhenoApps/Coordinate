@@ -3,7 +3,8 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
@@ -17,8 +18,8 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-                                        private final android.app.Activity activity;
-    @android.support.annotation.NonNull private final
+                                 private final android.app.Activity activity;
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
             handler;
 
@@ -27,7 +28,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // endregion
 
     public AddOptionalFieldAlertDialogTester(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
         handler) { super(); this.activity = activity; this.handler = handler; }
 

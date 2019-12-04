@@ -8,7 +8,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject while OptionalField does.)
  *
  * Uses:
- * android.support.annotation.NonNull
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.javalib.Utils
  */
@@ -18,14 +18,13 @@ public abstract class BaseOptionalField extends java.lang.Object
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
 
     // region Fields
-    @android.support.annotation.NonNull private final java.lang.String name, hint    ;
-    @android.support.annotation.NonNull private       java.lang.String value   = ""  ;
-                                        private       boolean          checked = true;
+    @androidx.annotation.NonNull private final java.lang.String name, hint    ;
+    @androidx.annotation.NonNull private       java.lang.String value   = ""  ;
+                                 private       boolean          checked = true;
     // endregion
 
     // region Private Methods
-    @android.support.annotation.NonNull
-    private static java.lang.String valid(final java.lang.String name)
+    @androidx.annotation.NonNull private static java.lang.String valid(final java.lang.String name)
     {
         if (null == name)
             throw new java.lang.AssertionError();
@@ -43,7 +42,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Constructors
-    BaseOptionalField(@android.support.annotation.NonNull final java.lang.String name,
+    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name,
     final java.lang.String hint)
     {
         super();
@@ -52,12 +51,12 @@ public abstract class BaseOptionalField extends java.lang.Object
         this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull                   (hint).trim();
     }
 
-    BaseOptionalField(@android.support.annotation.NonNull final java.lang.String name)
+    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name)
     { this(name,""); }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     { return this.getName(); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -77,7 +76,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     }
 
     /** Overridden just to elevate from protected to public. */
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
     throws java.lang.CloneNotSupportedException { return super.clone(); }
     // endregion
 
@@ -96,14 +95,13 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Public Methods
     // region Getter and Setter Public Methods
-    @android.support.annotation.NonNull public java.lang.String getName() { return this.name; }
-
-    @android.support.annotation.NonNull public java.lang.String getValue() { return this.value; }
+    @androidx.annotation.NonNull public java.lang.String getName () { return this.name ; }
+    @androidx.annotation.NonNull public java.lang.String getValue() { return this.value; }
 
     public void setValue(final java.lang.String value)
     { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value).trim(); }
 
-    @android.support.annotation.NonNull public java.lang.String getHint() { return this.hint; }
+    @androidx.annotation.NonNull public java.lang.String getHint() { return this.hint; }
 
     public void setChecked(final boolean checked) { this.checked = checked; }
     // endregion

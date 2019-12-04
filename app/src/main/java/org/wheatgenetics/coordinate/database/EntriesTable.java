@@ -6,10 +6,11 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  * android.database.CursorWrapper
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -34,9 +35,9 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // endregion
 
     // region Constructors
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntriesTable(final android.content.Context context,
-    @android.support.annotation.NonNull final java.lang.String tag)
+    @androidx.annotation.NonNull final java.lang.String tag)
     {
         super(
             /* context   => */ context                                                      ,
@@ -49,7 +50,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // endregion
 
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.IncludedEntryModel makeIncludedEntryModel(final long id,
     final long gridId, final int row, final int col, final java.lang.String value,
     final long timestamp)
@@ -63,17 +64,15 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
             /* timestamp => */ timestamp);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     final long gridId, final int rows, final int cols)
     { return new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean setEntryModel(
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModels entryModels,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel  entryModel )
     { entryModels.set(entryModel); return false; }
     // endregion
 
@@ -132,9 +131,8 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                 }
                 // endregion
 
-                private CursorWrapper(
-                @android.support.annotation.NonNull final android.database.Cursor cursor)
-                { super(cursor); }
+                private CursorWrapper(@androidx.annotation.NonNull
+                final android.database.Cursor cursor) { super(cursor); }
 
                 private org.wheatgenetics.coordinate.model.EntryModel make()
                 {
@@ -159,9 +157,9 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
         }
     }
 
-    @java.lang.Override @android.support.annotation.NonNull
+    @java.lang.Override @androidx.annotation.NonNull
     android.content.ContentValues getContentValuesForInsert(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = super.getContentValuesForInsert(model);
         {
@@ -190,7 +188,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     // endregion
 
     // region Operations
-    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.EntryModels load(
+    @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.EntryModels load(
     final long gridId, final int rows, final int cols)
     {
         final org.wheatgenetics.coordinate.model.EntryModels result;

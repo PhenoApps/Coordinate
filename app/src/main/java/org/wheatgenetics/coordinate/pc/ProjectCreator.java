@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.pc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
@@ -20,12 +21,12 @@ public class ProjectCreator extends java.lang.Object
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void handleCreateProjectDone(
-        @android.support.annotation.IntRange(from = 1) long projectId);
+        @androidx.annotation.IntRange(from = 1) long projectId);
     }
 
     // region Fields
-                                         private final android.app.Activity activity;
-    @android.support.annotation.Nullable private final
+                                  private final android.app.Activity activity;
+    @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
@@ -35,7 +36,7 @@ public class ProjectCreator extends java.lang.Object
     // endregion
 
     // region Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -68,7 +69,7 @@ public class ProjectCreator extends java.lang.Object
     public ProjectCreator(final android.app.Activity activity)
     { super(); this.activity = activity; this.handler = null; }
 
-    public ProjectCreator(final android.app.Activity activity, @android.support.annotation.Nullable
+    public ProjectCreator(final android.app.Activity activity, @androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
     // endregion

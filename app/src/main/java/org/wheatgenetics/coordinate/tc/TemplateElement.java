@@ -2,8 +2,9 @@ package org.wheatgenetics.coordinate.tc;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
  * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.Cell
  *
@@ -15,7 +16,7 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface TemplateHandler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler;
 
     private boolean isExcluded()
@@ -24,11 +25,11 @@ class TemplateElement extends org.wheatgenetics.coordinate.Element
             (org.wheatgenetics.coordinate.model.Cell) this.elementModel);
     }
 
-    TemplateElement(                    final org.wheatgenetics.coordinate.model.Cell cell    ,
-    @android.support.annotation.NonNull final android.widget.TextView                 textView,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.TemplateElement.Handler handler,
-    @android.support.annotation.NonNull final
+    TemplateElement(             final org.wheatgenetics.coordinate.model.Cell cell    ,
+    @androidx.annotation.NonNull final android.widget.TextView                 textView,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.tc.TemplateElement.Handler
+        handler,
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler templateHandler)
     {
         super(cell, textView, handler); this.templateHandler = templateHandler;

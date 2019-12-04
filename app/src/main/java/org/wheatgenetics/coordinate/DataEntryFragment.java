@@ -5,15 +5,16 @@ package org.wheatgenetics.coordinate;
  * android.app.Activity
  * android.content.Context
  * android.os.Bundle
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.v4.app.Fragment
  * android.view.LayoutInflater
  * android.view.View
  * android.view.ViewGroup
  * android.widget.EditText
  * android.widget.LinearLayout
  * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.fragment.app.Fragment
  *
  * org.wheatgenetics.androidlibrary.ClearingEditorActionListener
  * org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
@@ -25,7 +26,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.BuildConfig
  * org.wheatgenetics.coordinate.R
  */
-public class DataEntryFragment extends android.support.v4.app.Fragment
+public class DataEntryFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
@@ -51,19 +52,19 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     public DataEntryFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
-    @java.lang.Override public void onAttach(final android.content.Context context)
+    @java.lang.Override public void onAttach(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         super.onAttach(context);
 
         if (context instanceof org.wheatgenetics.coordinate.DataEntryFragment.Handler)
             this.handler = (org.wheatgenetics.coordinate.DataEntryFragment.Handler) context;
-        else
-            throw new java.lang.RuntimeException(null == context ?
-                "context" : context.toString() + " must implement Handler");
+        else throw new java.lang.RuntimeException(
+            context.toString() + " must implement Handler");
     }
 
     @java.lang.Override public android.view.View onCreateView(
-    @android.support.annotation.NonNull final android.view.LayoutInflater inflater,
+    @androidx.annotation.NonNull final android.view.LayoutInflater inflater,
     final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment:
@@ -72,7 +73,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     }
 
     @java.lang.Override public void onActivityCreated(
-    @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
 

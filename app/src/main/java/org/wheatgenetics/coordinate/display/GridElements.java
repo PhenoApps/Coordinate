@@ -3,12 +3,13 @@ package org.wheatgenetics.coordinate.display;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
  * android.widget.TextView
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -25,26 +26,26 @@ class GridElements extends org.wheatgenetics.coordinate.Elements
 implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
 {
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.display.GridElement.Handler handler;
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler;
-    @android.support.annotation.Nullable private final
+    @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
 
     private int activeRow, activeCol;
     // endregion
 
     GridElements(
-    @android.support.annotation.NonNull            final android.app.Activity activity,
-    @android.support.annotation.IntRange(from = 1) final int                  rows    ,
-    @android.support.annotation.IntRange(from = 1) final int                  cols    ,
+    @androidx.annotation.NonNull            final android.app.Activity activity,
+    @androidx.annotation.IntRange(from = 1) final int                  rows    ,
+    @androidx.annotation.IntRange(from = 1) final int                  cols    ,
     final int activeRow, final int activeCol,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.display.GridElement.Handler handler,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler,
-    @android.support.annotation.Nullable final
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.Handler
+        handler,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.GridHandler
+        gridHandler,
+    @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(activity);
@@ -53,8 +54,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     }
 
     // region Overridden Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
     protected org.wheatgenetics.coordinate.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
@@ -74,7 +75,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     { super.clear(); this.activeRow = this.activeCol = -1; }
 
     // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Method
-    @java.lang.Override public void activate(@android.support.annotation.NonNull
+    @java.lang.Override public void activate(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.display.GridElement gridElement)
     {
         final int newActiveRow = gridElement.getRow(), newActiveCol = gridElement.getCol();
@@ -98,8 +99,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
 
     /** Note: Overloaded, not overridden. */
     void allocate(
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols,
+    @androidx.annotation.IntRange(from = 1) final int rows,
+    @androidx.annotation.IntRange(from = 1) final int cols,
     final int activeRow, final int activeCol)
     { this.allocate(rows, cols); this.activeRow = activeRow; this.activeCol = activeCol; }
 }

@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
+ * androidx.annotation.NonNull
  *
  * org.json.JSONException
  * org.json.JSONObject
@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.model;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CellTest extends java.lang.Object
 {
-    @android.support.annotation.NonNull static org.json.JSONObject makeJSONObject(
+    @androidx.annotation.NonNull static org.json.JSONObject makeJSONObject(
     final int row, final int col) throws org.json.JSONException
     {
         final org.json.JSONObject result = new org.json.JSONObject();

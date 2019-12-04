@@ -6,8 +6,9 @@ package org.wheatgenetics.coordinate.optionalField;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
  *
@@ -25,7 +26,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
             handler;
 
@@ -43,7 +44,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
             this.nonNullOptionalFields.setChecked(/* index => */ index, /* checked => */ checked);
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener()
     {
         if (null == this.onMultiChoiceClickListenerInstance)
@@ -72,7 +73,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // endregion
 
     public CheckAndAddOptionalFieldsAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
         handler) { super(activity); this.handler = handler; }
 
@@ -100,7 +101,7 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     // endregion
     // endregion
 
-    public void show(@android.support.annotation.Nullable
+    public void show(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         if (null != nonNullOptionalFields)

@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
+ * androidx.annotation.IntRange
  *
  * org.junit.Assert
  * org.junit.Test
@@ -113,10 +113,10 @@ public class JoinedGridModelsTest extends java.lang.Object
         class Processor extends java.lang.Object
         implements org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
         {
-            @android.support.annotation.IntRange(from = 1) private final long gridId;
+            @androidx.annotation.IntRange(from = 1) private final long gridId;
 
             private Processor(@java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 1) final long gridId)
+            @androidx.annotation.IntRange(from = 1) final long gridId)
             { super(); this.gridId = gridId; }
 
             @java.lang.Override public void process(

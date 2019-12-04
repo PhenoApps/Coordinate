@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
@@ -20,7 +20,7 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
         java.util.ArrayList<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
             arrayListInstance = null;                                                   // lazy load
 
-    @android.support.annotation.NonNull private java.util.ArrayList<
+    @androidx.annotation.NonNull private java.util.ArrayList<
     org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> arrayList()
     {
         if (null == this.arrayListInstance)
@@ -30,7 +30,7 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
         return this.arrayListInstance;
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override boolean isInRange(final int i)
     {
         // noinspection SimplifiableConditionalExpression
@@ -40,18 +40,18 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
 
     // region Overridden Methods
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override @android.support.annotation.NonNull public java.util.Iterator<
+    @java.lang.Override @androidx.annotation.NonNull public java.util.Iterator<
     org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> iterator()
     {
         @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
         class Iterator extends java.lang.Object implements
         java.util.Iterator<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
         {
-            @android.support.annotation.NonNull private final java.util.ListIterator<
+            @androidx.annotation.NonNull private final java.util.ListIterator<
                 org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
                     listIterator;
 
-            private Iterator(@android.support.annotation.NonNull final java.util.ArrayList<
+            private Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
             org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> arrayList)
             { super(); this.listIterator = arrayList.listIterator(); }
 
@@ -82,12 +82,12 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
             return false;
     }
 
-    @java.lang.Override @android.support.annotation.IntRange(from = 0) public int size()
+    @java.lang.Override @androidx.annotation.IntRange(from = 0) public int size()
     { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
-    @java.lang.Override @android.support.annotation.Nullable
+    @java.lang.Override @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.model.JoinedGridModel get(
-    @android.support.annotation.IntRange(from = 0) final int i)
+    @androidx.annotation.IntRange(from = 0) final int i)
     {
         if (null == this.arrayListInstance)
             return null;

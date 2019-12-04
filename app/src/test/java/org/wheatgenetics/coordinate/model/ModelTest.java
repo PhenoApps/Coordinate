@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
+ * androidx.annotation.IntRange
  *
  * org.junit.Assert
  * org.junit.Test
@@ -19,8 +19,8 @@ public class ModelTest extends java.lang.Object
      */
     private static class ConcreteModel extends org.wheatgenetics.coordinate.model.Model
     {
-        ConcreteModel()                                                             { super()  ; }
-        ConcreteModel(@android.support.annotation.IntRange(from = 1) final long id) { super(id); }
+        ConcreteModel()                                                      { super()  ; }
+        ConcreteModel(@androidx.annotation.IntRange(from = 1) final long id) { super(id); }
     }
 
     // region Constructor Tests

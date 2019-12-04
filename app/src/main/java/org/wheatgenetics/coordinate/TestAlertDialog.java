@@ -3,11 +3,12 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.Button
  * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -151,7 +152,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
     excludedRowsOrColsAlertDialogTester()
     {
@@ -395,7 +396,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
-    @java.lang.Override public void handleTemplateCreated(@android.support.annotation.NonNull
+    @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { this.templateModel = templateModel; this.refreshText(); }
     // endregion

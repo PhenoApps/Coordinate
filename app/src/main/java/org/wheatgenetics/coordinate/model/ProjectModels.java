@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.model.ProjectModel
  */
@@ -15,7 +15,7 @@ public class ProjectModels extends java.lang.Object
         arrayListInstance = null;                                                       // lazy load
 
     // region Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private java.util.ArrayList<org.wheatgenetics.coordinate.model.ProjectModel> arrayList()
     {
         if (null == this.arrayListInstance)
@@ -37,11 +37,11 @@ public class ProjectModels extends java.lang.Object
     public void add(final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     { if (null != projectModel) this.arrayList().add(projectModel); }
 
-    @android.support.annotation.IntRange(from = 0) public int size()
+    @androidx.annotation.IntRange(from = 0) public int size()
     { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
 
-    @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.ProjectModel get(
-    @android.support.annotation.IntRange(from = 0) final int i)
+    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.ProjectModel get(
+    @androidx.annotation.IntRange(from = 0) final int i)
     {
         if (null == this.arrayListInstance)
             return null;
@@ -49,9 +49,9 @@ public class ProjectModels extends java.lang.Object
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
-    @android.support.annotation.Nullable public java.lang.String[] titles()
+    @androidx.annotation.Nullable public java.lang.String[] titles()
     {
-        @android.support.annotation.IntRange(from = 0) final int size = this.size();
+        @androidx.annotation.IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;

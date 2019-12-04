@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
  *
  * org.json.JSONArray
  * org.json.JSONObject
@@ -25,7 +25,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     private static final java.lang.String NAME1 = "name1", VALUE1 = "value1", HINT1 = "hint1";
 
     // region Private Methods
-    @android.support.annotation.IntRange(from = 0) private static int size(
+    @androidx.annotation.IntRange(from = 0) private static int size(
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         int result = 0;
@@ -37,7 +37,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
         return result;
     }
 
-    @android.support.annotation.NonNull private static org.json.JSONObject makeJSONObject()
+    @androidx.annotation.NonNull private static org.json.JSONObject makeJSONObject()
     {
         return org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.NAME1 ,
@@ -45,7 +45,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.HINT1 );
     }
 
-    @android.support.annotation.NonNull private static org.json.JSONArray makeJSONArray()
+    @androidx.annotation.NonNull private static org.json.JSONArray makeJSONArray()
     {
         final org.json.JSONArray result = new org.json.JSONArray();
         result.put(
@@ -57,7 +57,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     }
     // endregion
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
     makeNonNullOptionalFields()
     {

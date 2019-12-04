@@ -5,10 +5,11 @@ package org.wheatgenetics.coordinate.tc;
  * android.app.Activity
  * android.content.Intent
  * android.os.Bundle
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.v7.app.AppCompatActivity
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -23,22 +24,21 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
  */
-public class ExcludeCellsActivity extends android.support.v7.app.AppCompatActivity
+public class ExcludeCellsActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 {
     @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) private static class DisplayModel
     extends java.lang.Object implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         // region Fields
-        @android.support.annotation.IntRange(from = 1) private final int     rows, cols;
-                                                       private final boolean
-                                                           colNumbering, rowNumbering;
+        @androidx.annotation.IntRange(from = 1) private final int     rows        , cols        ;
+                                                private final boolean colNumbering, rowNumbering;
         // endregion
 
         private DisplayModel(
-        @android.support.annotation.IntRange(from = 1) final int               rows  ,
-        @android.support.annotation.IntRange(from = 1) final int               cols  ,
-        @android.support.annotation.NonNull            final android.os.Bundle bundle)
+        @androidx.annotation.IntRange(from = 1) final int               rows  ,
+        @androidx.annotation.IntRange(from = 1) final int               cols  ,
+        @androidx.annotation.NonNull            final android.os.Bundle bundle)
         {
             super();
 
@@ -51,19 +51,19 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         }
 
         // region Overridden Methods
-        @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRows()
+        @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRows()
         { return this.rows; }
 
-        @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getCols()
+        @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getCols()
         { return this.cols; }
 
         @java.lang.Override public boolean getColNumbering() { return this.colNumbering; }
         @java.lang.Override public boolean getRowNumbering() { return this.rowNumbering; }
 
-        @java.lang.Override @android.support.annotation.Nullable
+        @java.lang.Override @androidx.annotation.Nullable
         public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-        @android.support.annotation.IntRange(from = 1) final int row,
-        @android.support.annotation.IntRange(from = 1) final int col)
+        @androidx.annotation.IntRange(from = 1) final int row,
+        @androidx.annotation.IntRange(from = 1) final int col)
         { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
         // endregion
     }
@@ -89,7 +89,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     }
 
     private boolean isExcludedCell(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
     {
         // noinspection SimplifiableConditionalExpression
         return null == this.excludedCells ? false : this.excludedCells.contains(cell);
@@ -106,7 +106,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         final android.os.Bundle bundle = this.getIntent().getExtras();
         if (null != bundle)
         {
-            @android.support.annotation.IntRange(from = 1) final int
+            @androidx.annotation.IntRange(from = 1) final int
                 rows = bundle.getInt(
                     org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY),
                 cols = bundle.getInt(

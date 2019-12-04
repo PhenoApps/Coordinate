@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
+ * androidx.annotation.NonNull
  *
  * org.junit.Assert
  * org.junit.Test
@@ -21,11 +21,11 @@ public class BaseOptionalFieldTest extends java.lang.Object
     org.wheatgenetics.coordinate.optionalField.BaseOptionalField
     {
         private ConcreteBaseOptionalField(
-        @android.support.annotation.NonNull final java.lang.String name,
-                                            final java.lang.String hint) { super(name, hint); }
+        @androidx.annotation.NonNull final java.lang.String name,
+                                     final java.lang.String hint) { super(name, hint); }
 
-        private ConcreteBaseOptionalField(
-        @android.support.annotation.NonNull final java.lang.String name) { super(name); }
+        private ConcreteBaseOptionalField(@androidx.annotation.NonNull final java.lang.String name)
+        { super(name); }
     }
 
     // region Constructor Tests

@@ -5,9 +5,10 @@ package org.wheatgenetics.coordinate.database;
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
- * android.support.annotation.IntRange
- * android.support.annotation.RawRes
- * android.support.test.InstrumentationRegistry
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.RawRes
+ * androidx.test.platform.app.InstrumentationRegistry
  *
  * org.junit.After
  * org.junit.Assert
@@ -47,9 +48,9 @@ public class DatabaseTest extends java.lang.Object
     private static void logInfo(final int a, final int e)
     { android.util.Log.i("DatabaseTest", java.lang.String.format("'%c'|'%c'", a, e)); }
 
-    private static void testTable(     final java.lang.String                       name,
-                                       final android.database.sqlite.SQLiteDatabase db  ,
-    @android.support.annotation.RawRes final int                                    id  )
+    private static void testTable(final java.lang.String                       name,
+                                  final android.database.sqlite.SQLiteDatabase db  ,
+    @androidx.annotation.RawRes   final int                                    id  )
     throws java.io.IOException
     {
         final java.io.StringReader actual;
@@ -71,14 +72,14 @@ public class DatabaseTest extends java.lang.Object
         org.junit.Assert.assertNotNull(actual);
 
         final java.io.InputStreamReader expected = new java.io.InputStreamReader(
-            android.support.test.InstrumentationRegistry.getTargetContext()
-                .getResources().openRawResource(id));
+            androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                .getTargetContext().getResources().openRawResource(id));
 
         // 'a' is for actual and 'e' is for expected.
         org.wheatgenetics.coordinate.database.DatabaseTest.logInfo('a','e');
         do
         {
-            @android.support.annotation.IntRange(from = -1) int a, e;
+            @androidx.annotation.IntRange(from = -1) int a, e;
 
             do { a = actual.read() /* throws java.io.IOException */; }
             while (java.lang.Character.isWhitespace(a));
@@ -137,7 +138,8 @@ public class DatabaseTest extends java.lang.Object
     {
         final android.database.sqlite.SQLiteDatabase db =
             org.wheatgenetics.coordinate.database.Database.db(
-                /* context  => */ android.support.test.InstrumentationRegistry.getTargetContext(),
+                /* context => */ androidx.test.platform.app.InstrumentationRegistry
+                    .getInstrumentation().getTargetContext(),
                 /* fileName => */
                     org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
         org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException

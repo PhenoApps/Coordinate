@@ -2,12 +2,12 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.DrawableRes
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.DrawableRes
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -20,26 +20,26 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 {
     private java.lang.String value;
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    void uncheckedSetValue(@android.support.annotation.Nullable final java.lang.String value)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void uncheckedSetValue(@androidx.annotation.Nullable final java.lang.String value)
     { this.value = null == value ? null : value.trim(); }
 
     // region Constructors
     IncludedEntryModel(
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  row   ,
-    @android.support.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
+    @androidx.annotation.IntRange(from = 1) final long gridId,
+    @androidx.annotation.IntRange(from = 1) final int  row   ,
+    @androidx.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
 
     public IncludedEntryModel(
-    @android.support.annotation.IntRange(from = 1) final long             id       ,
-    @android.support.annotation.IntRange(from = 1) final long             gridId   ,
-    @android.support.annotation.IntRange(from = 1) final int              row      ,
-    @android.support.annotation.IntRange(from = 1) final int              col      ,
-                                                   final java.lang.String value    ,
-    @android.support.annotation.IntRange(from = 0) final long             timestamp)
+    @androidx.annotation.IntRange(from = 1) final long             id       ,
+    @androidx.annotation.IntRange(from = 1) final long             gridId   ,
+    @androidx.annotation.IntRange(from = 1) final int              row      ,
+    @androidx.annotation.IntRange(from = 1) final int              col      ,
+                                            final java.lang.String value    ,
+    @androidx.annotation.IntRange(from = 0) final long             timestamp)
     { super(id, gridId, row, col, timestamp); this.uncheckedSetValue(value); }
 
-    public IncludedEntryModel(@android.support.annotation.NonNull final
+    public IncludedEntryModel(@androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
     { super(excludedEntryModel); }
     // endregion
@@ -48,7 +48,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override java.lang.String getSeedExportValue()
     { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(),"BLANK_"); }
 
-    @java.lang.Override @android.support.annotation.NonNull java.lang.String getDNAExportValue(
+    @java.lang.Override @androidx.annotation.NonNull java.lang.String getDNAExportValue(
     final java.lang.String sample_id)
     {
         final java.lang.String value = this.getValue();
@@ -64,7 +64,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override public java.lang.String getValue        () { return this.value     ; }
     @java.lang.Override public java.lang.String getDatabaseValue() { return this.getValue(); }
 
-    @java.lang.Override @android.support.annotation.DrawableRes public int backgroundResource()
+    @java.lang.Override @androidx.annotation.DrawableRes public int backgroundResource()
     {
         return this.valueIsEmpty() ?
             org.wheatgenetics.coordinate.R.drawable.empty_included_entry :
@@ -73,7 +73,7 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     // endregion
 
     // region Public Methods
-    public void setValue(@android.support.annotation.Nullable final java.lang.String value)
+    public void setValue(@androidx.annotation.Nullable final java.lang.String value)
     { this.uncheckedSetValue(value); }
 
     public boolean valueIsEmpty()

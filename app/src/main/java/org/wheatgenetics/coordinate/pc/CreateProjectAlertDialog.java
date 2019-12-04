@@ -3,10 +3,11 @@ package org.wheatgenetics.coordinate.pc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
@@ -19,7 +20,7 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     { public abstract boolean handleCreateProjectDone(java.lang.String projectTitle); }
 
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler;
     private android.widget.EditText projectTitleEditText;
     // endregion
@@ -39,8 +40,7 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
                     org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogInUseToast);
     }
 
-    CreateProjectAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
+    CreateProjectAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 

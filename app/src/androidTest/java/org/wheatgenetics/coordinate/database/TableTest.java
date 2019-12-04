@@ -3,7 +3,8 @@ package org.wheatgenetics.coordinate.database;
 /**
  * Uses:
  * android.database.Cursor
- * android.support.test.InstrumentationRegistry
+ *
+ * androidx.test.platform.app.InstrumentationRegistry
  *
  * org.junit.After
  * org.junit.Assert
@@ -30,7 +31,8 @@ public class TableTest extends java.lang.Object
         private ConcreteTable()
         {
             super(
-                /* context   => */ android.support.test.InstrumentationRegistry.getTargetContext(),
+                /* context => */ androidx.test.platform.app.InstrumentationRegistry
+                    .getInstrumentation().getTargetContext(),
                 /* tableName => */"sqlite_master",
                 /* tag       => */"TableTest",
                 /* databaseName => */

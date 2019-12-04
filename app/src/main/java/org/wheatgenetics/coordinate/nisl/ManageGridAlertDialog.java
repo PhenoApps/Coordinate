@@ -5,8 +5,9 @@ package org.wheatgenetics.coordinate.nisl;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.StringRes
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -19,14 +20,14 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 
     // region Fields
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration", "RedundantSuppression"})
-    @android.support.annotation.StringRes private static final int
+    @androidx.annotation.StringRes private static final int
         BOTH_ITEMS[] = new int[]{
             org.wheatgenetics.coordinate.R.string.ManageGridAlertDialogLoad  ,
             org.wheatgenetics.coordinate.R.string.ManageGridAlertDialogDelete},
         LOAD_ITEM[] = new int[]{
             org.wheatgenetics.coordinate.R.string.ManageGridAlertDialogLoad};
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler handler;
 
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null; // lazy
@@ -36,7 +37,7 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     private void loadGrid  () { this.handler.loadGrid  (); }
     private void deleteGrid() { this.handler.deleteGrid(); }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
         if (null == this.onClickListenerInstance) this.onClickListenerInstance =
@@ -62,7 +63,7 @@ class ManageGridAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
     }
     // endregion
 
-    ManageGridAlertDialog(final android.app.Activity activity, @android.support.annotation.NonNull
+    ManageGridAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 

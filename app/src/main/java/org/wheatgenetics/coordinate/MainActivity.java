@@ -11,19 +11,6 @@ package org.wheatgenetics.coordinate;
  * android.Manifest.permission
  * android.media.MediaPlayer
  * android.os.Bundle
- * android.support.annotation.IdRes
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.StringRes
- * android.support.design.widget.NavigationView
- * android.support.v4.app.FragmentManager
- * android.support.v4.view.GravityCompat
- * android.support.v4.widget.DrawerLayout
- * android.support.v7.app.ActionBar
- * android.support.v7.app.ActionBarDrawerToggle
- * android.support.v7.app.AppCompatActivity
- * android.support.v7.widget.Toolbar
  * android.view.inputmethod.InputMethodManager
  * android.view.Menu
  * android.view.MenuInflater
@@ -31,6 +18,21 @@ package org.wheatgenetics.coordinate;
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.TextView
+ *
+ * androidx.annotation.IdRes
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ * androidx.appcompat.app.ActionBar
+ * androidx.appcompat.app.ActionBarDrawerToggle
+ * androidx.appcompat.app.AppCompatActivity
+ * androidx.appcompat.widget.Toolbar
+ * androidx.core.view.GravityCompat
+ * androidx.drawerlayout.widget.DrawerLayout
+ * androidx.fragment.app.FragmentManager
+ *
+ * com.google.android.material.navigation.NavigationView
  *
  * org.wheatgenetics.javalib.Dir.PermissionException
  * org.wheatgenetics.javalib.Dir.PermissionRequestedException
@@ -94,7 +96,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
  */
-public class MainActivity extends android.support.v7.app.AppCompatActivity implements
+public class MainActivity extends androidx.appcompat.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
@@ -110,7 +112,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region Fields
-    private android.support.v4.widget.DrawerLayout drawerLayout;
+    private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
     private android.view.MenuItem manageGridMenuItem = null, exportGridMenuItem = null;
     private android.view.MenuItem templateMenuItem = null, importTemplateMenuItem = null,
         exportTemplateMenuItem = null, deleteTemplateMenuItem = null;
@@ -146,14 +148,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
 
     private java.lang.String versionName, fileName, directoryName;
-    @android.support.annotation.IntRange(from = 1) private long projectId;
+    @androidx.annotation.IntRange(from = 1) private long projectId;
 
     private org.wheatgenetics.coordinate.UniqueAlertDialog uniqueAlertDialog = null;    // lazy load
     // endregion
 
     // region Private Methods
     // region Table Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -161,7 +163,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         return this.templatesTableInstance;
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -169,11 +171,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         return this.projectsTableInstance;
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     { return org.wheatgenetics.coordinate.Utils.gridsTable(this.gridsTableInstance,this); }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
         return org.wheatgenetics.coordinate.Utils.entriesTable(
@@ -186,7 +188,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
-    private void showLongToast(@android.support.annotation.StringRes final int text)
+    private void showLongToast(@androidx.annotation.StringRes final int text)
     { this.showLongToast(this.getString(text)); }
     // endregion
 
@@ -194,7 +196,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void showShortToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
 
-    private void showShortToast(@android.support.annotation.StringRes final int text)
+    private void showShortToast(@androidx.annotation.StringRes final int text)
     { this.showShortToast(this.getString(text)); }
     // endregion
     // endregion
@@ -338,7 +340,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region configureNavHeaderMain() configureNavigationDrawer() Private Methods
-    private void setTextViewText(@android.support.annotation.IdRes final int textViewId,
+    private void setTextViewText(@androidx.annotation.IdRes final int textViewId,
     final java.lang.String text)
     {
         final android.widget.TextView textView = this.findViewById(textViewId);
@@ -382,7 +384,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private void closeDrawer()
     {
         if (null != this.drawerLayout)
-            this.drawerLayout.closeDrawer(android.support.v4.view.GravityCompat.START);
+            this.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START);
     }
 
     private void populateFragments()
@@ -392,8 +394,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     // region loadJoinedGridModel() Private Methods
-    private void loadJoinedGridModel(
-    @android.support.annotation.IntRange(from = 0) final long gridId)
+    private void loadJoinedGridModel(@androidx.annotation.IntRange(from = 0) final long gridId)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(gridId))
             this.joinedGridModel = null;
@@ -411,7 +412,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     private void loadJoinedGridModelThenPopulate(
-    @android.support.annotation.IntRange(from = 0) final long gridId)
+    @androidx.annotation.IntRange(from = 0) final long gridId)
     { this.loadJoinedGridModel(gridId); this.populateFragments(); }
 
     private void clearJoinedGridModelThenPopulate()
@@ -528,7 +529,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    private void exportTemplate(@android.support.annotation.NonNull
+    private void exportTemplate(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
     final java.lang.String                                 fileName     )
     { this.templateModel = templateModel; this.fileName = fileName; this.exportTemplate(); }
@@ -546,11 +547,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
 
     // region Project Private Methods
-    @android.support.annotation.IntRange(from = 0) private long getProjectId()
+    @androidx.annotation.IntRange(from = 0) private long getProjectId()
     { return this.projectModelIsLoaded() ? this.projectModel.getId() : 0; }
 
-    private void handleProjectDeleted(
-    @android.support.annotation.IntRange(from = 1) final long projectId)
+    private void handleProjectDeleted(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
         if (this.projectModelIsLoaded()) if (!this.projectsTable().exists(projectId))
             this.clearProjectModel();
@@ -644,7 +644,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    private void exportProject(@android.support.annotation.IntRange(from = 1) final long projectId,
+    private void exportProject(@androidx.annotation.IntRange(from = 1) final long projectId,
     final java.lang.String directoryName)
     { this.projectId = projectId; this.directoryName = directoryName; this.exportProject(); }
     // endregion
@@ -675,7 +675,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         final android.view.Menu menu;
         {
-            final android.support.design.widget.NavigationView navigationView =
+            final com.google.android.material.navigation.NavigationView navigationView =
                 this.findViewById(org.wheatgenetics.coordinate.R.id.nav_view);  // From layout/acti-
             if (null == navigationView)                                         //  vity_main.xml.
                 menu = null;
@@ -704,8 +704,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     }
 
                                     @java.lang.Override public void loadGrid(
-                                    @android.support.annotation.IntRange(from = 1)
-                                        final long gridId)
+                                    @androidx.annotation.IntRange(from = 1) final long gridId)
                                     {
                                         org.wheatgenetics.coordinate.MainActivity
                                             .this.loadJoinedGridModelThenPopulate(gridId);
@@ -737,7 +736,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     }
 
                                     @java.lang.Override public void exportTemplate(
-                                    @android.support.annotation.NonNull final
+                                    @androidx.annotation.NonNull final
                                         org.wheatgenetics.coordinate.model.TemplateModel
                                         templateModel,
                                     final java.lang.String fileName)
@@ -766,8 +765,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     }
 
                                     @java.lang.Override public void loadProject(
-                                    @android.support.annotation.IntRange(from = 1)
-                                        final long projectId)
+                                    @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
                                         org.wheatgenetics.coordinate
                                             .MainActivity.this.loadProjectModel(projectId);
@@ -780,16 +778,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     }
 
                                     @java.lang.Override public void handleProjectDeleted(
-                                    @android.support.annotation.IntRange(from = 1)
-                                        final long projectId)
+                                    @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
                                         org.wheatgenetics.coordinate
                                             .MainActivity.this.handleProjectDeleted(projectId);
                                     }
 
                                     @java.lang.Override public void exportProject(
-                                    @android.support.annotation.IntRange(from = 1)
-                                        final long projectId,
+                                    @androidx.annotation.IntRange(from = 1) final long projectId,
                                     final java.lang.String directoryName)
                                     {
                                         org.wheatgenetics.coordinate.MainActivity
@@ -880,7 +876,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     private void handleDuplicateCheckException(
-    @android.support.annotation.NonNull final java.lang.String message)
+    @androidx.annotation.NonNull final java.lang.String message)
     {
         if (this.getSoundOn())
         {
@@ -907,18 +903,18 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         // region Configure action bar.
         {
-            final android.support.v7.widget.Toolbar toolbar = this.findViewById(
+            final androidx.appcompat.widget.Toolbar toolbar = this.findViewById(
                 org.wheatgenetics.coordinate.R.id.toolbar);         // From layout/app_bar_main.xml.
             this.setSupportActionBar(toolbar);
 
             {
-                final android.support.v7.app.ActionBar supportActionBar =
+                final androidx.appcompat.app.ActionBar supportActionBar =
                     this.getSupportActionBar();
                 if (null != supportActionBar) supportActionBar.setTitle(null);
             }
 
-            final android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle =
-                new android.support.v7.app.ActionBarDrawerToggle(
+            final androidx.appcompat.app.ActionBarDrawerToggle actionBarDrawerToggle =
+                new androidx.appcompat.app.ActionBarDrawerToggle(
                     this, this.drawerLayout, toolbar,
                     org.wheatgenetics.coordinate.R.string.navigation_drawer_open ,
                     org.wheatgenetics.coordinate.R.string.navigation_drawer_close)
@@ -969,18 +965,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
         // region Find fragments.
         {
-            final android.support.v4.app.FragmentManager fragmentManager =
+            final androidx.fragment.app.FragmentManager fragmentManager =
                 this.getSupportFragmentManager();
-            if (null != fragmentManager)
-            {
-                this.gridDisplayFragment =
-                    (org.wheatgenetics.coordinate.display.GridDisplayFragment)
-                    fragmentManager.findFragmentById(
-                        org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
-                this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
-                    fragmentManager.findFragmentById(
-                        org.wheatgenetics.coordinate.R.id.dataEntryFragment);
-            }
+            this.gridDisplayFragment = (org.wheatgenetics.coordinate.display.GridDisplayFragment)
+                fragmentManager.findFragmentById(
+                    org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
+            this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
+                fragmentManager.findFragmentById(
+                    org.wheatgenetics.coordinate.R.id.dataEntryFragment);
         }
         // endregion
 
@@ -1044,7 +1036,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override public void onBackPressed()
     {
         if (null != this.drawerLayout
-        &&  this.drawerLayout.isDrawerOpen(android.support.v4.view.GravityCompat.START))
+        &&  this.drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START))
             this.closeDrawer();
         else
             super.onBackPressed();
@@ -1058,7 +1050,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     @java.lang.Override public boolean onOptionsItemSelected(
-    @android.support.annotation.NonNull final android.view.MenuItem item)
+    @androidx.annotation.NonNull final android.view.MenuItem item)
     {
         // Handle action bar item clicks here.  The action bar will automatically handle clicks on
         // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
@@ -1076,6 +1068,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override protected void onActivityResult(final int requestCode,
     final int resultCode, final android.content.Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
+
         final java.lang.String barcodeScannerResult =
             org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
                 requestCode, resultCode, data);
@@ -1117,9 +1111,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
 
     @java.lang.Override public void onRequestPermissionsResult(final int requestCode,
-    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
         final java.lang.String permissions[],
-    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
         final int grantResults[])
     {
         boolean permissionFound = false;
@@ -1236,7 +1230,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
     }
 
-    @java.lang.Override @android.support.annotation.Nullable
+    @java.lang.Override @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
     {
         if (this.joinedGridModel instanceof
@@ -1368,11 +1362,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
     @java.lang.Override public void handleGridCreated(
-    @android.support.annotation.IntRange(from = 1) final long gridId)
+    @androidx.annotation.IntRange(from = 1) final long gridId)
     { this.loadJoinedGridModelThenPopulate(gridId); }
 
     @java.lang.Override public void loadProjectModel(
-    @android.support.annotation.IntRange(from = 1) final long projectId)
+    @androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.projectModel = org.wheatgenetics.coordinate.model.Model.illegal(projectId) ?
             null : this.projectsTable().get(projectId);

@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
+ * androidx.annotation.IntRange
  *
  * org.junit.Assert
  * org.junit.Test
@@ -24,11 +24,11 @@ public class BaseTemplateModelTest extends java.lang.Object
     extends org.wheatgenetics.coordinate.model.BaseTemplateModel
     {
         private ConcreteBaseTemplateModel(
-        @android.support.annotation.IntRange(from = 1) final long id, final java.lang.String title,
+        @androidx.annotation.IntRange(from = 1) final long id, final java.lang.String title,
         final org.wheatgenetics.coordinate.model.TemplateType type,
-        @android.support.annotation.IntRange(from = 1) final int rows                        ,
-        @android.support.annotation.IntRange(from = 1) final int cols                        ,
-        @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+        @androidx.annotation.IntRange(from = 1) final int rows                        ,
+        @androidx.annotation.IntRange(from = 1) final int cols                        ,
+        @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
         final boolean colNumbering, final boolean rowNumbering, final long timestamp)
         {
             super(id, title, type, rows, cols, generatedExcludedCellsAmount,
@@ -38,10 +38,10 @@ public class BaseTemplateModelTest extends java.lang.Object
         private ConcreteBaseTemplateModel(
         @java.lang.SuppressWarnings({"SameParameterValue"}) final java.lang.String title,
         final org.wheatgenetics.coordinate.model.TemplateType type,
-        @android.support.annotation.IntRange(from = 1) final int rows,
-        @android.support.annotation.IntRange(from = 1) final int cols,
-        @java.lang.SuppressWarnings({"SameParameterValue"})
-            @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+        @androidx.annotation.IntRange(from = 1) final int rows,
+        @androidx.annotation.IntRange(from = 1) final int cols,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 0)
+            final int generatedExcludedCellsAmount,
         final boolean colNumbering, final boolean rowNumbering,
         @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
         {

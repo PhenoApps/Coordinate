@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -36,8 +36,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Fields
-    @android.support.annotation.NonNull private final org.wheatgenetics.coordinate.model.Cell
-        maxCell;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.Cell maxCell;
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>
         cellTreeSetInstance = null;                                                     // lazy load
     // endregion
@@ -54,11 +53,11 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private java.util.Iterator<org.wheatgenetics.coordinate.model.Cell> iterator()
     { return null == this.cellTreeSetInstance ? null : this.cellTreeSetInstance.iterator(); }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell> cellTreeSet()
     {
         if (null == this.cellTreeSetInstance)
@@ -71,24 +70,24 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 
     // region Constructors
     /** Assigns this.maxCell. */
-    private Cells(@android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell
+    private Cells(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell
         maxCell) { super(); this.maxCell = maxCell; }
 
     /** Creates this.maxCell. */
     @java.lang.SuppressWarnings({"CopyConstructorMissesField"}) private Cells(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells cells)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells cells)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
 
     /** Creates this.maxCell. */
     Cells(
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    @androidx.annotation.IntRange(from = 1) final int maxRow,
+    @androidx.annotation.IntRange(from = 1) final int maxCol)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
 
     /** Creates this.maxCell. */
-    public Cells(                                  final java.lang.String json  ,
-    @android.support.annotation.IntRange(from = 1) final int              maxRow,
-    @android.support.annotation.IntRange(from = 1) final int              maxCol)
+    public Cells(                           final java.lang.String json  ,
+    @androidx.annotation.IntRange(from = 1) final int              maxRow,
+    @androidx.annotation.IntRange(from = 1) final int              maxCol)
     {
         this(maxRow, maxCol);
 
@@ -118,7 +117,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     {
         if (null == this.cellTreeSetInstance)
             return "null";
@@ -171,7 +170,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(this);
@@ -200,10 +199,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         }
     }
 
-    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.Cells makeRandomCells(
-    @android.support.annotation.IntRange(from = 0)       int amount,
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol) throws
+    @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.Cells makeRandomCells(
+    @androidx.annotation.IntRange(from = 0)       int amount,
+    @androidx.annotation.IntRange(from = 1) final int maxRow,
+    @androidx.annotation.IntRange(from = 1) final int maxCol) throws
     org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
     org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
     {
@@ -244,13 +243,13 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     }
 
     boolean contains(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     { return this.contains(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
     void add(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
     int size() { return null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size(); }
@@ -258,7 +257,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 
     // region Public Methods
     public boolean contains(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell candidateCell)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell candidateCell)
     {
         // The following code checks to see if candidateCell is inRange().  If it isn't then we know
         // that it can't be present so contains() returns false.  (The check is actually not
@@ -286,7 +285,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         return null == this.cellTreeSetInstance ? false : this.cellTreeSetInstance.remove(cell);
     }
 
-    @android.support.annotation.Nullable public java.lang.String json()
+    @androidx.annotation.Nullable public java.lang.String json()
     {
         if (null == this.cellTreeSetInstance)
             return null;

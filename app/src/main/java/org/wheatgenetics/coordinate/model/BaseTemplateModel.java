@@ -8,11 +8,11 @@ package org.wheatgenetics.coordinate.model;
  * (BaseTemplateModel does not use org.json.* while DisplayTemplateModel and TemplateModel do.)
  *
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.Utils
  *
@@ -22,32 +22,32 @@ package org.wheatgenetics.coordinate.model;
 abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    @android.support.annotation.IntRange(from = 0) private final long timestamp;
+    @androidx.annotation.IntRange(from = 0) private final long timestamp;
 
     private java.lang.String                                title;
     private org.wheatgenetics.coordinate.model.TemplateType type ;
 
-    @android.support.annotation.IntRange(from = 1) private int rows, cols                  ;
-    @android.support.annotation.IntRange(from = 0) private int generatedExcludedCellsAmount;
+    @androidx.annotation.IntRange(from = 1) private int rows, cols                  ;
+    @androidx.annotation.IntRange(from = 0) private int generatedExcludedCellsAmount;
 
     private boolean          colNumbering, rowNumbering;
     private java.lang.String entryLabel                ;
     // endregion
 
     // region Private Methods
-    private void setRows(@android.support.annotation.IntRange(from = 1) final int rows)
+    private void setRows(@androidx.annotation.IntRange(from = 1) final int rows)
     { this.rows = org.wheatgenetics.coordinate.Utils.valid(rows,1); }
 
-    private void setCols(@android.support.annotation.IntRange(from = 1) final int cols)
+    private void setCols(@androidx.annotation.IntRange(from = 1) final int cols)
     { this.cols = org.wheatgenetics.coordinate.Utils.valid(cols,1); }
 
 
     /** Called by first and second constructor. */
     private void assign(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    @androidx.annotation.IntRange(from = 1) final int rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering)
     {
         this.setTitle(title); this.setType(type); this.setRows(rows); this.setCols(cols);
@@ -56,9 +56,9 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
-    @java.lang.SuppressWarnings({"DefaultLocale"}) @android.support.annotation.Nullable
+    @java.lang.SuppressWarnings({"DefaultLocale"}) @androidx.annotation.Nullable
     private static java.lang.String[] items(
-    @android.support.annotation.IntRange(from = 1) final int length, final java.lang.String label)
+    @androidx.annotation.IntRange(from = 1) final int length, final java.lang.String label)
     {
         if (length <= 0)
             return null;
@@ -75,14 +75,14 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     // region Constructors
     /** Called by first and fourth DisplayTemplateModel constructors. */
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    BaseTemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    BaseTemplateModel(@androidx.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    @androidx.annotation.IntRange(from = 1) final int rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id);
         this.assign(title, type, rows, cols,
@@ -91,14 +91,14 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
     /** Called by second DisplayTemplateModel constructor. */
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    @androidx.annotation.IntRange(from = 1) final int rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super();
         this.assign(title, type, rows, cols,
@@ -107,7 +107,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
     /** Called by third DisplayTemplateModel constructor. */
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     BaseTemplateModel()
     {
         super();
@@ -118,7 +118,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     { return java.lang.String.format(this.formatString(), "BaseTemplateModel") + "]"; }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -188,7 +188,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     // endregion
 
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.SuppressWarnings({"DefaultLocale"}) java.lang.String formatString()
     {
         return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d, genera" +
@@ -198,30 +198,30 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
             this.getRowNumbering(), this.getEntryLabel(), this.getTimestamp());
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setRows(final java.lang.String rows) { this.setRows(java.lang.Integer.valueOf(rows)); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setCols(final java.lang.String cols) { this.setCols(java.lang.Integer.valueOf(cols)); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setGeneratedExcludedCellsAmount(final java.lang.String generatedExcludedCellsAmount)
     {
         this.setGeneratedExcludedCellsAmount(
             java.lang.Integer.valueOf(generatedExcludedCellsAmount));
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setColNumbering(final java.lang.String colNumbering)
     { this.setColNumbering(java.lang.Boolean.valueOf(colNumbering)); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setRowNumbering(final java.lang.String rowNumbering)
     { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
 
     boolean entryLabelIsNotNull() { return null != this.getEntryLabel(); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setEntryLabel(final java.lang.String entryLabel) { this.entryLabel = entryLabel; }
     // endregion
 
@@ -236,15 +236,15 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     { this.type = templateType; }
 
 
-    @android.support.annotation.IntRange(from = 1) public int getRows() { return this.rows; }
-    @android.support.annotation.IntRange(from = 1) public int getCols() { return this.cols; }
+    @androidx.annotation.IntRange(from = 1) public int getRows() { return this.rows; }
+    @androidx.annotation.IntRange(from = 1) public int getCols() { return this.cols; }
 
 
-    @android.support.annotation.IntRange(from = 0) public int getGeneratedExcludedCellsAmount()
+    @androidx.annotation.IntRange(from = 0) public int getGeneratedExcludedCellsAmount()
     { return this.generatedExcludedCellsAmount; }
 
     public void setGeneratedExcludedCellsAmount(
-    @android.support.annotation.IntRange(from = 0) final int amount)
+    @androidx.annotation.IntRange(from = 0) final int amount)
     {
         this.generatedExcludedCellsAmount =
             org.wheatgenetics.coordinate.Utils.valid(amount,0);
@@ -261,13 +261,12 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     public java.lang.String getEntryLabel() { return this.entryLabel; }
 
 
-    @android.support.annotation.IntRange(from = 0) public long getTimestamp()
-    { return this.timestamp; }
+    @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
 
 
     public void assign(final java.lang.String title,
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols)
+    @androidx.annotation.IntRange(from = 1) final int rows,
+    @androidx.annotation.IntRange(from = 1) final int cols)
     {
         this.setTitle(title);       this.setRows(rows);       this.setCols(cols);
         this.setType(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
@@ -277,12 +276,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     public boolean isDefaultTemplate() { return this.getType().isDefaultTemplate(); }
 
 
-    @android.support.annotation.Nullable
-    public java.lang.String[] rowItems(final java.lang.String label)
+    @androidx.annotation.Nullable public java.lang.String[] rowItems(final java.lang.String label)
     { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getRows(), label); }
 
-    @android.support.annotation.Nullable
-    public java.lang.String[] colItems(final java.lang.String label)
+    @androidx.annotation.Nullable public java.lang.String[] colItems(final java.lang.String label)
     { return org.wheatgenetics.coordinate.model.BaseTemplateModel.items(this.getCols(), label); }
     // endregion
 }

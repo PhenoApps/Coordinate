@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.database;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -22,16 +23,16 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     { public void handleCGFUETCheckException() /* CGFUET == CurrentGridFullyUniqueEntriesTable */; }
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.database.CurrentGridFullyUniqueEntriesTable.Handler handler;
 
     CurrentGridFullyUniqueEntriesTable(final android.content.Context context,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.database.CurrentGridFullyUniqueEntriesTable.Handler handler)
     { super(context,"CurrentGridFullyUniqueEntriesTable"); this.handler = handler; }
 
     // region Overridden Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.model.IncludedEntryModel
     makeIncludedEntryModel(final long id, final long gridId, final int row, final int col,
     final java.lang.String value, final long timestamp)
@@ -52,10 +53,8 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
     }
 
     @java.lang.Override boolean setEntryModel(
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels,
-    @android.support.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModels entryModels,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel  entryModel )
     {
         if (entryModels instanceof org.wheatgenetics.coordinate.model.FullyUniqueEntryModels)
             try

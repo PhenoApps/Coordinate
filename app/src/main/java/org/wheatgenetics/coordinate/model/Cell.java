@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
  *
  * org.json.JSONException
  * org.json.JSONObject
@@ -17,19 +17,18 @@ org.wheatgenetics.coordinate.model.ElementModel
 {
     private static final java.lang.String ROW_JSON_NAME = "row", COL_JSON_NAME = "col";
 
-    @android.support.annotation.NonNull
-    private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.RowOrCol row, col;
 
     // region Constructors
     /** Assigns this.row and this.col. */
     private Cell(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol row,
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol col)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol row,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol col)
     { super(); this.row = row; this.col = col; }
 
     /** Creates this.row and this.col. */
     @java.lang.SuppressWarnings({"CopyConstructorMissesField"})
-    Cell(@android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
+    Cell(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell cell)
     {
         this(
             new org.wheatgenetics.coordinate.model.RowOrCol(/* rowOrCol => */ cell.getRow()),
@@ -38,8 +37,8 @@ org.wheatgenetics.coordinate.model.ElementModel
 
     /** Creates this.row and this.col. */
     public Cell(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     {
         this(
             new org.wheatgenetics.coordinate.model.RowOrCol(/* value => */ row),
@@ -47,7 +46,7 @@ org.wheatgenetics.coordinate.model.ElementModel
     }
 
     /** Creates this.row and this.col. */
-    Cell(@android.support.annotation.NonNull final org.json.JSONObject jsonObject)
+    Cell(@androidx.annotation.NonNull final org.json.JSONObject jsonObject)
     throws org.json.JSONException
     {
         this(
@@ -57,7 +56,7 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     {
         return java.lang.String.format("Cell(%s, %s)",
             this.getRow().toString(), this.getCol().toString());
@@ -80,12 +79,12 @@ org.wheatgenetics.coordinate.model.ElementModel
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
-    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     { return new org.wheatgenetics.coordinate.model.Cell(this); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override
-    public int compareTo(@android.support.annotation.NonNull final java.lang.Object object)
+    public int compareTo(@androidx.annotation.NonNull final java.lang.Object object)
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
             (org.wheatgenetics.coordinate.model.Cell) object;
@@ -95,23 +94,23 @@ org.wheatgenetics.coordinate.model.ElementModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.ElementModel Overridden Methods
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRowValue()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRowValue()
     { return this.getRow().getValue(); }
 
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getColValue()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getColValue()
     { return this.getCol().getValue(); }
     // endregion
     // endregion
 
     // region Package Methods
-    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getRow()
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getRow()
     { return this.row; }
 
-    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getCol()
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.RowOrCol getCol()
     { return this.col; }
 
-    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.Cell inRange(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell maxCell)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cell inRange(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell maxCell)
     {
         this.getRow().inRange(maxCell.getRow());        // throws java.lang.IllegalArgumentException
         this.getCol().inRange(maxCell.getCol());        // throws java.lang.IllegalArgumentException
@@ -119,7 +118,7 @@ org.wheatgenetics.coordinate.model.ElementModel
         return this;
     }
 
-    @android.support.annotation.NonNull org.json.JSONObject json() throws org.json.JSONException
+    @androidx.annotation.NonNull org.json.JSONObject json() throws org.json.JSONException
     {
         final org.json.JSONObject result = new org.json.JSONObject();
 
@@ -131,10 +130,10 @@ org.wheatgenetics.coordinate.model.ElementModel
         return result;
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.model.Cell makeWithRandomValues(
-    @android.support.annotation.IntRange(from = 1) final int maxRow,
-    @android.support.annotation.IntRange(from = 1) final int maxCol)
+    @androidx.annotation.IntRange(from = 1) final int maxRow,
+    @androidx.annotation.IntRange(from = 1) final int maxCol)
     {
         return new org.wheatgenetics.coordinate.model.Cell(
             /* row => */ org.wheatgenetics.coordinate.model.RowOrCol.makeWithRandomValue(maxRow),

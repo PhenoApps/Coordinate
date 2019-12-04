@@ -4,7 +4,8 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  * android.os.Bundle
- * android.support.annotation.NonNull
+ * 
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
@@ -22,14 +23,14 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
-        public abstract void handleTemplateCreated(@android.support.annotation.NonNull
+        public abstract void handleTemplateCreated(@androidx.annotation.NonNull
         org.wheatgenetics.coordinate.model.TemplateModel templateModel);
     }
 
     // region Fields
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    @android.support.annotation.NonNull             private final
+    @androidx.annotation.NonNull                    private final
         org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
@@ -42,7 +43,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
 
     public TemplateCreator(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    @android.support.annotation.NonNull             final
+    @androidx.annotation.NonNull                    final
         org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 

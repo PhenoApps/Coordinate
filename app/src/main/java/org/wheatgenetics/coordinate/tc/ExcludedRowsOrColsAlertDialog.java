@@ -6,8 +6,9 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.DialogInterface.OnMultiChoiceClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.StringRes
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
  *
@@ -20,24 +21,24 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     {
         public abstract void excludeRowsOrCols(
         @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-        @android.support.annotation.NonNull boolean checkedItems[]);
+        @androidx.annotation.NonNull boolean checkedItems[]);
     }
 
     // region Fields
-                                        private final java.lang.String label;
-    @android.support.annotation.NonNull private final
+                                 private final java.lang.String label;
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler;
 
     private boolean titleHasBeenSet = false;
     // endregion
 
     private void excludeRowsOrCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @android.support.annotation.NonNull final boolean checkedItems[])
+    @androidx.annotation.NonNull final boolean checkedItems[])
     { this.handler.excludeRowsOrCols(checkedItems); }
 
     ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.StringRes final int label,
-    @android.support.annotation.NonNull   final
+    @androidx.annotation.StringRes final int label,
+    @androidx.annotation.NonNull   final
         org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 

@@ -3,14 +3,15 @@ package org.wheatgenetics.coordinate.gc;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
  * android.view.LayoutInflater
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
  * android.widget.LinearLayout
  * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
@@ -29,10 +30,10 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     }
 
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler;
 
-    @android.support.annotation.Nullable private java.util.ArrayList<android.widget.EditText>
+    @androidx.annotation.Nullable private java.util.ArrayList<android.widget.EditText>
         editTextArrayList = null;
     private org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields;
     private boolean                                                          firstCannotBeEmpty   ;
@@ -90,7 +91,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
     }
 
     SetOptionalFieldValuesAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
+    @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
@@ -102,7 +103,7 @@ class SetOptionalFieldValuesAlertDialog extends org.wheatgenetics.androidlibrary
             .setCancelNegativeButton();
     }
 
-    void show(final java.lang.String title, @android.support.annotation.NonNull
+    void show(final java.lang.String title, @androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields checkedOptionalFields,
     final boolean                                                          firstCannotBeEmpty   )
     {

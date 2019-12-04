@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
@@ -29,23 +29,23 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Fields
-    @android.support.annotation.IntRange(from = 1) private final long gridId;
-    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @android.support.annotation.NonNull
+    @androidx.annotation.IntRange(from = 1) private final long gridId;
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
         private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
 
     // region Private Methods
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel downThenAcrossNext(
-    @android.support.annotation.IntRange(from = 0) final int lastRow  ,
-    @android.support.annotation.IntRange(from = 0) final int lastCol  ,
-    @android.support.annotation.IntRange(from = 0) final int activeRow,
-    @android.support.annotation.IntRange(from = 0) final int activeCol,
-    @android.support.annotation.Nullable           final
+    @androidx.annotation.IntRange(from = 0) final int lastRow  ,
+    @androidx.annotation.IntRange(from = 0) final int lastCol  ,
+    @androidx.annotation.IntRange(from = 0) final int activeRow,
+    @androidx.annotation.IntRange(from = 0) final int activeCol,
+    @androidx.annotation.Nullable           final
         org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
-        @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
-                                                       final boolean filledRowOrColNeedsChecking;
+        @androidx.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
+                                                final boolean filledRowOrColNeedsChecking;
         {
             final boolean recursion = null == filledHandler;
             if (!recursion && null == this.downThenAcrossNext(                          // recursion
@@ -91,17 +91,17 @@ public class EntryModels extends java.lang.Object
         return null;
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel acrossThenDownNext(
-    @android.support.annotation.IntRange(from = 0) final int lastRow  ,
-    @android.support.annotation.IntRange(from = 0) final int lastCol  ,
-    @android.support.annotation.IntRange(from = 0) final int activeRow,
-    @android.support.annotation.IntRange(from = 0) final int activeCol,
-    @android.support.annotation.Nullable           final
+    @androidx.annotation.IntRange(from = 0) final int lastRow  ,
+    @androidx.annotation.IntRange(from = 0) final int lastCol  ,
+    @androidx.annotation.IntRange(from = 0) final int activeRow,
+    @androidx.annotation.IntRange(from = 0) final int activeCol,
+    @androidx.annotation.Nullable           final
         org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler)
     {
-        @android.support.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
-                                                       final boolean filledRowOrColNeedsChecking;
+        @androidx.annotation.IntRange(from = 0) final int     candidateRow, candidateCol ;
+                                                final boolean filledRowOrColNeedsChecking;
         {
             final boolean recursion = null == filledHandler;
             if (!recursion && null == this.acrossThenDownNext(                          // recursion
@@ -149,21 +149,21 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void uncheckedSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         if (null != entryModel)
             this.entryModelArray[entryModel.getRow() - 1][entryModel.getCol() - 1] = entryModel;
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull
     org.wheatgenetics.coordinate.model.IncludedEntryModel makeButDontSetIncludedEntry(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     {
         return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
             this.getGridId(), row, col);
@@ -171,9 +171,9 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     public EntryModels(
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  rows  ,
-    @android.support.annotation.IntRange(from = 1) final int  cols  )
+    @androidx.annotation.IntRange(from = 1) final long gridId,
+    @androidx.annotation.IntRange(from = 1) final int  rows  ,
+    @androidx.annotation.IntRange(from = 1) final int  cols  )
     {
         super();
 
@@ -185,24 +185,24 @@ public class EntryModels extends java.lang.Object
 
     // region Package Methods
     void makeExcludedEntry(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     {
         this.uncheckedSet(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
             this.getGridId(), row, col));
     }
 
     void makeIncludedEntry(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     { this.uncheckedSet(this.makeButDontSetIncludedEntry(row, col)); }
 
     org.wheatgenetics.coordinate.model.EntryModel get(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     { return this.entryModelArray[row - 1][col - 1]; }
 
-    @android.support.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCells()
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCells()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(
@@ -215,7 +215,7 @@ public class EntryModels extends java.lang.Object
         return result;
     }
 
-    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.IncludedEntryModel next(
+    @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
     final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
@@ -224,7 +224,7 @@ public class EntryModels extends java.lang.Object
             return null;
         else
         {
-            @android.support.annotation.IntRange(from = 0) final int
+            @androidx.annotation.IntRange(from = 0) final int
                 lastRow   = this.entryModelArray.length    - 1,
                 lastCol   = this.entryModelArray[0].length - 1,
                 activeRow = activeEntryModel.getRow()      - 1,

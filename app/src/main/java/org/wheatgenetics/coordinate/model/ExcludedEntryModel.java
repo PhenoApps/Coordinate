@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.DrawableRes
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
+ * androidx.annotation.DrawableRes
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -17,19 +17,19 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Constructors
     ExcludedEntryModel(
-    @android.support.annotation.IntRange(from = 1) final long gridId,
-    @android.support.annotation.IntRange(from = 1) final int  row   ,
-    @android.support.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
+    @androidx.annotation.IntRange(from = 1) final long gridId,
+    @androidx.annotation.IntRange(from = 1) final int  row   ,
+    @androidx.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
 
     public ExcludedEntryModel(
-    @android.support.annotation.IntRange(from = 1) final long id       ,
-    @android.support.annotation.IntRange(from = 1) final long gridId   ,
-    @android.support.annotation.IntRange(from = 1) final int  row      ,
-    @android.support.annotation.IntRange(from = 1) final int  col      ,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 1) final long id       ,
+    @androidx.annotation.IntRange(from = 1) final long gridId   ,
+    @androidx.annotation.IntRange(from = 1) final int  row      ,
+    @androidx.annotation.IntRange(from = 1) final int  col      ,
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     { super(id, gridId, row, col, timestamp); }
 
-    public ExcludedEntryModel(@android.support.annotation.NonNull final
+    public ExcludedEntryModel(@androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel)
     { super(includedEntryModel); }
     // endregion
@@ -42,7 +42,7 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
     @java.lang.Override public java.lang.String getDatabaseValue()
     { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
 
-    @java.lang.Override @android.support.annotation.DrawableRes public int backgroundResource()
+    @java.lang.Override @androidx.annotation.DrawableRes public int backgroundResource()
     { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
     // endregion
 }

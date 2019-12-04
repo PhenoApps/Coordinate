@@ -3,11 +3,12 @@ package org.wheatgenetics.coordinate.database;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * 
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
@@ -31,12 +32,12 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     { super(context,"AllGridsUniqueEntriesTable"); }
 
     // region Overridden Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
     org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker()
     { return this.getAllGridsUniqueEntryModels(); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     final long gridId, final int rows, final int cols)
     {
@@ -47,10 +48,10 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     }
 
     // region org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker Overridden Method
-    @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-    @android.support.annotation.IntRange(from = 1) final long             gridId,
-    @android.support.annotation.Nullable           final java.lang.String value ,
-    @android.support.annotation.NonNull            final java.lang.String scope ) throws
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+    @androidx.annotation.IntRange(from = 1) final long             gridId,
+    @androidx.annotation.Nullable           final java.lang.String value ,
+    @androidx.annotation.NonNull            final java.lang.String scope ) throws
     org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.DatabaseDuplicateCheckException
     {
         // noinspection CStyleArrayDeclaration

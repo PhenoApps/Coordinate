@@ -2,12 +2,12 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
+ * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
  *
  * org.junit.Assert
  * org.junit.Test
- *
- * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
@@ -30,7 +30,7 @@ public class ElementsTest extends java.lang.Object
             super(null);
         }
 
-        @java.lang.Override @android.support.annotation.NonNull
+        @java.lang.Override @androidx.annotation.NonNull
         protected org.wheatgenetics.coordinate.Element makeElement(
         final org.wheatgenetics.coordinate.model.ElementModel elementModel,
         final android.widget.TextView                         textView    )

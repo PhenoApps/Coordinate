@@ -5,8 +5,9 @@ package org.wheatgenetics.coordinate.nisl;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.support.annotation.NonNull
- * android.support.annotation.StringRes
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -26,7 +27,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     }
 
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler;
 
     private org.wheatgenetics.coordinate.database.ProjectsTable
@@ -38,7 +39,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     // endregion
 
     // region Private Methods
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -66,7 +67,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
             this.deleteProject();
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private android.content.DialogInterface.OnClickListener onClickListener()
     {
         if (null == this.onClickListenerInstance) this.onClickListenerInstance =
@@ -92,8 +93,7 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     }
     // endregion
 
-    ManageProjectAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
+    ManageProjectAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
@@ -103,8 +103,8 @@ class ManageProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     void show(final boolean projectModelIsLoaded)
     {
         {
-            @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-            @android.support.annotation.StringRes final int items[];
+            @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.StringRes
+            final int items[];
             {
                 @java.lang.SuppressWarnings({"Convert2Diamond"})
                 final java.util.ArrayList<java.lang.Integer> arrayList =

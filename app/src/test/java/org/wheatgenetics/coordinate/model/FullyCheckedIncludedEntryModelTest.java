@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.junit.Test
  *
@@ -23,10 +23,10 @@ public class FullyCheckedIncludedEntryModelTest extends java.lang.Object
     private static class MeanChecker extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     {
-        @java.lang.Override @android.support.annotation.Nullable public java.lang.String check(
-        @android.support.annotation.IntRange(from = 1) final int              rowIndex,
-        @android.support.annotation.IntRange(from = 1) final int              colIndex,
-        @android.support.annotation.Nullable           final java.lang.String value   )
+        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
+        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
+        @androidx.annotation.IntRange(from = 1) final int              colIndex,
+        @androidx.annotation.Nullable           final java.lang.String value   )
         throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
         {
             throw new org.wheatgenetics.coordinate.model
@@ -38,7 +38,7 @@ public class FullyCheckedIncludedEntryModelTest extends java.lang.Object
     private org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker
         meanCheckerInstance = null;                                                     // lazy load
 
-    @android.support.annotation.NonNull private
+    @androidx.annotation.NonNull private
     org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker meanChecker()
     {
         if (null == this.meanCheckerInstance) this.meanCheckerInstance = new

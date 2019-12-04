@@ -2,13 +2,14 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
- * android.support.annotation.VisibleForTesting
  * android.util.Xml
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.VisibleForTesting
  *
  * org.xmlpull.v1.XmlSerializer
  * org.xml.sax.Attributes
@@ -28,23 +29,23 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME = "optionalFields";
 
     // region Fields
-    @android.support.annotation.Nullable
-        private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            nonNullOptionalFieldsInstance;
+    @androidx.annotation.Nullable private
+        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+        nonNullOptionalFieldsInstance;
 
     private static javax.xml.parsers.SAXParserFactory saxParserFactoryInstance = null;  // lazy load
     private static javax.xml.parsers.SAXParser        saxParserInstance        = null;  // lazy load
     // endregion
 
     // region Private Methods
-    private void setOptionalFields(@android.support.annotation.Nullable java.lang.String json)
+    private void setOptionalFields(@androidx.annotation.Nullable java.lang.String json)
     {
         if (null != json) json = json.trim();
         this.nonNullOptionalFieldsInstance = null == json ? null : json.equals("") ? null :
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(json);
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private static javax.xml.parsers.SAXParserFactory saxParserFactory()
     {
         if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance)
@@ -53,7 +54,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         return org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance;
     }
 
-    @android.support.annotation.Nullable private static javax.xml.parsers.SAXParser saxParser()
+    @androidx.annotation.Nullable private static javax.xml.parsers.SAXParser saxParser()
     {
         if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance)
             try
@@ -71,21 +72,17 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
 
     // region Constructors
     /** Called by clone(). */
-    private TemplateModel(@android.support.annotation.IntRange(from = 1) final long id,
+    private TemplateModel(@androidx.annotation.IntRange(from = 1) final long id,
     final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells
-        excludedCells,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
-        excludedRows,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
-        excludedCols,
-    final boolean colNumbering, final boolean rowNumbering,
-    @android.support.annotation.Nullable final
+    @androidx.annotation.IntRange(from = 1) final int rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells     excludedCells,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
+    final boolean colNumbering, final boolean rowNumbering, @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id, title, type, rows, cols, generatedExcludedCellsAmount, excludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
@@ -95,19 +92,15 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     /** Called by clone() and third constructor. */
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells
-        excludedCells,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
-        excludedRows,
-    @android.support.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols
-        excludedCols,
-    final boolean colNumbering, final boolean rowNumbering,
-    @android.support.annotation.Nullable final
+    @androidx.annotation.IntRange(from = 1) final int rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells     excludedCells,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
+    final boolean colNumbering, final boolean rowNumbering, @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @android.support.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(title, type, rows, cols, generatedExcludedCellsAmount, excludedCells, excludedRows,
             excludedCols, colNumbering, rowNumbering, timestamp);
@@ -117,11 +110,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     /** Called by makeSeedDefault() and makeDNADefault(). */
     private TemplateModel(final java.lang.String title,
     final org.wheatgenetics.coordinate.model.TemplateType type,
-    @android.support.annotation.IntRange(from = 1) final int     rows                        ,
-    @android.support.annotation.IntRange(from = 1) final int     cols                        ,
-    @android.support.annotation.IntRange(from = 0) final int     generatedExcludedCellsAmount,
-                                                   final boolean rowNumbering                ,
-    @android.support.annotation.Nullable final
+    @androidx.annotation.IntRange(from = 1) final int     rows                        ,
+    @androidx.annotation.IntRange(from = 1) final int     cols                        ,
+    @androidx.annotation.IntRange(from = 0) final int     generatedExcludedCellsAmount,
+                                            final boolean rowNumbering                ,
+    @androidx.annotation.Nullable           final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         this(title, type, rows, cols, generatedExcludedCellsAmount,
@@ -131,8 +124,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
 
     /** Called by makeUserDefined(). */
-    private TemplateModel(@android.support.annotation.Nullable final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+    private TemplateModel(@androidx.annotation.Nullable final
+    org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
     {
         super();
 
@@ -146,20 +139,20 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
 
     /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
     public TemplateModel(
-    @android.support.annotation.IntRange(from = 1        ) final long             id             ,
-                                                           final java.lang.String title          ,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
-    @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable                   final java.lang.String excludedCells ,
-    @android.support.annotation.Nullable                   final java.lang.String excludedRows  ,
-    @android.support.annotation.Nullable                   final java.lang.String excludedCols  ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int              colNumbering  ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int              rowNumbering  ,
-                                                           final java.lang.String entryLabel    ,
-    @android.support.annotation.Nullable                   final java.lang.String optionalFields,
-    @android.support.annotation.IntRange(from = 0        ) final long             timestamp     )
+    @androidx.annotation.IntRange(from = 1        ) final long             id             ,
+                                                    final java.lang.String title          ,
+    @androidx.annotation.IntRange(from = 0, to = 2) final int              code           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              rows           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              cols           ,
+    @androidx.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable                   final java.lang.String excludedCells  ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedRows   ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedCols   ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              colNumbering   ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              rowNumbering   ,
+                                                    final java.lang.String entryLabel     ,
+    @androidx.annotation.Nullable                   final java.lang.String optionalFields ,
+    @androidx.annotation.IntRange(from = 0        ) final long             timestamp      )
     {
         super(id, title, code, rows, cols, generatedExcludedCellsAmount, excludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp);
@@ -168,7 +161,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     {
         return java.lang.String.format(super.formatString() + ", options=%s]",
             "TemplateModel", null == this.nonNullOptionalFieldsInstance ? "" :
@@ -201,7 +194,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
 
     @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
-    @java.lang.Override @android.support.annotation.NonNull protected java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     {
         final long                                     id            = this.getId             ();
         final org.wheatgenetics.coordinate.model.Cells excludedCells = this.excludedCellsClone();
@@ -243,10 +236,10 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override void assignCharacterData(
-    @android.support.annotation.Nullable final java.lang.String elementName  ,
-                                         final java.lang.String characterData)
+    @androidx.annotation.Nullable final java.lang.String elementName  ,
+                                  final java.lang.String characterData)
     {
         if (org.wheatgenetics.coordinate.model.TemplateModel.OPTIONAL_FIELDS_TAG_NAME.equals(
         elementName))
@@ -257,10 +250,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     // endregion
 
     // region Package Methods
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    boolean export(@android.support.annotation.Nullable final java.io.Writer writer)
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
+    boolean export(@androidx.annotation.Nullable final java.io.Writer writer)
     {
         boolean success;
 
@@ -309,7 +301,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         return success;
     }
 
-    boolean export(@android.support.annotation.Nullable final java.io.File exportFile)
+    boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
     {
         final boolean failure = false;
         if (null == exportFile)
@@ -322,7 +314,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
 
     // region Public Methods
     // region optionalFields Public Methods
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
     { return this.nonNullOptionalFieldsInstance; }
 
@@ -333,7 +325,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             true : this.nonNullOptionalFieldsInstance.isEmpty();
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsClone()
     {
         return null == this.nonNullOptionalFieldsInstance ? null :
@@ -341,7 +333,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 this.nonNullOptionalFieldsInstance.clone();
     }
 
-    @android.support.annotation.Nullable public java.lang.String optionalFieldsAsJson()
+    @androidx.annotation.Nullable public java.lang.String optionalFieldsAsJson()
     {
         return null == this.nonNullOptionalFieldsInstance ?
             null : this.nonNullOptionalFieldsInstance.toJson();
@@ -350,7 +342,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
 
     // region Make Public Methods
     /** Called by TemplateModels. */
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
@@ -368,7 +360,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
 
     /** Called by TemplateModels. */
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -383,14 +375,14 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
 
     /** Called by TemplateCreator. */
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
             org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew());
     }
 
-    @android.support.annotation.Nullable public static
+    @androidx.annotation.Nullable public static
     org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined(final java.io.File file)
     {
         if (null == file)
@@ -400,13 +392,13 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
             {
                 // region Fields
-                @android.support.annotation.Nullable private java.lang.String elementName;
+                @androidx.annotation.Nullable private java.lang.String elementName;
 
                 private org.wheatgenetics.coordinate.model.TemplateModel
                     templateModelInstance = null;                                       // lazy load
                 // endregion
 
-                @android.support.annotation.NonNull
+                @androidx.annotation.NonNull
                 private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
                 {
                     if (null == this.templateModelInstance) this.templateModelInstance =
@@ -432,7 +424,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 { this.elementName = null; }
                 // endregion
 
-                @android.support.annotation.Nullable
+                @androidx.annotation.Nullable
                 private org.wheatgenetics.coordinate.model.TemplateModel getTemplateModel()
                 { return this.templateModelInstance; }
             }

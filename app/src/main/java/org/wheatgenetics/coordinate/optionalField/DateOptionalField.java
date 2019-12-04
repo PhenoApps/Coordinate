@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
- * android.support.annotation.VisibleForTesting
+ * androidx.annotation.NonNull
+ * androidx.annotation.VisibleForTesting
  *
  * org.json.JSONObject
  *
@@ -12,8 +12,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
-@android.support.annotation.VisibleForTesting(
-    otherwise = android.support.annotation.VisibleForTesting.PACKAGE_PRIVATE)
+@androidx.annotation.VisibleForTesting(
+    otherwise = androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE)
 public class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     // region Constructors
@@ -32,7 +32,7 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
             new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
@@ -40,13 +40,13 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
         return result;
     }
 
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String getValue()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getValue()
     { return org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate(); }
     // endregion
 
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PACKAGE_PRIVATE)
-    @android.support.annotation.NonNull public static java.lang.String getCurrentDate()
+    @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PACKAGE_PRIVATE)
+    @androidx.annotation.NonNull public static java.lang.String getCurrentDate()
     {
         return org.wheatgenetics.androidlibrary.Utils.formatDate(
             java.lang.System.currentTimeMillis()).toString();

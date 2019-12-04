@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.annotation.SuppressLint
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * 
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  */
@@ -18,18 +19,18 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
     {
         // region Fields
-        @android.support.annotation.NonNull @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.NonNull
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             arrayList;
 
-        @android.support.annotation.NonNull @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.NonNull
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             listIterator;
         // endregion
 
-        Iterator(@android.support.annotation.NonNull final java.util.ArrayList<
+        Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
         org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
         { super(); this.arrayList = arrayList; this.listIterator = this.arrayList.listIterator(); }
 
@@ -58,15 +59,15 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
         // endregion
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull @android.annotation.SuppressLint({"RestrictedApi"})
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull @android.annotation.SuppressLint({"RestrictedApi"})
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
         arrayList =
             new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
 
     // region Overridden Methods
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.String toString()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
     {
         final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder("{");
         {
@@ -108,7 +109,7 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override @android.support.annotation.NonNull
+    @java.lang.Override @androidx.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
         return new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(

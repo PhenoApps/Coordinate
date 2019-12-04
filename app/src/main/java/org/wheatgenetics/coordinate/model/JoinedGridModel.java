@@ -2,11 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.CsvWriter
  *
@@ -33,22 +33,19 @@ public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridMode
 implements org.wheatgenetics.coordinate.model.DisplayModel
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Helper
-    {
-        public abstract void publishProgress(
-            @android.support.annotation.IntRange(from = 1) int col);
-    }
+    { public abstract void publishProgress(@androidx.annotation.IntRange(from = 1) int col); }
 
     // region Fields
-    @android.support.annotation.NonNull private final
-        org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
+        templateModel;
     private org.wheatgenetics.coordinate.model.EntryModels entryModels = null;
     // endregion
 
     // region Private Methods
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.EntryModel getEntryModel(
-    @android.support.annotation.IntRange(from = 1) final int row,
-    @android.support.annotation.IntRange(from = 1) final int col)
+    @androidx.annotation.IntRange(from = 1) final int row,
+    @androidx.annotation.IntRange(from = 1) final int col)
     {
         // noinspection ConstantConditions
         return this.entryModelsIsNull() ? null : this.getEntryModels().get(row, col);
@@ -56,10 +53,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     // region export*() Private Methods
     private void exportSeed(
-    @android.support.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter     ,
-                                         final java.lang.String                    exportFileName,
-    @android.support.annotation.Nullable final
-        org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    @androidx.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter     ,
+                                  final java.lang.String                    exportFileName,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+        helper,
     final boolean includeHeader) throws java.io.IOException
     {
         final java.lang.String tray_id, person, date;
@@ -83,12 +80,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         if (includeHeader) csvWriter.writeRecord(new java.lang.String[]{"tray_id", "cell_id",
             "tray_num", "tray_column", "tray_row", "seed_id", "person", "date"});
         {
-            @android.support.annotation.IntRange(from = 1) final int
+            @androidx.annotation.IntRange(from = 1) final int
                 cols = this.getCols(), rows = this.getRows();
 
-            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+            for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+                for (@androidx.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
                 {
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.getEntryModel(row, col);
@@ -113,9 +110,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     @java.lang.SuppressWarnings({"DefaultLocale"}) private void exportDNA(
-    @android.support.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter,
-    @android.support.annotation.Nullable final
-        org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    @androidx.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+        helper,
     final boolean includeHeader) throws java.io.IOException
     {
         final java.lang.String date, plate_id, plate_name,
@@ -147,14 +144,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             "date", "plate_id", "plate_name", "sample_id", "well_A01", "well_01A",
             "tissue_id", "dna_person", "notes", "tissue_type", "extraction"});
         {
-            @android.support.annotation.IntRange(from = 1) final int
+            @androidx.annotation.IntRange(from = 1) final int
                 cols = this.getCols(), rows = this.getRows();
 
-            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+            for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (@android.support.annotation.IntRange(from = 0) int r = 0; r < rows; r++)
+                for (@androidx.annotation.IntRange(from = 0) int r = 0; r < rows; r++)
                 {
-                    @android.support.annotation.IntRange(from = 1) final int row = r + 1;
+                    @androidx.annotation.IntRange(from = 1) final int row = r + 1;
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.getEntryModel(row, col);
                     if (null != entryModel)
@@ -191,9 +188,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     private void exportUserDefined(
-    @android.support.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter,
-    @android.support.annotation.Nullable final
-        org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    @androidx.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+        helper,
     final boolean includeHeader) throws java.io.IOException
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
@@ -214,7 +211,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         }
 
         {
-            @android.support.annotation.IntRange(from = 1) final int
+            @androidx.annotation.IntRange(from = 1) final int
                 cols = this.getCols(), rows = this.getRows();
             // noinspection CStyleArrayDeclaration
             final java.lang.String values[] =
@@ -223,9 +220,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             final boolean
                 colNumbering = this.templateModel.getColNumbering(),
                 rowNumbering = this.templateModel.getRowNumbering();
-            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+            for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             {
-                for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+                for (@androidx.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
                 {
                     final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                         this.getEntryModel(row, col);
@@ -258,34 +255,34 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
     // endregion
 
-    private boolean isExcludedRow(@android.support.annotation.IntRange(from = 1) final int row)
+    private boolean isExcludedRow(@androidx.annotation.IntRange(from = 1) final int row)
     { return this.templateModel.isExcludedRow(row); }
 
-    private boolean isExcludedCol(@android.support.annotation.IntRange(from = 1) final int col)
+    private boolean isExcludedCol(@androidx.annotation.IntRange(from = 1) final int col)
     { return this.templateModel.isExcludedCol(col); }
 
     private void excludedCellsFromExcludedRowsAndCols(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells result)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells result)
     {
-        @android.support.annotation.IntRange(from = 1) final int
+        @androidx.annotation.IntRange(from = 1) final int
             rows = this.getRows(), cols = this.getCols();
 
-        for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+        for (@androidx.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
             if (this.isExcludedRow(row))
-                for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+                for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
                     result.add(row, col);
 
-        for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+        for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
             if (this.isExcludedCol(col))
-                for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+                for (@androidx.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
                     result.add(row, col);
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.Cells initialExcludedCells()
     { return this.templateModel.getExcludedCells(); }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.model.Cells excludedCellsFromTemplate()
     {
         final org.wheatgenetics.coordinate.model.Cells result;
@@ -305,11 +302,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     private void makeEntryModelsFromExcludedCells(
     final org.wheatgenetics.coordinate.model.Cells excludedCells)
     {
-        @android.support.annotation.IntRange(from = 1) final int
+        @androidx.annotation.IntRange(from = 1) final int
             rows = this.getRows(), cols = this.getCols();
         this.entryModels = this.makeEntryModels(rows, cols);
-        for (@android.support.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
-            for (@android.support.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
+        for (@androidx.annotation.IntRange(from = 1) int row = 1; row <= rows; row++)
+            for (@androidx.annotation.IntRange(from = 1) int col = 1; col <= cols; col++)
                 if (null == excludedCells)
                     this.entryModels.makeIncludedEntry(row, col);
                 else
@@ -319,7 +316,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         this.entryModels.makeIncludedEntry(row, col);
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
     final org.wheatgenetics.coordinate.Utils.Advancement               advancement     ,
@@ -330,8 +327,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             activeEntryModel, advancement, filledHandler);
     }
 
-    private boolean setActiveRowAndActiveCol(@android.support.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
+    private boolean setActiveRowAndActiveCol(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel nextEntryModel)
     {
         return this.setActiveRowAndActiveCol(
             nextEntryModel.getRow() - 1,nextEntryModel.getCol() - 1);
@@ -339,14 +336,13 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean entryModelsIsNull() { return null == this.getEntryModels(); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull
-    org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
-    @android.support.annotation.IntRange(from = 1) final int rows,
-    @android.support.annotation.IntRange(from = 1) final int cols)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
+    @androidx.annotation.IntRange(from = 1) final int rows,
+    @androidx.annotation.IntRange(from = 1) final int cols)
     {
         return new org.wheatgenetics.coordinate.model.EntryModels(
             /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
@@ -356,12 +352,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // region Constructors
     /** Used by GridCreator. */
     public JoinedGridModel(
-    @android.support.annotation.IntRange(from = 0) final long             projectId,
-                                                   final java.lang.String person   ,
-    @android.support.annotation.Nullable           final
+    @androidx.annotation.IntRange(from = 0) final long             projectId,
+                                            final java.lang.String person   ,
+    @androidx.annotation.Nullable           final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
+        templateModel)
     {
         super(
             /* templateId     => */ templateModel.getId(),
@@ -373,28 +369,28 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     /** Used by GridsTable. */
     public JoinedGridModel(
-    @android.support.annotation.IntRange(from = 1) final long             id            ,
-    @android.support.annotation.IntRange(from = 0) final long             projectId     ,
-                                                   final java.lang.String person        ,
-    @android.support.annotation.IntRange(from = 0) final int              activeRow     ,
-    @android.support.annotation.IntRange(from = 0) final int              activeCol     ,
-    @android.support.annotation.Nullable           final java.lang.String optionalFields,
-    @android.support.annotation.IntRange(from = 0) final long             timestamp     ,
+    @androidx.annotation.IntRange(from = 1) final long             id            ,
+    @androidx.annotation.IntRange(from = 0) final long             projectId     ,
+                                            final java.lang.String person        ,
+    @androidx.annotation.IntRange(from = 0) final int              activeRow     ,
+    @androidx.annotation.IntRange(from = 0) final int              activeCol     ,
+    @androidx.annotation.Nullable           final java.lang.String optionalFields,
+    @androidx.annotation.IntRange(from = 0) final long             timestamp     ,
 
-    @android.support.annotation.IntRange(from = 1        ) final long             templateId     ,
-                                                           final java.lang.String title          ,
-    @android.support.annotation.IntRange(from = 0, to = 2) final int              code           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              rows           ,
-    @android.support.annotation.IntRange(from = 1        ) final int              cols           ,
-    @android.support.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    @android.support.annotation.Nullable final java.lang.String initialExcludedCells,
-    @android.support.annotation.Nullable final java.lang.String excludedRows        ,
-    @android.support.annotation.Nullable final java.lang.String excludedCols        ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int      colNumbering          ,
-    @android.support.annotation.IntRange(from = 0, to = 1) final int      rowNumbering          ,
-                                                   final java.lang.String entryLabel            ,
-    @android.support.annotation.Nullable           final java.lang.String templateOptionalFields,
-    @android.support.annotation.IntRange(from = 0) final long             templateTimestamp     ,
+    @androidx.annotation.IntRange(from = 1        ) final long             templateId     ,
+                                                    final java.lang.String title          ,
+    @androidx.annotation.IntRange(from = 0, to = 2) final int              code           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              rows           ,
+    @androidx.annotation.IntRange(from = 1        ) final int              cols           ,
+    @androidx.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable                   final java.lang.String initialExcludedCells  ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedRows          ,
+    @androidx.annotation.Nullable                   final java.lang.String excludedCols          ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              colNumbering          ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int              rowNumbering          ,
+                                                    final java.lang.String entryLabel            ,
+    @androidx.annotation.Nullable                   final java.lang.String templateOptionalFields,
+    @androidx.annotation.IntRange(from = 0)         final long             templateTimestamp     ,
 
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
@@ -408,10 +404,10 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region org.wheatgenetics.coordinate.model.DisplayModel Overridden Methods
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getRows()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRows()
     { return this.templateModel.getRows(); }
 
-    @java.lang.Override @android.support.annotation.IntRange(from = 1) public int getCols()
+    @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getCols()
     { return this.templateModel.getCols(); }
 
     @java.lang.Override public boolean getColNumbering()
@@ -420,14 +416,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @java.lang.Override public boolean getRowNumbering()
     { return this.templateModel.getRowNumbering(); }
 
-    @java.lang.Override @android.support.annotation.Nullable
+    @java.lang.Override @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-    @android.support.annotation.IntRange(from = 1) int row,
-    @android.support.annotation.IntRange(from = 1) int col) { return this.getEntryModel(row, col); }
+    @androidx.annotation.IntRange(from = 1) int row,
+    @androidx.annotation.IntRange(from = 1) int col) { return this.getEntryModel(row, col); }
     // endregion
 
     // region Package Methods
-    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
     java.lang.String name()
     {
         return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
@@ -435,8 +431,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.getFormattedTimestamp());
     }
 
-    @android.support.annotation.NonNull
-    org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
         // noinspection ConstantConditions
         final org.wheatgenetics.coordinate.model.Cells result = this.entryModelsIsNull() ?
@@ -447,8 +442,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     void export(final java.io.Writer writer, final java.lang.String exportFileName,
-    @android.support.annotation.Nullable final
-        org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper,
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+        helper,
     final boolean includeHeader) throws java.io.IOException
     {
         final org.wheatgenetics.coordinate.model.TemplateType templateType =
@@ -499,7 +494,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         this.makeEntryModelsFromExcludedCells(excludedCells);
     }
 
-    public void makeEntryModels(@android.support.annotation.NonNull final
+    public void makeEntryModels(@androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.model.Cells projectExcludedCells) throws
     org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange,
     org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
@@ -528,13 +523,13 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             this.getEntryModels().set(entryModel);
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.model.EntryModel getActiveEntryModel()
     { return this.getEntryModel(this.getActiveRow() + 1,this.getActiveCol() + 1); }
 
     public boolean setActiveRowAndActiveCol(
-    @android.support.annotation.IntRange(from = 0) final int row,
-    @android.support.annotation.IntRange(from = 0) final int col)
+    @androidx.annotation.IntRange(from = 0) final int row,
+    @androidx.annotation.IntRange(from = 0) final int col)
     {
         final boolean changed;
 
@@ -546,7 +541,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         return changed;
     }
 
-    @android.support.annotation.Nullable public org.wheatgenetics.coordinate.model.EntryModels
+    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.EntryModels
     getEntryModels() { return this.entryModels; }
 
     public boolean goToNext(

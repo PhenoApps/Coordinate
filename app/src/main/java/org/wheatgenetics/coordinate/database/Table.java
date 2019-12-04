@@ -6,13 +6,14 @@ package org.wheatgenetics.coordinate.database;
  * android.content.Context
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
- * android.support.annotation.CallSuper
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
- * android.support.annotation.VisibleForTesting
  * android.util.Log
+ *
+ * androidx.annotation.CallSuper
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.VisibleForTesting
  *
  * org.wheatgenetics.coordinate.model.Model
  *
@@ -24,28 +25,27 @@ abstract class Table extends java.lang.Object
     static final java.lang.String ID_FIELD_NAME = "_id";
 
     // region Fields
-    @android.support.annotation.NonNull private final android.database.sqlite.SQLiteDatabase db;
-                                        private final java.lang.String           tableName, tag;
+    @androidx.annotation.NonNull private final android.database.sqlite.SQLiteDatabase db;
+                                 private final java.lang.String           tableName, tag;
     // endregion
 
     // region Constructors
     private Table(
-    @android.support.annotation.NonNull final android.database.sqlite.SQLiteDatabase db       ,
-                                        final java.lang.String                       tableName,
-                                        final java.lang.String                       tag      )
+    @androidx.annotation.NonNull final android.database.sqlite.SQLiteDatabase db       ,
+                                 final java.lang.String                       tableName,
+                                 final java.lang.String                       tag      )
     { super(); this.db = db; this.tableName = tableName; this.tag = tag; }
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
-    Table(final android.content.Context context, final java.lang.String tableName,
-    final java.lang.String tag, final java.lang.String databaseName)
+    @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE) Table(
+    final android.content.Context context, final java.lang.String tableName   ,
+    final java.lang.String        tag    , final java.lang.String databaseName)
     {
         this(org.wheatgenetics.coordinate.database.Database.db(context, databaseName),
             tableName, tag);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
     { this(org.wheatgenetics.coordinate.database.Database.db(context), tableName, tag); }
@@ -70,9 +70,8 @@ abstract class Table extends java.lang.Object
             /* limit         => */null);
     }
 
-    @android.support.annotation.NonNull
-    private android.content.ContentValues getContentValuesForUpdate(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
+    @androidx.annotation.NonNull private android.content.ContentValues getContentValuesForUpdate(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final android.content.ContentValues result = this.getContentValuesForInsert(model);
         result.put(org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME, model.getId());
@@ -92,15 +91,15 @@ abstract class Table extends java.lang.Object
 
     // region External Operations
     // region Package External Operations
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull static java.lang.String whereClause()
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull static java.lang.String whereClause()
     { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = ?"; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.NonNull static java.lang.String whereClause(final long id)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull static java.lang.String whereClause(final long id)
     { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = " + id; }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String selection,
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[],
     final java.lang.String orderBy)
@@ -112,7 +111,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy      );
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String selection,
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[])
     {
@@ -122,7 +121,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */null);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryAll(final java.lang.String orderBy)
     {
         return this.queryAll(
@@ -131,7 +130,7 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */ orderBy);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor queryDistinct(final java.lang.String selection)
     {
         return this.query(
@@ -141,16 +140,16 @@ abstract class Table extends java.lang.Object
             /* orderBy       => */null);
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor rawQuery(final java.lang.String sql,
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String selectionArgs[])
     { return this.db.rawQuery(/* sql => */ sql, /* selectionArgs => */ selectionArgs); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     android.database.Cursor rawQuery(final java.lang.String sql)
     { return this.rawQuery(/* sql => */ sql, /* selectionArgs => */null); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     static boolean exists(final android.database.Cursor cursor)
     {
         if (null == cursor)
@@ -160,11 +159,11 @@ abstract class Table extends java.lang.Object
             finally { cursor.close()              ; }
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor);
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.Nullable org.wheatgenetics.coordinate.model.Model makeFromFirst(
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.Model makeFromFirst(
     final android.database.Cursor cursor)
     {
         if (null == cursor)
@@ -174,13 +173,13 @@ abstract class Table extends java.lang.Object
             finally { cursor.close();                                                            }
     }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.support.annotation.CallSuper @android.support.annotation.NonNull
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.CallSuper @androidx.annotation.NonNull
     android.content.ContentValues getContentValuesForInsert(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     { return new android.content.ContentValues(); }
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean deleteUsingWhereClause(final java.lang.String whereClause)
     {
         this.logInfo("Deleting from table " + this.tableName + " on " + whereClause);
@@ -202,7 +201,7 @@ abstract class Table extends java.lang.Object
     }
 
     public void update(
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
     {
         final java.lang.String whereClause =
             org.wheatgenetics.coordinate.database.Table.whereClause(model.getId());

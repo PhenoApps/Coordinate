@@ -3,9 +3,10 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.Dir.PermissionException
  *
@@ -24,7 +25,7 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     {
         private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
 
-        private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        private AsyncTask(@androidx.annotation.NonNull final android.content.Context context,
         final java.io.File exportFile, final java.lang.String exportFileName,
         final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels)
         {
@@ -39,9 +40,8 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
                 .R.string.EntireProjectProjectExporterAsyncTaskFailedMessage)));
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
-        boolean export()
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override boolean export()
         {
             boolean success;
             if (null == this.baseJoinedGridModels)
@@ -69,14 +69,14 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
             return success;
         }
 
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
-        void handleExportSuccess(final java.io.File exportFile) { this.alert(); this.share(); }
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override void handleExportSuccess(final java.io.File exportFile)
+        { this.alert(); this.share(); }
         // endregion
     }
 
     // region Fields
-    @android.support.annotation.NonNull private final java.lang.String exportFileName;
+    @androidx.annotation.NonNull private final java.lang.String exportFileName;
 
     private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask
         asyncTask = null;
@@ -84,9 +84,9 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
 
     public EntireProjectProjectExporter(
     final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
-    @android.support.annotation.NonNull final android.content.Context                     context  ,
-                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir,
-                                        final java.lang.String                       exportFileName)
+    @androidx.annotation.NonNull final android.content.Context                     context       ,
+                                 final org.wheatgenetics.androidlibrary.RequestDir exportDir     ,
+                                 final java.lang.String                            exportFileName)
     {
         super(baseJoinedGridModels, context, exportDir);
         this.exportFileName = exportFileName + ".csv";

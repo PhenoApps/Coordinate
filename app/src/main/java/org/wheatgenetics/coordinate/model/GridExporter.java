@@ -3,10 +3,11 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.R
  *
@@ -28,24 +29,23 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
         // region Fields
-                                            private final java.lang.String exportFileName;
-        @android.support.annotation.NonNull private final
+                                     private final java.lang.String exportFileName;
+        @androidx.annotation.NonNull private final
             org.wheatgenetics.coordinate.model.GridExporter.Helper helper;
         // endregion
 
         private void deleteGrid() { this.helper.deleteGrid(); }
 
         private AsyncTask(
-        @android.support.annotation.NonNull final android.content.Context context       ,
-                                            final java.io.File            exportFile    ,
-                                            final java.lang.String        exportFileName,
-        @android.support.annotation.NonNull final
-            org.wheatgenetics.coordinate.model.GridExporter.Helper helper)
+        @androidx.annotation.NonNull final android.content.Context context       ,
+                                     final java.io.File            exportFile    ,
+                                     final java.lang.String        exportFileName,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
+            helper)
         { super(context, exportFile); this.exportFileName = exportFileName; this.helper = helper; }
 
         // region Overridden Methods
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         @java.lang.Override boolean export()
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -73,8 +73,8 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
             return success;
         }
 
-        @java.lang.Override @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override @androidx.annotation.RestrictTo(
+            androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         void handleExportSuccess(final java.io.File exportFile)
         {
             @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -93,7 +93,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method
         @java.lang.Override public void publishProgress(
-        @android.support.annotation.IntRange(from = 1) final int col)
+        @androidx.annotation.IntRange(from = 1) final int col)
         {
             this.publishProgress(this.getString(
                 org.wheatgenetics.coordinate.R.string.GridExporterProgressDialogMessage) + col);
@@ -103,12 +103,12 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     }
     // endregion
 
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.model.GridExporter.AsyncTask asyncTask;
 
-    public GridExporter(@android.support.annotation.NonNull final android.content.Context context,
+    public GridExporter(@androidx.annotation.NonNull final android.content.Context context,
     final java.io.File exportFile, final java.lang.String exportFileName,
-    @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
         helper)
     {
         super();

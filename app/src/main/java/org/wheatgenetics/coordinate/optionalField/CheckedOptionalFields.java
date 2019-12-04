@@ -2,9 +2,9 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalFields
@@ -12,17 +12,17 @@ package org.wheatgenetics.coordinate.optionalField;
  */
 public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 {
-    public CheckedOptionalFields(@android.support.annotation.Nullable
+    public CheckedOptionalFields(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields)
     { super(); if (null != optionalFields) this.arrayList.addAll(optionalFields.arrayList); }
 
-    @java.lang.Override @android.support.annotation.NonNull
+    @java.lang.Override @androidx.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
     {
         // Only iterates over checked optional fields.
         class Iterator extends org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
         {
-            private Iterator(@android.support.annotation.NonNull final java.util.ArrayList<
+            private Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
             org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
             { super(arrayList); }
 
@@ -50,9 +50,9 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         return new Iterator(this.arrayList);
     }
 
-    @android.support.annotation.IntRange(from = 0) public int size()
+    @androidx.annotation.IntRange(from = 0) public int size()
     {
-        @android.support.annotation.IntRange(from = 0) int result = 0;
+        @androidx.annotation.IntRange(from = 0) int result = 0;
 
         // noinspection UnusedParameters
         for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:

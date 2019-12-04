@@ -5,12 +5,6 @@ package org.wheatgenetics.coordinate;
  * android.app.Activity
  * android.content.Context
  * android.os.Bundle
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
- * android.support.v4.app.Fragment
  * android.view.LayoutInflater
  * android.view.View
  * android.view.ViewGroup
@@ -18,6 +12,13 @@ package org.wheatgenetics.coordinate;
  * android.widget.TableLayout
  * android.widget.TableRow
  * android.widget.TextView
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
+ * androidx.fragment.app.Fragment
  *
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -27,7 +28,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  */
-public abstract class DisplayFragment extends android.support.v4.app.Fragment
+public abstract class DisplayFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.coordinate.Element.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
@@ -37,33 +38,34 @@ implements org.wheatgenetics.coordinate.Element.Handler
     }
 
     // region Fields
-    @android.support.annotation.Nullable protected
-        org.wheatgenetics.coordinate.DisplayFragment.Handler handler;
-    @android.support.annotation.Nullable private   android.widget.TableLayout         tableLayout;
-    @android.support.annotation.Nullable protected org.wheatgenetics.coordinate.Elements elements;
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.DisplayFragment.Handler
+        handler;
+    @androidx.annotation.Nullable private   android.widget.TableLayout            tableLayout;
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.Elements elements   ;
     // endregion
 
     // region Protected Methods
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract boolean setHandler(final android.content.Context context);
 
-    @android.support.annotation.RestrictTo(android.support.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract void allocateElements(
-    @android.support.annotation.IntRange(from = 1) final int lastRow,
-    @android.support.annotation.IntRange(from = 1) final int lastCol);
+    @androidx.annotation.IntRange(from = 1) final int lastRow,
+    @androidx.annotation.IntRange(from = 1) final int lastCol);
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override public void onAttach(final android.content.Context context)
+    @java.lang.Override public void onAttach(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         super.onAttach(context);
 
-        if (!this.setHandler(context)) throw new java.lang.RuntimeException(
-            null == context ? "context" : context.toString() + " must implement Handler");
+        if (!this.setHandler(context))
+            throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
     }
 
     @java.lang.Override public android.view.View onCreateView(
-    @android.support.annotation.NonNull final android.view.LayoutInflater inflater,
+    @androidx.annotation.NonNull final android.view.LayoutInflater inflater,
     final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment:
@@ -72,7 +74,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
     }
 
     @java.lang.Override public void onActivityCreated(
-    @android.support.annotation.Nullable final android.os.Bundle savedInstanceState)
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
 
@@ -89,7 +91,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
 
     // region org.wheatgenetics.coordinate.Element.Handler Overridden Method
-    public void toggle(@android.support.annotation.Nullable final
+    public void toggle(@androidx.annotation.Nullable final
     org.wheatgenetics.coordinate.model.ElementModel elementModel)
     { if (null != this.handler) this.handler.toggle(elementModel); }
     // endregion

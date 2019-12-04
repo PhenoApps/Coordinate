@@ -5,10 +5,11 @@ package org.wheatgenetics.coordinate.tc;
  * android.app.Activity
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
- * android.support.annotation.NonNull
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.Button
+ *
+ * androidx.annotation.NonNull
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
@@ -32,7 +33,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
     // region Fields
     @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode;
-    @android.support.annotation.NonNull             private final
+    @androidx.annotation.NonNull                    private final
         org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
             handler;
 
@@ -77,7 +78,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
     SetExcludesOptionalFieldsNumberingAlertDialog(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    @android.support.annotation.NonNull             final
+    @androidx.annotation.NonNull                    final
         org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
         handler) { super(activity); this.requestCode = requestCode; this.handler = handler; }
 

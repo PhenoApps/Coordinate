@@ -3,12 +3,13 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.app.Activity
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
  * android.annotation.SuppressLint
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
+ * 
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  * org.wheatgenetics.androidlibrary.Utils
@@ -23,7 +24,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
     { public abstract void handleAddOptionalFieldDone(); }
 
     // region Fields
-    @android.support.annotation.NonNull private final
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler;
 
     private android.widget.EditText                             nameEditText, defaultValueEditText;
@@ -48,9 +49,8 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         }
     }
 
-    AddOptionalFieldAlertDialog(final android.app.Activity activity,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
+    AddOptionalFieldAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
@@ -77,7 +77,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
-    void show(@android.support.annotation.Nullable
+    void show(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
     {
         if (null != nonNullOptionalFields)

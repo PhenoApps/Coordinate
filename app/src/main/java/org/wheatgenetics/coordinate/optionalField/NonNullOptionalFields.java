@@ -2,10 +2,10 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
- * android.support.annotation.VisibleForTesting
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.VisibleForTesting
  *
  * org.json.JSONArray
  * org.json.JSONException
@@ -23,7 +23,7 @@ public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optional
 implements java.lang.Cloneable
 {
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields checkedAdd(
-    @android.support.annotation.NonNull final java.lang.String name, final java.lang.String value,
+    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
     final java.lang.String hint)
     {
         if (null != value && value.trim().length() > 0)
@@ -83,7 +83,7 @@ implements java.lang.Cloneable
     }
     // endregion
 
-    @java.lang.Override @android.support.annotation.NonNull public java.lang.Object clone()
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
@@ -118,14 +118,14 @@ implements java.lang.Cloneable
 
     // region Add Methods
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @android.support.annotation.NonNull final java.lang.String name)
+    @androidx.annotation.NonNull final java.lang.String name)
     {
         this.arrayList.add(new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name));
         return this;
     }
 
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @android.support.annotation.NonNull final java.lang.String name, final java.lang.String value,
+    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
     final java.lang.String hint)
     {
         this.arrayList.add(
@@ -141,10 +141,10 @@ implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    void setChecked(@android.support.annotation.IntRange(from = 0) final int index,
-    final boolean checked) { this.get(index).setChecked(checked); }
+    void setChecked(@androidx.annotation.IntRange(from = 0) final int index, final boolean checked)
+    { this.get(index).setChecked(checked); }
 
-    @android.support.annotation.NonNull boolean[] checks()
+    @androidx.annotation.NonNull boolean[] checks()
     {
         // noinspection CStyleArrayDeclaration
         final boolean result[];
@@ -170,9 +170,9 @@ implements java.lang.Cloneable
     public boolean isEmpty() { return !this.iterator().hasNext(); }
 
     public org.wheatgenetics.coordinate.optionalField.BaseOptionalField get(
-    @android.support.annotation.IntRange(from = 0) final int index)
+    @androidx.annotation.IntRange(from = 0) final int index)
     {
-        @android.support.annotation.IntRange(from = 0) int size = 0;
+        @androidx.annotation.IntRange(from = 0) int size = 0;
         {
             final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
                 this.iterator();
@@ -188,14 +188,14 @@ implements java.lang.Cloneable
             {
                 final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
                     this.iterator();
-                @android.support.annotation.IntRange(from = 0) int i = 0;
+                @androidx.annotation.IntRange(from = 0) int i = 0;
                 do result = iterator.next(); while (i++ < index);
             }
             return result;
         }
     }
 
-    @android.support.annotation.NonNull public java.lang.String getDatedFirstValue()
+    @androidx.annotation.NonNull public java.lang.String getDatedFirstValue()
     {
         final int first = 0;
         return this.get(first).getValue() + "_" +
@@ -203,7 +203,7 @@ implements java.lang.Cloneable
                 ".","_");
     }
 
-    @android.support.annotation.NonNull public java.lang.String toJson()
+    @androidx.annotation.NonNull public java.lang.String toJson()
     {
         final org.json.JSONArray jsonArray = new org.json.JSONArray();
 
@@ -232,7 +232,7 @@ implements java.lang.Cloneable
         return jsonArray.toString();
     }
 
-    @android.support.annotation.NonNull public java.lang.String[] names()
+    @androidx.annotation.NonNull public java.lang.String[] names()
     {
         @java.lang.SuppressWarnings({"Convert2Diamond"})
         final java.util.ArrayList<java.lang.String> nameArrayList =
@@ -246,7 +246,7 @@ implements java.lang.Cloneable
         return nameArrayList.toArray(result);
     }
 
-    @android.support.annotation.NonNull public java.lang.String[] values()
+    @androidx.annotation.NonNull public java.lang.String[] values()
     {
         @java.lang.SuppressWarnings({"Convert2Diamond"})
         final java.util.ArrayList<java.lang.String> valueArrayList =
@@ -278,7 +278,7 @@ implements java.lang.Cloneable
         return valueArrayList.toArray(result);
     }
 
-    @android.support.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+    @androidx.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
     public java.lang.String[] values(final java.lang.String names[])
     {
         if (null == names)
@@ -333,9 +333,9 @@ implements java.lang.Cloneable
     }
 
     // region Make Public Methods
-    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew(
     final java.lang.String identification, final java.lang.String person)
     {
@@ -344,16 +344,16 @@ implements java.lang.Cloneable
             "Person"        , person        ,null).addDate();
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
     {
         return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew(
             null,null);
     }
 
-    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault(
     final java.lang.String trayId, final java.lang.String person)
     {
@@ -362,16 +362,16 @@ implements java.lang.Cloneable
             "Person", person,"Person name").addDate();
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
     {
         return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeSeedDefault(
             null,null);
     }
 
-    @android.support.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @android.support.annotation.VisibleForTesting(
-        otherwise = android.support.annotation.VisibleForTesting.PRIVATE)
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+    @androidx.annotation.VisibleForTesting(
+        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault(
     final java.lang.String plateId, final java.lang.String plateName, final java.lang.String person)
     {
@@ -383,7 +383,7 @@ implements java.lang.Cloneable
             .checkedAdd("person", person,null).addDate();
     }
 
-    @android.support.annotation.NonNull
+    @androidx.annotation.NonNull
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()
     {
         return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeDNADefault(

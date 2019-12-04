@@ -3,11 +3,12 @@ package org.wheatgenetics.coordinate.display;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
  * android.view.View
  * android.view.View.OnLongClickListener
  * android.widget.TextView
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -23,15 +24,15 @@ implements android.view.View.OnLongClickListener
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface GridHandler
     {
-        public abstract void activate(@android.support.annotation.NonNull
+        public abstract void activate(@androidx.annotation.NonNull
         org.wheatgenetics.coordinate.display.GridElement gridElement);
     }
 
     // region Fields
-    @android.support.annotation.NonNull  private final android.content.Context context;
-    @android.support.annotation.NonNull  private final
+    @androidx.annotation.NonNull private final android.content.Context context;
+    @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler;
-    @android.support.annotation.Nullable private final
+    @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
     // endregion
 
@@ -53,16 +54,14 @@ implements android.view.View.OnLongClickListener
     // endregion
 
     GridElement(
-    @android.support.annotation.NonNull final android.content.Context                       context,
-                                        final org.wheatgenetics.coordinate.model.EntryModel
-                                            entryModel,
-    @android.support.annotation.NonNull final android.widget.TextView textView,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.display.GridElement.Handler handler,
-    @android.support.annotation.NonNull final
-        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler,
-    int activeRow, int activeCol,
-    @android.support.annotation.Nullable final
+    @androidx.annotation.NonNull final android.content.Context                       context   ,
+                                 final org.wheatgenetics.coordinate.model.EntryModel entryModel,
+    @androidx.annotation.NonNull final android.widget.TextView                       textView  ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.Handler
+        handler,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.GridHandler
+        gridHandler,
+    int activeRow, int activeCol, @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
         super(entryModel, textView, handler);

@@ -2,7 +2,7 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.support.annotation.NonNull
+ * androidx.annotation.NonNull
  *
  * org.junit.Assert
  * org.junit.Test
@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.optionalField;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class DateOptionalFieldTest extends java.lang.Object
 {
-    @android.support.annotation.NonNull private static java.lang.String expectedCurrentDate()
+    @androidx.annotation.NonNull private static java.lang.String expectedCurrentDate()
     {
         return org.wheatgenetics.androidlibrary.Utils.formatDate(
             java.lang.System.currentTimeMillis()).toString();

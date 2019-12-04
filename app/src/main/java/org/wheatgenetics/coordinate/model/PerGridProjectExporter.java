@@ -3,10 +3,11 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * android.content.Context
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.RestrictTo
- * android.support.annotation.RestrictTo.Scope
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.Dir.PermissionException
  *
@@ -29,17 +30,17 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         { public abstract void execute(); }
 
         // region Fields
-        @android.support.annotation.NonNull private final
+        @androidx.annotation.NonNull private final
             org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
-        @android.support.annotation.NonNull private final
+        @androidx.annotation.NonNull private final
             org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client;
         // endregion
 
-        private AsyncTask(@android.support.annotation.NonNull final android.content.Context context,
+        private AsyncTask(@androidx.annotation.NonNull final android.content.Context context,
         final java.io.File exportFile, final java.lang.String exportFileName,
-        @android.support.annotation.NonNull final org.wheatgenetics.coordinate.model.JoinedGridModel
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.JoinedGridModel
             joinedGridModel,
-        @android.support.annotation.NonNull final
+        @androidx.annotation.NonNull final
             org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
         {
             super(context, exportFile, exportFileName);
@@ -55,9 +56,8 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
                 this.joinedGridModel.getId())));
         }
 
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
-        boolean export()
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override boolean export()
         {
             boolean success;
             try
@@ -80,24 +80,24 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
             return success;
         }
 
-        @android.support.annotation.RestrictTo(
-            android.support.annotation.RestrictTo.Scope.SUBCLASSES) @java.lang.Override
-        void handleExportSuccess(final java.io.File exportFile) { this.client.execute(); }
+        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @java.lang.Override void handleExportSuccess(final java.io.File exportFile)
+        { this.client.execute(); }
         // endregion
     }
 
     // region Fields
     private final java.lang.String exportDirectoryName;
 
-    @android.support.annotation.IntRange(from = 0) private int                  i         =    0;
+    @androidx.annotation.IntRange(from = 0) private int                         i         =    0;
     private org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask asyncTask = null;
     // endregion
 
     public PerGridProjectExporter(
     final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
-    @android.support.annotation.NonNull final android.content.Context                     context  ,
-                                        final org.wheatgenetics.androidlibrary.RequestDir exportDir,
-                                        final java.lang.String                  exportDirectoryName)
+    @androidx.annotation.NonNull final android.content.Context                     context  ,
+                                 final org.wheatgenetics.androidlibrary.RequestDir exportDir,
+                                 final java.lang.String                  exportDirectoryName)
     {
         super(baseJoinedGridModels, context, exportDir);
         this.exportDirectoryName = exportDirectoryName;

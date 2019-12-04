@@ -2,15 +2,15 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
- * android.support.annotation.IntRange
- * android.support.annotation.NonNull
- * android.support.annotation.Nullable
+ * android.widget.TextView
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.test.platform.app.InstrumentationRegistry
  *
  * org.junit.Assert
  * org.junit.Test
- *
- * android.support.test.InstrumentationRegistry
- * android.widget.TextView
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
@@ -27,11 +27,12 @@ public class ElementTest extends java.lang.Object
      */
     private static class ConcreteElement extends org.wheatgenetics.coordinate.Element
     {
-        private ConcreteElement(@android.support.annotation.Nullable
-            final org.wheatgenetics.coordinate.model.ElementModel elementModel,
-        @android.support.annotation.NonNull final android.widget.TextView textView,
-        @android.support.annotation.NonNull final org.wheatgenetics.coordinate.Element.Handler
-            handler) { super(elementModel, textView, handler); }
+        private ConcreteElement(@androidx.annotation.Nullable final
+            org.wheatgenetics.coordinate.model.ElementModel elementModel,
+        @androidx.annotation.NonNull final android.widget.TextView textView,
+        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.NonNull final
+            org.wheatgenetics.coordinate.Element.Handler handler)
+        { super(elementModel, textView, handler); }
 
         // region Overridden Methods
         @java.lang.Override protected void respondToClick       () {}
@@ -53,8 +54,8 @@ public class ElementTest extends java.lang.Object
         // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             /* elementModel => */null,
-            /* textView     => */ new android.widget.TextView(
-            android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* textView     => */ new android.widget.TextView(androidx.test.platform.app
+                .InstrumentationRegistry.getInstrumentation().getTargetContext()),
             /* handler => */null).clearOnLongClickListener();
     }
     // endregion
@@ -74,8 +75,8 @@ public class ElementTest extends java.lang.Object
         // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             /* elementModel => */null,
-            /* textView     => */ new android.widget.TextView(
-                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* textView     => */ new android.widget.TextView(androidx.test.platform.app
+                .InstrumentationRegistry.getInstrumentation().getTargetContext()),
             /* handler => */null).setOnClickListener();
     }
     // endregion
@@ -94,8 +95,8 @@ public class ElementTest extends java.lang.Object
         // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             /* elementModel => */null,
-            /* textView     => */ new android.widget.TextView(
-                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* textView     => */ new android.widget.TextView(androidx.test.platform.app
+                .InstrumentationRegistry.getInstrumentation().getTargetContext()),
             /* handler => */null).clearOnClickListener();
     }
     // endregion
@@ -114,8 +115,8 @@ public class ElementTest extends java.lang.Object
         // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
             /* elementModel => */null,
-            /* textView     => */ new android.widget.TextView(
-                android.support.test.InstrumentationRegistry.getTargetContext()),
+            /* textView     => */ new android.widget.TextView(androidx.test.platform.app
+                .InstrumentationRegistry.getInstrumentation().getTargetContext()),
             /* handler => */null).setOnLongClickListener(null);
     }
     // endregion
@@ -129,11 +130,11 @@ public class ElementTest extends java.lang.Object
         class ElementModel extends java.lang.Object
         implements org.wheatgenetics.coordinate.model.ElementModel
         {
-            @java.lang.Override @android.support.annotation.IntRange(from = 1)
-            public int getRowValue() { return 2; }
+            @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRowValue()
+            { return 2; }
 
-            @java.lang.Override @android.support.annotation.IntRange(from = 1)
-            public int getColValue() { return 3; }
+            @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getColValue()
+            { return 3; }
         }
         final ElementModel elementModel = new ElementModel();
 
