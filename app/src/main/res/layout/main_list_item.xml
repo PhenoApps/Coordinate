@@ -8,4 +8,6 @@
     android:singleLine="true"
     android:textSize="48sp"
     android:textStyle="bold"
-    android:padding="24sp" />
+    android:padding="24sp"
+
+    android:enabled="false" />
