@@ -912,7 +912,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         // region Configure action bar.
         {
             final androidx.appcompat.widget.Toolbar toolbar = this.findViewById(
-                org.wheatgenetics.coordinate.R.id.toolbar);         // From layout/app_bar_main.xml.
+                org.wheatgenetics.coordinate.R.id.toolbar);     // From layout/app_bar_old_main.xml.
             this.setSupportActionBar(toolbar);
 
             {
