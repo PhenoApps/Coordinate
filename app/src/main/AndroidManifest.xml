@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- To switch to the old user interface perform the two steps indicated below. -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.wheatgenetics.coordinate">
@@ -10,8 +11,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/OldAppTheme">
 
+        <!-- Step 1: Change android:name from ".MainActivity" to ".OldMainActivity". -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -23,6 +25,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Step 2: Change android:name from ".MainActivity" to ".OldMainActivity". -->
         <activity android:name=".OldMainActivity" />
 
         <activity android:name=".tc.ExcludeCellsActivity">
