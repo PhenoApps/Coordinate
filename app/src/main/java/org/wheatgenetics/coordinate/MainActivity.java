@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate;
 /**
  * Uses:
  * android.os.Bundle
+ * android.view.Menu
  * android.widget.ArrayAdapter
  * android.widget.ListView
  *
@@ -24,5 +25,11 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity
             mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(this,
                 org.wheatgenetics.coordinate.R.layout.main_list_item, new java.lang.String[]{
                     "Grids", "Templates", "Projects", "Settings", "About"}));
+    }
+
+    @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
+    {
+        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_main, menu);
+        return true;
     }
 }

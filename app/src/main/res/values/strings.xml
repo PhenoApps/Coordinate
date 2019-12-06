@@ -296,4 +296,6 @@
     <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
+
+    <string name="MainActivityNewMenuItemTitle">New</string>
 </resources>

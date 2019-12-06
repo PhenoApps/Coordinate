@@ -17,7 +17,6 @@
         <!-- Step 2: Change android:name from ".MainActivity" to ".OldMainActivity". -->
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:configChanges="keyboardHidden|keyboard">
 
             <intent-filter>
