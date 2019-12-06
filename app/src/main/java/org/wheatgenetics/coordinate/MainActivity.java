@@ -7,7 +7,6 @@ package org.wheatgenetics.coordinate;
  * android.widget.ListView
  *
  * androidx.appcompat.app.AppCompatActivity
- * androidx.appcompat.widget.Toolbar
  *
  * org.wheatgenetics.coordinate.R
  */
@@ -18,17 +17,12 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
 
-        {
-            final androidx.appcompat.widget.Toolbar toolbar = this.findViewById(
-                org.wheatgenetics.coordinate.R.id.toolbar);         // From layout/app_bar_main.xml.
-            this.setSupportActionBar(toolbar);
-        }
-
         final android.widget.ListView mainListView = this.findViewById(
             org.wheatgenetics.coordinate.R.id.mainListView);        // From layout/content_main.xml.
-        // noinspection Convert2Diamond
-        mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(this,
-            org.wheatgenetics.coordinate.R.layout.main_list_item, new java.lang.String[]{
-                "Grids", "Templates", "Projects", "Settings", "About"}));
+        if (null != mainListView)
+            // noinspection Convert2Diamond
+            mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(this,
+                org.wheatgenetics.coordinate.R.layout.main_list_item, new java.lang.String[]{
+                    "Grids", "Templates", "Projects", "Settings", "About"}));
     }
 }
