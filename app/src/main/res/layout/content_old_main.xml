@@ -12,7 +12,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
     tools:context="org.wheatgenetics.coordinate.OldMainActivity"
-    tools:showIn="@layout/app_bar_old_main"
+    tools:showIn="@layout/app_bar_main"
     tools:ignore="PrivateResource">
 
     <TableRow tools:ignore="UselessParent">
