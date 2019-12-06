@@ -12,11 +12,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/OldAppTheme">
+        android:theme="@style/AppTheme">
 
         <!-- Step 2: Change android:name from ".MainActivity" to ".OldMainActivity". -->
         <activity
-            android:name=".OldMainActivity"
+            android:name=".MainActivity"
             android:configChanges="keyboardHidden|keyboard">
 
             <intent-filter>
@@ -26,7 +26,7 @@
         </activity>
 
         <!-- Step 3: Change android:name from ".MainActivity" to ".OldMainActivity". -->
-        <!--<activity android:name=".OldMainActivity" />-->
+        <activity android:name=".OldMainActivity" />
 
         <activity android:name=".tc.ExcludeCellsActivity">
             <intent-filter>
@@ -42,4 +42,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
