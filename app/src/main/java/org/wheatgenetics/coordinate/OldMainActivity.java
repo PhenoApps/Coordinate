@@ -198,56 +198,19 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     // endregion
     // endregion
 
-    // region RequestDir PrivateMethods
-    private org.wheatgenetics.androidlibrary.RequestDir makeRequestDir(
-    final java.lang.String name, final int requestCode)
-    {
-        return new org.wheatgenetics.androidlibrary.RequestDir(
-            /* activity            => */this,
-            /* name                => */ name                                                      ,
-            /* blankHiddenFileName => */ org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
-            /* requestCode         => */ requestCode);
-    }
-
-    private void createCoordinateDirIfMissing(final int requestCode)
-    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
-    {
-        final org.wheatgenetics.androidlibrary.RequestDir coordinateDir = this.makeRequestDir(
-            org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME, requestCode);
-        coordinateDir.createIfMissing();                 // throws java.io.IOException, org.wheatge-
-    }                                                    //  netics.javalib.Dir.PermissionException
-
-    /** This directory is used to transfer templates between devices. */
-    private org.wheatgenetics.coordinate.TemplatesDir templatesDir(final int requestCode)
-    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
-    {
-        this.createCoordinateDirIfMissing(requestCode);  // throws java.io.IOException, org.wheatge-
-                                                         //  netics.javalib.Dir.PermissionException
-        final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-            new org.wheatgenetics.coordinate.TemplatesDir(
-                /* activity => */this,
-                /* name     => */ org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME +
-                    "/Templates",
-                /* blankHiddenFileName => */
-                    org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
-                /* requestCode => */ requestCode);
-        templatesDir.createIfMissing();                  // throws java.io.IOException, org.wheatge-
-        return templatesDir;                             //  netics.javalib.Dir.PermissionException
-    }
-
     /** Exported data is saved to this folder. */
     private org.wheatgenetics.androidlibrary.RequestDir exportDir(final int requestCode)
     throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
     {
-        this.createCoordinateDirIfMissing(requestCode);  // throws java.io.IOException, org.wheatge-
-                                                         //  netics.javalib.Dir.PermissionException
-        final org.wheatgenetics.androidlibrary.RequestDir exportDir = this.makeRequestDir(
-            org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME + "/Export",
-            requestCode);
+        org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
+            this, requestCode);                                 //  tion, org.wheatgenetics-
+                                                                        //  .javalib.Dir.Permission-
+        final org.wheatgenetics.androidlibrary.RequestDir exportDir =   //  Exception
+            org.wheatgenetics.coordinate.Utils.makeRequestDir(this,
+            org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME + "/Export", requestCode);
         exportDir.createIfMissing();                     // throws java.io.IOException, org.wheatge-
         return exportDir;                                //  netics.javalib.Dir.PermissionException
     }
-    // endregion
 
     // region configureNavigationDrawer() Private Methods
     private boolean joinedGridModelIsLoaded() { return null != this.joinedGridModel; }
@@ -281,9 +244,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             try
             {
                 final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    this.templatesDir(org.wheatgenetics               // throws java.io.IOException,
-                        .coordinate.OldMainActivity                   //  org.wheatgenetics.javalib-
-                        .CONFIGURE_NAVIGATION_DRAWER);                //  .Dir.PermissionException
+                    org.wheatgenetics.coordinate.Utils.templatesDir(// throws java.io.IOException,
+                        this,                               //  org.wheatgenetics.javalib-
+                        org.wheatgenetics.coordinate                //  .Dir.PermissionException
+                            .OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
                 this.importTemplateMenuItem.setEnabled(
                     templatesDir.atLeastOneXmlFileExists() /* throws PermissionException */);
             }
@@ -475,7 +439,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         try
         {
             final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                this.templatesDir(                        // throws IOException, PermissionException
+                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
+                    this,                                            //  PermissionException
                     org.wheatgenetics.coordinate.OldMainActivity.IMPORT_TEMPLATE);
             file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
         }
@@ -503,7 +468,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             try
             {
                 final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    this.templatesDir(                    // throws IOException, PermissionException
+                    org.wheatgenetics.coordinate.Utils.templatesDir(         // throws IOException,
+                        this,                                        //  PermissionException
                         org.wheatgenetics.coordinate.OldMainActivity.EXPORT_TEMPLATE);
                 exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
                     this.fileName + ".xml");
@@ -660,7 +626,8 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         final org.wheatgenetics.coordinate.TemplatesDir templatesDir;
         try
         {
-            templatesDir = this.templatesDir(             // throws IOException, PermissionException
+            templatesDir = org.wheatgenetics.coordinate.Utils.templatesDir(  // throws IOException,
+                this,                                                //  PermissionException
                 org.wheatgenetics.coordinate.OldMainActivity.CONFIGURE_NAVIGATION_VIEW);
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)

@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.app.AlertDialog.Builder
  * android.content.Context
  * android.content.DialogInterface
@@ -14,6 +15,9 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.Nullable
  * androidx.annotation.StringRes
  *
+ * org.wheatgenetics.javalib.Dir.PermissionException
+ *
+ * org.wheatgenetics.androidlibrary.RequestDir
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.model.AllGridsUniqueJoinedGridModel
@@ -30,7 +34,9 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  *
+ * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.TemplatesDir
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
@@ -510,6 +516,48 @@ public class Utils extends java.lang.Object
                 }
             else return joinedGridModel instanceof
                 org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel;
+    }
+    // endregion
+
+    // region RequestDir Methods
+    static org.wheatgenetics.androidlibrary.RequestDir makeRequestDir(
+    final android.app.Activity activity, final java.lang.String name, final int requestCode)
+    {
+        return new org.wheatgenetics.androidlibrary.RequestDir(
+            /* activity            => */ activity                                                  ,
+            /* name                => */ name                                                      ,
+            /* blankHiddenFileName => */ org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
+            /* requestCode         => */ requestCode);
+    }
+
+    static void createCoordinateDirIfMissing(
+    final android.app.Activity activity, final int requestCode)
+    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
+    {
+        final org.wheatgenetics.androidlibrary.RequestDir coordinateDir =
+            org.wheatgenetics.coordinate.Utils.makeRequestDir(activity,
+                org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME, requestCode);
+        coordinateDir.createIfMissing();                 // throws java.io.IOException, org.wheatge-
+    }                                                    //  netics.javalib.Dir.PermissionException
+
+    /** This directory is used to transfer templates between devices. */
+    static org.wheatgenetics.coordinate.TemplatesDir templatesDir(
+    final android.app.Activity activity, final int requestCode)
+    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
+    {
+        org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
+            activity, requestCode);                                     //  tion, org.wheatgenetics-
+                                                                        //  .javalib.Dir.Permission-
+        final org.wheatgenetics.coordinate.TemplatesDir templatesDir =  //  Exception
+            new org.wheatgenetics.coordinate.TemplatesDir(
+                /* activity => */ activity,
+                /* name     => */org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME +
+                    "/Templates",
+                /* blankHiddenFileName => */
+                    org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
+                /* requestCode => */ requestCode);
+        templatesDir.createIfMissing();                  // throws java.io.IOException, org.wheatge-
+        return templatesDir;                             //  netics.javalib.Dir.PermissionException
     }
     // endregion
 }
