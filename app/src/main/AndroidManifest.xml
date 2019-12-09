@@ -28,6 +28,8 @@
         <!-- Step 3: Change android:name from ".MainActivity" to ".OldMainActivity". -->
         <activity android:name=".OldMainActivity" />
 
+        <activity android:name=".templates.TemplatesActivity" android:label="Templates" />
+
         <activity android:name=".tc.ExcludeCellsActivity">
             <intent-filter>
                 <action   android:name="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity" />
