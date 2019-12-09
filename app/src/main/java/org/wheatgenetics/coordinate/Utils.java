@@ -520,7 +520,7 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region RequestDir Methods
-    static org.wheatgenetics.androidlibrary.RequestDir makeRequestDir(
+    @androidx.annotation.NonNull static org.wheatgenetics.androidlibrary.RequestDir makeRequestDir(
     final android.app.Activity activity, final java.lang.String name, final int requestCode)
     {
         return new org.wheatgenetics.androidlibrary.RequestDir(
@@ -541,7 +541,8 @@ public class Utils extends java.lang.Object
     }                                                    //  netics.javalib.Dir.PermissionException
 
     /** This directory is used to transfer templates between devices. */
-    static org.wheatgenetics.coordinate.TemplatesDir templatesDir(
+    @androidx.annotation.NonNull
+    public static org.wheatgenetics.coordinate.TemplatesDir templatesDir(
     final android.app.Activity activity, final int requestCode)
     throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
     {

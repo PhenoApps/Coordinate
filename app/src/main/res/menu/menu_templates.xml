@@ -11,6 +11,7 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
+        android:id="@+id/importTemplateMenuItem"
         android:title="@string/TemplatesActivityImportMenuItemTitle"
         app:showAsAction="always"
 
