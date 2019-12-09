@@ -276,13 +276,16 @@
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 
+    <!-- multiple activities -->
+    <string name="AppBarNewTitle">New</string>
+
     <!-- TemplatesActivity -->
+    <string name="TemplatesActivityLabel">Templates</string>
+    <string name="TemplatesActivityImportMenuItemTitle">Import</string>
+
     <string name="TemplatesListTitle">title:</string>
     <string name="TemplatesListDimensions">dimensions:</string>
     <string name="TemplatesListRows">rows,</string>
     <string name="TemplatesListColumns">columns</string>
     <string name="TemplatesListTimestamp">timestamp:</string>
-
-    <!-- MainActivity -->
-    <string name="MainActivityNewMenuItemTitle">New</string>
 </resources>

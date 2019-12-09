@@ -3,7 +3,8 @@ package org.wheatgenetics.coordinate.templates;
 /**
  * Uses:
  * android.os.Bundle
- *  * android.view.View
+ * android.view.Menu
+ * android.view.View
  * android.widget.AdapterView<>
  * android.widget.AdapterView.OnItemClickListener
  * android.widget.ListView
@@ -12,7 +13,7 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.templates.TemplatesListAdapter
+ * org.wheatgenetics.coordinate.templates.TemplatesAdapter
  */
 public class TemplatesActivity extends androidx.appcompat.app.AppCompatActivity
 {
@@ -38,5 +39,11 @@ public class TemplatesActivity extends androidx.appcompat.app.AppCompatActivity
                     }
                 });
         }
+    }
+
+    @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
+    {
+        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_templates, menu);
+        return true;
     }
 }
