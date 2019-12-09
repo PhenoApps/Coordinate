@@ -288,4 +288,9 @@
     <string name="TemplatesListRows">rows,</string>
     <string name="TemplatesListColumns">columns</string>
     <string name="TemplatesListTimestamp">timestamp:</string>
+
+    <!-- MainActivity -->
+    <string name="MainActivityGridMenuItemTitle">Grid</string>
+    <string name="MainActivityTemplateMenuItemTitle">Template</string>
+    <string name="MainActivityProjectMenuItemTitle">Project</string>
 </resources>

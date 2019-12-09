@@ -3,8 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:title="@string/AppBarNewTitle"
-        app:showAsAction="always" />
-
+    <item android:title="@string/AppBarNewTitle" app:showAsAction="always">
+        <menu>
+            <item android:title="@string/MainActivityGridMenuItemTitle"     />
+            <item android:title="@string/MainActivityTemplateMenuItemTitle" />
+            <item android:title="@string/MainActivityProjectMenuItemTitle"  />
+        </menu>
+    </item>
 </menu>
