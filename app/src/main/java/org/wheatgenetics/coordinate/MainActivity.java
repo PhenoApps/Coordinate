@@ -150,7 +150,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region MenuItem Event Handlers
-    public void onTemplateMenuItemClick(final android.view.MenuItem menuItem)
+    public void onTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem)
     {
         if (null == this.templateCreator)
             this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
@@ -158,7 +159,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         this.templateCreator.create();
     }
 
-    public void onProjectMenuItemClick(final android.view.MenuItem menuItem)
+    public void onProjectMenuItemClick(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem)
     {
         if (null == this.projectCreator) this.projectCreator =
             new org.wheatgenetics.coordinate.pc.ProjectCreator(this);

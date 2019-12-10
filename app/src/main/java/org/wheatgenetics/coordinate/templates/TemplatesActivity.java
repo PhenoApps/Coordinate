@@ -152,6 +152,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onActivityResult(requestCode, resultCode, data);
 
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
@@ -180,7 +181,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
     // endregion
 
-    public void onNewTemplateMenuItemClick(final android.view.MenuItem menuItem)
+    public void onNewTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem)
     {
         if (null == this.templateCreator)
             this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(

@@ -7,6 +7,7 @@
     <item
         android:title="@string/AppBarNewTitle"
         app:showAsAction="always"
+        android:onClick="onNewProjectMenuItemClick"
 
         tools:ignore="AlwaysShowAction" />
 </menu>
