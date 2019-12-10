@@ -3,6 +3,9 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
+ *
+ * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.model.Model
  */
@@ -29,5 +32,11 @@ public class ProjectModel extends org.wheatgenetics.coordinate.model.Model
     public java.lang.String getTitle() { return this.title; }
 
     @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
+
+    @androidx.annotation.Nullable public java.lang.CharSequence getTimestampAsCharSequence()
+    {
+        final long timestamp = this.getTimestamp();
+        return timestamp < 1 ? null : org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp);
+    }
     // endregion
 }

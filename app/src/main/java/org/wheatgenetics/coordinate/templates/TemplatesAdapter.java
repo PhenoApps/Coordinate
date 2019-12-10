@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.templates;
  * android.view.ViewGroup
  * android.widget.BaseAdapter
  * android.widget.ListAdapter
+ * android.widget.TableLayout
  * android.widget.TextView
  *
  * androidx.annotation.NonNull

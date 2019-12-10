@@ -695,8 +695,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             case org.wheatgenetics.coordinate.R.id.nav_create_project:
                 if (null == this.projectCreator) this.projectCreator =
                     new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity);
-                this.projectCreator.create();
-                break;
+                this.projectCreator.create(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_manage_project:
                 if (null == this.manageProjectAlertDialog) this.manageProjectAlertDialog =
@@ -727,8 +726,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                                     .NavigationItemSelectedListener.this.deleteProject();
                             }
                         });
-                this.manageProjectAlertDialog.show(this.handler.projectModelIsLoaded());
-                break;
+                this.manageProjectAlertDialog.show(this.handler.projectModelIsLoaded()); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate.nisl

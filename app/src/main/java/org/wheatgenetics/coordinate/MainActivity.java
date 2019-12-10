@@ -22,6 +22,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.projects.ProjectsActivity
+ *
  * org.wheatgenetics.coordinate.templates.TemplatesActivity
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
@@ -34,15 +36,18 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private android.content.Intent                               templatesIntentInstance = null;//ll
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
-    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator         = null;//ll
+    private android.content.Intent templatesIntentInstance = null,                         // lazy
+        projectsIntentInstance = null;                                                     //  loads
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
+    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator        = null;// ll
     // endregion
 
     // region Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
+    // region TemplatesActivity Private Methods
     private android.content.Intent templatesIntent()
     {
         if (null == this.templatesIntentInstance) this.templatesIntentInstance =
@@ -52,6 +57,19 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
     private void startTemplatesActivity() { this.startActivity(this.templatesIntent()); }
+    // endregion
+
+    // region ProjectsActivity Private Methods
+    private android.content.Intent projectsIntent()
+    {
+        if (null == this.projectsIntentInstance) this.projectsIntentInstance =
+            new android.content.Intent(this,
+                org.wheatgenetics.coordinate.projects.ProjectsActivity.class);
+        return this.projectsIntentInstance;
+    }
+
+    private void startProjectsActivity() { this.startActivity(this.projectsIntent()); }
+    // endregion
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
@@ -86,6 +104,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                         {
                             case 1: org.wheatgenetics.coordinate.MainActivity
                                 .this.startTemplatesActivity(); break;
+
+                            case 2: org.wheatgenetics.coordinate.MainActivity
+                                .this.startProjectsActivity(); break;
                         }
                     }
                 });
@@ -104,6 +125,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onActivityResult(requestCode, resultCode, data);
 
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:

@@ -289,6 +289,12 @@
     <string name="TemplatesListColumns">columns</string>
     <string name="TemplatesListTimestamp">timestamp:</string>
 
+    <!-- ProjectsActivity -->
+    <string name="ProjectsActivityLabel">Projects</string>
+
+    <string name="ProjectsListTitle">title:</string>
+    <string name="ProjectsListTimestamp">timestamp:</string>
+
     <!-- MainActivity -->
     <string name="MainActivityGridMenuItemTitle">Grid</string>
     <string name="MainActivityTemplateMenuItemTitle">Template</string>
