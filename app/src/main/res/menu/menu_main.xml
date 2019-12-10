@@ -11,7 +11,8 @@
                 android:title="@string/MainActivityTemplateMenuItemTitle"
                 android:onClick="onTemplateMenuItemClick" />
 
-            <item android:title="@string/MainActivityProjectMenuItemTitle" />
+            <item android:title="@string/MainActivityProjectMenuItemTitle"
+                android:onClick="onProjectMenuItemClick" />
         </menu>
     </item>
 </menu>

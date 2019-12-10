@@ -22,6 +22,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.pc.ProjectCreator
+ *
  * org.wheatgenetics.coordinate.projects.ProjectsActivity
  *
  * org.wheatgenetics.coordinate.templates.TemplatesActivity
@@ -41,6 +43,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator        = null;// ll
+
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator = null;       // lazy load
     // endregion
 
     // region Private Methods
@@ -145,6 +149,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
     // endregion
 
+    // region MenuItem Event Handlers
     public void onTemplateMenuItemClick(final android.view.MenuItem menuItem)
     {
         if (null == this.templateCreator)
@@ -152,4 +157,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
         this.templateCreator.create();
     }
+
+    public void onProjectMenuItemClick(final android.view.MenuItem menuItem)
+    {
+        if (null == this.projectCreator) this.projectCreator =
+            new org.wheatgenetics.coordinate.pc.ProjectCreator(this);
+        this.projectCreator.create();
+    }
+    // endregion
 }
