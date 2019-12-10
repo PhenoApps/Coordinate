@@ -22,7 +22,7 @@ package org.wheatgenetics.coordinate.templates;
  */
 class TemplatesAdapter extends android.widget.BaseAdapter implements android.widget.ListAdapter
 {
-    // region fields
+    // region Fields
     private final android.app.Activity activity;
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
@@ -51,6 +51,9 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
     { super(); this.activity = activity; }
 
     // region Overridden Methods
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.templateModelsInstance = null; super.notifyDataSetChanged(); }
+
     @java.lang.Override public int getCount()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
