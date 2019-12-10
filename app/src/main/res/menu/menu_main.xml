@@ -5,9 +5,13 @@
 
     <item android:title="@string/AppBarNewTitle" app:showAsAction="always">
         <menu>
-            <item android:title="@string/MainActivityGridMenuItemTitle"     />
-            <item android:title="@string/MainActivityTemplateMenuItemTitle" />
-            <item android:title="@string/MainActivityProjectMenuItemTitle"  />
+            <item android:title="@string/MainActivityGridMenuItemTitle" />
+
+            <item
+                android:title="@string/MainActivityTemplateMenuItemTitle"
+                android:onClick="onTemplateMenuItemClick" />
+
+            <item android:title="@string/MainActivityProjectMenuItemTitle" />
         </menu>
     </item>
 </menu>
