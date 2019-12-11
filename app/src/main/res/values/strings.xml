@@ -224,11 +224,13 @@
 
     <string name="show_about">About</string>
 
+    <!-- Utils -->
+    <string name="UtilsSelectExportedTemplateTitle">Import template</string>
+
     <!-- NavigationItemSelectedListener -->
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
 
-    <string name="NavigationItemSelectedListenerSelectImportTemplateTitle">Import template</string>
     <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
