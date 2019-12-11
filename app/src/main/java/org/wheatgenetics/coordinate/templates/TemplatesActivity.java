@@ -32,18 +32,23 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
  * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.templates.TemplatesAdapter
  */
 public class TemplatesActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
-    private static final int CONFIGURE_IMPORT_MENU_ITEM = 10;
+    private static final int CONFIGURE_IMPORT_MENU_ITEM = 10,
+        SELECT_EXPORTED_TEMPLATE = 20, IMPORT_TEMPLATE = 30;
 
     // region Fields
     private org.wheatgenetics.coordinate.templates.TemplatesAdapter templatesAdapter = null;
 
+    // region importMenuItem Fields
     private android.view.MenuItem importMenuItem = null;
+    private java.lang.String      fileName             ;
+    // endregion
 
     // region newMenuItem Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
@@ -54,6 +59,14 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
 
     private void configureImportMenuItem()
     {
@@ -70,20 +83,66 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
             {
                 if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                {
-                    this.showLongToast(e.getMessage());
-                    this.importMenuItem.setEnabled(false);
-                }
+                    { this.showLongToast(e.getMessage()); this.importMenuItem.setEnabled(false); }
             }
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    // region Import Template Private Methods
+    private void importTemplate()
     {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
+        java.io.File file;
+        try
+        {
+            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
+                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
+                    this,                                            //  PermissionException
+                    org.wheatgenetics.coordinate.templates.TemplatesActivity.IMPORT_TEMPLATE);
+            file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
+        }
+        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
+        {
+            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+                this.showLongToast(e.getMessage());
+            file = null;
+        }
+
+        if (null != file)
+        {
+            final boolean templateImported = this.templatesTable().insert(
+                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file)) > 0;
+            if (templateImported && null != this.templatesAdapter)
+                this.templatesAdapter.notifyDataSetChanged();
+        }
     }
+
+    private void importTemplate(final java.lang.String fileName)
+    { this.fileName = fileName; this.importTemplate(); }
+
+    private void selectExportedTemplate()
+    {
+        try
+        {
+            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
+                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
+                    this, org.wheatgenetics.coordinate               //  PermissionException
+                    .templates.TemplatesActivity.SELECT_EXPORTED_TEMPLATE);
+            org.wheatgenetics.coordinate.Utils.selectExportedTemplate(templatesDir,this,
+                new org.wheatgenetics.coordinate.Utils.Handler()
+                {
+                    @java.lang.Override public void importTemplate(final java.lang.String fileName)
+                    {
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity
+                            .this.importTemplate(fileName);
+                    }
+                });
+        }
+        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
+        {
+            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+                this.showLongToast(e.getMessage());
+        }
+    }
+    // endregion
     // endregion
 
     // region Overridden Methods
@@ -138,11 +197,16 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
         if (permissionFound) for (final int grantResult: grantResults)
             if (android.content.pm.PackageManager.PERMISSION_GRANTED == grantResult)
-                // noinspection SwitchStatementWithTooFewBranches
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.templates.TemplatesActivity
                         .CONFIGURE_IMPORT_MENU_ITEM: this.configureImportMenuItem(); break;
+
+                    case org.wheatgenetics.coordinate.templates.TemplatesActivity
+                        .SELECT_EXPORTED_TEMPLATE: this.selectExportedTemplate(); break;
+
+                    case org.wheatgenetics.coordinate.templates.TemplatesActivity
+                        .IMPORT_TEMPLATE: this.importTemplate(); break;
                 }
     }
 
@@ -181,6 +245,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
     // endregion
 
+    // region MenuItem Event Handlers
     public void onNewTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem)
     {
@@ -189,4 +254,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
         this.templateCreator.create();
     }
+
+    public void onImportTemplateMenuItem(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem) { this.selectExportedTemplate(); }
+    // endregion
 }

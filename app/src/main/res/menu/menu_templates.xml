@@ -15,6 +15,7 @@
         android:id="@+id/importTemplateMenuItem"
         android:title="@string/TemplatesActivityImportMenuItemTitle"
         app:showAsAction="always"
+        android:onClick="onImportTemplateMenuItem"
 
         tools:ignore="AlwaysShowAction" />
 
