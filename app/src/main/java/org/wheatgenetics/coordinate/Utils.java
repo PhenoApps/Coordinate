@@ -36,6 +36,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.SelectAlertDialog
+ * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
  * org.wheatgenetics.coordinate.TemplatesDir
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -45,6 +47,9 @@ public class Utils extends java.lang.Object
     public enum Advancement      { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN        }
            enum ProjectExport    { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT }
     public enum TypeOfUniqueness { ERROR, CURRENT_GRID, CURRENT_PROJECT, ALL_GRIDS   }
+
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    { public abstract void importTemplate(java.lang.String fileName); }
     // endregion
 
     private static android.content.SharedPreferences                                        // lazy
@@ -549,7 +554,7 @@ public class Utils extends java.lang.Object
         org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
             activity, requestCode);                                     //  tion, org.wheatgenetics-
                                                                         //  .javalib.Dir.Permission-
-        final org.wheatgenetics.coordinate.TemplatesDir templatesDir =  //  Exception
+        final org.wheatgenetics.coordinate.TemplatesDir result =        //  Exception
             new org.wheatgenetics.coordinate.TemplatesDir(
                 /* activity => */ activity,
                 /* name     => */org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME +
@@ -557,8 +562,34 @@ public class Utils extends java.lang.Object
                 /* blankHiddenFileName => */
                     org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
                 /* requestCode => */ requestCode);
-        templatesDir.createIfMissing();                  // throws java.io.IOException, org.wheatge-
-        return templatesDir;                             //  netics.javalib.Dir.PermissionException
+        result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
+        return result;                                   //  netics.javalib.Dir.PermissionException
     }
     // endregion
+
+    public static void selectExportedTemplate(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.TemplatesDir  templatesDir,
+    @androidx.annotation.NonNull final android.app.Activity                       activity    ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.Utils.Handler handler     )
+    {
+        // noinspection CStyleArrayDeclaration
+        final java.lang.String fileNames[];
+        try { fileNames = templatesDir.listXml() /* throws PermissionException */; }
+        catch (final org.wheatgenetics.javalib.Dir.PermissionException e)
+        { org.wheatgenetics.androidlibrary.Utils.showLongToast(activity, e.getMessage()); return; }
+
+        if (null != fileNames) if (fileNames.length > 0)
+        {
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog =
+                new org.wheatgenetics.coordinate.SelectAlertDialog(activity,
+                    new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+                    {
+                        @java.lang.Override public void select(final int which)
+                        { handler.importTemplate(fileNames[which]); }
+                    });
+            selectAlertDialog.show(
+                org.wheatgenetics.coordinate.R.string.UtilsSelectExportedTemplateTitle, fileNames);
+        }
+
+    }
 }

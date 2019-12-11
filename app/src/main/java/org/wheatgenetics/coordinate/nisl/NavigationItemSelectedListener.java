@@ -17,7 +17,6 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
  *
- * org.wheatgenetics.javalib.Dir.PermissionException
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -51,6 +50,7 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
@@ -242,28 +242,15 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     private void selectExportedTemplate()
     {
-        // noinspection CStyleArrayDeclaration
-        final java.lang.String fileNames[];
-        try { fileNames = this.templatesDir.listXml() /* throws PermissionException */; }
-        catch (final org.wheatgenetics.javalib.Dir.PermissionException e)
-        { this.showLongToast(e.getMessage()); return; }
-
-        if (null != fileNames) if (fileNames.length > 0)
-        {
-            final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog =
-                new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                    new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                    {
-                        @java.lang.Override public void select(final int which)
-                        {
-                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                .this.importTemplateAfterGettingFileName(fileNames[which]);
-                        }
-                    });
-            selectAlertDialog.show(org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerSelectImportTemplateTitle,
-                fileNames);
-        }
+        org.wheatgenetics.coordinate.Utils.selectExportedTemplate(this.templatesDir, this.activity,
+            new org.wheatgenetics.coordinate.Utils.Handler()
+            {
+                @java.lang.Override public void importTemplate(final java.lang.String fileName)
+                {
+                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                        .this.importTemplateAfterGettingFileName(fileName);
+                }
+            });
     }
     // endregion
 
