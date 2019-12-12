@@ -903,10 +903,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
+        this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_old_main);
 
         this.drawerLayout = this.findViewById(
-            org.wheatgenetics.coordinate.R.id.drawer_layout);      // From layout/activity_main.xml.
+            org.wheatgenetics.coordinate.R.id.drawer_layout);  // From layout/activity_old_main.xml.
 
         // region Configure action bar.
         {
