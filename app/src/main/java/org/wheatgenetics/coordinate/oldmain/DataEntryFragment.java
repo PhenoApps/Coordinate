@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.oldmain;
 
 /**
  * Uses:
@@ -29,7 +29,7 @@ package org.wheatgenetics.coordinate;
 public class DataEntryFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract java.lang.String getEntryValue   ();
         public abstract java.lang.String getProjectTitle ();
@@ -42,7 +42,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     }
 
     // region Fields
-    private org.wheatgenetics.coordinate.DataEntryFragment.Handler handler;
+    private org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler handler;
 
     private android.widget.EditText     entryEditText                              ;
     private android.widget.TextView     projectTitleTextView, templateTitleTextView;
@@ -57,10 +57,10 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     {
         super.onAttach(context);
 
-        if (context instanceof org.wheatgenetics.coordinate.DataEntryFragment.Handler)
-            this.handler = (org.wheatgenetics.coordinate.DataEntryFragment.Handler) context;
-        else throw new java.lang.RuntimeException(
-            context.toString() + " must implement Handler");
+        if (context instanceof org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler)
+            this.handler = (org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler) context;
+        else
+            throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
     }
 
     @java.lang.Override public android.view.View onCreateView(
@@ -111,8 +111,8 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     // endregion
     // endregion
 
-    // region Package Methods
-    void populate()
+    // region Public Methods
+    public void populate()
     {
         if (null != this.handler)
         {
@@ -170,7 +170,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
         }
     }
 
-    void setEntry(final java.lang.String entry)
+    public void setEntry(final java.lang.String entry)
     { if (null != this.entryEditText) this.entryEditText.setText(entry); }
     // endregion
 }

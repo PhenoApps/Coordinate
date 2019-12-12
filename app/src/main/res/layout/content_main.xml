@@ -32,7 +32,7 @@
 
         <fragment
             android:id="@+id/dataEntryFragment"
-            android:name="org.wheatgenetics.coordinate.DataEntryFragment"
+            android:name="org.wheatgenetics.coordinate.oldmain.DataEntryFragment"
 
             tools:layout="@layout/fragment_data_entry" />
 

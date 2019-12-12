@@ -84,15 +84,16 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler
  *
+ * org.wheatgenetics.coordinate.oldmain.DataEntryFragment
+ * org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler
+ * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
+ *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.Consts
- * org.wheatgenetics.coordinate.DataEntryFragment
- * org.wheatgenetics.coordinate.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
- * org.wheatgenetics.coordinate.UniqueAlertDialog
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
@@ -100,7 +101,7 @@ package org.wheatgenetics.coordinate;
 public class OldMainActivity extends androidx.appcompat.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
-org.wheatgenetics.coordinate.DataEntryFragment.Handler          ,
+org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
@@ -142,12 +143,12 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         entireProjectProjectExporter = null;
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
-    private org.wheatgenetics.coordinate.DataEntryFragment           dataEntryFragment  ;
+    private org.wheatgenetics.coordinate.oldmain.DataEntryFragment   dataEntryFragment  ;
 
     private java.lang.String versionName, fileName, directoryName;
     @androidx.annotation.IntRange(from = 1) private long projectId;
 
-    private org.wheatgenetics.coordinate.UniqueAlertDialog uniqueAlertDialog = null;    // lazy load
+    private org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog uniqueAlertDialog = null;   // ll
     // endregion
 
     // region Private Methods
@@ -857,7 +858,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
 
         if (null == this.uniqueAlertDialog) this.uniqueAlertDialog =
-            new org.wheatgenetics.coordinate.UniqueAlertDialog(this);
+            new org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog(this);
         this.uniqueAlertDialog.show(message);
     }
     // endregion
@@ -940,7 +941,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             this.gridDisplayFragment = (org.wheatgenetics.coordinate.display.GridDisplayFragment)
                 fragmentManager.findFragmentById(
                     org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
-            this.dataEntryFragment = (org.wheatgenetics.coordinate.DataEntryFragment)
+            this.dataEntryFragment = (org.wheatgenetics.coordinate.oldmain.DataEntryFragment)
                 fragmentManager.findFragmentById(
                     org.wheatgenetics.coordinate.R.id.dataEntryFragment);
         }
@@ -1239,7 +1240,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     }
     // endregion
 
-    // region org.wheatgenetics.coordinate.DataEntryFragment.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler Overridden Methods
     @java.lang.Override public java.lang.String getEntryValue()
     {
         if (this.joinedGridModelIsLoaded())
