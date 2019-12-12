@@ -33,7 +33,7 @@ public class ProjectModel extends org.wheatgenetics.coordinate.model.Model
 
     @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
 
-    @androidx.annotation.Nullable public java.lang.CharSequence getTimestampAsCharSequence()
+    @androidx.annotation.Nullable public java.lang.CharSequence getFormattedTimestamp()
     {
         final long timestamp = this.getTimestamp();
         return timestamp < 1 ? null : org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp);

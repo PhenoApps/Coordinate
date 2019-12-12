@@ -121,7 +121,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
                     final android.widget.TextView timestampTextView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemTimestamp);
                     if (null != timestampTextView)
-                        timestampTextView.setText(templateModel.getTimestampAsCharSequence());
+                        timestampTextView.setText(templateModel.getFormattedTimestamp());
                 }
                 return view;
             }

@@ -108,7 +108,7 @@ class ProjectsAdapter extends android.widget.BaseAdapter implements android.widg
                     final android.widget.TextView timestampTextView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTimestamp);
                     if (null != timestampTextView)
-                        timestampTextView.setText(projectModel.getTimestampAsCharSequence());
+                        timestampTextView.setText(projectModel.getFormattedTimestamp());
                 }
                 return view;
             }
