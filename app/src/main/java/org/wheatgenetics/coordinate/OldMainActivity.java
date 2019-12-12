@@ -86,13 +86,13 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.oldmain.DataEntryFragment
  * org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler
-
+ * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
+ *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
- * org.wheatgenetics.coordinate.UniqueAlertDialog
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
  * org.wheatgenetics.coordinate.Utils.ProjectExport
@@ -151,7 +151,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     private java.lang.String versionName, fileName, directoryName;
     @androidx.annotation.IntRange(from = 1) private long projectId;
 
-    private org.wheatgenetics.coordinate.UniqueAlertDialog uniqueAlertDialog = null;    // lazy load
+    private org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog uniqueAlertDialog = null;   // ll
     // endregion
 
     // region Private Methods
@@ -895,7 +895,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         }
 
         if (null == this.uniqueAlertDialog) this.uniqueAlertDialog =
-            new org.wheatgenetics.coordinate.UniqueAlertDialog(this);
+            new org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog(this);
         this.uniqueAlertDialog.show(message);
     }
     // endregion
