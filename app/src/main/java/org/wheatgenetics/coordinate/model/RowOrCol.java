@@ -24,9 +24,12 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     { this(rowOrCol.getValue()) /* throws java.lang.IllegalArgumentException */; }
     // endregion
 
+    @androidx.annotation.NonNull private java.lang.String getValueAsString()
+    { return java.lang.String.valueOf(this.getValue()); }
+
     // region Overridden Methods
     @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
-    { return java.lang.Integer.toString(this.getValue()); }
+    { return this.getValueAsString(); }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {
