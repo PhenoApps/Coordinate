@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:requiresFadingEdge="vertical"
 
-    tools:context=".MainActivity">
+    tools:context=".OldMainActivity">
 
     <LinearLayout
         android:id="@+id/setOptionalFieldValuesLinearLayout"
