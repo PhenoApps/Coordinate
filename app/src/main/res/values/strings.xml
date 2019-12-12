@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
+
     <!-- Preferences -->
     <string name="AdvancementPreferenceKey">Advancement</string>
     <string name="AdvancementPreferenceTitle">Workflow</string>
@@ -77,6 +78,7 @@
     <string name="UniquenessListPreferenceDefault">@string/UniquenessListPreferenceCurrentGrid</string>
 
 
+
     <!-- Exporter -->
     <string name="ExporterProgressDialogTitle">Exporting&#8230;</string>
     <string name="ExporterProgressDialogInitialMessage">File is being saved.</string>
@@ -96,12 +98,14 @@
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
 
 
+
     <!-- optionalField AlertDialogs -->
     <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
     <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
 
     <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
     <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
+
 
 
     <!-- assign_title_rows_cols.xml -->
@@ -117,12 +121,14 @@
     <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
 
 
+
     <!-- ExcludedRowsOrColsAlertDialog -->
     <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
 
     <!-- ExcludedRowsOrColsAlertDialogTester -->
     <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
     <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
+
 
 
     <!-- generated_excluded_cells.xml -->
@@ -132,12 +138,14 @@
     <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
 
 
+
     <!-- ExcludeAlertDialog -->
     <string name="ExcludeAlertDialogTitle">Exclude</string>
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
     <string name="ExcludeAlertDialogColsItem">Columns</string>
     <string name="ExcludeAlertDialogCellsItem">Cells</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
+
 
 
     <!-- set_numbering.xml -->
@@ -152,6 +160,7 @@
     <string name="SetNumberingAlertDialogTitle">Naming</string>
 
 
+
     <!-- set_excludes_optional_fields_numbering.xml -->
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
@@ -160,6 +169,7 @@
     <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
+
 
 
     <!-- create_project.xml -->
@@ -171,15 +181,18 @@
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
 
 
+
     <!-- GetTemplateChoiceAlertDialog -->
     <string name="GetTemplateChoiceAlertDialogTitle">Template Options</string>
     <string name="GetTemplateChoiceAlertDialogOldItem">Load Template</string>
     <string name="GetTemplateChoiceAlertDialogNewItem">New Template</string>
 
 
+
     <!-- SetOptionalFieldValuesAlertDialog -->
     <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
     <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
+
 
 
     <!-- GridCreator -->
@@ -190,10 +203,12 @@
     <string name="GridCreatorEntriesAlertMessage">Unable to make excluded entr(y|ies).</string>
 
 
+
     <!-- ManageGridAlertDialog -->
     <string name="ManageGridAlertDialogLoad">Load</string>
     <string name="ManageGridAlertDialogDelete">Delete</string>
     <string name="ManageGridAlertDialogTitle">Manage grid</string>
+
 
 
     <!-- ManageProjectAlertDialog -->
@@ -201,6 +216,7 @@
     <string name="ManageProjectAlertDialogLoad">Load</string>
     <string name="ManageProjectAlertDialogClear">Clear</string>
     <string name="ManageProjectAlertDialogDelete">Delete</string>
+
 
 
     <!-- activity_main_drawer.xml -->
@@ -224,8 +240,12 @@
 
     <string name="show_about">About</string>
 
+
+
     <!-- Utils -->
     <string name="UtilsSelectExportedTemplateTitle">Import template</string>
+
+
 
     <!-- NavigationItemSelectedListener -->
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
@@ -252,21 +272,26 @@
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
 
 
+
     <!-- GridElement -->
     <string name="ElementConfirmTitle">Exclude Cell</string>
     <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
+
 
 
     <!-- TestAlertDialog -->
     <string name="TestAlertDialogTitle">Test Coordinate</string>
 
 
+
     <!-- UniqueAlertDialog -->
     <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
 
 
+
     <!-- fragment_data_entry.xml -->
     <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
 
 
     <!-- OldMainActivity -->
@@ -278,8 +303,12 @@
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 
+
+
     <!-- multiple activities -->
     <string name="AppBarNewTitle">New</string>
+
+
 
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
@@ -291,11 +320,15 @@
     <string name="TemplatesListColumns">columns</string>
     <string name="TemplatesListTimestamp">timestamp:</string>
 
+
+
     <!-- ProjectsActivity -->
     <string name="ProjectsActivityLabel">Projects</string>
 
     <string name="ProjectsListTitle">title:</string>
     <string name="ProjectsListTimestamp">timestamp:</string>
+
+
 
     <!-- MainActivity -->
     <string name="MainActivityGridMenuItemTitle">Grid</string>
