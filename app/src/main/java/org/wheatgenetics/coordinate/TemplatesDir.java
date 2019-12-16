@@ -55,7 +55,9 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
         return blankHiddenFile;
     }
 
-    boolean atLeastOneXmlFileExists() throws org.wheatgenetics.javalib.Dir.PermissionException
+    // region Public Methods
+    public boolean atLeastOneXmlFileExists()
+    throws org.wheatgenetics.javalib.Dir.PermissionException
     {
         // noinspection CStyleArrayDeclaration
         final java.lang.String fileNames[] = this.listXml();       // throws org.wheatgenetics.java-
@@ -65,4 +67,5 @@ public class TemplatesDir extends org.wheatgenetics.androidlibrary.RequestDir
 
     public java.lang.String[] listXml() throws org.wheatgenetics.javalib.Dir.PermissionException
     { return this.list(".+\\.xml"); }                       // throws org.wheatgenetics.java-
-}                                                                  //  lib.Dir.PermissionException
+    // endregion                                                   //  lib.Dir.PermissionException
+}
