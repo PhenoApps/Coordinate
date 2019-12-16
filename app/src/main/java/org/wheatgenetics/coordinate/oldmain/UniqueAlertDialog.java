@@ -10,9 +10,9 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.R
  */
-public class UniqueAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class UniqueAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
-    public UniqueAlertDialog(final android.app.Activity activity) { super(activity); }
+    UniqueAlertDialog(final android.app.Activity activity) { super(activity); }
 
     @java.lang.Override public void configure()
     { this.setTitle(org.wheatgenetics.coordinate.R.string.UniqueAlertDialogTitle); }

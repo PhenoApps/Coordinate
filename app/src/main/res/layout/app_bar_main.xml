@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".OldMainActivity">
+    tools:context=".oldmain.OldMainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

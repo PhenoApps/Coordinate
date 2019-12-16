@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.oldmain;
 
 /**
  * Uses:
@@ -87,6 +87,7 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.oldmain.DataEntryFragment
  * org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler
  * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
+ * org.wheatgenetics.coordinate.oldmain.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
@@ -171,12 +172,15 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    { return org.wheatgenetics.coordinate.Utils.gridsTable(this.gridsTableInstance,this); }
+    {
+        return org.wheatgenetics.coordinate.oldmain.Utils.gridsTable(
+            this.gridsTableInstance,this);
+    }
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
-        return org.wheatgenetics.coordinate.Utils.entriesTable(
+        return org.wheatgenetics.coordinate.oldmain.Utils.entriesTable(
             this.entriesTableInstance, this.gridsTable(),this);
     }
     // endregion
@@ -245,10 +249,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             try
             {
                 final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    org.wheatgenetics.coordinate.Utils.templatesDir(// throws java.io.IOException,
-                        this,                               //  org.wheatgenetics.javalib-
-                        org.wheatgenetics.coordinate                //  .Dir.PermissionException
-                            .OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
+                    org.wheatgenetics.coordinate.Utils.templatesDir(  // throws java.io.IOException,
+                        this,                                 //  org.wheatgenetics.javalib-
+                        org.wheatgenetics.coordinate                  //  .Dir.PermissionException
+                            .oldmain.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
                 this.importTemplateMenuItem.setEnabled(
                     templatesDir.atLeastOneXmlFileExists() /* throws PermissionException */);
             }
@@ -337,7 +341,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             final android.view.inputmethod.InputMethodManager imm =
                 (android.view.inputmethod.InputMethodManager) this.getSystemService(
-                    org.wheatgenetics.coordinate.OldMainActivity.INPUT_METHOD_SERVICE);
+                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.INPUT_METHOD_SERVICE);
             if (null != imm) imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
@@ -405,11 +409,11 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.androidlibrary.RequestDir exportDir =
                     new org.wheatgenetics.androidlibrary.RequestDir(
                         /* activity => */this,
-                        /* parent   => */ this.exportDir(                          // throws IOE, PE
-                            org.wheatgenetics.coordinate.OldMainActivity.EXPORT_GRID_REQUEST_CODE),
+                        /* parent   => */ this.exportDir(org.wheatgenetics         // throws IOE, PE
+                            .coordinate.oldmain.OldMainActivity.EXPORT_GRID_REQUEST_CODE),
                         /* name        => */ this.joinedGridModel.getTemplateTitle(),
-                        /* requestCode => */
-                            org.wheatgenetics.coordinate.OldMainActivity.EXPORT_GRID_REQUEST_CODE);
+                        /* requestCode => */ org.wheatgenetics
+                            .coordinate.oldmain.OldMainActivity.EXPORT_GRID_REQUEST_CODE);
                 exportDir.createIfMissing();             // throws java.io.IOException, org.wheatge-
                                                          //  netics.javalib.Dir.PermissionException
                 this.gridExporter = new org.wheatgenetics.coordinate.model.GridExporter(
@@ -442,7 +446,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
                 org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
                     this,                                            //  PermissionException
-                    org.wheatgenetics.coordinate.OldMainActivity.IMPORT_TEMPLATE);
+                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE);
             file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
@@ -471,7 +475,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                 final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
                     org.wheatgenetics.coordinate.Utils.templatesDir(         // throws IOException,
                         this,                                        //  PermissionException
-                        org.wheatgenetics.coordinate.OldMainActivity.EXPORT_TEMPLATE);
+                        org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE);
                 exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
                     this.fileName + ".xml");
             }
@@ -549,10 +553,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     /* activity => */this,
                                     /* parent   => */ this.exportDir(        // throws IOException,
                                         org.wheatgenetics.coordinate         //  PermissionException
-                                        .OldMainActivity.EXPORT_PROJECT_REQUEST_CODE),
+                                        .oldmain.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE),
                                     /* name        => */ firstJoinedGridModel.getTemplateTitle(),
                                     /* requestCode => */ org.wheatgenetics.coordinate
-                                        .OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
+                                        .oldmain.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
                             parentDir.createIfMissing(); // throws java.io.IOException, org.wheatge-
                                                          //  netics.javalib.Dir.PermissionException
                             exportDir = new org.wheatgenetics.androidlibrary.RequestDir(
@@ -560,7 +564,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 /* parent      => */ parentDir         ,
                                 /* name        => */ this.directoryName,
                                 /* requestCode => */ org.wheatgenetics.coordinate
-                                    .OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
+                                    .oldmain.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
                             exportDir.createIfMissing(); // throws java.io.IOException, org.wheatge-
                         }                                //  netics.javalib.Dir.PermissionException
                         catch (final java.io.IOException |
@@ -593,7 +597,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 /* context              => */this,
                                 /* exportDir => */ this.exportDir(           // throws IOException,
                                     org.wheatgenetics.coordinate             //  PermissionException
-                                    .OldMainActivity.EXPORT_PROJECT_REQUEST_CODE),
+                                    .oldmain.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE),
                                 /* exportFileName => */ this.directoryName);
                         this.entireProjectProjectExporter.execute();
                     }
@@ -629,7 +633,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         {
             templatesDir = org.wheatgenetics.coordinate.Utils.templatesDir(  // throws IOException,
                 this,                                                //  PermissionException
-                org.wheatgenetics.coordinate.OldMainActivity.CONFIGURE_NAVIGATION_VIEW);
+                org.wheatgenetics.coordinate.oldmain.OldMainActivity.CONFIGURE_NAVIGATION_VIEW);
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
         {
@@ -661,40 +665,40 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                 {
                                     @java.lang.Override public void createGrid()
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.createGrid();
                                     }
 
                                     @java.lang.Override public boolean joinedGridModelIsLoaded()
                                     {
-                                        return org.wheatgenetics.coordinate.OldMainActivity
+                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.joinedGridModelIsLoaded();
                                     }
 
                                     @java.lang.Override public void loadGrid(
                                     @androidx.annotation.IntRange(from = 1) final long gridId)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.loadJoinedGridModelThenPopulate(gridId);
                                     }
 
                                     @java.lang.Override public void deleteGrid()
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.deleteGrid();
                                     }
 
                                     @java.lang.Override
                                     public java.lang.String getInitialGridExportFileName()
                                     {
-                                        return org.wheatgenetics.coordinate.OldMainActivity
+                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.getInitialGridExportFileName();
                                     }
 
                                     @java.lang.Override
                                     public void exportGrid(final java.lang.String fileName)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.exportGrid(fileName);
                                     }
 
@@ -702,7 +706,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     @java.lang.Override
                                     public void importTemplate(final java.lang.String fileName)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.importTemplate(fileName);
                                     }
 
@@ -712,46 +716,46 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                         templateModel,
                                     final java.lang.String fileName)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.exportTemplate(templateModel, fileName);
                                     }
 
                                     @java.lang.Override public void handleGridDeleted()
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.handleGridDeleted();
                                     }
 
 
                                     @java.lang.Override public long getProjectId()
                                     {
-                                        return org.wheatgenetics.coordinate.OldMainActivity
+                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.getProjectId();
                                     }
 
                                     @java.lang.Override public boolean projectModelIsLoaded()
                                     {
-                                        return org.wheatgenetics.coordinate.OldMainActivity
+                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.projectModelIsLoaded();
                                     }
 
                                     @java.lang.Override public void loadProject(
                                     @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.loadProjectModel(projectId);
                                     }
 
                                     @java.lang.Override public void clearProject()
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.clearProjectModel();
                                     }
 
                                     @java.lang.Override public void handleProjectDeleted(
                                     @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.handleProjectDeleted(projectId);
                                     }
 
@@ -759,14 +763,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     @androidx.annotation.IntRange(from = 1) final long projectId,
                                     final java.lang.String directoryName)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.exportProject(projectId, directoryName);
                                     }
 
 
                                     @java.lang.Override public void closeDrawer()
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.closeDrawer();
                                     }
                                 },
@@ -775,7 +779,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                                     @java.lang.Override
                                     public void onClick(final android.view.View v)
                                     {
-                                        org.wheatgenetics.coordinate.OldMainActivity
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.showChangeLog();
                                     }
                                 }));
@@ -822,15 +826,15 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private void reloadIfNecessary()
     {
-        if (org.wheatgenetics.coordinate.Utils.gridsTableNeedsReloading(
+        if (org.wheatgenetics.coordinate.oldmain.Utils.gridsTableNeedsReloading(
         this.gridsTableInstance,this))
             this.gridsTableInstance = null;
 
-        if (org.wheatgenetics.coordinate.Utils.entriesTableNeedsReloading(
+        if (org.wheatgenetics.coordinate.oldmain.Utils.entriesTableNeedsReloading(
         this.entriesTableInstance,this))
             this.entriesTableInstance = null;
 
-        if (org.wheatgenetics.coordinate.Utils.joinedGridModelNeedsReloading(
+        if (org.wheatgenetics.coordinate.oldmain.Utils.joinedGridModelNeedsReloading(
         this.joinedGridModel,this))
             this.loadJoinedGridModelThenPopulate(this.joinedGridModel.getId());
     }
@@ -893,7 +897,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                         @java.lang.Override
                         public void onDrawerOpened(final android.view.View drawerView)
                         {
-                            org.wheatgenetics.coordinate.OldMainActivity
+                            org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                 .this.configureNavigationDrawer();
                         }
                     };
@@ -1096,23 +1100,23 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
             if (android.content.pm.PackageManager.PERMISSION_GRANTED == grantResult)
                 switch (requestCode)
                 {
-                    case org.wheatgenetics.coordinate.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER:
-                        this.configureNavigationDrawer(); break;
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                    .CONFIGURE_NAVIGATION_DRAWER: this.configureNavigationDrawer(); break;
 
-                    case org.wheatgenetics.coordinate.OldMainActivity.IMPORT_TEMPLATE:
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE:
                         this.importTemplate(); break;
 
-                    case org.wheatgenetics.coordinate.OldMainActivity.EXPORT_TEMPLATE:
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE:
                         this.exportTemplate(); break;
 
-                    case org.wheatgenetics.coordinate.OldMainActivity.CONFIGURE_NAVIGATION_VIEW:
-                        this.configureNavigationView(); break;
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                    .CONFIGURE_NAVIGATION_VIEW: this.configureNavigationView(); break;
 
-                    case org.wheatgenetics.coordinate.OldMainActivity.EXPORT_GRID_REQUEST_CODE:
-                        this.exportGrid(); break;
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                    .EXPORT_GRID_REQUEST_CODE: this.exportGrid(); break;
 
-                    case org.wheatgenetics.coordinate.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE:
-                        this.exportProject(); break;
+                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                    .EXPORT_PROJECT_REQUEST_CODE: this.exportProject(); break;
                 }
     }
 

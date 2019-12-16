@@ -1,13 +1,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-
-    tools:context=".OldMainActivity">
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/titleEditText"
@@ -15,7 +12,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogTitleEditTextHint"
         android:inputType="text"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/rowsEditText"
@@ -23,7 +21,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogRowsEditTextHint"
         android:inputType="number"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/colsEditText"
@@ -31,6 +30,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogColsEditTextHint"
         android:inputType="number"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:importantForAutofill="no" />
 
 </LinearLayout>
