@@ -90,6 +90,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
+ * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
@@ -104,13 +105,9 @@ org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
 org.wheatgenetics.coordinate.model.GridExporter.Helper
 {
-    // region Constants
-    private static final java.lang.String COORDINATE_DIR_NAME = "Coordinate",
-        BLANK_HIDDEN_FILE_NAME = ".coordinate";
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, IMPORT_TEMPLATE = 11,
         EXPORT_TEMPLATE = 12, CONFIGURE_NAVIGATION_VIEW = 13, EXPORT_GRID_REQUEST_CODE = 30,
         EXPORT_PROJECT_REQUEST_CODE = 31;
-    // endregion
 
     // region Fields
     private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
@@ -208,17 +205,16 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     {
         return new org.wheatgenetics.androidlibrary.RequestDir(
             /* activity            => */this,
-            /* name                => */ name,
-            /* blankHiddenFileName => */
-                org.wheatgenetics.coordinate.OldMainActivity.BLANK_HIDDEN_FILE_NAME,
-            /* requestCode => */ requestCode);
+            /* name                => */ name                                                      ,
+            /* blankHiddenFileName => */ org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
+            /* requestCode         => */ requestCode);
     }
 
     private void createCoordinateDirIfMissing(final int requestCode)
     throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
     {
         final org.wheatgenetics.androidlibrary.RequestDir coordinateDir = this.makeRequestDir(
-            org.wheatgenetics.coordinate.OldMainActivity.COORDINATE_DIR_NAME, requestCode);
+            org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME, requestCode);
         coordinateDir.createIfMissing();                 // throws java.io.IOException, org.wheatge-
     }                                                    //  netics.javalib.Dir.PermissionException
 
@@ -231,11 +227,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
             new org.wheatgenetics.coordinate.TemplatesDir(
                 /* activity => */this,
-                /* name     => */
-                    org.wheatgenetics.coordinate.OldMainActivity.COORDINATE_DIR_NAME +
+                /* name     => */org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME +
                     "/Templates",
                 /* blankHiddenFileName => */
-                    org.wheatgenetics.coordinate.OldMainActivity.BLANK_HIDDEN_FILE_NAME,
+                    org.wheatgenetics.coordinate.Consts.BLANK_HIDDEN_FILE_NAME,
                 /* requestCode => */ requestCode);
         templatesDir.createIfMissing();                  // throws java.io.IOException, org.wheatge-
         return templatesDir;                             //  netics.javalib.Dir.PermissionException
@@ -248,7 +243,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
         this.createCoordinateDirIfMissing(requestCode);  // throws java.io.IOException, org.wheatge-
                                                          //  netics.javalib.Dir.PermissionException
         final org.wheatgenetics.androidlibrary.RequestDir exportDir = this.makeRequestDir(
-            org.wheatgenetics.coordinate.OldMainActivity.COORDINATE_DIR_NAME + "/Export",
+            org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME + "/Export",
             requestCode);
         exportDir.createIfMissing();                     // throws java.io.IOException, org.wheatge-
         return exportDir;                                //  netics.javalib.Dir.PermissionException
