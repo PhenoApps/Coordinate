@@ -322,6 +322,14 @@
 
 
 
+    <!-- ProjectClickAlertDialog -->
+    <string name="ProjectClickAlertDialogCreateGrid">New grid in this project</string>
+    <string name="ProjectClickAlertDialogShowGrids">Show grids in this project</string>
+    <string name="ProjectClickAlertDialogDeleteProject">Delete</string>
+    <string name="ProjectClickAlertDialogExportProject">Export</string>
+
+
+
     <!-- ProjectsActivity -->
     <string name="ProjectsActivityLabel">Projects</string>
 

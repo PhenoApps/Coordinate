@@ -508,7 +508,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             this.showShortToast(org.wheatgenetics.coordinate
                 .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
 
-        success = projectsTable().delete(projectId);                               // delete project
+        success = this.projectsTable().delete(projectId);                          // delete project
 
         if (success)
         {
