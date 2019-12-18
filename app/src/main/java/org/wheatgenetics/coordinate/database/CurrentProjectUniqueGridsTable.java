@@ -86,7 +86,8 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
                     new java.lang.String[]{java.lang.String.valueOf(id), value}));
     }
 
-    private boolean existsInsideProject(final long id, final java.lang.String value)
+    private boolean existsInsideProject(final long id,
+    final java.lang.String value, final long projectId)
     {
         final android.database.Cursor cursor;
         {
@@ -95,23 +96,24 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
                 final java.lang.String GRIDS_TABLE_PROJECTID_FIELD = org.wheatgenetics.coordinate
                     .database.CurrentProjectUniqueGridsTable.GRIDS_TABLE_PROJECTID_FIELD;
                 sql = org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable
-                    .firstPartOfSql() + java.lang.String.format(" AND (%s IS NOT NULL AND %s >= 1)",
+                    .firstPartOfSql() + java.lang.String.format(" AND (%s IS NOT NULL AND %s = ?)",
                         GRIDS_TABLE_PROJECTID_FIELD, GRIDS_TABLE_PROJECTID_FIELD);
             }
             cursor = this.rawQuery(
                 /* sql           => */ sql,
-                /* selectionArgs => */
-                    new java.lang.String[]{java.lang.String.valueOf(id), value});
+                /* selectionArgs => */ new java.lang.String[]{
+                    java.lang.String.valueOf(id), value, java.lang.String.valueOf(projectId)});
         }
         if (null != cursor) if (cursor.moveToFirst())
         {
             org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.log(
-                "gridId == " + id + ", value == " + value);
+                "gridId == " + id + ", value == " + value + ", projectId == " + projectId);
             do
             {
                 org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.log(
-                    "[grids].[_id] == " + cursor.getString(0) +
-                    ", [entries].[edata] == " + cursor.getString(1));
+                    "[grids].[_id] == "   + cursor.getString(0) +
+                    ", [entries].[edata] == "   + cursor.getString(1) +
+                    ", [grids].[projectId] == " + cursor.getString(2));
             }
             while (cursor.moveToNext());
         }
@@ -189,7 +191,7 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
                  else
                      return value;
             else
-                if (this.existsInsideProject(gridId, value))
+                if (this.existsInsideProject(gridId, value, joinedGridModel.getProjectId()))
                     throw new org.wheatgenetics.coordinate.model
                         .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope);
                 else
