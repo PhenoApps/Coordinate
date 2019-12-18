@@ -46,6 +46,9 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
             this.templateModelsInstance = this.templatesTable().load();
         return this.templateModelsInstance;
     }
+
+    @androidx.annotation.NonNull private android.widget.TableLayout makeTableLayout()
+    { return new android.widget.TableLayout(this.activity); }
     // endregion
 
     TemplatesAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
@@ -91,7 +94,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) this.getItem(position);
         if (null == templateModel)
-            return new android.widget.TableLayout(this.activity);
+            return this.makeTableLayout();
         else
         {
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
@@ -99,7 +102,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
                     org.wheatgenetics.coordinate.R.layout.templates_list_item,
                     null,false);
             if (null == view)
-                return new android.widget.TableLayout(this.activity);
+                return this.makeTableLayout();
             else
             {
                 {

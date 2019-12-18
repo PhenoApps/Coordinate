@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate;
  * android.widget.ListView
  *
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.androidlibrary.Utils
@@ -85,7 +86,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onCreate(
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);

@@ -14,6 +14,7 @@ package org.wheatgenetics.coordinate.projects;
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.javalib.Dir.PermissionException
@@ -222,7 +223,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onCreate(
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_projects);
