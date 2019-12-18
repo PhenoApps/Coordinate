@@ -97,7 +97,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override protected void onCreate(final android.os.Bundle savedInstanceState)
+    @java.lang.Override protected void onCreate(
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_exclude_cells);
