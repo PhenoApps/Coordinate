@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.database;
 /**
  * Uses:
  * android.content.Context
+ * android.util.Log
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
@@ -28,6 +29,13 @@ public class CurrentProjectUniqueGridsTable extends org.wheatgenetics.coordinate
 implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
 {
     // region Private Methods
+    private static void log(final java.lang.String msg)
+    {
+        android.util.Log.d(
+            org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.class.getName(),
+            msg                                                                                 );
+    }
+
     private static java.lang.String format(
     @androidx.annotation.NonNull final java.lang.String format)
     {
@@ -58,7 +66,7 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     {
         final java.lang.String sql =
             org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.format(
-                "SELECT ALL %s, %s " +
+                "SELECT ALL %s, %s "                    +
                     "FROM %s INNER JOIN %s ON %s = %s " +
                     "WHERE %s <> ? AND %s = ? AND (%s IS NULL OR %s <= 0)");
         return org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.exists(
@@ -70,16 +78,31 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
 
     private boolean existsInsideProject(final long id, final java.lang.String value)
     {
-        final java.lang.String sql =
-            org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.format(
-                "SELECT ALL %s, %s " +
-                    "FROM %s INNER JOIN %s ON %s = %s " +
-                    "WHERE %s <> ? AND %s = ? AND (%s IS NOT NULL and %s >= 1)");
-        return org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.exists(
-            this.rawQuery(
+        final android.database.Cursor cursor;
+        {
+            final java.lang.String sql =
+                org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.format(
+                    "SELECT ALL %s, %s "                   +
+                        "FROM %s INNER JOIN %s ON %s = %s " +
+                        "WHERE %s <> ? AND %s = ? AND (%s IS NOT NULL AND %s >= 1)");
+            cursor = this.rawQuery(
                 /* sql           => */ sql,
                 /* selectionArgs => */
-                    new java.lang.String[]{java.lang.String.valueOf(id), value}));
+                    new java.lang.String[]{java.lang.String.valueOf(id), value});
+        }
+        if (null != cursor) if (cursor.moveToFirst())
+        {
+            org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.log(
+                "gridId == " + id + ", value == " + value);
+            do
+            {
+                org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.log(
+                    "[grids].[_id] == " + cursor.getString(0) +
+                    ", [entries].[edata] == " + cursor.getString(1));
+            }
+            while (cursor.moveToNext());
+        }
+        return org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.exists(cursor);
     }
     // endregion
 

@@ -29,7 +29,7 @@ package org.wheatgenetics.coordinate.oldmain;
 public class DataEntryFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     {
         public abstract java.lang.String getEntryValue   ();
         public abstract java.lang.String getProjectTitle ();
@@ -111,8 +111,8 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     // endregion
     // endregion
 
-    // region Public Methods
-    public void populate()
+    // region Package Methods
+    void populate()
     {
         if (null != this.handler)
         {
@@ -170,7 +170,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
         }
     }
 
-    public void setEntry(final java.lang.String entry)
+    void setEntry(final java.lang.String entry)
     { if (null != this.entryEditText) this.entryEditText.setText(entry); }
     // endregion
 }
