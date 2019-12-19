@@ -72,7 +72,8 @@ class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
             new org.wheatgenetics.coordinate.ProjectDeleter(this.activity(),
                 new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
                 {
-                    @java.lang.Override public void respondToDeletedProject()
+                    @java.lang.Override public void respondToDeletedProject(
+                    @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
                         org.wheatgenetics.coordinate.projects
                             .ProjectClickAlertDialog.this.respondToDeletedProject();

@@ -454,10 +454,8 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     {
         final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
             this.loadByProjectId(projectId);
-        if (null == baseJoinedGridModels)
-            return false;
-        else
-            return baseJoinedGridModels.size() > 0;
+        // noinspection SimplifiableConditionalExpression
+        return null == baseJoinedGridModels ? false : baseJoinedGridModels.size() > 0;
     }
 
     public boolean deleteByTemplateId(final long templateId)
