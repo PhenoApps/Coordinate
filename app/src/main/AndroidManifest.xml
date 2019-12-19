@@ -29,6 +29,10 @@
         <activity android:name=".oldmain.OldMainActivity" />
 
         <activity
+            android:name=".grids.GridsActivity"
+            android:label="@string/GridsActivityLabel" />
+
+        <activity
             android:name=".templates.TemplatesActivity"
             android:label="@string/TemplatesActivityLabel" />
 

@@ -310,6 +310,11 @@
 
 
 
+    <!-- GridsActivity -->
+    <string name="GridsActivityLabel">Grids</string>
+
+
+
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
