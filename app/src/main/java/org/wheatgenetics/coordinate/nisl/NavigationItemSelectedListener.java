@@ -300,11 +300,10 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         }
 
         if (this.gridsTable().deleteByTemplateId(templateId))                     // delete grids
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
+            this.showShortToast(
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsSuccessToast);
         else
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
+            this.showShortToast(org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsFailToast);
 
         success = templatesTable().delete(templateId);                            // delete template
 
@@ -504,33 +503,31 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         }
 
         if (this.gridsTable().deleteByProjectId(projectId))                        // delete grids
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
+            this.showShortToast(
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsSuccessToast);
         else
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
+            this.showShortToast(org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsFailToast);
 
-        success = projectsTable().delete(projectId);                               // delete project
+        success = this.projectsTable().delete(projectId);                          // delete project
 
         if (success)
         {
-            this.showLongToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
+            this.showLongToast(
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast);
             this.handler.handleProjectDeleted(projectId);
         }
-        else this.showLongToast(org.wheatgenetics.coordinate
-            .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
+        else this.showLongToast(
+            org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast);
     }
 
     private void deleteProjectAfterSelect(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
-            /* context => */ this.activity,
-            /* title   => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationTitle,
-            /* message => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
+            /* context => */ this.activity                                                        ,
+            /* title   => */ org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationTitle,
+            /* message => */
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationMessage,
             /* yesRunnable => */ new java.lang.Runnable()
                 {
                     @java.lang.Override public void run()
