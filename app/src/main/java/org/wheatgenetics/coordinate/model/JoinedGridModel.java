@@ -423,14 +423,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
-    java.lang.String name()
-    {
-        return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
-            this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
-            this.getFormattedTimestamp());
-    }
-
     @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
         // noinspection ConstantConditions
@@ -478,6 +470,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Public Methods
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
+    public java.lang.String name()
+    {
+        return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
+            this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
+            this.getFormattedTimestamp());
+    }
+
     public java.lang.String getTemplateTitle() { return this.templateModel.getTitle(); }
 
     public void makeEntryModels() throws

@@ -18,5 +18,4 @@
         android:onClick="onImportTemplateMenuItem"
 
         tools:ignore="AlwaysShowAction" />
-
 </menu>
