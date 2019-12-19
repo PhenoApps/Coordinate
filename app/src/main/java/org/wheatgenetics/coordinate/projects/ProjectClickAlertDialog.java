@@ -11,25 +11,19 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
- * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.ProjectDeleter
+ * org.wheatgenetics.coordinate.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
  *
- * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
- * org.wheatgenetics.coordinate.database.ProjectsTable
  *
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.ProjectModel
  *
  * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
  * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler
  */
 class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
-implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     {
@@ -45,31 +39,19 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler handler;
 
-    // region Table Fields
-    private org.wheatgenetics.coordinate.database.EntriesTable  entriesTableInstance  = null;  // ll
-    private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
-    // endregion
-
     @androidx.annotation.IntRange(from = 1) private long    projectId      ;
                                             private boolean projectHasGrids;
 
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
+
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;    // ll
 
+    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleterInstance = null;  // lazy load
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
     // endregion
 
     // region Private Methods
-    // region Table Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity());
-        return this.entriesTableInstance;
-    }
-
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
@@ -78,88 +60,28 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         return this.gridsTableInstance;
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
-    {
-        if (null == this.projectsTableInstance) this.projectsTableInstance =
-            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity());
-        return this.projectsTableInstance;
-    }
-    // endregion
-
-    // region Toast Private Methods
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity(), text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.activity().getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.activity(), text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.activity().getString(text)); }
-    // endregion
-    // endregion
-
     private void createGrid() { this.handler.createGrid(this.projectId); }
     private void showGrids () { this.handler.showGrids (this.projectId); }
 
-    // region deleteProjectStepN() Private Methods
-    private void deleteProjectStep3()
+    // region deleteProject() Private Methods
+    private void respondToDeletedProject() { this.handler.respondToDeletedProject(); }
+
+    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
     {
-        final boolean success = this.projectsTable().delete(this.projectId);
-        if (success)
-        {
-            this.showLongToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteProjectSuccessToast);
-            this.handler.respondToDeletedProject();
-        }
-        else this.showLongToast(org.wheatgenetics.coordinate
-            .R.string.NavigationItemSelectedListenerDeleteProjectFailToast);
-    }
-
-    private void deleteProjectStep2()
-    {
-        {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-                this.gridsTable().loadByProjectId(this.projectId);
-            if (null != baseJoinedGridModels)
-                baseJoinedGridModels.processAll(this);                   // delete entries
-        }
-
-        if (this.gridsTable().deleteByProjectId(this.projectId))                   // delete grids
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsSuccessToast);
-        else
-            this.showShortToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridsFailToast);
-
-        this.deleteProjectStep3();
-    }
-
-    private void deleteProjectStep1()
-    {
-        if (this.projectHasGrids)
-            org.wheatgenetics.coordinate.Utils.confirm(
-                /* context => */ this.activity(),
-                /* title   => */ org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationTitle,
-                /* message => */ org.wheatgenetics.coordinate
-                    .R.string.NavigationItemSelectedListenerDeleteProjectConfirmationMessage,
-                /* yesRunnable => */ new java.lang.Runnable()
+        if (null == this.projectDeleterInstance) this.projectDeleterInstance =
+            new org.wheatgenetics.coordinate.ProjectDeleter(this.activity(),
+                new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
+                {
+                    @java.lang.Override public void respondToDeletedProject()
                     {
-                        @java.lang.Override public void run()
-                        {
-                            org.wheatgenetics.coordinate.projects
-                                .ProjectClickAlertDialog.this.deleteProjectStep2();
-                        }
-                    });
-        else this.deleteProjectStep3();
+                        org.wheatgenetics.coordinate.projects
+                            .ProjectClickAlertDialog.this.respondToDeletedProject();
+                    }
+                });
+        return this.projectDeleterInstance;
     }
+
+    private void deleteProject() { this.projectDeleter().delete(this.projectId); }
     // endregion
 
     // region exportProject() Private Methods
@@ -184,17 +106,11 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         return this.projectExportPreprocessorInstance;
     }
 
-    private void exportProject()
-    {
-
-        final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
-            this.projectsTable().get(this.projectId);
-        if (null != projectModel) this.projectExportPreprocessor().preprocess(projectModel);
-    }
+    private void exportProject() { this.projectExportPreprocessor().preprocess(this.projectId); }
     // endregion
 
     private void handleCase1()
-    { if (this.projectHasGrids) this.showGrids(); else this.deleteProjectStep1(); }
+    { if (this.projectHasGrids) this.showGrids(); else this.deleteProject(); }
 
     @androidx.annotation.NonNull
     private android.content.DialogInterface.OnClickListener onClickListener()
@@ -214,7 +130,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                             .this.handleCase1(); break;
 
                         case 2: org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
-                            .this.deleteProjectStep1(); break;
+                            .this.deleteProject(); break;
 
                         case 3: org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
                             .this.exportProject(); break;
@@ -229,15 +145,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
-    // region Overridden Methods
     @java.lang.Override public void configure() {}
-
-    // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
-    @java.lang.Override
-    public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
-    { if (null != joinedGridModel) this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
-    // endregion
-    // endregion
 
     void show(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
