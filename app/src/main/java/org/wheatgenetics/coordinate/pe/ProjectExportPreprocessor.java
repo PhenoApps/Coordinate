@@ -11,6 +11,8 @@ package org.wheatgenetics.coordinate.pe;
  * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
  * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
  *
+ * org.wheatgenetics.coordinate.database.ProjectsTable
+ *
  * org.wheatgenetics.coordinate.model.ProjectModel
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -28,11 +30,21 @@ public class ProjectExportPreprocessor extends java.lang.Object
         org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler handler;
 
     @androidx.annotation.IntRange(from = 1) private long projectId;
+
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
         getExportFileNameAlertDialogInstance = null;                                    // lazy load
     // endregion
 
     // region Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
+    {
+        if (null == this.projectsTableInstance) this.projectsTableInstance =
+            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity);
+        return this.projectsTableInstance;
+    }
+
     private void exportProject(final java.lang.String directoryName)
     { this.handler.exportProject(this.projectId, directoryName);  }
 
@@ -53,6 +65,9 @@ public class ProjectExportPreprocessor extends java.lang.Object
                     });
         return this.getExportFileNameAlertDialogInstance;
     }
+
+    private void preprocess(final java.lang.String initialFileName)
+    { this.getExportFileNameAlertDialog().show(initialFileName); }
     // endregion
 
     public ProjectExportPreprocessor(
@@ -61,13 +76,20 @@ public class ProjectExportPreprocessor extends java.lang.Object
         org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler handler)
     { super(); this.activity = activity; this.handler = handler; }
 
+    // region Public Methods
+    public void preprocess(@androidx.annotation.IntRange(from = 1) final long projectId)
+    {
+        this.projectId = projectId;
+        final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
+            this.projectsTable().get(this.projectId);
+        if (null != projectModel) this.preprocess(projectModel.getTitle());
+    }
+
     public void preprocess(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel)
-        {
-            this.projectId = projectModel.getId();
-            this.getExportFileNameAlertDialog().show(projectModel.getTitle());
-        }
+            { this.projectId = projectModel.getId(); this.preprocess(projectModel.getTitle()); }
     }
+    // endregion
 }
