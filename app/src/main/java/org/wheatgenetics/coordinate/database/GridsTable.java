@@ -450,6 +450,14 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
                 org.wheatgenetics.coordinate.database.GridsTable.PROJECTID_FIELD_NAME + " > 0"));
     }
 
+    public boolean existsInProject(final long projectId)
+    {
+        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
+            this.loadByProjectId(projectId);
+        // noinspection SimplifiableConditionalExpression
+        return null == baseJoinedGridModels ? false : baseJoinedGridModels.size() > 0;
+    }
+
     public boolean deleteByTemplateId(final long templateId)
     {
         return this.deleteUsingWhereClause(/* whereClause => */

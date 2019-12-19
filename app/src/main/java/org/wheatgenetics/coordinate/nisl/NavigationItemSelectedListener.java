@@ -2,7 +2,6 @@ package org.wheatgenetics.coordinate.nisl;
 
 /**
  * Uses:
- * android.annotation.SuppressLint
  * android.app.Activity
  * android.content.Intent
  * android.content.res.Resources
@@ -26,6 +25,7 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  *
+ * org.wheatgenetics.coordinate.ProjectDeleter
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -126,6 +126,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator  = null;     // lazy load
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
         manageProjectAlertDialog = null;                                                // lazy load
+    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleterInstance = null;  // lazy load
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
     private android.content.Intent                   preferenceIntentInstance = null;   // lazy load
@@ -489,54 +490,29 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     private void clearProject() { this.handler.clearProject(); }
 
     // region Delete Project Private Methods
-    private void deleteProjectAfterConfirm(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    private void respondToDeletedProject(
+    @androidx.annotation.IntRange(from = 1) final long projectId)
+    { this.handler.handleProjectDeleted(projectId); }
+
+    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
     {
-                                                final boolean success                         ;
-        @androidx.annotation.IntRange(from = 1) final long    projectId = projectModel.getId();
-
-        {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-                this.gridsTable().loadByProjectId(projectId);
-            if (null != baseJoinedGridModels)
-                baseJoinedGridModels.processAll(this);                   // delete entries
-        }
-
-        if (this.gridsTable().deleteByProjectId(projectId))                        // delete grids
-            this.showShortToast(
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsSuccessToast);
-        else
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsFailToast);
-
-        success = this.projectsTable().delete(projectId);                          // delete project
-
-        if (success)
-        {
-            this.showLongToast(
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast);
-            this.handler.handleProjectDeleted(projectId);
-        }
-        else this.showLongToast(
-            org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast);
+        if (null == this.projectDeleterInstance) this.projectDeleterInstance =
+            new org.wheatgenetics.coordinate.ProjectDeleter(this.activity,
+                new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
+                {
+                    @java.lang.Override public void respondToDeletedProject(
+                    @androidx.annotation.IntRange(from = 1) final long projectId)
+                    {
+                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                            .this.respondToDeletedProject(projectId);
+                    }
+                });
+        return this.projectDeleterInstance;
     }
 
     private void deleteProjectAfterSelect(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        if (null != projectModel) org.wheatgenetics.coordinate.Utils.confirm(
-            /* context => */ this.activity                                                        ,
-            /* title   => */ org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationTitle,
-            /* message => */
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationMessage,
-            /* yesRunnable => */ new java.lang.Runnable()
-                {
-                    @java.lang.Override public void run()
-                    {
-                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                            .this.deleteProjectAfterConfirm(projectModel);
-                    }
-                });
-    }
+    { this.projectDeleter().delete(projectModel); }
 
     private void deleteProject()
     {

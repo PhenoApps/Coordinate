@@ -27,7 +27,10 @@ public class ProjectDeleter extends java.lang.Object
 implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    { public abstract void respondToDeletedProject(); }
+    {
+        public abstract void respondToDeletedProject(
+        @androidx.annotation.IntRange(from = 1) long projectId);
+    }
 
     // region Fields
     @androidx.annotation.NonNull private final android.content.Context context;
@@ -95,7 +98,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         {
             this.showLongToast(
                 org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast);
-            this.handler.respondToDeletedProject();
+            this.handler.respondToDeletedProject(this.projectId);
         }
         else this.showLongToast(
             org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast);
