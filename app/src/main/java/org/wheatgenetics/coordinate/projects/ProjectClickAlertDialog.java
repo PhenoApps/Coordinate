@@ -11,8 +11,6 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.R
@@ -26,6 +24,9 @@ package org.wheatgenetics.coordinate.projects;
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.ProjectModel
+ *
+ * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
+ * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler
  */
 class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
@@ -35,8 +36,9 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         public abstract void createGrid(@androidx.annotation.IntRange(from = 1) long projectId);
         public abstract void showGrids (@androidx.annotation.IntRange(from = 1) long projectId);
         public abstract void respondToDeletedProject();
-        public abstract void exportProject(@androidx.annotation.IntRange(from = 1) long projectId,
-            java.lang.String directoryName);
+
+        public abstract void exportProject(
+        @androidx.annotation.IntRange(from = 1) long projectId, java.lang.String directoryName);
     }
 
     // region Fields
@@ -52,10 +54,10 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     @androidx.annotation.IntRange(from = 1) private long    projectId      ;
                                             private boolean projectHasGrids;
 
-    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getExportFileNameAlertDialogInstance = null;                                    // lazy load
-
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;    // ll
+
+    private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
+        projectExportPreprocessorInstance = null;                                       // lazy load
     // endregion
 
     // region Private Methods
@@ -161,32 +163,33 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region exportProject() Private Methods
-    private void exportProjectAfterGettingDirectoryName(final java.lang.String directoryName)
-    { this.handler.exportProject(this.projectId, directoryName);  }
+    private void exportProject(
+    @androidx.annotation.IntRange(from = 1) long projectId, final java.lang.String directoryName)
+    { this.handler.exportProject(projectId, directoryName);  }
 
-    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-    getExportFileNameAlertDialog()
+    private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
     {
-        if (null == this.getExportFileNameAlertDialogInstance)
-            this.getExportFileNameAlertDialogInstance =
-                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity(),
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+        if (null == this.projectExportPreprocessorInstance) this.projectExportPreprocessorInstance =
+            new org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor(this.activity(),
+                new org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler()
+                {
+                    @java.lang.Override public void exportProject(
+                    @androidx.annotation.IntRange(from = 1) final long             projectId    ,
+                                                            final java.lang.String directoryName)
                     {
-                        @java.lang.Override
-                        public void handleGetFileNameDone(final java.lang.String fileName)
-                        {
-                            org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
-                                .this.exportProjectAfterGettingDirectoryName(fileName);
-                        }
-                    });
-        return this.getExportFileNameAlertDialogInstance;
+                        org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
+                            .this.exportProject(projectId, directoryName);
+                    }
+                });
+        return this.projectExportPreprocessorInstance;
     }
 
     private void exportProject()
     {
+
         final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
             this.projectsTable().get(this.projectId);
-        if (null != projectModel) this.getExportFileNameAlertDialog().show(projectModel.getTitle());
+        if (null != projectModel) this.projectExportPreprocessor().preprocess(projectModel);
     }
     // endregion
 
