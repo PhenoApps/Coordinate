@@ -21,6 +21,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.grids.GridsActivity
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.pc.ProjectCreator
@@ -39,8 +41,8 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private android.content.Intent templatesIntentInstance = null,                         // lazy
-        projectsIntentInstance = null;                                                     //  loads
+    private android.content.Intent gridsIntentInstance = null,                             // lazy
+        templatesIntentInstance = null, projectsIntentInstance = null;                     //  loads
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator        = null;// ll
@@ -51,6 +53,18 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    // region GridsActivity Private Methods
+    private android.content.Intent gridsIntent()
+    {
+        if (null == this.gridsIntentInstance) this.gridsIntentInstance =
+            new android.content.Intent(this,
+                org.wheatgenetics.coordinate.grids.GridsActivity.class);
+        return this.gridsIntentInstance;
+    }
+
+    private void startGridsActivity() { this.startActivity(this.gridsIntent()); }
+    // endregion
 
     // region TemplatesActivity Private Methods
     private android.content.Intent templatesIntent()
@@ -108,6 +122,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                     {
                         switch (position)
                         {
+                            case 0: org.wheatgenetics.coordinate.MainActivity
+                                .this.startGridsActivity(); break;
+
                             case 1: org.wheatgenetics.coordinate.MainActivity
                                 .this.startTemplatesActivity(); break;
 
