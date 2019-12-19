@@ -247,6 +247,16 @@
 
 
 
+    <!-- ProjectDeleter -->
+    <string name="ProjectDeleterConfirmationTitle">Delete project</string>
+    <string name="ProjectDeleterConfirmationMessage">Are you sure you want to delete this project and all its grids?</string>
+    <string name="ProjectDeleterGridsSuccessToast">Grid(s) successfully deleted</string>
+    <string name="ProjectDeleterGridsFailToast">Grid(s) were not deleted</string>
+    <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
+    <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
+
+
+
     <!-- NavigationItemSelectedListener -->
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
     <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
@@ -255,17 +265,11 @@
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
-    <string name="NavigationItemSelectedListenerDeleteGridsSuccessToast">Grid(s) successfully deleted</string>
-    <string name="NavigationItemSelectedListenerDeleteGridsFailToast">Grid(s) were not deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateSuccessToast">Template successfully deleted</string>
     <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
 
     <string name="NavigationItemSelectedListenerSelectLoadProjectTitle">Load project</string>
     <string name="NavigationItemSelectedListenerSelectDeleteProjectTitle">Delete project</string>
-    <string name="NavigationItemSelectedListenerDeleteProjectConfirmationTitle">Delete project</string>
-    <string name="NavigationItemSelectedListenerDeleteProjectConfirmationMessage">Are you sure you want to delete this project and all its grids?</string>
-    <string name="NavigationItemSelectedListenerDeleteProjectSuccessToast">Project successfully deleted</string>
-    <string name="NavigationItemSelectedListenerDeleteProjectFailToast">Project could not be deleted</string>
     <string name="NavigationItemSelectedListenerSelectExportProjectTitle">Export project</string>
 
     <string name="AboutAlertDialogTitle">About Coordinate</string>
