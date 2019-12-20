@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -18,13 +18,14 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.ProjectExporter
- * org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
+ *
+ * org.wheatgenetics.coordinate.exporter.ProjectExporter
+ * org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
  */
-public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.ProjectExporter
+public class PerGridProjectExporter extends org.wheatgenetics.coordinate.exporter.ProjectExporter
 {
     private static class AsyncTask
-    extends org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
+    extends org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
     {
         @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) private interface Client
         { public abstract void execute(); }
@@ -33,7 +34,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         @androidx.annotation.NonNull private final
             org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
         @androidx.annotation.NonNull private final
-            org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client;
+            org.wheatgenetics.coordinate.exporter.PerGridProjectExporter.AsyncTask.Client client;
         // endregion
 
         private AsyncTask(@androidx.annotation.NonNull final android.content.Context context,
@@ -41,7 +42,7 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
         @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.JoinedGridModel
             joinedGridModel,
         @androidx.annotation.NonNull final
-            org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask.Client client)
+            org.wheatgenetics.coordinate.exporter.PerGridProjectExporter.AsyncTask.Client client)
         {
             super(context, exportFile, exportFileName);
             this.joinedGridModel = joinedGridModel; this.client = client;
@@ -89,8 +90,8 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
     // region Fields
     private final java.lang.String exportDirectoryName;
 
-    @androidx.annotation.IntRange(from = 0) private int                         i         =    0;
-    private org.wheatgenetics.coordinate.model.PerGridProjectExporter.AsyncTask asyncTask = null;
+    @androidx.annotation.IntRange(from = 0) private int                            i         =    0;
+    private org.wheatgenetics.coordinate.exporter.PerGridProjectExporter.AsyncTask asyncTask = null;
     // endregion
 
     public PerGridProjectExporter(
@@ -136,19 +137,19 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.model.P
                                 "grid%d_%s.csv", joinedGridModel.getId(), this.exportDirectoryName);
                             try
                             {
-                                this.asyncTask = new org.wheatgenetics.coordinate.model
-                                    .PerGridProjectExporter.AsyncTask(
+                                this.asyncTask = new org.wheatgenetics.coordinate
+                                    .exporter.PerGridProjectExporter.AsyncTask(
                                         /* context    => */ context,
                                         /* exportFile => */ exportDir.createNewFile(     // throws
                                             /* fileName => */ exportFileName),           //  IOE, PE
                                         /* exportFileName  => */ exportFileName ,
                                         /* joinedGridModel => */ joinedGridModel,
-                                        /* client => */ new org.wheatgenetics.coordinate.model
+                                        /* client => */ new org.wheatgenetics.coordinate.exporter
                                             .PerGridProjectExporter.AsyncTask.Client()
                                             {
                                                 @java.lang.Override public void execute()
                                                 {
-                                                    org.wheatgenetics.coordinate.model
+                                                    org.wheatgenetics.coordinate.exporter
                                                         .PerGridProjectExporter.this
                                                         .execute();                     // recursion
                                                 }

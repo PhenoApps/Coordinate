@@ -18,10 +18,11 @@ package org.wheatgenetics.coordinate.pe;
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  *
+ * org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter
+ * org.wheatgenetics.coordinate.exporter.PerGridProjectExporter
+ *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
  * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.PerGridProjectExporter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectExporter extends java.lang.Object
@@ -35,8 +36,9 @@ public class ProjectExporter extends java.lang.Object
 
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
 
-    private org.wheatgenetics.coordinate.model.PerGridProjectExporter perGridProjectExporter = null;
-    private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter
+    private org.wheatgenetics.coordinate.exporter.PerGridProjectExporter
+        perGridProjectExporter = null;
+    private org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter
         entireProjectProjectExporter = null;
     // endregion
 
@@ -136,7 +138,7 @@ public class ProjectExporter extends java.lang.Object
                 if (null != exportDir)
                 {
                     this.perGridProjectExporter =
-                        new org.wheatgenetics.coordinate.model.PerGridProjectExporter(
+                        new org.wheatgenetics.coordinate.exporter.PerGridProjectExporter(
                             /* baseJoinedGridModels => */ baseJoinedGridModels,
                             /* context              => */ this.activity       ,
                             /* exportDir            => */ exportDir           ,
@@ -149,7 +151,7 @@ public class ProjectExporter extends java.lang.Object
                 try
                 {
                     this.entireProjectProjectExporter =
-                        new org.wheatgenetics.coordinate.model.EntireProjectProjectExporter(
+                        new org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter(
                             /* baseJoinedGridModels => */ baseJoinedGridModels,
                             /* context              => */ this.activity       ,
                             /* exportDir            => */ this.exportDir(),  // throws IOException,

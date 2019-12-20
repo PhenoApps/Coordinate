@@ -21,11 +21,72 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
     }
 
-    // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     abstract boolean isInRange(final int i);
 
-    boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
+    // region Public Methods
+    public abstract boolean add(
+    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
+
+    @androidx.annotation.IntRange(from = 0) public abstract int size();
+
+    @androidx.annotation.Nullable
+    public abstract org.wheatgenetics.coordinate.model.JoinedGridModel get(
+    @androidx.annotation.IntRange(from = 0) final int i);
+
+    @androidx.annotation.Nullable public java.lang.String[] names()
+    {
+        @androidx.annotation.IntRange(from = 0) final int size = this.size();
+
+        if (size <= 0)
+            return null;
+        else
+        {
+            // noinspection CStyleArrayDeclaration
+            final java.lang.String result[] = new java.lang.String[size];
+            {
+                final int first = 0, last = size - 1;
+                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
+                {
+                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                        this.get(i);
+                    if (null != joinedGridModel) result[i] = joinedGridModel.name();
+                }
+            }
+            return result;
+        }
+    }
+
+    public abstract void processAll(
+    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor processor);
+
+    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.Cells excludedCells(
+    @androidx.annotation.IntRange(from = 1) final int maxRow,
+    @androidx.annotation.IntRange(from = 1) final int maxCol)
+    {
+        @androidx.annotation.IntRange(from = 0) final int size = this.size();
+
+        if (size <= 0)
+            return null;
+        else
+        {
+            final org.wheatgenetics.coordinate.model.Cells result =
+                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+            {
+                final int first = 0, last = size - 1;
+                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
+                {
+                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+                        this.get(i);
+                    if (null != joinedGridModel)
+                        result.accumulate(joinedGridModel.excludedCellsFromEntries());
+                }
+            }
+            return result;
+        }
+    }
+
+    public boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
     final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
     throws java.io.IOException
     {
@@ -98,69 +159,6 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
             success = true;
         }
         return success;
-    }
-    // endregion
-
-    // region Public Methods
-    public abstract boolean add(
-    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
-
-    @androidx.annotation.IntRange(from = 0) public abstract int size();
-
-    @androidx.annotation.Nullable
-    public abstract org.wheatgenetics.coordinate.model.JoinedGridModel get(
-    @androidx.annotation.IntRange(from = 0) final int i);
-
-    @androidx.annotation.Nullable public java.lang.String[] names()
-    {
-        @androidx.annotation.IntRange(from = 0) final int size = this.size();
-
-        if (size <= 0)
-            return null;
-        else
-        {
-            // noinspection CStyleArrayDeclaration
-            final java.lang.String result[] = new java.lang.String[size];
-            {
-                final int first = 0, last = size - 1;
-                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                        this.get(i);
-                    if (null != joinedGridModel) result[i] = joinedGridModel.name();
-                }
-            }
-            return result;
-        }
-    }
-
-    public abstract void processAll(
-    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor processor);
-
-    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.Cells excludedCells(
-    @androidx.annotation.IntRange(from = 1) final int maxRow,
-    @androidx.annotation.IntRange(from = 1) final int maxCol)
-    {
-        @androidx.annotation.IntRange(from = 0) final int size = this.size();
-
-        if (size <= 0)
-            return null;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.Cells result =
-                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
-            {
-                final int first = 0, last = size - 1;
-                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                        this.get(i);
-                    if (null != joinedGridModel)
-                        result.accumulate(joinedGridModel.excludedCellsFromEntries());
-                }
-            }
-            return result;
-        }
     }
     // endregion
 }

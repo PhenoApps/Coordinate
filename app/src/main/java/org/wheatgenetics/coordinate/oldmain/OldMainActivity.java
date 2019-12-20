@@ -53,6 +53,10 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.display.GridDisplayFragment
  * org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler
  *
+ * org.wheatgenetics.coordinate.exporter.GridExporter
+ * org.wheatgenetics.coordinate.exporter.GridExporter.Helper
+ * org.wheatgenetics.coordinate.exporter.TemplateExporter
+ *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  *
@@ -66,13 +70,10 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
- * org.wheatgenetics.coordinate.model.GridExporter
- * org.wheatgenetics.coordinate.model.GridExporter.Helper
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.ProjectModel
- * org.wheatgenetics.coordinate.model.TemplateExporter
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
@@ -104,7 +105,7 @@ org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
-org.wheatgenetics.coordinate.model.GridExporter.Helper
+org.wheatgenetics.coordinate.exporter.GridExporter.Helper
 {
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, PREPROCESS_TEMPLATE_IMPORT = 20,
         IMPORT_TEMPLATE = 21, EXPORT_TEMPLATE = 22, EXPORT_GRID_REQUEST_CODE = 30,
@@ -133,14 +134,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
-    private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel          = null;
-    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel             = null;
-    private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator              = null;//ll
-    private org.wheatgenetics.coordinate.model.GridExporter     gridExporter             = null;
-    private org.wheatgenetics.coordinate.ti.TemplateImporter    templateImporterInstance = null;//ll
-    private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter         = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel    templateModel                  ;
-    private org.wheatgenetics.coordinate.pe.ProjectExporter     projectExporterInstance  = null;//ll
+    private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel          = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel    projectModel             = null;
+    private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
+    private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter             = null;
+    private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
+    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter     = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
+    private org.wheatgenetics.coordinate.pe.ProjectExporter  projectExporterInstance = null;   // ll
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.oldmain.DataEntryFragment   dataEntryFragment  ;
@@ -414,7 +415,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                             .coordinate.oldmain.OldMainActivity.EXPORT_GRID_REQUEST_CODE);
                 exportDir.createIfMissing();             // throws java.io.IOException, org.wheatge-
                                                          //  netics.javalib.Dir.PermissionException
-                this.gridExporter = new org.wheatgenetics.coordinate.model.GridExporter(
+                this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
                     /* context    => */this,
                     /* exportFile => */ exportDir.createNewFile(   // throws org.wheatgenetics.java-
                         this.fileName + ".csv"),          //  lib.Dir.PermissionException
@@ -472,7 +473,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
             if (null != exportFile)
             {
-                this.templateExporter = new org.wheatgenetics.coordinate.model.TemplateExporter(
+                this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
                     /* context       => */this,
                     /* exportFile    => */ exportFile        ,
                     /* templateModel => */ this.templateModel);
@@ -1248,7 +1249,7 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
     { this.loadProjectModel(0); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.model.GridExporter.Helper Overridden Methods
+    // region org.wheatgenetics.coordinate.exporter.GridExporter.Helper Overridden Methods
     @java.lang.Override public void deleteGrid()
     {
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -11,12 +11,13 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.model.Exporter
- * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+ *
+ * org.wheatgenetics.coordinate.exporter.Exporter
+ * org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
  */
-public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
+public class GridExporter extends org.wheatgenetics.coordinate.exporter.Exporter
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Helper
@@ -25,13 +26,13 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         public abstract void                                               deleteGrid        ();
     }
 
-    private static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
+    private static class AsyncTask extends org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
         // region Fields
                                      private final java.lang.String exportFileName;
         @androidx.annotation.NonNull private final
-            org.wheatgenetics.coordinate.model.GridExporter.Helper helper;
+            org.wheatgenetics.coordinate.exporter.GridExporter.Helper helper;
         // endregion
 
         private void deleteGrid() { this.helper.deleteGrid(); }
@@ -40,7 +41,7 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
         @androidx.annotation.NonNull final android.content.Context context       ,
                                      final java.io.File            exportFile    ,
                                      final java.lang.String        exportFileName,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.exporter.GridExporter.Helper
             helper)
         { super(context, exportFile); this.exportFileName = exportFileName; this.helper = helper; }
 
@@ -82,8 +83,8 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
             {
                 @java.lang.Override public void run()
                 {
-                    org.wheatgenetics.coordinate.model.GridExporter.AsyncTask.this.deleteGrid();
-                    org.wheatgenetics.coordinate.model.GridExporter.AsyncTask.this.share     ();
+                    org.wheatgenetics.coordinate.exporter.GridExporter.AsyncTask.this.deleteGrid();
+                    org.wheatgenetics.coordinate.exporter.GridExporter.AsyncTask.this.share     ();
                 }
             }
 
@@ -104,15 +105,15 @@ public class GridExporter extends org.wheatgenetics.coordinate.model.Exporter
     // endregion
 
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.model.GridExporter.AsyncTask asyncTask;
+        org.wheatgenetics.coordinate.exporter.GridExporter.AsyncTask asyncTask;
 
     public GridExporter(@androidx.annotation.NonNull final android.content.Context context,
     final java.io.File exportFile, final java.lang.String exportFileName,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.GridExporter.Helper
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         helper)
     {
         super();
-        this.asyncTask = new org.wheatgenetics.coordinate.model.GridExporter.AsyncTask(
+        this.asyncTask = new org.wheatgenetics.coordinate.exporter.GridExporter.AsyncTask(
             context, exportFile, exportFileName, helper);
     }
 

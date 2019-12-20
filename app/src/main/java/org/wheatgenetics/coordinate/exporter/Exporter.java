@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -46,7 +46,7 @@ abstract class Exporter extends java.lang.Object
             class NoRunnable extends java.lang.Object implements java.lang.Runnable
             {
                 @java.lang.Override public void run()
-                { org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.share(); }
+                { org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask.this.share(); }
             }
 
             org.wheatgenetics.coordinate.Utils.confirm(
@@ -174,7 +174,7 @@ abstract class Exporter extends java.lang.Object
                 {
                     @java.lang.Override public void run()
                     {
-                        org.wheatgenetics.coordinate.model.Exporter.AsyncTask.this.confirm(
+                        org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask.this.confirm(
                             message, yesRunnable);
                     }
                 });
