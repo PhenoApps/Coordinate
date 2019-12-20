@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -8,13 +8,14 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.Exporter
- * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
  * org.wheatgenetics.coordinate.model.TemplateModel
+ *
+ * org.wheatgenetics.coordinate.exporter.Exporter
+ * org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
  */
-public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporter
+public class TemplateExporter extends org.wheatgenetics.coordinate.exporter.Exporter
 {
-    private static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
+    private static class AsyncTask extends org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
     {
         private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
@@ -47,7 +48,7 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
     }
 
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask asyncTask;
+        org.wheatgenetics.coordinate.exporter.TemplateExporter.AsyncTask asyncTask;
 
     public TemplateExporter(
     @androidx.annotation.NonNull final android.content.Context context   ,
@@ -56,7 +57,7 @@ public class TemplateExporter extends org.wheatgenetics.coordinate.model.Exporte
                                     templateModel)
     {
         super();
-        this.asyncTask = new org.wheatgenetics.coordinate.model.TemplateExporter.AsyncTask(
+        this.asyncTask = new org.wheatgenetics.coordinate.exporter.TemplateExporter.AsyncTask(
             context, exportFile, templateModel);
     }
 

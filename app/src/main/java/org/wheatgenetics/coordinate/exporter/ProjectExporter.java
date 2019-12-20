@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -15,13 +15,14 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.Exporter
- * org.wheatgenetics.coordinate.model.Exporter.AsyncTask
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
+ *
+ * org.wheatgenetics.coordinate.exporter.Exporter
+ * org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
  */
-abstract class ProjectExporter extends org.wheatgenetics.coordinate.model.Exporter
+abstract class ProjectExporter extends org.wheatgenetics.coordinate.exporter.Exporter
 {
-    abstract static class AsyncTask extends org.wheatgenetics.coordinate.model.Exporter.AsyncTask
+    abstract static class AsyncTask extends org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
     {
         private final java.lang.String exportFileName;

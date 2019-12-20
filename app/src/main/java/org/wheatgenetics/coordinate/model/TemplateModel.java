@@ -249,7 +249,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
-    // region Package Methods
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     boolean export(@androidx.annotation.Nullable final java.io.Writer writer)
@@ -301,17 +300,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         return success;
     }
 
-    boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
-    {
-        final boolean failure = false;
-        if (null == exportFile)
-            return failure;
-        else
-            try { return this.export(new java.io.FileWriter(exportFile) /* throws */); }
-            catch (final java.io.IOException e) { return failure; }
-    }
-    // endregion
-
     // region Public Methods
     // region optionalFields Public Methods
     @androidx.annotation.Nullable
@@ -339,6 +327,16 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             null : this.nonNullOptionalFieldsInstance.toJson();
     }
     // endregion
+
+    public boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
+    {
+        final boolean failure = false;
+        if (null == exportFile)
+            return failure;
+        else
+            try { return this.export(new java.io.FileWriter(exportFile) /* throws */); }
+            catch (final java.io.IOException e) { return failure; }
+    }
 
     // region Make Public Methods
     /** Called by TemplateModels. */

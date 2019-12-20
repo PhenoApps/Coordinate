@@ -32,7 +32,7 @@ package org.wheatgenetics.coordinate.model;
 public class JoinedGridModel extends org.wheatgenetics.coordinate.model.GridModel
 implements org.wheatgenetics.coordinate.model.DisplayModel
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Helper
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Helper
     { public abstract void publishProgress(@androidx.annotation.IntRange(from = 1) int col); }
 
     // region Fields
@@ -458,23 +458,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             else                                                                  //  .IOException
                 this.exportUserDefined(csvWriter, helper, includeHeader);         // throws java.io-
     }                                                                             //  .IOException
-
-    boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-    throws java.io.IOException
-    {
-        final boolean success;
-        if (null == exportFile || null == helper)
-            success = false;
-        else
-        {
-            this.export(                                               // throws java.io.IOException
-                new java.io.FileWriter(exportFile) /* throws java.io.IOException */,
-                exportFileName, helper, /* includeHeader => */true);
-            success = true;
-        }
-        return success;
-    }
     // endregion
 
     // region Public Methods
@@ -564,6 +547,23 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         // noinspection SimplifiableConditionalExpression
         return activeEntryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel ?
             this.goToNext(activeEntryModel, advancement,null) : false;
+    }
+
+    public boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
+    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
+    throws java.io.IOException
+    {
+        final boolean success;
+        if (null == exportFile || null == helper)
+            success = false;
+        else
+        {
+            this.export(                                               // throws java.io.IOException
+                new java.io.FileWriter(exportFile) /* throws java.io.IOException */,
+                exportFileName, helper, /* includeHeader => */true);
+            success = true;
+        }
+        return success;
     }
     // endregion
 }

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.model;
+package org.wheatgenetics.coordinate.exporter;
 
 /**
  * Uses:
@@ -15,13 +15,15 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.ProjectExporter
- * org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
+ *
+ * org.wheatgenetics.coordinate.exporter.ProjectExporter
+ * org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
  */
-public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.model.ProjectExporter
+public class EntireProjectProjectExporter
+extends org.wheatgenetics.coordinate.exporter.ProjectExporter
 {
     private static class AsyncTask
-    extends org.wheatgenetics.coordinate.model.ProjectExporter.AsyncTask
+    extends org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
     {
         private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
 
@@ -78,7 +80,7 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
     // region Fields
     @androidx.annotation.NonNull private final java.lang.String exportFileName;
 
-    private org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask
+    private org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter.AsyncTask
         asyncTask = null;
     // endregion
 
@@ -103,8 +105,8 @@ public class EntireProjectProjectExporter extends org.wheatgenetics.coordinate.m
             if (null != exportDir)
                 try
                 {
-                    this.asyncTask = new
-                        org.wheatgenetics.coordinate.model.EntireProjectProjectExporter.AsyncTask(
+                    this.asyncTask = new org.wheatgenetics.coordinate.exporter
+                        .EntireProjectProjectExporter.AsyncTask(
                             /* context    => */ this.getContext(),
                             /* exportFile => */ exportDir.createNewFile(     // throws IOException,
                                 this.exportFileName),                        //  PermissionException
