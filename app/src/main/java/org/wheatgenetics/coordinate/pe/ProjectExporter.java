@@ -69,9 +69,8 @@ public class ProjectExporter extends java.lang.Object
     }
     // endregion
 
-    public ProjectExporter(
-    @androidx.annotation.NonNull final android.app.Activity activity   ,
-                                 final int                  requestCode)
+    public ProjectExporter(@androidx.annotation.NonNull final android.app.Activity activity   ,
+                                                        final int                  requestCode)
     { super(); this.activity = activity; this.requestCode = requestCode; }
 
     @java.lang.Override protected void finalize() throws java.lang.Throwable

@@ -90,6 +90,8 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.pe.ProjectExporter
  *
+ * org.wheatgenetics.coordinate.ti.TemplateImporter
+ *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
@@ -131,13 +133,14 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
-    private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel         = null;
-    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel            = null;
-    private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator             = null;// ll
-    private org.wheatgenetics.coordinate.model.GridExporter     gridExporter            = null;
-    private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter        = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel    templateModel                 ;
-    private org.wheatgenetics.coordinate.pe.ProjectExporter     projectExporterInstance = null;// ll
+    private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel          = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel             = null;
+    private org.wheatgenetics.coordinate.gc.GridCreator         gridCreator              = null;//ll
+    private org.wheatgenetics.coordinate.model.GridExporter     gridExporter             = null;
+    private org.wheatgenetics.coordinate.ti.TemplateImporter    templateImporterInstance = null;//ll
+    private org.wheatgenetics.coordinate.model.TemplateExporter templateExporter         = null;
+    private org.wheatgenetics.coordinate.model.TemplateModel    templateModel                  ;
+    private org.wheatgenetics.coordinate.pe.ProjectExporter     projectExporterInstance  = null;//ll
 
     private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.oldmain.DataEntryFragment   dataEntryFragment  ;
@@ -433,30 +436,16 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
 
     // region Template Private Methods
     // region Import Template Private Methods
-    private void importTemplate()
+    private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporter()
     {
-        java.io.File file;
-        try
-        {
-            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
-                    this,                                            //  PermissionException
-                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE);
-            file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
-        }
-        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-        {
-            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                this.showLongToast(e.getMessage());
-            file = null;
-        }
-
-        if (null != file) this.templatesTable().insert(
-            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file));
+        if (null == this.templateImporterInstance) this.templateImporterInstance =
+            new org.wheatgenetics.coordinate.ti.TemplateImporter(this,
+                org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE);
+        return this.templateImporterInstance;
     }
 
     private void importTemplate(final java.lang.String fileName)
-    { this.fileName = fileName; this.importTemplate(); }
+    { this.templateImporter().importTemplate(fileName); }
     // endregion
 
     // region Export Template Private Methods
@@ -1013,7 +1002,9 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                         break;
 
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE:
-                        this.importTemplate(); break;
+                        if (null != this.templateImporterInstance)
+                            this.templateImporterInstance.importTemplate();
+                        break;
 
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE:
                         this.exportTemplate(); break;
@@ -1022,7 +1013,10 @@ org.wheatgenetics.coordinate.model.GridExporter.Helper
                     .EXPORT_GRID_REQUEST_CODE: this.exportGrid(); break;
 
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                    .EXPORT_PROJECT_REQUEST_CODE: this.projectExporter().exportProject(); break;
+                    .EXPORT_PROJECT_REQUEST_CODE:
+                        if (null != this.projectExporterInstance)
+                            this.projectExporterInstance.exportProject();
+                        break;
                 }
     }
 
