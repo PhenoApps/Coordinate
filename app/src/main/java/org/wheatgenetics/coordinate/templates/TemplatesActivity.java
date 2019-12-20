@@ -29,6 +29,8 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.ti.TemplateImporter
+ * org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
  *
  * org.wheatgenetics.coordinate.R
@@ -52,12 +54,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private android.view.MenuItem                                      importMenuItem = null;
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
         templateImportPreprocessorInstance = null;                                      // lazy load
-    private java.lang.String fileName;
+    private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporterInstance = null;  // ll
     // endregion
 
     // region newMenuItem Fields
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator        = null;// ll
+    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
     // endregion
     // endregion
 
@@ -84,6 +86,18 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             }
     }
 
+    private void notifyDataSetChanged()
+    { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
+
+    // region Create Private Methods
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
+    {
+        if (null == this.templateCreatorInstance)
+            this.templateCreatorInstance = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
+        return this.templateCreatorInstance;
+    }
+
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
@@ -91,44 +105,39 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
     }
+    // endregion
 
-    // region Import Template Private Methods
-    private void importTemplate()
+    // region Import Private Methods
+    // region importTemplate() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporter()
     {
-        java.io.File file;
-        try
-        {
-            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
-                    this,                                            //  PermissionException
-                    org.wheatgenetics.coordinate.templates.TemplatesActivity.IMPORT_TEMPLATE);
-            file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
-        }
-        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-        {
-            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                this.showLongToast(e.getMessage());
-            file = null;
-        }
-
-        if (null != file)
-        {
-            final boolean templateImported = this.templatesTable().insert(
-                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file)) > 0;
-            if (templateImported && null != this.templatesAdapter)
-                this.templatesAdapter.notifyDataSetChanged();
-        }
+        if (null == this.templateImporterInstance) this.templateImporterInstance =
+            new org.wheatgenetics.coordinate.ti.TemplateImporter(this,
+                org.wheatgenetics.coordinate.templates.TemplatesActivity.IMPORT_TEMPLATE,
+                new org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter()
+                {
+                    @java.lang.Override public void notifyDataSetChanged()
+                    {
+                        org.wheatgenetics.coordinate.templates
+                            .TemplatesActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.templateImporterInstance;
     }
 
     private void importTemplate(final java.lang.String fileName)
-    { this.fileName = fileName; this.importTemplate(); }
+    { this.templateImporter().importTemplate(fileName); }
+    // endregion
 
+    // region preprocessTemplateImport() Import Private Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor templateImportPreprocessor()
     {
         if (null == this.templateImportPreprocessorInstance)
             this.templateImportPreprocessorInstance =
-                new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(this,
-                    org.wheatgenetics.coordinate.templates
+                new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(
+                    this, org.wheatgenetics.coordinate.templates
                         .TemplatesActivity.PREPROCESS_TEMPLATE_IMPORT,
                     new org.wheatgenetics.coordinate.Utils.Handler()
                     {
@@ -143,6 +152,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
     private void preprocessTemplateImport() { this.templateImportPreprocessor().preprocess(); }
+    // endregion
     // endregion
     // endregion
 
@@ -202,7 +212,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.templates.TemplatesActivity
-                        .CONFIGURE_IMPORT_MENU_ITEM: this.configureImportMenuItem(); break;
+                    .CONFIGURE_IMPORT_MENU_ITEM: this.configureImportMenuItem(); break;
 
                     case org.wheatgenetics.coordinate.templates.TemplatesActivity
                     .PREPROCESS_TEMPLATE_IMPORT:
@@ -210,8 +220,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                             this.templateImportPreprocessorInstance.preprocess();
                         break;
 
-                    case org.wheatgenetics.coordinate.templates.TemplatesActivity
-                        .IMPORT_TEMPLATE: this.importTemplate(); break;
+                    case org.wheatgenetics.coordinate.templates.TemplatesActivity.IMPORT_TEMPLATE:
+                        if (null != this.templateImporterInstance)
+                            this.templateImporterInstance.importTemplate();
+                        break;
                 }
     }
 
@@ -225,8 +237,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
-                    if (null != this.templateCreator)
-                        this.templateCreator.setExcludedCells(data.getExtras());
+                    if (null != this.templateCreatorInstance)
+                        this.templateCreatorInstance.setExcludedCells(data.getExtras());
                     break;
             }
     }
@@ -239,11 +251,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         {
             final boolean templateCreated = this.templatesTable().insert(templateModel) > 0;
             if (templateCreated)
-            {
-                not = "";
-                if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged();
-            }
-            else not = " not";
+                { not = ""; this.notifyDataSetChanged(); }
+            else
+                not = " not";
         }
         this.showLongToast(templateModel.getTitle() + not + " created");
     }
@@ -252,13 +262,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region MenuItem Event Handlers
     public void onNewTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem)
-    {
-        if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
-        this.templateCreator.create();
-    }
+    final android.view.MenuItem menuItem) { this.templateCreator().create(); }
 
     public void onImportTemplateMenuItem(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.preprocessTemplateImport(); }
