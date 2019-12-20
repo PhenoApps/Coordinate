@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
@@ -11,8 +11,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Elements
+ * org.wheatgenetics.coordinate.display.Element
+ * org.wheatgenetics.coordinate.display.Elements
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ElementsTest extends java.lang.Object
@@ -22,7 +22,7 @@ public class ElementsTest extends java.lang.Object
      * Because Elements is abstract.  Why does that matter?  Because I can't instantiate an abstract
      * class.  If I can't instantiate it I can't test it.
      */
-    private static class ConcreteElements extends org.wheatgenetics.coordinate.Elements
+    private static class ConcreteElements extends org.wheatgenetics.coordinate.display.Elements
     {
         private ConcreteElements()
         {
@@ -31,7 +31,7 @@ public class ElementsTest extends java.lang.Object
         }
 
         @java.lang.Override @androidx.annotation.NonNull
-        protected org.wheatgenetics.coordinate.Element makeElement(
+        protected org.wheatgenetics.coordinate.display.Element makeElement(
         final org.wheatgenetics.coordinate.model.ElementModel elementModel,
         final android.widget.TextView                         textView    )
         {
@@ -45,20 +45,20 @@ public class ElementsTest extends java.lang.Object
     {
         // noinspection ConstantConditions
         org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getActivity());
+            new org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements().getActivity());
     }
 
     @org.junit.Test() public void getElementArrayWorks()
     {
-        org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().getElementArray());
+        org.junit.Assert.assertNull(new
+            org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements().getElementArray());
     }
     // endregion
 
     @org.junit.Test() public void clearAndAllocateWork()
     {
-        final org.wheatgenetics.coordinate.ElementsTest.ConcreteElements concreteElements =
-            new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements();
+        final org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements concreteElements =
+            new org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements();
         org.junit.Assert.assertNull(concreteElements.getElementArray());
 
         concreteElements.allocate(5,2);
@@ -70,16 +70,22 @@ public class ElementsTest extends java.lang.Object
     @org.junit.Test() public void nullAddWorks()
     {
         org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().add(null));
+            new org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements().add(null));
     }
 
     // region allocate() Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void invalidRowAllocateFails()
-    { new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().allocate(-7,5); }
+    {
+        new org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements().allocate(
+            -7,5);
+    }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void invalidColAllocateFails()
-    { new org.wheatgenetics.coordinate.ElementsTest.ConcreteElements().allocate(7,0); }
+    {
+        new org.wheatgenetics.coordinate.display.ElementsTest.ConcreteElements().allocate(
+            7,0);
+    }
     // endregion
 }

@@ -6,12 +6,13 @@ package org.wheatgenetics.coordinate.tc;
  *
  * androidx.annotation.NonNull
  *
- * org.wheatgenetics.coordinate.model.Cell
- *
- * org.wheatgenetics.coordinate.Element
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.display.Element
+ *
+ * org.wheatgenetics.coordinate.model.Cell
  */
-class TemplateElement extends org.wheatgenetics.coordinate.Element
+class TemplateElement extends org.wheatgenetics.coordinate.display.Element
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface TemplateHandler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }

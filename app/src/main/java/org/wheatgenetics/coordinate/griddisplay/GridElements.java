@@ -11,8 +11,8 @@ package org.wheatgenetics.coordinate.griddisplay;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Elements
+ * org.wheatgenetics.coordinate.display.Element
+ * org.wheatgenetics.coordinate.display.Elements
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -22,7 +22,7 @@ package org.wheatgenetics.coordinate.griddisplay;
  * org.wheatgenetics.coordinate.griddisplay.GridElement.Handler
  * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
  */
-class GridElements extends org.wheatgenetics.coordinate.Elements
+class GridElements extends org.wheatgenetics.coordinate.display.Elements
 implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 {
     // region Fields
@@ -56,7 +56,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.Element makeElement(
+    protected org.wheatgenetics.coordinate.display.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
     {
@@ -83,7 +83,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
         {
             if (this.activeRow > -1 && this.activeCol > -1)
             {
-                final org.wheatgenetics.coordinate.Element[][] elementArray =
+                final org.wheatgenetics.coordinate.display.Element[][] elementArray =
                     this.getElementArray();
                 if (null != elementArray)
                     ((org.wheatgenetics.coordinate.griddisplay.GridElement)
