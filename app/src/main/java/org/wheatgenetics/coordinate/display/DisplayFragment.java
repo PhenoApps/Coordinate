@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
@@ -20,16 +20,17 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.RestrictTo.Scope
  * androidx.fragment.app.Fragment
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
  *
- * org.wheatgenetics.coordinate.Element.Handler
- * org.wheatgenetics.coordinate.Elements
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.display.Element.Handler
+ * org.wheatgenetics.coordinate.display.Elements
  */
 public abstract class DisplayFragment extends androidx.fragment.app.Fragment
-implements org.wheatgenetics.coordinate.Element.Handler
+implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
     {
@@ -38,10 +39,10 @@ implements org.wheatgenetics.coordinate.Element.Handler
     }
 
     // region Fields
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.DisplayFragment.Handler
-        handler;
-    @androidx.annotation.Nullable private   android.widget.TableLayout            tableLayout;
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.Elements elements   ;
+    @androidx.annotation.Nullable protected
+        org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler;
+    @androidx.annotation.Nullable private   android.widget.TableLayout                  tableLayout;
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.display.Elements elements ;
     // endregion
 
     // region Protected Methods
@@ -90,7 +91,7 @@ implements org.wheatgenetics.coordinate.Element.Handler
 
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
 
-    // region org.wheatgenetics.coordinate.Element.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Method
     public void toggle(@androidx.annotation.Nullable final
     org.wheatgenetics.coordinate.model.ElementModel elementModel)
     { if (null != this.handler) this.handler.toggle(elementModel); }

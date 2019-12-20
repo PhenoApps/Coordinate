@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
@@ -28,7 +28,8 @@ public abstract class Element extends java.lang.Object implements android.view.V
 
     // region Fields
     @androidx.annotation.NonNull private final android.widget.TextView                     textView;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.Element.Handler handler;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.display.Element.Handler
+        handler;
 
     @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.model.ElementModel
         elementModel;
@@ -79,8 +80,8 @@ public abstract class Element extends java.lang.Object implements android.view.V
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected Element(@androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.ElementModel elementModel,
-    @androidx.annotation.NonNull final android.widget.TextView                      textView,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.Element.Handler handler )
+    @androidx.annotation.NonNull final android.widget.TextView                             textView,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.Element.Handler handler)
     { super(); this.elementModel = elementModel; this.textView = textView; this.handler = handler; }
 
     // region android.view.View.OnClickListener Overridden Method

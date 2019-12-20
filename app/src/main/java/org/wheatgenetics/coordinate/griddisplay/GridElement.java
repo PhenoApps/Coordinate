@@ -10,16 +10,17 @@ package org.wheatgenetics.coordinate.griddisplay;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.Element
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
+ *
+ * org.wheatgenetics.coordinate.display.Element
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  */
-class GridElement extends org.wheatgenetics.coordinate.Element
+class GridElement extends org.wheatgenetics.coordinate.display.Element
 implements android.view.View.OnLongClickListener
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface GridHandler

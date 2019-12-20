@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
@@ -14,8 +14,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.model.ElementModel
  *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Element.Handler
+ * org.wheatgenetics.coordinate.display.Element
+ * org.wheatgenetics.coordinate.display.Element.Handler
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ElementTest extends java.lang.Object
@@ -25,13 +25,13 @@ public class ElementTest extends java.lang.Object
      * Because Element is abstract.  Why does that matter?  Because I can't instantiate an abstract
      * class.  If I can't instantiate it I can't test it.
      */
-    private static class ConcreteElement extends org.wheatgenetics.coordinate.Element
+    private static class ConcreteElement extends org.wheatgenetics.coordinate.display.Element
     {
         private ConcreteElement(@androidx.annotation.Nullable final
             org.wheatgenetics.coordinate.model.ElementModel elementModel,
         @androidx.annotation.NonNull final android.widget.TextView textView,
         @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.NonNull final
-            org.wheatgenetics.coordinate.Element.Handler handler)
+            org.wheatgenetics.coordinate.display.Element.Handler handler)
         { super(elementModel, textView, handler); }
 
         // region Overridden Methods
@@ -45,14 +45,14 @@ public class ElementTest extends java.lang.Object
     public void clearOnLongClickListenerFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).clearOnLongClickListener();
     }
 
     @org.junit.Test() public void clearOnLongClickListenerSucceeds()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             /* elementModel => */null,
             /* textView     => */ new android.widget.TextView(androidx.test.platform.app
                 .InstrumentationRegistry.getInstrumentation().getTargetContext()),
@@ -66,14 +66,14 @@ public class ElementTest extends java.lang.Object
     public void setOnClickListenerFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).setOnClickListener();
     }
 
     @org.junit.Test() public void setOnClickListenerSucceeds()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             /* elementModel => */null,
             /* textView     => */ new android.widget.TextView(androidx.test.platform.app
                 .InstrumentationRegistry.getInstrumentation().getTargetContext()),
@@ -86,14 +86,14 @@ public class ElementTest extends java.lang.Object
     public void clearOnClickListenerFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).clearOnClickListener();
     }
 
     @org.junit.Test() public void clearOnClickListenerSucceeds()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             /* elementModel => */null,
             /* textView     => */ new android.widget.TextView(androidx.test.platform.app
                 .InstrumentationRegistry.getInstrumentation().getTargetContext()),
@@ -106,14 +106,14 @@ public class ElementTest extends java.lang.Object
     public void setOnLongClickListenerFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).setOnLongClickListener(null);
     }
 
     @org.junit.Test() public void setOnLongClickListenerSucceeds()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             /* elementModel => */null,
             /* textView     => */ new android.widget.TextView(androidx.test.platform.app
                 .InstrumentationRegistry.getInstrumentation().getTargetContext()),
@@ -124,8 +124,9 @@ public class ElementTest extends java.lang.Object
     @org.junit.Test() public void elementModelIsNotNullWorks()
     {
         // noinspection ConstantConditions
-        org.junit.Assert.assertFalse(new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
-            null,null,null).elementModelIsNotNull());
+        org.junit.Assert.assertFalse(
+            new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
+                null,null,null).elementModelIsNotNull());
 
         class ElementModel extends java.lang.Object
         implements org.wheatgenetics.coordinate.model.ElementModel
@@ -139,8 +140,8 @@ public class ElementTest extends java.lang.Object
         final ElementModel elementModel = new ElementModel();
 
         // noinspection ConstantConditions
-        final org.wheatgenetics.coordinate.ElementTest.ConcreteElement concreteElement =
-            new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        final org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement concreteElement =
+            new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
                 elementModel,null,null);
         org.junit.Assert.assertTrue(concreteElement.elementModelIsNotNull());
     }
@@ -149,14 +150,14 @@ public class ElementTest extends java.lang.Object
     public void setBackgroundResourceFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).setBackgroundResource(55);
     }
 
     @org.junit.Test(expected = java.lang.NullPointerException.class) public void toggleFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+        new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
             null,null,null).toggle();
     }
     // endregion
@@ -166,7 +167,7 @@ public class ElementTest extends java.lang.Object
     {
         // noinspection ConstantConditions
         org.junit.Assert.assertEquals(-1,
-            new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
                 null,null,null).getRow());
     }
 
@@ -174,7 +175,7 @@ public class ElementTest extends java.lang.Object
     {
         // noinspection ConstantConditions
         org.junit.Assert.assertEquals(-1,
-            new org.wheatgenetics.coordinate.ElementTest.ConcreteElement(
+            new org.wheatgenetics.coordinate.display.ElementTest.ConcreteElement(
                 null,null,null).getCol());
     }
     // endregion

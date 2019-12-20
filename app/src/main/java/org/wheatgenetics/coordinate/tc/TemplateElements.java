@@ -10,17 +10,17 @@ package org.wheatgenetics.coordinate.tc;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.display.Element
+ * org.wheatgenetics.coordinate.display.Elements
+ *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.ElementModel
- *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Elements
  *
  * org.wheatgenetics.coordinate.tc.TemplateElement
  * org.wheatgenetics.coordinate.tc.TemplateElement.Handler
  * org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
  */
-class TemplateElements extends org.wheatgenetics.coordinate.Elements
+class TemplateElements extends org.wheatgenetics.coordinate.display.Elements
 {
     // region Fields
     @androidx.annotation.NonNull private final
@@ -44,7 +44,7 @@ class TemplateElements extends org.wheatgenetics.coordinate.Elements
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.Element makeElement(
+    protected org.wheatgenetics.coordinate.display.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
     {

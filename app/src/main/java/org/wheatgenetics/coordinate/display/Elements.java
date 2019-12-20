@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.display;
 
 /**
  * Uses:
@@ -14,11 +14,12 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.ElementModel
- *
- * org.wheatgenetics.coordinate.Element
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
+ *
+ * org.wheatgenetics.coordinate.model.ElementModel
+ *
+ * org.wheatgenetics.coordinate.display.Element
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Elements extends java.lang.Object
@@ -27,13 +28,13 @@ public abstract class Elements extends java.lang.Object
     @androidx.annotation.NonNull private final android.app.Activity activity;
 
     @androidx.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    private org.wheatgenetics.coordinate.Element elementArray[][];
+    private org.wheatgenetics.coordinate.display.Element elementArray[][];
     // endregion
 
     // region Protected Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
-    protected abstract org.wheatgenetics.coordinate.Element makeElement(
+    protected abstract org.wheatgenetics.coordinate.display.Element makeElement(
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    );
 
@@ -43,7 +44,7 @@ public abstract class Elements extends java.lang.Object
     { return this.activity; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.Element[][]
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.display.Element[][]
     getElementArray() { return this.elementArray; }
     // endregion
 
@@ -69,7 +70,7 @@ public abstract class Elements extends java.lang.Object
             }
             {
                 if (null == result) return null;
-                final org.wheatgenetics.coordinate.Element element =
+                final org.wheatgenetics.coordinate.display.Element element =
                     this.makeElement(elementModel, (android.widget.TextView)
                         result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView));
                 if (null == this.elementArray)
@@ -87,7 +88,7 @@ public abstract class Elements extends java.lang.Object
     @androidx.annotation.IntRange(from = 1) final int rows,
     @androidx.annotation.IntRange(from = 1) final int cols)
     {
-        this.elementArray = new org.wheatgenetics.coordinate.Element
+        this.elementArray = new org.wheatgenetics.coordinate.display.Element
             [org.wheatgenetics.coordinate.Utils.valid(rows,1)]
             [org.wheatgenetics.coordinate.Utils.valid(cols,1)];
     }
