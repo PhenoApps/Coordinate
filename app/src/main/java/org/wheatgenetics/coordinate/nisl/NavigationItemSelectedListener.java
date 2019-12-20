@@ -26,10 +26,10 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.about.OtherApps.Index
  *
  * org.wheatgenetics.coordinate.ProjectDeleter
+ * org.wheatgenetics.coordinate.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Handler
@@ -55,6 +55,8 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
+ *
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
@@ -79,17 +81,17 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
         public abstract void importTemplate(java.lang.String fileName);
         public abstract void exportTemplate(@androidx.annotation.NonNull
-            org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-            java.lang.String                                 fileName     );
+                org.wheatgenetics.coordinate.model.TemplateModel templateModel,
+            java.lang.String                                     fileName     );
         public abstract void handleGridDeleted();
 
-        public abstract long    getProjectId        ();
-        public abstract boolean projectModelIsLoaded();
-        public abstract void    loadProject(@androidx.annotation.IntRange(from = 1) long projectId);
-        public abstract void    clearProject        ();
-        public abstract void    handleProjectDeleted(
+        public abstract long getProjectId();
+        public abstract void loadProject (@androidx.annotation.IntRange(from = 1) long projectId);
+        public abstract void clearProject();
+        public abstract void handleProjectDeleted(
             @androidx.annotation.IntRange(from = 1) long projectId);
-        public abstract void exportProject(
+        public abstract boolean projectModelIsLoaded();
+        public abstract void    exportProject       (
             @androidx.annotation.IntRange(from = 1) long             projectId    ,
                                                     java.lang.String directoryName);
 
@@ -101,15 +103,16 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Fields
+    // region Constructor Fields
     @androidx.annotation.NonNull                    private final android.app.Activity activity;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int
         createTemplateRequestCode, clickUniquenessRequestCode;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.TemplatesDir
-        templatesDir;
-                                 private final java.lang.String versionName;
+                                 private final int              preprocessTemplateImportRequestCode;
+                                 private final java.lang.String versionName                        ;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler;
-    private final android.view.View.OnClickListener               versionOnClickListener;
+        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler           ;
+    private final android.view.View.OnClickListener                          versionOnClickListener;
+    // endregion
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
@@ -118,19 +121,27 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     private org.wheatgenetics.coordinate.database.ProjectsTable  projectsTableInstance  = null;// ll
     // endregion
 
+    // region Lazy Load Fields
     private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
-        manageGridAlertDialog = null;                                                   // lazy load
+        manageGridAlertDialogInstance = null;                                           // lazy load
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getGridExportFileNameAlertDialog = null;                                        // lazy load
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;     // lazy load
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreator  = null;     // lazy load
+        getGridExportFileNameAlertDialogInstance = null;                                // lazy load
+
+    private org.wheatgenetics.coordinate.tc.TemplateCreator    templateCreatorInstance = null; // ll
+    private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
+        templateImportPreprocessorInstance = null;                                     // lazy load
+
+    private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
-        manageProjectAlertDialog = null;                                                // lazy load
-    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleterInstance = null;  // lazy load
+        manageProjectAlertDialogInstance = null;                                        // lazy load
+    private org.wheatgenetics.coordinate.ProjectDeleter  projectDeleterInstance = null; // lazy load
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
-    private android.content.Intent                   preferenceIntentInstance = null;   // lazy load
-    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog         = null;   // lazy load
+
+    private android.content.Intent preferenceIntentInstance = null;                     // lazy load
+
+    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialogInstance = null;   // lazy load
+    // endregion
     // endregion
 
     // region Private Methods
@@ -187,7 +198,8 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Grid Private Methods
-    // region loadGrid() Grid Private Methods
+    // region manageGrid() Grid Private Methods
+    // region loadGrid() manageGrid() Grid Private Methods
     private void loadGridAfterSelect(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
     { if (null != joinedGridModel) this.handler.loadGrid(joinedGridModel.getId()); }
@@ -215,7 +227,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
     // endregion
 
-    // region deleteGrid() Grid Private Methods
+    // region deleteGrid() manageGrid() Grid Private Methods
     private void deleteGridAfterConfirm() { this.handler.deleteGrid(); }
 
     private void deleteGrid()
@@ -235,26 +247,95 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
     // endregion
 
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog manageGridAlertDialog()
+    {
+        if (null == this.manageGridAlertDialogInstance) this.manageGridAlertDialogInstance =
+            new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog(this.activity,
+                new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler()
+                {
+                    @java.lang.Override public void loadGrid()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.loadGrid();
+                    }
+
+                    @java.lang.Override public void deleteGrid()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.deleteGrid();
+                    }
+                });
+        return this.manageGridAlertDialogInstance;
+    }
+
+    private void manageGrid()
+    { this.manageGridAlertDialog().show(this.handler.joinedGridModelIsLoaded()); }
+    // endregion
+
+    // region exportGrid() Grid Private Methods
     private void exportGrid(final java.lang.String fileName) { this.handler.exportGrid(fileName); }
+
+    @androidx.annotation.NonNull private
+    org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog getGridExportFileNameAlertDialog()
+    {
+        if (null == this.getGridExportFileNameAlertDialogInstance)
+            this.getGridExportFileNameAlertDialogInstance =
+                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
+                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+                    {
+                        @java.lang.Override
+                        public void handleGetFileNameDone(final java.lang.String fileName)
+                        {
+                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                .this.exportGrid(fileName);
+                        }
+                    });
+        return this.getGridExportFileNameAlertDialogInstance;
+    }
+
+    private void exportGrid()
+    { this.getGridExportFileNameAlertDialog().show(this.handler.getInitialGridExportFileName()); }
+    // endregion
     // endregion
 
     // region Template Private Methods
-    // region Import Template Private Methods
-    private void importTemplateAfterGettingFileName(final java.lang.String fileName)
+    // region createTemplate() Template Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
+    {
+        if (null == this.templateCreatorInstance)
+            this.templateCreatorInstance = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this.activity, this.createTemplateRequestCode,this);
+        return this.templateCreatorInstance;
+    }
+
+    private void createTemplate() { this.templateCreator().create(); }
+    // endregion
+
+    // region importTemplate() Template Private Methods
+    private void importTemplate(final java.lang.String fileName)
     { this.handler.importTemplate(fileName); }
 
-    private void selectExportedTemplate()
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor templateImportPreprocessor()
     {
-        org.wheatgenetics.coordinate.Utils.selectExportedTemplate(this.templatesDir, this.activity,
-            new org.wheatgenetics.coordinate.Utils.Handler()
-            {
-                @java.lang.Override public void importTemplate(final java.lang.String fileName)
+        if (null == this.templateImportPreprocessorInstance)
+            this.templateImportPreprocessorInstance =
+            new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(
+                this.activity, this.preprocessTemplateImportRequestCode,
+                new org.wheatgenetics.coordinate.Utils.Handler()
                 {
-                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                        .this.importTemplateAfterGettingFileName(fileName);
-                }
-            });
+                    @java.lang.Override public void importTemplate(final java.lang.String fileName)
+                    {
+                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                            .this.importTemplate(fileName);
+                    }
+                });
+        return this.templateImportPreprocessorInstance;
     }
+
+    private void importTemplate() { this.templateImportPreprocessor().preprocess(); }
     // endregion
 
     // region Export Template Private Methods
@@ -346,7 +427,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             this.templatesTable().loadUserDefined();
         if (null != templateModels) if (templateModels.size() > 0)
         {
-            final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog;
+            final org.wheatgenetics.coordinate.SelectAlertDialog selectTemplateAlertDialog;
             {
                 final org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler;
                 switch (templateOperation)
@@ -374,7 +455,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                     default: handler = null; break;
                 }
 
-                selectAlertDialog =
+                selectTemplateAlertDialog =
                     new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity, handler);
             }
 
@@ -389,13 +470,23 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
                 default: title = 0;
             }
-            selectAlertDialog.show(title, templateModels.titles());
+            selectTemplateAlertDialog.show(title, templateModels.titles());
         }
     }
     // endregion
 
     // region Project Private Methods
-    private long getProjectId() { return this.handler.getProjectId(); }
+    // region createProject() Project Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
+    {
+        if (null == this.projectCreatorInstance) this.projectCreatorInstance =
+            new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity);
+        return this.projectCreatorInstance;
+    }
+
+    private void createProject() { this.projectCreator().create(); }
+    // endregion
 
     private void selectProject(
     final org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.ProjectOperation
@@ -404,9 +495,8 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels;
         switch (projectOperation)
         {
-            case LOAD:
-                projectModels = this.projectsTable().loadExceptFor(this.getProjectId());
-                break;
+            case LOAD: projectModels =
+                this.projectsTable().loadExceptFor(this.getProjectId()); break;
 
             case DELETE: projectModels = this.projectsTable().load                 (); break;
             case EXPORT: projectModels = this.projectsTable().loadProjectsWithGrids(); break;
@@ -475,7 +565,10 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         }
     }
 
-    // region Load Project Private Methods
+    // region manageProject() Project Private Methods
+    private long getProjectId() { return this.handler.getProjectId(); }
+
+    // region loadProject() Private Methods
     private void loadProjectAfterSelect(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     { if (null != projectModel) this.handler.loadProject(projectModel.getId()); }
@@ -489,11 +582,11 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     private void clearProject() { this.handler.clearProject(); }
 
-    // region Delete Project Private Methods
-    private void respondToDeletedProject(
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    { this.handler.handleProjectDeleted(projectId); }
+    // region deleteProject() Private Methods
+    private void respondToDeletedProject(@androidx.annotation.IntRange(from = 1)
+    final long projectId) { this.handler.handleProjectDeleted(projectId); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
     {
         if (null == this.projectDeleterInstance) this.projectDeleterInstance =
@@ -521,12 +614,51 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
     // endregion
 
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog manageProjectAlertDialog()
+    {
+        if (null == this.manageProjectAlertDialogInstance) this.manageProjectAlertDialogInstance =
+            new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog(this.activity,
+                new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler()
+                {
+                    @java.lang.Override public long getProjectId()
+                    {
+                        return org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.getProjectId();
+                    }
+
+                    @java.lang.Override public void loadProject()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.loadProject();
+                    }
+
+                    @java.lang.Override public void clearProject()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.clearProject();
+                    }
+
+                    @java.lang.Override public void deleteProject()
+                    {
+                        org.wheatgenetics.coordinate.nisl
+                            .NavigationItemSelectedListener.this.deleteProject();
+                    }
+                });
+        return this.manageProjectAlertDialogInstance;
+    }
+
+    private void manageProject()
+    { this.manageProjectAlertDialog().show(this.handler.projectModelIsLoaded()); }
+    // endregion
+
     // region Export Project Private Methods
     private void exportProject(
     @androidx.annotation.IntRange(from = 1) final long             projectId    ,
                                             final java.lang.String directoryName)
     { this.handler.exportProject(projectId, directoryName); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
     {
         if (null == this.projectExportPreprocessorInstance) this.projectExportPreprocessorInstance =
@@ -550,6 +682,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
     // endregion
 
+    // region PreferenceActivity Private Methods
     @androidx.annotation.NonNull private android.content.Intent preferenceIntent()
     {
         if (null == this.preferenceIntentInstance)
@@ -557,27 +690,74 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                 this.activity, org.wheatgenetics.coordinate.nisl.PreferenceActivity.class);
         return this.preferenceIntentInstance;
     }
+
+    private void startPreferenceActivity()
+    {
+        this.activity.startActivityForResult(this.preferenceIntent(),
+            this.clickUniquenessRequestCode);
+    }
+    // endregion
+
+    // region AboutAlertDialog Private Methods
+    @androidx.annotation.Nullable
+    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog()
+    {
+        if (null == this.aboutAlertDialogInstance)
+        {
+            // noinspection CStyleArrayDeclaration
+            final java.lang.String title, msgs[];
+            {
+                final android.content.res.Resources resources = this.activity.getResources();
+
+                if (null == resources)
+                    return null;
+                else
+                {
+                    title = resources.getString(
+                        org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
+                    msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
+                        org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
+                }
+            }
+
+            this.aboutAlertDialogInstance = new org.wheatgenetics.about.AboutAlertDialog(
+                /* context       => */ this.activity                                     ,
+                /* title         => */ title                                             ,
+                /* versionName   => */ this.versionName                                  ,
+                /* msgs[]        => */ msgs                                              ,
+                /* suppressIndex => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
+                /* versionOnClickListener => */ this.versionOnClickListener              );
+        }
+        return this.aboutAlertDialogInstance;
+    }
+
+    private void showAboutAlertDialog()
+    {
+        final org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = this.aboutAlertDialog();
+        if (null != aboutAlertDialog) aboutAlertDialog.show();
+    }
+    // endregion
     // endregion
 
     public NavigationItemSelectedListener(
-    @androidx.annotation.NonNull                    final android.app.Activity             activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int            createTemplateRequestCode ,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int            clickUniquenessRequestCode,
-    @androidx.annotation.NonNull                    final org.wheatgenetics.coordinate.TemplatesDir
-        templatesDir,                               final java.lang.String versionName,
+    @androidx.annotation.NonNull                    final android.app.Activity activity            ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int   createTemplateRequestCode          ,
+                                                    final int   preprocessTemplateImportRequestCode,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int   clickUniquenessRequestCode         ,
+                                                    final java.lang.String     versionName         ,
     @androidx.annotation.NonNull                    final
         org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler handler,
     final android.view.View.OnClickListener versionOnClickListener)
     {
         super();
 
-        this.activity                   = activity                  ;
-        this.createTemplateRequestCode  = createTemplateRequestCode ;
-        this.clickUniquenessRequestCode = clickUniquenessRequestCode;
-        this.templatesDir               = templatesDir              ;
-        this.versionName                = versionName               ;
-        this.handler                    = handler                   ;
-        this.versionOnClickListener     = versionOnClickListener    ;
+        this.activity                            = activity                           ;
+        this.createTemplateRequestCode           = createTemplateRequestCode          ;
+        this.preprocessTemplateImportRequestCode = preprocessTemplateImportRequestCode;
+        this.clickUniquenessRequestCode          = clickUniquenessRequestCode         ;
+        this.versionName                         = versionName                        ;
+        this.handler                             = handler                            ;
+        this.versionOnClickListener              = versionOnClickListener             ;
     }
 
     // region Overridden Methods
@@ -593,144 +773,43 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             case org.wheatgenetics.coordinate.R.id.nav_create_grid:
                 this.handler.createGrid(); break;
 
-            case org.wheatgenetics.coordinate.R.id.nav_manage_grid:
-                if (null == this.manageGridAlertDialog) this.manageGridAlertDialog =
-                    new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog(this.activity,
-                        new org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler()
-                        {
-                            @java.lang.Override public void loadGrid()
-                            {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.loadGrid();
-                            }
-
-                            @java.lang.Override public void deleteGrid()
-                            {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.deleteGrid();
-                            }
-                        });
-                this.manageGridAlertDialog.show(this.handler.joinedGridModelIsLoaded()); break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_export_grid:
-                if (null == this.getGridExportFileNameAlertDialog)
-                    this.getGridExportFileNameAlertDialog =
-                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(
-                            this.activity, new
-                            org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
-                            {
-                                @java.lang.Override
-                                public void handleGetFileNameDone(final java.lang.String fileName)
-                                {
-                                    org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                        .this.exportGrid(fileName);
-                                }
-                            });
-                this.getGridExportFileNameAlertDialog.show(
-                    this.handler.getInitialGridExportFileName());
-                break;
+            case org.wheatgenetics.coordinate.R.id.nav_manage_grid: this.manageGrid(); break;
+            case org.wheatgenetics.coordinate.R.id.nav_export_grid: this.exportGrid(); break;
 
 
 
             case org.wheatgenetics.coordinate.R.id.nav_create_template:
-                if (null == this.templateCreator)
-                    this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                        this.activity, this.createTemplateRequestCode,this);
-                this.templateCreator.create(); break;
+                this.createTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_import_template:
-                this.selectExportedTemplate(); break;
+                this.importTemplate(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.TemplateOperation.EXPORT);
-                break;
+                    .NavigationItemSelectedListener.TemplateOperation.EXPORT); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_delete_template:
                 this.selectUserDefinedTemplate(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.TemplateOperation.DELETE);
-                break;
+                    .NavigationItemSelectedListener.TemplateOperation.DELETE); break;
 
 
 
-            case org.wheatgenetics.coordinate.R.id.nav_create_project:
-                if (null == this.projectCreator) this.projectCreator =
-                    new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity);
-                this.projectCreator.create(); break;
-
-            case org.wheatgenetics.coordinate.R.id.nav_manage_project:
-                if (null == this.manageProjectAlertDialog) this.manageProjectAlertDialog =
-                    new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog(this.activity,
-                        new org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler()
-                        {
-                            @java.lang.Override public long getProjectId()
-                            {
-                                return org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.getProjectId();
-                            }
-
-                            @java.lang.Override public void loadProject()
-                            {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.loadProject();
-                            }
-
-                            @java.lang.Override public void clearProject()
-                            {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.clearProject();
-                            }
-
-                            @java.lang.Override public void deleteProject()
-                            {
-                                org.wheatgenetics.coordinate.nisl
-                                    .NavigationItemSelectedListener.this.deleteProject();
-                            }
-                        });
-                this.manageProjectAlertDialog.show(this.handler.projectModelIsLoaded()); break;
+            case org.wheatgenetics.coordinate.R.id.nav_create_project: this.createProject(); break;
+            case org.wheatgenetics.coordinate.R.id.nav_manage_project: this.manageProject(); break;
 
             case org.wheatgenetics.coordinate.R.id.nav_export_project:
                 this.selectProject(org.wheatgenetics.coordinate.nisl
-                    .NavigationItemSelectedListener.ProjectOperation.EXPORT);
-                break;
+                    .NavigationItemSelectedListener.ProjectOperation.EXPORT); break;
 
 
 
             case org.wheatgenetics.coordinate.R.id.nav_settings:
-                this.activity.startActivityForResult(this.preferenceIntent(),
-                    this.clickUniquenessRequestCode); break;
+                this.startPreferenceActivity(); break;
 
 
 
             case org.wheatgenetics.coordinate.R.id.nav_show_about:
-                if (null == this.aboutAlertDialog)
-                {
-                    // noinspection CStyleArrayDeclaration
-                    final java.lang.String title, msgs[];
-                    {
-                        final android.content.res.Resources resources =
-                            this.activity.getResources();
-
-                        if (null == resources)
-                            break;
-                        else
-                        {
-                            title = resources.getString(
-                                org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
-                            msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
-                                org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
-                        }
-                    }
-
-                    this.aboutAlertDialog = new org.wheatgenetics.about.AboutAlertDialog(
-                        /* context       => */ this.activity                                     ,
-                        /* title         => */ title                                             ,
-                        /* versionName   => */ this.versionName                                  ,
-                        /* msgs[]        => */ msgs                                              ,
-                        /* suppressIndex => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
-                        /* versionOnClickListener => */ this.versionOnClickListener              );
-                }
-                this.aboutAlertDialog.show(); break;
+                this.showAboutAlertDialog(); break;
         }
         this.handler.closeDrawer(); return true;
     }
@@ -752,6 +831,17 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
     // endregion
 
+    // region Public Methods
     public void setExcludedCells(final android.os.Bundle bundle)
-    { if (null != this.templateCreator) this.templateCreator.setExcludedCells(bundle); }
+    {
+        if (null != this.templateCreatorInstance)
+            this.templateCreatorInstance.setExcludedCells(bundle);
+    }
+
+    public void preprocessTemplateImport()
+    {
+        if (null != this.templateImportPreprocessorInstance)
+            this.templateImportPreprocessorInstance.preprocess();
+    }
+    // endregion
 }
