@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.display;
+package org.wheatgenetics.coordinate.griddisplay;
 
 /**
  * Uses:
@@ -11,17 +11,17 @@ package org.wheatgenetics.coordinate.display;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- *
  * org.wheatgenetics.coordinate.DisplayFragment
  * org.wheatgenetics.coordinate.DisplayFragment.Handler
  *
- * org.wheatgenetics.coordinate.display.GridElement
- * org.wheatgenetics.coordinate.display.GridElement.GridHandler
- * org.wheatgenetics.coordinate.display.GridElements
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
+ *
+ * org.wheatgenetics.coordinate.griddisplay.GridElement
+ * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
+ * org.wheatgenetics.coordinate.griddisplay.GridElements
  */
 public class GridDisplayFragment extends org.wheatgenetics.coordinate.DisplayFragment
-implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
+implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler extends org.wheatgenetics.coordinate.DisplayFragment.Handler
@@ -41,10 +41,10 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     {
         final boolean success;
 
-        if (context instanceof org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler)
+        if (context instanceof org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler)
         {
             this.handler =
-                (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) context;
+                (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) context;
             success = true;
         }
         else { this.handler = null; success = false; }
@@ -57,8 +57,8 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     @androidx.annotation.IntRange(from = 1) final int lastRow,
     @androidx.annotation.IntRange(from = 1) final int lastCol)
     {
-        final org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler handler =
-            (org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler) this.handler;
+        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler handler =
+            (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) this.handler;
         if (null != handler)
         {
             final int activeRow = handler.getActiveRow(), activeCol = handler.getActiveCol();
@@ -66,22 +66,22 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
             {
                 final android.app.Activity activity = this.getActivity();
                 if (null != activity) this.elements =
-                    new org.wheatgenetics.coordinate.display.GridElements(activity, lastRow,
-                        lastCol, activeRow, activeCol,this,this,
+                    new org.wheatgenetics.coordinate.griddisplay.GridElements(activity,
+                        lastRow, lastCol, activeRow, activeCol,this,this,
                         handler.getChecker());
             }
             else
-                ((org.wheatgenetics.coordinate.display.GridElements) this.elements).allocate(
+                ((org.wheatgenetics.coordinate.griddisplay.GridElements) this.elements).allocate(
                     lastRow, lastCol, activeRow, activeCol);
         }
     }
 
-    // region org.wheatgenetics.coordinate.display.GridElement.GridHandler Overridden Method
+    // region org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler Overridden Method
     @java.lang.Override public void activate(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.display.GridElement gridElement)
+    final org.wheatgenetics.coordinate.griddisplay.GridElement gridElement)
     {
         if (null != this.handler)
-            ((org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler)
+            ((org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler)
                 this.handler).activate(gridElement.getRow(), gridElement.getCol());
     }
     // endregion

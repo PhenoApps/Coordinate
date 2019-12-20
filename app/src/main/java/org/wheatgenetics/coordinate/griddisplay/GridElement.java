@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.display;
+package org.wheatgenetics.coordinate.griddisplay;
 
 /**
  * Uses:
@@ -10,14 +10,14 @@ package org.wheatgenetics.coordinate.display;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.Element
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
- *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
  */
 class GridElement extends org.wheatgenetics.coordinate.Element
 implements android.view.View.OnLongClickListener
@@ -25,13 +25,13 @@ implements android.view.View.OnLongClickListener
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface GridHandler
     {
         public abstract void activate(@androidx.annotation.NonNull
-        org.wheatgenetics.coordinate.display.GridElement gridElement);
+        org.wheatgenetics.coordinate.griddisplay.GridElement gridElement);
     }
 
     // region Fields
     @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler;
+        org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler gridHandler;
     @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
     // endregion
@@ -57,10 +57,10 @@ implements android.view.View.OnLongClickListener
     @androidx.annotation.NonNull final android.content.Context                       context   ,
                                  final org.wheatgenetics.coordinate.model.EntryModel entryModel,
     @androidx.annotation.NonNull final android.widget.TextView                       textView  ,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.Handler
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.griddisplay.GridElement.Handler
         handler,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.GridHandler
-        gridHandler,
+    @androidx.annotation.NonNull final
+        org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler gridHandler,
     int activeRow, int activeCol, @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
@@ -116,7 +116,10 @@ implements android.view.View.OnLongClickListener
                         /* yesRunnable => */ new java.lang.Runnable()
                             {
                                 @java.lang.Override public void run()
-                                { org.wheatgenetics.coordinate.display.GridElement.this.exclude(); }
+                                {
+                                    org.wheatgenetics.coordinate.griddisplay
+                                        .GridElement.this.exclude();
+                                }
                             });
                 }
             }
