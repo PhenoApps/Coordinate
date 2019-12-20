@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.display;
+package org.wheatgenetics.coordinate.griddisplay;
 
 /**
  * Uses:
@@ -11,25 +11,25 @@ package org.wheatgenetics.coordinate.display;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.Element
+ * org.wheatgenetics.coordinate.Elements
+ *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.EntryModel
  *
- * org.wheatgenetics.coordinate.Element
- * org.wheatgenetics.coordinate.Elements
- *
- * org.wheatgenetics.coordinate.display.GridElement
- * org.wheatgenetics.coordinate.display.GridElement.Handler
- * org.wheatgenetics.coordinate.display.GridElement.GridHandler
+ * org.wheatgenetics.coordinate.griddisplay.GridElement
+ * org.wheatgenetics.coordinate.griddisplay.GridElement.Handler
+ * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
  */
 class GridElements extends org.wheatgenetics.coordinate.Elements
-implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
+implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 {
     // region Fields
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.display.GridElement.Handler handler;
+        org.wheatgenetics.coordinate.griddisplay.GridElement.Handler handler;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.display.GridElement.GridHandler gridHandler;
+        org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler gridHandler;
     @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
 
@@ -41,10 +41,10 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     @androidx.annotation.IntRange(from = 1) final int                  rows    ,
     @androidx.annotation.IntRange(from = 1) final int                  cols    ,
     final int activeRow, final int activeCol,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.Handler
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.griddisplay.GridElement.Handler
         handler,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.GridElement.GridHandler
-        gridHandler,
+    @androidx.annotation.NonNull final
+        org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler gridHandler,
     @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
@@ -60,7 +60,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     final org.wheatgenetics.coordinate.model.ElementModel elementModel,
     final android.widget.TextView                         textView    )
     {
-        return new org.wheatgenetics.coordinate.display.GridElement(
+        return new org.wheatgenetics.coordinate.griddisplay.GridElement(
             /* context     => */ this.getActivity()                                          ,
             /* entryModel  => */ (org.wheatgenetics.coordinate.model.EntryModel) elementModel,
             /* textView    => */ textView                                                    ,
@@ -74,9 +74,9 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
     @java.lang.Override protected void clear()
     { super.clear(); this.activeRow = this.activeCol = -1; }
 
-    // region org.wheatgenetics.coordinate.display.GridElement.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.griddisplay.GridElement.Handler Overridden Method
     @java.lang.Override public void activate(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.display.GridElement gridElement)
+    final org.wheatgenetics.coordinate.griddisplay.GridElement gridElement)
     {
         final int newActiveRow = gridElement.getRow(), newActiveCol = gridElement.getCol();
         if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
@@ -86,7 +86,7 @@ implements org.wheatgenetics.coordinate.display.GridElement.GridHandler
                 final org.wheatgenetics.coordinate.Element[][] elementArray =
                     this.getElementArray();
                 if (null != elementArray)
-                    ((org.wheatgenetics.coordinate.display.GridElement)
+                    ((org.wheatgenetics.coordinate.griddisplay.GridElement)
                         elementArray[this.activeRow][this.activeCol]).inactivate();
             }
 

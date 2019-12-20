@@ -50,15 +50,15 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
- * org.wheatgenetics.coordinate.display.GridDisplayFragment
- * org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler
- *
  * org.wheatgenetics.coordinate.exporter.GridExporter
  * org.wheatgenetics.coordinate.exporter.GridExporter.Helper
  * org.wheatgenetics.coordinate.exporter.TemplateExporter
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
+ *
+ * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment
+ * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
@@ -101,7 +101,7 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.Utils.Advancement
  */
 public class OldMainActivity extends androidx.appcompat.app.AppCompatActivity implements
-org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
@@ -143,8 +143,8 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
     private org.wheatgenetics.coordinate.pe.ProjectExporter  projectExporterInstance = null;   // ll
 
-    private org.wheatgenetics.coordinate.display.GridDisplayFragment gridDisplayFragment;
-    private org.wheatgenetics.coordinate.oldmain.DataEntryFragment   dataEntryFragment  ;
+    private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment gridDisplayFragment;
+    private org.wheatgenetics.coordinate.oldmain.DataEntryFragment       dataEntryFragment  ;
 
     private java.lang.String versionName, fileName;
 
@@ -835,7 +835,8 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         {
             final androidx.fragment.app.FragmentManager fragmentManager =
                 this.getSupportFragmentManager();
-            this.gridDisplayFragment = (org.wheatgenetics.coordinate.display.GridDisplayFragment)
+            this.gridDisplayFragment =
+                (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment)
                 fragmentManager.findFragmentById(
                     org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
             this.dataEntryFragment = (org.wheatgenetics.coordinate.oldmain.DataEntryFragment)
@@ -1038,7 +1039,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         super.onDestroy();
     }
 
-    // region org.wheatgenetics.coordinate.display.GridDisplayFragment.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.getJoinedGridModel(); }
 

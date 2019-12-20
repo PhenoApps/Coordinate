@@ -19,7 +19,7 @@
 
         <fragment
             android:id="@+id/gridDisplayFragment"
-            android:name="org.wheatgenetics.coordinate.display.GridDisplayFragment"
+            android:name="org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment"
 
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
