@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.projects;
 /**
  * Uses:
  * android.content.pm.PackageManager
+ * android.content.Context
+ * android.content.Intent
  * android.Manifest.permission
  * android.os.Bundle
  * android.view.Menu
@@ -47,6 +49,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
         projectClickAlertDialogInstance = null;                                         // lazy load
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;      // ll
+
+    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
     // endregion
 
     // region Private Methods
@@ -190,6 +194,18 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     }
     // endregion
 
+    // region MenuItem Event Handler
     public void onNewProjectMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.projectCreator().createAndReturn(); }
+    // endregion
+
+    @androidx.annotation.NonNull public static android.content.Intent intent(
+    @androidx.annotation.NonNull final android.content.Context context)
+    {
+        return null == org.wheatgenetics.coordinate.projects.ProjectsActivity.INTENT_INSTANCE ?
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.INTENT_INSTANCE =
+                new android.content.Intent(context,
+                    org.wheatgenetics.coordinate.projects.ProjectsActivity.class) :
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.INTENT_INSTANCE;
+    }
 }
