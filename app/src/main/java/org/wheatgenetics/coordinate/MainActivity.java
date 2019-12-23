@@ -41,8 +41,7 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private android.content.Intent gridsIntentInstance = null,                             // lazy
-        templatesIntentInstance = null, projectsIntentInstance = null;                     //  loads
+    private android.content.Intent projectsIntentInstance = null;                       // lazy load
 
     // region Create Template Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
@@ -57,17 +56,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void startGridsActivity()
     { this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.intent(this)); }
 
-    // region startTemplatesActivity() Private Methods
-    private android.content.Intent templatesIntent()
+    private void startTemplatesActivity()
     {
-        if (null == this.templatesIntentInstance) this.templatesIntentInstance =
-            new android.content.Intent(this,
-                org.wheatgenetics.coordinate.templates.TemplatesActivity.class);
-        return this.templatesIntentInstance;
+        this.startActivity(
+            org.wheatgenetics.coordinate.templates.TemplatesActivity.intent(this));
     }
-
-    private void startTemplatesActivity() { this.startActivity(this.templatesIntent()); }
-    // endregion
 
     // region startProjectsActivity() Private Methods
     private android.content.Intent projectsIntent()

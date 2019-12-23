@@ -3,6 +3,8 @@ package org.wheatgenetics.coordinate.templates;
 /**
  * Uses:
  * android.app.Activity
+ * android.content.Context
+ * android.content.Intent
  * android.content.pm.PackageManager
  * android.Manifest.permission
  * android.os.Bundle
@@ -58,6 +60,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
     // endregion
+
+    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
     // endregion
 
     // region Private Methods
@@ -259,4 +263,14 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     public void onImportTemplateMenuItem(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.preprocessTemplateImport(); }
     // endregion
+
+    @androidx.annotation.NonNull public static android.content.Intent intent(
+    @androidx.annotation.NonNull final android.content.Context context)
+    {
+        return null == org.wheatgenetics.coordinate.templates.TemplatesActivity.INTENT_INSTANCE ?
+            org.wheatgenetics.coordinate.templates.TemplatesActivity.INTENT_INSTANCE =
+                new android.content.Intent(context,
+                    org.wheatgenetics.coordinate.templates.TemplatesActivity.class) :
+            org.wheatgenetics.coordinate.templates.TemplatesActivity.INTENT_INSTANCE;
+    }
 }
