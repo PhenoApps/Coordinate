@@ -91,6 +91,7 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.pe.ProjectExporter
  *
+ * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
  *
  * org.wheatgenetics.coordinate.Consts
@@ -121,6 +122,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private android.media.MediaPlayer gridEndMediaPlayer = null,
         rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
 
+    private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnablerInstance    = null; // ll
     private org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences          ;
     private org.wheatgenetics.changelog.ChangeLogAlertDialog      changeLogAlertDialog = null; // ll
     private org.wheatgenetics.zxing.BarcodeScanner                barcodeScanner       = null; // ll
@@ -231,6 +233,14 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
             this.exportGridMenuItem.setEnabled(this.joinedGridModelIsLoaded());
     }
 
+    private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnabler()
+    {
+        if (null == this.menuItemEnablerInstance) this.menuItemEnablerInstance =
+            new org.wheatgenetics.coordinate.ti.MenuItemEnabler(this,
+                org.wheatgenetics.coordinate.oldmain.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
+        return this.menuItemEnablerInstance;
+    }
+
     private void configureTemplateMenuItems()
     {
         if (null != this.templateMenuItem)
@@ -245,22 +255,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         }
 
         if (null != this.importTemplateMenuItem)
-            try
-            {
-                final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    org.wheatgenetics.coordinate.Utils.templatesDir(  // throws java.io.IOException,
-                        this,                                 //  org.wheatgenetics.javalib-
-                        org.wheatgenetics.coordinate                  //  .Dir.PermissionException
-                            .oldmain.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
-                this.importTemplateMenuItem.setEnabled(
-                    templatesDir.atLeastOneXmlFileExists() /* throws PermissionException */);
-            }
-            catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-            {
-                if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                    this.showLongToast(e.getMessage());
-                return;
-            }
+            this.importTemplateMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
 
         final boolean userDefinedTemplatesExist = this.templatesTable().exists(
             org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED);
