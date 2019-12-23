@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate.grids;
 
 /**
  * Uses:
+ * android.content.Context
+ * android.content.Intent
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
@@ -9,6 +11,7 @@ package org.wheatgenetics.coordinate.grids;
  * android.widget.AdapterView.OnItemClickListener
  * android.widget.ListView
  *
+ * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
@@ -53,6 +56,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     }
     // endregion
 
+    // region MenuItem Event Handler
     public void onNewGridMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem)
     {
@@ -60,5 +64,14 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
             this.gridGreator = new org.wheatgenetics.coordinate.tc.GridCreator(
                 this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
         this.gridGreator.create();*/
+    }
+    // endregion
+
+    @androidx.annotation.NonNull public static android.content.Intent intent(
+    @androidx.annotation.Nullable final android.content.Intent intent  ,
+    @androidx.annotation.NonNull  final android.content.Context context)
+    {
+        return null == intent ? new android.content.Intent(context,
+            org.wheatgenetics.coordinate.grids.GridsActivity.class) : intent;
     }
 }

@@ -44,29 +44,27 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private android.content.Intent gridsIntentInstance = null,                             // lazy
         templatesIntentInstance = null, projectsIntentInstance = null;                     //  loads
 
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreator        = null;// ll
-
-    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator = null;       // lazy load
+    // region Create Template Fields
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
+    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
     // endregion
 
-    // region Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;   // lazy
+    // endregion                                                                            //  load
 
-    // region GridsActivity Private Methods
+    // region Private Methods
+    // region startActivity() Private Methods
+    // region startGridsActivity() Private Methods
     private android.content.Intent gridsIntent()
     {
-        if (null == this.gridsIntentInstance) this.gridsIntentInstance =
-            new android.content.Intent(this,
-                org.wheatgenetics.coordinate.grids.GridsActivity.class);
-        return this.gridsIntentInstance;
+        return org.wheatgenetics.coordinate.grids.GridsActivity.intent(
+            this.gridsIntentInstance,this);
     }
 
     private void startGridsActivity() { this.startActivity(this.gridsIntent()); }
     // endregion
 
-    // region TemplatesActivity Private Methods
+    // region startTemplatesActivity() Private Methods
     private android.content.Intent templatesIntent()
     {
         if (null == this.templatesIntentInstance) this.templatesIntentInstance =
@@ -78,7 +76,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void startTemplatesActivity() { this.startActivity(this.templatesIntent()); }
     // endregion
 
-    // region ProjectsActivity Private Methods
+    // region startProjectsActivity() Private Methods
     private android.content.Intent projectsIntent()
     {
         if (null == this.projectsIntentInstance) this.projectsIntentInstance =
@@ -89,13 +87,34 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private void startProjectsActivity() { this.startActivity(this.projectsIntent()); }
     // endregion
+    // endregion
 
+    // region Create Template Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
+    {
+        if (null == this.templateCreatorInstance)
+            this.templateCreatorInstance = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
+        return this.templateCreatorInstance;
+    }
+    // endregion
+
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
+    {
+        if (null == this.projectCreatorInstance) this.projectCreatorInstance =
+            new org.wheatgenetics.coordinate.pc.ProjectCreator(this);
+        return this.projectCreatorInstance;
     }
     // endregion
 
@@ -130,6 +149,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
                             case 2: org.wheatgenetics.coordinate.MainActivity
                                 .this.startProjectsActivity(); break;
+
+                            case 3: /* TODO */ break;
+                            case 4: /* TODO */ break;
                         }
                     }
                 });
@@ -152,8 +174,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
-                    if (null != this.templateCreator)
-                        this.templateCreator.setExcludedCells(data.getExtras());
+                    if (null != this.templateCreatorInstance)
+                        this.templateCreatorInstance.setExcludedCells(data.getExtras());
                     break;
             }
     }
@@ -170,20 +192,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region MenuItem Event Handlers
     public void onTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem)
-    {
-        if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
-        this.templateCreator.create();
-    }
+    final android.view.MenuItem menuItem) { this.templateCreator().create(); }
 
     public void onProjectMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem)
-    {
-        if (null == this.projectCreator) this.projectCreator =
-            new org.wheatgenetics.coordinate.pc.ProjectCreator(this);
-        this.projectCreator.create();
-    }
+    final android.view.MenuItem menuItem) { this.projectCreator().create(); }
     // endregion
 }
