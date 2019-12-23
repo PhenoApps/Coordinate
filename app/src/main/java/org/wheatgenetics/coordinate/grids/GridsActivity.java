@@ -18,10 +18,14 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
+ * org.wheatgenetics.coordinate.grids.GridsAdapter
  */
 public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 {
-    private org.wheatgenetics.coordinate.grids.AllGridsAdapter allGridsAdapter = null;
+    private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
+
+    private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
+    { return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this); }
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
@@ -34,8 +38,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
             org.wheatgenetics.coordinate.R.id.gridsListView);
         if (null != gridsListView)
         {
-            gridsListView.setAdapter(this.allGridsAdapter =
-                new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this));
+            gridsListView.setAdapter(this.gridsAdapter = makeAllGridsAdapter());
             gridsListView.setOnItemClickListener(
                 new android.widget.AdapterView.OnItemClickListener()
                 {
@@ -68,7 +71,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     // endregion
 
     @androidx.annotation.NonNull public static android.content.Intent intent(
-    @androidx.annotation.Nullable final android.content.Intent intent  ,
+    @androidx.annotation.Nullable final android.content.Intent  intent ,
     @androidx.annotation.NonNull  final android.content.Context context)
     {
         return null == intent ? new android.content.Intent(context,
