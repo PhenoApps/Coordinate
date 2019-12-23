@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.projects;
 
 /**
  * Uses:
+ * android.content.Intent
  * android.content.pm.PackageManager
  * android.Manifest.permission
  * android.os.Bundle
@@ -19,6 +20,8 @@ package org.wheatgenetics.coordinate.projects;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.grids.GridsActivity
+ *
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  *
@@ -35,6 +38,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Fields
     private org.wheatgenetics.coordinate.projects.ProjectsAdapter projectsAdapter = null;
 
+    private android.content.Intent gridsIntentInstance = null;                          // lazy load
+
     // region exportProject() Fields
     @androidx.annotation.IntRange(from = 1) private long             projectId    ;
                                             private java.lang.String directoryName;
@@ -50,6 +55,18 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Private Methods
     private void notifyDataSetChanged()
     { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
+
+    // region showGrids() Private Methods
+    private android.content.Intent gridsIntent(
+    @androidx.annotation.IntRange(from = 1) final long projectId)
+    {
+        return org.wheatgenetics.coordinate.grids.GridsActivity.intent(
+            this.gridsIntentInstance,this, projectId);
+    }
+
+    private void showGrids(@androidx.annotation.IntRange(from = 1) final long projectId)
+    { this.startActivity(this.gridsIntent(projectId)); }
+    // endregion
 
     // region exportProject() Private Methods
     @androidx.annotation.NonNull
@@ -85,7 +102,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
                     @java.lang.Override public void showGrids(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
-                        // TODO
+                        org.wheatgenetics.coordinate.projects
+                            .ProjectsActivity.this.showGrids(projectId);
                     }
 
                     @java.lang.Override public void respondToDeletedProject()
