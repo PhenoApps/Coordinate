@@ -17,9 +17,6 @@ package org.wheatgenetics.coordinate.templates;
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
- * org.wheatgenetics.javalib.Dir.PermissionException
- * org.wheatgenetics.javalib.Dir.PermissionRequestedException
- *
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
@@ -29,14 +26,13 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
  * org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
  *
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
- * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.templates.TemplatesAdapter
@@ -51,7 +47,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.templates.TemplatesAdapter templatesAdapter = null;
 
     // region importMenuItem Fields
-    private android.view.MenuItem                                      importMenuItem = null;
+    private android.view.MenuItem                           importMenuItem          = null;
+    private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnablerInstance = null;    // ll
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
         templateImportPreprocessorInstance = null;                                      // lazy load
     private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporterInstance = null;  // ll
@@ -64,27 +61,22 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+    private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnabler()
+    {
+        if (null == this.menuItemEnablerInstance) this.menuItemEnablerInstance =
+            new org.wheatgenetics.coordinate.ti.MenuItemEnabler(this, org.wheatgenetics
+                .coordinate.templates.TemplatesActivity.CONFIGURE_IMPORT_MENU_ITEM);
+        return this.menuItemEnablerInstance;
+    }
 
     private void configureImportMenuItem()
     {
         if (null != this.importMenuItem)
-            try
-            {
-                final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    org.wheatgenetics.coordinate.Utils.templatesDir(  // throws java.io.IOException,
-                        this,                                 //  org.wheatgenetics.javalib-
-                        org.wheatgenetics.coordinate.templates        //  .Dir.PermissionException
-                            .TemplatesActivity.CONFIGURE_IMPORT_MENU_ITEM);
-                this.importMenuItem.setEnabled(templatesDir.atLeastOneXmlFileExists());
-            }
-            catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-            {
-                if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                    { this.showLongToast(e.getMessage()); this.importMenuItem.setEnabled(false); }
-            }
+            this.importMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
     }
+
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
     private void notifyDataSetChanged()
     { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
