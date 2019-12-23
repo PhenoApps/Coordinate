@@ -75,27 +75,27 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             this.importMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
     }
 
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
-
     private void notifyDataSetChanged()
     { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
 
     // region Create Private Methods
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
-    {
-        if (null == this.templateCreatorInstance)
-            this.templateCreatorInstance = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
-        return this.templateCreatorInstance;
-    }
-
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
+    {
+        if (null == this.templateCreatorInstance)
+            this.templateCreatorInstance = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
+        return this.templateCreatorInstance;
     }
     // endregion
 

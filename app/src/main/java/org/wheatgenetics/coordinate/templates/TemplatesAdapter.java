@@ -7,7 +7,6 @@ package org.wheatgenetics.coordinate.templates;
  * android.view.View
  * android.view.ViewGroup
  * android.widget.BaseAdapter
- * android.widget.ListAdapter
  * android.widget.TableLayout
  * android.widget.TextView
  *
@@ -21,10 +20,10 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  */
-class TemplatesAdapter extends android.widget.BaseAdapter implements android.widget.ListAdapter
+class TemplatesAdapter extends android.widget.BaseAdapter
 {
     // region Fields
-    private final android.app.Activity activity;
+    @androidx.annotation.NonNull private final android.app.Activity activity;
 
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.model.TemplateModels    templateModelsInstance = null;// ll
@@ -47,7 +46,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
         return this.templateModelsInstance;
     }
 
-    @androidx.annotation.NonNull private android.widget.TableLayout makeTableLayout()
+    @androidx.annotation.NonNull private android.widget.TableLayout makeEmptyTableLayout()
     { return new android.widget.TableLayout(this.activity); }
     // endregion
 
@@ -74,16 +73,9 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
 
     @java.lang.Override public long getItemId(final int position)
     {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            this.templateModels();
-        if (null == templateModels)
-            return -1;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                templateModels.get(position);
-            return null == templateModel ? -1 :templateModel.getId();
-        }
+        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
+            (org.wheatgenetics.coordinate.model.TemplateModel) this.getItem(position);
+        return null == templateModel ? -1 :templateModel.getId();
     }
 
     @java.lang.Override @androidx.annotation.NonNull public android.view.View getView(
@@ -94,7 +86,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) this.getItem(position);
         if (null == templateModel)
-            return this.makeTableLayout();
+            return this.makeEmptyTableLayout();
         else
         {
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
@@ -102,7 +94,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter implements android.wid
                     org.wheatgenetics.coordinate.R.layout.templates_list_item,
                     null,false);
             if (null == view)
-                return this.makeTableLayout();
+                return this.makeEmptyTableLayout();
             else
             {
                 {

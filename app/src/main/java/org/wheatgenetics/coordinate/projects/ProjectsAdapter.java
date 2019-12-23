@@ -7,7 +7,6 @@ package org.wheatgenetics.coordinate.projects;
  * android.view.View
  * android.view.ViewGroup
  * android.widget.BaseAdapter
- * android.widget.ListAdapter
  * android.widget.TableLayout
  * android.widget.TextView
  *
@@ -21,10 +20,10 @@ package org.wheatgenetics.coordinate.projects;
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  */
-class ProjectsAdapter extends android.widget.BaseAdapter implements android.widget.ListAdapter
+class ProjectsAdapter extends android.widget.BaseAdapter
 {
     // region Fields
-    private final android.app.Activity activity;
+    @androidx.annotation.NonNull private final android.app.Activity activity;
 
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null; // ll
     private org.wheatgenetics.coordinate.model.ProjectModels    projectModelsInstance = null; // ll
@@ -46,6 +45,9 @@ class ProjectsAdapter extends android.widget.BaseAdapter implements android.widg
             this.projectModelsInstance = this.projectsTable().load();
         return this.projectModelsInstance;
     }
+
+    @androidx.annotation.NonNull private android.widget.TableLayout makeEmptyTableLayout()
+    { return new android.widget.TableLayout(this.activity); }
     // endregion
 
     ProjectsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
@@ -69,15 +71,9 @@ class ProjectsAdapter extends android.widget.BaseAdapter implements android.widg
 
     @java.lang.Override public long getItemId(final int position)
     {
-        final org.wheatgenetics.coordinate.model.ProjectModels projectModels = this.projectModels();
-        if (null == projectModels)
-            return -1;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
-                projectModels.get(position);
-            return null == projectModel ? -1 : projectModel.getId();
-        }
+        final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
+            (org.wheatgenetics.coordinate.model.ProjectModel) this.getItem(position);
+        return null == projectModel ? -1 : projectModel.getId();
     }
 
     @java.lang.Override @androidx.annotation.NonNull public android.view.View getView(
@@ -88,7 +84,7 @@ class ProjectsAdapter extends android.widget.BaseAdapter implements android.widg
         final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
             (org.wheatgenetics.coordinate.model.ProjectModel) this.getItem(position);
         if (null == projectModel)
-            return new android.widget.TableLayout(this.activity);
+            return this.makeEmptyTableLayout();
         else
         {
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
@@ -96,7 +92,7 @@ class ProjectsAdapter extends android.widget.BaseAdapter implements android.widg
                     org.wheatgenetics.coordinate.R.layout.projects_list_item,
                     null,false);
             if (null == view)
-                return new android.widget.TableLayout(this.activity);
+                return this.makeEmptyTableLayout();
             else
             {
                 {

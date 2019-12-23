@@ -44,7 +44,7 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
 
     private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
         projectClickAlertDialogInstance = null;                                         // lazy load
-    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator = null;       // lazy load
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;      // ll
     // endregion
 
     // region Private Methods
@@ -69,6 +69,7 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     { this.projectId = projectId; this.directoryName = directoryName; this.exportProject(); }
     // endregion
 
+    // region projectClickAlertDialog() Private Methods
     private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog projectClickAlertDialog()
     {
         if (null == this.projectClickAlertDialogInstance) this.projectClickAlertDialogInstance =
@@ -106,8 +107,23 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
 
     private void showProjectClickAlertDialog(@androidx.annotation.IntRange(from = 1)
     final long projectId) { this.projectClickAlertDialog().show(projectId); }
+    // endregion
 
-    private void handleCreateProjectDone() { this.notifyDataSetChanged(); }
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
+    {
+        if (null == this.projectCreatorInstance)
+            this.projectCreatorInstance = new org.wheatgenetics.coordinate.pc.ProjectCreator(
+                this, new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
+                {
+                    @java.lang.Override public void handleCreateProjectDone(
+                    @androidx.annotation.IntRange(from = 1) final long projectId)
+                    {
+                        org.wheatgenetics.coordinate.projects
+                            .ProjectsActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.projectCreatorInstance;
+    }
     // endregion
 
     // region Overridden Methods
@@ -166,19 +182,5 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // endregion
 
     public void onNewProjectMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem)
-    {
-        if (null == this.projectCreator)
-            this.projectCreator = new org.wheatgenetics.coordinate.pc.ProjectCreator(this,
-                new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
-                {
-                    @java.lang.Override public void handleCreateProjectDone(
-                    @androidx.annotation.IntRange(from = 1) final long projectId)
-                    {
-                        org.wheatgenetics.coordinate.projects
-                            .ProjectsActivity.this.handleCreateProjectDone();
-                    }
-                });
-        this.projectCreator.createAndReturn();
-    }
+    final android.view.MenuItem menuItem) { this.projectCreator().createAndReturn(); }
 }
