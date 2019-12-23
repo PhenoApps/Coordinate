@@ -11,6 +11,8 @@ package org.wheatgenetics.coordinate.grids;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  *
@@ -19,35 +21,30 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
-class GridsAdapter extends android.widget.BaseAdapter
+abstract class GridsAdapter extends android.widget.BaseAdapter
 {
     // region Fields
     @androidx.annotation.NonNull private final android.app.Activity activity;
 
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
-    private org.wheatgenetics.coordinate.model.BaseJoinedGridModels 
-        baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
 
-    // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    @androidx.annotation.NonNull private android.widget.TextView makeEmptyTextView()
+    { return new android.widget.TextView(this.activity); }
+
+    // region Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
             new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
         return this.gridsTableInstance;
     }
 
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable
-    private org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels()
-    {
-        if (null == this.baseJoinedGridModelsInstance)
-            this.baseJoinedGridModelsInstance = this.gridsTable().load();
-        return this.baseJoinedGridModelsInstance;
-    }
+    abstract org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels();
 
-    @androidx.annotation.NonNull private android.widget.TextView makeEmptyTextView()
-    { return new android.widget.TextView(this.activity); }
     // endregion
 
     GridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)

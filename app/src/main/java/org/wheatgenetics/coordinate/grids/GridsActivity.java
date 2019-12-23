@@ -14,11 +14,11 @@ package org.wheatgenetics.coordinate.grids;
  *
  * org.wheatgenetics.coordinate.R
  *
- * org.wheatgenetics.coordinate.grids.GridsAdapter
+ * org.wheatgenetics.coordinate.grids.AllGridsAdapter
  */
 public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 {
-    private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
+    private org.wheatgenetics.coordinate.grids.AllGridsAdapter allGridsAdapter = null;
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
@@ -31,8 +31,8 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
             org.wheatgenetics.coordinate.R.id.gridsListView);
         if (null != gridsListView)
         {
-            gridsListView.setAdapter(this.gridsAdapter =
-                new org.wheatgenetics.coordinate.grids.GridsAdapter(this));
+            gridsListView.setAdapter(this.allGridsAdapter =
+                new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this));
             gridsListView.setOnItemClickListener(
                 new android.widget.AdapterView.OnItemClickListener()
                 {
