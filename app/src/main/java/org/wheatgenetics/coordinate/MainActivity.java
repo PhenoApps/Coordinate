@@ -54,15 +54,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region Private Methods
     // region startActivity() Private Methods
-    // region startGridsActivity() Private Methods
-    private android.content.Intent gridsIntent()
-    {
-        return org.wheatgenetics.coordinate.grids.GridsActivity.intent(
-            this.gridsIntentInstance,this);
-    }
-
-    private void startGridsActivity() { this.startActivity(this.gridsIntent()); }
-    // endregion
+    private void startGridsActivity()
+    { this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.intent(this)); }
 
     // region startTemplatesActivity() Private Methods
     private android.content.Intent templatesIntent()

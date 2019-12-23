@@ -26,18 +26,24 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 {
     private static final java.lang.String PROJECT_ID_KEY = "projectId";
 
+    // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
+
+    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
+    // endregion
 
     // region Private Methods
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     { return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this); }
 
-    @androidx.annotation.NonNull public static android.content.Intent makeIfNullOrReturn(
-    @androidx.annotation.Nullable final android.content.Intent  intent ,
-    @androidx.annotation.NonNull  final android.content.Context context)
+    @androidx.annotation.NonNull private static android.content.Intent INTENT(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
-        return null == intent ? new android.content.Intent(context,
-            org.wheatgenetics.coordinate.grids.GridsActivity.class) : intent;
+        return null == org.wheatgenetics.coordinate.grids.GridsActivity.INTENT_INSTANCE ?
+            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT_INSTANCE =
+                new android.content.Intent(context,
+                    org.wheatgenetics.coordinate.grids.GridsActivity.class) :
+            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT_INSTANCE;
     }
     // endregion
 
@@ -105,11 +111,10 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 
     // region Public Methods
     @androidx.annotation.NonNull public static android.content.Intent intent(
-    @androidx.annotation.Nullable final android.content.Intent  intent ,
-    @androidx.annotation.NonNull  final android.content.Context context)
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         final android.content.Intent result =
-            org.wheatgenetics.coordinate.grids.GridsActivity.makeIfNullOrReturn(intent, context);
+            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context);
         {
             final java.lang.String PROJECT_ID_KEY =
                 org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY;
@@ -119,12 +124,11 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.NonNull public static android.content.Intent intent(
-    @androidx.annotation.Nullable           final android.content.Intent  intent   ,
     @androidx.annotation.NonNull            final android.content.Context context  ,
     @androidx.annotation.IntRange(from = 1) final long                    projectId)
     {
-        return org.wheatgenetics.coordinate.grids.GridsActivity.makeIfNullOrReturn(intent, context)
-            .putExtra(org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY, projectId);
+        return org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context).putExtra(
+            org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY, projectId);
     }
     // endregion
 }
