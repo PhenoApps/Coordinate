@@ -54,14 +54,14 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // endregion
 
     // region Private Methods
-    private void notifyDataSetChanged()
-    { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
-
-    private void showGrids(@androidx.annotation.IntRange(from = 1) final long projectId)
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.startActivity(
             org.wheatgenetics.coordinate.grids.GridsActivity.intent(this, projectId));
     }
+
+    private void notifyDataSetChanged()
+    { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
 
     // region exportProject() Private Methods
     @androidx.annotation.NonNull
@@ -97,8 +97,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
                     @java.lang.Override public void showGrids(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
-                        org.wheatgenetics.coordinate.projects
-                            .ProjectsActivity.this.showGrids(projectId);
+                        org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.startGridsActivity(projectId);
                     }
 
                     @java.lang.Override public void respondToDeletedProject()
