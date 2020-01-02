@@ -52,7 +52,6 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.exporter.GridExporter
  * org.wheatgenetics.coordinate.exporter.GridExporter.Helper
- * org.wheatgenetics.coordinate.exporter.TemplateExporter
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
@@ -91,12 +90,13 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.pe.ProjectExporter
  *
+ * org.wheatgenetics.coordinate.te.TemplateExporter
+ *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
  *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Types
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Advancement
@@ -141,9 +141,9 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
     private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter             = null;
     private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
-    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter     = null;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel                  ;
-    private org.wheatgenetics.coordinate.pe.ProjectExporter  projectExporterInstance = null;   // ll
+    @androidx.annotation.IntRange(from = 1) private long       templateId                     ;
+    private org.wheatgenetics.coordinate.te.TemplateExporter   templateExporterInstance = null;// ll
+    private org.wheatgenetics.coordinate.pe.ProjectExporter    projectExporterInstance  = null;// ll
 
     private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.oldmain.DataEntryFragment       dataEntryFragment  ;
@@ -445,45 +445,21 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     // endregion
 
     // region Export Template Private Methods
-    private void exportTemplate()
+    private org.wheatgenetics.coordinate.te.TemplateExporter templateExporter()
     {
-        if (null != this.templateModel)
-        {
-            java.io.File exportFile;
-            try
-            {
-                final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                    org.wheatgenetics.coordinate.Utils.templatesDir(         // throws IOException,
-                        this,                                        //  PermissionException
-                        org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE);
-                exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
-                    this.fileName + ".xml");
-            }
-            catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-            {
-                if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
-                    this.showLongToast(e.getMessage());
-                exportFile = null;
-            }
-
-            if (null != exportFile)
-            {
-                this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                    /* context       => */this,
-                    /* exportFile    => */ exportFile        ,
-                    /* templateModel => */ this.templateModel);
-                this.templateExporter.execute();
-            }
-        }
+        if (null == this.templateExporterInstance) this.templateExporterInstance =
+            new org.wheatgenetics.coordinate.te.TemplateExporter(this,
+                org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE);
+        return this.templateExporterInstance;
     }
+
+    private void exportTemplate()
+    { this.templateExporter().export(this.templateId, this.fileName); }
 
     private void exportTemplate(
     @androidx.annotation.IntRange(from = 1) final long             templateId,
                                             final java.lang.String fileName  )
-    {
-        this.templateModel = this.templatesTable().get(templateId); this.fileName = fileName;
-        this.exportTemplate();
-    }
+    { this.templateId = templateId; this.fileName = fileName; this.exportTemplate(); }
     // endregion
 
     private void handleGridDeleted()
@@ -1025,12 +1001,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
         if (null != this.gridEndMediaPlayer       ) this.gridEndMediaPlayer.release       ();
 
-
-        if (null != this.templateExporter)
-            { this.templateExporter.cancel(); this.templateExporter = null; }
-
         if (null != this.gridExporter) { this.gridExporter.cancel(); this.gridExporter = null; }
-
 
         super.onDestroy();
     }
