@@ -55,6 +55,9 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
+ * org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
+ * org.wheatgenetics.coordinate.te.TemplateExportPreprocessor.Handler
+ *
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
  *
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
@@ -80,9 +83,9 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         public abstract void             exportGrid                  (java.lang.String fileName);
 
         public abstract void importTemplate(java.lang.String fileName);
-        public abstract void exportTemplate(@androidx.annotation.NonNull
-                org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-            java.lang.String                                     fileName     );
+        public abstract void exportTemplate(
+            @androidx.annotation.IntRange(from = 1) long             templateId,
+                                                    java.lang.String fileName  );
         public abstract void handleGridDeleted();
 
         public abstract long getProjectId();
@@ -129,7 +132,9 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator    templateCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
-        templateImportPreprocessorInstance = null;                                     // lazy load
+        templateImportPreprocessorInstance = null;                                      // lazy load
+    private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
+        templateExportPreprocessorInstance = null;                                      // lazy load
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
@@ -339,32 +344,32 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Export Template Private Methods
-    private void exportTemplateAfterGettingFileName(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    final java.lang.String                                 fileName     )
-    { this.handler.exportTemplate(templateModel, fileName); }
+    private void exportTemplateAfterGettingFileName(
+    @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                            final java.lang.String fileName  )
+    { this.handler.exportTemplate(templateId, fileName); }
+
+    private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor templateExportPreprocessor()
+    {
+        if (null == this.templateExportPreprocessorInstance)
+            this.templateExportPreprocessorInstance =
+                new org.wheatgenetics.coordinate.te.TemplateExportPreprocessor(this.activity,
+                    new org.wheatgenetics.coordinate.te.TemplateExportPreprocessor.Handler()
+                    {
+                        @java.lang.Override public void exportTemplate(
+                        @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                                                final java.lang.String fileName  )
+                        {
+                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                .this.exportTemplateAfterGettingFileName(templateId, fileName);
+                        }
+                    });
+        return this.templateExportPreprocessorInstance;
+    }
 
     private void exportTemplateAfterSelect(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel)
-        {
-            final org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-                getTemplateExportFileNameAlertDialog =
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
-                        new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
-                        {
-                            @java.lang.Override
-                            public void handleGetFileNameDone(final java.lang.String fileName)
-                            {
-                                org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                    .this.exportTemplateAfterGettingFileName(
-                                        templateModel, fileName);
-                            }
-                        });
-            getTemplateExportFileNameAlertDialog.show(templateModel.getTitle());
-        }
-    }
+    { this.templateExportPreprocessor().preprocess(templateModel); }
     // endregion
 
     // region Delete Template Private Methods
