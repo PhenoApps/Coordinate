@@ -477,10 +477,13 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         }
     }
 
-    private void exportTemplate(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    final java.lang.String                                 fileName     )
-    { this.templateModel = templateModel; this.fileName = fileName; this.exportTemplate(); }
+    private void exportTemplate(
+    @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                            final java.lang.String fileName  )
+    {
+        this.templateModel = this.templatesTable().get(templateId); this.fileName = fileName;
+        this.exportTemplate();
+    }
     // endregion
 
     private void handleGridDeleted()
@@ -601,13 +604,11 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
                                     }
 
                                     @java.lang.Override public void exportTemplate(
-                                    @androidx.annotation.NonNull final
-                                        org.wheatgenetics.coordinate.model.TemplateModel
-                                        templateModel,
-                                    final java.lang.String fileName)
+                                    @androidx.annotation.IntRange(from = 1) final long   templateId,
+                                                                    final java.lang.String fileName)
                                     {
                                         org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                                            .this.exportTemplate(templateModel, fileName);
+                                            .this.exportTemplate(templateId, fileName);
                                     }
 
                                     @java.lang.Override public void handleGridDeleted()

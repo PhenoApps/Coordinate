@@ -44,7 +44,7 @@ public class TemplateExportPreprocessor extends java.lang.Object
         return this.templatesTableInstance;
     }
 
-    private void exportTempate(final java.lang.String fileName)
+    private void exportTemplate(final java.lang.String fileName)
     { this.handler.exportTemplate(this.templateId, fileName); }
 
     private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
@@ -59,14 +59,18 @@ public class TemplateExportPreprocessor extends java.lang.Object
                         public void handleGetFileNameDone(final java.lang.String fileName)
                         {
                             org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
-                                .this.exportTempate(fileName);
+                                .this.exportTemplate(fileName);
                         }
                     });
         return this.getExportFileNameAlertDialogInstance;
     }
 
-    private void preprocess(final java.lang.String initialFileName)
-    { this.getExportFileNameAlertDialog().show(initialFileName); }
+    private void preprocessAfterSettingTemplateId(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    {
+        if (null != templateModel)
+            this.getExportFileNameAlertDialog().show(templateModel.getTitle());
+    }
     // endregion
 
     public TemplateExportPreprocessor(
@@ -79,16 +83,17 @@ public class TemplateExportPreprocessor extends java.lang.Object
     public void preprocess(@androidx.annotation.IntRange(from = 1) final long templateId)
     {
         this.templateId = templateId;
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            this.templatesTable().get(templateId);
-        if (null != templateModel) this.preprocess(templateModel.getTitle());
+        this.preprocessAfterSettingTemplateId(this.templatesTable().get(this.templateId));
     }
 
     public void preprocess(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
         if (null != templateModel)
-            { this.templateId = templateModel.getId(); this.preprocess(templateModel.getTitle()); }
+        {
+            this.templateId = templateModel.getId();
+            this.preprocessAfterSettingTemplateId(templateModel);
+        }
     }
     // endregion
 }

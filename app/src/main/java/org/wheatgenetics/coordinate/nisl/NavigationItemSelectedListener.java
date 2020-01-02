@@ -83,9 +83,9 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         public abstract void             exportGrid                  (java.lang.String fileName);
 
         public abstract void importTemplate(java.lang.String fileName);
-        public abstract void exportTemplate(@androidx.annotation.NonNull
-                org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-            java.lang.String                                     fileName     );
+        public abstract void exportTemplate(
+            @androidx.annotation.IntRange(from = 1) long             templateId,
+                                                    java.lang.String fileName  );
         public abstract void handleGridDeleted();
 
         public abstract long getProjectId();
@@ -344,10 +344,10 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Export Template Private Methods
-    private void exportTemplateAfterGettingFileName(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    final java.lang.String                                 fileName     )
-    { this.handler.exportTemplate(templateModel, fileName); }
+    private void exportTemplateAfterGettingFileName(
+    @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                            final java.lang.String fileName  )
+    { this.handler.exportTemplate(templateId, fileName); }
 
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor templateExportPreprocessor()
     {

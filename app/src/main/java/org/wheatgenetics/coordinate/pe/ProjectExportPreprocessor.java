@@ -66,8 +66,9 @@ public class ProjectExportPreprocessor extends java.lang.Object
         return this.getExportFileNameAlertDialogInstance;
     }
 
-    private void preprocess(final java.lang.String initialFileName)
-    { this.getExportFileNameAlertDialog().show(initialFileName); }
+    private void preprocessAfterSettingProjectId(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
+    { if (null != projectModel) this.getExportFileNameAlertDialog().show(projectModel.getTitle()); }
     // endregion
 
     public ProjectExportPreprocessor(
@@ -80,16 +81,17 @@ public class ProjectExportPreprocessor extends java.lang.Object
     public void preprocess(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.projectId = projectId;
-        final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
-            this.projectsTable().get(this.projectId);
-        if (null != projectModel) this.preprocess(projectModel.getTitle());
+        this.preprocessAfterSettingProjectId(this.projectsTable().get(this.projectId));
     }
 
     public void preprocess(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
         if (null != projectModel)
-            { this.projectId = projectModel.getId(); this.preprocess(projectModel.getTitle()); }
+        {
+            this.projectId = projectModel.getId();
+            this.preprocessAfterSettingProjectId(projectModel);
+        }
     }
     // endregion
 }
