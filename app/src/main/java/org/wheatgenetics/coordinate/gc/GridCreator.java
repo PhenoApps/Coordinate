@@ -54,7 +54,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         public abstract void handleGridCreated(@androidx.annotation.IntRange(from = 1) long gridId);
 
         public abstract void loadProjectModel(
-        @androidx.annotation.IntRange(from = 1) long projectId);
+            @androidx.annotation.IntRange(from = 1) long projectId);
         public abstract void clearProjectModel();
     }
 
@@ -86,10 +86,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.model.TemplateModel     templateModel                ;
     private java.lang.String                                     person                       ;
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields;
-    private org.wheatgenetics.coordinate.database.EntriesTable  entriesTableInstance = null;   // ll
+    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields  optionalFields;
     private org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog
         setOptionalFieldValuesAlertDialog = null;                                       // lazy load
+    private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;    // ll
     // endregion
 
     // region Private Methods
@@ -195,7 +195,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     /**
      * This method's mission is to 1) set this.projectId, 2) sometimes cause a side effect, 3) set
-     * this.templateModel and pass control to setValues() (if able to set this.templateModel), or
+     * this.templateModel and pass control to setValues() (if able to set this.templateModel) or
      * 4) pass control to this.getTemplateChoiceAlertDialog (if not able to set this.templateModel).
      *
      * which               item
@@ -276,9 +276,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
     // endregion
 
-    public GridCreator(final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int                          requestCode,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
+    public GridCreator(                             final android.app.Activity activity   ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode,
+    @androidx.annotation.NonNull                    final
+        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods

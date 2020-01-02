@@ -1012,7 +1012,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity
                     .EXPORT_PROJECT_REQUEST_CODE:
                         if (null != this.projectExporterInstance)
-                            this.projectExporterInstance.exportProject();
+                            this.projectExporterInstance.export();
                         break;
                 }
     }

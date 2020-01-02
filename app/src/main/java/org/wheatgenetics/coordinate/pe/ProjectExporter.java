@@ -90,7 +90,7 @@ public class ProjectExporter extends java.lang.Object
     }
 
     // region Public Methods
-    public void exportProject()
+    public void export()
     {
         final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
             this.gridsTable().loadByProjectId(this.projectId);
@@ -170,6 +170,6 @@ public class ProjectExporter extends java.lang.Object
 
     public void export(@androidx.annotation.IntRange(from = 1) final long projectId,
     final java.lang.String directoryName)
-    { this.projectId = projectId; this.directoryName = directoryName; this.exportProject(); }
+    { this.projectId = projectId; this.directoryName = directoryName; this.export(); }
     // endregion
 }
