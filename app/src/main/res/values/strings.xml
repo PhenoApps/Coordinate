@@ -242,8 +242,8 @@
 
 
 
-    <!-- Utils -->
-    <string name="UtilsSelectExportedTemplateTitle">Import template</string>
+    <!-- TemplateImportPreprocessor -->
+    <string name="SelectExportedTemplateTitle">Import template</string>
 
 
 

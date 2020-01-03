@@ -34,7 +34,6 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.TemplateDeleter.GridHandler
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
- * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
@@ -59,6 +58,7 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.te.TemplateExportPreprocessor.Handler
  *
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
+ * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler
  *
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
@@ -303,16 +303,17 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.templateImportPreprocessorInstance)
             this.templateImportPreprocessorInstance =
-            new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(
-                this.activity, this.preprocessTemplateImportRequestCode,
-                new org.wheatgenetics.coordinate.Utils.Handler()
-                {
-                    @java.lang.Override public void importTemplate(final java.lang.String fileName)
+                new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(
+                    this.activity, this.preprocessTemplateImportRequestCode,
+                    new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler()
                     {
-                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                            .this.importTemplate(fileName);
-                    }
-                });
+                        @java.lang.Override
+                        public void importTemplate(final java.lang.String fileName)
+                        {
+                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                                .this.importTemplate(fileName);
+                        }
+                    });
         return this.templateImportPreprocessorInstance;
     }
 
