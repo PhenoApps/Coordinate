@@ -123,7 +123,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
         return result;
     }
 
-    @androidx.annotation.NonNull public static android.content.Intent intent(
+    @androidx.annotation.NonNull public static android.content.Intent projectIdIntent(
     @androidx.annotation.NonNull            final android.content.Context context  ,
     @androidx.annotation.IntRange(from = 1) final long                    projectId)
     {

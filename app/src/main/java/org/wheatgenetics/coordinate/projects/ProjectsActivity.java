@@ -51,8 +51,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Private Methods
     private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
-        this.startActivity(
-            org.wheatgenetics.coordinate.grids.GridsActivity.intent(this, projectId));
+        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
+            this, projectId));
     }
 
     private void notifyDataSetChanged()
