@@ -15,6 +15,7 @@ package org.wheatgenetics.coordinate.templates;
  * android.widget.AdapterView.OnItemClickListener
  * android.widget.ListView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
@@ -27,10 +28,14 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.grids.GridsActivity
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
+ *
+ * org.wheatgenetics.coordinate.te.TemplateExporter
  *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
@@ -38,15 +43,22 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
  *
  * org.wheatgenetics.coordinate.templates.TemplatesAdapter
+ * org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
+ * org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog.Handler
  */
 public class TemplatesActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
-    private static final int CONFIGURE_IMPORT_MENU_ITEM = 10,
-        PREPROCESS_TEMPLATE_IMPORT = 20, IMPORT_TEMPLATE = 30;
+    private static final int EXPORT_TEMPLATE = 10, CONFIGURE_IMPORT_MENU_ITEM = 20,
+        PREPROCESS_TEMPLATE_IMPORT = 30, IMPORT_TEMPLATE = 35;
 
     // region Fields
     private org.wheatgenetics.coordinate.templates.TemplatesAdapter templatesAdapter = null;
+
+    private org.wheatgenetics.coordinate.te.TemplateExporter templateExporterInstance = null;  // ll
+
+    private org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
+        templateClickAlertDialogInstance = null;                                        // lazy load
 
     // region importMenuItem Fields
     private android.view.MenuItem                           importMenuItem          = null;
@@ -68,6 +80,72 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Private Methods
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long templateId)
+    {
+        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.templateIdIntent(
+            this, templateId));
+    }
+
+    // region Export Private Methods
+    private org.wheatgenetics.coordinate.te.TemplateExporter templateExporter()
+    {
+        if (null == this.templateExporterInstance) this.templateExporterInstance =
+            new org.wheatgenetics.coordinate.te.TemplateExporter(this,
+                org.wheatgenetics.coordinate.templates.TemplatesActivity.EXPORT_TEMPLATE);
+        return this.templateExporterInstance;
+    }
+
+    private void exportTemplate(
+    @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                            final java.lang.String fileName  )
+    { this.templateExporter().export(templateId, fileName); }
+    // endregion
+
+    private void notifyDataSetChanged()
+    { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
+
+    // region templateClickAlertDialog() Private Methods
+    private org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
+    templateClickAlertDialog()
+    {
+        if (null == this.templateClickAlertDialogInstance) this.templateClickAlertDialogInstance =
+            new org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog(this,
+                new org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog.Handler()
+                {
+                    @java.lang.Override public void createGrid(
+                    @androidx.annotation.IntRange(from = 1) final long templateId)
+                    {
+                        // TODO
+                    }
+
+                    @java.lang.Override public void showGrids(
+                    @androidx.annotation.IntRange(from = 1) final long templateId)
+                    {
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity
+                            .this.startGridsActivity(templateId);
+                    }
+
+                    @java.lang.Override public void exportTemplate(
+                    @androidx.annotation.IntRange(from = 1) final long             templateId,
+                                                            final java.lang.String fileName  )
+                    {
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity
+                            .this.exportTemplate(templateId, fileName);
+                    }
+
+                    @java.lang.Override public void respondToDeletedTemplate()
+                    {
+                        org.wheatgenetics.coordinate.templates
+                            .TemplatesActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.templateClickAlertDialogInstance;
+    }
+
+    private void showTemplateClickAlertDialog(@androidx.annotation.IntRange(from = 1)
+    final long templateId) { this.templateClickAlertDialog().show(templateId);}
+    // endregion
+
     // region importMenuItem Private Methods
     private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnabler()
     {
@@ -84,10 +162,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
     // endregion
 
-    private void notifyDataSetChanged()
-    { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
-
     // region createTemplate() Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
+
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
@@ -95,9 +173,6 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
         return this.templatesTableInstance;
     }
-
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
     {
@@ -179,7 +254,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                     final android.widget.AdapterView<?> parent, final android.view.View view,
                     final int position, final long id)
                     {
-                        // TODO
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity
+                            .this.showTemplateClickAlertDialog(id);
                     }
                 });
         }
@@ -214,6 +290,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             if (android.content.pm.PackageManager.PERMISSION_GRANTED == grantResult)
                 switch (requestCode)
                 {
+                    case org.wheatgenetics.coordinate.templates.TemplatesActivity.EXPORT_TEMPLATE:
+                        if (null != this.templateExporterInstance)
+                            this.templateExporterInstance.export();
+                        break;
+
                     case org.wheatgenetics.coordinate.templates.TemplatesActivity
                     .CONFIGURE_IMPORT_MENU_ITEM: this.configureImportMenuItem(); break;
 

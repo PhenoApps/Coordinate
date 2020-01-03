@@ -327,6 +327,14 @@
 
 
 
+    <!-- TemplateClickAlertDialog -->
+    <string name="TemplateClickAlertDialogCreateGrid">New grid from this template</string>
+    <string name="TemplateClickAlertDialogShowGrids">Show grids using this template</string>
+    <string name="TemplateClickAlertDialogExportTemplate">Export</string>
+    <string name="TemplateClickAlertDialogDeleteTemplate">Delete</string>
+
+
+
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
