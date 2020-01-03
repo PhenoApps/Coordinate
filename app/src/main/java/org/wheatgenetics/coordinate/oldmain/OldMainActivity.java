@@ -141,7 +141,6 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
     private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter             = null;
     private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
-    @androidx.annotation.IntRange(from = 1) private long       templateId                     ;
     private org.wheatgenetics.coordinate.te.TemplateExporter   templateExporterInstance = null;// ll
     private org.wheatgenetics.coordinate.pe.ProjectExporter    projectExporterInstance  = null;// ll
 
@@ -453,13 +452,10 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         return this.templateExporterInstance;
     }
 
-    private void exportTemplate()
-    { this.templateExporter().export(this.templateId, this.fileName); }
-
     private void exportTemplate(
     @androidx.annotation.IntRange(from = 1) final long             templateId,
                                             final java.lang.String fileName  )
-    { this.templateId = templateId; this.fileName = fileName; this.exportTemplate(); }
+    { this.templateExporter().export(templateId, fileName); }
     // endregion
 
     private void handleGridDeleted()
@@ -981,7 +977,9 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
                         break;
 
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE:
-                        this.exportTemplate(); break;
+                        if (null != this.templateExporterInstance)
+                            this.templateExporterInstance.export();
+                        break;
 
                     case org.wheatgenetics.coordinate.oldmain.OldMainActivity
                     .EXPORT_GRID_REQUEST_CODE: this.exportGrid(); break;
