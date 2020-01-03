@@ -44,7 +44,6 @@ abstract class GridsAdapter extends android.widget.BaseAdapter
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable
     abstract org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels();
-
     // endregion
 
     GridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)

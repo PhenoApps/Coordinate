@@ -21,6 +21,10 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
+ * org.wheatgenetics.coordinate.Utils.Handler
+ *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -32,10 +36,6 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.ti.TemplateImporter
  * org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Types
- * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.templates.TemplatesAdapter
  */

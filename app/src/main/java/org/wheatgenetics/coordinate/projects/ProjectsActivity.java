@@ -39,12 +39,7 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Fields
     private org.wheatgenetics.coordinate.projects.ProjectsAdapter projectsAdapter = null;
 
-    // region exportProject() Fields
-    @androidx.annotation.IntRange(from = 1) private long             projectId    ;
-                                            private java.lang.String directoryName;
-
     private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporterInstance = null;    // ll
-    // endregion
 
     private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
         projectClickAlertDialogInstance = null;                                         // lazy load
@@ -73,12 +68,9 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
         return this.projectExporterInstance;
     }
 
-    private void exportProject()
-    { this.projectExporter().export(this.projectId, this.directoryName); }
-
     private void exportProject(@androidx.annotation.IntRange(from = 1) final long projectId,
     final java.lang.String directoryName)
-    { this.projectId = projectId; this.directoryName = directoryName; this.exportProject(); }
+    { this.projectExporter().export(projectId, directoryName); }
     // endregion
 
     // region projectClickAlertDialog() Private Methods
@@ -189,7 +181,10 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.projects.ProjectsActivity
-                        .EXPORT_PROJECT_REQUEST_CODE: this.exportProject(); break;
+                    .EXPORT_PROJECT_REQUEST_CODE:
+                        if (null != this.projectExporterInstance)
+                            this.projectExporterInstance.export();
+                        break;
                 }
     }
     // endregion
