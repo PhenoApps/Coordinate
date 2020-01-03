@@ -26,9 +26,6 @@ public class TemplateExporter extends java.lang.Object
     @androidx.annotation.NonNull private final android.app.Activity activity   ;
                                  private final int                  requestCode;
 
-    @androidx.annotation.IntRange(from = 1) private long             templateId;
-                                            private java.lang.String fileName  ;
-
     private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter     = null;
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     // endregion
@@ -57,8 +54,8 @@ public class TemplateExporter extends java.lang.Object
         super.finalize();
     }
 
-    // region Public Methods
-    public void export()
+    public void export(@androidx.annotation.IntRange(from = 1) final long templateId,
+    final java.lang.String fileName)
     {
         java.io.File exportFile;
         try
@@ -68,7 +65,7 @@ public class TemplateExporter extends java.lang.Object
                     this.activity, this.requestCode);                    //  PermissionException
 
             exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
-                this.fileName + ".xml");
+                fileName + ".xml");
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
         {
@@ -80,15 +77,10 @@ public class TemplateExporter extends java.lang.Object
         if (null != exportFile)
         {
             this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                /* context       => */ this.activity                             ,
-                /* exportFile    => */ exportFile                                ,
-                /* templateModel => */ this.templatesTable().get(this.templateId));
+                /* context       => */ this.activity                        ,
+                /* exportFile    => */ exportFile                           ,
+                /* templateModel => */ this.templatesTable().get(templateId));
             this.templateExporter.execute();
         }
     }
-
-    public void export(@androidx.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String fileName)
-    { this.templateId = templateId; this.fileName = fileName; this.export(); }
-    // endregion
 }

@@ -40,8 +40,8 @@ class CreateProjectAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
                     org.wheatgenetics.coordinate.R.string.CreateProjectAlertDialogInUseToast);
     }
 
-    CreateProjectAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
+    CreateProjectAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     // region Overridden Methods

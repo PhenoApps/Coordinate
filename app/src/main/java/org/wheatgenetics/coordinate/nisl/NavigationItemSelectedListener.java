@@ -30,17 +30,17 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
+ * org.wheatgenetics.coordinate.TemplateDeleter
+ * org.wheatgenetics.coordinate.TemplateDeleter.GridHandler
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Handler
  *
- * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
@@ -69,8 +69,7 @@ package org.wheatgenetics.coordinate.nisl;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class NavigationItemSelectedListener extends java.lang.Object implements
 com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                               ,
-org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -120,7 +119,6 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null;// ll
     private org.wheatgenetics.coordinate.database.ProjectsTable  projectsTableInstance  = null;// ll
     // endregion
 
@@ -135,6 +133,7 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         templateImportPreprocessorInstance = null;                                      // lazy load
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
         templateExportPreprocessorInstance = null;                                      // lazy load
+    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleterInstance = null;       // ll
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
@@ -168,14 +167,6 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity);
-        return this.entriesTableInstance;
-    }
-
-    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -184,23 +175,8 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
     // endregion
 
-    // region Toast Private Methods
-    // region Long Toast Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.activity.getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.activity, text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.activity.getString(text)); }
-    // endregion
-    // endregion
 
     // region Grid Private Methods
     // region manageGrid() Grid Private Methods
@@ -373,55 +349,25 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Delete Template Private Methods
-    private void deleteTemplateAfterConfirm(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
+    private void handleGridDeleted() { this.handler.handleGridDeleted(); }
+
+    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleter()
     {
-                                                final boolean success                           ;
-        @androidx.annotation.IntRange(from = 1) final long    templateId = templateModel.getId();
-
-        {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-                this.gridsTable().loadByTemplateId(templateId);
-            if (null != baseJoinedGridModels)
-                baseJoinedGridModels.processAll(this);                  // delete entries
-        }
-
-        if (this.gridsTable().deleteByTemplateId(templateId))                     // delete grids
-            this.showShortToast(
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsSuccessToast);
-        else
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsFailToast);
-
-        success = templatesTable().delete(templateId);                            // delete template
-
-        if (success)
-        {
-            this.showLongToast(org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteTemplateSuccessToast);
-            this.handler.handleGridDeleted();
-        }
-        else this.showLongToast(org.wheatgenetics.coordinate
-            .R.string.NavigationItemSelectedListenerDeleteTemplateFailToast);
-    }
-
-    private void deleteTemplateAfterSelect(
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel) org.wheatgenetics.coordinate.Utils.confirm(
-            /* context => */ this.activity,
-            /* title   => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteTemplateConfirmationTitle,
-            /* message => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteTemplateConfirmationMessage,
-            /* yesRunnable => */ new java.lang.Runnable()
+        if (null == this.templateDeleterInstance) this.templateDeleterInstance =
+            new org.wheatgenetics.coordinate.TemplateDeleter(this.activity,
+                new org.wheatgenetics.coordinate.TemplateDeleter.GridHandler()
                 {
-                    @java.lang.Override public void run()
+                    @java.lang.Override public void respondToDeletedGrid()
                     {
                         org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                            .this.deleteTemplateAfterConfirm(templateModel);
+                            .this.handleGridDeleted();
                     }
                 });
+        return this.templateDeleterInstance;
     }
+
+    private void deleteTemplateAfterSelect(final org.wheatgenetics.coordinate.model.TemplateModel
+    templateModel) { this.templateDeleter().delete(templateModel); }
     // endregion
 
     private void selectUserDefinedTemplate(
@@ -827,12 +773,6 @@ org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         final java.lang.String not = this.templatesTable().insert(templateModel) > 0 ? "" : " not";
         this.showLongToast(templateModel.getTitle() + not + " created");
     }
-    // endregion
-
-    // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
-    @java.lang.Override
-    public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
-    { if (null != joinedGridModel) this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
     // endregion
     // endregion
 

@@ -29,8 +29,8 @@ public class ProjectCreator extends java.lang.Object
     @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler;
 
-    private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
-        createProjectAlertDialog = null, createAndReturnProjectAlertDialog = null;     // lazy loads
+    private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog                   // lazy loads
+        createProjectAlertDialogInstance = null, createAndReturnProjectAlertDialogInstance = null;
     private org.wheatgenetics.coordinate.database.ProjectsTable
         projectsTableInstance = null;                                                   // lazy load
     // endregion
@@ -50,34 +50,14 @@ public class ProjectCreator extends java.lang.Object
             new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle));
     }
 
+    // region create() Private Methods
     private boolean insert(final java.lang.String projectTitle)
     { return this.sharedInsert(projectTitle) > 0; }
 
-    private boolean insertAndReturn(final java.lang.String projectTitle)
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog createProjectAlertDialog()
     {
-        final long projectId = this.sharedInsert(projectTitle);
-        if (projectId > 0)
-        {
-            if (null != this.handler) this.handler.handleCreateProjectDone(projectId);
-            return true;
-        }
-        else return false;
-    }
-    // endregion
-
-    // region Constructors
-    public ProjectCreator(final android.app.Activity activity)
-    { super(); this.activity = activity; this.handler = null; }
-
-    public ProjectCreator(final android.app.Activity activity, @androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
-    // endregion
-
-    // region Public Methods
-    public void create()
-    {
-        if (null == this.createProjectAlertDialog) this.createProjectAlertDialog =
+        if (null == this.createProjectAlertDialogInstance) this.createProjectAlertDialogInstance =
             new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog(this.activity,
                 new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler()
                 {
@@ -88,23 +68,55 @@ public class ProjectCreator extends java.lang.Object
                             projectTitle);
                     }
                 });
-        this.createProjectAlertDialog.show();
+        return this.createProjectAlertDialogInstance;
+    }
+    // endregion
+
+    // region createAndReturn() Private Methods
+    private boolean insertAndReturn(final java.lang.String projectTitle)
+    {
+        final long projectId = this.sharedInsert(projectTitle);
+        if (projectId > 0)
+        {
+            if (null != this.handler) this.handler.handleCreateProjectDone(projectId);
+            return true;
+        }
+        else return false;
     }
 
-    public void createAndReturn()
+    @androidx.annotation.NonNull private
+    org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog createAndReturnProjectAlertDialog()
     {
-        if (null == this.createAndReturnProjectAlertDialog) this.createAndReturnProjectAlertDialog =
-            new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog(this.activity,
-                new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler()
-                {
-                    @java.lang.Override
-                    public boolean handleCreateProjectDone(final java.lang.String projectTitle)
+        if (null == this.createAndReturnProjectAlertDialogInstance)
+            this.createAndReturnProjectAlertDialogInstance =
+                new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog(this.activity,
+                    new org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler()
                     {
-                        return org.wheatgenetics.coordinate.pc.ProjectCreator.this.insertAndReturn(
-                            projectTitle);
-                    }
-                });
-        this.createAndReturnProjectAlertDialog.show();
+                        @java.lang.Override public boolean handleCreateProjectDone(
+                        final java.lang.String projectTitle)
+                        {
+                            return
+                                org.wheatgenetics.coordinate.pc.ProjectCreator.this.insertAndReturn(
+                                    projectTitle);
+                        }
+                    });
+        return this.createAndReturnProjectAlertDialogInstance;
     }
+    // endregion
+    // endregion
+
+    // region Constructors
+    public ProjectCreator(final android.app.Activity activity, @androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler)
+    { super(); this.activity = activity; this.handler = handler; }
+
+    public ProjectCreator(@androidx.annotation.NonNull final android.app.Activity activity)
+    { this(activity,null); }
+    // endregion
+
+    // region Public Methods
+    public void create() { this.createProjectAlertDialog().show(); }
+
+    public void createAndReturn() { this.createAndReturnProjectAlertDialog().show(); }
     // endregion
 }

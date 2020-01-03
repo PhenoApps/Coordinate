@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -94,14 +95,13 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     private void deleteProjectStep3()
     {
         final boolean success = this.projectsTable().delete(this.projectId);
-        if (success)
         {
-            this.showLongToast(
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast);
-            this.handler.respondToDeletedProject(this.projectId);
+            @androidx.annotation.StringRes final int text = success ?
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast :
+                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast    ;
+            this.showLongToast(text);
         }
-        else this.showLongToast(
-            org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast);
+        if (success) this.handler.respondToDeletedProject(this.projectId);
     }
 
     private void deleteProjectStep2()
@@ -112,13 +112,13 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             if (null != baseJoinedGridModels)
                 baseJoinedGridModels.processAll(this);                   // delete entries
         }
-
-        if (this.gridsTable().deleteByProjectId(this.projectId))                   // delete grids
-            this.showShortToast(
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsSuccessToast);
-        else
-            this.showShortToast(org.wheatgenetics.coordinate.R.string.ProjectDeleterGridsFailToast);
-
+        {
+            @androidx.annotation.StringRes final int text =
+                this.gridsTable().deleteByProjectId(this.projectId) ?              // delete grids
+                    org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
+                    org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
+            this.showShortToast(text);
+        }
         this.deleteProjectStep3();
     }
     // endregion
