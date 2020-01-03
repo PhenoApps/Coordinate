@@ -242,8 +242,8 @@
 
 
 
-    <!-- Utils -->
-    <string name="UtilsSelectExportedTemplateTitle">Import template</string>
+    <!-- TemplateImportPreprocessor -->
+    <string name="SelectExportedTemplateTitle">Import template</string>
 
 
 
@@ -314,4 +314,57 @@
     <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
     <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
     <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
+
+
+
+    <!-- multiple activities -->
+    <string name="AppBarNewTitle">New</string>
+
+
+
+    <!-- GridsActivity -->
+    <string name="GridsActivityLabel">Grids</string>
+
+
+
+    <!-- TemplateClickAlertDialog -->
+    <string name="TemplateClickAlertDialogCreateGrid">New grid from this template</string>
+    <string name="TemplateClickAlertDialogShowGrids">Show grids using this template</string>
+    <string name="TemplateClickAlertDialogExportTemplate">Export</string>
+    <string name="TemplateClickAlertDialogDeleteTemplate">Delete</string>
+
+
+
+    <!-- TemplatesActivity -->
+    <string name="TemplatesActivityLabel">Templates</string>
+    <string name="TemplatesActivityImportMenuItemTitle">Import</string>
+
+    <string name="TemplatesListTitle">title:</string>
+    <string name="TemplatesListDimensions">dimensions:</string>
+    <string name="TemplatesListRows">rows,</string>
+    <string name="TemplatesListColumns">columns</string>
+    <string name="TemplatesListTimestamp">timestamp:</string>
+
+
+
+    <!-- ProjectClickAlertDialog -->
+    <string name="ProjectClickAlertDialogCreateGrid">New grid in this project</string>
+    <string name="ProjectClickAlertDialogShowGrids">Show grids in this project</string>
+    <string name="ProjectClickAlertDialogDeleteProject">Delete</string>
+    <string name="ProjectClickAlertDialogExportProject">Export</string>
+
+
+
+    <!-- ProjectsActivity -->
+    <string name="ProjectsActivityLabel">Projects</string>
+
+    <string name="ProjectsListTitle">title:</string>
+    <string name="ProjectsListTimestamp">timestamp:</string>
+
+
+
+    <!-- MainActivity -->
+    <string name="MainActivityGridMenuItemTitle">Grid</string>
+    <string name="MainActivityTemplateMenuItemTitle">Template</string>
+    <string name="MainActivityProjectMenuItemTitle">Project</string>
 </resources>
