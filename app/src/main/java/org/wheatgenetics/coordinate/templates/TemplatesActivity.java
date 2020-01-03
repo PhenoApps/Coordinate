@@ -51,20 +51,24 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region importMenuItem Fields
     private android.view.MenuItem                           importMenuItem          = null;
     private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnablerInstance = null;    // ll
+    // endregion
+
+    // region createTemplate() Fields
+    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
+    // endregion
+
+    // region Import Fields
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
         templateImportPreprocessorInstance = null;                                      // lazy load
     private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporterInstance = null;  // ll
-    // endregion
-
-    // region newMenuItem Fields
-    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
     // endregion
 
     private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
     // endregion
 
     // region Private Methods
+    // region importMenuItem Private Methods
     private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnabler()
     {
         if (null == this.menuItemEnablerInstance) this.menuItemEnablerInstance =
@@ -78,11 +82,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null != this.importMenuItem)
             this.importMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
     }
+    // endregion
 
     private void notifyDataSetChanged()
     { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
 
-    // region Create Private Methods
+    // region createTemplate() Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
@@ -101,6 +106,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
         return this.templateCreatorInstance;
     }
+
+    private void createTemplate() { this.templateCreator().create(); }
     // endregion
 
     // region Import Private Methods
@@ -258,7 +265,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region MenuItem Event Handlers
     public void onNewTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem) { this.templateCreator().create(); }
+    final android.view.MenuItem menuItem) { this.createTemplate(); }
 
     public void onImportTemplateMenuItem(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.preprocessTemplateImport(); }

@@ -142,8 +142,8 @@ class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     }
     // endregion
 
-    ProjectClickAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler handler)
+    ProjectClickAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure() {}
