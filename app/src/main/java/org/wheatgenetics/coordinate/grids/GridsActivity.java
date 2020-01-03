@@ -21,10 +21,12 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
  * org.wheatgenetics.coordinate.grids.GridsAdapter
  * org.wheatgenetics.coordinate.grids.ProjectGridsAdapter
+ * org.wheatgenetics.coordinate.grids.TemplateGridsAdapter
  */
 public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 {
-    private static final java.lang.String PROJECT_ID_KEY = "projectId";
+    private static final java.lang.String
+        TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
 
     // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
@@ -45,6 +47,28 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                     org.wheatgenetics.coordinate.grids.GridsActivity.class) :
             org.wheatgenetics.coordinate.grids.GridsActivity.INTENT_INSTANCE;
     }
+
+    @androidx.annotation.NonNull private static android.content.Intent removeTEMPLATE_ID_KEY(
+    @androidx.annotation.NonNull final android.content.Intent intent)
+    {
+        {
+            final java.lang.String TEMPLATE_ID_KEY =
+                org.wheatgenetics.coordinate.grids.GridsActivity.TEMPLATE_ID_KEY;
+            if (intent.hasExtra(TEMPLATE_ID_KEY)) intent.removeExtra(TEMPLATE_ID_KEY);
+        }
+        return intent;
+    }
+
+    @androidx.annotation.NonNull private static android.content.Intent removePROJECT_ID_KEY(
+    @androidx.annotation.NonNull final android.content.Intent intent)
+    {
+        {
+            final java.lang.String PROJECT_ID_KEY =
+                org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY;
+            if (intent.hasExtra(PROJECT_ID_KEY)) intent.removeExtra(PROJECT_ID_KEY);
+        }
+        return intent;
+    }
     // endregion
 
     // region Overridden Methods
@@ -64,17 +88,30 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                     this.gridsAdapter = this.makeAllGridsAdapter();
                 else
                 {
-                    final java.lang.String PROJECT_ID_KEY =
-                        org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY;
-                    if (intent.hasExtra(PROJECT_ID_KEY))
+                    final java.lang.String TEMPLATE_ID_KEY =
+                        org.wheatgenetics.coordinate.grids.GridsActivity.TEMPLATE_ID_KEY;
+                    if (intent.hasExtra(TEMPLATE_ID_KEY))
                     {
-                          @androidx.annotation.IntRange(from = 1) final long projectId =
-                              intent.getLongExtra(PROJECT_ID_KEY,-1);
-                          this.gridsAdapter =
-                              new org.wheatgenetics.coordinate.grids.ProjectGridsAdapter(
-                                  this, projectId);
+                        @androidx.annotation.IntRange(from = 1) final long templateId =
+                            intent.getLongExtra(TEMPLATE_ID_KEY,-1);
+                        this.gridsAdapter =
+                            new org.wheatgenetics.coordinate.grids.TemplateGridsAdapter(
+                                this, templateId);
                     }
-                    else this.gridsAdapter = this.makeAllGridsAdapter();
+                    else
+                    {
+                        final java.lang.String PROJECT_ID_KEY =
+                            org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY;
+                        if (intent.hasExtra(PROJECT_ID_KEY))
+                        {
+                            @androidx.annotation.IntRange(from = 1) final long projectId =
+                                intent.getLongExtra(PROJECT_ID_KEY,-1);
+                            this.gridsAdapter =
+                                new org.wheatgenetics.coordinate.grids.ProjectGridsAdapter(
+                                    this, projectId);
+                        }
+                        else this.gridsAdapter = this.makeAllGridsAdapter();
+                    }
                 }
             }
             gridsListView.setAdapter(this.gridsAdapter);
@@ -113,22 +150,27 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     @androidx.annotation.NonNull public static android.content.Intent intent(
     @androidx.annotation.NonNull final android.content.Context context)
     {
-        final android.content.Intent result =
-            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context);
-        {
-            final java.lang.String PROJECT_ID_KEY =
-                org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY;
-            if (result.hasExtra(PROJECT_ID_KEY)) result.removeExtra(PROJECT_ID_KEY);
-        }
-        return result;
+        return org.wheatgenetics.coordinate.grids.GridsActivity.removePROJECT_ID_KEY(
+            org.wheatgenetics.coordinate.grids.GridsActivity.removeTEMPLATE_ID_KEY(
+                org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context)));
+    }
+
+    @androidx.annotation.NonNull public static android.content.Intent templateIdIntent(
+    @androidx.annotation.NonNull            final android.content.Context context   ,
+    @androidx.annotation.IntRange(from = 1) final long                    templateId)
+    {
+        return org.wheatgenetics.coordinate.grids.GridsActivity.removePROJECT_ID_KEY(
+            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context)).putExtra(
+                org.wheatgenetics.coordinate.grids.GridsActivity.TEMPLATE_ID_KEY, templateId);
     }
 
     @androidx.annotation.NonNull public static android.content.Intent projectIdIntent(
     @androidx.annotation.NonNull            final android.content.Context context  ,
     @androidx.annotation.IntRange(from = 1) final long                    projectId)
     {
-        return org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context).putExtra(
-            org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY, projectId);
+        return org.wheatgenetics.coordinate.grids.GridsActivity.removeTEMPLATE_ID_KEY(
+            org.wheatgenetics.coordinate.grids.GridsActivity.INTENT(context)).putExtra(
+                org.wheatgenetics.coordinate.grids.GridsActivity.PROJECT_ID_KEY, projectId);
     }
     // endregion
 }
