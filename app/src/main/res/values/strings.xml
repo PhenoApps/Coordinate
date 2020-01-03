@@ -247,11 +247,23 @@
 
 
 
+    <!-- Deleter -->
+    <string name="DeleterGridsSuccessToast">Grid(s) successfully deleted</string>
+    <string name="DeleterGridsFailToast">Grid(s) were not deleted</string>
+
+
+
+    <!-- TemplateDeleter -->
+    <string name="TemplateDeleterConfirmationTitle">Delete template</string>
+    <string name="TemplateDeleterConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
+    <string name="TemplateDeleterSuccessToast">Template successfully deleted</string>
+    <string name="TemplateDeleterFailToast">Template could not be deleted</string>
+
+
+
     <!-- ProjectDeleter -->
     <string name="ProjectDeleterConfirmationTitle">Delete project</string>
     <string name="ProjectDeleterConfirmationMessage">Are you sure you want to delete this project and all its grids?</string>
-    <string name="ProjectDeleterGridsSuccessToast">Grid(s) successfully deleted</string>
-    <string name="ProjectDeleterGridsFailToast">Grid(s) were not deleted</string>
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
 
@@ -263,10 +275,6 @@
 
     <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
-    <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationTitle">Delete template</string>
-    <string name="NavigationItemSelectedListenerDeleteTemplateConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
-    <string name="NavigationItemSelectedListenerDeleteTemplateSuccessToast">Template successfully deleted</string>
-    <string name="NavigationItemSelectedListenerDeleteTemplateFailToast">Template could not be deleted</string>
 
     <string name="NavigationItemSelectedListenerSelectLoadProjectTitle">Load project</string>
     <string name="NavigationItemSelectedListenerSelectDeleteProjectTitle">Delete project</string>

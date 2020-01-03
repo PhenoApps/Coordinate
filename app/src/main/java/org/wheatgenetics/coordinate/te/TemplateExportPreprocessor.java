@@ -37,6 +37,7 @@ public class TemplateExportPreprocessor extends java.lang.Object
     // endregion
 
     // region Private Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
@@ -47,8 +48,8 @@ public class TemplateExportPreprocessor extends java.lang.Object
     private void exportTemplate(final java.lang.String fileName)
     { this.handler.exportTemplate(this.templateId, fileName); }
 
-    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-    getExportFileNameAlertDialog()
+    @androidx.annotation.NonNull private
+    org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog getExportFileNameAlertDialog()
     {
         if (null == this.getExportFileNameAlertDialogInstance)
             this.getExportFileNameAlertDialogInstance =

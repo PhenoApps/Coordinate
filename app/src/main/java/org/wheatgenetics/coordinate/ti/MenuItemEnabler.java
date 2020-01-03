@@ -25,8 +25,8 @@ public class MenuItemEnabler extends java.lang.Object
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
 
-    public MenuItemEnabler(@androidx.annotation.NonNull final android.app.Activity activity,
-    final int requestCode)
+    public MenuItemEnabler(@androidx.annotation.NonNull final android.app.Activity activity   ,
+                                                        final int                  requestCode)
     { super(); this.activity = activity; this.requestCode = requestCode; }
 
     public boolean shouldBeEnabled()

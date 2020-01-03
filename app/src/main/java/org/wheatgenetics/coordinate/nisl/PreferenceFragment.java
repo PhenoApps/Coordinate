@@ -21,7 +21,7 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.R
  */
-public class PreferenceFragment extends androidx.preference.PreferenceFragmentCompat
+class PreferenceFragment extends androidx.preference.PreferenceFragmentCompat
 implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 {
     // region Fields

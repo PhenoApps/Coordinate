@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.ti;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Utils
  * org.wheatgenetics.coordinate.Utils.Handler
  */
@@ -20,7 +21,7 @@ public class TemplateImportPreprocessor extends java.lang.Object
     // region Fields
     @androidx.annotation.NonNull private final android.app.Activity                     activity   ;
                                  private final int                                      requestCode;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.Utils.Handler   handler;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.Utils.Handler handler  ;
     // endregion
 
     private void showLongToast(final java.lang.String text)
