@@ -24,7 +24,6 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
- * org.wheatgenetics.coordinate.Utils.Handler
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
@@ -41,6 +40,7 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.ti.TemplateImporter
  * org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter
  * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
+ * org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler
  *
  * org.wheatgenetics.coordinate.templates.TemplatesAdapter
  * org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
@@ -217,7 +217,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor(
                     this, org.wheatgenetics.coordinate.templates
                         .TemplatesActivity.PREPROCESS_TEMPLATE_IMPORT,
-                    new org.wheatgenetics.coordinate.Utils.Handler()
+                    new org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler()
                     {
                         @java.lang.Override
                         public void importTemplate(final java.lang.String fileName)
