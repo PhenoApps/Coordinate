@@ -19,8 +19,6 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.Utils
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
  *
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
@@ -38,6 +36,9 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.ge.GridExportPreprocessor
+ * org.wheatgenetics.coordinate.ge.GridExportPreprocessor.Handler
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -76,10 +77,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         public abstract void    createGrid             ();
         public abstract boolean joinedGridModelIsLoaded();
-        public abstract void    loadGrid(@androidx.annotation.IntRange(from = 1) long gridId);
+        public abstract void    loadGrid  (@androidx.annotation.IntRange(from = 1) long gridId);
         public abstract void    deleteGrid();
-        public abstract java.lang.String getInitialGridExportFileName();
-        public abstract void             exportGrid                  (java.lang.String fileName);
+        public abstract long    getGridId ();
+        public abstract void    exportGrid(
+            @androidx.annotation.IntRange(from = 1) long gridId, java.lang.String fileName);
 
         public abstract void importTemplate(java.lang.String fileName);
         public abstract void exportTemplate(
@@ -125,8 +127,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Lazy Load Fields
     private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
         manageGridAlertDialogInstance = null;                                           // lazy load
-    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getGridExportFileNameAlertDialogInstance = null;                                // lazy load
+    private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
+        gridExportPreprocessorInstance = null;                                          // lazy load
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator    templateCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
@@ -255,28 +257,30 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region exportGrid() Grid Private Methods
-    private void exportGrid(final java.lang.String fileName) { this.handler.exportGrid(fileName); }
+    private void exportGrid(
+    @androidx.annotation.IntRange(from = 1) final long             gridId  ,
+                                            final java.lang.String fileName)
+    { this.handler.exportGrid(gridId, fileName); }
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog getGridExportFileNameAlertDialog()
+    private org.wheatgenetics.coordinate.ge.GridExportPreprocessor gridExportPreprocessor()
     {
-        if (null == this.getGridExportFileNameAlertDialogInstance)
-            this.getGridExportFileNameAlertDialogInstance =
-                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
+        if (null == this.gridExportPreprocessorInstance) this.gridExportPreprocessorInstance =
+            new org.wheatgenetics.coordinate.ge.GridExportPreprocessor(this.activity,
+                new org.wheatgenetics.coordinate.ge.GridExportPreprocessor.Handler()
+                {
+                    @java.lang.Override public void exportGrid(
+                    @androidx.annotation.IntRange(from = 1) final long             gridId  ,
+                                                            final java.lang.String fileName)
                     {
-                        @java.lang.Override
-                        public void handleGetFileNameDone(final java.lang.String fileName)
-                        {
-                            org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
-                                .this.exportGrid(fileName);
-                        }
-                    });
-        return this.getGridExportFileNameAlertDialogInstance;
+                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                            .this.exportGrid(gridId, fileName);
+                    }
+                });
+        return this.gridExportPreprocessorInstance;
     }
 
     private void exportGrid()
-    { this.getGridExportFileNameAlertDialog().show(this.handler.getInitialGridExportFileName()); }
+    { this.gridExportPreprocessor().preprocess(this.handler.getGridId()); }
     // endregion
     // endregion
 

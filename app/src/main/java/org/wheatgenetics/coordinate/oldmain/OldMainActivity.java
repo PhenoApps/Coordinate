@@ -389,11 +389,8 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     }
 
     // region Export Grid Private Methods
-    private java.lang.String getInitialGridExportFileName()
-    {
-        return this.joinedGridModelIsLoaded() ?
-            this.joinedGridModel.getFirstOptionalFieldDatedValue() : null;
-    }
+    private long getGridId()
+    { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getId() : 0; }
 
     private void exportGrid()
     {
@@ -557,15 +554,15 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
                                             .this.deleteGrid();
                                     }
 
-                                    @java.lang.Override
-                                    public java.lang.String getInitialGridExportFileName()
+                                    @java.lang.Override public long getGridId()
                                     {
                                         return org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                                            .this.getInitialGridExportFileName();
+                                            .this.getGridId();
                                     }
 
                                     @java.lang.Override
-                                    public void exportGrid(final java.lang.String fileName)
+                                    public void exportGrid(@androidx.annotation.IntRange(from = 1)
+                                    final long gridId, final java.lang.String fileName)
                                     {
                                         org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.exportGrid(fileName);
