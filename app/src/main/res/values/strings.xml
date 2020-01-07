@@ -253,6 +253,15 @@
 
 
 
+    <!-- GridDeleter -->
+    <string name="GridDeleterConfirmation">Are you sure that you want to delete the current grid?</string>
+    <string name="GridDeleterEntriesOfGridDeletedToast">Entries successfully deleted</string>
+    <string name="GridDeleterEntriesOfGridNotDeletedToast">Entries were not deleted</string>
+    <string name="GridDeleterGridDeletedToast">Grid successfully deleted</string>
+    <string name="GridDeleterGridNotDeletedToast">Grid could not be deleted</string>
+
+
+
     <!-- TemplateDeleter -->
     <string name="TemplateDeleterConfirmationTitle">Delete template</string>
     <string name="TemplateDeleterConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
@@ -271,7 +280,6 @@
 
     <!-- NavigationItemSelectedListener -->
     <string name="NavigationItemSelectedListenerLoadGridTitle">Load grid</string>
-    <string name="NavigationItemSelectedListenerDeleteGridConfirmation">Are you sure that you want to delete the current grid?</string>
 
     <string name="NavigationItemSelectedListenerSelectExportTemplateTitle">Export template</string>
     <string name="NavigationItemSelectedListenerSelectDeleteTemplateTitle">Delete template</string>
@@ -310,10 +318,6 @@
     <string name="MainActivityCheckExceptionAlertDialogTitle">Duplicate Sample Encountered</string>
     <string name="MainActivityCheckExceptionAlertDialogMessage">An attempt to load a grid from the database could not be completed because the grid violates the current Uniqueness setting.  Should I change the setting to "Allow duplicates" so that your next attempt will succeed?</string>
     <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
-    <string name="MainActivityEntriesOfGridSuccessToast">Entries successfully deleted</string>
-    <string name="MainActivityEntriesOfGridFailToast">Entries were not deleted</string>
-    <string name="MainActivityGridDeletedToast">Grid successfully deleted</string>
-    <string name="MainActivityGridNotDeletedToast">Grid could not be deleted</string>
 
 
 

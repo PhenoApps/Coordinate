@@ -23,7 +23,6 @@ package org.wheatgenetics.coordinate.oldmain;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.annotation.StringRes
  * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.ActionBarDrawerToggle
  * androidx.appcompat.app.AppCompatActivity
@@ -106,6 +105,7 @@ org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
+org.wheatgenetics.coordinate.GridDeleter.Handler                ,
 org.wheatgenetics.coordinate.exporter.GridExporter.Helper
 {
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, PREPROCESS_TEMPLATE_IMPORT = 20,
@@ -139,6 +139,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel          = null;
     private org.wheatgenetics.coordinate.model.ProjectModel    projectModel             = null;
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
+    private org.wheatgenetics.coordinate.GridDeleter           gridDeleterInstance      = null;// ll
     private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter             = null;
     private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
     @androidx.annotation.IntRange(from = 1) private long       templateId                     ;
@@ -186,23 +187,8 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     }
     // endregion
 
-    // region Toast Private Methods
-    // region Long Toast Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this, text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.getString(text)); }
-    // endregion
-    // endregion
 
     /** Exported data is saved to this folder. */
     private org.wheatgenetics.androidlibrary.RequestDir exportDir(final int requestCode)
@@ -388,9 +374,16 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
         this.gridCreator.create(this.projectModel);
     }
 
-    // region Export Grid Private Methods
     private long getGridId()
     { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getId() : 0; }
+
+    // region Export Grid Private Methods
+    private org.wheatgenetics.coordinate.GridDeleter gridDeleter()
+    {
+        if (null == this.gridDeleterInstance) this.gridDeleterInstance =
+            new org.wheatgenetics.coordinate.GridDeleter(this,this);
+        return this.gridDeleterInstance;
+    }
 
     private void exportGrid()
     {
@@ -548,16 +541,16 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
                                             .this.loadJoinedGridModelThenPopulate(gridId);
                                     }
 
-                                    @java.lang.Override public void deleteGrid()
-                                    {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                                            .this.deleteGrid();
-                                    }
-
                                     @java.lang.Override public long getGridId()
                                     {
                                         return org.wheatgenetics.coordinate.oldmain.OldMainActivity
                                             .this.getGridId();
+                                    }
+
+                                    @java.lang.Override public void respondToDeleteGrid()
+                                    {
+                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                            .this.respondToDeletedGrid();
                                     }
 
                                     @java.lang.Override
@@ -1214,42 +1207,16 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     { this.loadProjectModel(0); }
     // endregion
 
+    // region org.wheatgenetics.coordinate.GridDeleter.Handler Overridden Method
+    @java.lang.Override public void respondToDeletedGrid()
+    { this.clearJoinedGridModelThenPopulate(); this.createGrid(); }
+    // endregion
+
     // region org.wheatgenetics.coordinate.exporter.GridExporter.Helper Overridden Methods
     @java.lang.Override public void deleteGrid()
     {
-        final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
-        if (null == gridsTable)
-            this.showLongToast(
-                org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
-        else
-        {
-            final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
-                this.entriesTable();
-            if (null == entriesTable)
-                this.showShortToast(
-                    org.wheatgenetics.coordinate.R.string.MainActivityEntriesOfGridFailToast);
-            else
-                if (null != this.joinedGridModel)
-                {
-                    final long gridId = this.joinedGridModel.getId();
-
-                    if (entriesTable.deleteByGridId(gridId))
-                        this.showShortToast(org.wheatgenetics.coordinate
-                            .R.string.MainActivityEntriesOfGridSuccessToast);
-                    else
-                        this.showShortToast(org.wheatgenetics.coordinate
-                            .R.string.MainActivityEntriesOfGridFailToast);
-
-                    if (gridsTable.delete(gridId))
-                    {
-                        this.showLongToast(
-                            org.wheatgenetics.coordinate.R.string.MainActivityGridDeletedToast);
-                        this.clearJoinedGridModelThenPopulate(); this.createGrid();
-                    }
-                    else this.showLongToast(
-                        org.wheatgenetics.coordinate.R.string.MainActivityGridNotDeletedToast);
-                }
-        }
+        if (this.joinedGridModelIsLoaded())
+            this.gridDeleter().deleteWithoutConfirm(this.joinedGridModel.getId());
     }
 
     @java.lang.Override
