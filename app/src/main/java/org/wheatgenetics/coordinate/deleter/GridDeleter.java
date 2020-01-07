@@ -10,71 +10,40 @@ package org.wheatgenetics.coordinate.deleter;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.coordinate.database.EntriesTable
- * org.wheatgenetics.coordinate.database.GridsTable
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
+ *
+ * org.wheatgenetics.coordinate.deleter.BaseGridDeleter
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class GridDeleter extends java.lang.Object
+public class GridDeleter extends org.wheatgenetics.coordinate.deleter.BaseGridDeleter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     { public abstract void respondToDeletedGrid(); }
 
-    // region Fields
-    @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.deleter.GridDeleter.Handler handler;
 
-    // region Table Fields
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;    // ll
-    private org.wheatgenetics.coordinate.database.GridsTable   gridsTableInstance   = null;    // ll
-    // endregion
-    // endregion
-
     // region Private Methods
-    // region Table Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.context);
-        return this.entriesTableInstance;
-    }
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
-        if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.context);
-        return this.gridsTableInstance;
-    }
-    // endregion
-
-    // region Toast Private Methods
     // region Long Toast Private Methods
     private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context, text); }
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
 
     private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context.getString(text)); }
+    { this.showLongToast(this.context().getString(text)); }
     // endregion
 
     // region Short Toast Private Methods
     private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context, text); }
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
 
     private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context.getString(text)); }
-    // endregion
+    { this.showShortToast(this.context().getString(text)); }
     // endregion
     // endregion
 
     public GridDeleter(@androidx.annotation.NonNull final android.content.Context context,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
-        handler)
-    { super(); this.context = context; this.handler = handler; }
+        handler) { super(context); this.handler = handler; }
 
     // region Public Methods
     public void deleteWithoutConfirm(@androidx.annotation.IntRange(from = 1) final long gridId)
@@ -100,7 +69,7 @@ public class GridDeleter extends java.lang.Object
     public void deleteWithConfirm(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         org.wheatgenetics.coordinate.Utils.confirm(
-            /* context     => */ this.context                                                 ,
+            /* context     => */ this.context()                                               ,
             /* message     => */ org.wheatgenetics.coordinate.R.string.GridDeleterConfirmation,
             /* yesRunnable => */ new java.lang.Runnable()
                 {

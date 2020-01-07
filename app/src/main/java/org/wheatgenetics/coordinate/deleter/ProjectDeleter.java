@@ -11,7 +11,9 @@ package org.wheatgenetics.coordinate.deleter;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.coordinate.database.EntriesTable
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
+ *
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
@@ -20,8 +22,7 @@ package org.wheatgenetics.coordinate.deleter;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.ProjectModel
  *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
+ * org.wheatgenetics.coordinate.deleter.PackageGridDeleter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectDeleter extends java.lang.Object
@@ -42,9 +43,12 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
-    private org.wheatgenetics.coordinate.database.EntriesTable  entriesTableInstance  = null;  // ll
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
     // endregion
+
+    private boolean                                                 atLeastOneGridWasDeleted;
+    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter
+        packageGridDeleterInstance = null;                                              // lazy load
     // endregion
 
     // region Private Methods
@@ -58,14 +62,6 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.context);
-        return this.entriesTableInstance;
-    }
-
-    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
@@ -73,6 +69,14 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         return this.projectsTableInstance;
     }
     // endregion
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
+    {
+        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context);
+        return this.packageGridDeleterInstance;
+    }
 
     // region Toast Private Methods
     // region Long Toast Private Methods
@@ -110,14 +114,17 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
                 this.gridsTable().loadByProjectId(this.projectId);
             if (null != baseJoinedGridModels)
-                baseJoinedGridModels.processAll(this);                   // delete entries
-        }
-        {
-            @androidx.annotation.StringRes final int text =
-                this.gridsTable().deleteByProjectId(this.projectId) ?              // delete grids
-                    org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
-                    org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
-            this.showShortToast(text);
+            {
+                this.atLeastOneGridWasDeleted = false;
+                baseJoinedGridModels.processAll(this);
+
+                {
+                    @androidx.annotation.StringRes final int text = this.atLeastOneGridWasDeleted ?
+                        org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
+                        org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
+                    this.showShortToast(text);
+                }
+            }
         }
         this.deleteProjectStep3();
     }
@@ -131,7 +138,15 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
     @java.lang.Override
     public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
-    { if (null != joinedGridModel) this.entriesTable().deleteByGridId(joinedGridModel.getId()); }
+    {
+        if (null != joinedGridModel)
+        {
+            final boolean gridWasDeleted =
+                this.packageGridDeleter().delete(joinedGridModel.getId());
+            if (!this.atLeastOneGridWasDeleted && gridWasDeleted)
+                this.atLeastOneGridWasDeleted = true;
+        }
+    }
     // endregion
 
     // region Public Methods
