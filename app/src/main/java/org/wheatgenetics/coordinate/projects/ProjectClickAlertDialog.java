@@ -46,7 +46,7 @@ class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
 
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;    // ll
 
-    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleterInstance = null;  // lazy load
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
     // endregion
@@ -66,11 +66,12 @@ class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     // region deleteProject() Private Methods
     private void respondToDeletedProject() { this.handler.respondToDeletedProject(); }
 
-    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleter()
     {
         if (null == this.projectDeleterInstance) this.projectDeleterInstance =
-            new org.wheatgenetics.coordinate.ProjectDeleter(this.activity(),
-                new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
+            new org.wheatgenetics.coordinate.deleter.ProjectDeleter(this.activity(),
+                new org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedProject(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
@@ -90,6 +91,7 @@ class ProjectClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     @androidx.annotation.IntRange(from = 1) long projectId, final java.lang.String directoryName)
     { this.handler.exportProject(projectId, directoryName);  }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
     {
         if (null == this.projectExportPreprocessorInstance) this.projectExportPreprocessorInstance =

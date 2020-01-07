@@ -52,7 +52,7 @@ class TemplateClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     private android.content.DialogInterface.OnClickListener onClickListenerInstance = null;    // ll
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
         templateExportPreprocessorInstance = null;                                      // lazy load
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleterInstance = null;       // ll
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleterInstance = null;//ll
     // endregion
 
     // region Private Methods
@@ -83,6 +83,7 @@ class TemplateClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
                                             final java.lang.String fileName  )
     { this.handler.exportTemplate(templateId, fileName); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor templateExportPreprocessor()
     {
         if (null == this.templateExportPreprocessorInstance)
@@ -107,11 +108,12 @@ class TemplateClickAlertDialog extends org.wheatgenetics.androidlibrary.AlertDia
     // region deleteTemplate() Private Methods
     private void respondToDeletedTemplate() { this.handler.respondToDeletedTemplate(); }
 
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleter()
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
     {
         if (null == this.templateDeleterInstance) this.templateDeleterInstance =
-            new org.wheatgenetics.coordinate.TemplateDeleter(this.activity(),
-                new org.wheatgenetics.coordinate.TemplateDeleter.TemplateHandler()
+            new org.wheatgenetics.coordinate.deleter.TemplateDeleter(this.activity(),
+                new org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler()
                 {
                     @java.lang.Override public void respondToDeletedTemplate(
                     @androidx.annotation.IntRange(from = 1) final long templateId)
