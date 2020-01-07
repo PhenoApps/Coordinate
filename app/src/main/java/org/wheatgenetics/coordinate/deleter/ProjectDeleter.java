@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.deleter;
 
 /**
  * Uses:
@@ -36,7 +36,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // region Fields
     @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.ProjectDeleter.Handler handler;
+        org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler handler;
 
     @androidx.annotation.IntRange(from = 1) private long projectId;
 
@@ -123,9 +123,9 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
     // endregion
 
-    public ProjectDeleter(
-    @androidx.annotation.NonNull final android.content.Context                             context,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.ProjectDeleter.Handler handler)
+    public ProjectDeleter(@androidx.annotation.NonNull final android.content.Context context,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
+        handler)
     { super(); this.context = context; this.handler = handler; }
 
     // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
@@ -148,7 +148,10 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                 /* yesRunnable => */ new java.lang.Runnable()
                     {
                         @java.lang.Override public void run()
-                        { org.wheatgenetics.coordinate.ProjectDeleter.this.deleteProjectStep2(); }
+                        {
+                            org.wheatgenetics.coordinate.deleter
+                                .ProjectDeleter.this.deleteProjectStep2();
+                        }
                     });
         else this.deleteProjectStep3();
     }

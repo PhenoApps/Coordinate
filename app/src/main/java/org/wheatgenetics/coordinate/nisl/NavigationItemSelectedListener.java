@@ -23,19 +23,22 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  *
- * org.wheatgenetics.coordinate.ProjectDeleter
- * org.wheatgenetics.coordinate.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- * org.wheatgenetics.coordinate.TemplateDeleter
- * org.wheatgenetics.coordinate.TemplateDeleter.GridHandler
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.deleter.GridDeleter
+ * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
+ * org.wheatgenetics.coordinate.deleter.TemplateDeleter
+ * org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler
  *
  * org.wheatgenetics.coordinate.ge.GridExportPreprocessor
  * org.wheatgenetics.coordinate.ge.GridExportPreprocessor.Handler
@@ -78,9 +81,9 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         public abstract void    createGrid             ();
         public abstract boolean joinedGridModelIsLoaded();
         public abstract void    loadGrid  (@androidx.annotation.IntRange(from = 1) long gridId);
-        public abstract void    deleteGrid();
-        public abstract long    getGridId ();
-        public abstract void    exportGrid(
+        public abstract long    getGridId          ();
+        public abstract void    respondToDeleteGrid();
+        public abstract void    exportGrid         (
             @androidx.annotation.IntRange(from = 1) long gridId, java.lang.String fileName);
 
         public abstract void importTemplate(java.lang.String fileName);
@@ -125,6 +128,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Lazy Load Fields
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleterInstance = null;// lazy load
     private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
         manageGridAlertDialogInstance = null;                                           // lazy load
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
@@ -135,12 +139,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         templateImportPreprocessorInstance = null;                                      // lazy load
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
         templateExportPreprocessorInstance = null;                                      // lazy load
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleterInstance = null;       // ll
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleterInstance = null;//ll
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
         manageProjectAlertDialogInstance = null;                                        // lazy load
-    private org.wheatgenetics.coordinate.ProjectDeleter  projectDeleterInstance = null; // lazy load
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
 
@@ -211,23 +215,24 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region deleteGrid() manageGrid() Grid Private Methods
-    private void deleteGridAfterConfirm() { this.handler.deleteGrid(); }
+    private void respondToDeleteGrid() { this.handler.respondToDeleteGrid(); }
 
-    private void deleteGrid()
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleter()
     {
-        org.wheatgenetics.coordinate.Utils.confirm(
-            /* context => */ this.activity,
-            /* message => */ org.wheatgenetics.coordinate
-                .R.string.NavigationItemSelectedListenerDeleteGridConfirmation,
-            /* yesRunnable => */ new java.lang.Runnable()
+        if (null == this.gridDeleterInstance) this.gridDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.GridDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
                 {
-                    @java.lang.Override public void run()
+                    @java.lang.Override public void respondToDeletedGrid()
                     {
-                        org.wheatgenetics.coordinate.nisl
-                            .NavigationItemSelectedListener.this.deleteGridAfterConfirm();
+                        org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
+                            .this.respondToDeleteGrid();
                     }
                 });
+        return this.gridDeleterInstance;
     }
+
+    private void deleteGrid() { this.gridDeleter().deleteWithConfirm(this.handler.getGridId()); }
     // endregion
 
     @androidx.annotation.NonNull
@@ -356,11 +361,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Delete Template Private Methods
     private void handleGridDeleted() { this.handler.handleGridDeleted(); }
 
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleter()
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
     {
         if (null == this.templateDeleterInstance) this.templateDeleterInstance =
-            new org.wheatgenetics.coordinate.TemplateDeleter(this.activity,
-                new org.wheatgenetics.coordinate.TemplateDeleter.GridHandler()
+            new org.wheatgenetics.coordinate.deleter.TemplateDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler()
                 {
                     @java.lang.Override public void respondToDeletedGrid()
                     {
@@ -543,11 +548,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     final long projectId) { this.handler.handleProjectDeleted(projectId); }
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleter()
     {
         if (null == this.projectDeleterInstance) this.projectDeleterInstance =
-            new org.wheatgenetics.coordinate.ProjectDeleter(this.activity,
-                new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
+            new org.wheatgenetics.coordinate.deleter.ProjectDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedProject(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
