@@ -25,8 +25,6 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.GridDeleter
  * org.wheatgenetics.coordinate.GridDeleter.Handler
- * org.wheatgenetics.coordinate.ProjectDeleter
- * org.wheatgenetics.coordinate.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -37,6 +35,8 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.deleter.TemplateDeleter
  * org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler
  *
@@ -144,7 +144,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
         manageProjectAlertDialogInstance = null;                                        // lazy load
-    private org.wheatgenetics.coordinate.ProjectDeleter  projectDeleterInstance = null; // lazy load
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
 
@@ -548,11 +548,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     final long projectId) { this.handler.handleProjectDeleted(projectId); }
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.ProjectDeleter projectDeleter()
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleter()
     {
         if (null == this.projectDeleterInstance) this.projectDeleterInstance =
-            new org.wheatgenetics.coordinate.ProjectDeleter(this.activity,
-                new org.wheatgenetics.coordinate.ProjectDeleter.Handler()
+            new org.wheatgenetics.coordinate.deleter.ProjectDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedProject(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
