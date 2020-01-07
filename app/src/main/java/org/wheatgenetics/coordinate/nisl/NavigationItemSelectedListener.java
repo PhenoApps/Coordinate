@@ -30,14 +30,15 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- * org.wheatgenetics.coordinate.TemplateDeleter
- * org.wheatgenetics.coordinate.TemplateDeleter.GridHandler
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.deleter.TemplateDeleter
+ * org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler
  *
  * org.wheatgenetics.coordinate.ge.GridExportPreprocessor
  * org.wheatgenetics.coordinate.ge.GridExportPreprocessor.Handler
@@ -138,7 +139,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         templateImportPreprocessorInstance = null;                                      // lazy load
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
         templateExportPreprocessorInstance = null;                                      // lazy load
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleterInstance = null;       // ll
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleterInstance = null;//ll
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator      projectCreatorInstance = null; // ll
     private org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
@@ -360,11 +361,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Delete Template Private Methods
     private void handleGridDeleted() { this.handler.handleGridDeleted(); }
 
-    private org.wheatgenetics.coordinate.TemplateDeleter templateDeleter()
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
     {
         if (null == this.templateDeleterInstance) this.templateDeleterInstance =
-            new org.wheatgenetics.coordinate.TemplateDeleter(this.activity,
-                new org.wheatgenetics.coordinate.TemplateDeleter.GridHandler()
+            new org.wheatgenetics.coordinate.deleter.TemplateDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler()
                 {
                     @java.lang.Override public void respondToDeletedGrid()
                     {

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.deleter;
 
 /**
  * Uses:
@@ -41,9 +41,9 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // region Fields
     @androidx.annotation.NonNull  private final android.content.Context context;
     @androidx.annotation.Nullable private final
-        org.wheatgenetics.coordinate.TemplateDeleter.GridHandler gridHandler;
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler gridHandler;
     @androidx.annotation.Nullable private final
-        org.wheatgenetics.coordinate.TemplateDeleter.TemplateHandler templateHandler;
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler templateHandler;
 
     @androidx.annotation.IntRange(from = 1) private long templateId;
 
@@ -123,8 +123,8 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         {
             final boolean success = this.gridsTable().deleteByTemplateId(this.templateId);
             @androidx.annotation.StringRes final int text = success ?              // delete grids
-                    org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
-                    org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
+                org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
+                org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
             this.showShortToast(text);
             if (success && null != this.gridHandler) this.gridHandler.respondToDeletedGrid();
         }
@@ -134,10 +134,10 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     // region Constructors
     private TemplateDeleter(@androidx.annotation.NonNull final android.content.Context context,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.TemplateDeleter.GridHandler
-        gridHandler,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.TemplateDeleter.TemplateHandler
-        templateHandler)
+    @androidx.annotation.Nullable final
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler gridHandler,
+    @androidx.annotation.Nullable final
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler templateHandler)
     {
         super();
 
@@ -148,12 +148,12 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     public TemplateDeleter(@androidx.annotation.NonNull  final android.content.Context context,
                            @androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.TemplateDeleter.GridHandler gridHandler)
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler gridHandler)
     { this(context, gridHandler,null); }
 
     public TemplateDeleter(@androidx.annotation.NonNull  final android.content.Context context,
                            @androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.TemplateDeleter.TemplateHandler templateHandler)
+        org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler templateHandler)
     { this(context,null, templateHandler); }
     // endregion
 
@@ -177,7 +177,10 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
                 /* yesRunnable => */ new java.lang.Runnable()
                     {
                         @java.lang.Override public void run()
-                        { org.wheatgenetics.coordinate.TemplateDeleter.this.deleteTemplateStep2(); }
+                        {
+                            org.wheatgenetics.coordinate.deleter
+                                .TemplateDeleter.this.deleteTemplateStep2();
+                        }
                     });
         else this.deleteTemplateStep3();
     }
