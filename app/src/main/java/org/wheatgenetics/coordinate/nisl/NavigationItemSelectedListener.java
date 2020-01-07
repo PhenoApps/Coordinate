@@ -23,8 +23,6 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.about.AboutAlertDialog
  * org.wheatgenetics.about.OtherApps.Index
  *
- * org.wheatgenetics.coordinate.GridDeleter
- * org.wheatgenetics.coordinate.GridDeleter.Handler
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -35,6 +33,8 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.deleter.GridDeleter
+ * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
  * org.wheatgenetics.coordinate.deleter.ProjectDeleter
  * org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
  * org.wheatgenetics.coordinate.deleter.TemplateDeleter
@@ -128,7 +128,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Lazy Load Fields
-    private org.wheatgenetics.coordinate.GridDeleter       gridDeleterInstance = null;  // lazy load
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleterInstance = null;// lazy load
     private org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog
         manageGridAlertDialogInstance = null;                                           // lazy load
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
@@ -217,11 +217,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region deleteGrid() manageGrid() Grid Private Methods
     private void respondToDeleteGrid() { this.handler.respondToDeleteGrid(); }
 
-    private org.wheatgenetics.coordinate.GridDeleter gridDeleter()
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleter()
     {
         if (null == this.gridDeleterInstance) this.gridDeleterInstance =
-            new org.wheatgenetics.coordinate.GridDeleter(this.activity,
-                new org.wheatgenetics.coordinate.GridDeleter.Handler()
+            new org.wheatgenetics.coordinate.deleter.GridDeleter(this.activity,
+                new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedGrid()
                     {

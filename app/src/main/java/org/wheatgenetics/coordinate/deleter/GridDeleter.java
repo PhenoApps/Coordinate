@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.deleter;
 
 /**
  * Uses:
@@ -25,7 +25,7 @@ public class GridDeleter extends java.lang.Object
     // region Fields
     @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.GridDeleter.Handler handler;
+        org.wheatgenetics.coordinate.deleter.GridDeleter.Handler handler;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;    // ll
@@ -71,8 +71,9 @@ public class GridDeleter extends java.lang.Object
     // endregion
     // endregion
 
-    public GridDeleter(@androidx.annotation.NonNull final android.content.Context       context,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.GridDeleter.Handler handler)
+    public GridDeleter(@androidx.annotation.NonNull final android.content.Context context,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
+        handler)
     { super(); this.context = context; this.handler = handler; }
 
     // region Public Methods
@@ -105,7 +106,7 @@ public class GridDeleter extends java.lang.Object
                 {
                     @java.lang.Override public void run()
                     {
-                        org.wheatgenetics.coordinate.GridDeleter.this.deleteWithoutConfirm(
+                        org.wheatgenetics.coordinate.deleter.GridDeleter.this.deleteWithoutConfirm(
                             gridId);
                     }
                 });

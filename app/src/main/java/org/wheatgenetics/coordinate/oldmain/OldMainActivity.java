@@ -49,6 +49,9 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.database.ProjectsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.deleter.GridDeleter
+ * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
+ *
  * org.wheatgenetics.coordinate.exporter.GridExporter
  * org.wheatgenetics.coordinate.exporter.GridExporter.Helper
  *
@@ -105,7 +108,7 @@ org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
 org.wheatgenetics.coordinate.gc.GridCreator.Handler             ,
-org.wheatgenetics.coordinate.GridDeleter.Handler                ,
+org.wheatgenetics.coordinate.deleter.GridDeleter.Handler        ,
 org.wheatgenetics.coordinate.exporter.GridExporter.Helper
 {
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, PREPROCESS_TEMPLATE_IMPORT = 20,
@@ -139,7 +142,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel          = null;
     private org.wheatgenetics.coordinate.model.ProjectModel    projectModel             = null;
     private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
-    private org.wheatgenetics.coordinate.GridDeleter           gridDeleterInstance      = null;// ll
+    private org.wheatgenetics.coordinate.deleter.GridDeleter   gridDeleterInstance      = null;// ll
     private org.wheatgenetics.coordinate.exporter.GridExporter gridExporter             = null;
     private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
     @androidx.annotation.IntRange(from = 1) private long       templateId                     ;
@@ -378,10 +381,10 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getId() : 0; }
 
     // region Export Grid Private Methods
-    private org.wheatgenetics.coordinate.GridDeleter gridDeleter()
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleter()
     {
         if (null == this.gridDeleterInstance) this.gridDeleterInstance =
-            new org.wheatgenetics.coordinate.GridDeleter(this,this);
+            new org.wheatgenetics.coordinate.deleter.GridDeleter(this,this);
         return this.gridDeleterInstance;
     }
 
@@ -1207,7 +1210,7 @@ org.wheatgenetics.coordinate.exporter.GridExporter.Helper
     { this.loadProjectModel(0); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.GridDeleter.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.deleter.GridDeleter.Handler Overridden Method
     @java.lang.Override public void respondToDeletedGrid()
     { this.clearJoinedGridModelThenPopulate(); this.createGrid(); }
     // endregion
