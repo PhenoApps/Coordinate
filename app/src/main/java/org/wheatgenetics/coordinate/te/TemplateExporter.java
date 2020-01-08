@@ -26,11 +26,12 @@ public class TemplateExporter extends java.lang.Object
     @androidx.annotation.NonNull private final android.app.Activity activity   ;
                                  private final int                  requestCode;
 
-    @androidx.annotation.IntRange(from = 1) private long             templateId;
-                                            private java.lang.String fileName  ;
+    @androidx.annotation.IntRange(from = 1) private long            templateId;
+                                            private java.lang.String fileName ;
 
-    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter      = null;
-    private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;//ll
+    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter = null;
+    private org.wheatgenetics.coordinate.database.TemplatesTable
+        templatesTableInstance = null;                                                  // lazy load
     // endregion
 
     // region Private Methods
@@ -64,10 +65,10 @@ public class TemplateExporter extends java.lang.Object
         try
         {
             final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(         // throws IOException,
-                    this.activity, this.requestCode);                    //  PermissionException
+                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
+                    this.activity, this.requestCode);                        //  PermissionException
 
-            exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
+            exportFile = templatesDir.createNewFile(      // throws IOException, PermissionException
                 this.fileName + ".xml");
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
