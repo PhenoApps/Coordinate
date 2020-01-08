@@ -26,8 +26,12 @@ public class TemplateExporter extends java.lang.Object
     @androidx.annotation.NonNull private final android.app.Activity activity   ;
                                  private final int                  requestCode;
 
-    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter     = null;
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
+    @androidx.annotation.IntRange(from = 1) private long            templateId;
+                                            private java.lang.String fileName ;
+
+    private org.wheatgenetics.coordinate.exporter.TemplateExporter templateExporter = null;
+    private org.wheatgenetics.coordinate.database.TemplatesTable
+        templatesTableInstance = null;                                                  // lazy load
     // endregion
 
     // region Private Methods
@@ -54,18 +58,18 @@ public class TemplateExporter extends java.lang.Object
         super.finalize();
     }
 
-    public void export(@androidx.annotation.IntRange(from = 1) final long templateId,
-    final java.lang.String fileName)
+    // region Public Methods
+    public void export()
     {
         java.io.File exportFile;
         try
         {
             final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(         // throws IOException,
-                    this.activity, this.requestCode);                    //  PermissionException
+                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
+                    this.activity, this.requestCode);                        //  PermissionException
 
-            exportFile = templatesDir.createNewFile(  // throws IOException, PermissionException
-                fileName + ".xml");
+            exportFile = templatesDir.createNewFile(      // throws IOException, PermissionException
+                this.fileName + ".xml");
         }
         catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
         {
@@ -77,10 +81,15 @@ public class TemplateExporter extends java.lang.Object
         if (null != exportFile)
         {
             this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                /* context       => */ this.activity                        ,
-                /* exportFile    => */ exportFile                           ,
-                /* templateModel => */ this.templatesTable().get(templateId));
+                /* context       => */ this.activity                             ,
+                /* exportFile    => */ exportFile                                ,
+                /* templateModel => */ this.templatesTable().get(this.templateId));
             this.templateExporter.execute();
         }
     }
+
+    public void export(@androidx.annotation.IntRange(from = 1) final long templateId,
+    final java.lang.String fileName)
+    { this.templateId = templateId; this.fileName = fileName; this.export(); }
+    // endregion
 }
