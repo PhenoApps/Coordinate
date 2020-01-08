@@ -14,7 +14,6 @@ package org.wheatgenetics.coordinate.deleter;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
- * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
@@ -22,10 +21,10 @@ package org.wheatgenetics.coordinate.deleter;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
+ * org.wheatgenetics.coordinate.deleter.Deleter
  * org.wheatgenetics.coordinate.deleter.PackageGridDeleter
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateDeleter extends java.lang.Object
+public class TemplateDeleter extends org.wheatgenetics.coordinate.deleter.Deleter
 implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 {
     // region Types
@@ -40,7 +39,6 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     // endregion
 
     // region Fields
-    @androidx.annotation.NonNull  private final android.content.Context context;
     @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler gridHandler;
     @androidx.annotation.Nullable private final
@@ -48,60 +46,47 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     @androidx.annotation.IntRange(from = 1) private long templateId;
 
-    // region Table Fields
-    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    // endregion
-
     private boolean                                                 atLeastOneGridWasDeleted;
     private org.wheatgenetics.coordinate.deleter.PackageGridDeleter
         packageGridDeleterInstance = null;                                              // lazy load
+
+    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     // endregion
 
     // region Private Methods
-    // region Table Private Methods
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
     {
-        if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.context);
-        return this.gridsTableInstance;
+        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context());
+        return this.packageGridDeleterInstance;
     }
+
+    // region Toast Private Methods
+    // region Short Toast Private Methods
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
+
+    private void showShortToast(@androidx.annotation.StringRes final int text)
+    { this.showShortToast(this.context().getString(text)); }
+    // endregion
+
+    // region Long Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
+
+    private void showLongToast(@androidx.annotation.StringRes final int text)
+    { this.showLongToast(this.context().getString(text)); }
+    // endregion
+    // endregion
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.context);
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this.context());
         return this.templatesTableInstance;
     }
-    // endregion
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
-    {
-        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
-            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context);
-        return this.packageGridDeleterInstance;
-    }
-
-    // region Toast Private Methods
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context, text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context.getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context, text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context.getString(text)); }
-    // endregion
-    // endregion
 
     private void deleteTemplateStep3()
     {
@@ -146,13 +131,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         org.wheatgenetics.coordinate.deleter.TemplateDeleter.GridHandler gridHandler,
     @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler templateHandler)
-    {
-        super();
-
-        this.context         = context        ;
-        this.gridHandler     = gridHandler    ;
-        this.templateHandler = templateHandler;
-    }
+    { super(context); this.gridHandler = gridHandler; this.templateHandler = templateHandler; }
 
     public TemplateDeleter(@androidx.annotation.NonNull  final android.content.Context context,
                            @androidx.annotation.Nullable final
@@ -185,7 +164,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         this.templateId = templateId;
         if (this.gridsTable().existsInTemplate(this.templateId))
             org.wheatgenetics.coordinate.Utils.confirm(
-                /* context => */ this.context,
+                /* context => */ this.context(),
                 /* title   => */
                     org.wheatgenetics.coordinate.R.string.TemplateDeleterConfirmationTitle,
                 /* message => */

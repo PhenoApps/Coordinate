@@ -14,7 +14,6 @@ package org.wheatgenetics.coordinate.deleter;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
- * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
@@ -22,10 +21,10 @@ package org.wheatgenetics.coordinate.deleter;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.ProjectModel
  *
+ * org.wheatgenetics.coordinate.deleter.Deleter
  * org.wheatgenetics.coordinate.deleter.PackageGridDeleter
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ProjectDeleter extends java.lang.Object
+public class ProjectDeleter extends org.wheatgenetics.coordinate.deleter.Deleter
 implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -35,66 +34,52 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     }
 
     // region Fields
-    @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler handler;
 
     @androidx.annotation.IntRange(from = 1) private long projectId;
 
-    // region Table Fields
-    private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
-    // endregion
-
     private boolean                                                 atLeastOneGridWasDeleted;
     private org.wheatgenetics.coordinate.deleter.PackageGridDeleter
         packageGridDeleterInstance = null;                                              // lazy load
+
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
     // endregion
 
     // region Private Methods
-    // region Table Private Methods
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
     {
-        if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.context);
-        return this.gridsTableInstance;
+        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context());
+        return this.packageGridDeleterInstance;
     }
+
+    // region Toast Private Methods
+    // region Short Toast Private Methods
+    private void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
+
+    private void showShortToast(@androidx.annotation.StringRes final int text)
+    { this.showShortToast(this.context().getString(text)); }
+    // endregion
+
+    // region Long Toast Private Methods
+    private void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
+
+    private void showLongToast(@androidx.annotation.StringRes final int text)
+    { this.showLongToast(this.context().getString(text)); }
+    // endregion
+    // endregion
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
-            new org.wheatgenetics.coordinate.database.ProjectsTable(this.context);
+            new org.wheatgenetics.coordinate.database.ProjectsTable(this.context());
         return this.projectsTableInstance;
     }
-    // endregion
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
-    {
-        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
-            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context);
-        return this.packageGridDeleterInstance;
-    }
-
-    // region Toast Private Methods
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context, text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context.getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context, text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context.getString(text)); }
-    // endregion
-    // endregion
 
     private void deleteProjectStep3()
     {
@@ -132,8 +117,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
 
     public ProjectDeleter(@androidx.annotation.NonNull final android.content.Context context,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
-        handler)
-    { super(); this.context = context; this.handler = handler; }
+        handler) { super(context); this.handler = handler; }
 
     // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
     @java.lang.Override
@@ -155,7 +139,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         this.projectId = projectId;
         if (this.gridsTable().existsInProject(this.projectId))
             org.wheatgenetics.coordinate.Utils.confirm(
-                /* context => */ this.context,
+                /* context => */ this.context(),
                 /* title   => */
                     org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationTitle,
                 /* message => */

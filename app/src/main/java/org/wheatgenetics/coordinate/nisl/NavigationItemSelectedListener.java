@@ -217,6 +217,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region deleteGrid() manageGrid() Grid Private Methods
     private void respondToDeleteGrid() { this.handler.respondToDeleteGrid(); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleter()
     {
         if (null == this.gridDeleterInstance) this.gridDeleterInstance =
@@ -262,11 +263,10 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region exportGrid() Grid Private Methods
-    private void exportGrid(
-    @androidx.annotation.IntRange(from = 1) final long             gridId  ,
-                                            final java.lang.String fileName)
-    { this.handler.exportGrid(gridId, fileName); }
+    private void exportGrid(@androidx.annotation.IntRange(from = 1) final long gridId,
+    final java.lang.String fileName) { this.handler.exportGrid(gridId, fileName); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor gridExportPreprocessor()
     {
         if (null == this.gridExportPreprocessorInstance) this.gridExportPreprocessorInstance =
@@ -335,6 +335,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                                             final java.lang.String fileName  )
     { this.handler.exportTemplate(templateId, fileName); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor templateExportPreprocessor()
     {
         if (null == this.templateExportPreprocessorInstance)
@@ -361,6 +362,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Delete Template Private Methods
     private void handleGridDeleted() { this.handler.handleGridDeleted(); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
     {
         if (null == this.templateDeleterInstance) this.templateDeleterInstance =
@@ -614,10 +616,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Export Project Private Methods
-    private void exportProject(
-    @androidx.annotation.IntRange(from = 1) final long             projectId    ,
-                                            final java.lang.String directoryName)
-    { this.handler.exportProject(projectId, directoryName); }
+    private void exportProject(@androidx.annotation.IntRange(from = 1) final long projectId,
+    final java.lang.String directoryName) { this.handler.exportProject(projectId, directoryName); }
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
