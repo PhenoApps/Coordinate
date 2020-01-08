@@ -3,7 +3,9 @@ package org.wheatgenetics.coordinate.grids;
 /**
  * Uses:
  * android.content.Context
+ * android.content.pm.PackageManager
  * android.content.Intent
+ * android.Manifest.permission
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
@@ -18,18 +20,31 @@ package org.wheatgenetics.coordinate.grids;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
+ *
+ * org.wheatgenetics.coordinate.ge.GridExporter
+ *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
+ * org.wheatgenetics.coordinate.grids.GridClickAlertDialog
+ * org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler
  * org.wheatgenetics.coordinate.grids.GridsAdapter
  * org.wheatgenetics.coordinate.grids.ProjectGridsAdapter
  * org.wheatgenetics.coordinate.grids.TemplateGridsAdapter
  */
 public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 {
+    // region Consts
     private static final java.lang.String
         TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
+    private static final int EXPORT_GRID = 10;
+    // endregion
 
     // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
+
+    private org.wheatgenetics.coordinate.ge.GridExporter   gridExporterInstance = null; // lazy load
+    private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
+        gridClickAlertDialogInstance = null;                                            // lazy load
 
     private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
     // endregion
@@ -38,6 +53,66 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     { return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this); }
 
+    // region gridClickAlertDialog() Private Methods
+    private void notifyDataSetChanged()
+    { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
+
+    // region exportGrid() gridClickAlertDialog() Private Methods
+    private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
+    {
+        if (null == this.gridExporterInstance) this.gridExporterInstance =
+            new org.wheatgenetics.coordinate.ge.GridExporter(this,
+                org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID,
+                new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
+                {
+                    @java.lang.Override public void respondToDeletedGrid()
+                    {
+                        org.wheatgenetics.coordinate.grids
+                            .GridsActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.gridExporterInstance;
+    }
+
+    private void exportGrid(@androidx.annotation.IntRange(from = 1) final long gridId,
+    final java.lang.String fileName) { this.gridExporter().export(gridId, fileName); }
+    // endregion
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.grids.GridClickAlertDialog gridClickAlertDialog()
+    {
+        if (null == this.gridClickAlertDialogInstance) this.gridClickAlertDialogInstance =
+            new org.wheatgenetics.coordinate.grids.GridClickAlertDialog(this,
+                new org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler()
+                {
+                    @java.lang.Override public void collectData(
+                    @androidx.annotation.IntRange(from = 1) final long gridId)
+                    {
+                        // TODO
+                    }
+
+                    @java.lang.Override public void exportGrid(
+                    @androidx.annotation.IntRange(from = 1) final long             gridId  ,
+                                                            final java.lang.String fileName)
+                    {
+                        org.wheatgenetics.coordinate.grids.GridsActivity
+                            .this.exportGrid(gridId, fileName);
+                    }
+
+                    @java.lang.Override public void respondToDeletedGrid()
+                    {
+                        org.wheatgenetics.coordinate.grids.GridsActivity
+                            .this.notifyDataSetChanged();
+                    }
+                });
+        return this.gridClickAlertDialogInstance;
+    }
+
+    private void showGridClickAlertDialog(@androidx.annotation.IntRange(from = 1) final long gridId)
+    { this.gridClickAlertDialog().show(gridId); }
+    // endregion
+
+    // region intent Private Methods
     @androidx.annotation.NonNull private static android.content.Intent INTENT(
     @androidx.annotation.NonNull final android.content.Context context)
     {
@@ -69,6 +144,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
         }
         return intent;
     }
+    // endregion
     // endregion
 
     // region Overridden Methods
@@ -122,7 +198,8 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                     final android.widget.AdapterView<?> parent, final android.view.View view,
                     final int position, final long id)
                     {
-                        // TODO
+                        org.wheatgenetics.coordinate.grids.GridsActivity
+                            .this.showGridClickAlertDialog(id);
                     }
                 });
         }
@@ -132,6 +209,28 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     {
         this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_grids, menu);
         return true;
+    }
+
+    @java.lang.Override public void onRequestPermissionsResult(final int requestCode,
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
+        final java.lang.String permissions[],
+    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
+        final int grantResults[])
+    {
+        boolean permissionFound = false;
+        for (final java.lang.String permission: permissions)
+            if (android.Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission))
+                { permissionFound = true; break; }
+
+        if (permissionFound) for (final int grantResult: grantResults)
+            if (android.content.pm.PackageManager.PERMISSION_GRANTED == grantResult)
+                // noinspection SwitchStatementWithTooFewBranches
+                switch (requestCode)
+                {
+                    case org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID:
+                        if (null != this.gridExporterInstance) this.gridExporterInstance.export();
+                        break;
+                }
     }
     // endregion
 

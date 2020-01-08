@@ -326,6 +326,13 @@
 
 
 
+    <!-- GridClickAlertDialog -->
+    <string name="GridClickAlertDialogCollectData">Collect data</string>
+    <string name="GridClickAlertDialogDeleteGrid">Delete</string>
+    <string name="GridClickAlertDialogExportGrid">Export</string>
+
+
+
     <!-- GridsActivity -->
     <string name="GridsActivityLabel">Grids</string>
 
