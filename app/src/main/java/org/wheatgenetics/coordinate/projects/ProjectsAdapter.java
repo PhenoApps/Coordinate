@@ -6,8 +6,6 @@ package org.wheatgenetics.coordinate.projects;
  * android.app.Activity
  * android.view.View
  * android.view.ViewGroup
- * android.widget.BaseAdapter
- * android.widget.TableLayout
  * android.widget.TextView
  *
  * androidx.annotation.NonNull
@@ -15,16 +13,15 @@ package org.wheatgenetics.coordinate.projects;
  *
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
+ * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  */
-class ProjectsAdapter extends android.widget.BaseAdapter
+class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity;
-
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null; // ll
     private org.wheatgenetics.coordinate.model.ProjectModels    projectModelsInstance = null; // ll
     // endregion
@@ -34,7 +31,7 @@ class ProjectsAdapter extends android.widget.BaseAdapter
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
-            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity);
+            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity());
         return this.projectsTableInstance;
     }
 
@@ -45,13 +42,10 @@ class ProjectsAdapter extends android.widget.BaseAdapter
             this.projectModelsInstance = this.projectsTable().load();
         return this.projectModelsInstance;
     }
-
-    @androidx.annotation.NonNull private android.widget.TableLayout makeEmptyTableLayout()
-    { return new android.widget.TableLayout(this.activity); }
     // endregion
 
     ProjectsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(); this.activity = activity; }
+    { super(activity); }
 
     // region Overridden Methods
     @java.lang.Override public void notifyDataSetChanged()
@@ -88,7 +82,7 @@ class ProjectsAdapter extends android.widget.BaseAdapter
         else
         {
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
-                this.activity.getLayoutInflater().inflate(
+                this.activity().getLayoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.projects_list_item,
                     null,false);
             if (null == view)

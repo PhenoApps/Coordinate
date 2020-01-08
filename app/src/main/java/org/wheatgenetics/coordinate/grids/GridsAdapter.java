@@ -6,7 +6,6 @@ package org.wheatgenetics.coordinate.grids;
  * android.app.Activity
  * android.view.View
  * android.view.ViewGroup
- * android.widget.BaseAdapter
  * android.widget.TextView
  *
  * androidx.annotation.NonNull
@@ -16,28 +15,25 @@ package org.wheatgenetics.coordinate.grids;
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  *
+ * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
-abstract class GridsAdapter extends android.widget.BaseAdapter
+abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
-    // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity;
-
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
-    // endregion
 
     @androidx.annotation.NonNull private android.widget.TextView makeEmptyTextView()
-    { return new android.widget.TextView(this.activity); }
+    { return new android.widget.TextView(this.activity()); }
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
         return this.gridsTableInstance;
     }
 
@@ -47,7 +43,7 @@ abstract class GridsAdapter extends android.widget.BaseAdapter
     // endregion
 
     GridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(); this.activity = activity; }
+    { super(activity); }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()
@@ -84,7 +80,7 @@ abstract class GridsAdapter extends android.widget.BaseAdapter
         {
             @android.annotation.SuppressLint({"InflateParams"})
             final android.widget.TextView textView =
-                (android.widget.TextView) this.activity.getLayoutInflater().inflate(
+                (android.widget.TextView) this.activity().getLayoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.grids_list_item,
                     null,false);
             if (null == textView)

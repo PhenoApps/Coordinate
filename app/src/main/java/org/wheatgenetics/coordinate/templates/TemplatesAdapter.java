@@ -6,8 +6,6 @@ package org.wheatgenetics.coordinate.templates;
  * android.app.Activity
  * android.view.View
  * android.view.ViewGroup
- * android.widget.BaseAdapter
- * android.widget.TableLayout
  * android.widget.TextView
  *
  * androidx.annotation.NonNull
@@ -15,16 +13,15 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  */
-class TemplatesAdapter extends android.widget.BaseAdapter
+class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity;
-
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.model.TemplateModels    templateModelsInstance = null;// ll
     // endregion
@@ -34,7 +31,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity);
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity());
         return this.templatesTableInstance;
     }
 
@@ -45,13 +42,10 @@ class TemplatesAdapter extends android.widget.BaseAdapter
             this.templateModelsInstance = this.templatesTable().load();
         return this.templateModelsInstance;
     }
-
-    @androidx.annotation.NonNull private android.widget.TableLayout makeEmptyTableLayout()
-    { return new android.widget.TableLayout(this.activity); }
     // endregion
 
     TemplatesAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(); this.activity = activity; }
+    { super(activity); }
 
     // region Overridden Methods
     @java.lang.Override public void notifyDataSetChanged()
@@ -90,7 +84,7 @@ class TemplatesAdapter extends android.widget.BaseAdapter
         else
         {
             @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
-                this.activity.getLayoutInflater().inflate(
+                this.activity().getLayoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.templates_list_item,
                     null,false);
             if (null == view)
