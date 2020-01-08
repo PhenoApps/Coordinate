@@ -35,6 +35,9 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
     @androidx.annotation.IntRange(from = 1) final long projectId)
     { super(activity); this.setProjectId(projectId); }
 
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+
     void setProjectId(@androidx.annotation.IntRange(from = 1) final long projectId)
     { this.projectId = projectId; }
 }

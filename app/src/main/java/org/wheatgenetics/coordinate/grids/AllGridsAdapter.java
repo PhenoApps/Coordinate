@@ -29,4 +29,7 @@ class AllGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapter
 
     AllGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
     { super(activity); }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
 }
