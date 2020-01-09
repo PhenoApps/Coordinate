@@ -8,8 +8,6 @@ package org.wheatgenetics.coordinate.deleter;
  * androidx.annotation.NonNull
  * androidx.annotation.StringRes
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
@@ -22,24 +20,6 @@ public class GridDeleter extends org.wheatgenetics.coordinate.deleter.BaseGridDe
 
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.deleter.GridDeleter.Handler handler;
-
-    // region Private Methods
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context().getString(text)); }
-    // endregion
-
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context().getString(text)); }
-    // endregion
-    // endregion
 
     public GridDeleter(@androidx.annotation.NonNull final android.content.Context context,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.GridDeleter.Handler

@@ -7,6 +7,9 @@ package org.wheatgenetics.coordinate.deleter;
  * androidx.annotation.NonNull
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  */
@@ -30,6 +33,28 @@ abstract class Deleter extends java.lang.Object
             new org.wheatgenetics.coordinate.database.GridsTable(this.context());
         return this.gridsTableInstance;
     }
+
+    // region Toast Package Methods
+    // region Long Toast Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void showLongToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void showLongToast(@androidx.annotation.StringRes final int text)
+    { this.showLongToast(this.context().getString(text)); }
+    // endregion
+
+    // region Short Toast Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void showShortToast(final java.lang.String text)
+    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void showShortToast(@androidx.annotation.StringRes final int text)
+    { this.showShortToast(this.context().getString(text)); }
+    // endregion
+    // endregion
     // endregion
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)

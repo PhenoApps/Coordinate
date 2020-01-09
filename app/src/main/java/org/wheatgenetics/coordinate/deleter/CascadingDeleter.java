@@ -11,8 +11,6 @@ package org.wheatgenetics.coordinate.deleter;
  * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.StringRes
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
@@ -38,7 +36,6 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         packageGridDeleterInstance = null;                                              // lazy load
     // endregion
 
-    // region Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
     {
@@ -46,25 +43,6 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
             new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context());
         return this.packageGridDeleterInstance;
     }
-
-    // region Toast Private Methods
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context().getString(text)); }
-    // endregion
-
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context().getString(text)); }
-    // endregion
-    // endregion
-    // endregion
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
