@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.nisl;
+package org.wheatgenetics.coordinate.preference;
 
 /**
  * Uses:
@@ -21,7 +21,7 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.R
  */
-class PreferenceFragment extends androidx.preference.PreferenceFragmentCompat
+public class PreferenceFragment extends androidx.preference.PreferenceFragmentCompat
 implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 {
     // region Fields
@@ -131,17 +131,20 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             {
                 {
                     final android.content.res.Resources resources = activity.getResources();
-                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                    org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
+                        resources                                                               ,
                         org.wheatgenetics.coordinate.R.array.UniquenessListPreferenceEntryValues,
                         org.wheatgenetics.coordinate.R.array.UniquenessListPreferenceEntries    ,
                         this.uniquenessTreeMap                                                  );
 
-                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                    org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
+                        resources                                                              ,
                         org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntryValues,
                         org.wheatgenetics.coordinate.R.array.ProjectExportPreferenceEntries    ,
                         this.projectExportTreeMap                                              );
 
-                    org.wheatgenetics.coordinate.nisl.PreferenceFragment.populateTreeMap(resources,
+                    org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
+                        resources                                                            ,
                         org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntryValues,
                         org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntries    ,
                         this.advancementTreeMap                                              );

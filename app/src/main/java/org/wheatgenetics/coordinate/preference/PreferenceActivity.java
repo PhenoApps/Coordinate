@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.nisl;
+package org.wheatgenetics.coordinate.preference;
 
 /**
  * Uses:
@@ -20,7 +20,7 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * org.wheatgenetics.coordinate.Types
  *
- * org.wheatgenetics.coordinate.nisl.PreferenceFragment
+ * org.wheatgenetics.coordinate.preference.PreferenceFragment
  */
 public class PreferenceActivity extends androidx.appcompat.app.AppCompatActivity
 implements androidx.preference.Preference.OnPreferenceClickListener
@@ -66,7 +66,7 @@ implements androidx.preference.Preference.OnPreferenceClickListener
 
         // Display PreferenceFragment as the main content.
         this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-            new org.wheatgenetics.coordinate.nisl.PreferenceFragment()).commit();
+            new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
     }
 
     @java.lang.Override protected void onStart()
@@ -100,10 +100,10 @@ implements androidx.preference.Preference.OnPreferenceClickListener
     @androidx.annotation.NonNull public static android.content.Intent intent(
     @androidx.annotation.NonNull final android.content.Context context)
     {
-        return null == org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE ?
-            org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE =
+        return null == org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE ?
+            org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE =
                 new android.content.Intent(context,
-                    org.wheatgenetics.coordinate.nisl.PreferenceActivity.class) :
-            org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE;
+                    org.wheatgenetics.coordinate.preference.PreferenceActivity.class) :
+            org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE;
     }
 }

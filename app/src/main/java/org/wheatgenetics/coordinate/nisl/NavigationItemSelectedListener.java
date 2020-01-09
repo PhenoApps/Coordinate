@@ -54,6 +54,8 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
  * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler
  *
+ * org.wheatgenetics.coordinate.preference.PreferenceActivity
+ *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
@@ -67,7 +69,6 @@ package org.wheatgenetics.coordinate.nisl;
  * org.wheatgenetics.coordinate.nisl.ManageGridAlertDialog.Handler
  * org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog
  * org.wheatgenetics.coordinate.nisl.ManageProjectAlertDialog.Handler
- * org.wheatgenetics.coordinate.nisl.PreferenceActivity
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class NavigationItemSelectedListener extends java.lang.Object implements
@@ -643,8 +644,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void startPreferenceActivity()
     {
         this.activity.startActivityForResult(
-            org.wheatgenetics.coordinate.nisl.PreferenceActivity.intent(this.activity),
-            this.clickUniquenessRequestCode                                           );
+            org.wheatgenetics.coordinate.preference.PreferenceActivity.intent(this.activity),
+            this.clickUniquenessRequestCode                                                 );
     }
 
     // region AboutAlertDialog Private Methods
