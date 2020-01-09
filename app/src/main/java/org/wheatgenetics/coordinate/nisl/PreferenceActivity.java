@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.nisl;
 /**
  * Uses:
  * android.app.Activity
+ * android.content.Context
  * android.content.Intent
  * android.R
  * android.os.Bundle
@@ -24,7 +25,11 @@ package org.wheatgenetics.coordinate.nisl;
 public class PreferenceActivity extends androidx.appcompat.app.AppCompatActivity
 implements androidx.preference.Preference.OnPreferenceClickListener
 {
+    // region Fields
     private boolean uniquenessPreferenceWasClicked;
+
+    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
+    // endregion
 
     private void setResult()
     {
@@ -45,10 +50,9 @@ implements androidx.preference.Preference.OnPreferenceClickListener
     {
         super.onCreate(savedInstanceState);
 
-        if (null == savedInstanceState)
-            this.uniquenessPreferenceWasClicked = false;
-        else
-            this.uniquenessPreferenceWasClicked = savedInstanceState.getBoolean(
+        // noinspection SimplifiableConditionalExpression
+        this.uniquenessPreferenceWasClicked =
+            null == savedInstanceState ? false : savedInstanceState.getBoolean(
                 org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
 
         {
@@ -92,4 +96,14 @@ implements androidx.preference.Preference.OnPreferenceClickListener
     { this.uniquenessPreferenceWasClicked = true; return true; }
     // endregion
     // endregion
+
+    @androidx.annotation.NonNull public static android.content.Intent intent(
+    @androidx.annotation.NonNull final android.content.Context context)
+    {
+        return null == org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE ?
+            org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE =
+                new android.content.Intent(context,
+                    org.wheatgenetics.coordinate.nisl.PreferenceActivity.class) :
+            org.wheatgenetics.coordinate.nisl.PreferenceActivity.INTENT_INSTANCE;
+    }
 }
