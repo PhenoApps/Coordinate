@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.nisl;
 /**
  * Uses:
  * android.app.Activity
- * android.content.Intent
  * android.content.res.Resources
  * android.os.Bundle
  * android.view.MenuItem
@@ -147,8 +146,6 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
-
-    private android.content.Intent preferenceIntentInstance = null;                     // lazy load
 
     private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialogInstance = null;   // lazy load
     // endregion
@@ -643,21 +640,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
     // endregion
 
-    // region PreferenceActivity Private Methods
-    @androidx.annotation.NonNull private android.content.Intent preferenceIntent()
-    {
-        if (null == this.preferenceIntentInstance)
-            this.preferenceIntentInstance = new android.content.Intent(
-                this.activity, org.wheatgenetics.coordinate.nisl.PreferenceActivity.class);
-        return this.preferenceIntentInstance;
-    }
-
     private void startPreferenceActivity()
     {
-        this.activity.startActivityForResult(this.preferenceIntent(),
-            this.clickUniquenessRequestCode);
+        this.activity.startActivityForResult(
+            org.wheatgenetics.coordinate.nisl.PreferenceActivity.intent(this.activity),
+            this.clickUniquenessRequestCode                                           );
     }
-    // endregion
 
     // region AboutAlertDialog Private Methods
     @androidx.annotation.Nullable
