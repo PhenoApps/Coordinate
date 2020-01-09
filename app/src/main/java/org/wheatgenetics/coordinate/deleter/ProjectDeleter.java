@@ -7,25 +7,19 @@ package org.wheatgenetics.coordinate.deleter;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.androidlibrary.Utils
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
- * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.ProjectModel
  *
- * org.wheatgenetics.coordinate.deleter.Deleter
- * org.wheatgenetics.coordinate.deleter.PackageGridDeleter
+ * org.wheatgenetics.coordinate.deleter.CascadingDeleter
  */
-public class ProjectDeleter extends org.wheatgenetics.coordinate.deleter.Deleter
-implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
+public class ProjectDeleter extends org.wheatgenetics.coordinate.deleter.CascadingDeleter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
@@ -37,40 +31,7 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler handler;
 
-    @androidx.annotation.IntRange(from = 1) private long projectId;
-
-    private boolean                                                 atLeastOneGridWasDeleted;
-    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter
-        packageGridDeleterInstance = null;                                              // lazy load
-
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
-    // endregion
-
-    // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.deleter.PackageGridDeleter packageGridDeleter()
-    {
-        if (null == this.packageGridDeleterInstance) this.packageGridDeleterInstance =
-            new org.wheatgenetics.coordinate.deleter.PackageGridDeleter(this.context());
-        return this.packageGridDeleterInstance;
-    }
-
-    // region Toast Private Methods
-    // region Short Toast Private Methods
-    private void showShortToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showShortToast(this.context(), text); }
-
-    private void showShortToast(@androidx.annotation.StringRes final int text)
-    { this.showShortToast(this.context().getString(text)); }
-    // endregion
-
-    // region Long Toast Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.context(), text); }
-
-    private void showLongToast(@androidx.annotation.StringRes final int text)
-    { this.showLongToast(this.context().getString(text)); }
-    // endregion
     // endregion
 
     @androidx.annotation.NonNull
@@ -81,82 +42,45 @@ implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
         return this.projectsTableInstance;
     }
 
-    private void deleteProjectStep3()
-    {
-        final boolean success = this.projectsTable().delete(this.projectId);
-        {
-            @androidx.annotation.StringRes final int text = success ?
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast :
-                org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast    ;
-            this.showLongToast(text);
-        }
-        if (success) this.handler.respondToDeletedProject(this.projectId);
-    }
-
-    private void deleteProjectStep2()
-    {
-        {
-            final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-                this.gridsTable().loadByProjectId(this.projectId);
-            if (null != baseJoinedGridModels)
-            {
-                this.atLeastOneGridWasDeleted = false;
-                baseJoinedGridModels.processAll(this);
-
-                {
-                    @androidx.annotation.StringRes final int text = this.atLeastOneGridWasDeleted ?
-                        org.wheatgenetics.coordinate.R.string.DeleterGridsSuccessToast :
-                        org.wheatgenetics.coordinate.R.string.DeleterGridsFailToast    ;
-                    this.showShortToast(text);
-                }
-            }
-        }
-        this.deleteProjectStep3();
-    }
-    // endregion
-
     public ProjectDeleter(@androidx.annotation.NonNull final android.content.Context context,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
-        handler) { super(context); this.handler = handler; }
-
-    // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
-    @java.lang.Override
-    public void process(final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
+        handler)
     {
-        if (null != joinedGridModel)
-        {
-            final boolean gridWasDeleted =
-                this.packageGridDeleter().delete(joinedGridModel.getId());
-            if (!this.atLeastOneGridWasDeleted && gridWasDeleted)
-                this.atLeastOneGridWasDeleted = true;
-        }
+        super(context,
+            org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationTitle  ,
+            org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationMessage,
+            org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectSuccessToast,
+            org.wheatgenetics.coordinate.R.string.ProjectDeleterProjectFailToast   );
+        this.handler = handler;
+    }
+
+    // region Overridden Methods
+    // region deleteStep3() Overridden Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override boolean deleteMasterRecord()
+    { return this.projectsTable().delete(this.id()); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override boolean deleteStep3()
+    {
+        final boolean success = super.deleteStep3();
+        if (success) this.handler.respondToDeletedProject(this.id());
+        return success;
     }
     // endregion
 
-    // region Public Methods
-    public void delete(@androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        this.projectId = projectId;
-        if (this.gridsTable().existsInProject(this.projectId))
-            org.wheatgenetics.coordinate.Utils.confirm(
-                /* context => */ this.context(),
-                /* title   => */
-                    org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationTitle,
-                /* message => */
-                    org.wheatgenetics.coordinate.R.string.ProjectDeleterConfirmationMessage,
-                /* yesRunnable => */ new java.lang.Runnable()
-                    {
-                        @java.lang.Override public void run()
-                        {
-                            org.wheatgenetics.coordinate.deleter
-                                .ProjectDeleter.this.deleteProjectStep2();
-                        }
-                    });
-        else this.deleteProjectStep3();
-    }
-
-    public void delete(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    { if (null != projectModel) this.delete(projectModel.getId()); }
+    // region deleteStep2() Overridden Method
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.Nullable
+    org.wheatgenetics.coordinate.model.BaseJoinedGridModels loadDetailRecords()
+    { return this.gridsTable().loadByProjectId(this.id()); }
     // endregion
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override boolean detailRecordsExists()
+    { return this.gridsTable().existsInProject(this.id()); }
+    // endregion
+
+    public void delete(@androidx.annotation.Nullable final
+    org.wheatgenetics.coordinate.model.ProjectModel projectModel) { super.delete(projectModel); }
 }
