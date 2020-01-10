@@ -3,7 +3,6 @@ package org.wheatgenetics.coordinate.nisl;
 /**
  * Uses:
  * android.app.Activity
- * android.content.res.Resources
  * android.os.Bundle
  * android.view.MenuItem
  * android.view.View.OnClickListener
@@ -15,13 +14,9 @@ package org.wheatgenetics.coordinate.nisl;
  *
  * com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
  *
- * org.wheatgenetics.javalib.Utils
- *
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.about.AboutAlertDialog
- * org.wheatgenetics.about.OtherApps.Index
- *
+ * org.wheatgenetics.coordinate.AboutAlertDialog
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
  * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
@@ -148,7 +143,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
 
-    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialogInstance = null;   // lazy load
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;     // ll
     // endregion
     // endregion
 
@@ -649,43 +644,16 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
     // region AboutAlertDialog Private Methods
-    @androidx.annotation.Nullable
-    private org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog()
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialog()
     {
-        if (null == this.aboutAlertDialogInstance)
-        {
-            // noinspection CStyleArrayDeclaration
-            final java.lang.String title, msgs[];
-            {
-                final android.content.res.Resources resources = this.activity.getResources();
-
-                if (null == resources)
-                    return null;
-                else
-                {
-                    title = resources.getString(
-                        org.wheatgenetics.coordinate.R.string.AboutAlertDialogTitle);
-                    msgs = org.wheatgenetics.javalib.Utils.stringArray(resources.getString(
-                        org.wheatgenetics.coordinate.R.string.AboutAlertDialogMsg));
-                }
-            }
-
-            this.aboutAlertDialogInstance = new org.wheatgenetics.about.AboutAlertDialog(
-                /* context       => */ this.activity                                     ,
-                /* title         => */ title                                             ,
-                /* versionName   => */ this.versionName                                  ,
-                /* msgs[]        => */ msgs                                              ,
-                /* suppressIndex => */ org.wheatgenetics.about.OtherApps.Index.COORDINATE,
-                /* versionOnClickListener => */ this.versionOnClickListener              );
-        }
+        if (null == this.aboutAlertDialogInstance) this.aboutAlertDialogInstance =
+            new org.wheatgenetics.coordinate.AboutAlertDialog(
+                this.activity, this.versionName, this.versionOnClickListener);
         return this.aboutAlertDialogInstance;
     }
 
-    private void showAboutAlertDialog()
-    {
-        final org.wheatgenetics.about.AboutAlertDialog aboutAlertDialog = this.aboutAlertDialog();
-        if (null != aboutAlertDialog) aboutAlertDialog.show();
-    }
+    private void showAboutAlertDialog() { this.aboutAlertDialog().show(); }
     // endregion
     // endregion
 
