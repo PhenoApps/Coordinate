@@ -4,10 +4,13 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.app.Activity
  * android.content.Intent
+ * android.content.pm.PackageInfo
+ * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
+ * android.view.View.OnClickListener
  * android.widget.AdapterView<>
  * android.widget.AdapterView.OnItemClickListener
  * android.widget.ArrayAdapter
@@ -17,7 +20,15 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
+ * org.wheatgenetics.javalib.Utils
+ *
  * org.wheatgenetics.androidlibrary.Utils
+ * org.wheatgenetics.changelog.ChangeLogAlertDialog
+ * org.wheatgenetics.sharedpreferences.SharedPreferences
+ *
+ * org.wheatgenetics.coordinate.AboutAlertDialog
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
@@ -35,14 +46,16 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Types
  */
 public class MainActivity extends androidx.appcompat.app.AppCompatActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;     // ll
+    private java.lang.String                              versionName                    ;
+
+    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;   // lazy
+                                                                                            //  load
     // region Create Template Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
     private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
@@ -52,6 +65,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion                                                                            //  load
 
     // region Private Methods
+    private void reloadIfNecessary() { /* TODO */ }
+
     // region startActivity() Private Methods
     private void startGridsActivity()
     { this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.intent(this)); }
@@ -76,7 +91,31 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
     // endregion
 
-    private void reloadIfNecessary() { /* TODO */ }
+    // region AboutAlertDialog Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialog()
+    {
+        if (null == this.aboutAlertDialogInstance) this.aboutAlertDialogInstance =
+            new org.wheatgenetics.coordinate.AboutAlertDialog(
+                this, this.versionName, new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override public void onClick(final android.view.View view)
+                    { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
+                });
+        return this.aboutAlertDialogInstance;
+    }
+
+    private void showAboutAlertDialog() { this.aboutAlertDialog().show(); }
+    // endregion
+
+    private void showChangeLog()
+    {
+        if (null == this.changeLogAlertDialog)
+            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
+                /* activity               => */this,
+                /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
+        this.changeLogAlertDialog.show();
+    }
 
     // region Create Template Private Methods
     @androidx.annotation.NonNull
@@ -115,39 +154,77 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
 
-        final android.widget.ListView mainListView = this.findViewById(
-            org.wheatgenetics.coordinate.R.id.mainListView);        // From layout/content_main.xml.
-        if (null != mainListView)
         {
-            // noinspection Convert2Diamond
-            mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
-                this, org.wheatgenetics.coordinate.R.layout.main_list_item,
-                new java.lang.String[]{"Grids", "Templates", "Projects", "Settings", "About"}));
-            mainListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
-                {
-                    @java.lang.Override
-                    public void onItemClick(final android.widget.AdapterView<?> parent,
-                    final android.view.View view, final int position, final long id)
+            final android.widget.ListView mainListView = this.findViewById(
+                org.wheatgenetics.coordinate.R.id.mainListView);    // From layout/content_main.xml.
+            if (null != mainListView)
+            {
+                // noinspection Convert2Diamond
+                mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
+                    this, org.wheatgenetics.coordinate.R.layout.main_list_item,
+                    new java.lang.String[]{"Grids", "Templates",
+                        "Projects", "Settings", "About"}));
+                mainListView.setOnItemClickListener(
+                    new android.widget.AdapterView.OnItemClickListener()
                     {
-                        switch (position)
+                        @java.lang.Override
+                        public void onItemClick(final android.widget.AdapterView<?> parent,
+                        final android.view.View view, final int position, final long id)
                         {
-                            case 0: org.wheatgenetics.coordinate.MainActivity
-                                .this.startGridsActivity(); break;
+                            switch (position)
+                            {
+                                case 0: org.wheatgenetics.coordinate.MainActivity
+                                    .this.startGridsActivity(); break;
 
-                            case 1: org.wheatgenetics.coordinate.MainActivity
-                                .this.startTemplatesActivity(); break;
+                                case 1: org.wheatgenetics.coordinate.MainActivity
+                                    .this.startTemplatesActivity(); break;
 
-                            case 2: org.wheatgenetics.coordinate.MainActivity
-                                .this.startProjectsActivity(); break;
+                                case 2: org.wheatgenetics.coordinate.MainActivity
+                                    .this.startProjectsActivity(); break;
 
-                            case 3: org.wheatgenetics.coordinate.MainActivity
-                                .this.startPreferenceActivity(); break;
+                                case 3: org.wheatgenetics.coordinate.MainActivity
+                                    .this.startPreferenceActivity(); break;
 
-                            case 4: /* TODO */ break;
+                                case 4: org.wheatgenetics.coordinate.MainActivity
+                                    .this.showAboutAlertDialog(); break;
+                            }
                         }
-                    }
-                });
+                    });
+            }
         }
+
+        // region Get version.
+        int versionCode;
+        try
+        {
+            final android.content.pm.PackageInfo packageInfo =
+                this.getPackageManager().getPackageInfo(   // throws android.content.pm.Package-
+                    this.getPackageName(),0);           //  Manager.NameNotFoundException
+            if (null == packageInfo)
+            {
+                versionCode      = 0;
+                this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
+            }
+            else
+            {
+                versionCode      = packageInfo.versionCode;
+                this.versionName = packageInfo.versionName;
+            }
+        }
+        catch (final android.content.pm.PackageManager.NameNotFoundException e)
+        {
+            versionCode      = 0;
+            this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
+        }
+        // endregion
+
+        // region Set version.
+        final org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences =
+            new org.wheatgenetics.sharedpreferences.SharedPreferences(
+                this.getSharedPreferences("Settings", /* mode => */0));
+        if (!sharedPreferences.updateVersionIsSet(versionCode))
+            { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
+        // endregion
     }
 
     @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
