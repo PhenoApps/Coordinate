@@ -27,6 +27,8 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  *
+ * org.wheatgenetics.coordinate.preference.PreferenceActivity
+ *
  * org.wheatgenetics.coordinate.projects.ProjectsActivity
  *
  * org.wheatgenetics.coordinate.templates.TemplatesActivity
@@ -65,7 +67,16 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         this.startActivity(
             org.wheatgenetics.coordinate.projects.ProjectsActivity.intent(this));
     }
+
+    private void startPreferenceActivity()
+    {
+        this.startActivityForResult(
+            org.wheatgenetics.coordinate.preference.PreferenceActivity.intent(this),
+            org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED                          );
+    }
     // endregion
+
+    private void reloadIfNecessary() { /* TODO */ }
 
     // region Create Template Private Methods
     @androidx.annotation.NonNull
@@ -79,6 +90,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
     {
         if (null == this.templateCreatorInstance)
@@ -128,7 +140,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                             case 2: org.wheatgenetics.coordinate.MainActivity
                                 .this.startProjectsActivity(); break;
 
-                            case 3: /* TODO */ break;
+                            case 3: org.wheatgenetics.coordinate.MainActivity
+                                .this.startPreferenceActivity(); break;
+
                             case 4: /* TODO */ break;
                         }
                     }
@@ -148,12 +162,26 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onActivityResult(requestCode, resultCode, data);
 
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
-            // noinspection SwitchStatementWithTooFewBranches
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
                         this.templateCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+
+                case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:
+                    {
+                        final boolean uniquenessPreferenceWasClicked;
+                        {
+                            final android.os.Bundle bundle = data.getExtras();
+                            // noinspection SimplifiableConditionalExpression
+                            uniquenessPreferenceWasClicked = null == bundle ?
+                                false : bundle.getBoolean(
+                                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
+                                    false);
+                        }
+                        if (uniquenessPreferenceWasClicked) this.reloadIfNecessary();
+                    }
                     break;
             }
     }
