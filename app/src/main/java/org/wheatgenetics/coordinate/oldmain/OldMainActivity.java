@@ -47,8 +47,8 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
  *
- * org.wheatgenetics.coordinate.gc.GridCreator
- * org.wheatgenetics.coordinate.gc.GridCreator.Handler
+ * org.wheatgenetics.coordinate.gc.OldGridCreator
+ * org.wheatgenetics.coordinate.gc.OldGridCreator.Handler
  *
  * org.wheatgenetics.coordinate.ge.GridExporter
  * org.wheatgenetics.coordinate.ge.GridExporter.Handler
@@ -101,7 +101,7 @@ public class OldMainActivity extends androidx.appcompat.app.AppCompatActivity im
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.model.EntryModels.FilledHandler    ,
 org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler  ,
-org.wheatgenetics.coordinate.gc.GridCreator.Handler
+org.wheatgenetics.coordinate.gc.OldGridCreator.Handler
 {
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, PREPROCESS_TEMPLATE_IMPORT = 20,
         IMPORT_TEMPLATE = 21, EXPORT_TEMPLATE = 22, EXPORT_GRID_REQUEST_CODE = 30,
@@ -133,7 +133,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
         navigationItemSelectedListener;
     private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel          = null;
     private org.wheatgenetics.coordinate.model.ProjectModel    projectModel             = null;
-    private org.wheatgenetics.coordinate.gc.GridCreator        gridCreator              = null;// ll
+    private org.wheatgenetics.coordinate.gc.OldGridCreator     gridCreator              = null;// ll
     private org.wheatgenetics.coordinate.ge.GridExporter       gridExporterInstance     = null;// ll
     private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
     private org.wheatgenetics.coordinate.te.TemplateExporter   templateExporterInstance = null;// ll
@@ -345,7 +345,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     private void createGrid()
     {
         if (null == this.gridCreator)
-            this.gridCreator = new org.wheatgenetics.coordinate.gc.GridCreator(
+            this.gridCreator = new org.wheatgenetics.coordinate.gc.OldGridCreator(
                 this, org.wheatgenetics.coordinate.Types.CREATE_GRID,this);
         this.gridCreator.create(this.projectModel);
     }
@@ -1140,7 +1140,7 @@ org.wheatgenetics.coordinate.gc.GridCreator.Handler
     @java.lang.Override public void clearEntry() { this.saveEntry(null); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.gc.GridCreator.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.gc.OldGridCreator.Handler Overridden Methods
     @java.lang.Override public void handleGridCreated(
     @androidx.annotation.IntRange(from = 1) final long gridId)
     { this.loadJoinedGridModelThenPopulate(gridId); }

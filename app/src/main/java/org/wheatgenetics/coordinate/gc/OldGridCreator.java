@@ -44,7 +44,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class GridCreator extends java.lang.Object implements
+public class OldGridCreator extends java.lang.Object implements
 org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
@@ -63,7 +63,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
     @androidx.annotation.NonNull                    private final
-        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler;
+        org.wheatgenetics.coordinate.gc.OldGridCreator.Handler handler;
 
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;     // lazy load
 
@@ -118,7 +118,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                     @java.lang.Override public void handleCreateProjectDone(
                         @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
-                        org.wheatgenetics.coordinate.gc.GridCreator
+                        org.wheatgenetics.coordinate.gc.OldGridCreator
                             .this.handleCreateProjectDone(projectId);
                     }
                 });
@@ -260,10 +260,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
     // endregion
 
-    public GridCreator(                             final android.app.Activity activity   ,
+    public OldGridCreator(                          final android.app.Activity activity   ,
     @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode,
     @androidx.annotation.NonNull                    final
-        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
+        org.wheatgenetics.coordinate.gc.OldGridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
     // region Overridden Methods
@@ -372,7 +372,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 {
                     @java.lang.Override public void select(final int which)
                     {
-                        org.wheatgenetics.coordinate.gc.GridCreator.this.chooseOldAfterSelect(
+                        org.wheatgenetics.coordinate.gc.OldGridCreator.this.chooseOldAfterSelect(
                             which);
                     }
                 });
@@ -407,7 +407,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
                 new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                 {
                     @java.lang.Override public void select(final int which)
-                    { org.wheatgenetics.coordinate.gc.GridCreator.this.handleProjectChoice(which); }
+                    {
+                        org.wheatgenetics.coordinate.gc.OldGridCreator.this.handleProjectChoice(
+                            which);
+                    }
                 });
 
         // noinspection CStyleArrayDeclaration
