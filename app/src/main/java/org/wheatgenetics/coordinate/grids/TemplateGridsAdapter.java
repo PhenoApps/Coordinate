@@ -33,11 +33,8 @@ class TemplateGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapt
 
     TemplateGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
     @androidx.annotation.IntRange(from = 1) final long templateId)
-    { super(activity); this.setTemplateId(templateId); }
+    { super(activity); this.templateId = templateId; }
 
     @java.lang.Override public void notifyDataSetChanged()
     { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
-
-    void setTemplateId(@androidx.annotation.IntRange(from = 1) final long templateId)
-    { this.templateId = templateId; }
 }
