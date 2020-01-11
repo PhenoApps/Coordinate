@@ -80,8 +80,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     /** 0 means no projectId. */
     @androidx.annotation.IntRange(from = 0) private long projectId;
 
-    private org.wheatgenetics.coordinate.pc.ProjectCreator                                 // lazy
-        clearedProjectCreator = null, loadedProjectCreator = null;                         //  loads
+    private org.wheatgenetics.coordinate.pc.ProjectCreator       projectCreatorInstance = null;// ll
     private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
     private org.wheatgenetics.coordinate.model.TemplateModel     templateModel                ;
@@ -101,12 +100,31 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         this.getTemplateChoiceAlertDialog.show();
     }
 
-    private void clearedHandleCreateProjectDone(
+    // region projectCreator() Private Methods
+    private void handleCreateProjectDone(
     @androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.projectId = projectId; this.handler.loadProjectModel(projectId);
         this.getTemplateChoice();
     }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
+    {
+        if (null == this.projectCreatorInstance) this.projectCreatorInstance =
+            new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity,
+                new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
+                {
+                    @java.lang.Override public void handleCreateProjectDone(
+                        @androidx.annotation.IntRange(from = 1) final long projectId)
+                    {
+                        org.wheatgenetics.coordinate.gc.GridCreator
+                            .this.handleCreateProjectDone(projectId);
+                    }
+                });
+        return this.projectCreatorInstance;
+    }
+    // endregion
 
     // region *Table() Lazy Load Private Methods
     @androidx.annotation.NonNull
@@ -186,17 +204,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         return success;
     }
 
-    private void loadedHandleCreateProjectDone(
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        this.projectId = projectId; this.handler.loadProjectModel(projectId);
-        if (!this.setTemplateFromOtherGrids()) this.getTemplateChoice();
-    }
-
     /**
      * This method's mission is to 1) set this.projectId, 2) sometimes cause a side effect, 3) set
      * this.templateModel and pass control to setValues() (if able to set this.templateModel) or
-     * 4) pass control to this.getTemplateChoiceAlertDialog (if not able to set this.templateModel).
+     * 4) pass control to this.getTemplateChoice() (if not able to set this.templateModel).
      *
      * which               item
      * ===== =================================
@@ -218,42 +229,15 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
         if (null == this.projectModel)
             switch (which)
             {
-                case 0: this.projectId = 0; break;
-
-                case 1:         // If null == this.projectModel then this.projectModel is "cleared."
-                    if (null == this.clearedProjectCreator) this.clearedProjectCreator =
-                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity,
-                            new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
-                            {
-                                @java.lang.Override public void handleCreateProjectDone(
-                                @androidx.annotation.IntRange(from = 1) final long projectId)
-                                {
-                                    org.wheatgenetics.coordinate.gc.GridCreator
-                                        .this.clearedHandleCreateProjectDone(projectId);
-                                }
-                            });
-                    this.clearedProjectCreator.createAndReturn(); return;
-
-                default: throw new java.lang.IllegalArgumentException();
+                case 0 : this.projectId = 0                     ; break ;
+                case 1 : this.projectCreator().createAndReturn(); return;
+                default: throw new java.lang.IllegalArgumentException() ;
             }
         else
             switch (which)
             {
-                case 0: this.projectId = 0; this.handler.clearProjectModel(); break;
-
-                case 1:          // If null != this.projectModel then this.projectModel is "loaded."
-                    if (null == this.loadedProjectCreator) this.loadedProjectCreator =
-                        new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity,
-                            new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
-                            {
-                                @java.lang.Override public void handleCreateProjectDone(
-                                @androidx.annotation.IntRange(from = 1) final long projectId)
-                                {
-                                    org.wheatgenetics.coordinate.gc.GridCreator
-                                        .this.loadedHandleCreateProjectDone(projectId);
-                                }
-                            });
-                    this.loadedProjectCreator.createAndReturn(); return;
+                case 0: this.projectId = 0; this.handler.clearProjectModel(); break ;
+                case 1: this.projectCreator().createAndReturn();              return;
 
                 case 2:
                     this.projectId = this.projectModel.getId();           // SuppressLint({"Range"})
@@ -400,8 +384,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
     @java.lang.Override public void chooseNew()
     {
-        if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
+        if (null == this.templateCreator) this.templateCreator =
+            new org.wheatgenetics.coordinate.tc.TemplateCreator(
                 this.activity, this.requestCode,this);
         this.templateCreator.create();
     }
