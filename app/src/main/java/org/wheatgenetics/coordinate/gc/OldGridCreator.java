@@ -38,15 +38,15 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
- * org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog
- * org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler
  * org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog
  * org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
+ * org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog
+ * org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.Handler
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class OldGridCreator extends java.lang.Object implements
-org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler             ,
+org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.Handler,
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler          ,
 org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -70,8 +70,8 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     private org.wheatgenetics.coordinate.SelectAlertDialog    chooseOldAlertDialog = null;     // ll
     private org.wheatgenetics.coordinate.model.TemplateModels templateModels       = null;
 
-    private org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog
-        getTemplateChoiceAlertDialog = null;                                            // lazy load
+    private org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog
+        templateChoiceAlertDialog = null;                                               // lazy load
 
     @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.ProjectModel
         projectModel = null;
@@ -94,10 +94,10 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     // region Private Methods
     private void getTemplateChoice()
     {
-        if (null == this.getTemplateChoiceAlertDialog) this.getTemplateChoiceAlertDialog =
-            new org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog(
+        if (null == this.templateChoiceAlertDialog) this.templateChoiceAlertDialog =
+            new org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog(
                 this.activity,this);
-        this.getTemplateChoiceAlertDialog.show();
+        this.templateChoiceAlertDialog.show();
     }
 
     // region projectCreator() Private Methods
@@ -245,7 +245,6 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
 
                 default: throw new java.lang.IllegalArgumentException();
             }
-
         this.getTemplateChoice();
     }
 
@@ -363,7 +362,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
     }
     // endregion
 
-    // region org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.Handler Overridden Methods
     @java.lang.Override public void chooseOld()
     {
         if (null == this.chooseOldAlertDialog) this.chooseOldAlertDialog =

@@ -182,10 +182,10 @@
 
 
 
-    <!-- GetTemplateChoiceAlertDialog -->
-    <string name="GetTemplateChoiceAlertDialogTitle">Template Options</string>
-    <string name="GetTemplateChoiceAlertDialogOldItem">Load Template</string>
-    <string name="GetTemplateChoiceAlertDialogNewItem">New Template</string>
+    <!-- TemplateChoiceAlertDialog -->
+    <string name="TemplateChoiceAlertDialogTitle">Template Options</string>
+    <string name="TemplateChoiceAlertDialogOldItem">Load Template</string>
+    <string name="TemplateChoiceAlertDialogNewItem">New Template</string>
 
 
 

@@ -12,13 +12,13 @@ package org.wheatgenetics.coordinate.gc;
  *
  * org.wheatgenetics.coordinate.R
  */
-class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
+class TemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
     { public abstract void chooseOld(); public abstract void chooseNew(); }
 
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler;
+        org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.Handler handler;
 
     private void choose(final int which)
     {
@@ -29,22 +29,22 @@ class GetTemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.Aler
         }
     }
 
-    GetTemplateChoiceAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
-        final org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.Handler handler)
+    TemplateChoiceAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.Handler handler)
     { super(activity); this.handler = handler; }
 
     @java.lang.Override public void configure()
     {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogTitle)
+        this.setTitle(org.wheatgenetics.coordinate.R.string.TemplateChoiceAlertDialogTitle)
             .setItems(new int[]{
-                    org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogOldItem,
-                    org.wheatgenetics.coordinate.R.string.GetTemplateChoiceAlertDialogNewItem},
+                    org.wheatgenetics.coordinate.R.string.TemplateChoiceAlertDialogOldItem,
+                    org.wheatgenetics.coordinate.R.string.TemplateChoiceAlertDialogNewItem},
                 new android.content.DialogInterface.OnClickListener()
                 {
                     @java.lang.Override public void onClick(
                     final android.content.DialogInterface dialog, final int which)
                     {
-                        org.wheatgenetics.coordinate.gc.GetTemplateChoiceAlertDialog.this.choose(
+                        org.wheatgenetics.coordinate.gc.TemplateChoiceAlertDialog.this.choose(
                             which);
                     }
                 });
