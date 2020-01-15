@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="AdvancementPreferenceKey">Advancement</string>
+    <string name="AdvancementPreferenceTitle">Workflow</string>
+    <string name="AdvancementPreferenceSummary">Advance %s</string>
+
+    <string-array name="AdvancementPreferenceEntries">
+        <item>down each column</item>
+        <item>across each row</item>
+    </string-array>
+
+    <string name="AdvancementPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
+    <string name="AdvancementPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+
+    <string-array name="AdvancementPreferenceEntryValues">
+        <item>@string/AdvancementPreferenceDownThenAcrossEntryValue</item>
+        <item>@string/AdvancementPreferenceAcrossThenDownEntryValue</item>
+    </string-array>
+
+    <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
+
+
+    <string name="SoundOnPreferenceKey">SoundOn</string>
+    <string name="SoundOnPreferenceTitle">Notification sounds</string>
+
+
+    <string name="ProjectExportPreferenceKey">ProjectExport</string>
+    <string name="ProjectExportPreferenceTitle">Project Export</string>
+    <string name="ProjectExportPreferenceSummary">Projects export as %s</string>
+
+    <string-array name="ProjectExportPreferenceEntries">
+        <item>one file per grid</item>
+        <item>one file per project</item>
+    </string-array>
+
+    <string name="ProjectExportPreferenceOneFilePerGrid">OneFilePerGrid</string>
+    <string name="ProjectExportPreferenceOneFileEntireProject">OneFileEntireProject</string>
+
+    <string-array name="ProjectExportPreferenceEntryValues">
+        <item>@string/ProjectExportPreferenceOneFilePerGrid</item>
+        <item>@string/ProjectExportPreferenceOneFileEntireProject</item>
+    </string-array>
+
+    <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
+
+
+    <string name="UniquenessCheckBoxPreferenceKey">UniquenessCheckBox</string>
+    <string name="UniquenessCheckBoxPreferenceTitle">Unique Values Required</string>
+
+
+    <string name="UniquenessListPreferenceKey">UniquenessList</string>
+    <string name="UniquenessListPreferenceTitle">Unique Options</string>
+    <string name="UniquenessListPreferenceSummary">Samples must be unique %s</string>
+
+    <string-array name="UniquenessListPreferenceEntries">
+        <item>within current grid</item>
+        <item>among all grids of current project</item>
+        <item>among all grids</item>
+    </string-array>
+
+    <string name="UniquenessListPreferenceCurrentGrid">UniqueCurrentGrid</string>
+    <string name="UniquenessListPreferenceCurrentProject">UniqueCurrentProject</string>
+    <string name="UniquenessListPreferenceAllGrids">UniqueAllGrids</string>
+
+    <string-array name="UniquenessListPreferenceEntryValues">
+        <item>@string/UniquenessListPreferenceCurrentGrid</item>
+        <item>@string/UniquenessListPreferenceCurrentProject</item>
+        <item>@string/UniquenessListPreferenceAllGrids</item>
+    </string-array>
+
+    <string name="UniquenessListPreferenceDefault">@string/UniquenessListPreferenceCurrentGrid</string>
+</resources>

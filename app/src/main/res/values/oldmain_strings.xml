@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- UniqueAlertDialog -->
+    <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
+
+
+
+    <!-- fragment_data_entry.xml -->
+    <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
+
+
+    <!-- activity_main_drawer.xml -->
+    <string name="grid">Grid</string>
+    <string name="create_grid">Create</string>
+    <string name="manage_grid">Manage</string>
+    <string name="export_grid">Export</string>
+
+    <string name="template">Template</string>
+    <string name="create_template">Create</string>
+    <string name="import_template">Import</string>
+    <string name="export_template">Export</string>
+    <string name="delete_template">Delete</string>
+
+    <string name="project">Project</string>
+    <string name="create_project">Create</string>
+    <string name="manage_project">Manage</string>
+    <string name="export_project">Export</string>
+
+    <string name="settings">Settings</string>
+
+    <string name="show_about">About</string>
+
+
+
+    <!-- OldMainActivity -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="MainActivityFilledGridAlertMessage">Grid has been filled!</string>
+</resources>

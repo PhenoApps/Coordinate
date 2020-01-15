@@ -15,7 +15,6 @@ package org.wheatgenetics.coordinate.pe;
  *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.Utils
- * org.wheatgenetics.coordinate.Utils.ProjectExport
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  *
@@ -24,6 +23,9 @@ package org.wheatgenetics.coordinate.pe;
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ *
+ * org.wheatgenetics.coordinate.preference.Utils
+ * org.wheatgenetics.coordinate.preference.Utils.ProjectExport
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ProjectExporter extends java.lang.Object
@@ -97,9 +99,9 @@ public class ProjectExporter extends java.lang.Object
             this.gridsTable().loadByProjectId(this.projectId);
         if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
         {
-            final org.wheatgenetics.coordinate.Utils.ProjectExport projectExport =
-                org.wheatgenetics.coordinate.Utils.getProjectExport(this.activity);
-            if (org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_PER_GRID
+            final org.wheatgenetics.coordinate.preference.Utils.ProjectExport projectExport =
+                org.wheatgenetics.coordinate.preference.Utils.getProjectExport(this.activity);
+            if (org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ONE_FILE_PER_GRID
             == projectExport)
             {
                 org.wheatgenetics.androidlibrary.RequestDir exportDir;
@@ -147,7 +149,8 @@ public class ProjectExporter extends java.lang.Object
                     this.perGridProjectExporter.execute();
                 }
             }
-            else if (org.wheatgenetics.coordinate.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
+            else if (
+            org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
             == projectExport)
                 try
                 {

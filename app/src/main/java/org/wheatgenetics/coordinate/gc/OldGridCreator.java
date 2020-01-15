@@ -35,6 +35,8 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  *
+ * org.wheatgenetics.coordinate.preference.Utils
+ *
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  *
@@ -330,7 +332,7 @@ org.wheatgenetics.coordinate.gc.SetOptionalFieldValuesAlertDialog.Handler
             }
 
             if (joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-            org.wheatgenetics.coordinate.Utils.getAdvancement(this.activity)))
+            org.wheatgenetics.coordinate.preference.Utils.getAdvancement(this.activity)))
                 gridsTable.update(joinedGridModel);                  // Update activeRow, activeCol.
 
             this.entriesTable().insert(joinedGridModel.getEntryModels());

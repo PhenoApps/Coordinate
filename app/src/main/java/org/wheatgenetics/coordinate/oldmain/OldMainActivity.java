@@ -87,6 +87,9 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.pe.ProjectExporter
  *
+ * org.wheatgenetics.coordinate.preference.Utils
+ * org.wheatgenetics.coordinate.preference.Utils.Advancement
+ *
  * org.wheatgenetics.coordinate.te.TemplateExporter
  *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
@@ -95,7 +98,6 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  * org.wheatgenetics.coordinate.Utils
- * org.wheatgenetics.coordinate.Utils.Advancement
  */
 public class OldMainActivity extends androidx.appcompat.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
@@ -621,14 +623,14 @@ org.wheatgenetics.coordinate.gc.OldGridCreator.Handler
     }
 
     // region Default SharedPreferences Private Methods
-    private org.wheatgenetics.coordinate.Utils.Advancement getAdvancement()
-    { return org.wheatgenetics.coordinate.Utils.getAdvancement(this); }
+    private org.wheatgenetics.coordinate.preference.Utils.Advancement getAdvancement()
+    { return org.wheatgenetics.coordinate.preference.Utils.getAdvancement(this); }
 
     private boolean getSoundOn()
-    { return org.wheatgenetics.coordinate.Utils.getSoundOn(this); }
+    { return org.wheatgenetics.coordinate.preference.Utils.getSoundOn(this); }
 
     private boolean getUniqueness()
-    { return org.wheatgenetics.coordinate.Utils.getUniqueness(this); }
+    { return org.wheatgenetics.coordinate.preference.Utils.getUniqueness(this); }
     // endregion
 
     private void reloadIfNecessary()
