@@ -8,8 +8,8 @@
 
 
     <!-- SetOptionalFieldValuesAlertDialog -->
-    <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
-    <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
+    <string name="OldSetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
+    <string name="OldSetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
 
 
 
