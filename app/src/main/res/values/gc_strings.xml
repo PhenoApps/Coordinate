@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>
+    <string name="GridCreatorEntriesAlertMessage">Unable to make excluded entr(y|ies).</string>
+</resources>

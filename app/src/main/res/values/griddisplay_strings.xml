@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ElementConfirmTitle">Exclude Cell</string>
+    <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
+</resources>

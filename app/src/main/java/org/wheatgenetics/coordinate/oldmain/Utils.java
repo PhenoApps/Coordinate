@@ -7,9 +7,6 @@ package org.wheatgenetics.coordinate.oldmain;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.Utils
- * org.wheatgenetics.coordinate.Utils.TypeOfUniqueness
- *
  * org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable
  * org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable
  * org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
@@ -23,6 +20,9 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
+ *
+ * org.wheatgenetics.coordinate.preference.Utils
+ * org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) class Utils extends java.lang.Object
 {
@@ -34,8 +34,8 @@ package org.wheatgenetics.coordinate.oldmain;
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == gridsTableInstance)
-            if (org.wheatgenetics.coordinate.Utils.getUniqueness(context))
-                switch (org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+                switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return new
                         org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable(
@@ -64,8 +64,8 @@ package org.wheatgenetics.coordinate.oldmain;
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == entriesTableInstance)
-            if (org.wheatgenetics.coordinate.Utils.getUniqueness(context))
-                switch (org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+                switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return new
                         org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable(
@@ -100,8 +100,8 @@ package org.wheatgenetics.coordinate.oldmain;
         if (null == gridsTableInstance)
             return false;
         else
-            if (org.wheatgenetics.coordinate.Utils.getUniqueness(context))
-                switch (org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+                switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return !(gridsTableInstance instanceof
                         org.wheatgenetics.coordinate.database.CurrentGridUniqueGridsTable);
@@ -130,8 +130,8 @@ package org.wheatgenetics.coordinate.oldmain;
         if (null == entriesTableInstance)
             return false;
         else
-            if (org.wheatgenetics.coordinate.Utils.getUniqueness(context))
-                switch (org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+                switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return !(entriesTableInstance instanceof
                         org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable);
@@ -160,8 +160,8 @@ package org.wheatgenetics.coordinate.oldmain;
         if (null == joinedGridModel)
             return false;
         else
-            if (org.wheatgenetics.coordinate.Utils.getUniqueness(context))
-                switch (org.wheatgenetics.coordinate.Utils.getTypeOfUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+                switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return
                         joinedGridModel instanceof

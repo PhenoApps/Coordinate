@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- assign_title_rows_cols.xml -->
+    <string name="AssignTitleRowsColsAlertDialogTitleEditTextHint">Template name</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsEditTextHint">Number of rows</string>
+    <string name="AssignTitleRowsColsAlertDialogColsEditTextHint">Number of columns</string>
+
+    <!-- AssignTitleRowsColsAlertDialog -->
+    <string name="AssignTitleRowsColsAlertDialogTitle">New Template</string>
+    <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Next</string>
+    <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
+    <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
+    <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
+
+
+
+    <!-- ExcludedRowsOrColsAlertDialog -->
+    <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
+
+    <!-- ExcludedRowsOrColsAlertDialogTester -->
+    <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
+    <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
+
+
+
+    <!-- generated_excluded_cells.xml -->
+    <string name="GeneratedExcludedCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
+
+    <!-- GeneratedExcludedCellsAlertDialog -->
+    <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
+
+
+
+    <!-- ExcludeAlertDialog -->
+    <string name="ExcludeAlertDialogTitle">Exclude</string>
+    <string name="ExcludeAlertDialogRowsItem">Rows</string>
+    <string name="ExcludeAlertDialogColsItem">Columns</string>
+    <string name="ExcludeAlertDialogCellsItem">Cells</string>
+    <string name="ExcludeAlertDialogRandomItem">Random</string>
+
+
+
+    <!-- set_numbering.xml -->
+    <string name="SetNumberingAlertDialogRowSpinnerLabel">Rows</string>
+    <string name="SetNumberingAlertDialogColSpinnerLabel">Columns</string>
+    <string-array name="SetNumberingAlertDialogSpinnerEntries">
+        <item>1,2,3</item>
+        <item>A,B,C</item>
+    </string-array>
+
+    <!-- SetNumberingAlertDialog -->
+    <string name="SetNumberingAlertDialogTitle">Naming</string>
+
+
+
+    <!-- set_excludes_optional_fields_numbering.xml -->
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
+
+    <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
+    <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
+</resources>
