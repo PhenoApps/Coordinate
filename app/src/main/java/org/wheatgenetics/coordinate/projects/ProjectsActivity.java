@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.projects;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.pm.PackageManager
  * android.content.Context
  * android.content.Intent
@@ -20,6 +21,9 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
+ *
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  *
  * org.wheatgenetics.coordinate.grids.GridsActivity
  *
@@ -39,6 +43,9 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Fields
     private org.wheatgenetics.coordinate.projects.ProjectsAdapter projectsAdapter = null;
 
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
+        statelessGridCreatorInstance = null;                                            // lazy load
+
     private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporterInstance = null;    // ll
 
     private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
@@ -49,6 +56,20 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     // endregion
 
     // region Private Methods
+    // region createGrid() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
+    {
+        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
+        return this.statelessGridCreatorInstance;
+    }
+
+    private void createGrid(@androidx.annotation.IntRange(from = 1) final long projectId)
+    { this.statelessGridCreator().create(projectId); }
+    // endregion
+
     private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
@@ -83,7 +104,8 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
                     @java.lang.Override public void createGrid(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
-                        // TODO
+                        org.wheatgenetics.coordinate.projects.ProjectsActivity.this.createGrid(
+                            projectId);
                     }
 
                     @java.lang.Override public void showGrids(
@@ -162,6 +184,22 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     {
         this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_projects, menu);
         return true;
+    }
+
+    @java.lang.Override protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
+            switch (requestCode)
+            {
+                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                    if (null != this.statelessGridCreatorInstance)
+                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+            }
     }
 
     @java.lang.Override public void onRequestPermissionsResult(final int requestCode,
