@@ -42,7 +42,13 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
     // region Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler statefulHandler()
-    { return (org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler) this.handler(); }
+    {
+        final org.wheatgenetics.coordinate.gc.GridCreator.Handler handler = this.handler();
+        if (null == handler)
+            throw new java.lang.AssertionError();
+        else
+            return (org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler) handler;
+    }
 
     private void clearProjectModel()
     { this.statefulHandler().clearProjectModel(); }

@@ -146,8 +146,8 @@ extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
     private org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog templateChoiceAlertDialog()
     {
         if (null == this.templateChoiceAlertDialogInstance) this.templateChoiceAlertDialogInstance =
-            new org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog(this.activity(),
-                org.wheatgenetics.coordinate.R.string.TemplateChoiceAlertDialogTitle,
+            new org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog(
+                this.activity(), this.templateChoiceAlertDialogOldItem,
                 new org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog.Handler()
                 {
                     @java.lang.Override public void chooseOld()

@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.gc;
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
@@ -46,7 +47,7 @@ abstract class GridCreator extends java.lang.Object
     // region Constructor Fields
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    @androidx.annotation.NonNull                    private final
+    @androidx.annotation.Nullable                   private final
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler;
     // endregion
 
@@ -164,7 +165,7 @@ abstract class GridCreator extends java.lang.Object
 
                 this.entriesTable().insert(joinedGridModel.getEntryModels());
 
-                this.handler.handleGridCreated(gridId);
+                if (null != this.handler) this.handler.handleGridCreated(gridId);
             }
         }
     }
@@ -219,7 +220,7 @@ abstract class GridCreator extends java.lang.Object
     @org.wheatgenetics.coordinate.Types.RequestCode int requestCode() { return this.requestCode; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull
+    @androidx.annotation.Nullable
     org.wheatgenetics.coordinate.gc.GridCreator.Handler handler() { return this.handler; }
     // endregion
 
@@ -263,7 +264,7 @@ abstract class GridCreator extends java.lang.Object
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     GridCreator(                                    final android.app.Activity activity   ,
     @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode,
-    @androidx.annotation.NonNull                    final
+    @androidx.annotation.Nullable                   final
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
