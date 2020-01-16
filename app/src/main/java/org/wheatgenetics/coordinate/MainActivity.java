@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate;
  * android.widget.ArrayAdapter
  * android.widget.ListView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
+ *
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  *
  * org.wheatgenetics.coordinate.grids.GridsActivity
  *
@@ -56,6 +59,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;   // lazy
                                                                                             //  load
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
+        statelessGridCreatorInstance = null;                                            // lazy load
+
     // region Create Template Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
     private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
@@ -115,6 +121,14 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 /* activity               => */this,
                 /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
         this.changeLogAlertDialog.show();
+    }
+
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
+    {
+        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
+        return this.statelessGridCreatorInstance;
     }
 
     // region Create Template Private Methods
@@ -241,6 +255,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
             switch (requestCode)
             {
+                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                    if (null != this.statelessGridCreatorInstance)
+                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
                         this.templateCreatorInstance.setExcludedCells(data.getExtras());
@@ -274,6 +293,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region MenuItem Event Handlers
+    public void onGridMenuItemClick(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem) { this.statelessGridCreator().create(); }
+
     public void onTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.templateCreator().create(); }
 
