@@ -7,10 +7,10 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.coordinate.Utils.Advancement
- *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
+ * org.wheatgenetics.coordinate.preference.Utils.Advancement
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -1359,7 +1359,7 @@ public class JoinedGridModelTest extends java.lang.Object
             org.junit.Assert.assertTrue(joinedGridModel.goToNext(
                 /* activeEntryModel => */ activeEntryModel,
                 /* advancement      => */
-                    org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS,
+                    org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
                 /* filledHandler => */ filledHandler));
             org.junit.Assert.assertSame(
                 joinedGridModel.getElementModel(currentRow + 1, currentCol),
@@ -1368,7 +1368,7 @@ public class JoinedGridModelTest extends java.lang.Object
             org.junit.Assert.assertTrue(joinedGridModel.goToNext(
                 /* activeEntryModel => */ activeEntryModel,
                 /* advancement      => */
-                    org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN,
+                    org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
                 /* filledHandler => */ filledHandler));
         }
         org.junit.Assert.assertSame(joinedGridModel.getElementModel(currentRow,currentCol + 1),
@@ -1421,7 +1421,7 @@ public class JoinedGridModelTest extends java.lang.Object
             org.junit.Assert.assertFalse(joinedGridModel.goToNext(
                 /* activeEntryModel => */ activeEntryModel,
                 /* advancement      => */
-                    org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS,
+                    org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
                 /* filledHandler => */ filledHandler));
             org.junit.Assert.assertSame(
                 joinedGridModel.getElementModel(activeRow + 1,activeCol + 1),
@@ -1430,7 +1430,7 @@ public class JoinedGridModelTest extends java.lang.Object
             org.junit.Assert.assertFalse(joinedGridModel.goToNext(
                 /* activeEntryModel => */ activeEntryModel,
                 /* advancement      => */
-                    org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN,
+                    org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
                 /* filledHandler => */ filledHandler));
         }
         org.junit.Assert.assertSame(
@@ -1473,9 +1473,9 @@ public class JoinedGridModelTest extends java.lang.Object
 
         joinedGridModel.setActiveRowAndActiveCol(0,2);
         org.junit.Assert.assertFalse(joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-            org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS));
+            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS));
         org.junit.Assert.assertFalse(joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-            org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN));
+            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN));
     }
 
     @org.junit.Test() public void hardActiveRowAndOrActiveColWasAdjustedWorks()
@@ -1522,7 +1522,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
         // Adjust activeRow to one that is included:
         org.junit.Assert.assertTrue(joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-            org.wheatgenetics.coordinate.Utils.Advancement.DOWN_THEN_ACROSS));
+            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS));
 
 
         // Make an entry on the first (0) (excluded!) col active:
@@ -1530,7 +1530,7 @@ public class JoinedGridModelTest extends java.lang.Object
 
         // Adjust activeCol to one that is included:
         org.junit.Assert.assertTrue(joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-            org.wheatgenetics.coordinate.Utils.Advancement.ACROSS_THEN_DOWN));
+            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN));
     }
     // endregion
     // endregion
