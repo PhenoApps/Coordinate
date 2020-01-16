@@ -20,10 +20,10 @@ package org.wheatgenetics.coordinate.gc.ps;
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  */
-@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class ProjectSetter extends java.lang.Object
 {
-    @SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract void handleNoProjectSet();
         public abstract void handleProjectSet  (
@@ -31,9 +31,11 @@ abstract class ProjectSetter extends java.lang.Object
     }
 
     // region Fields
+    // region Constructor Fields
                                  private final android.app.Activity activity;
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.gc.ps.ProjectSetter.Handler handler;
+    // endregion
 
     /** 0 means no projectId. */
     @androidx.annotation.IntRange(from = 0) private long projectId;
@@ -63,7 +65,7 @@ abstract class ProjectSetter extends java.lang.Object
             new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity(),
                 new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                 {
-                    @Override public void select(final int which)
+                    @java.lang.Override public void select(final int which)
                     {
                         org.wheatgenetics.coordinate.gc.ps.ProjectSetter.this.handleProjectChoice(
                             which);
@@ -106,7 +108,7 @@ abstract class ProjectSetter extends java.lang.Object
             new org.wheatgenetics.coordinate.pc.ProjectCreator(this.activity(),
                 new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                 {
-                    @Override public void handleCreateProjectDone(
+                    @java.lang.Override public void handleCreateProjectDone(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
                     {
                         org.wheatgenetics.coordinate.gc.ps.ProjectSetter
