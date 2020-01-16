@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.gc;
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  *
  * org.wheatgenetics.coordinate.Types.RequestCode
  *
@@ -51,11 +52,17 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
         return this.statelessProjectSetterInstance;
     }
 
+    // region Constructors
     public StatelessGridCreator(                    final android.app.Activity activity   ,
     @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode,
-    @androidx.annotation.NonNull                    final
+    @androidx.annotation.Nullable                   final
         org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler handler)
     { super(activity, requestCode, handler); }
+
+    public StatelessGridCreator(                    final android.app.Activity activity   ,
+    @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode)
+    { this(activity, requestCode,null); }
+    // endregion
 
     // region Overridden Methods
     @java.lang.Override @androidx.annotation.NonNull
