@@ -67,7 +67,7 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     private void createGrid(@androidx.annotation.IntRange(from = 1) final long projectId)
-    { this.statelessGridCreator().create(projectId); }
+    { this.statelessGridCreator().createInProject(projectId); }
     // endregion
 
     private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
