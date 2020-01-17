@@ -17,7 +17,7 @@ package org.wheatgenetics.coordinate.grids;
 class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapter
 {
     // region Fields
-    @androidx.annotation.IntRange(from = 1) private long projectId;
+    @androidx.annotation.IntRange(from = 1) private final long projectId;
     private org.wheatgenetics.coordinate.model.BaseJoinedGridModels
         baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
