@@ -106,6 +106,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     }
 
     // region Export Private Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.te.TemplateExporter templateExporter()
     {
         if (null == this.templateExporterInstance) this.templateExporterInstance =
@@ -124,6 +125,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
 
     // region templateClickAlertDialog() Private Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
     templateClickAlertDialog()
     {
@@ -167,6 +169,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region importMenuItem Private Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnabler()
     {
         if (null == this.menuItemEnablerInstance) this.menuItemEnablerInstance =
@@ -194,6 +197,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         return this.templatesTableInstance;
     }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
     {
         if (null == this.templateCreatorInstance)

@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.grids;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.Context
  * android.content.pm.PackageManager
  * android.content.Intent
@@ -19,8 +20,12 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
+ *
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler
  *
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
@@ -45,6 +50,9 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     private org.wheatgenetics.coordinate.ge.GridExporter   gridExporterInstance = null; // lazy load
     private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
         gridClickAlertDialogInstance = null;                                            // lazy load
+
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
+        statelessGridCreatorInstance = null;                                            // lazy load
 
     private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
     // endregion
@@ -110,6 +118,28 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 
     private void showGridClickAlertDialog(@androidx.annotation.IntRange(from = 1) final long gridId)
     { this.gridClickAlertDialog().show(gridId); }
+    // endregion
+
+    // region createGrid() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
+    {
+        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,
+                new org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler()
+                {
+                    @java.lang.Override public void handleGridCreated(
+                    @androidx.annotation.IntRange(from = 1) final long gridId)
+                    {
+                        org.wheatgenetics.coordinate.grids
+                            .GridsActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.statelessGridCreatorInstance;
+    }
+
+    private void createGrid() { statelessGridCreator().create(); }
     // endregion
 
     // region intent Private Methods
@@ -232,17 +262,27 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                         break;
                 }
     }
+
+    @java.lang.Override protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
+            switch (requestCode)
+            {
+                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                    if (null != this.statelessGridCreatorInstance)
+                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+            }
+    }
     // endregion
 
     // region MenuItem Event Handler
     public void onNewGridMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem)
-    {
-        /*if (null == this.gridGreator)
-            this.gridGreator = new org.wheatgenetics.coordinate.tc.GridCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,this);
-        this.gridGreator.create();*/
-    }
+    final android.view.MenuItem menuItem) { this.createGrid(); }
     // endregion
 
     // region Public Methods
