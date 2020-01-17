@@ -19,12 +19,12 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.androidlibrary.ClearingEditorActionListener
  * org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
  *
+ * org.wheatgenetics.coordinate.BuildConfig
+ * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
- * org.wheatgenetics.coordinate.BuildConfig
- * org.wheatgenetics.coordinate.R
  */
 public class DataEntryFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
@@ -64,8 +64,9 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     }
 
     @java.lang.Override public android.view.View onCreateView(
-    @androidx.annotation.NonNull final android.view.LayoutInflater inflater,
-    final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
+    @androidx.annotation.NonNull  final android.view.LayoutInflater inflater          ,
+    @androidx.annotation.Nullable final android.view.ViewGroup      container         ,
+    @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)
     {
         // Inflate the layout for this fragment:
         return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_data_entry,
