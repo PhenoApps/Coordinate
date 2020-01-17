@@ -88,9 +88,19 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
     // endregion
 
     // region Public Methods
-    public void create() { this.statelessProjectSetter().set(); }
+    public void create()
+    { this.setTemplateIdStatusToCleared(); this.statelessProjectSetter().set(); }
+
+    public void createFromTemplate(@androidx.annotation.IntRange(from = 1) final long templateId)
+    {
+        this.setTemplateId(templateId); this.setTemplateIdStatusToSet();
+        this.statelessProjectSetter().set();
+    }
 
     public void createInProject(@androidx.annotation.IntRange(from = 1) final long projectId)
-    { this.handleProjectSet(projectId, /* existing => */true); }
+    {
+        this.setTemplateIdStatusToCleared();
+        this.handleProjectSet(projectId, /* existing => */true);
+    }
     // endregion
 }

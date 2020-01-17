@@ -27,6 +27,8 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator
+ *
  * org.wheatgenetics.coordinate.grids.GridsActivity
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -55,6 +57,9 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // region Fields
     private org.wheatgenetics.coordinate.templates.TemplatesAdapter templatesAdapter = null;
 
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
+        statelessGridCreatorInstance = null;                                            // lazy load
+
     private org.wheatgenetics.coordinate.te.TemplateExporter templateExporterInstance = null;  // ll
 
     private org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
@@ -80,6 +85,20 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Private Methods
+    // region createGrid() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
+    {
+        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
+        return this.statelessGridCreatorInstance;
+    }
+
+    private void createGrid(@androidx.annotation.IntRange(from = 1) final long templateId)
+    { statelessGridCreator().createFromTemplate(templateId); }
+    // endregion
+
     private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long templateId)
     {
         this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.templateIdIntent(
@@ -115,7 +134,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                     @java.lang.Override public void createGrid(
                     @androidx.annotation.IntRange(from = 1) final long templateId)
                     {
-                        // TODO
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity.this.createGrid(
+                            templateId);
                     }
 
                     @java.lang.Override public void showGrids(
@@ -317,9 +337,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onActivityResult(requestCode, resultCode, data);
 
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
-            // noinspection SwitchStatementWithTooFewBranches
             switch (requestCode)
             {
+                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                    if (null != this.statelessGridCreatorInstance)
+                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
                         this.templateCreatorInstance.setExcludedCells(data.getExtras());
