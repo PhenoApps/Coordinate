@@ -70,8 +70,6 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.Model
  * org.wheatgenetics.coordinate.model.ProjectModel
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  * org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
  *
@@ -717,36 +715,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         }
         // endregion
 
-        // region Default Templates
-        // Adds default templates to database if they aren't there already.  If they are there then
-        // they are updated to their default values.
-        {
-            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
-                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-            if (defaultTemplateModels.size() > 0)
-            {
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    this.templatesTable();
-                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
-                defaultTemplateModels)
-                {
-                    final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
-                        defaultTemplateModel.getType();
-                    if (templatesTable.exists(defaultTemplateType))
-                    {
-                        {
-                            final org.wheatgenetics.coordinate.model.TemplateModel
-                                existingTemplateModel = templatesTable.get(defaultTemplateType);
-                            if (null != existingTemplateModel)
-                                defaultTemplateModel.setId(existingTemplateModel.getId());
-                        }
-                        templatesTable.update(defaultTemplateModel);
-                    }
-                    else templatesTable.insert(defaultTemplateModel);
-                }
-            }
-        }
-        // endregion
+        org.wheatgenetics.coordinate.Utils.initializeDefaultTemplates(this);
 
         // region Find fragments.
         {

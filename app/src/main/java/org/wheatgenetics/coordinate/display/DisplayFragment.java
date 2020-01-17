@@ -66,8 +66,9 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     }
 
     @java.lang.Override public android.view.View onCreateView(
-    @androidx.annotation.NonNull final android.view.LayoutInflater inflater,
-    final android.view.ViewGroup container, final android.os.Bundle savedInstanceState)
+    @androidx.annotation.NonNull  final android.view.LayoutInflater inflater          ,
+    @androidx.annotation.Nullable final android.view.ViewGroup      container         ,
+    @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)
     {
         // Inflate the layout for this fragment:
         return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_display,
