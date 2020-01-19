@@ -19,9 +19,12 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
+ * org.wheatgenetics.coordinate.model.TemplateModel
+ * org.wheatgenetics.coordinate.model.TemplateModels
+ * org.wheatgenetics.coordinate.model.TemplateType
+ *
  * org.wheatgenetics.coordinate.AboutAlertDialog
  * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Utils
  */
 public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 {
@@ -93,7 +96,37 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     {
         super.onCreate(savedInstanceState);
 
-        org.wheatgenetics.coordinate.Utils.initializeDefaultTemplates(this);         // TODO
+        // region Initialize Default Templates
+        {
+            // Adds default templates to database if they aren't there already.  If they are there
+            // then they are updated to their default values.
+            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
+                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+            if (defaultTemplateModels.size() > 0)
+            {
+                @androidx.annotation.NonNull
+                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
+                    this.templatesTable();
+                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
+                defaultTemplateModels)
+                {
+                    final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
+                        defaultTemplateModel.getType();
+                    if (templatesTable.exists(defaultTemplateType))
+                    {
+                        {
+                            final org.wheatgenetics.coordinate.model.TemplateModel
+                                existingTemplateModel = templatesTable.get(defaultTemplateType);
+                            if (null != existingTemplateModel)
+                                defaultTemplateModel.setId(existingTemplateModel.getId());
+                        }
+                        templatesTable.update(defaultTemplateModel);
+                    }
+                    else templatesTable.insert(defaultTemplateModel);
+                }
+            }
+        }
+        // endregion
 
         // region Get version.
         int versionCode;
