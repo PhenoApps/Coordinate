@@ -122,14 +122,12 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
 
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
-    private org.wheatgenetics.coordinate.model.JoinedGridModel  joinedGridModel = null;
-    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel    = null;
-    private org.wheatgenetics.coordinate.gc.StatefulGridCreator
-        statefulGridCreatorInstance = null;                                             // lazy load
-    private org.wheatgenetics.coordinate.ge.GridExporter     gridExporterInstance     = null;  // ll
-    private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporterInstance = null;  // ll
-    private org.wheatgenetics.coordinate.te.TemplateExporter templateExporterInstance = null;  // ll
-    private org.wheatgenetics.coordinate.pe.ProjectExporter  projectExporterInstance  = null;  // ll
+    private org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel          = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel    projectModel             = null;
+    private org.wheatgenetics.coordinate.ge.GridExporter       gridExporterInstance     = null;// ll
+    private org.wheatgenetics.coordinate.ti.TemplateImporter   templateImporterInstance = null;// ll
+    private org.wheatgenetics.coordinate.te.TemplateExporter   templateExporterInstance = null;// ll
+    private org.wheatgenetics.coordinate.pe.ProjectExporter    projectExporterInstance  = null;// ll
 
     private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.oldmain.DataEntryFragment       dataEntryFragment  ;
@@ -328,10 +326,10 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.StatefulGridCreator statefulGridCreator()
     {
-        if (null == this.statefulGridCreatorInstance) this.statefulGridCreatorInstance =
+        if (null == this.gridCreatorInstance) this.gridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatefulGridCreator(
                 this, org.wheatgenetics.coordinate.Types.CREATE_GRID,this);
-        return this.statefulGridCreatorInstance;
+        return (org.wheatgenetics.coordinate.gc.StatefulGridCreator) this.gridCreatorInstance;
     }
 
     private void createGrid() { this.statefulGridCreator().create(this.projectModel); }
@@ -784,11 +782,6 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                     case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                         if (null != this.navigationItemSelectedListener)
                             this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
-                        break;
-
-                    case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                        if (null != this.statefulGridCreatorInstance)
-                            this.statefulGridCreatorInstance.setExcludedCells(data.getExtras());
                         break;
 
                     case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:

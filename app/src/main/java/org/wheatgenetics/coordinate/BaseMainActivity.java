@@ -2,6 +2,8 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.app.Activity
+ * android.content.Intent
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
@@ -17,6 +19,8 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.gc.GridCreator
+ *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -25,6 +29,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.AboutAlertDialog
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
  */
 public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 {
@@ -39,6 +44,8 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;  // lazy
                                                                                             //  load
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
+
+    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
     // endregion
 
     // region Private Methods
@@ -91,6 +98,7 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     }
     // endregion
 
+    // region Overridden Methods
     @java.lang.Override protected void onCreate(
     @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
@@ -160,4 +168,21 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
             { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
         // endregion
     }
+
+    @java.lang.Override protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
+            switch (requestCode)
+            {
+                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                    if (null != this.gridCreatorInstance)
+                        this.gridCreatorInstance.setExcludedCells(data.getExtras());
+                    break;
+            }
+    }
+    // endregion
 }
