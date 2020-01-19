@@ -41,6 +41,7 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.collector.DataEntryFragment
  * org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
+ * org.wheatgenetics.coordinate.collector.Utils
  *
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
@@ -77,9 +78,6 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
  * org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener.Handler
  *
- * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
- * org.wheatgenetics.coordinate.oldmain.Utils
- *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
  * org.wheatgenetics.coordinate.pe.ProjectExporter
@@ -91,6 +89,8 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
+ *
+ * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
  */
 public class OldMainActivity extends org.wheatgenetics.coordinate.BaseMainActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
@@ -149,14 +149,14 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
-        return org.wheatgenetics.coordinate.oldmain.Utils.gridsTable(
+        return org.wheatgenetics.coordinate.collector.Utils.gridsTable(
             this.gridsTableInstance,this);
     }
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
-        return org.wheatgenetics.coordinate.oldmain.Utils.entriesTable(
+        return org.wheatgenetics.coordinate.collector.Utils.entriesTable(
             this.entriesTableInstance, this.gridsTable(),this);
     }
     // endregion
@@ -612,15 +612,15 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
 
     private void reloadIfNecessary()
     {
-        if (org.wheatgenetics.coordinate.oldmain.Utils.gridsTableNeedsReloading(
+        if (org.wheatgenetics.coordinate.collector.Utils.gridsTableNeedsReloading(
         this.gridsTableInstance,this))
             this.gridsTableInstance = null;
 
-        if (org.wheatgenetics.coordinate.oldmain.Utils.entriesTableNeedsReloading(
+        if (org.wheatgenetics.coordinate.collector.Utils.entriesTableNeedsReloading(
         this.entriesTableInstance,this))
             this.entriesTableInstance = null;
 
-        if (org.wheatgenetics.coordinate.oldmain.Utils.joinedGridModelNeedsReloading(
+        if (org.wheatgenetics.coordinate.collector.Utils.joinedGridModelNeedsReloading(
         this.joinedGridModel,this))
             this.loadJoinedGridModelThenPopulate(this.joinedGridModel.getId());
     }

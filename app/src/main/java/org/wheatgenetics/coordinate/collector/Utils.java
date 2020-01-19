@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.oldmain;
+package org.wheatgenetics.coordinate.collector;
 
 /**
  * Uses:
@@ -24,11 +24,12 @@ package org.wheatgenetics.coordinate.oldmain;
  * org.wheatgenetics.coordinate.preference.Utils
  * org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) class Utils extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class Utils extends java.lang.Object
 {
     // region Table Methods
     @androidx.annotation.Nullable
-    static org.wheatgenetics.coordinate.database.GridsTable gridsTable(
+    public static org.wheatgenetics.coordinate.database.GridsTable gridsTable(
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.GridsTable
         gridsTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
@@ -56,7 +57,7 @@ package org.wheatgenetics.coordinate.oldmain;
     }
 
     @androidx.annotation.Nullable
-    static org.wheatgenetics.coordinate.database.EntriesTable entriesTable(
+    public static org.wheatgenetics.coordinate.database.EntriesTable entriesTable(
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.EntriesTable
         entriesTableInstance,
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.GridsTable
@@ -75,7 +76,7 @@ package org.wheatgenetics.coordinate.oldmain;
                         final org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable
                             currentProjectUniqueGridsTable = (org.wheatgenetics
                                 .coordinate.database.CurrentProjectUniqueGridsTable)
-                                org.wheatgenetics.coordinate.oldmain.Utils.gridsTable(
+                                org.wheatgenetics.coordinate.collector.Utils.gridsTable(
                                     gridsTableInstance, context);
                         return null == currentProjectUniqueGridsTable ? null : new
                             org.wheatgenetics.coordinate.database.CurrentProjectUniqueEntriesTable(
@@ -93,8 +94,8 @@ package org.wheatgenetics.coordinate.oldmain;
     // endregion
 
     // region needsReloading() Methods
-    static boolean gridsTableNeedsReloading(@androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance,
+    public static boolean gridsTableNeedsReloading(@androidx.annotation.Nullable
+        final org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == gridsTableInstance)
@@ -123,8 +124,8 @@ package org.wheatgenetics.coordinate.oldmain;
                     org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable;
     }
 
-    static boolean entriesTableNeedsReloading(@androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance,
+    public static boolean entriesTableNeedsReloading(@androidx.annotation.Nullable
+        final org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == entriesTableInstance)
@@ -153,7 +154,7 @@ package org.wheatgenetics.coordinate.oldmain;
                     org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable;
     }
 
-    static boolean joinedGridModelNeedsReloading(
+    public static boolean joinedGridModelNeedsReloading(
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel,
     @androidx.annotation.NonNull final android.content.Context context)
     {
