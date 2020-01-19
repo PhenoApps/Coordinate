@@ -7,8 +7,6 @@ package org.wheatgenetics.coordinate;
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
- * android.view.View
- * android.view.View.OnClickListener
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
@@ -27,7 +25,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
  *
- * org.wheatgenetics.coordinate.AboutAlertDialog
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  */
@@ -41,14 +38,11 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
 
-    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;  // lazy
-                                                                                            //  load
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
 
     protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
     // endregion
 
-    // region Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog()
     {
@@ -58,20 +52,6 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
                 /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
         return this.changeLogAlertDialogInstance;
     }
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialog()
-    {
-        if (null == this.aboutAlertDialogInstance) this.aboutAlertDialogInstance =
-            new org.wheatgenetics.coordinate.AboutAlertDialog(
-                this, this.versionName(), new android.view.View.OnClickListener()
-            {
-                @java.lang.Override public void onClick(final android.view.View view)
-                { org.wheatgenetics.coordinate.BaseMainActivity.this.showChangeLog(); }
-            });
-        return this.aboutAlertDialogInstance;
-    }
-    // endregion
 
     // region Protected Methods
     protected java.lang.String versionName() { return this.versionName; }
@@ -86,8 +66,6 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     }
 
     protected void showChangeLog() { this.changeLogAlertDialog().show(); }
-
-    protected void showAboutAlertDialog() { this.aboutAlertDialog().show(); }
 
     @androidx.annotation.NonNull
     protected org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
