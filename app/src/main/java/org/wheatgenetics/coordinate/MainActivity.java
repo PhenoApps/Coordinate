@@ -4,8 +4,6 @@ package org.wheatgenetics.coordinate;
  * Uses:
  * android.app.Activity
  * android.content.Intent
- * android.content.pm.PackageInfo
- * android.content.pm.PackageManager.NameNotFoundException
  * android.os.Bundle
  * android.view.Menu
  * android.view.MenuItem
@@ -19,19 +17,13 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.AppCompatActivity
- *
- * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.androidlibrary.Utils
- * org.wheatgenetics.changelog.ChangeLogAlertDialog
- * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
  * org.wheatgenetics.coordinate.AboutAlertDialog
+ * org.wheatgenetics.coordinate.BaseMainActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
- *
- * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  *
@@ -50,23 +42,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  */
-public class MainActivity extends androidx.appcompat.app.AppCompatActivity
+public class MainActivity extends org.wheatgenetics.coordinate.BaseMainActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;     // ll
-    private java.lang.String                              versionName                    ;
-
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog = null;   // lazy
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;  // lazy
                                                                                             //  load
-    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
-        statelessGridCreatorInstance = null;                                            // lazy load
-
-    // region Create Template Fields
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
-    private org.wheatgenetics.coordinate.tc.TemplateCreator      templateCreatorInstance = null;//ll
-    // endregion
-
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance = null;  // lazy
+                                                                                             //  load
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;   // lazy
     // endregion                                                                            //  load
 
@@ -103,7 +86,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.aboutAlertDialogInstance) this.aboutAlertDialogInstance =
             new org.wheatgenetics.coordinate.AboutAlertDialog(
-                this, this.versionName, new android.view.View.OnClickListener()
+                this, this.versionName(), new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
@@ -114,32 +97,16 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void showAboutAlertDialog() { this.aboutAlertDialog().show(); }
     // endregion
 
-    private void showChangeLog()
-    {
-        if (null == this.changeLogAlertDialog)
-            this.changeLogAlertDialog = new org.wheatgenetics.changelog.ChangeLogAlertDialog(
-                /* activity               => */this,
-                /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
-        this.changeLogAlertDialog.show();
-    }
-
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
     {
-        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+        if (null == this.gridCreatorInstance) this.gridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
                 this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
-        return this.statelessGridCreatorInstance;
+        return (org.wheatgenetics.coordinate.gc.StatelessGridCreator) this.gridCreatorInstance;
     }
 
     // region Create Template Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
-    }
-
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
 
@@ -206,39 +173,6 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                     });
             }
         }
-
-        // region Get version.
-        int versionCode;
-        try
-        {
-            final android.content.pm.PackageInfo packageInfo =
-                this.getPackageManager().getPackageInfo(   // throws android.content.pm.Package-
-                    this.getPackageName(),0);           //  Manager.NameNotFoundException
-            if (null == packageInfo)
-            {
-                versionCode      = 0;
-                this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
-            }
-            else
-            {
-                versionCode      = packageInfo.versionCode;
-                this.versionName = packageInfo.versionName;
-            }
-        }
-        catch (final android.content.pm.PackageManager.NameNotFoundException e)
-        {
-            versionCode      = 0;
-            this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
-        }
-        // endregion
-
-        // region Set version.
-        final org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences =
-            new org.wheatgenetics.sharedpreferences.SharedPreferences(
-                this.getSharedPreferences("Settings", /* mode => */0));
-        if (!sharedPreferences.updateVersionIsSet(versionCode))
-            { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
-        // endregion
     }
 
     @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
@@ -255,17 +189,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
             switch (requestCode)
             {
-                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.statelessGridCreatorInstance)
-                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
-
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
                         this.templateCreatorInstance.setExcludedCells(data.getExtras());
                     break;
 
-                case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:
+                case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:             // TODO: DRY
                     {
                         final boolean uniquenessPreferenceWasClicked;
                         {
