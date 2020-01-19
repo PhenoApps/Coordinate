@@ -38,7 +38,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.gc.vs.ValueSetter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-abstract class GridCreator extends java.lang.Object
+public abstract class GridCreator extends java.lang.Object
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler

@@ -18,12 +18,6 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.androidlibrary.RequestDir
  * org.wheatgenetics.androidlibrary.Utils
  *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateModels
- * org.wheatgenetics.coordinate.model.TemplateType
- *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.TemplatesDir
@@ -31,9 +25,6 @@ package org.wheatgenetics.coordinate;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
-    private static org.wheatgenetics.coordinate.database.TemplatesTable
-        templatesTableInstance = null;                                                  // lazy load
-
     // region AlertDialog Methods
     // private alert(String title, String message, positiveText, positiveListener, negativeListener)
     //     public alert(int title, String message)
@@ -256,50 +247,6 @@ public class Utils extends java.lang.Object
                 /* requestCode => */ requestCode);
         result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
         return result;                                   //  netics.javalib.Dir.PermissionException
-    }
-    // endregion
-
-    // region initializeDefaultTemplates() Methods
-    @androidx.annotation.NonNull
-    private static org.wheatgenetics.coordinate.database.TemplatesTable templatesTable(
-    final android.content.Context context)
-    {
-        if (null == org.wheatgenetics.coordinate.Utils.templatesTableInstance)
-            org.wheatgenetics.coordinate.Utils.templatesTableInstance =
-                new org.wheatgenetics.coordinate.database.TemplatesTable(context);
-        return org.wheatgenetics.coordinate.Utils.templatesTableInstance;
-    }
-
-    /*
-     * Adds default templates to database if they aren't there already.  If they are there then they
-     * are updated to their default values.
-     */
-    public static void initializeDefaultTemplates(final android.content.Context context)
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-        if (defaultTemplateModels.size() > 0)
-        {
-            final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                org.wheatgenetics.coordinate.Utils.templatesTable(context);
-            for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
-            defaultTemplateModels)
-            {
-                final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
-                    defaultTemplateModel.getType();
-                if (templatesTable.exists(defaultTemplateType))
-                {
-                    {
-                        final org.wheatgenetics.coordinate.model.TemplateModel
-                            existingTemplateModel = templatesTable.get(defaultTemplateType);
-                        if (null != existingTemplateModel)
-                            defaultTemplateModel.setId(existingTemplateModel.getId());
-                    }
-                    templatesTable.update(defaultTemplateModel);
-                }
-                else templatesTable.insert(defaultTemplateModel);
-            }
-        }
     }
     // endregion
 }
