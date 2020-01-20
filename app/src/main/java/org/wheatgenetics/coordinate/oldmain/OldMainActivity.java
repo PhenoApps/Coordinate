@@ -41,6 +41,7 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.collector.DataEntryFragment
  * org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
+ * org.wheatgenetics.coordinate.collector.UniqueAlertDialog
  * org.wheatgenetics.coordinate.collector.Utils
  *
  * org.wheatgenetics.coordinate.database.EntriesTable
@@ -89,8 +90,6 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
- *
- * org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog
  */
 public class OldMainActivity extends org.wheatgenetics.coordinate.BaseMainActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
@@ -133,7 +132,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment gridDisplayFragment;
     private org.wheatgenetics.coordinate.collector.DataEntryFragment     dataEntryFragment  ;
 
-    private org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog uniqueAlertDialog = null;   // ll
+    private org.wheatgenetics.coordinate.collector.UniqueAlertDialog uniqueAlertDialog = null; // ll
     // endregion
 
     // region Private Methods
@@ -648,7 +647,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         }
 
         if (null == this.uniqueAlertDialog) this.uniqueAlertDialog =
-            new org.wheatgenetics.coordinate.oldmain.UniqueAlertDialog(this);
+            new org.wheatgenetics.coordinate.collector.UniqueAlertDialog(this);
         this.uniqueAlertDialog.show(message);
     }
     // endregion
