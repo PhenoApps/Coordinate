@@ -13,7 +13,7 @@
         android:theme="@style/OldAppTheme">
 
         <activity
-            android:name=".oldmain.OldMainActivity"
+            android:name=".main.OldMainActivity"
             android:configChanges="keyboardHidden|keyboard">
 
             <intent-filter>

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.main;
 
 /**
  * Uses:
@@ -10,11 +10,14 @@ package org.wheatgenetics.coordinate;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.changelog.ChangeLogAlertDialog
+ *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
@@ -28,17 +31,16 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  */
-public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
+abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 {
     // region Fields
-    private java.lang.String                                      versionName;
+    private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;//ll
+    private java.lang.String                                      versionName                  ;
     private org.wheatgenetics.sharedpreferences.SharedPreferences
         sharedPreferencesInstances = null;                                              // lazy load
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
-
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance  = null;//ll
 
     protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
     // endregion
@@ -54,8 +56,19 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
     }
 
     // region Protected Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull
+    protected org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+        return this.templatesTableInstance;
+    }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected java.lang.String versionName() { return this.versionName; }
 
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
     protected org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
     {
@@ -65,15 +78,8 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
         return this.sharedPreferencesInstances;
     }
 
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void showChangeLog() { this.changeLogAlertDialog().show(); }
-
-    @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
-        return this.templatesTableInstance;
-    }
     // endregion
 
     // region Overridden Methods
@@ -86,6 +92,7 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
         {
             // Adds default templates to database if they aren't there already.  If they are there
             // then they are updated to their default values.
+            @androidx.annotation.NonNull
             final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
                 org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
             if (defaultTemplateModels.size() > 0)
@@ -101,6 +108,7 @@ public abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatA
                     if (templatesTable.exists(defaultTemplateType))
                     {
                         {
+                            @androidx.annotation.Nullable
                             final org.wheatgenetics.coordinate.model.TemplateModel
                                 existingTemplateModel = templatesTable.get(defaultTemplateType);
                             if (null != existingTemplateModel)
