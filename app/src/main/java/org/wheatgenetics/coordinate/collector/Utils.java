@@ -25,11 +25,11 @@ package org.wheatgenetics.coordinate.collector;
  * org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class Utils extends java.lang.Object
+class Utils extends java.lang.Object
 {
     // region Table Methods
     @androidx.annotation.Nullable
-    public static org.wheatgenetics.coordinate.database.GridsTable gridsTable(
+    static org.wheatgenetics.coordinate.database.GridsTable gridsTable(
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.GridsTable
         gridsTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
@@ -57,7 +57,7 @@ public class Utils extends java.lang.Object
     }
 
     @androidx.annotation.Nullable
-    public static org.wheatgenetics.coordinate.database.EntriesTable entriesTable(
+    static org.wheatgenetics.coordinate.database.EntriesTable entriesTable(
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.EntriesTable
         entriesTableInstance,
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.database.GridsTable
@@ -94,7 +94,7 @@ public class Utils extends java.lang.Object
     // endregion
 
     // region needsReloading() Methods
-    public static boolean gridsTableNeedsReloading(@androidx.annotation.Nullable
+    static boolean gridsTableNeedsReloading(@androidx.annotation.Nullable
         final org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
     {
@@ -124,7 +124,7 @@ public class Utils extends java.lang.Object
                     org.wheatgenetics.coordinate.database.AllGridsUniqueGridsTable;
     }
 
-    public static boolean entriesTableNeedsReloading(@androidx.annotation.Nullable
+    static boolean entriesTableNeedsReloading(@androidx.annotation.Nullable
         final org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance,
     @androidx.annotation.NonNull final android.content.Context context)
     {
@@ -154,7 +154,7 @@ public class Utils extends java.lang.Object
                     org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable;
     }
 
-    public static boolean joinedGridModelNeedsReloading(
+    static boolean joinedGridModelNeedsReloading(
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel,
     @androidx.annotation.NonNull final android.content.Context context)
     {
