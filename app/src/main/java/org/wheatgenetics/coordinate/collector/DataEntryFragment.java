@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.oldmain;
+package org.wheatgenetics.coordinate.collector;
 
 /**
  * Uses:
@@ -29,7 +29,7 @@ package org.wheatgenetics.coordinate.oldmain;
 public class DataEntryFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
 {
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
+    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
         public abstract java.lang.String getEntryValue   ();
         public abstract java.lang.String getProjectTitle ();
@@ -42,12 +42,17 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     }
 
     // region Fields
-    private org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler handler;
+    private org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler handler;
 
     private android.widget.EditText     entryEditText                              ;
     private android.widget.TextView     projectTitleTextView, templateTitleTextView;
     private android.widget.LinearLayout optionalFieldsLayout                       ;
     // endregion
+
+    private static void setText(
+    @androidx.annotation.Nullable final android.widget.TextView textView,
+    @androidx.annotation.Nullable final java.lang.String        text    )
+    { if (null != textView) textView.setText(text); }
 
     public DataEntryFragment() { /* Required empty public constructor. */ }
 
@@ -57,8 +62,9 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
     {
         super.onAttach(context);
 
-        if (context instanceof org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler)
-            this.handler = (org.wheatgenetics.coordinate.oldmain.DataEntryFragment.Handler) context;
+        if (context instanceof org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler)
+            this.handler =
+                (org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler) context;
         else
             throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
     }
@@ -119,12 +125,10 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
         {
             this.setEntry(this.handler.getEntryValue());
 
-            if (null != this.projectTitleTextView)
-                this.projectTitleTextView.setText(this.handler.getProjectTitle());
-
-            if (null != this.templateTitleTextView)
-                this.templateTitleTextView.setText(this.handler.getTemplateTitle());
-
+            org.wheatgenetics.coordinate.collector.DataEntryFragment.setText(
+                this.projectTitleTextView, this.handler.getProjectTitle());
+            org.wheatgenetics.coordinate.collector.DataEntryFragment.setText(
+                this.templateTitleTextView, this.handler.getTemplateTitle());
 
             if (null != this.optionalFieldsLayout)
             {
@@ -154,14 +158,14 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
                                 {
                                     final android.widget.TextView nameTextView = view.findViewById(
                                         org.wheatgenetics.coordinate.R.id.nameTextView);
-                                    if (null != nameTextView)
-                                        nameTextView.setText(baseOptionalField.getName());
+                                    org.wheatgenetics.coordinate.collector.DataEntryFragment
+                                        .setText(nameTextView, baseOptionalField.getName());
                                 }
                                 {
                                     final android.widget.TextView valueTextView = view.findViewById(
                                         org.wheatgenetics.coordinate.R.id.valueTextView);
-                                    if (null != valueTextView)
-                                        valueTextView.setText(baseOptionalField.getValue());
+                                    org.wheatgenetics.coordinate.collector.DataEntryFragment
+                                        .setText(valueTextView, baseOptionalField.getValue());
                                 }
                             }
                             this.optionalFieldsLayout.addView(view);

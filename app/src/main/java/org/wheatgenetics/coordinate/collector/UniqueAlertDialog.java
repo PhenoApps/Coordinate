@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.oldmain;
+package org.wheatgenetics.coordinate.collector;
 
 /**
  * Uses:

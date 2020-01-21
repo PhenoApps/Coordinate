@@ -39,9 +39,13 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     }
 
     // region Fields
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable protected
         org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler;
-    @androidx.annotation.Nullable private   android.widget.TableLayout                  tableLayout;
+
+    @androidx.annotation.Nullable private android.widget.TableLayout tableLayout;
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.display.Elements elements ;
     // endregion
 
@@ -84,8 +88,8 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
         if (null == activity)
             this.tableLayout = null;
         else
-            this.tableLayout =
-                activity.findViewById(org.wheatgenetics.coordinate.R.id.displayTableLayout);
+            this.tableLayout = activity.findViewById(
+                org.wheatgenetics.coordinate.R.id.displayTableLayout);
 
         this.populate();
     }
