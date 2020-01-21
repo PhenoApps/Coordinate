@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.grids;
  * Uses:
  * android.app.Activity
  * android.content.Context
+ * android.content.Intent
  * android.content.pm.PackageManager
  * android.content.Intent
  * android.Manifest.permission
@@ -30,6 +31,7 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
+ * org.wheatgenetics.coordinate.grids.CollectorActivity
  * org.wheatgenetics.coordinate.grids.GridClickAlertDialog
  * org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler
  * org.wheatgenetics.coordinate.grids.GridsAdapter
@@ -47,7 +49,8 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
 
-    private org.wheatgenetics.coordinate.ge.GridExporter   gridExporterInstance = null; // lazy load
+    private android.content.Intent                       collectorIntentInstance = null;// lazy load
+    private org.wheatgenetics.coordinate.ge.GridExporter gridExporterInstance    = null;// lazy load
     private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
         gridClickAlertDialogInstance = null;                                            // lazy load
 
@@ -62,6 +65,22 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     { return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this); }
 
     // region gridClickAlertDialog() Private Methods
+    // region collectData() gridClickAlertDialog() Private Methods
+    @androidx.annotation.NonNull private android.content.Intent collectorIntent()
+    {
+        if (null == this.collectorIntentInstance)
+            this.collectorIntentInstance = new android.content.Intent(this,
+                org.wheatgenetics.coordinate.grids.CollectorActivity.class);
+        return this.collectorIntentInstance;
+    }
+
+    private void collectData(@androidx.annotation.IntRange(from = 1) final long gridId)
+    {
+        this.startActivity(this.collectorIntent().putExtra(
+            org.wheatgenetics.coordinate.grids.CollectorActivity.GRID_ID_KEY, gridId));
+    }
+    // endregion
+
     private void notifyDataSetChanged()
     { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
 
@@ -95,9 +114,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                 {
                     @java.lang.Override public void collectData(
                     @androidx.annotation.IntRange(from = 1) final long gridId)
-                    {
-                        // TODO
-                    }
+                    { org.wheatgenetics.coordinate.grids.GridsActivity.this.collectData(gridId); }
 
                     @java.lang.Override public void exportGrid(
                     @androidx.annotation.IntRange(from = 1) final long             gridId  ,

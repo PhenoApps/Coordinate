@@ -19,6 +19,10 @@
     <string name="AppBarNewTitle">New</string>
 
 
+    <!-- CollectorActivity -->
+    <string name="CollectorActivityLabel">Collect Data</string>
+
+
 
     <!-- GridClickAlertDialog -->
     <string name="GridClickAlertDialogCollectData">Collect data</string>
