@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.oldmain;
+package org.wheatgenetics.coordinate.main;
 
 /**
  * Uses:
@@ -33,7 +33,6 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
- * org.wheatgenetics.coordinate.BaseMainActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
@@ -66,8 +65,10 @@ package org.wheatgenetics.coordinate.oldmain;
  *
  * org.wheatgenetics.coordinate.ti.MenuItemEnabler
  * org.wheatgenetics.coordinate.ti.TemplateImporter
+ *
+ * org.wheatgenetics.coordinate.main.BaseMainActivity
  */
-public class OldMainActivity extends org.wheatgenetics.coordinate.BaseMainActivity implements
+public class OldMainActivity extends org.wheatgenetics.coordinate.main.BaseMainActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler    ,
 org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
@@ -127,7 +128,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null == this.menuItemEnablerInstance) this.menuItemEnablerInstance =
             new org.wheatgenetics.coordinate.ti.MenuItemEnabler(this,
-                org.wheatgenetics.coordinate.oldmain.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
+                org.wheatgenetics.coordinate.main.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER);
         return this.menuItemEnablerInstance;
     }
 
@@ -216,7 +217,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         {
             final android.view.inputmethod.InputMethodManager imm =
                 (android.view.inputmethod.InputMethodManager) this.getSystemService(
-                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.INPUT_METHOD_SERVICE);
+                    org.wheatgenetics.coordinate.main.OldMainActivity.INPUT_METHOD_SERVICE);
             if (null != imm) imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
@@ -255,12 +256,12 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null == this.gridExporterInstance) this.gridExporterInstance =
             new org.wheatgenetics.coordinate.ge.GridExporter(this,
-                org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_GRID_REQUEST_CODE,
+                org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_GRID_REQUEST_CODE,
                 new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedGrid()
                     {
-                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                        org.wheatgenetics.coordinate.main.OldMainActivity
                             .this.respondToDeletedGrid();
                     }
                 });
@@ -279,7 +280,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null == this.templateImporterInstance) this.templateImporterInstance =
             new org.wheatgenetics.coordinate.ti.TemplateImporter(this,
-                org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE);
+                org.wheatgenetics.coordinate.main.OldMainActivity.IMPORT_TEMPLATE);
         return this.templateImporterInstance;
     }
 
@@ -293,7 +294,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null == this.templateExporterInstance) this.templateExporterInstance =
             new org.wheatgenetics.coordinate.te.TemplateExporter(this,
-                org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE);
+                org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_TEMPLATE);
         return this.templateExporterInstance;
     }
 
@@ -321,7 +322,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null == this.projectExporterInstance) this.projectExporterInstance =
             new org.wheatgenetics.coordinate.pe.ProjectExporter(this,
-                org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
+                org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE);
         return this.projectExporterInstance;
     }
 
@@ -348,7 +349,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                             /* createTemplateRequestCode => */
                                 org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE,
                             /* importTemplateRequestCode => */ org.wheatgenetics.coordinate
-                                .oldmain.OldMainActivity.PREPROCESS_TEMPLATE_IMPORT,
+                                .main.OldMainActivity.PREPROCESS_TEMPLATE_IMPORT,
                             /* clickUniquenessRequestCode => */
                                 org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED,
                             /* versionName => */ this.versionName(),
@@ -357,32 +358,32 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                 {
                                     @java.lang.Override public void createGrid()
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.createGrid();
                                     }
 
                                     @java.lang.Override public boolean joinedGridModelIsLoaded()
                                     {
-                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        return org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.joinedGridModelIsLoaded();
                                     }
 
                                     @java.lang.Override public void loadGrid(
                                     @androidx.annotation.IntRange(from = 1) final long gridId)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.loadJoinedGridModelThenPopulate(gridId);
                                     }
 
                                     @java.lang.Override public long getGridId()
                                     {
-                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        return org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.getGridId();
                                     }
 
                                     @java.lang.Override public void respondToDeleteGrid()
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.respondToDeletedGrid();
                                     }
 
@@ -390,7 +391,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                     @androidx.annotation.IntRange(from = 1) final long     gridId  ,
                                                                     final java.lang.String fileName)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.exportGrid(gridId, fileName);
                                     }
 
@@ -398,7 +399,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                     @java.lang.Override
                                     public void importTemplate(final java.lang.String fileName)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.importTemplate(fileName);
                                     }
 
@@ -406,46 +407,46 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                     @androidx.annotation.IntRange(from = 1) final long   templateId,
                                                                   final java.lang.String fileName  )
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.exportTemplate(templateId, fileName);
                                     }
 
                                     @java.lang.Override public void handleGridDeleted()
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.handleGridDeleted();
                                     }
 
 
                                     @java.lang.Override public long getProjectId()
                                     {
-                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        return org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.getProjectId();
                                     }
 
                                     @java.lang.Override public void loadProject(
                                     @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.loadProjectModel(projectId);
                                     }
 
                                     @java.lang.Override public void clearProject()
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.clearProjectModel();
                                     }
 
                                     @java.lang.Override public void handleProjectDeleted(
                                     @androidx.annotation.IntRange(from = 1) final long projectId)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.handleProjectDeleted(projectId);
                                     }
 
                                     @java.lang.Override public boolean projectModelIsLoaded()
                                     {
-                                        return org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        return org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.projectModelIsLoaded();
                                     }
 
@@ -453,14 +454,14 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                     @androidx.annotation.IntRange(from = 1) final long projectId   ,
                                                                final java.lang.String directoryName)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.exportProject(projectId, directoryName);
                                     }
 
 
                                     @java.lang.Override public void closeDrawer()
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.closeDrawer();
                                     }
                                 },
@@ -469,7 +470,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                                     @java.lang.Override
                                     public void onClick(final android.view.View v)
                                     {
-                                        org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                                        org.wheatgenetics.coordinate.main.OldMainActivity
                                             .this.showChangeLog();
                                     }
                                 }));
@@ -532,7 +533,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                         @java.lang.Override
                         public void onDrawerOpened(final android.view.View drawerView)
                         {
-                            org.wheatgenetics.coordinate.oldmain.OldMainActivity
+                            org.wheatgenetics.coordinate.main.OldMainActivity
                                 .this.configureNavigationDrawer();
                         }
                     };
@@ -651,32 +652,32 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
             if (android.content.pm.PackageManager.PERMISSION_GRANTED == grantResult)
                 switch (requestCode)
                 {
-                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                    .CONFIGURE_NAVIGATION_DRAWER: this.configureNavigationDrawer(); break;
+                    case
+                    org.wheatgenetics.coordinate.main.OldMainActivity.CONFIGURE_NAVIGATION_DRAWER:
+                        this.configureNavigationDrawer(); break;
 
                     case
-                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.PREPROCESS_TEMPLATE_IMPORT:
+                    org.wheatgenetics.coordinate.main.OldMainActivity.PREPROCESS_TEMPLATE_IMPORT:
                         if (null != this.navigationItemSelectedListener)
                             this.navigationItemSelectedListener.preprocessTemplateImport();
                         break;
 
-                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity.IMPORT_TEMPLATE:
+                    case org.wheatgenetics.coordinate.main.OldMainActivity.IMPORT_TEMPLATE:
                         if (null != this.templateImporterInstance)
                             this.templateImporterInstance.importTemplate();
                         break;
 
-                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_TEMPLATE:
+                    case org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_TEMPLATE:
                         if (null != this.templateExporterInstance)
                             this.templateExporterInstance.export();
                         break;
 
-                    case
-                    org.wheatgenetics.coordinate.oldmain.OldMainActivity.EXPORT_GRID_REQUEST_CODE:
+                    case org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_GRID_REQUEST_CODE:
                         if (null != this.gridExporterInstance) this.gridExporterInstance.export();
                         break;
 
-                    case org.wheatgenetics.coordinate.oldmain.OldMainActivity
-                    .EXPORT_PROJECT_REQUEST_CODE:
+                    case
+                    org.wheatgenetics.coordinate.main.OldMainActivity.EXPORT_PROJECT_REQUEST_CODE:
                         if (null != this.projectExporterInstance)
                             this.projectExporterInstance.export();
                         break;
