@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Step 2: Change android:name from ".MainActivity" to ".main.OldMainActivity". -->
+        <!-- Step 2: Change android:name from ".main.MainActivity" to ".main.OldMainActivity". -->
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:configChanges="keyboardHidden|keyboard">
 
             <intent-filter>
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Step 3: Change android:name from ".main.OldMainActivity" to ".MainActivity". -->
+        <!-- Step 3: Change android:name from ".main.OldMainActivity" to ".main.MainActivity". -->
         <activity android:name=".main.OldMainActivity" />
 
         <activity

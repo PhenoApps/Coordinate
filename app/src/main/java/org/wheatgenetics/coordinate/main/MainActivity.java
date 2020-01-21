@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.main;
 
 /**
  * Uses:
@@ -21,13 +21,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.AboutAlertDialog
- * org.wheatgenetics.coordinate.BaseMainActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  *
  * org.wheatgenetics.coordinate.grids.GridsActivity
+ *
+ * org.wheatgenetics.coordinate.main.BaseMainActivity
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
@@ -42,16 +43,14 @@ package org.wheatgenetics.coordinate;
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
  */
-public class MainActivity extends org.wheatgenetics.coordinate.BaseMainActivity
+public class MainActivity extends org.wheatgenetics.coordinate.main.BaseMainActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;  // lazy
-                                                                                            //  load
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance = null;  // lazy
-                                                                                             //  load
-    private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;   // lazy
-    // endregion                                                                            //  load
+    private org.wheatgenetics.coordinate.AboutAlertDialog   aboutAlertDialogInstance = null;   // ll
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance  = null;   // ll
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreatorInstance   = null;   // ll
+    // endregion
 
     // region Private Methods
     private void reloadIfNecessary() { /* TODO */ }
@@ -89,7 +88,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                 this, this.versionName(), new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
-                    { org.wheatgenetics.coordinate.MainActivity.this.showChangeLog(); }
+                    { org.wheatgenetics.coordinate.main.MainActivity.this.showChangeLog(); }
                 });
         return this.aboutAlertDialogInstance;
     }
@@ -154,19 +153,19 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                         {
                             switch (position)
                             {
-                                case 0: org.wheatgenetics.coordinate.MainActivity
+                                case 0: org.wheatgenetics.coordinate.main.MainActivity
                                     .this.startGridsActivity(); break;
 
-                                case 1: org.wheatgenetics.coordinate.MainActivity
+                                case 1: org.wheatgenetics.coordinate.main.MainActivity
                                     .this.startTemplatesActivity(); break;
 
-                                case 2: org.wheatgenetics.coordinate.MainActivity
+                                case 2: org.wheatgenetics.coordinate.main.MainActivity
                                     .this.startProjectsActivity(); break;
 
-                                case 3: org.wheatgenetics.coordinate.MainActivity
+                                case 3: org.wheatgenetics.coordinate.main.MainActivity
                                     .this.startPreferenceActivity(); break;
 
-                                case 4: org.wheatgenetics.coordinate.MainActivity
+                                case 4: org.wheatgenetics.coordinate.main.MainActivity
                                     .this.showAboutAlertDialog(); break;
                             }
                         }
