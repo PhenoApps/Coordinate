@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.collector;
 
 /**
  * Uses:
+ * android.content.Intent
  * android.media.MediaPlayer
  *
  * androidx.annotation.IntRange
@@ -11,6 +12,8 @@ package org.wheatgenetics.coordinate.collector;
  * androidx.annotation.RestrictTo.Scope
  * androidx.appcompat.app.AppCompatActivity
  * androidx.fragment.app.FragmentManager
+ *
+ * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
@@ -72,6 +75,8 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     private android.media.MediaPlayer gridEndMediaPlayer = null,
         rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
     private org.wheatgenetics.coordinate.collector.UniqueAlertDialog uniqueAlertDialog = null; // ll
+
+    private org.wheatgenetics.zxing.BarcodeScanner barcodeScannerInstance = null;       // lazy load
     // endregion
 
     // region Private Methods
@@ -104,6 +109,9 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
             }
     }
 
+    private void setEntry(final java.lang.String entry)
+    { if (null != this.dataEntryFragment) this.dataEntryFragment.setEntry(entry); }
+
     private void handleDuplicateCheckException(
     @androidx.annotation.NonNull final java.lang.String message)
     {
@@ -118,6 +126,13 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         if (null == this.uniqueAlertDialog) this.uniqueAlertDialog =
             new org.wheatgenetics.coordinate.collector.UniqueAlertDialog(this.activity);
         this.uniqueAlertDialog.show(message);
+    }
+
+    @androidx.annotation.NonNull private org.wheatgenetics.zxing.BarcodeScanner barcodeScanner()
+    {
+        if (null == this.barcodeScannerInstance) this.barcodeScannerInstance =
+            new org.wheatgenetics.zxing.BarcodeScanner(this.activity);
+        return this.barcodeScannerInstance;
     }
     // endregion
 
@@ -354,9 +369,6 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         if (null != this.dataEntryFragment  ) this.dataEntryFragment.populate  ();
     }
 
-    public void setEntry(final java.lang.String entry)
-    { if (null != this.dataEntryFragment) this.dataEntryFragment.setEntry(entry); }
-
     // region loadJoinedGridModel() Public Methods
     public void loadJoinedGridModel(@androidx.annotation.IntRange(from = 0) final long gridId)
     {
@@ -387,6 +399,29 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         this.joinedGridModel, this.activity))
             this.loadJoinedGridModelThenPopulate(this.joinedGridModel.getId());
     }
+
+    // region Barcode Public Methods
+    public boolean scanBarcode() { this.barcodeScanner().scan(); return true; }
+
+    public boolean parseActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        final boolean handled;
+        {
+            final java.lang.String barcodeScannerResult =
+                org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
+                    requestCode, resultCode, data);
+            if (null == barcodeScannerResult)
+                handled = false;
+            else
+            {
+                this.setEntry(barcodeScannerResult); this.saveEntry(barcodeScannerResult);
+                handled = true;
+            }
+        }
+        return handled;
+    }
+    // endregion
 
     public void release()
     {

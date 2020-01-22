@@ -29,7 +29,6 @@ package org.wheatgenetics.coordinate.main;
  * com.google.android.material.navigation.NavigationView
  *
  * org.wheatgenetics.androidlibrary.R
- * org.wheatgenetics.zxing.BarcodeScanner
  *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
@@ -86,7 +85,6 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         exportProjectMenuItem = null;
 
     private org.wheatgenetics.coordinate.ti.MenuItemEnabler menuItemEnablerInstance = null;    // ll
-    private org.wheatgenetics.zxing.BarcodeScanner          barcodeScanner          = null;    // ll
 
     private org.wheatgenetics.coordinate.collector.OldCollector       collectorInstance = null;// ll
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
@@ -588,12 +586,9 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         final int itemId = item.getItemId();
 
         if (org.wheatgenetics.androidlibrary.R.id.cameraOptionsMenuItem == itemId)
-        {
-            if (null == this.barcodeScanner)
-                this.barcodeScanner = new org.wheatgenetics.zxing.BarcodeScanner(this);
-            this.barcodeScanner.scan(); return true;
-        }
-        else return super.onOptionsItemSelected(item);
+            return this.collector().scanBarcode();
+        else
+            return super.onOptionsItemSelected(item);
     }
 
     @java.lang.Override protected void onActivityResult(final int requestCode,
@@ -601,16 +596,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        final java.lang.String barcodeScannerResult =
-            org.wheatgenetics.zxing.BarcodeScanner.parseActivityResult(
-                requestCode, resultCode, data);
-        if (null != barcodeScannerResult)
-        {
-            @androidx.annotation.NonNull
-            final org.wheatgenetics.coordinate.collector.OldCollector collector = this.collector();
-            collector.setEntry(barcodeScannerResult); collector.saveEntry(barcodeScannerResult);
-        }
-        else
+        if (!this.collector().parseActivityResult(requestCode, resultCode, data))
             if (android.app.Activity.RESULT_OK == resultCode && null != data)
                 switch (requestCode)
                 {
