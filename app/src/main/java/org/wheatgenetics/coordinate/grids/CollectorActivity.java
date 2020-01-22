@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.grids;
  * Uses:
  * android.content.Intent
  * android.os.Bundle
+ * android.view.Menu
+ * android.view.MenuItem
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
@@ -55,8 +57,21 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         }
     }
 
+    @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
+    {
+        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_collector, menu);
+        return true;
+    }
+
     @java.lang.Override protected void onStart()
     { super.onStart(); this.collector().populateFragments(); }
+
+    @java.lang.Override protected void onActivityResult(final int requestCode,
+    final int resultCode, final android.content.Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.collector().parseActivityResult(requestCode, resultCode, data);
+    }
 
     @java.lang.Override protected void onDestroy()
     {
@@ -102,5 +117,10 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 
     @java.lang.Override public void clearEntry() { this.collector().clearEntry(); }
     // endregion
+    // endregion
+
+    // region MenuItem Event Handler
+    public void onCameraMenuItemClick(@java.lang.SuppressWarnings({"unused"})
+    final android.view.MenuItem menuItem) { this.collector().scanBarcode(); }
     // endregion
 }
