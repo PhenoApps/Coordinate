@@ -63,8 +63,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     { return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this); }
 
-    // region gridClickAlertDialog() Private Methods
-    private void collectData(@androidx.annotation.IntRange(from = 1) final long gridId)
+    private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(
             org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
@@ -73,6 +72,10 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     private void notifyDataSetChanged()
     { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
 
+    private void handleGridCreated(@androidx.annotation.IntRange(from = 1) final long gridId)
+    { this.notifyDataSetChanged(); this.startCollectorActivity(gridId); }
+
+    // region gridClickAlertDialog() Private Methods
     // region exportGrid() gridClickAlertDialog() Private Methods
     private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
     {
@@ -103,7 +106,10 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                 {
                     @java.lang.Override public void collectData(
                     @androidx.annotation.IntRange(from = 1) final long gridId)
-                    { org.wheatgenetics.coordinate.grids.GridsActivity.this.collectData(gridId); }
+                    {
+                        org.wheatgenetics.coordinate.grids.GridsActivity
+                            .this.startCollectorActivity(gridId);
+                    }
 
                     @java.lang.Override public void exportGrid(
                     @androidx.annotation.IntRange(from = 1) final long             gridId  ,
@@ -138,8 +144,8 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
                     @java.lang.Override public void handleGridCreated(
                     @androidx.annotation.IntRange(from = 1) final long gridId)
                     {
-                        org.wheatgenetics.coordinate.grids
-                            .GridsActivity.this.notifyDataSetChanged();
+                        org.wheatgenetics.coordinate.grids.GridsActivity.this.handleGridCreated(
+                            gridId);
                     }
                 });
         return this.statelessGridCreatorInstance;
