@@ -18,8 +18,8 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.AppCompatActivity
  *
+ * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
@@ -38,7 +38,7 @@ package org.wheatgenetics.coordinate.projects;
  * org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
  * org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler
  */
-public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
+public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
     private static final int EXPORT_PROJECT_REQUEST_CODE = 10;
 

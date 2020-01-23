@@ -11,8 +11,6 @@ package org.wheatgenetics.coordinate.preference;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.ActionBar
- * androidx.appcompat.app.AppCompatActivity
  * androidx.preference.Preference
  * androidx.preference.Preference.OnPreferenceClickListener
  *
@@ -20,7 +18,7 @@ package org.wheatgenetics.coordinate.preference;
  *
  * org.wheatgenetics.coordinate.preference.PreferenceFragment
  */
-public class PreferenceActivity extends androidx.appcompat.app.AppCompatActivity
+public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivity
 implements androidx.preference.Preference.OnPreferenceClickListener
 {
     // region Fields
@@ -52,12 +50,6 @@ implements androidx.preference.Preference.OnPreferenceClickListener
         this.uniquenessPreferenceWasClicked =
             null == savedInstanceState ? false : savedInstanceState.getBoolean(
                 org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
-
-        {
-            final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
-            if (null != supportActionBar)
-                supportActionBar.setDisplayHomeAsUpEnabled(/* showHomeAsUp => */ true);
-        }
 
         // Display PreferenceFragment as the main content.
         this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,

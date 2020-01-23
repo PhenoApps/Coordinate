@@ -18,8 +18,8 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.AppCompatActivity
  *
+ * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
@@ -38,7 +38,7 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.grids.ProjectGridsAdapter
  * org.wheatgenetics.coordinate.grids.TemplateGridsAdapter
  */
-public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
+public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
     // region Consts
     private static final java.lang.String

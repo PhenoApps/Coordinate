@@ -11,7 +11,6 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
  *
@@ -24,9 +23,10 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
+ * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.R
  */
-public class CollectorActivity extends androidx.appcompat.app.AppCompatActivity implements
+public class CollectorActivity extends org.wheatgenetics.coordinate.BackActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 {

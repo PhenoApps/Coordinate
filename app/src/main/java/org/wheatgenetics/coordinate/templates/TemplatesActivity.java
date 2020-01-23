@@ -18,10 +18,10 @@ package org.wheatgenetics.coordinate.templates;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
@@ -50,7 +50,7 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog
  * org.wheatgenetics.coordinate.templates.TemplateClickAlertDialog.Handler
  */
-public class TemplatesActivity extends androidx.appcompat.app.AppCompatActivity
+public class TemplatesActivity extends org.wheatgenetics.coordinate.BackActivity
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     private static final int EXPORT_TEMPLATE = 10, CONFIGURE_IMPORT_MENU_ITEM = 20,
