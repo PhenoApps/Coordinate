@@ -22,12 +22,14 @@ package org.wheatgenetics.coordinate.templates;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler
  *
  * org.wheatgenetics.coordinate.grids.GridsActivity
  *
@@ -86,12 +88,27 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region Private Methods
     // region createGrid() Private Methods
+    private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
+    {
+        this.startActivity(
+            org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
+    }
+
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
     {
         if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,
+                new org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler()
+                {
+                    @java.lang.Override public void handleGridCreated(
+                    @androidx.annotation.IntRange(from = 1) final long gridId)
+                    {
+                        org.wheatgenetics.coordinate.templates.TemplatesActivity
+                            .this.startCollectorActivity(gridId);
+                    }
+                });
         return this.statelessGridCreatorInstance;
     }
 
