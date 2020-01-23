@@ -42,7 +42,8 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
 
-    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;             // lazy load
     // endregion
 
     @androidx.annotation.NonNull
@@ -55,10 +56,10 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
         return this.changeLogAlertDialogInstance;
     }
 
-    // region Protected Methods
+    // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
@@ -66,11 +67,11 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected java.lang.String versionName() { return this.versionName; }
+    java.lang.String versionName() { return this.versionName; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
-    protected org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
+    org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
     {
         if (null == this.sharedPreferencesInstances) this.sharedPreferencesInstances =
             new org.wheatgenetics.sharedpreferences.SharedPreferences(
@@ -79,7 +80,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void showChangeLog() { this.changeLogAlertDialog().show(); }
+    void showChangeLog() { this.changeLogAlertDialog().show(); }
     // endregion
 
     // region Overridden Methods

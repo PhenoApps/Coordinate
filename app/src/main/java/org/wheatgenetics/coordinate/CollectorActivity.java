@@ -2,11 +2,13 @@ package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
+ * android.content.Context
  * android.content.Intent
  * android.os.Bundle
  * android.view.Menu
  * android.view.MenuItem
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
@@ -28,9 +30,13 @@ public class CollectorActivity extends androidx.appcompat.app.AppCompatActivity 
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 {
-    public static final java.lang.String GRID_ID_KEY = "gridId";
+    private static final java.lang.String GRID_ID_KEY = "gridId";
 
+    // region Fields
     private org.wheatgenetics.coordinate.collector.Collector collectorInstance = null;  // lazy load
+
+    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
+    // endregion
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.collector.Collector collector()
@@ -123,4 +129,17 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     public void onCameraMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.collector().scanBarcode(); }
     // endregion
+
+    @androidx.annotation.NonNull public static android.content.Intent INTENT(
+    @androidx.annotation.NonNull            final android.content.Context context,
+    @androidx.annotation.IntRange(from = 1) final long                    gridId )
+    {
+        @androidx.annotation.NonNull final android.content.Intent result =
+            null == org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE ?
+                org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE =
+                    new android.content.Intent(context,
+                        org.wheatgenetics.coordinate.CollectorActivity.class) :
+                org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE;
+        return result.putExtra(org.wheatgenetics.coordinate.CollectorActivity.GRID_ID_KEY, gridId);
+    }
 }
