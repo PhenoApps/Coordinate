@@ -48,7 +48,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
-    @androidx.annotation.Nullable android.os.Bundle savedInstanceState)
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_collector);
@@ -130,7 +130,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     final android.view.MenuItem menuItem) { this.collector().scanBarcode(); }
     // endregion
 
-    @androidx.annotation.NonNull public static android.content.Intent INTENT(
+    @androidx.annotation.NonNull public static android.content.Intent intent(
     @androidx.annotation.NonNull            final android.content.Context context,
     @androidx.annotation.IntRange(from = 1) final long                    gridId )
     {

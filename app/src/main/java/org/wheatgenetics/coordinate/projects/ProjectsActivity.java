@@ -62,7 +62,7 @@ public class ProjectsActivity extends androidx.appcompat.app.AppCompatActivity
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
     }
 
     @androidx.annotation.NonNull

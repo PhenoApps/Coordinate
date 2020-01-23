@@ -83,7 +83,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
     }
     // endregion
 

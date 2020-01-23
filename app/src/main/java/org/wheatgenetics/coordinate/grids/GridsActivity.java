@@ -66,7 +66,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
     }
 
     private void notifyDataSetChanged()
@@ -191,7 +191,7 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
-    @androidx.annotation.Nullable android.os.Bundle savedInstanceState)
+    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_grids);
