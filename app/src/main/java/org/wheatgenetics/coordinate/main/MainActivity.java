@@ -21,10 +21,12 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.androidlibrary.Utils
  *
  * org.wheatgenetics.coordinate.AboutAlertDialog
+ * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
+ * org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler
  *
  * org.wheatgenetics.coordinate.grids.GridsActivity
  *
@@ -77,6 +79,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             org.wheatgenetics.coordinate.preference.PreferenceActivity.intent(this),
             org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED                          );
     }
+
+    private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
+    {
+        this.startActivity(
+            org.wheatgenetics.coordinate.CollectorActivity.INTENT(this, gridId));
+    }
     // endregion
 
     // region AboutAlertDialog Private Methods
@@ -101,7 +109,16 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.gridCreatorInstance) this.gridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_GRID);
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,
+                new org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler()
+                {
+                    @java.lang.Override public void handleGridCreated(
+                    @androidx.annotation.IntRange(from = 1) final long gridId)
+                    {
+                        org.wheatgenetics.coordinate.main.MainActivity.this.startCollectorActivity(
+                            gridId);
+                    }
+                });
         return (org.wheatgenetics.coordinate.gc.StatelessGridCreator) this.gridCreatorInstance;
     }
 
