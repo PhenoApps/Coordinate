@@ -69,6 +69,11 @@
 
 
 
+    <!-- PreferenceActivity -->
+    <string name="PreferenceActivityLabel">Settings</string>
+
+
+
     <!-- MainActivity -->
     <string name="MainActivityGridMenuItemTitle">Grid</string>
     <string name="MainActivityTemplateMenuItemTitle">Template</string>

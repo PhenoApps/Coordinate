@@ -49,7 +49,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".preference.PreferenceActivity">
+        <activity
+            android:name=".preference.PreferenceActivity"
+            android:label="@string/PreferenceActivityLabel">
+
             <intent-filter>
                 <action   android:name="org.wheatgenetics.coordinate.preference.PreferenceActivity" />
                 <category android:name="android.intent.category.DEFAULT"                            />

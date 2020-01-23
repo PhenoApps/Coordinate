@@ -56,10 +56,7 @@ implements androidx.preference.Preference.OnPreferenceClickListener
         {
             final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
             if (null != supportActionBar)
-            {
-                supportActionBar.setTitle                 (/* title        => */ null);
                 supportActionBar.setDisplayHomeAsUpEnabled(/* showHomeAsUp => */ true);
-            }
         }
 
         // Display PreferenceFragment as the main content.
