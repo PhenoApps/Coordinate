@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.grids;
+package org.wheatgenetics.coordinate;
 
 /**
  * Uses:
@@ -11,8 +11,6 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
- * org.wheatgenetics.coordinate.R
- *
  * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.collector.Collector
@@ -23,12 +21,14 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.model.ElementModel
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
+ *
+ * org.wheatgenetics.coordinate.R
  */
 public class CollectorActivity extends androidx.appcompat.app.AppCompatActivity implements
 org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
 org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 {
-    static final java.lang.String GRID_ID_KEY = "gridId";
+    public static final java.lang.String GRID_ID_KEY = "gridId";
 
     private org.wheatgenetics.coordinate.collector.Collector collectorInstance = null;  // lazy load
 
@@ -51,7 +51,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         if (null != intent)
         {
             final java.lang.String GRID_ID_KEY =
-                org.wheatgenetics.coordinate.grids.CollectorActivity.GRID_ID_KEY;
+                org.wheatgenetics.coordinate.CollectorActivity.GRID_ID_KEY;
             if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(
                 intent.getLongExtra(GRID_ID_KEY,-1));
         }

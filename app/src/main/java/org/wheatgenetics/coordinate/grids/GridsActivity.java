@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.Nullable
  * androidx.appcompat.app.AppCompatActivity
  *
+ * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
@@ -31,7 +32,6 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
- * org.wheatgenetics.coordinate.grids.CollectorActivity
  * org.wheatgenetics.coordinate.grids.GridClickAlertDialog
  * org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler
  * org.wheatgenetics.coordinate.grids.GridsAdapter
@@ -69,15 +69,15 @@ public class GridsActivity extends androidx.appcompat.app.AppCompatActivity
     @androidx.annotation.NonNull private android.content.Intent collectorIntent()
     {
         if (null == this.collectorIntentInstance)
-            this.collectorIntentInstance = new android.content.Intent(this,
-                org.wheatgenetics.coordinate.grids.CollectorActivity.class);
+            this.collectorIntentInstance = new android.content.Intent(
+                this, org.wheatgenetics.coordinate.CollectorActivity.class);
         return this.collectorIntentInstance;
     }
 
     private void collectData(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(this.collectorIntent().putExtra(
-            org.wheatgenetics.coordinate.grids.CollectorActivity.GRID_ID_KEY, gridId));
+            org.wheatgenetics.coordinate.CollectorActivity.GRID_ID_KEY, gridId));
     }
     // endregion
 
