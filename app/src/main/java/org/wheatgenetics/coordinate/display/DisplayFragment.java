@@ -46,12 +46,13 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     @androidx.annotation.Nullable private android.widget.TableLayout tableLayout;
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.display.Elements elements ;
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.display.Elements elements;
     // endregion
 
     // region Protected Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected abstract boolean setHandler(final android.content.Context context);
+    protected abstract boolean setHandler(
+    @androidx.annotation.NonNull final android.content.Context context);
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected abstract void allocateElements(
@@ -69,7 +70,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
             throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
     }
 
-    @java.lang.Override public android.view.View onCreateView(
+    @java.lang.Override @androidx.annotation.Nullable public android.view.View onCreateView(
     @androidx.annotation.NonNull  final android.view.LayoutInflater inflater          ,
     @androidx.annotation.Nullable final android.view.ViewGroup      container         ,
     @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)
