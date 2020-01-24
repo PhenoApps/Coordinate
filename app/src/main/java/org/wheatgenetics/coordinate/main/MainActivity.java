@@ -55,8 +55,6 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Private Methods
-    private void reloadIfNecessary() { /* TODO */ }
-
     // region startActivity() Private Methods
     private void startGridsActivity()
     { this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.intent(this)); }
@@ -203,26 +201,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onActivityResult(requestCode, resultCode, data);
 
         if (android.app.Activity.RESULT_OK == resultCode && null != data)
+            // noinspection SwitchStatementWithTooFewBranches
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
                         this.templateCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
-
-                case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:             // TODO: DRY
-                    {
-                        final boolean uniquenessPreferenceWasClicked;
-                        {
-                            final android.os.Bundle bundle = data.getExtras();
-                            // noinspection SimplifiableConditionalExpression
-                            uniquenessPreferenceWasClicked = null == bundle ?
-                                false : bundle.getBoolean(
-                                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                                    false);
-                        }
-                        if (uniquenessPreferenceWasClicked) this.reloadIfNecessary();
-                    }
                     break;
             }
     }
