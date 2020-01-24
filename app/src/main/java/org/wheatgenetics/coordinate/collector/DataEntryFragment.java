@@ -69,7 +69,7 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
             throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
     }
 
-    @java.lang.Override public android.view.View onCreateView(
+    @java.lang.Override @androidx.annotation.Nullable public android.view.View onCreateView(
     @androidx.annotation.NonNull  final android.view.LayoutInflater inflater          ,
     @androidx.annotation.Nullable final android.view.ViewGroup      container         ,
     @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)

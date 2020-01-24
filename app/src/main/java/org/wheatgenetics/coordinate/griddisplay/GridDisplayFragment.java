@@ -42,7 +42,8 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected boolean setHandler(final android.content.Context context)
+    @java.lang.Override protected boolean setHandler(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         final boolean success;
 
