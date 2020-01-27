@@ -163,8 +163,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.displayModel; }
 
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (null != elementModel)
         {

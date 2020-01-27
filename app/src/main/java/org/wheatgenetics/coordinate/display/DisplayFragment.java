@@ -34,8 +34,9 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
     {
-        public abstract org.wheatgenetics.coordinate.model.DisplayModel         getDisplayModel();
-        public abstract void toggle(org.wheatgenetics.coordinate.model.ElementModel elementModel);
+        public abstract org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel();
+        public abstract void toggle(@androidx.annotation.Nullable
+            org.wheatgenetics.coordinate.model.ElementModel elementModel);
     }
 
     // region Fields
@@ -98,8 +99,8 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
 
     // region org.wheatgenetics.coordinate.display.Element.Handler Overridden Method
-    public void toggle(@androidx.annotation.Nullable final
-    org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     { if (null != this.handler) this.handler.toggle(elementModel); }
     // endregion
     // endregion
