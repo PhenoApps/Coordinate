@@ -90,9 +90,15 @@ public abstract class Element extends java.lang.Object implements android.view.V
 
     // region Public Methods
     @androidx.annotation.IntRange(from = -1) public int getRow()
-    { return null == this.elementModel ? -1 : this.elementModel.getRowValue() - 1; }
+    {
+        // noinspection ConstantConditions
+        return this.elementModelIsNotNull() ? this.elementModel.getRowValue() - 1 : -1;
+    }
 
     @androidx.annotation.IntRange(from = -1) public int getCol()
-    { return null == this.elementModel ? -1 : this.elementModel.getColValue() - 1; }
+    {
+        // noinspection ConstantConditions
+        return this.elementModelIsNotNull() ? this.elementModel.getColValue() - 1 : -1;
+    }
     // endregion
 }

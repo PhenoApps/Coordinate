@@ -680,8 +680,8 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.collector().getDisplayModel(); }
 
-    @java.lang.Override
-    public void toggle(final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     { this.collector().toggle(elementModel); }
 
     @java.lang.Override public int getActiveRow() { return this.collector().getActiveRow(); }

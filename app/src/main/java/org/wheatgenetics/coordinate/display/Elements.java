@@ -70,13 +70,19 @@ public abstract class Elements extends java.lang.Object
             }
             {
                 if (null == result) return null;
-                final org.wheatgenetics.coordinate.display.Element element =
-                    this.makeElement(elementModel, (android.widget.TextView)
-                        result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView));
-                if (null == this.elementArray)
+
+                @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
+                @androidx.annotation.Nullable final org.wheatgenetics.coordinate.display.Element
+                    elementArray[][] = this.getElementArray();
+                if (null == elementArray)
                     return null;
                 else
-                    this.elementArray[element.getRow()][element.getCol()] = element;
+                {
+                    final org.wheatgenetics.coordinate.display.Element element =
+                        this.makeElement(elementModel, (android.widget.TextView)
+                            result.findViewById(org.wheatgenetics.coordinate.R.id.displayTextView));
+                    elementArray[element.getRow()][element.getCol()] = element;
+                }
             }
             return result;
         }
