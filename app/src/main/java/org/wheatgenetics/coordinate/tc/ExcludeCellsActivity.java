@@ -20,10 +20,10 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.RowOrCols
  *
- * org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
+ * org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler
  */
 public class ExcludeCellsActivity extends androidx.appcompat.app.AppCompatActivity
-implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
+implements org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler
 {
     @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) private static class DisplayModel
     extends java.lang.Object implements org.wheatgenetics.coordinate.model.DisplayModel
@@ -161,7 +161,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         super.onBackPressed();
     }
 
-    // region org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler Overridden Methods
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.displayModel; }
 

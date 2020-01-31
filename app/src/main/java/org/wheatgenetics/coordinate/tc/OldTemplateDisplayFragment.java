@@ -17,14 +17,14 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
  * org.wheatgenetics.coordinate.tc.TemplateElements
  */
-public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
+public class OldTemplateDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
 implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler extends org.wheatgenetics.coordinate.display.DisplayFragment.Handler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
-    public TemplateDisplayFragment() { /* Required empty public constructor. */ }
+    public OldTemplateDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -33,10 +33,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
     {
         final boolean success;
 
-        if (context instanceof org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler)
+        if (context instanceof org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler)
         {
             this.handler =
-                (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) context;
+                (org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler) context;
             success = true;
         }
         else { this.handler = null; success = false; }
@@ -66,7 +66,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
         if (null == this.handler)
             throw new java.lang.NullPointerException();
         else
-            return ((org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler)
+            return ((org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler)
                 this.handler).isExcluded(cell);
     }
     // endregion
