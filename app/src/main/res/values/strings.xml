@@ -19,6 +19,16 @@
     <string name="AppBarNewTitle">New</string>
 
 
+    <!-- CollectorActivity -->
+    <string name="CollectorActivityLabel">Collect Data</string>
+
+
+
+    <!-- GridClickAlertDialog -->
+    <string name="GridClickAlertDialogCollectData">Collect data</string>
+    <string name="GridClickAlertDialogDeleteGrid">Delete</string>
+    <string name="GridClickAlertDialogExportGrid">Export</string>
+
 
     <!-- GridsActivity -->
     <string name="GridsActivityLabel">Grids</string>
@@ -56,6 +66,11 @@
 
     <string name="ProjectsListTitle">title:</string>
     <string name="ProjectsListTimestamp">timestamp:</string>
+
+
+
+    <!-- PreferenceActivity -->
+    <string name="PreferenceActivityLabel">Settings</string>
 
 
 

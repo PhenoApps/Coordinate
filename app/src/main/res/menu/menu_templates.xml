@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:title="@string/AppBarNewTitle"
+        app:showAsAction="always"
+        android:onClick="onNewTemplateMenuItemClick"
+
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/importTemplateMenuItem"
+        android:title="@string/TemplatesActivityImportMenuItemTitle"
+        app:showAsAction="always"
+        android:onClick="onImportTemplateMenuItem"
+
+        tools:ignore="AlwaysShowAction" />
+</menu>

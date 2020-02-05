@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow>
+        <TextView
+            android:text="@string/ProjectsListTitle"
+            android:paddingEnd="6sp"
+            android:paddingRight="6sp"
+            
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/projectsListItemTitle"
+            android:text="test title"
+
+            tools:ignore="HardcodedText" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/ProjectsListTimestamp"
+            android:paddingEnd="6sp"
+            android:paddingRight="6sp"
+
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/projectsListItemTimestamp"
+            android:text="test timestamp"
+
+            tools:ignore="HardcodedText" />
+    </TableRow>
+</TableLayout>

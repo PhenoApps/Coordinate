@@ -1,0 +1,35 @@
+package org.wheatgenetics.coordinate.grids;
+
+/**
+ * Uses:
+ * android.app.Activity
+ *
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
+ *
+ * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
+ *
+ * org.wheatgenetics.coordinate.grids.GridsAdapter
+ */
+class AllGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapter
+{
+    private org.wheatgenetics.coordinate.model.BaseJoinedGridModels
+        baseJoinedGridModelsInstance = null;                                            // lazy load
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.Nullable
+    org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels()
+    {
+        if (null == this.baseJoinedGridModelsInstance)
+            this.baseJoinedGridModelsInstance = this.gridsTable().load();
+        return this.baseJoinedGridModelsInstance;
+    }
+
+    AllGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
+    { super(activity); }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+}

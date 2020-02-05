@@ -40,8 +40,12 @@ package org.wheatgenetics.coordinate.gc;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class GridCreator extends java.lang.Object
 {
+    // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     { public abstract void handleGridCreated(@androidx.annotation.IntRange(from = 1) long gridId); }
+
+    private enum TemplateIdStatus { UNSPECIFIED, CLEARED, SET }
+    // endregion
 
     // region Fields
     // region Constructor Fields
@@ -50,6 +54,9 @@ public abstract class GridCreator extends java.lang.Object
     @androidx.annotation.Nullable                   private final
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler;
     // endregion
+
+    private org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus templateIdStatus =
+        org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.UNSPECIFIED;
 
     @androidx.annotation.IntRange(from = 0) private long             projectId, templateId;
                                             private java.lang.String person               ;
@@ -99,6 +106,8 @@ public abstract class GridCreator extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
             this.templatesTable().get(this.templateId);
+        this.templateIdStatus =
+            org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.UNSPECIFIED;
         if (null != templateModel)
         {
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -224,10 +233,27 @@ public abstract class GridCreator extends java.lang.Object
     org.wheatgenetics.coordinate.gc.GridCreator.Handler handler() { return this.handler; }
     // endregion
 
+    // region templateIdStatus Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setTemplateIdStatusToCleared()
+    {
+        this.templateIdStatus =
+            org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.CLEARED;
+    }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setTemplateIdStatusToSet()
+    { this.templateIdStatus = org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.SET; }
+    // endregion
+
     // region Template Setter Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    void setTemplateId(@androidx.annotation.IntRange(from = 1) long templateId)
+    { this.templateId = templateId; }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void handleTemplateSet(@androidx.annotation.IntRange(from = 1) long templateId)
-    { this.templateId = templateId; this.setValues(); }
+    { this.setTemplateId(templateId); this.setValues(); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
@@ -239,7 +265,16 @@ public abstract class GridCreator extends java.lang.Object
 
     // region Project Setter Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void handleNoProjectSet() { this.projectId = 0; this.setTemplate(); }
+    void handleNoProjectSet()
+    {
+        this.projectId = 0;
+
+        switch (this.templateIdStatus)
+        {
+            case UNSPECIFIED: case CLEARED: this.setTemplate(); break;
+            case SET                      : this.setValues  (); break;
+        }
+    }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @android.annotation.SuppressLint({"Range"}) void handleProjectSet(
@@ -247,16 +282,23 @@ public abstract class GridCreator extends java.lang.Object
     {
         this.projectId = projectId;
 
-        if (existing)
+        switch (this.templateIdStatus)
         {
-            @androidx.annotation.IntRange(from = 0) final long templateId =
-                this.projectTemplateSetter().set(projectId);
-            if (org.wheatgenetics.coordinate.model.Model.illegal(templateId))
-                this.setTemplate();
-            else
-                this.handleTemplateSet(templateId);                       // SuppressLint({"Range"})
+            case UNSPECIFIED: case CLEARED:
+                if (existing)
+                {
+                    @androidx.annotation.IntRange(from = 0) final long templateId =
+                        this.projectTemplateSetter().set(projectId);
+                    if (org.wheatgenetics.coordinate.model.Model.illegal(templateId))
+                        this.setTemplate();
+                    else
+                        this.handleTemplateSet(templateId);               // SuppressLint({"Range"})
+                }
+                else this.setTemplate();
+                break;
+
+            case SET: this.setValues(); break;
         }
-        else this.setTemplate();
     }
     // endregion
     // endregion

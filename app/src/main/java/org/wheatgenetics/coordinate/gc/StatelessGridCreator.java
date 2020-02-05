@@ -59,6 +59,7 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
         org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler handler)
     { super(activity, requestCode, handler); }
 
+    @java.lang.SuppressWarnings({"unused"})
     public StatelessGridCreator(                    final android.app.Activity activity   ,
     @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode)
     { this(activity, requestCode,null); }
@@ -87,5 +88,20 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
     { return null != this.choosingTemplateSetterInstance; }
     // endregion
 
-    public void create() { this.statelessProjectSetter().set(); }
+    // region Public Methods
+    public void create()
+    { this.setTemplateIdStatusToCleared(); this.statelessProjectSetter().set(); }
+
+    public void createFromTemplate(@androidx.annotation.IntRange(from = 1) final long templateId)
+    {
+        this.setTemplateId(templateId); this.setTemplateIdStatusToSet();
+        this.statelessProjectSetter().set();
+    }
+
+    public void createInProject(@androidx.annotation.IntRange(from = 1) final long projectId)
+    {
+        this.setTemplateIdStatusToCleared();
+        this.handleProjectSet(projectId, /* existing => */true);
+    }
+    // endregion
 }
