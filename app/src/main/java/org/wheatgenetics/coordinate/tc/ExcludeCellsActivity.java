@@ -113,7 +113,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
 
                 @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
                 private org.wheatgenetics.coordinate.model.RowOrCols makeRowOrCols(
-                                                        final java.lang.String json    ,
+                @androidx.annotation.Nullable           final java.lang.String json    ,
                 @androidx.annotation.IntRange(from = 0) final int              maxValue)
                 {
                     if (maxValue < 1)
@@ -156,10 +156,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
                     }
 
                     {
-                        final java.lang.String EXCLUDED_COLS_BUNDLE_KEY = org.wheatgenetics
-                            .coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY;
-                        this.excludedRows = bundle.containsKey(EXCLUDED_COLS_BUNDLE_KEY) ?
-                            bundle.getString(EXCLUDED_COLS_BUNDLE_KEY) : null;
+                        final java.lang.String EXCLUDED_ROWS_BUNDLE_KEY = org.wheatgenetics
+                            .coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY;
+                        this.excludedRows = bundle.containsKey(EXCLUDED_ROWS_BUNDLE_KEY) ?
+                            bundle.getString(EXCLUDED_ROWS_BUNDLE_KEY) : null;
                     }
                     {
                         final java.lang.String EXCLUDED_COLS_BUNDLE_KEY = org.wheatgenetics
@@ -169,6 +169,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
                     }
                 }
 
+                // region External Methods
                 @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable private
                 org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel makeDisplayModel()
                 {
@@ -208,6 +209,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
                 @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
                 private org.wheatgenetics.coordinate.model.RowOrCols makeExcludedCols()
                 { return this.makeRowOrCols(this.excludedCols, this.cols); }
+                // endregion
             }
             final Bundle bundle = new Bundle(extras);
             this.displayModel  = bundle.makeDisplayModel ();
