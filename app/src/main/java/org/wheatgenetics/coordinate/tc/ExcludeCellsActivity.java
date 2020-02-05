@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.tc;
 
 /**
  * Uses:
+ * android.annotation.SuppressLint
  * android.app.Activity
  * android.content.Intent
  * android.os.Bundle
@@ -34,18 +35,14 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         // endregion
 
         private DisplayModel(
-        @androidx.annotation.IntRange(from = 1) final int               rows  ,
-        @androidx.annotation.IntRange(from = 1) final int               cols  ,
-        @androidx.annotation.NonNull            final android.os.Bundle bundle)
+        @androidx.annotation.IntRange(from = 1) final int rows,
+        @androidx.annotation.IntRange(from = 1) final int cols,
+        final boolean colNumbering, final boolean rowNumbering)
         {
             super();
 
-            this.rows = rows; this.cols = cols;
-
-            this.colNumbering = bundle.getBoolean(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY);
-            this.rowNumbering = bundle.getBoolean(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_BUNDLE_KEY);
+            this.rows         = rows        ; this.cols         = cols        ;
+            this.colNumbering = colNumbering; this.rowNumbering = rowNumbering;
         }
 
         // region Overridden Methods
@@ -101,45 +98,122 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_exclude_cells);
 
-        final android.os.Bundle bundle = this.getIntent().getExtras();
-        if (null != bundle)
+        final android.os.Bundle extras = this.getIntent().getExtras();
+        if (null != extras)
         {
-            final java.lang.String
-                ROWS_BUNDLE_KEY =
-                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY,
-                COLS_BUNDLE_KEY =
-                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY;
-            if (bundle.containsKey(ROWS_BUNDLE_KEY) && bundle.containsKey(COLS_BUNDLE_KEY))
+            @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
+            class Bundle extends java.lang.Object
             {
-                @androidx.annotation.IntRange(from = 1) final int
-                    rows = bundle.getInt(ROWS_BUNDLE_KEY), cols = bundle.getInt(COLS_BUNDLE_KEY);
-                this.displayModel =
-                    new org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel(
-                        rows, cols, bundle);
+                // region Fields
+                @androidx.annotation.IntRange(from = 0) private final int rows, cols;
+                                              private final boolean colNumbering, rowNumbering;
+                @androidx.annotation.Nullable private final java.lang.String
+                    excludedCells, excludedRows, excludedCols;
+                // endregion
+
+                @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
+                private org.wheatgenetics.coordinate.model.RowOrCols makeRowOrCols(
+                                                        final java.lang.String json    ,
+                @androidx.annotation.IntRange(from = 0) final int              maxValue)
                 {
-                    final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY = org.wheatgenetics
-                        .coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY;
-                    if (bundle.containsKey(EXCLUDED_CELLS_BUNDLE_KEY))
-                        this.excludedCells = new org.wheatgenetics.coordinate.model.Cells(
-                            /* json   => */ bundle.getString(EXCLUDED_CELLS_BUNDLE_KEY),
-                            /* maxRow => */ rows                                       ,
-                            /* maxCol => */ cols                                       );
+                    if (maxValue < 1)
+                        return null;
+                    else
+                        if (null == json)
+                            return null;
+                        else
+                            return new org.wheatgenetics.coordinate.model.RowOrCols(
+                                /* json => */ json, /* maxValue => */ maxValue);
                 }
+
+                private Bundle(@androidx.annotation.NonNull final android.os.Bundle bundle)
                 {
-                    final java.lang.String EXCLUDED_ROWS_BUNDLE_KEY = org.wheatgenetics
-                        .coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY;
-                    if (bundle.containsKey(EXCLUDED_ROWS_BUNDLE_KEY))
-                        this.excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(
-                            /* json     => */ bundle.getString(EXCLUDED_ROWS_BUNDLE_KEY),
-                            /* maxValue => */ rows                                      );
+                    super();
+
+                    {
+                        final java.lang.String ROWS_BUNDLE_KEY =
+                            org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY;
+                        this.rows = bundle.containsKey(ROWS_BUNDLE_KEY) ?
+                            bundle.getInt(ROWS_BUNDLE_KEY) : 0;
+                    }
+                    {
+                        final java.lang.String COLS_BUNDLE_KEY =
+                            org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY;
+                        this.cols = bundle.containsKey(COLS_BUNDLE_KEY) ?
+                            bundle.getInt(COLS_BUNDLE_KEY) : 0;
+                    }
+
+                    this.colNumbering = bundle.getBoolean(org.wheatgenetics
+                        .coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY);
+                    this.rowNumbering = bundle.getBoolean(org.wheatgenetics
+                        .coordinate.model.DisplayTemplateModel.ROW_NUMBERING_BUNDLE_KEY);
+
+                    {
+                        final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY = org.wheatgenetics
+                            .coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY;
+                        this.excludedCells = bundle.containsKey(EXCLUDED_CELLS_BUNDLE_KEY) ?
+                            bundle.getString(EXCLUDED_CELLS_BUNDLE_KEY) : null;
+                    }
+
+                    {
+                        final java.lang.String EXCLUDED_COLS_BUNDLE_KEY = org.wheatgenetics
+                            .coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY;
+                        this.excludedRows = bundle.containsKey(EXCLUDED_COLS_BUNDLE_KEY) ?
+                            bundle.getString(EXCLUDED_COLS_BUNDLE_KEY) : null;
+                    }
+                    {
+                        final java.lang.String EXCLUDED_COLS_BUNDLE_KEY = org.wheatgenetics
+                            .coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY;
+                        this.excludedCols = bundle.containsKey(EXCLUDED_COLS_BUNDLE_KEY) ?
+                            bundle.getString(EXCLUDED_COLS_BUNDLE_KEY) : null;
+                    }
                 }
-                final java.lang.String EXCLUDED_COLS_BUNDLE_KEY = org.wheatgenetics
-                    .coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY;
-                if (bundle.containsKey(EXCLUDED_COLS_BUNDLE_KEY))
-                    this.excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(
-                        /* json     => */ bundle.getString(EXCLUDED_COLS_BUNDLE_KEY),
-                        /* maxValue => */ cols                                      );
+
+                @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable private
+                org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel makeDisplayModel()
+                {
+                    if (this.rows < 1)
+                        return null;
+                    else
+                        if (this.cols < 1)
+                            return null;
+                        else
+                            return new
+                                org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.DisplayModel(
+                                    this.rows, this.cols, this.colNumbering, this.rowNumbering);
+                }
+
+                @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
+                private org.wheatgenetics.coordinate.model.Cells makeExcludedCells()
+                {
+                    if (this.rows < 1)
+                        return null;
+                    else
+                        if (this.cols < 1)
+                            return null;
+                        else
+                            if (null == this.excludedCells)
+                                return null;
+                            else
+                                return new org.wheatgenetics.coordinate.model.Cells(
+                                    /* json   => */ this.excludedCells,
+                                    /* maxRow => */ this.rows         ,
+                                    /* maxCol => */ this.cols         );
+                }
+
+                @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
+                private org.wheatgenetics.coordinate.model.RowOrCols makeExcludedRows()
+                { return this.makeRowOrCols(this.excludedRows, this.rows); }
+
+                @android.annotation.SuppressLint({"Range"}) @androidx.annotation.Nullable
+                private org.wheatgenetics.coordinate.model.RowOrCols makeExcludedCols()
+                { return this.makeRowOrCols(this.excludedCols, this.cols); }
             }
+            final Bundle bundle = new Bundle(extras);
+            this.displayModel  = bundle.makeDisplayModel ();
+            this.excludedCells = bundle.makeExcludedCells();
+            this.excludedRows  = bundle.makeExcludedRows ();
+            this.excludedCols  = bundle.makeExcludedCols ();
         }
     }
 
