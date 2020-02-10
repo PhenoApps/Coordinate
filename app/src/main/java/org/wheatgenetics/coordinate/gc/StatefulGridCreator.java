@@ -100,7 +100,6 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
         org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler handler)
     { super(activity, requestCode, handler); }
 
-    // region Overridden Methods
     @java.lang.Override @androidx.annotation.NonNull
     org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
     {
@@ -118,10 +117,6 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
                 });
         return this.choosingTemplateSetterInstance;
     }
-
-    /*@java.lang.Override boolean choosingTemplateSetterIsNotNull()                 // TODO: Remove?
-    { return null != this.choosingTemplateSetterInstance; }*/
-    // endregion
 
     public void create(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)

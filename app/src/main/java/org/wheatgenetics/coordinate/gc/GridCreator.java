@@ -232,9 +232,6 @@ public abstract class GridCreator extends java.lang.Object
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
     abstract org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter();
-
-    /*@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)//TODO:Remove?
-    abstract boolean choosingTemplateSetterIsNotNull();*/
     // endregion
 
     // region Project Setter Package Methods
