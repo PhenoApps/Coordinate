@@ -178,10 +178,7 @@ extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
     // region Public Methods
     public void set() { this.templateChoiceAlertDialog().show(); }
 
-    public void setExcludedCells(final android.os.Bundle bundle)
-    {
-        if (null != this.templateCreatorInstance)
-            this.templateCreatorInstance.setExcludedCells(bundle);
-    }
+    public void continueExcluding(final android.os.Bundle bundle)
+    { this.templateCreator().continueExcluding(bundle); }
     // endregion
 }

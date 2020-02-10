@@ -744,11 +744,8 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     // endregion
 
     // region Public Methods
-    public void setExcludedCells(final android.os.Bundle bundle)
-    {
-        if (null != this.templateCreatorInstance)
-            this.templateCreatorInstance.setExcludedCells(bundle);
-    }
+    public void continueExcluding(final android.os.Bundle bundle)
+    { this.templateCreator().continueExcluding(bundle); }
 
     public void preprocessTemplateImport()
     {

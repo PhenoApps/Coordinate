@@ -41,8 +41,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
-
-    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
     // endregion
 
     @androidx.annotation.NonNull
@@ -80,6 +78,10 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void showChangeLog() { this.changeLogAlertDialog().show(); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull
+    protected abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
     // endregion
 
     // region Overridden Methods
@@ -165,9 +167,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.gridCreatorInstance)
-                        this.gridCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
+                    this.gridCreator().continueExcluding(data.getExtras()); break;
             }
     }
     // endregion
