@@ -79,7 +79,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
 
     /** Creates this.maxCell. */
-    Cells(
+    public Cells(
     @androidx.annotation.IntRange(from = 1) final int maxRow,
     @androidx.annotation.IntRange(from = 1) final int maxCol)
     { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }

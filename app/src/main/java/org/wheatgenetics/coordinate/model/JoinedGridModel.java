@@ -351,8 +351,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Constructors
-    /** Used by GridCreator. */
-    public JoinedGridModel(
+    /** Used by GridCreator. */ public JoinedGridModel(
     @androidx.annotation.IntRange(from = 0) final long             projectId,
                                             final java.lang.String person   ,
     @androidx.annotation.Nullable           final
@@ -368,8 +367,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         this.templateModel = templateModel;
     }
 
-    /** Used by GridsTable. */
-    public JoinedGridModel(
+    /** Used by GridsTable. */ public JoinedGridModel(
     @androidx.annotation.IntRange(from = 1) final long             id            ,
     @androidx.annotation.IntRange(from = 0) final long             projectId     ,
                                             final java.lang.String person        ,

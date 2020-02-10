@@ -566,6 +566,27 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         return result;
     }
 
+    public static void removeState(final android.content.Intent intent)
+    {
+        if (null != intent)
+        {
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY);
+            intent.removeExtra(
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_BUNDLE_KEY);
+        }
+    }
+
     public void setExcludedCells(@androidx.annotation.NonNull final android.os.Bundle bundle)
     {
         final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY =
