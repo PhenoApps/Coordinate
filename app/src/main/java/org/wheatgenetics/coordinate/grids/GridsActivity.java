@@ -286,7 +286,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
                     if (null != this.statelessGridCreatorInstance)
-                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                        this.statelessGridCreatorInstance.continueExcluding(data.getExtras());
                     break;
             }
     }

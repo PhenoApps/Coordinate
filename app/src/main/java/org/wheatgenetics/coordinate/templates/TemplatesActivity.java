@@ -362,12 +362,12 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
                     if (null != this.statelessGridCreatorInstance)
-                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
+                        this.statelessGridCreatorInstance.continueExcluding(data.getExtras());
                     break;
 
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                     if (null != this.templateCreatorInstance)
-                        this.templateCreatorInstance.setExcludedCells(data.getExtras());
+                        this.templateCreatorInstance.continueExcluding(data.getExtras());
                     break;
             }
     }
