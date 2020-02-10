@@ -200,7 +200,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
+    org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
     {
         if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatelessGridCreator(

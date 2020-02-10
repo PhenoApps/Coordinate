@@ -65,7 +65,6 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
     { this(activity, requestCode,null); }
     // endregion
 
-    // region Overridden Methods
     @java.lang.Override @androidx.annotation.NonNull
     org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
     {
@@ -83,10 +82,6 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
                 });
         return this.choosingTemplateSetterInstance;
     }
-
-    /*@java.lang.Override boolean choosingTemplateSetterIsNotNull()                 // TODO: Remove?
-    { return null != this.choosingTemplateSetterInstance; }*/
-    // endregion
 
     // region Public Methods
     public void create()

@@ -41,9 +41,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;             // lazy load
     // endregion
 
     @androidx.annotation.NonNull
