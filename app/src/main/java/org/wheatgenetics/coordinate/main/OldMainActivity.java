@@ -676,7 +676,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
+    org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
     {
         if (null == this.statefulGridCreatorInstance) this.statefulGridCreatorInstance =
             new org.wheatgenetics.coordinate.gc.StatefulGridCreator(

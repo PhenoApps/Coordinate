@@ -83,8 +83,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     void showChangeLog() { this.changeLogAlertDialog().show(); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull
-    protected abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
+    @androidx.annotation.NonNull abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
     // endregion
 
     // region Overridden Methods
