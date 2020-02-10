@@ -41,8 +41,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
-
-    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;   // lazy load
     // endregion
 
     @androidx.annotation.NonNull
@@ -55,10 +53,10 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
         return this.changeLogAlertDialogInstance;
     }
 
-    // region Protected Methods
+    // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
+    org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
             new org.wheatgenetics.coordinate.database.TemplatesTable(this);
@@ -66,11 +64,11 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected java.lang.String versionName() { return this.versionName; }
+    java.lang.String versionName() { return this.versionName; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
-    protected org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
+    org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
     {
         if (null == this.sharedPreferencesInstances) this.sharedPreferencesInstances =
             new org.wheatgenetics.sharedpreferences.SharedPreferences(
@@ -79,7 +77,10 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void showChangeLog() { this.changeLogAlertDialog().show(); }
+    void showChangeLog() { this.changeLogAlertDialog().show(); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
     // endregion
 
     // region Overridden Methods
@@ -165,9 +166,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.gridCreatorInstance)
-                        this.gridCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
+                    this.gridCreator().continueExcluding(data.getExtras()); break;
             }
     }
     // endregion
