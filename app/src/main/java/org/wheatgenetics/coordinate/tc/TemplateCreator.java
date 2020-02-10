@@ -89,7 +89,11 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
         this.assignTitleRowsColsAlertDialog().show(this.templateModel);
     }
 
-    public void setExcludedCells(final android.os.Bundle bundle)
-    { if (null != this.templateModel) this.templateModel.setExcludedCells(bundle); }
+    public void continueExcluding(final android.os.Bundle bundle)
+    {
+        this.templateModel =
+            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(bundle);
+        this.handleAssignDone();
+    }
     // endregion
 }

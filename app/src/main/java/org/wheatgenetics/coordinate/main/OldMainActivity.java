@@ -20,6 +20,8 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.ActionBarDrawerToggle
  * androidx.appcompat.widget.Toolbar
@@ -40,6 +42,7 @@ package org.wheatgenetics.coordinate.main;
  *
  * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
  *
+ * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.StatefulGridCreator
  * org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
  *
@@ -89,7 +92,9 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     private org.wheatgenetics.coordinate.collector.OldCollector       collectorInstance = null;// ll
     private org.wheatgenetics.coordinate.nisl.NavigationItemSelectedListener
         navigationItemSelectedListener;
-    private org.wheatgenetics.coordinate.model.ProjectModel  projectModel             = null;
+    private org.wheatgenetics.coordinate.model.ProjectModel     projectModel = null;
+    private org.wheatgenetics.coordinate.gc.StatefulGridCreator
+        statefulGridCreatorInstance = null;                                             // lazy load
     private org.wheatgenetics.coordinate.ge.GridExporter     gridExporterInstance     = null;  // ll
     private org.wheatgenetics.coordinate.ti.TemplateImporter templateImporterInstance = null;  // ll
     private org.wheatgenetics.coordinate.te.TemplateExporter templateExporterInstance = null;  // ll
@@ -228,18 +233,11 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     }
 
     // region Grid Private Methods
-    // region createGrid() Grid Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.StatefulGridCreator statefulGridCreator()
+    private void createGrid()
     {
-        if (null == this.gridCreatorInstance) this.gridCreatorInstance =
-            new org.wheatgenetics.coordinate.gc.StatefulGridCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,this);
-        return (org.wheatgenetics.coordinate.gc.StatefulGridCreator) this.gridCreatorInstance;
+        ((org.wheatgenetics.coordinate.gc.StatefulGridCreator) this.gridCreator()).create(
+            this.projectModel);
     }
-
-    private void createGrid() { this.statefulGridCreator().create(this.projectModel); }
-    // endregion
 
     private void loadJoinedGridModelThenPopulate(@androidx.annotation.IntRange(from = 0)
     final long gridId) { this.collector().loadJoinedGridModelThenPopulate(gridId); }
@@ -602,7 +600,7 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
                 {
                     case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
                         if (null != this.navigationItemSelectedListener)
-                            this.navigationItemSelectedListener.setExcludedCells(data.getExtras());
+                            this.navigationItemSelectedListener.continueExcluding(data.getExtras());
                         break;
 
                     case org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED:
@@ -674,6 +672,16 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     {
         if (null != this.collectorInstance) this.collectorInstance.release();
         super.onDestroy();
+    }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
+    protected org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
+    {
+        if (null == this.statefulGridCreatorInstance) this.statefulGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatefulGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,this);
+        return this.statefulGridCreatorInstance;
     }
 
     // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods

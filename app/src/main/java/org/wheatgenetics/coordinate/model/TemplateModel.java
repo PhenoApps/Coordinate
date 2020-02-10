@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.os.Bundle
  * android.util.Xml
  *
  * androidx.annotation.IntRange
@@ -27,7 +28,10 @@ package org.wheatgenetics.coordinate.model;
  */
 public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTemplateModel
 {
-    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME = "optionalFields";
+    // region Constants
+    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME  = "optionalFields";
+    private static final java.lang.String TEMPLATE_MODEL_EXTRA_NAME = "templateModel" ;
+    // endregion
 
     // region Fields
     @androidx.annotation.Nullable private
@@ -395,6 +399,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
+    // region export() Public Methods
     public boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
     {
         final boolean failure = false;
@@ -404,6 +409,30 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             try { return this.export(new java.io.FileWriter(exportFile) /* throws */); }
             catch (final java.io.IOException e) { return failure; }
     }
+
+    public void export(@androidx.annotation.NonNull final android.os.Bundle bundle)
+    {
+                                      final boolean          remove;
+        @androidx.annotation.Nullable final java.lang.String string;
+        {
+            final java.io.StringWriter stringWriter = new java.io.StringWriter();
+            if (this.export(stringWriter))
+            {
+                string = stringWriter.toString().trim();
+                remove = string.length() < 1;
+            }
+            else
+                { remove = true; string = null; }
+        }
+
+        final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
+            org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+        if (remove)
+            bundle.remove(TEMPLATE_MODEL_EXTRA_NAME);
+        else
+            bundle.putString(TEMPLATE_MODEL_EXTRA_NAME, string);
+    }
+    // endregion
 
     // region Make Public Methods
     /** Called by TemplateModels. */ @androidx.annotation.NonNull
@@ -464,6 +493,34 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 finally { fileInputStream.close() /* throws java.io.IOException */; }
             }
             catch (final java.io.IOException e) { return null; }
+    }
+
+    @androidx.annotation.Nullable public static org.wheatgenetics.coordinate.model.TemplateModel
+    makeUserDefined(@androidx.annotation.Nullable final android.os.Bundle bundle)
+    {
+        if (null == bundle)
+            return null;
+        else
+        {
+            final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
+                org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+            if (bundle.containsKey(TEMPLATE_MODEL_EXTRA_NAME))
+            {
+                @androidx.annotation.Nullable
+                java.lang.String string = bundle.getString(TEMPLATE_MODEL_EXTRA_NAME);
+                if (null == string)
+                    return null;
+                {
+                    string = string.trim();
+                    if (string.length() < 1)
+                        return null;
+                    else
+                        return org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
+                            new org.xml.sax.InputSource(new java.io.StringReader(string)));
+                }
+            }
+            else return null;
+        }
     }
     // endregion
     // endregion

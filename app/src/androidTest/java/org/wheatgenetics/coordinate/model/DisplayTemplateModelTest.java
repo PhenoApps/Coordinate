@@ -242,49 +242,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
     }
     // endregion
 
-    // region Package Method Tests
-    @org.junit.Test() public void isExcludedRowWorks()
-    {
-        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
-            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* id                           => */10,
-                /* title                        => */"testTitle",
-                /* code                         => */1,
-                /* rows                         => */5,
-                /* cols                         => */2,
-                /* generatedExcludedCellsAmount => */0,
-                /* excludedCells                => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* timestamp                    => */880);
-        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(1));
-    }
-
-    @org.junit.Test() public void isExcludedColWorks()
-    {
-        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
-            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* id                           => */10,
-                /* title                        => */"testTitle",
-                /* code                         => */1,
-                /* rows                         => */5,
-                /* cols                         => */2,
-                /* generatedExcludedCellsAmount => */0,
-                /* excludedCells                => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* timestamp                    => */880);
-        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(1));
-    }
-    // endregion
-
     // region Public Method Tests
+    // region excludedCells Public Method Tests
     @org.junit.Test() public void getExcludedCellsAsJsonWorks()
     {
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
@@ -304,6 +263,36 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* timestamp                    => */880);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedCellsAsJson());
     }
+
+    @org.junit.Test() public void isExcludedCellAndToggleWork()
+    {
+        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
+            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+                /* id                           => */10,
+                /* title                        => */"testTitle",
+                /* code                         => */1,
+                /* rows                         => */5,
+                /* cols                         => */2,
+                /* generatedExcludedCellsAmount => */0,
+                /* excludedCells                => */null,
+                /* excludedRows                 => */null,
+                /* excludedCols                 => */null,
+                /* colNumbering                 => */1,
+                /* rowNumbering                 => */0,
+                /* entryLabel                   => */null,
+                /* timestamp                    => */880);
+        final org.wheatgenetics.coordinate.model.Cell cell =
+            new org.wheatgenetics.coordinate.model.Cell(1,1);
+
+        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCell(cell));
+
+        displayTemplateModel.toggle(cell);
+        org.junit.Assert.assertTrue(displayTemplateModel.isExcludedCell(cell));
+
+        displayTemplateModel.toggle(cell);
+        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCell(cell));
+    }
+    // endregion
 
     // region excludedRows Public Method Tests
     @org.junit.Test() public void addExcludedRowAndClearExcludedRowsSucceed()
@@ -351,6 +340,26 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* entryLabel                   => */null,
                 /* timestamp                    => */880);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedRowsAsJson());
+    }
+
+    @org.junit.Test() public void isExcludedRowWorks()
+    {
+        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
+            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+                /* id                           => */10,
+                /* title                        => */"testTitle",
+                /* code                         => */1,
+                /* rows                         => */5,
+                /* cols                         => */2,
+                /* generatedExcludedCellsAmount => */0,
+                /* excludedCells                => */null,
+                /* excludedRows                 => */null,
+                /* excludedCols                 => */null,
+                /* colNumbering                 => */1,
+                /* rowNumbering                 => */0,
+                /* entryLabel                   => */null,
+                /* timestamp                    => */880);
+        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(1));
     }
     // endregion
 
@@ -400,6 +409,26 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* entryLabel                   => */null,
                 /* timestamp                    => */880);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedColsAsJson());
+    }
+
+    @org.junit.Test() public void isExcludedColWorks()
+    {
+        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
+            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+                /* id                           => */10,
+                /* title                        => */"testTitle",
+                /* code                         => */1,
+                /* rows                         => */5,
+                /* cols                         => */2,
+                /* generatedExcludedCellsAmount => */0,
+                /* excludedCells                => */null,
+                /* excludedRows                 => */null,
+                /* excludedCols                 => */null,
+                /* colNumbering                 => */1,
+                /* rowNumbering                 => */0,
+                /* entryLabel                   => */null,
+                /* timestamp                    => */880);
+        org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(1));
     }
     // endregion
 
@@ -455,84 +484,84 @@ public class DisplayTemplateModelTest extends java.lang.Object
     }
     // endregion
 
-    @org.junit.Test() public void getStateWorks()
-    {
-        final int                                                     rows = 5, cols = 2;
-        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
-            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* id                           => */10,
-                /* title                        => */"testTitle",
-                /* code                         => */1,
-                /* rows                         => */ rows,
-                /* cols                         => */ cols,
-                /* generatedExcludedCellsAmount => */0,
-                /* excludedCells                => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* timestamp                    => */880);
-        android.os.Bundle state = displayTemplateModel.getState();
-        org.junit.Assert.assertNotNull(state);
-
-        org.junit.Assert.assertEquals(rows, state.getInt("rows"));
-        org.junit.Assert.assertEquals(cols, state.getInt("cols"));
-
-        org.junit.Assert.assertNull(state.getString("excludedCells"));
-
-        org.junit.Assert.assertNull(state.getString("excludedRows"));
-        org.junit.Assert.assertNull(state.getString("excludedCols"));
-
-        org.junit.Assert.assertTrue (state.getBoolean("colNumbering"));
-        org.junit.Assert.assertFalse(state.getBoolean("rowNumbering"));
-
-
-        {
-            final android.os.Bundle excludedCellsBundle = new android.os.Bundle();
-            {
-                final org.wheatgenetics.coordinate.model.Cells excludedCells =
-                    new org.wheatgenetics.coordinate.model.Cells(rows, cols);
-                excludedCells.add(1,1);
-                excludedCellsBundle.putString("excludedCells", excludedCells.json());
-            }
-            displayTemplateModel.setExcludedCells(excludedCellsBundle);
-        }
-        displayTemplateModel.addExcludedRow(1); displayTemplateModel.addExcludedCol(1);
-        state = displayTemplateModel.getState();
-        org.junit.Assert.assertNotNull(state);
-
-        org.junit.Assert.assertEquals("[{\"row\":1,\"col\":1}]",
-            state.getString("excludedCells"));
-
-        org.junit.Assert.assertEquals("[1]", state.getString("excludedRows"));
-        org.junit.Assert.assertEquals("[1]", state.getString("excludedCols"));
-    }
-
-    @org.junit.Test() public void setExcludedCellsWorks()
-    {
-        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
-            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
-                /* id                           => */10,
-                /* title                        => */"testTitle",
-                /* code                         => */1,
-                /* rows                         => */5,
-                /* cols                         => */2,
-                /* generatedExcludedCellsAmount => */0,
-                /* excludedCells                => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* timestamp                    => */880);
-        final java.lang.String json = "[{\"row\":1,\"col\":1}]";
-        {
-            final android.os.Bundle excludedCellsBundle = new android.os.Bundle();
-            excludedCellsBundle.putString("excludedCells", json);
-            displayTemplateModel.setExcludedCells(excludedCellsBundle);
-        }
-        org.junit.Assert.assertEquals(json, displayTemplateModel.getExcludedCellsAsJson());
-    }
+//    @org.junit.Test() public void getStateWorks()                                 // TODO: Remove?
+//    {
+//        final int                                                     rows = 5, cols = 2;
+//        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
+//            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+//                /* id                           => */10,
+//                /* title                        => */"testTitle",
+//                /* code                         => */1,
+//                /* rows                         => */ rows,
+//                /* cols                         => */ cols,
+//                /* generatedExcludedCellsAmount => */0,
+//                /* excludedCells                => */null,
+//                /* excludedRows                 => */null,
+//                /* excludedCols                 => */null,
+//                /* colNumbering                 => */1,
+//                /* rowNumbering                 => */0,
+//                /* entryLabel                   => */null,
+//                /* timestamp                    => */880);
+//        android.os.Bundle state = displayTemplateModel.getState();
+//        org.junit.Assert.assertNotNull(state);
+//
+//        org.junit.Assert.assertEquals(rows, state.getInt("rows"));
+//        org.junit.Assert.assertEquals(cols, state.getInt("cols"));
+//
+//        org.junit.Assert.assertNull(state.getString("excludedCells"));
+//
+//        org.junit.Assert.assertNull(state.getString("excludedRows"));
+//        org.junit.Assert.assertNull(state.getString("excludedCols"));
+//
+//        org.junit.Assert.assertTrue (state.getBoolean("colNumbering"));
+//        org.junit.Assert.assertFalse(state.getBoolean("rowNumbering"));
+//
+//
+//        {
+//            final android.os.Bundle excludedCellsBundle = new android.os.Bundle();
+//            {
+//                final org.wheatgenetics.coordinate.model.Cells excludedCells =
+//                    new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+//                excludedCells.add(1,1);
+//                excludedCellsBundle.putString("excludedCells", excludedCells.json());
+//            }
+//            displayTemplateModel.setExcludedCells(excludedCellsBundle);
+//        }
+//        displayTemplateModel.addExcludedRow(1); displayTemplateModel.addExcludedCol(1);
+//        state = displayTemplateModel.getState();
+//        org.junit.Assert.assertNotNull(state);
+//
+//        org.junit.Assert.assertEquals("[{\"row\":1,\"col\":1}]",
+//            state.getString("excludedCells"));
+//
+//        org.junit.Assert.assertEquals("[1]", state.getString("excludedRows"));
+//        org.junit.Assert.assertEquals("[1]", state.getString("excludedCols"));
+//    }
+//
+//    @org.junit.Test() public void setExcludedCellsWorks()
+//    {
+//        final org.wheatgenetics.coordinate.model.DisplayTemplateModel displayTemplateModel =
+//            new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
+//                /* id                           => */10,
+//                /* title                        => */"testTitle",
+//                /* code                         => */1,
+//                /* rows                         => */5,
+//                /* cols                         => */2,
+//                /* generatedExcludedCellsAmount => */0,
+//                /* excludedCells                => */null,
+//                /* excludedRows                 => */null,
+//                /* excludedCols                 => */null,
+//                /* colNumbering                 => */1,
+//                /* rowNumbering                 => */0,
+//                /* entryLabel                   => */null,
+//                /* timestamp                    => */880);
+//        final java.lang.String json = "[{\"row\":1,\"col\":1}]";
+//        {
+//            final android.os.Bundle excludedCellsBundle = new android.os.Bundle();
+//            excludedCellsBundle.putString("excludedCells", json);
+//            displayTemplateModel.setExcludedCells(excludedCellsBundle);
+//        }
+//        org.junit.Assert.assertEquals(json, displayTemplateModel.getExcludedCellsAsJson());
+//    }
     // endregion
 }

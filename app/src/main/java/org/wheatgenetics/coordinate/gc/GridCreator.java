@@ -259,8 +259,8 @@ public abstract class GridCreator extends java.lang.Object
     @androidx.annotation.NonNull
     abstract org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter();
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    abstract boolean choosingTemplateSetterIsNotNull();
+    /*@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)//TODO:Remove?
+    abstract boolean choosingTemplateSetterIsNotNull();*/
     // endregion
 
     // region Project Setter Package Methods
@@ -310,9 +310,6 @@ public abstract class GridCreator extends java.lang.Object
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
-    public void setExcludedCells(final android.os.Bundle bundle)
-    {
-        if (this.choosingTemplateSetterIsNotNull())
-            this.choosingTemplateSetter().setExcludedCells(bundle);
-    }
+    public void continueExcluding(final android.os.Bundle bundle)
+    { this.choosingTemplateSetter().continueExcluding(bundle); }
 }

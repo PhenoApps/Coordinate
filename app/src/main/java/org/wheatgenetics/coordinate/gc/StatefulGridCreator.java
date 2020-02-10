@@ -119,8 +119,8 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
         return this.choosingTemplateSetterInstance;
     }
 
-    @java.lang.Override boolean choosingTemplateSetterIsNotNull()
-    { return null != this.choosingTemplateSetterInstance; }
+    /*@java.lang.Override boolean choosingTemplateSetterIsNotNull()                 // TODO: Remove?
+    { return null != this.choosingTemplateSetterInstance; }*/
     // endregion
 
     public void create(@androidx.annotation.Nullable

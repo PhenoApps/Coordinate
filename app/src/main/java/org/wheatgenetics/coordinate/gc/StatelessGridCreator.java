@@ -84,8 +84,8 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
         return this.choosingTemplateSetterInstance;
     }
 
-    @java.lang.Override boolean choosingTemplateSetterIsNotNull()
-    { return null != this.choosingTemplateSetterInstance; }
+    /*@java.lang.Override boolean choosingTemplateSetterIsNotNull()                 // TODO: Remove?
+    { return null != this.choosingTemplateSetterInstance; }*/
     // endregion
 
     // region Public Methods
