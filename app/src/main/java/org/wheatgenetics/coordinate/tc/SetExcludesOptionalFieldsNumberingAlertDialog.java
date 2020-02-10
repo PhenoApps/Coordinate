@@ -40,38 +40,57 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
-        checkAndAddOptionalFieldsAlertDialog = null;                                    // lazy load
+        checkAndAddOptionalFieldsAlertDialogInstance = null;                            // lazy load
     private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
-        excludeAlertDialog = null;                                                      // lazy load
+        excludeAlertDialogInstance = null;                                              // lazy load
     private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog
-        setNumberingAlertDialog = null;                                                 // lazy load
+        setNumberingAlertDialogInstance = null;                                         // lazy load
     // endregion
 
     // region Private Methods
-    private void checkAndAddOptionalFields()
+    // region checkAndAddOptionalFields() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
+    checkAndAddOptionalFieldsAlertDialog()
     {
-        if (null == this.checkAndAddOptionalFieldsAlertDialog)
-            this.checkAndAddOptionalFieldsAlertDialog =
+        if (null == this.checkAndAddOptionalFieldsAlertDialogInstance)
+            this.checkAndAddOptionalFieldsAlertDialogInstance =
                 new org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog(
                     this.activity(),this);
-        if (null != this.templateModel)
-            this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.optionalFields());
+        return this.checkAndAddOptionalFieldsAlertDialogInstance;
     }
 
-    private void exclude()
+    private void checkAndAddOptionalFields()
     {
-        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
+        if (null != this.templateModel)
+            this.checkAndAddOptionalFieldsAlertDialog().show(this.templateModel.optionalFields());
+    }
+    // endregion
+
+    // region exclude() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog excludeAlertDialog()
+    {
+        if (null == this.excludeAlertDialogInstance) this.excludeAlertDialogInstance =
             new org.wheatgenetics.coordinate.tc.ExcludeAlertDialog(
                 this.activity(), this.requestCode);
-        this.excludeAlertDialog.show(this.templateModel);
+        return this.excludeAlertDialogInstance;
     }
 
-    private void setNumbering()
+    private void exclude() { this.excludeAlertDialog().show(this.templateModel); }
+    // endregion
+
+    // region setNumbering() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog setNumberingAlertDialog()
     {
-        if (null == this.setNumberingAlertDialog) this.setNumberingAlertDialog =
+        if (null == this.setNumberingAlertDialogInstance) this.setNumberingAlertDialogInstance =
             new org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog(this.activity());
-        this.setNumberingAlertDialog.show(this.templateModel);
+        return this.setNumberingAlertDialogInstance;
     }
+
+    private void setNumbering() { this.setNumberingAlertDialog().show(this.templateModel); }
+    // endregion
 
     private void handleSetDone() { this.handler.handleSetDone(); }
     // endregion
@@ -156,8 +175,9 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     // region org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler Overridden Method
     @java.lang.Override public void handleAddOptionalFieldDone()
     {
-        if (null != this.templateModel && null != this.checkAndAddOptionalFieldsAlertDialog)
-            this.checkAndAddOptionalFieldsAlertDialog.show(this.templateModel.optionalFields());
+        if (null != this.templateModel && null != this.checkAndAddOptionalFieldsAlertDialogInstance)
+            this.checkAndAddOptionalFieldsAlertDialogInstance.show(
+                this.templateModel.optionalFields());
     }
     // endregion
     // endregion
