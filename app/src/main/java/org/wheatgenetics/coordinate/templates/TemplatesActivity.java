@@ -361,14 +361,10 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.statelessGridCreatorInstance)
-                        this.statelessGridCreatorInstance.continueExcluding(data.getExtras());
-                    break;
+                    this.statelessGridCreator().continueExcluding(data.getExtras()); break;
 
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
-                    if (null != this.templateCreatorInstance)
-                        this.templateCreatorInstance.continueExcluding(data.getExtras());
-                    break;
+                    this.templateCreator().continueExcluding(data.getExtras()); break;
             }
     }
 

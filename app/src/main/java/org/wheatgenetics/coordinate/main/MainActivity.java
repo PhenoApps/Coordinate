@@ -192,9 +192,7 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
-                    if (null != this.templateCreatorInstance)
-                        this.templateCreatorInstance.continueExcluding(data.getExtras());
-                    break;
+                    this.templateCreator().continueExcluding(data.getExtras()); break;
             }
     }
 
