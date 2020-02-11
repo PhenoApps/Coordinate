@@ -2,8 +2,6 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
- * android.os.Bundle                                                                // TODO: Remove?
- *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
@@ -21,19 +19,12 @@ package org.wheatgenetics.coordinate.model;
  */
 public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.BaseTemplateModel
 {
-    // region Constants                                                             // TODO: Remove?
     private static final java.lang.String
         TITLE_TAG_NAME = "title", ROWS_TAG_NAME = "rows", COLS_TAG_NAME = "cols",
         GENERATED_EXCLUDED_CELLS_AMOUNT_TAG_NAME = "generatedExcludedCellsAmount",
         COL_NUMBERING_TAG_NAME  = "colNumbering", ROW_NUMBERING_TAG_NAME  = "rowNumbering" ,
         ENTRY_LABEL_TAG_NAME    = "entryLabel"  , EXCLUDED_CELLS_TAG_NAME = "excludedCells",
         EXCLUDED_ROWS_TAG_NAME  = "excludedRows", EXCLUDED_COLS_TAG_NAME  = "excludedCols" ;
-    /*public static final java.lang.String                                          // TODO: Remove?
-        ROWS_BUNDLE_KEY           = "rows"         , COLS_BUNDLE_KEY          = "cols"        ,
-        EXCLUDED_CELLS_BUNDLE_KEY = "excludedCells",
-        EXCLUDED_ROWS_BUNDLE_KEY  = "excludedRows" , EXCLUDED_COLS_BUNDLE_KEY = "excludedCols",
-        COL_NUMBERING_BUNDLE_KEY  = "colNumbering" , ROW_NUMBERING_BUNDLE_KEY = "rowNumbering";*/
-    // endregion                                                                    // TODO: Remove?
 
     // region Fields
     @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.Cells
@@ -558,64 +549,5 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         return result;
     }
     // endregion
-
-    /*@androidx.annotation.NonNull public android.os.Bundle getState()              // TODO: Remove?
-    {
-        final android.os.Bundle result = new android.os.Bundle();
-
-        result.putInt(org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY,
-            this.getRows());
-        result.putInt(org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY,
-            this.getCols());
-
-        result.putString(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY,
-            this.getExcludedCellsAsJson()                                                    );
-
-        result.putString(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY,
-            this.getExcludedRowsAsJson()                                                    );
-        result.putString(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY,
-            this.getExcludedColsAsJson()                                                    );
-
-        result.putBoolean(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY,
-            this.getColNumbering()                                                          );
-        result.putBoolean(
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_BUNDLE_KEY,
-            this.getRowNumbering()                                                          );
-
-        return result;
-    }*/
-
-    /*public static void removeState(final android.content.Intent intent)           // TODO: Remove?
-    {
-        if (null != intent)
-        {
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROWS_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COLS_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_ROWS_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_COLS_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.COL_NUMBERING_BUNDLE_KEY);
-            intent.removeExtra(
-                org.wheatgenetics.coordinate.model.DisplayTemplateModel.ROW_NUMBERING_BUNDLE_KEY);
-        }
-    }*/
-
-    /*public void setExcludedCells(@androidx.annotation.NonNull final android.os.Bundle bundle)//TODO: Remove?
-    {
-        final java.lang.String EXCLUDED_CELLS_BUNDLE_KEY =
-            org.wheatgenetics.coordinate.model.DisplayTemplateModel.EXCLUDED_CELLS_BUNDLE_KEY;
-        this.setExcludedCells(bundle.containsKey(EXCLUDED_CELLS_BUNDLE_KEY) ?
-            bundle.getString(EXCLUDED_CELLS_BUNDLE_KEY) : null);
-    }*/
     // endregion
 }
