@@ -401,7 +401,8 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     }
 
     // region Barcode Public Methods
-    public boolean scanBarcode() { this.barcodeScanner().scan(); return true; }
+    @java.lang.SuppressWarnings({"SameReturnValue"}) public boolean scanBarcode()
+    { this.barcodeScanner().scan(); return true; }
 
     public boolean parseActivityResult(final int requestCode,
     final int resultCode, final android.content.Intent data)
