@@ -16,8 +16,6 @@ package org.wheatgenetics.coordinate.preference;
  * androidx.preference.Preference
  * androidx.preference.Preference.OnPreferenceClickListener
  *
- * org.wheatgenetics.androidlibrary.Utils
- *
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.preference.PreferenceFragment
@@ -67,12 +65,6 @@ implements androidx.preference.Preference.OnPreferenceClickListener
         // Display PreferenceFragment as the main content.
         this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
             new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
-    }
-
-    @java.lang.Override protected void onStart()
-    {
-        super.onStart(); org.wheatgenetics.androidlibrary.Utils.showLongToast(
-            this,"Press \"Back\" when done.");
     }
 
     @java.lang.Override protected void onSaveInstanceState(

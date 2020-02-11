@@ -14,11 +14,9 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.Cell
- * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.DisplayTemplateModel
  * org.wheatgenetics.coordinate.model.ElementModel
- * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
  * org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment.Handler
