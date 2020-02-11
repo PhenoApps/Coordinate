@@ -69,4 +69,9 @@
     </string-array>
 
     <string name="UniquenessListPreferenceDefault">@string/UniquenessListPreferenceCurrentGrid</string>
+
+
+
+    <!-- PreferenceActivity -->
+    <string name="PreferenceActivityLabel">Settings</string>
 </resources>

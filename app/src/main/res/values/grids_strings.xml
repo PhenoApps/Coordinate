@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- GridsActivity -->
+    <string name="GridsActivityLabel">Grids</string>
+
+
+    <!-- GridClickAlertDialog -->
+    <string name="GridClickAlertDialogCollectData">Collect data</string>
+    <string name="GridClickAlertDialogDeleteGrid">Delete</string>
+    <string name="GridClickAlertDialogExportGrid">Export</string>
+</resources>

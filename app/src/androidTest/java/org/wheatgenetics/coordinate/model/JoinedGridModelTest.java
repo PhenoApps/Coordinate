@@ -133,47 +133,6 @@ public class JoinedGridModelTest extends java.lang.Object
     // endregion
 
     // region Package Method Tests
-    @org.junit.Test() public void nameSucceeds()
-    {
-        final java.lang.String                                   expectedName   ;
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
-        {
-            final java.lang.String person    = "testPerson", title = "testTitle";
-            final int              rows      = 5           , cols  = 2          ;
-            final long             timestamp = 123                              ;
-
-            expectedName = java.lang.String.format(
-                "Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", person, title,
-                cols, rows, org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp));
-            joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id                           => */5,
-                /* projectId                    => */0,
-                /* person                       => */ person,
-                /* activeRow                    => */0,
-                /* activeCol                    => */0,
-                /* optionalFields               => */null,
-                /* timestamp                    => */ timestamp,
-
-                /* templateId                   => */6,
-                /* title                        => */ title,
-                /* code                         => */1,
-                /* rows                         => */ rows,
-                /* cols                         => */ cols,
-                /* generatedExcludedCellsAmount => */0,
-                /* initialExcludedCells         => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* templateOptionalFields       => */null,
-                /* templateTimestamp            => */333,
-
-                /* entryModels                  => */null);
-        }
-        org.junit.Assert.assertEquals(expectedName, joinedGridModel.name());
-    }
-
     // region excludedCellsFromEntries() Package Method Tests
     @org.junit.Test() public void emptyExcludedCellsFromEntriesWorks()
     {
@@ -1099,6 +1058,47 @@ public class JoinedGridModelTest extends java.lang.Object
     // endregion
 
     // region Public Method Tests
+    @org.junit.Test() public void nameSucceeds()
+    {
+        final java.lang.String                                   expectedName   ;
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
+        {
+            final java.lang.String person    = "testPerson", title = "testTitle";
+            final int              rows      = 5           , cols  = 2          ;
+            final long             timestamp = 123                              ;
+
+            expectedName = java.lang.String.format(
+                "Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", person, title,
+                cols, rows, org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp));
+            joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id                           => */5,
+                /* projectId                    => */0,
+                /* person                       => */ person,
+                /* activeRow                    => */0,
+                /* activeCol                    => */0,
+                /* optionalFields               => */null,
+                /* timestamp                    => */ timestamp,
+
+                /* templateId                   => */6,
+                /* title                        => */ title,
+                /* code                         => */1,
+                /* rows                         => */ rows,
+                /* cols                         => */ cols,
+                /* generatedExcludedCellsAmount => */0,
+                /* initialExcludedCells         => */null,
+                /* excludedRows                 => */null,
+                /* excludedCols                 => */null,
+                /* colNumbering                 => */1,
+                /* rowNumbering                 => */0,
+                /* entryLabel                   => */null,
+                /* templateOptionalFields       => */null,
+                /* templateTimestamp            => */333,
+
+                /* entryModels                  => */null);
+        }
+        org.junit.Assert.assertEquals(expectedName, joinedGridModel.name());
+    }
+
     // region makeEntryModels() Public Method Tests
     @org.junit.Test() public void noneGeneratedMakeEntryModelWorks()
     {
