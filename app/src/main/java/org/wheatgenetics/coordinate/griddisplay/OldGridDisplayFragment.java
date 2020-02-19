@@ -11,8 +11,8 @@ package org.wheatgenetics.coordinate.griddisplay;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.display.DisplayFragment
- * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+ * org.wheatgenetics.coordinate.display.OldDisplayFragment
+ * org.wheatgenetics.coordinate.display.OldDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  *
@@ -20,11 +20,11 @@ package org.wheatgenetics.coordinate.griddisplay;
  * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
  * org.wheatgenetics.coordinate.griddisplay.GridElements
  */
-public class OldGridDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
+public class OldGridDisplayFragment extends org.wheatgenetics.coordinate.display.OldDisplayFragment
 implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler extends org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+    public interface Handler extends org.wheatgenetics.coordinate.display.OldDisplayFragment.Handler
     {
         public abstract int getActiveRow(); public abstract int getActiveCol();
         public abstract void activate(int row, int col);

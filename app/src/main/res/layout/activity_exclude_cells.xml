@@ -18,6 +18,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        tools:layout="@layout/fragment_display" />
+        tools:layout="@layout/fragment_old_display" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

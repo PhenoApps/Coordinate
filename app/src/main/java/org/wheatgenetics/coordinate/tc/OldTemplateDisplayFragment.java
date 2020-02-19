@@ -9,19 +9,20 @@ package org.wheatgenetics.coordinate.tc;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.display.DisplayFragment
- * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+ * org.wheatgenetics.coordinate.display.OldDisplayFragment
+ * org.wheatgenetics.coordinate.display.OldDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.model.Cell
  *
  * org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
  * org.wheatgenetics.coordinate.tc.TemplateElements
  */
-public class OldTemplateDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
+public class OldTemplateDisplayFragment
+extends    org.wheatgenetics.coordinate.display.OldDisplayFragment
 implements org.wheatgenetics.coordinate.tc.TemplateElement.TemplateHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler extends org.wheatgenetics.coordinate.display.DisplayFragment.Handler
+    public interface Handler extends org.wheatgenetics.coordinate.display.OldDisplayFragment.Handler
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     public OldTemplateDisplayFragment() { /* Required empty public constructor. */ }

@@ -29,7 +29,7 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.display.Element.Handler
  * org.wheatgenetics.coordinate.display.Elements
  */
-public abstract class DisplayFragment extends androidx.fragment.app.Fragment
+public abstract class OldDisplayFragment extends androidx.fragment.app.Fragment
 implements org.wheatgenetics.coordinate.display.Element.Handler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
@@ -42,7 +42,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     // region Fields
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable protected
-        org.wheatgenetics.coordinate.display.DisplayFragment.Handler handler;
+        org.wheatgenetics.coordinate.display.OldDisplayFragment.Handler handler;
 
     @androidx.annotation.Nullable private android.widget.TableLayout tableLayout;
 
@@ -77,7 +77,7 @@ implements org.wheatgenetics.coordinate.display.Element.Handler
     @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)
     {
         // Inflate the layout for this fragment:
-        return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_display,
+        return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_old_display,
             container,false);
     }
 
