@@ -20,7 +20,7 @@ package org.wheatgenetics.coordinate.griddisplay;
  * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
  * org.wheatgenetics.coordinate.griddisplay.GridElements
  */
-public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
+public class OldGridDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
 implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
@@ -34,11 +34,14 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     }
 
     @androidx.annotation.Nullable
-    private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+    private org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
     gridDisplayFragmenthandler()
-    { return (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) this.handler; }
+    {
+        return
+            (org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler) this.handler;
+    }
 
-    public GridDisplayFragment() { /* Required empty public constructor. */ }
+    public OldGridDisplayFragment() { /* Required empty public constructor. */ }
 
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -47,10 +50,11 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     {
         final boolean success;
 
-        if (context instanceof org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler)
+        if (context instanceof
+        org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler)
         {
             this.handler =
-                (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) context;
+                (org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler) context;
             success = true;
         }
         else { this.handler = null; success = false; }
@@ -63,7 +67,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     @androidx.annotation.IntRange(from = 1) final int lastRow,
     @androidx.annotation.IntRange(from = 1) final int lastCol)
     {
-        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+        final org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
             gridDisplayFragmenthandler = this.gridDisplayFragmenthandler();
         if (null != gridDisplayFragmenthandler)
         {
@@ -88,7 +92,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     @java.lang.Override public void activate(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.griddisplay.GridElement gridElement)
     {
-        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+        final org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
             gridDisplayFragmenthandler = this.gridDisplayFragmenthandler();
         if (null != gridDisplayFragmenthandler)
                 gridDisplayFragmenthandler.activate(gridElement.getRow(), gridElement.getCol());
