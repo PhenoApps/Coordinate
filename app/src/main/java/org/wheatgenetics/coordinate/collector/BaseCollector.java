@@ -236,8 +236,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel)
             return (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
                 this.joinedGridModel.getEntryModels();
-        else
-            return null;
+        else return null;
     }
     // endregion
 
