@@ -11,13 +11,13 @@
 
     <fragment
         android:id="@+id/templateDisplayFragment"
-        android:name="org.wheatgenetics.coordinate.tc.OldTemplateDisplayFragment"
+        android:name="org.wheatgenetics.coordinate.tc.TemplateDisplayFragment"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        tools:layout="@layout/fragment_old_display" />
+        tools:layout="@layout/fragment_display" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
