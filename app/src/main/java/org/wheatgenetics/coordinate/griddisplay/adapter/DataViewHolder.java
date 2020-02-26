@@ -2,6 +2,9 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
 
 /**
  * Uses:
+ * android.content.Context
+ * android.view.View
+ * android.view.View.OnLongClickListener
  * android.widget.ImageView
  *
  * androidx.annotation.IntRange
@@ -11,9 +14,12 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Utils
  *
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.EntryModel
+ * org.wheatgenetics.coordinate.model.ExcludedEntryModel
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel
  *
  * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
  */
@@ -25,8 +31,17 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder dataViewHolder);
     }
 
+    // region Fields
+    // region Constructor Fields
+    @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler gridHandler;
+    @androidx.annotation.Nullable private final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker;
+    // endregion
+
+    private android.view.View.OnLongClickListener onLongClickListenerInstance = null;   // lazy load
+    // endregion
 
     // region Private Methods
     private boolean elementModelIsNotNull() { return null != this.elementModel; }
@@ -36,15 +51,90 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         this.setImage(org.wheatgenetics.coordinate.R.drawable.active_entry);
         this.gridHandler.activate(this);
     }
+
+    // region onLongClickListener() Private Methods
+    private void exclude()
+    {
+        if (this.elementModelIsNotNull())
+            this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
+                (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
+        this.clearOnClickListener(); this.toggle();                    // TODO: Is toggle() correct?
+    }
+
+    private boolean onLongClick()
+    {
+        if (this.elementModelIsNotNull())
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
+                (org.wheatgenetics.coordinate.model.EntryModel) this.elementModel;
+            if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+            {
+                final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
+                    (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModel;
+                if (includedEntryModel.valueIsEmpty())
+                    this.exclude();
+                else
+                {
+                    org.wheatgenetics.coordinate.Utils.confirm(
+                        /* context => */ this.context                                             ,
+                        /* title   => */ org.wheatgenetics.coordinate.R.string.ElementConfirmTitle,
+                        /* message => */ java.lang.String.format(
+                            this.context.getString(
+                                org.wheatgenetics.coordinate.R.string.ElementConfirmMessage),
+                            includedEntryModel.getValue()),
+                        /* yesRunnable => */ new java.lang.Runnable()
+                            {
+                                @java.lang.Override public void run()
+                                {
+                                    org.wheatgenetics.coordinate.griddisplay
+                                        .adapter.DataViewHolder.this.exclude();
+                                }
+                            });
+                }
+            }
+            else
+            {
+                final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel =
+                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) entryModel;
+                this.elementModel = null == this.checker ?
+                    new org.wheatgenetics.coordinate.model.IncludedEntryModel(excludedEntryModel) :
+                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                        excludedEntryModel, this.checker);
+                this.setOnClickListener(); this.toggle();              // TODO: Is toggle() correct?
+            }
+        }
+        return true;
+    }
+
+    @androidx.annotation.NonNull private android.view.View.OnLongClickListener onLongClickListener()
+    {
+        if (null == this.onLongClickListenerInstance) this.onLongClickListenerInstance =
+            new android.view.View.OnLongClickListener()
+            {
+                @java.lang.Override public boolean onLongClick(final android.view.View view)
+                {
+                    return org.wheatgenetics.coordinate.griddisplay
+                        .adapter.DataViewHolder.this.onLongClick();
+                }
+            };
+        return this.onLongClickListenerInstance;
+    }
+    // endregion
     // endregion
 
     DataViewHolder(
     @androidx.annotation.NonNull final android.widget.ImageView itemView,
+    @androidx.annotation.NonNull final android.content.Context  context ,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler handler,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler gridHandler)
-    { super(itemView, handler); this.gridHandler = gridHandler; }
+        org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler gridHandler,
+    @androidx.annotation.Nullable final
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
+    {
+        super(itemView, handler); this.itemView.setOnLongClickListener(this.onLongClickListener());
+        this.context = context; this.gridHandler = gridHandler; this.checker = checker;
+    }
 
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
