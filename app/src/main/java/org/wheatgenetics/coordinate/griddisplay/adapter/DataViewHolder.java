@@ -59,9 +59,8 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     @java.lang.Override protected void respondToClick() { this.activate(); }
     // endregion
 
-    void bind(
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.EntryModel entryModel,
-    int activeRow, int activeCol)
+    void bind(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.EntryModel entryModel, int activeRow, int activeCol)
     {
         this.elementModel = entryModel;
 

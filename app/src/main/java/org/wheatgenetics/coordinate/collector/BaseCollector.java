@@ -98,6 +98,9 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     { return org.wheatgenetics.coordinate.preference.Utils.getSoundOn(this.activity); }
     // endregion
 
+    private void populateDataEntryFragment()
+    { if (null != this.dataEntryFragment) this.dataEntryFragment.populate(); }
+
     private void goToNext(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
@@ -105,7 +108,10 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
             if (this.joinedGridModel.goToNext(entryModel, this.getAdvancement(),this))
             {
                 gridsTable.update(this.joinedGridModel);             // Update activeRow, activeCol.
-                this.populateFragments();
+
+                if (null != this.gridDisplayFragment)
+                    this.gridDisplayFragment.notifyDataSetChanged();
+                this.populateDataEntryFragment();
             }
     }
 
@@ -365,7 +371,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     public void populateFragments()
     {
         if (null != this.gridDisplayFragment) this.gridDisplayFragment.populate();
-        if (null != this.dataEntryFragment  ) this.dataEntryFragment.populate  ();
+        this.populateDataEntryFragment();
     }
 
     // region loadJoinedGridModel() Public Methods

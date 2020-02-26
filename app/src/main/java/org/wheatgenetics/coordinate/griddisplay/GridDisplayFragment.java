@@ -30,11 +30,27 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
         public abstract void activate(int row, int col);
     }
 
+    private org.wheatgenetics.coordinate.griddisplay.adapter.Adapter adapter = null;
+
     // region Private Methods
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
     gridDisplayFragmentHandler()
     { return (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) this.handler; }
+
+    private int getActiveRow()
+    {
+        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+            gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+        return null == gridDisplayFragmentHandler ? -1 : gridDisplayFragmentHandler.getActiveRow();
+    }
+
+    private int getActiveCol()
+    {
+        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+            gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+        return null == gridDisplayFragmentHandler ? -1 : gridDisplayFragmentHandler.getActiveCol();
+    }
 
     private void activate(@androidx.annotation.NonNull final
     org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder dataViewHolder)
@@ -70,26 +86,15 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
     @java.lang.Override protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel)
     {
-        final int activeRow, activeCol;
-        {
-            final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
-                gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
-            if (null == gridDisplayFragmentHandler)
-                activeRow = activeCol = -1;
-            else
-            {
-                activeRow = gridDisplayFragmentHandler.getActiveRow();
-                activeCol = gridDisplayFragmentHandler.getActiveCol();
-            }
-        }
-        return new org.wheatgenetics.coordinate.griddisplay.adapter.Adapter(displayModel, activeRow,
-            activeCol, new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler()
+        return this.adapter = new org.wheatgenetics.coordinate.griddisplay.adapter.Adapter(
+            displayModel, this.getActiveRow(), this.getActiveCol(),
+            new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler()
             {
                 @java.lang.Override @androidx.annotation.Nullable
                 public org.wheatgenetics.coordinate.model.ElementModel toggle(
                 @androidx.annotation.Nullable final
                     org.wheatgenetics.coordinate.model.ElementModel elementModel)
-                { return null; /* TODO: Remove? */ }
+                { return elementModel; /* TODO */ }
             }, new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler()
             {
                 @java.lang.Override public void activate(@androidx.annotation.NonNull final
@@ -101,4 +106,10 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
             });
     }
     // endregion
+
+    public void notifyDataSetChanged()
+    {
+        if (null != this.adapter)
+            this.adapter.notifyDataSetChanged(this.getActiveRow(), this.getActiveCol());
+    }
 }

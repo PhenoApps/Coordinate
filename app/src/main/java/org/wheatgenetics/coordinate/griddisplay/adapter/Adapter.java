@@ -35,8 +35,8 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
         final int newActiveRow = dataViewHolder.getRow(), newActiveCol = dataViewHolder.getCol();
         if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
         {
-            this.activeRow = newActiveRow; this.activeCol = newActiveCol;
-            this.notifyDataSetChanged(); this.gridHandler.activate(dataViewHolder);
+            this.notifyDataSetChanged(newActiveRow, newActiveCol);
+            this.gridHandler.activate(dataViewHolder);
         }
     }
 
@@ -83,4 +83,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
             this.activeRow, this.activeCol);
     }
     // endregion
+
+    public void notifyDataSetChanged(final int activeRow, final int activeCol)
+    { this.activeRow = activeRow; this.activeCol = activeCol; this.notifyDataSetChanged(); }
 }

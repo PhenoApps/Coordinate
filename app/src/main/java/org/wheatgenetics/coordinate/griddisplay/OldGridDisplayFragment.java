@@ -95,7 +95,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
         final org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
             gridDisplayFragmenthandler = this.gridDisplayFragmenthandler();
         if (null != gridDisplayFragmenthandler)
-                gridDisplayFragmenthandler.activate(gridElement.getRow(), gridElement.getCol());
+            gridDisplayFragmenthandler.activate(gridElement.getRow(), gridElement.getCol());
     }
     // endregion
     // endregion
