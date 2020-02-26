@@ -4,13 +4,16 @@ package org.wheatgenetics.coordinate.projects;
  * Uses:
  * android.annotation.SuppressLint
  * android.app.Activity
+ * android.content.res.Resources
  * android.view.View
  * android.view.ViewGroup
  * android.widget.TextView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
  * org.wheatgenetics.coordinate.Adapter
@@ -22,11 +25,17 @@ package org.wheatgenetics.coordinate.projects;
 class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null; // ll
-    private org.wheatgenetics.coordinate.model.ProjectModels    projectModelsInstance = null; // ll
+    // region Table Fields
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
+    private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
+    // endregion
+
+    private org.wheatgenetics.coordinate.model.ProjectModels projectModelsInstance = null;     // ll
+    private android.content.res.Resources                    resourcesInstance     = null;     // ll
     // endregion
 
     // region Private Methods
+    // region Table Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
@@ -35,6 +44,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
         return this.projectsTableInstance;
     }
 
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+        return this.gridsTableInstance;
+    }
+    // endregion
+
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.ProjectModels projectModels()
     {
@@ -42,15 +60,18 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
             this.projectModelsInstance = this.projectsTable().load();
         return this.projectModelsInstance;
     }
+
+    @androidx.annotation.NonNull private android.content.res.Resources resources()
+    {
+        if (null == this.resourcesInstance) this.resourcesInstance = this.activity().getResources();
+        return this.resourcesInstance;
+    }
     // endregion
 
     ProjectsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
     { super(activity); }
 
     // region Overridden Methods
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.projectModelsInstance = null; super.notifyDataSetChanged(); }
-
     @java.lang.Override public int getCount()
     {
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels = this.projectModels();
@@ -90,19 +111,39 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
             else
             {
                 {
-                    final android.widget.TextView titleTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTitle);
-                    if (null != titleTextView) titleTextView.setText(projectModel.getTitle());
+                    if (null != textView) textView.setText(projectModel.getTitle());
                 }
                 {
-                    final android.widget.TextView timestampTextView = view.findViewById(
+                    @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
+                        this.gridsTable().numberInProject(projectModel.getId());
+                    {
+                        final android.widget.TextView valueTextView = view.findViewById(
+                            org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGridsValue);
+                        if (null != valueTextView)
+                            valueTextView.setText(java.lang.String.valueOf(numberOfGrids));
+                    }
+                    {
+                        final android.widget.TextView labelTextView = view.findViewById(
+                            org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGridsLabel);
+                        if (null != labelTextView)
+                            labelTextView.setText(this.resources().getQuantityString(
+                                org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
+                                numberOfGrids                                                   ));
+                    }
+                }
+                {
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTimestamp);
-                    if (null != timestampTextView)
-                        timestampTextView.setText(projectModel.getFormattedTimestamp());
+                    if (null != textView) textView.setText(projectModel.getFormattedTimestamp());
                 }
                 return view;
             }
         }
     }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.projectModelsInstance = null; super.notifyDataSetChanged(); }
     // endregion
 }

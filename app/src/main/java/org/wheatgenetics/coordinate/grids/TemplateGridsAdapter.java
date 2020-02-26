@@ -22,6 +22,14 @@ class TemplateGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapt
         baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
 
+    TemplateGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
+    @androidx.annotation.IntRange(from = 1) final long templateId)
+    { super(activity); this.templateId = templateId; }
+
+    // region Overridden Methods
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.Nullable
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels()
@@ -30,11 +38,5 @@ class TemplateGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapt
             this.baseJoinedGridModelsInstance = this.gridsTable().loadByTemplateId(this.templateId);
         return this.baseJoinedGridModelsInstance;
     }
-
-    TemplateGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.IntRange(from = 1) final long templateId)
-    { super(activity); this.templateId = templateId; }
-
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+    // endregion
 }

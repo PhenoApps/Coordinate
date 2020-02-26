@@ -22,6 +22,14 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
         baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
 
+    ProjectGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
+    @androidx.annotation.IntRange(from = 1) final long projectId)
+    { super(activity); this.projectId = projectId; }
+
+    // region Overridden Methods
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.Nullable
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels()
@@ -30,11 +38,5 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
             this.baseJoinedGridModelsInstance = this.gridsTable().loadByProjectId(this.projectId);
         return this.baseJoinedGridModelsInstance;
     }
-
-    ProjectGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    { super(activity); this.projectId = projectId; }
-
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+    // endregion
 }

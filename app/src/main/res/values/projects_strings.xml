@@ -11,5 +11,9 @@
     <string name="ProjectsActivityLabel">Projects</string>
 
     <string name="ProjectsListTitle">title:</string>
+    <plurals name="ProjectsListNumberOfGrids">
+        <item quantity="one">grid</item>
+        <item quantity="other">grids</item>
+    </plurals>
     <string name="ProjectsListTimestamp">timestamp:</string>
 </resources>

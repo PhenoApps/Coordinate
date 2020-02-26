@@ -23,6 +23,22 @@
 
     <TableRow>
         <TextView
+            android:id="@+id/projectsListItemNumberOfGridsValue"
+            android:text="99"
+            android:paddingEnd="6sp"
+            android:paddingRight="6sp"
+
+            tools:ignore="HardcodedText, RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/projectsListItemNumberOfGridsLabel"
+            android:text="grids"
+
+            tools:ignore="HardcodedText" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
             android:text="@string/ProjectsListTimestamp"
             android:paddingEnd="6sp"
             android:paddingRight="6sp"

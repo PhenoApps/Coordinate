@@ -48,9 +48,6 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
     { super(activity); }
 
     // region Overridden Methods
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.templateModelsInstance = null; super.notifyDataSetChanged(); }
-
     @java.lang.Override public int getCount()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
@@ -116,5 +113,8 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
             }
         }
     }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.templateModelsInstance = null; super.notifyDataSetChanged(); }
     // endregion
 }
