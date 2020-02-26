@@ -11,10 +11,10 @@ package org.wheatgenetics.coordinate.templates;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
  * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels

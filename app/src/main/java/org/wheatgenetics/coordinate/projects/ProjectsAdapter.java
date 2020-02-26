@@ -13,11 +13,11 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.database.GridsTable
- * org.wheatgenetics.coordinate.database.ProjectsTable
- *
  * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.ProjectsTable
  *
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels

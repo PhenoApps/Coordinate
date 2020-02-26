@@ -13,10 +13,10 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.database.GridsTable
- *
  * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.database.GridsTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -24,9 +24,6 @@ package org.wheatgenetics.coordinate.grids;
 abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
-
-    @androidx.annotation.NonNull private android.widget.TextView makeEmptyTextView()
-    { return new android.widget.TextView(this.activity()); }
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -75,20 +72,34 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
             (org.wheatgenetics.coordinate.model.JoinedGridModel) this.getItem(position);
         if (null == joinedGridModel)
-            return this.makeEmptyTextView();
+            return this.makeEmptyTableLayout();
         else
         {
-            @android.annotation.SuppressLint({"InflateParams"})
-            final android.widget.TextView textView =
-                (android.widget.TextView) this.activity().getLayoutInflater().inflate(
+            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
+                this.activity().getLayoutInflater().inflate(
                     org.wheatgenetics.coordinate.R.layout.grids_list_item,
                     null,false);
-            if (null == textView)
-                return this.makeEmptyTextView();
+            if (null == view)
+                return this.makeEmptyTableLayout();
             else
             {
-                textView.setText(joinedGridModel.name());
-                return textView;
+                {
+                    final android.widget.TextView textView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemId);
+                    if (null != textView) textView.setText(
+                        java.lang.String.valueOf(joinedGridModel.getId()));
+                }
+                {
+                    final android.widget.TextView textView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemTemplateTitle);
+                    if (null != textView) textView.setText(joinedGridModel.getTemplateTitle());
+                }
+                {
+                    final android.widget.TextView textView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemTimestamp);
+                    if (null != textView) textView.setText(joinedGridModel.getFormattedTimestamp());
+                }
+                return view;
             }
         }
     }
