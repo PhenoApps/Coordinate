@@ -56,7 +56,7 @@ public abstract class DataViewHolder extends org.wheatgenetics.coordinate.displa
     // endregion
 
     // region Protected Methods
-    // region setImage()Protected Methods
+    // region setImage() Protected Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected void setImage(@androidx.annotation.DrawableRes final int resId)
     { ((android.widget.ImageView) this.itemView).setImageResource(resId); }

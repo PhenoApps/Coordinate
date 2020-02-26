@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  *
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.model.IncludedEntryModel
  * org.wheatgenetics.coordinate.model.EntryModel
  *
  * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
@@ -35,8 +36,6 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         this.setImage(org.wheatgenetics.coordinate.R.drawable.active_entry);
         this.gridHandler.activate(this);
     }
-
-    private void inactivate() { this.setImage(); }
     // endregion
 
     DataViewHolder(
@@ -72,7 +71,12 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         ||  -1            == activeRow && -1            == activeCol)
             this.activate();
         else
-            this.inactivate();
+            this.setImage();
+
+        if (this.elementModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
+            this.setOnClickListener();
+        else
+            this.clearOnClickListener();
     }
 
     // region Public Methods

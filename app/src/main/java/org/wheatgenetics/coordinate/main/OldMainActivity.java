@@ -48,7 +48,7 @@ package org.wheatgenetics.coordinate.main;
  *
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
- * org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
+ * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.DisplayModel
@@ -71,8 +71,8 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.coordinate.main.BaseMainActivity
  */
 public class OldMainActivity extends org.wheatgenetics.coordinate.main.BaseMainActivity implements
-org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler,
-org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler       ,
+org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler    ,
 org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
 {
     private static final int CONFIGURE_NAVIGATION_DRAWER = 10, PREPROCESS_TEMPLATE_IMPORT = 20,
@@ -684,13 +684,13 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
         return this.statefulGridCreatorInstance;
     }
 
-    // region org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.collector().getDisplayModel(); }
 
-    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    /*@java.lang.Override public void toggle(@androidx.annotation.Nullable                   // TODO
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { this.collector().toggle(elementModel); }
+    { this.collector().toggle(elementModel); }*/
 
     @java.lang.Override public int getActiveRow() { return this.collector().getActiveRow(); }
     @java.lang.Override public int getActiveCol() { return this.collector().getActiveCol(); }
@@ -698,9 +698,9 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
     @java.lang.Override public void activate(final int row, final int col)
     { this.collector().activate(row, col); }
 
-    @java.lang.Override @androidx.annotation.Nullable
+    /*@java.lang.Override @androidx.annotation.Nullable                                      // TODO
     public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
-    { return this.collector().getChecker(); }
+    { return this.collector().getChecker(); }*/
     // endregion
 
     // region org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler Overridden Methods

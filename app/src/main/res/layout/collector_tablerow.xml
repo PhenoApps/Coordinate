@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/gridDisplayFragment"
-        android:name="org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment"
+        android:name="org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment"
 
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
 
-        tools:layout="@layout/fragment_old_display" />
+        tools:layout="@layout/fragment_display" />
 
     <View
         android:layout_width="2dp"

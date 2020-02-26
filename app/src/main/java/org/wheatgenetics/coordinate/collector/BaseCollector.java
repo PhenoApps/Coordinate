@@ -22,8 +22,8 @@ package org.wheatgenetics.coordinate.collector;
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
- * org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment
- * org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler
+ * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment
+ * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
@@ -53,16 +53,15 @@ package org.wheatgenetics.coordinate.collector;
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class BaseCollector extends java.lang.Object implements
-org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler,
-org.wheatgenetics.coordinate.model.EntryModels.FilledHandler           ,
+org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
+org.wheatgenetics.coordinate.model.EntryModels.FilledHandler        ,
 org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 {
     // region Fields
     @androidx.annotation.NonNull private final androidx.appcompat.app.AppCompatActivity activity;
 
-    private final org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment
-        gridDisplayFragment;
-    private final org.wheatgenetics.coordinate.collector.DataEntryFragment dataEntryFragment;
+    private final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment gridDisplayFragment;
+    private final org.wheatgenetics.coordinate.collector.DataEntryFragment     dataEntryFragment  ;
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel = null;
@@ -165,18 +164,18 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         @androidx.annotation.NonNull
         final androidx.fragment.app.FragmentManager fragmentManager =
             this.activity.getSupportFragmentManager();
-        this.gridDisplayFragment = (org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment)
+        this.gridDisplayFragment = (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment)
             fragmentManager.findFragmentById(org.wheatgenetics.coordinate.R.id.gridDisplayFragment);
         this.dataEntryFragment = (org.wheatgenetics.coordinate.collector.DataEntryFragment)
             fragmentManager.findFragmentById(org.wheatgenetics.coordinate.R.id.dataEntryFragment);
     }
 
     // region Overridden Methods
-    // region org.wheatgenetics.coordinate.griddisplay.OldGridDisplayFragment.Handler Overridden Methods
+    // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.joinedGridModel; }
 
-    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    /*@java.lang.Override public void toggle(@androidx.annotation.Nullable                   // TODO
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (this.joinedGridModelIsLoaded())
@@ -209,7 +208,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
                         this.goToNext(entryModel);
             }
         }
-    }
+    }*/
 
     @java.lang.Override public int getActiveRow()
     { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getActiveRow() : -1; }
@@ -230,7 +229,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         }
     }
 
-    @java.lang.Override @androidx.annotation.Nullable
+    /*@java.lang.Override @androidx.annotation.Nullable                                      // TODO
     public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
     {
         if (this.joinedGridModel instanceof
@@ -238,7 +237,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
             return (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
                 this.joinedGridModel.getEntryModels();
         else return null;
-    }
+    }*/
     // endregion
 
     // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Methods

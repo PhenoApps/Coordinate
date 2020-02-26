@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.coordinate.model.DisplayModel
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -27,6 +29,17 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     private int activeRow, activeCol;
     // endregion
 
+    private void activate(@androidx.annotation.NonNull final
+    org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder dataViewHolder)
+    {
+        final int newActiveRow = dataViewHolder.getRow(), newActiveCol = dataViewHolder.getCol();
+        if (newActiveRow != this.activeRow || newActiveCol != this.activeCol)
+        {
+            this.activeRow = newActiveRow; this.activeCol = newActiveCol;
+            this.notifyDataSetChanged(); this.gridHandler.activate(dataViewHolder);
+        }
+    }
+
     public Adapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
                                  final int activeRow, final int activeCol,
@@ -40,14 +53,25 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     }
 
     // region Overridden Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.NonNull
     protected org.wheatgenetics.coordinate.display.adapter.DataViewHolder dataViewHolder(
     @androidx.annotation.NonNull final android.widget.ImageView itemView)
     {
         return new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder(
-            itemView, this.getHandler(), this.gridHandler);
+            itemView, this.getHandler(),
+            new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler()
+            {
+                @java.lang.Override public void activate(@androidx.annotation.NonNull final
+                org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder dataViewHolder)
+                {
+                    org.wheatgenetics.coordinate.griddisplay.adapter.Adapter.this.activate(
+                        dataViewHolder);
+                }
+            });
     }
 
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void bind(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.adapter.DataViewHolder
         dataViewHolder,
