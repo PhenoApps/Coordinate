@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:icon="@drawable/ic_create_white"
+        android:icon="@drawable/ic_create_grid_white"
         android:onClick="onNewGridMenuItemClick"
         android:title="@string/AppBarNewTitle"
         app:showAsAction="always"

@@ -5,7 +5,7 @@
             <group>
                 <item
                     android:id="@+id/nav_create_grid"
-                    android:icon="@drawable/ic_create_black"
+                    android:icon="@drawable/ic_create_grid_black"
                     android:title="@string/create_grid" />
                 <item
                     android:id="@+id/nav_manage_grid"
@@ -55,7 +55,7 @@
             <group>
                 <item
                     android:id="@+id/nav_create_project"
-                    android:icon="@drawable/ic_create_black"
+                    android:icon="@drawable/ic_create_grid_black"
                     android:title="@string/create_project" />
                 <item
                     android:id="@+id/nav_manage_project"

@@ -97,11 +97,11 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     { this.statelessGridCreator().createInProject(projectId); }
     // endregion*/
 
-    /*private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
         this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
             this, projectId));
-    }*/
+    }
 
     private void notifyDataSetChanged()
     { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
@@ -236,6 +236,14 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
         {
             projectsListView.setAdapter(this.projectsAdapter =
                 new org.wheatgenetics.coordinate.projects.ProjectsAdapter(this,
+                    /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override public void onClick(final android.view.View view)
+                        {
+                            if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                                .this.startGridsActivity((java.lang.Long) view.getTag());
+                        }
+                    },
                     /* onDeleteButtonClickListener => */ new android.view.View.OnClickListener()
                     {
                         @java.lang.Override public void onClick(final android.view.View view)

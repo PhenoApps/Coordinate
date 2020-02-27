@@ -9,7 +9,7 @@
 
         <menu>
             <item
-                android:icon="@drawable/ic_create_black"
+                android:icon="@drawable/ic_create_grid_black"
                 android:onClick="onGridMenuItemClick"
                 android:title="@string/MainActivityGridMenuItemTitle" />
 

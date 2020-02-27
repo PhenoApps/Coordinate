@@ -26,10 +26,20 @@
         </TableLayout>
 
         <ImageButton
+            android:id="@+id/projectsListItemShowGridsButton"
+            android:src="@drawable/selector_show_grid"
+            android:background="?android:selectableItemBackground"
+            android:layout_height="match_parent"
+            android:padding="9dp"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
             android:id="@+id/projectsListItemDeleteButton"
             android:src="@drawable/selector_delete"
             android:background="?android:selectableItemBackground"
             android:layout_height="match_parent"
+            android:padding="9dp"
 
             tools:ignore="ContentDescription" />
 
@@ -38,6 +48,7 @@
             android:src="@drawable/selector_export"
             android:background="?android:selectableItemBackground"
             android:layout_height="match_parent"
+            android:padding="9dp"
 
             tools:ignore="ContentDescription" />
     </TableRow>
