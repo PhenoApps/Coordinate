@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:padding="6dp">
+    android:padding="6dp"
 
-    <TableRow>
-        <TextView android:id="@+id/projectsListItemTitle" />
-    </TableRow>
+    android:stretchColumns="0">
 
-    <TableRow>
-        <TextView android:id="@+id/projectsListItemNumberOfGrids" />
-    </TableRow>
+    <TableRow tools:ignore="UselessParent">
+        <TableLayout>
+            <TableRow>
+                <TextView android:id="@+id/projectsListItemTitle" />
+            </TableRow>
 
-    <TableRow>
-        <TextView android:id="@+id/projectsListItemTimestamp" />
+            <TableRow>
+                <TextView android:id="@+id/projectsListItemNumberOfGrids" />
+            </TableRow>
+
+            <TableRow>
+                <TextView android:id="@+id/projectsListItemTimestamp" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/projectsListItemExportButton"
+            android:src="@drawable/selector_export"
+            android:background="?android:selectableItemBackground"
+            android:layout_height="match_parent"
+
+            tools:ignore="ContentDescription" />
     </TableRow>
 </TableLayout>

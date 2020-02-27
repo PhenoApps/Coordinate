@@ -6,7 +6,9 @@ package org.wheatgenetics.coordinate.projects;
  * android.app.Activity
  * android.content.res.Resources
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.ViewGroup
+ * android.widget.ImageButton
  * android.widget.TextView
  *
  * androidx.annotation.IntRange
@@ -25,6 +27,9 @@ package org.wheatgenetics.coordinate.projects;
 class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
+    @androidx.annotation.NonNull
+    private final android.view.View.OnClickListener onExportButtonClickListener;
+
     // region Table Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
     private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
@@ -68,8 +73,11 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     }
     // endregion
 
-    ProjectsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(activity); }
+    ProjectsAdapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener)
+    { super(activity); this.onExportButtonClickListener = onExportButtonClickListener; }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()
@@ -131,6 +139,22 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                     final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTimestamp);
                     if (null != textView) textView.setText(projectModel.getFormattedTimestamp());
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemExportButton);
+                    if (null != imageButton)
+                    {
+                        @androidx.annotation.IntRange(from = 1) final long projectId =
+                            projectModel.getId();
+                        if (this.gridsTable().existsInProject(projectId))
+                        {
+                            imageButton.setEnabled        (true                            );
+                            imageButton.setTag            (projectId                       );
+                            imageButton.setOnClickListener(this.onExportButtonClickListener);
+                        }
+                        else imageButton.setEnabled(false);
+                    }
                 }
                 return view;
             }
