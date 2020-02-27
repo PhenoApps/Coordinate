@@ -10,10 +10,8 @@
     <!-- ProjectsActivity -->
     <string name="ProjectsActivityLabel">Projects</string>
 
-    <string name="ProjectsListTitle">title:</string>
     <plurals name="ProjectsListNumberOfGrids">
-        <item quantity="one">grid</item>
-        <item quantity="other">grids</item>
+        <item quantity="one">%d grid</item>
+        <item quantity="other">%d grids</item>
     </plurals>
-    <string name="ProjectsListTimestamp">timestamp:</string>
 </resources>

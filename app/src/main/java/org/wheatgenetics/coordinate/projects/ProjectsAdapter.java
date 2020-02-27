@@ -116,21 +116,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                     if (null != textView) textView.setText(projectModel.getTitle());
                 }
                 {
-                    @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
-                        this.gridsTable().numberInProject(projectModel.getId());
+                    final android.widget.TextView valueTextView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGrids);
+                    if (null != valueTextView)
                     {
-                        final android.widget.TextView valueTextView = view.findViewById(
-                            org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGridsValue);
-                        if (null != valueTextView)
-                            valueTextView.setText(java.lang.String.valueOf(numberOfGrids));
-                    }
-                    {
-                        final android.widget.TextView labelTextView = view.findViewById(
-                            org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGridsLabel);
-                        if (null != labelTextView)
-                            labelTextView.setText(this.resources().getQuantityString(
-                                org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
-                                numberOfGrids                                                   ));
+                        @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
+                            this.gridsTable().numberInProject(projectModel.getId());
+                        valueTextView.setText(this.resources().getQuantityString(
+                            org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
+                            numberOfGrids, numberOfGrids                                    ));
                     }
                 }
                 {
