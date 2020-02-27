@@ -28,7 +28,8 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
     @androidx.annotation.NonNull
-    private final android.view.View.OnClickListener onExportButtonClickListener;
+    private final android.view.View.OnClickListener onDeleteButtonClickListener,
+        onExportButtonClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
@@ -76,8 +77,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     ProjectsAdapter(
     @androidx.annotation.NonNull final android.app.Activity              activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
         onExportButtonClickListener)
-    { super(activity); this.onExportButtonClickListener = onExportButtonClickListener; }
+    {
+        super(activity);
+
+        this.onDeleteButtonClickListener = onDeleteButtonClickListener;
+        this.onExportButtonClickListener = onExportButtonClickListener;
+    }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()
@@ -142,6 +150,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                 }
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemDeleteButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (projectModel.getId()            );
+                        imageButton.setOnClickListener(this.onDeleteButtonClickListener);
+                    }
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemExportButton);
                     if (null != imageButton)
                     {
@@ -149,7 +166,6 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                             projectModel.getId();
                         if (this.gridsTable().existsInProject(projectId))
                         {
-                            imageButton.setEnabled        (true                            );
                             imageButton.setTag            (projectId                       );
                             imageButton.setOnClickListener(this.onExportButtonClickListener);
                         }

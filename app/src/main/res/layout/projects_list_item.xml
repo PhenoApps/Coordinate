@@ -26,6 +26,14 @@
         </TableLayout>
 
         <ImageButton
+            android:id="@+id/projectsListItemDeleteButton"
+            android:src="@drawable/selector_delete"
+            android:background="?android:selectableItemBackground"
+            android:layout_height="match_parent"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
             android:id="@+id/projectsListItemExportButton"
             android:src="@drawable/selector_export"
             android:background="?android:selectableItemBackground"

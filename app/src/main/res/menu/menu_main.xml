@@ -9,17 +9,17 @@
 
         <menu>
             <item
-                android:icon="@drawable/ic_menu_create_black"
+                android:icon="@drawable/ic_create_black"
                 android:onClick="onGridMenuItemClick"
                 android:title="@string/MainActivityGridMenuItemTitle" />
 
             <item
-                android:icon="@drawable/ic_menu_create_template_black"
+                android:icon="@drawable/ic_create_template_black"
                 android:onClick="onTemplateMenuItemClick"
                 android:title="@string/MainActivityTemplateMenuItemTitle" />
 
             <item
-                android:icon="@drawable/ic_menu_project_create_black"
+                android:icon="@drawable/ic_create_project_black"
                 android:onClick="onProjectMenuItemClick"
                 android:title="@string/MainActivityProjectMenuItemTitle" />
         </menu>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:icon="@drawable/ic_menu_project_create_white"
+        android:icon="@drawable/ic_create_project_white"
         android:onClick="onNewProjectMenuItemClick"
         android:title="@string/AppBarNewTitle"
         app:showAsAction="always"
