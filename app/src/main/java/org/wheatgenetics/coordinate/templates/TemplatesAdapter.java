@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.templates;
  * android.view.View
  * android.view.View.OnClickListener
  * android.view.ViewGroup
+ * android.widget.ImageButton
  * android.widget.TextView
  *
  * androidx.annotation.IntRange
@@ -126,6 +127,22 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
                         org.wheatgenetics.coordinate.R.id.templatesListItemTimestamp);
                     if (null != textView) textView.setText(templateModel.getFormattedTimestamp());
                 }
+
+                @androidx.annotation.IntRange(from = 1) final long templateId =
+                    templateModel.getId();
+                final boolean isUserDefined = !templateModel.isDefaultTemplate();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemDeleteButton);
+                    if (null != imageButton)
+                        if (isUserDefined)
+                        {
+                            imageButton.setTag            (templateId                        );
+                            imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+
                 return view;
             }
         }

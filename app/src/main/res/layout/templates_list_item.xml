@@ -6,18 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:padding="6dp">
+    android:padding="6dp"
 
-    <TableRow>
-        <TextView android:id="@+id/templatesListItemTitle" android:layout_span="2" />
-    </TableRow>
+    android:stretchColumns="0">
 
-    <TableRow>
-        <TextView android:id="@+id/templatesListItemRows"    />
-        <TextView android:id="@+id/templatesListItemColumns" />
-    </TableRow>
+    <TableRow tools:ignore="UselessParent">
+        <TableLayout>
+            <TableRow>
+                <TextView android:id="@+id/templatesListItemTitle" android:layout_span="2" />
+            </TableRow>
 
-    <TableRow>
-        <TextView android:id="@+id/templatesListItemTimestamp" android:layout_span="2" />
+            <TableRow>
+                <TextView android:id="@+id/templatesListItemRows"    />
+                <TextView android:id="@+id/templatesListItemColumns" />
+            </TableRow>
+
+            <TableRow>
+                <TextView android:id="@+id/templatesListItemTimestamp" android:layout_span="2" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/templatesListItemDeleteButton"
+            android:src="@drawable/selector_delete"
+            android:background="?android:selectableItemBackground"
+            android:layout_height="match_parent"
+            android:padding="9dp"
+
+            tools:ignore="ContentDescription" />
     </TableRow>
 </TableLayout>
