@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate;
+package org.wheatgenetics.coordinate.adapter;
 
 /**
  * Uses:
@@ -9,9 +9,9 @@ package org.wheatgenetics.coordinate;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.Adapter
+ * org.wheatgenetics.coordinate.adapter.Adapter
  */
-public abstract class NonGridsAdapter extends org.wheatgenetics.coordinate.Adapter
+public abstract class NonGridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
 {
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
         onCreateGridButtonClickListener, onShowGridsButtonClickListener;

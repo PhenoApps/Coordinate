@@ -16,15 +16,16 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.adapter.Adapter
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
-abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
+abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
 {
     // region Fields
     @androidx.annotation.NonNull private final android.view.View.OnClickListener

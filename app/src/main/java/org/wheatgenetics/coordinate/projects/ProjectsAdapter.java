@@ -14,8 +14,9 @@ package org.wheatgenetics.coordinate.projects;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.NonGridsAdapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.adapter.NonGridsAdapter
  *
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.ProjectsTable
@@ -23,7 +24,7 @@ package org.wheatgenetics.coordinate.projects;
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  */
-class ProjectsAdapter extends org.wheatgenetics.coordinate.NonGridsAdapter
+class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapter
 {
     // region Fields
     // region Table Fields
