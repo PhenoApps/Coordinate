@@ -11,9 +11,12 @@
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
 
-    <string name="TemplatesListTitle">title:</string>
-    <string name="TemplatesListDimensions">dimensions:</string>
-    <string name="TemplatesListRows">rows,</string>
-    <string name="TemplatesListColumns">columns</string>
-    <string name="TemplatesListTimestamp">timestamp:</string>
+    <plurals name="TemplatesListRows">
+        <item quantity="one"  >%d row</item>
+        <item quantity="other">%d rows</item>
+    </plurals>
+    <plurals name="TemplatesListColumns">
+        <item quantity="one"  >, %d column</item>
+        <item quantity="other">, %d columns</item>
+    </plurals>
 </resources>

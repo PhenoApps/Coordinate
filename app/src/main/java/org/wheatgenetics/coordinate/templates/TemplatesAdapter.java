@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.templates;
  * android.view.ViewGroup
  * android.widget.TextView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
@@ -89,25 +90,37 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
             else
             {
                 {
-                    final android.widget.TextView titleTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemTitle);
-                    if (null != titleTextView) titleTextView.setText(templateModel.getTitle());
+                    if (null != textView) textView.setText(templateModel.getTitle());
                 }
                 {
-                    final android.widget.TextView rowsTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemRows);
-                    if (null != rowsTextView) rowsTextView.setText(templateModel.getRowsAsString());
+                    if (null != textView)
+                    {
+                        @androidx.annotation.IntRange(from = 1) final int rows =
+                            templateModel.getRows();
+                        textView.setText(this.resources().getQuantityString(
+                            org.wheatgenetics.coordinate.R.plurals.TemplatesListRows, rows, rows));
+                    }
                 }
                 {
-                    final android.widget.TextView colsTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemColumns);
-                    if (null != colsTextView) colsTextView.setText(templateModel.getColsAsString());
+                    if (null != textView)
+                    {
+                        @androidx.annotation.IntRange(from = 1) final int cols =
+                            templateModel.getCols();
+                        textView.setText(this.resources().getQuantityString(
+                            org.wheatgenetics.coordinate.R.plurals.TemplatesListColumns,
+                            cols, cols                                                 ));
+                    }
                 }
                 {
-                    final android.widget.TextView timestampTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemTimestamp);
-                    if (null != timestampTextView)
-                        timestampTextView.setText(templateModel.getFormattedTimestamp());
+                    if (null != textView) textView.setText(templateModel.getFormattedTimestamp());
                 }
                 return view;
             }

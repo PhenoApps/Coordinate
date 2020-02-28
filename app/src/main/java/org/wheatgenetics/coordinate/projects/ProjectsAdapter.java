@@ -4,7 +4,6 @@ package org.wheatgenetics.coordinate.projects;
  * Uses:
  * android.annotation.SuppressLint
  * android.app.Activity
- * android.content.res.Resources
  * android.view.View
  * android.view.View.OnClickListener
  * android.view.ViewGroup
@@ -37,7 +36,6 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     // endregion
 
     private org.wheatgenetics.coordinate.model.ProjectModels projectModelsInstance = null;     // ll
-    private android.content.res.Resources                    resourcesInstance     = null;     // ll
     // endregion
 
     // region Private Methods
@@ -65,12 +63,6 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
         if (null == this.projectModelsInstance)
             this.projectModelsInstance = this.projectsTable().load();
         return this.projectModelsInstance;
-    }
-
-    @androidx.annotation.NonNull private android.content.res.Resources resources()
-    {
-        if (null == this.resourcesInstance) this.resourcesInstance = this.activity().getResources();
-        return this.resourcesInstance;
     }
     // endregion
 

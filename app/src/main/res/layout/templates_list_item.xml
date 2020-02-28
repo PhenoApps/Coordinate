@@ -4,71 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+    android:padding="6dp">
 
     <TableRow>
-        <TextView
-            android:text="@string/TemplatesListTitle"
-            android:paddingEnd="6sp"
-            android:paddingRight="6sp"
-            
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/templatesListItemTitle"
-            android:text="test title"
-            android:layout_span="4"
-
-            tools:ignore="HardcodedText" />
+        <TextView android:id="@+id/templatesListItemTitle" android:layout_span="2" />
     </TableRow>
 
     <TableRow>
-        <TextView
-            android:text="@string/TemplatesListDimensions"
-            android:paddingEnd="6sp"
-            android:paddingRight="6sp"
-
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/templatesListItemRows"
-            android:text="20"
-            android:paddingEnd="4sp"
-            android:paddingRight="4sp"
-
-            tools:ignore="HardcodedText, RtlSymmetry" />
-
-        <TextView
-            android:text="@string/TemplatesListRows"
-            android:paddingEnd="4sp"
-            android:paddingRight="4sp"
-
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/templatesListItemColumns"
-            android:text="100"
-            android:paddingEnd="4sp"
-            android:paddingRight="4sp"
-
-            tools:ignore="HardcodedText, RtlSymmetry" />
-
-        <TextView android:text="@string/TemplatesListColumns" />
+        <TextView android:id="@+id/templatesListItemRows"    />
+        <TextView android:id="@+id/templatesListItemColumns" />
     </TableRow>
 
     <TableRow>
-        <TextView
-            android:text="@string/TemplatesListTimestamp"
-            android:paddingEnd="6sp"
-            android:paddingRight="6sp"
-
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/templatesListItemTimestamp"
-            android:text="test timestamp"
-            android:layout_span="4"
-
-            tools:ignore="HardcodedText" />
+        <TextView android:id="@+id/templatesListItemTimestamp" android:layout_span="2" />
     </TableRow>
 </TableLayout>
