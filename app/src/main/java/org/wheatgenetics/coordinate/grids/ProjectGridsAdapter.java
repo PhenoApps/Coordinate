@@ -27,8 +27,13 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
     @androidx.annotation.NonNull            final android.app.Activity              activity ,
     @androidx.annotation.IntRange(from = 1) final long                              projectId,
     @androidx.annotation.NonNull            final android.view.View.OnClickListener
-            onDeleteButtonClickListener)
-    { super(activity, onDeleteButtonClickListener); this.projectId = projectId; }
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener)
+    {
+        super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
+        this.projectId = projectId;
+    }
 
     // region Overridden Methods
     @java.lang.Override public void notifyDataSetChanged()

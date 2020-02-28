@@ -18,7 +18,7 @@ public abstract class Adapter extends android.widget.BaseAdapter
     // region Constructor Fields
     @androidx.annotation.NonNull private final android.app.Activity              activity;
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
-        onDeleteButtonClickListener;
+        onDeleteButtonClickListener, onExportButtonClickListener;
     // endregion
 
     private android.content.res.Resources resourcesInstance = null;                     // lazy load
@@ -28,9 +28,15 @@ public abstract class Adapter extends android.widget.BaseAdapter
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull protected android.app.Activity activity() { return this.activity; }
 
+    // region onButtonClickListener() Protected Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull protected android.view.View.OnClickListener
     onDeleteButtonClickListener() { return this.onDeleteButtonClickListener; }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull protected android.view.View.OnClickListener
+    onExportButtonClickListener() { return this.onExportButtonClickListener; }
+    // endregion
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull protected android.widget.TableLayout makeEmptyTableLayout()
@@ -47,9 +53,14 @@ public abstract class Adapter extends android.widget.BaseAdapter
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected Adapter(@androidx.annotation.NonNull final android.app.Activity activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onDeleteButtonClickListener)
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener)
     {
         super();
-        this.activity = activity; this.onDeleteButtonClickListener = onDeleteButtonClickListener;
+
+        this.activity                    = activity                   ;
+        this.onDeleteButtonClickListener = onDeleteButtonClickListener;
+        this.onExportButtonClickListener = onExportButtonClickListener;
     }
 }

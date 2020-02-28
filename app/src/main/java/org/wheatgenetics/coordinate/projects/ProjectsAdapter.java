@@ -27,8 +27,7 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
-        onCreateGridButtonClickListener, onShowGridsButtonClickListener,
-        onExportButtonClickListener;
+        onCreateGridButtonClickListener, onShowGridsButtonClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
@@ -77,11 +76,10 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onExportButtonClickListener)
     {
-        super(activity, onDeleteButtonClickListener);
+        super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
 
         this.onCreateGridButtonClickListener = onCreateGridButtonClickListener;
         this.onShowGridsButtonClickListener  = onShowGridsButtonClickListener ;
-        this.onExportButtonClickListener     = onExportButtonClickListener    ;
     }
 
     // region Overridden Methods
@@ -183,8 +181,8 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                     if (null != imageButton)
                         if (projectHasGrids)
                         {
-                            imageButton.setTag            (projectId                       );
-                            imageButton.setOnClickListener(this.onExportButtonClickListener);
+                            imageButton.setTag            (projectId                         );
+                            imageButton.setOnClickListener(this.onExportButtonClickListener());
                         }
                         else imageButton.setEnabled(false);
                 }

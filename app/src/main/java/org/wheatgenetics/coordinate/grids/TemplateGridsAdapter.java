@@ -27,8 +27,13 @@ class TemplateGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapt
     @androidx.annotation.NonNull            final android.app.Activity              activity  ,
     @androidx.annotation.IntRange(from = 1) final long                              templateId,
     @androidx.annotation.NonNull            final android.view.View.OnClickListener
-        onDeleteButtonClickListener)
-    { super(activity, onDeleteButtonClickListener); this.templateId = templateId; }
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener)
+    {
+        super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
+        this.templateId = templateId;
+    }
 
     // region Overridden Methods
     @java.lang.Override public void notifyDataSetChanged()
