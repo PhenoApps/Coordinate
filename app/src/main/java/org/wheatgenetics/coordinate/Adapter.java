@@ -18,7 +18,8 @@ public abstract class Adapter extends android.widget.BaseAdapter
     // region Constructor Fields
     @androidx.annotation.NonNull private final android.app.Activity              activity;
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
-        onDeleteButtonClickListener, onExportButtonClickListener, onShowGridsButtonClickListener;
+        onCreateGridButtonClickListener, onDeleteButtonClickListener   ,
+        onExportButtonClickListener    , onShowGridsButtonClickListener;
     // endregion
 
     private android.content.res.Resources resourcesInstance = null;                     // lazy load
@@ -29,6 +30,10 @@ public abstract class Adapter extends android.widget.BaseAdapter
     @androidx.annotation.NonNull protected android.app.Activity activity() { return this.activity; }
 
     // region onButtonClickListener() Protected Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull protected android.view.View.OnClickListener
+    onCreateGridButtonClickListener() { return this.onCreateGridButtonClickListener; }
+
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull protected android.view.View.OnClickListener
     onDeleteButtonClickListener() { return this.onDeleteButtonClickListener; }
@@ -55,7 +60,10 @@ public abstract class Adapter extends android.widget.BaseAdapter
     // endregion
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected Adapter(@androidx.annotation.NonNull final android.app.Activity activity,
+    protected Adapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onCreateGridButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
@@ -65,9 +73,10 @@ public abstract class Adapter extends android.widget.BaseAdapter
     {
         super();
 
-        this.activity                       = activity                      ;
-        this.onDeleteButtonClickListener    = onDeleteButtonClickListener   ;
-        this.onExportButtonClickListener    = onExportButtonClickListener   ;
-        this.onShowGridsButtonClickListener = onShowGridsButtonClickListener;
+        this.activity                        = activity                       ;
+        this.onCreateGridButtonClickListener = onCreateGridButtonClickListener;
+        this.onDeleteButtonClickListener     = onDeleteButtonClickListener    ;
+        this.onExportButtonClickListener     = onExportButtonClickListener    ;
+        this.onShowGridsButtonClickListener  = onShowGridsButtonClickListener ;
     }
 }

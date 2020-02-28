@@ -342,6 +342,15 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         {
             templatesListView.setAdapter(this.templatesAdapter =
                 new org.wheatgenetics.coordinate.templates.TemplatesAdapter(this,
+                    /* onCreateGridButtonClickListener => */ new android.view.View.OnClickListener()
+                    {
+                        @java.lang.Override public void onClick(final android.view.View view)
+                        {
+                            /*if (null != view)
+                                org.wheatgenetics.coordinate.templates.TemplatesActivity
+                                    .this.deleteTemplate((java.lang.Long) view.getTag());*/
+                        }
+                    },
                     /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
                     {
                         @java.lang.Override public void onClick(final android.view.View view)

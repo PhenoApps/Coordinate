@@ -50,9 +50,9 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
 
-    private android.view.View.OnClickListener onDeleteButtonClickListenerInstance = null,
-        onExportButtonClickListenerInstance    = null,                                     // lazy
-        onShowGridsButtonClickListenerInstance = null;                                     //  loads
+    private android.view.View.OnClickListener        onCreateGridButtonClickListenerInstance = null,
+        onDeleteButtonClickListenerInstance   = null, onExportButtonClickListenerInstance    = null,
+        onShowGridsButtonClickListenerInstance = null;                                 // lazy loads
 
     private org.wheatgenetics.coordinate.ge.GridExporter           gridExporterInstance = null;// ll
     private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
@@ -67,16 +67,30 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Private Methods
     // region onButtonClickListener() Private Methods
     @androidx.annotation.NonNull
-    private android.view.View.OnClickListener onDeleteButtonClickListener()
+    private android.view.View.OnClickListener onCreateGridButtonClickListener()
     {
-        if (null == this.onDeleteButtonClickListenerInstance)
-            this.onDeleteButtonClickListenerInstance = new android.view.View.OnClickListener()
+        if (null == this.onCreateGridButtonClickListenerInstance)
+            this.onCreateGridButtonClickListenerInstance = new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     {
                         // TODO;
                     }
                 };
+        return this.onCreateGridButtonClickListenerInstance;
+    }
+
+    @androidx.annotation.NonNull
+    private android.view.View.OnClickListener onDeleteButtonClickListener()
+    {
+        if (null == this.onDeleteButtonClickListenerInstance)
+            this.onDeleteButtonClickListenerInstance = new android.view.View.OnClickListener()
+            {
+                @java.lang.Override public void onClick(final android.view.View view)
+                {
+                    // TODO;
+                }
+            };
         return this.onDeleteButtonClickListenerInstance;
     }
 
@@ -112,8 +126,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     {
         return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this,
-            this.onDeleteButtonClickListener   (), this.onExportButtonClickListener(),
-            this.onShowGridsButtonClickListener());
+            this.onCreateGridButtonClickListener(), this.onDeleteButtonClickListener   (),
+            this.onExportButtonClickListener    (), this.onShowGridsButtonClickListener());
     }
 
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
@@ -267,9 +281,11 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                             intent.getLongExtra(TEMPLATE_ID_KEY,-1);
                         this.gridsAdapter =
                             new org.wheatgenetics.coordinate.grids.TemplateGridsAdapter(
-                                this, templateId, this.onDeleteButtonClickListener(),
-                                this.onExportButtonClickListener   (),
-                                this.onShowGridsButtonClickListener());
+                                this, templateId,
+                                this.onCreateGridButtonClickListener(),
+                                this.onDeleteButtonClickListener    (),
+                                this.onExportButtonClickListener    (),
+                                this.onShowGridsButtonClickListener ());
                     }
                     else
                     {
@@ -281,9 +297,11 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                                 intent.getLongExtra(PROJECT_ID_KEY,-1);
                             this.gridsAdapter =
                                 new org.wheatgenetics.coordinate.grids.ProjectGridsAdapter(
-                                    this, projectId, this.onDeleteButtonClickListener(),
-                                    this.onExportButtonClickListener   (),
-                                    this.onShowGridsButtonClickListener());
+                                    this, projectId,
+                                    this.onCreateGridButtonClickListener(),
+                                    this.onDeleteButtonClickListener    (),
+                                    this.onExportButtonClickListener    (),
+                                    this.onShowGridsButtonClickListener ());
                         }
                         else this.gridsAdapter = this.makeAllGridsAdapter();
                     }
