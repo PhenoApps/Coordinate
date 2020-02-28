@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.templates;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.ViewGroup
  * android.widget.TextView
  *
@@ -45,8 +46,11 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
     }
     // endregion
 
-    TemplatesAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(activity); }
+    TemplatesAdapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener)
+    { super(activity, onDeleteButtonClickListener); }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()

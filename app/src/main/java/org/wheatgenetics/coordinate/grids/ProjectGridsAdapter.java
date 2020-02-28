@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.grids;
 /**
  * Uses:
  * android.app.Activity
+ * android.view.View.OnClickListener
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
@@ -22,9 +23,12 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
         baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
 
-    ProjectGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    { super(activity); this.projectId = projectId; }
+    ProjectGridsAdapter(
+    @androidx.annotation.NonNull            final android.app.Activity              activity ,
+    @androidx.annotation.IntRange(from = 1) final long                              projectId,
+    @androidx.annotation.NonNull            final android.view.View.OnClickListener
+            onDeleteButtonClickListener)
+    { super(activity, onDeleteButtonClickListener); this.projectId = projectId; }
 
     // region Overridden Methods
     @java.lang.Override public void notifyDataSetChanged()

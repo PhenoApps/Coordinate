@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.grids;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.ViewGroup
  * android.widget.TextView
  *
@@ -39,8 +40,10 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
     abstract org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels();
     // endregion
 
-    GridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(activity); }
+    GridsAdapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener) { super(activity, onDeleteButtonClickListener); }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()

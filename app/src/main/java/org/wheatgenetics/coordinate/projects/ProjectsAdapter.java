@@ -28,15 +28,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     // region Fields
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
         onCreateGridButtonClickListener, onShowGridsButtonClickListener,
-        onDeleteButtonClickListener    , onExportButtonClickListener   ;
+        onExportButtonClickListener;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
     private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
     // endregion
 
-    private org.wheatgenetics.coordinate.model.ProjectModels projectModelsInstance = null;     // ll
-    // endregion
+    private org.wheatgenetics.coordinate.model.ProjectModels projectModelsInstance = null;  // lazy
+    // endregion                                                                            //  load
 
     // region Private Methods
     // region Table Private Methods
@@ -77,11 +77,10 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onExportButtonClickListener)
     {
-        super(activity);
+        super(activity, onDeleteButtonClickListener);
 
         this.onCreateGridButtonClickListener = onCreateGridButtonClickListener;
         this.onShowGridsButtonClickListener  = onShowGridsButtonClickListener ;
-        this.onDeleteButtonClickListener     = onDeleteButtonClickListener    ;
         this.onExportButtonClickListener     = onExportButtonClickListener    ;
     }
 
@@ -174,8 +173,8 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                         org.wheatgenetics.coordinate.R.id.projectsListItemDeleteButton);
                     if (null != imageButton)
                     {
-                        imageButton.setTag            (projectId                       );
-                        imageButton.setOnClickListener(this.onDeleteButtonClickListener);
+                        imageButton.setTag            (projectId                         );
+                        imageButton.setOnClickListener(this.onDeleteButtonClickListener());
                     }
                 }
                 {
