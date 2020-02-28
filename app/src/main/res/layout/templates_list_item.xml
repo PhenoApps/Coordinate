@@ -27,6 +27,15 @@
         </TableLayout>
 
         <ImageButton
+            android:id="@+id/templatesListItemShowGridsButton"
+            android:src="@drawable/selector_show_grids"
+            android:background="?android:selectableItemBackground"
+            android:layout_height="match_parent"
+            android:padding="9dp"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
             android:id="@+id/templatesListItemExportButton"
             android:src="@drawable/selector_export"
             android:background="?android:selectableItemBackground"

@@ -17,6 +17,7 @@ package org.wheatgenetics.coordinate.templates;
  * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
  *
+ * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -25,11 +26,16 @@ package org.wheatgenetics.coordinate.templates;
 class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
+    // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.model.TemplateModels    templateModelsInstance = null;// ll
+    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
+    // endregion
+
+    private org.wheatgenetics.coordinate.model.TemplateModels templateModelsInstance = null;   // ll
     // endregion
 
     // region Private Methods
+    // region Table Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
@@ -37,6 +43,15 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
             new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity());
         return this.templatesTableInstance;
     }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+        return this.gridsTableInstance;
+    }
+    // endregion
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.TemplateModels templateModels()
@@ -137,6 +152,18 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
 
                 @androidx.annotation.IntRange(from = 1) final long templateId =
                     templateModel.getId();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemShowGridsButton);
+                    if (null != imageButton)
+                        if (this.gridsTable().existsInTemplate(templateId))
+                        {
+                            imageButton.setTag            (templateId                           );
+                            imageButton.setOnClickListener(this.onShowGridsButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+
                 final boolean isUserDefined = !templateModel.isDefaultTemplate();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
