@@ -22,16 +22,14 @@ class AllGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapter
     AllGridsAdapter(
     @androidx.annotation.NonNull final android.app.Activity              activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onCreateGridButtonClickListener,
+        onCollectDataButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener)
+        onExportButtonClickListener)
     {
-        super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
-            onExportButtonClickListener, onShowGridsButtonClickListener);
+        super(activity, onCollectDataButtonClickListener,
+            onDeleteButtonClickListener, onExportButtonClickListener);
     }
 
     // region Overridden Methods

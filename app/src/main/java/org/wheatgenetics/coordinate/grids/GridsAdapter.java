@@ -26,7 +26,11 @@ package org.wheatgenetics.coordinate.grids;
  */
 abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
+    // region Fields
+    @androidx.annotation.NonNull private final android.view.View.OnClickListener
+        onCollectDataButtonClickListener;
     private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
+    // endregion
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -45,16 +49,14 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
     GridsAdapter(
     @androidx.annotation.NonNull final android.app.Activity              activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onCreateGridButtonClickListener,
+        onCollectDataButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener)
+        onExportButtonClickListener)
     {
-        super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
-            onExportButtonClickListener, onShowGridsButtonClickListener);
+        super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
+        this.onCollectDataButtonClickListener = onCollectDataButtonClickListener;
     }
 
     // region Overridden Methods
@@ -116,6 +118,15 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
                 }
 
                 @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemCollectDataButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (gridId                               );
+                        imageButton.setOnClickListener(this.onCollectDataButtonClickListener);
+                    }
+                }
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemDeleteButton);

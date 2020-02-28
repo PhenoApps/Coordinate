@@ -27,16 +27,14 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
     @androidx.annotation.NonNull            final android.app.Activity              activity ,
     @androidx.annotation.IntRange(from = 1) final long                              projectId,
     @androidx.annotation.NonNull            final android.view.View.OnClickListener
-        onCreateGridButtonClickListener,
+        onCollectDataButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener)
+        onExportButtonClickListener)
     {
-        super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
-            onExportButtonClickListener, onShowGridsButtonClickListener);
+        super(activity, onCollectDataButtonClickListener,
+            onDeleteButtonClickListener, onExportButtonClickListener);
         this.projectId = projectId;
     }
 

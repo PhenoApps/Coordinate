@@ -55,7 +55,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
         gridExportPreprocessorInstance = null;                                          // lazy load
 
-    private android.view.View.OnClickListener        onCreateGridButtonClickListenerInstance = null,
+    private android.view.View.OnClickListener        onCollectDataButtonClickListenerInstance = null,
         onDeleteButtonClickListenerInstance   = null, onExportButtonClickListenerInstance    = null,
         onShowGridsButtonClickListenerInstance = null;                                 // lazy loads
 
@@ -68,6 +68,12 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Private Methods
     private void notifyDataSetChanged()
     { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
+
+    private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
+    {
+        this.startActivity(
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
+    }
 
     // region deleteGrid() Private Methods
     @androidx.annotation.NonNull
@@ -134,17 +140,18 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
 
     // region onButtonClickListener() Private Methods
     @androidx.annotation.NonNull
-    private android.view.View.OnClickListener onCreateGridButtonClickListener()
+    private android.view.View.OnClickListener onCollectDataButtonClickListener()
     {
-        if (null == this.onCreateGridButtonClickListenerInstance)
-            this.onCreateGridButtonClickListenerInstance = new android.view.View.OnClickListener()
+        if (null == this.onCollectDataButtonClickListenerInstance)
+            this.onCollectDataButtonClickListenerInstance = new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     {
-                        if (null != view) ;// TODO
+                        if (null != view) org.wheatgenetics.coordinate.grids.GridsActivity
+                            .this.startCollectorActivity((java.lang.Long) view.getTag());
                     }
                 };
-        return this.onCreateGridButtonClickListenerInstance;
+        return this.onCollectDataButtonClickListenerInstance;
     }
 
     @androidx.annotation.NonNull
@@ -176,39 +183,19 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
             };
         return this.onExportButtonClickListenerInstance;
     }
-
-    @androidx.annotation.NonNull
-    private android.view.View.OnClickListener onShowGridsButtonClickListener()
-    {
-        if (null == this.onShowGridsButtonClickListenerInstance)
-            this.onShowGridsButtonClickListenerInstance = new android.view.View.OnClickListener()
-            {
-                @java.lang.Override public void onClick(final android.view.View view)
-                {
-                    if (null != view) ;// TODO
-                }
-            };
-        return this.onShowGridsButtonClickListenerInstance;
-    }
     // endregion
 
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     {
         return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this,
-            this.onCreateGridButtonClickListener(), this.onDeleteButtonClickListener   (),
-            this.onExportButtonClickListener    (), this.onShowGridsButtonClickListener());
+            this.onCollectDataButtonClickListener(), this.onDeleteButtonClickListener(),
+            this.onExportButtonClickListener     ());
     }
 
-    private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
-    {
-        this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
-    }
-
+    // region createGrid() Private Methods
     private void handleGridCreated(@androidx.annotation.IntRange(from = 1) final long gridId)
     { this.notifyDataSetChanged(); this.startCollectorActivity(gridId); }
 
-    // region createGrid() Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
     {
@@ -291,10 +278,9 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                         this.gridsAdapter =
                             new org.wheatgenetics.coordinate.grids.TemplateGridsAdapter(
                                 this, templateId,
-                                this.onCreateGridButtonClickListener(),
-                                this.onDeleteButtonClickListener    (),
-                                this.onExportButtonClickListener    (),
-                                this.onShowGridsButtonClickListener ());
+                                this.onCollectDataButtonClickListener(),
+                                this.onDeleteButtonClickListener     (),
+                                this.onExportButtonClickListener     ());
                     }
                     else
                     {
@@ -307,10 +293,9 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                             this.gridsAdapter =
                                 new org.wheatgenetics.coordinate.grids.ProjectGridsAdapter(
                                     this, projectId,
-                                    this.onCreateGridButtonClickListener(),
-                                    this.onDeleteButtonClickListener    (),
-                                    this.onExportButtonClickListener    (),
-                                    this.onShowGridsButtonClickListener ());
+                                    this.onCollectDataButtonClickListener(),
+                                    this.onDeleteButtonClickListener     (),
+                                    this.onExportButtonClickListener     ());
                         }
                         else this.gridsAdapter = this.makeAllGridsAdapter();
                     }
