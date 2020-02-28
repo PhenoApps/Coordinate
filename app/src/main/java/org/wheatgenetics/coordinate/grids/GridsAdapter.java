@@ -45,8 +45,13 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener)
-    { super(activity, onDeleteButtonClickListener, onExportButtonClickListener); }
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
+    {
+        super(activity, onDeleteButtonClickListener,
+            onExportButtonClickListener, onShowGridsButtonClickListener);
+    }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()

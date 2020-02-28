@@ -51,7 +51,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
 
     private android.view.View.OnClickListener onDeleteButtonClickListenerInstance = null,
-        onExportButtonClickListenerInstance = null;                                    // lazy loads
+        onExportButtonClickListenerInstance    = null,                                     // lazy
+        onShowGridsButtonClickListenerInstance = null;                                     //  loads
 
     private org.wheatgenetics.coordinate.ge.GridExporter           gridExporterInstance = null;// ll
     private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
@@ -92,12 +93,27 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
             };
         return this.onExportButtonClickListenerInstance;
     }
+
+    @androidx.annotation.NonNull
+    private android.view.View.OnClickListener onShowGridsButtonClickListener()
+    {
+        if (null == this.onShowGridsButtonClickListenerInstance)
+            this.onShowGridsButtonClickListenerInstance = new android.view.View.OnClickListener()
+            {
+                @java.lang.Override public void onClick(final android.view.View view)
+                {
+                    // TODO;
+                }
+            };
+        return this.onShowGridsButtonClickListenerInstance;
+    }
     // endregion
 
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     {
-        return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(
-            this, this.onDeleteButtonClickListener(), this.onExportButtonClickListener());
+        return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this,
+            this.onDeleteButtonClickListener   (), this.onExportButtonClickListener(),
+            this.onShowGridsButtonClickListener());
     }
 
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
@@ -252,7 +268,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                         this.gridsAdapter =
                             new org.wheatgenetics.coordinate.grids.TemplateGridsAdapter(
                                 this, templateId, this.onDeleteButtonClickListener(),
-                                this.onExportButtonClickListener());
+                                this.onExportButtonClickListener   (),
+                                this.onShowGridsButtonClickListener());
                     }
                     else
                     {
@@ -265,7 +282,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                             this.gridsAdapter =
                                 new org.wheatgenetics.coordinate.grids.ProjectGridsAdapter(
                                     this, projectId, this.onDeleteButtonClickListener(),
-                                    this.onExportButtonClickListener());
+                                    this.onExportButtonClickListener   (),
+                                    this.onShowGridsButtonClickListener());
                         }
                         else this.gridsAdapter = this.makeAllGridsAdapter();
                     }

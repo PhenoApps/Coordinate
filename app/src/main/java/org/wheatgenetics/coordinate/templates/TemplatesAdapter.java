@@ -50,10 +50,15 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
     TemplatesAdapter(
     @androidx.annotation.NonNull final android.app.Activity              activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
         onExportButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener)
-    { super(activity, onDeleteButtonClickListener, onExportButtonClickListener); }
+    {
+        super(activity, onDeleteButtonClickListener,
+            onExportButtonClickListener, onShowGridsButtonClickListener);
+    }
 
     // region Overridden Methods
     @java.lang.Override public int getCount()

@@ -18,7 +18,7 @@ public abstract class Adapter extends android.widget.BaseAdapter
     // region Constructor Fields
     @androidx.annotation.NonNull private final android.app.Activity              activity;
     @androidx.annotation.NonNull private final android.view.View.OnClickListener
-        onDeleteButtonClickListener, onExportButtonClickListener;
+        onDeleteButtonClickListener, onExportButtonClickListener, onShowGridsButtonClickListener;
     // endregion
 
     private android.content.res.Resources resourcesInstance = null;                     // lazy load
@@ -36,6 +36,10 @@ public abstract class Adapter extends android.widget.BaseAdapter
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull protected android.view.View.OnClickListener
     onExportButtonClickListener() { return this.onExportButtonClickListener; }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull protected android.view.View.OnClickListener
+    onShowGridsButtonClickListener() { return this.onShowGridsButtonClickListener; }
     // endregion
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -55,12 +59,15 @@ public abstract class Adapter extends android.widget.BaseAdapter
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener)
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
     {
         super();
 
-        this.activity                    = activity                   ;
-        this.onDeleteButtonClickListener = onDeleteButtonClickListener;
-        this.onExportButtonClickListener = onExportButtonClickListener;
+        this.activity                       = activity                      ;
+        this.onDeleteButtonClickListener    = onDeleteButtonClickListener   ;
+        this.onExportButtonClickListener    = onExportButtonClickListener   ;
+        this.onShowGridsButtonClickListener = onShowGridsButtonClickListener;
     }
 }

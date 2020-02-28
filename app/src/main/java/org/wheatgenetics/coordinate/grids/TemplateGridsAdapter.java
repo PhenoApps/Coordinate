@@ -29,9 +29,12 @@ class TemplateGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapt
     @androidx.annotation.NonNull            final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener)
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
     {
-        super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
+        super(activity, onDeleteButtonClickListener,
+            onExportButtonClickListener, onShowGridsButtonClickListener);
         this.templateId = templateId;
     }
 
