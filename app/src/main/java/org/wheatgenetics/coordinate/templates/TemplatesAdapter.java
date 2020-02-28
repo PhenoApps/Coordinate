@@ -135,6 +135,17 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
                 final boolean isUserDefined = !templateModel.isDefaultTemplate();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemExportButton);
+                    if (null != imageButton)
+                        if (isUserDefined)
+                        {
+                            imageButton.setTag            (templateId                        );
+                            imageButton.setOnClickListener(this.onExportButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemDeleteButton);
                     if (null != imageButton)
                         if (isUserDefined)
