@@ -156,6 +156,15 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
                     templateModel.getId();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemCreateGridButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (templateId                            );
+                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener());
+                    }
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemShowGridsButton);
                     if (null != imageButton)
                         if (this.gridsTable().existsInTemplate(templateId))
