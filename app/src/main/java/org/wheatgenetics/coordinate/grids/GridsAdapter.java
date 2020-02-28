@@ -7,8 +7,10 @@ package org.wheatgenetics.coordinate.grids;
  * android.view.View
  * android.view.View.OnClickListener
  * android.view.ViewGroup
+ * android.widget.ImageButton
  * android.widget.TextView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
@@ -111,6 +113,17 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
                     final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemTimestamp);
                     if (null != textView) textView.setText(joinedGridModel.getFormattedTimestamp());
+                }
+
+                @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemExportButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (gridId                            );
+                        imageButton.setOnClickListener(this.onExportButtonClickListener());
+                    }
                 }
                 return view;
             }
