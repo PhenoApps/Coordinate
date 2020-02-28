@@ -27,9 +27,9 @@ package org.wheatgenetics.coordinate.projects;
 class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
 {
     // region Fields
-    @androidx.annotation.NonNull
-    private final android.view.View.OnClickListener onShowGridsButtonClickListener,
-        onDeleteButtonClickListener, onExportButtonClickListener;
+    @androidx.annotation.NonNull private final android.view.View.OnClickListener
+        onCreateGridButtonClickListener, onShowGridsButtonClickListener,
+        onDeleteButtonClickListener    , onExportButtonClickListener   ;
 
     // region Table Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
@@ -77,6 +77,8 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     ProjectsAdapter(
     @androidx.annotation.NonNull final android.app.Activity              activity,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onCreateGridButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
         onShowGridsButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
@@ -85,9 +87,10 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     {
         super(activity);
 
-        this.onShowGridsButtonClickListener = onShowGridsButtonClickListener;
-        this.onDeleteButtonClickListener    = onDeleteButtonClickListener   ;
-        this.onExportButtonClickListener    = onExportButtonClickListener   ;
+        this.onCreateGridButtonClickListener = onCreateGridButtonClickListener;
+        this.onShowGridsButtonClickListener  = onShowGridsButtonClickListener ;
+        this.onDeleteButtonClickListener     = onDeleteButtonClickListener    ;
+        this.onExportButtonClickListener     = onExportButtonClickListener    ;
     }
 
     // region Overridden Methods
@@ -139,6 +142,7 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                         org.wheatgenetics.coordinate.R.id.projectsListItemTimestamp);
                     if (null != textView) textView.setText(projectModel.getFormattedTimestamp());
                 }
+
                 final boolean projectHasGrids;
                 {
                     @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
@@ -151,7 +155,17 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                             org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
                             numberOfGrids, numberOfGrids                                    ));
                 }
+
                 @androidx.annotation.IntRange(from = 1) final long projectId = projectModel.getId();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemCreateGridButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (projectId                           );
+                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener);
+                    }
+                }
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemShowGridsButton);
@@ -183,6 +197,7 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
                         }
                         else imageButton.setEnabled(false);
                 }
+
                 return view;
             }
         }
