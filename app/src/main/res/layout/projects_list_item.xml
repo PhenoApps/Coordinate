@@ -36,7 +36,7 @@
 
         <ImageButton
             android:id="@+id/projectsListItemShowGridsButton"
-            android:src="@drawable/selector_show_grid"
+            android:src="@drawable/selector_show_grids"
             android:background="?android:selectableItemBackground"
             android:layout_height="match_parent"
             android:padding="9dp"
