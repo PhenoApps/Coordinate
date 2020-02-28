@@ -118,6 +118,15 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.Adapter
                 @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemDeleteButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (gridId                            );
+                        imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                    }
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemExportButton);
                     if (null != imageButton)
                     {

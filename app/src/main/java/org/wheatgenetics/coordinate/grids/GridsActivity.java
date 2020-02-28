@@ -12,8 +12,6 @@ package org.wheatgenetics.coordinate.grids;
  * android.view.MenuItem
  * android.view.View
  * android.view.View.OnClickListener
- * android.widget.AdapterView<?>
- * android.widget.AdapterView.OnItemClickListener
  * android.widget.ListView
  *
  * androidx.annotation.IntRange
@@ -25,6 +23,7 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
+ * org.wheatgenetics.coordinate.deleter.GridDeleter
  * org.wheatgenetics.coordinate.deleter.GridDeleter.Handler
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
@@ -35,8 +34,6 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
- * org.wheatgenetics.coordinate.grids.GridClickAlertDialog
- * org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler
  * org.wheatgenetics.coordinate.grids.GridsAdapter
  * org.wheatgenetics.coordinate.grids.ProjectGridsAdapter
  * org.wheatgenetics.coordinate.grids.TemplateGridsAdapter
@@ -52,6 +49,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Fields
     private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
 
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleterInstance = null;// lazy load
+
     private org.wheatgenetics.coordinate.ge.GridExporter           gridExporterInstance = null;// ll
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
         gridExportPreprocessorInstance = null;                                          // lazy load
@@ -59,9 +58,6 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     private android.view.View.OnClickListener        onCreateGridButtonClickListenerInstance = null,
         onDeleteButtonClickListenerInstance   = null, onExportButtonClickListenerInstance    = null,
         onShowGridsButtonClickListenerInstance = null;                                 // lazy loads
-
-    private org.wheatgenetics.coordinate.grids.GridClickAlertDialog
-        gridClickAlertDialogInstance = null;                                            // lazy load
 
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator
         statelessGridCreatorInstance = null;                                            // lazy load
@@ -72,6 +68,27 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Private Methods
     private void notifyDataSetChanged()
     { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
+
+    // region deleteGrid() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleter()
+    {
+        if (null == this.gridDeleterInstance) this.gridDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.GridDeleter(this,
+                new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
+                {
+                    @java.lang.Override public void respondToDeletedGrid()
+                    {
+                        org.wheatgenetics.coordinate.grids
+                            .GridsActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.gridDeleterInstance;
+    }
+
+    private void deleteGrid(@androidx.annotation.IntRange(from = 1) final long gridId)
+    { this.gridDeleter().deleteWithConfirm(gridId); }
+    // endregion
 
     // region exportGrid() Private Methods
     private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
@@ -138,7 +155,8 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
             {
                 @java.lang.Override public void onClick(final android.view.View view)
                 {
-                    if (null != view) ;// TODO
+                    if (null != view) org.wheatgenetics.coordinate.grids.GridsActivity
+                        .this.deleteGrid((java.lang.Long) view.getTag());
                 }
             };
         return this.onDeleteButtonClickListenerInstance;
@@ -189,42 +207,6 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
 
     private void handleGridCreated(@androidx.annotation.IntRange(from = 1) final long gridId)
     { this.notifyDataSetChanged(); this.startCollectorActivity(gridId); }
-
-    // region gridClickAlertDialog() Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.grids.GridClickAlertDialog gridClickAlertDialog()
-    {
-        if (null == this.gridClickAlertDialogInstance) this.gridClickAlertDialogInstance =
-            new org.wheatgenetics.coordinate.grids.GridClickAlertDialog(this,
-                new org.wheatgenetics.coordinate.grids.GridClickAlertDialog.Handler()
-                {
-                    @java.lang.Override public void collectData(
-                    @androidx.annotation.IntRange(from = 1) final long gridId)
-                    {
-                        org.wheatgenetics.coordinate.grids.GridsActivity
-                            .this.startCollectorActivity(gridId);
-                    }
-
-                    @java.lang.Override public void exportGrid(
-                    @androidx.annotation.IntRange(from = 1) final long             gridId  ,
-                                                            final java.lang.String fileName)
-                    {
-                        org.wheatgenetics.coordinate.grids.GridsActivity
-                            .this.exportGrid(gridId, fileName);
-                    }
-
-                    @java.lang.Override public void respondToDeletedGrid()
-                    {
-                        org.wheatgenetics.coordinate.grids.GridsActivity
-                            .this.notifyDataSetChanged();
-                    }
-                });
-        return this.gridClickAlertDialogInstance;
-    }
-
-    private void showGridClickAlertDialog(@androidx.annotation.IntRange(from = 1) final long gridId)
-    { this.gridClickAlertDialog().show(gridId); }
-    // endregion
 
     // region createGrid() Private Methods
     @androidx.annotation.NonNull
@@ -335,17 +317,6 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                 }
             }
             gridsListView.setAdapter(this.gridsAdapter);
-            gridsListView.setOnItemClickListener(
-                new android.widget.AdapterView.OnItemClickListener()
-                {
-                    @java.lang.Override public void onItemClick(
-                    final android.widget.AdapterView<?> parent, final android.view.View view,
-                    final int position, final long id)
-                    {
-                        org.wheatgenetics.coordinate.grids.GridsActivity
-                            .this.showGridClickAlertDialog(id);
-                    }
-                });
         }
     }
 
