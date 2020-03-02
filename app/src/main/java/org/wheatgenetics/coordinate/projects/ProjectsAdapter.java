@@ -68,11 +68,11 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapt
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onCreateGridButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
         onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener)
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
     {
         super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
             onExportButtonClickListener, onShowGridsButtonClickListener);
@@ -128,20 +128,18 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapt
                     if (null != textView) textView.setText(projectModel.getFormattedTimestamp());
                 }
 
-                final boolean projectHasGrids;
+                @androidx.annotation.IntRange(from = 1) final long projectId = projectModel.getId();
+                                                        final boolean projectHasGrids              ;
                 {
                     @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
-                        this.gridsTable().numberInProject(projectModel.getId());
+                        this.gridsTable().numberInProject(projectId);
                     projectHasGrids = numberOfGrids > 0;
-                    final android.widget.TextView valueTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGrids);
-                    if (null != valueTextView)
-                        valueTextView.setText(this.resources().getQuantityString(
-                            org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
-                            numberOfGrids, numberOfGrids                                    ));
+                    if (null != textView) textView.setText(this.resources().getQuantityString(
+                        org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
+                        numberOfGrids, numberOfGrids                                    ));
                 }
-
-                @androidx.annotation.IntRange(from = 1) final long projectId = projectModel.getId();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemCreateGridButton);

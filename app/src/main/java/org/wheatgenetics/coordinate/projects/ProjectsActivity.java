@@ -91,12 +91,6 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     { this.statelessGridCreator().createInProject(projectId); }
     // endregion
 
-    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
-            this, projectId));
-    }
-
     private void notifyDataSetChanged()
     { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
 
@@ -158,6 +152,12 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     { this.projectExportPreprocessor().preprocess(projectId); }
     // endregion
 
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
+    {
+        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
+            this, projectId));
+    }
+
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
     {
         if (null == this.projectCreatorInstance) this.projectCreatorInstance =
@@ -193,13 +193,6 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
                         if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
                             .this.createGrid((java.lang.Long) view.getTag());
                     }
-                }, /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
-                {
-                    @java.lang.Override public void onClick(final android.view.View view)
-                    {
-                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
-                            .this.startGridsActivity((java.lang.Long) view.getTag());
-                    }
                 }, /* onDeleteButtonClickListener => */ new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
@@ -213,6 +206,13 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
                     {
                         if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
                             .this.exportProject((java.lang.Long) view.getTag());
+                    }
+                }, /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override public void onClick(final android.view.View view)
+                    {
+                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.startGridsActivity((java.lang.Long) view.getTag());
                     }
                 }));
     }
