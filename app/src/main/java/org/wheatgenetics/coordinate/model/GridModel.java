@@ -89,10 +89,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveCol(@androidx.annotation.IntRange(from = 0) final int activeCol)
     { this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol,0); }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.CharSequence getFormattedTimestamp()
-    { return org.wheatgenetics.androidlibrary.Utils.formatDate(this.getTimestamp()); }
     // endregion
 
     // region Public Methods
@@ -104,6 +100,9 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.IntRange(from = 0) public int  getActiveRow() { return this.activeRow; }
     @androidx.annotation.IntRange(from = 0) public int  getActiveCol() { return this.activeCol; }
     @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
+
+    public java.lang.CharSequence getFormattedTimestamp()
+    { return org.wheatgenetics.androidlibrary.Utils.formatDate(this.getTimestamp()); }
 
     // region optionalFields Public Methods
     @androidx.annotation.Nullable
