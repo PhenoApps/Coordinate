@@ -5,7 +5,7 @@
             <group>
                 <item
                     android:id="@+id/nav_create_grid"
-                    android:icon="@drawable/ic_menu_create_black"
+                    android:icon="@drawable/ic_create_grid_black"
                     android:title="@string/create_grid" />
                 <item
                     android:id="@+id/nav_manage_grid"
@@ -15,7 +15,7 @@
                 <item
                     android:id="@+id/nav_export_grid"
                     android:enabled="false"
-                    android:icon="@drawable/ic_menu_export_black"
+                    android:icon="@drawable/ic_export_black"
                     android:title="@string/export_grid" />
             </group>
         </menu>
@@ -28,21 +28,21 @@
             <group>
                 <item
                     android:id="@+id/nav_create_template"
-                    android:icon="@drawable/ic_menu_create_template_black"
+                    android:icon="@drawable/ic_create_template_black"
                     android:title="@string/create_template" />
                 <item
                     android:id="@+id/nav_import_template"
-                    android:icon="@drawable/ic_menu_import_template_black"
+                    android:icon="@drawable/ic_import_template_black"
                     android:title="@string/import_template" />
                 <item
                     android:id="@+id/nav_export_template"
                     android:enabled="false"
-                    android:icon="@drawable/ic_menu_export_black"
+                    android:icon="@drawable/ic_export_black"
                     android:title="@string/export_template" />
                 <item
                     android:id="@+id/nav_delete_template"
                     android:enabled="false"
-                    android:icon="@drawable/ic_menu_delete_black"
+                    android:icon="@drawable/ic_delete_black"
                     android:title="@string/delete_template" />
             </group>
         </menu>
@@ -55,7 +55,7 @@
             <group>
                 <item
                     android:id="@+id/nav_create_project"
-                    android:icon="@drawable/ic_menu_create_black"
+                    android:icon="@drawable/ic_create_grid_black"
                     android:title="@string/create_project" />
                 <item
                     android:id="@+id/nav_manage_project"
@@ -65,7 +65,7 @@
                 <item
                     android:id="@+id/nav_export_project"
                     android:enabled="false"
-                    android:icon="@drawable/ic_menu_export_black"
+                    android:icon="@drawable/ic_export_black"
                     android:title="@string/export_project" />
             </group>
         </menu>
