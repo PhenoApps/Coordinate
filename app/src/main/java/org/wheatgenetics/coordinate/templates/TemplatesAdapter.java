@@ -68,11 +68,11 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdap
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onCreateGridButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener,
+        onDeleteButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
         onExportButtonClickListener,
     @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onDeleteButtonClickListener)
+        onShowGridsButtonClickListener)
     {
         super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
             onExportButtonClickListener, onShowGridsButtonClickListener);

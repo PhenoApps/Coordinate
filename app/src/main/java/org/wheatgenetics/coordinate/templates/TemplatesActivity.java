@@ -64,11 +64,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator
         statelessGridCreatorInstance = null;                                            // lazy load
 
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleterInstance = null;//ll
+
+    // region exportTemplate() Fields
     private org.wheatgenetics.coordinate.te.TemplateExportPreprocessor
         templateExportPreprocessorInstance = null;                                      // lazy load
-    private org.wheatgenetics.coordinate.te.TemplateExporter  templateExporterInstance = null; // ll
-
-    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleterInstance = null;//ll
+    private org.wheatgenetics.coordinate.te.TemplateExporter templateExporterInstance = null; // ll
+    // endregion
 
     // region importMenuItem Fields
     private android.view.MenuItem                           importMenuItem          = null;
@@ -119,11 +121,30 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     { statelessGridCreator().createFromTemplate(templateId); }
     // endregion
 
-    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long templateId)
+    private void notifyDataSetChanged()
+    { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
+
+    // region deleteTemplate() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
     {
-        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.templateIdIntent(
-            this, templateId));
+        if (null == this.templateDeleterInstance) this.templateDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.TemplateDeleter(this,
+                new org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler()
+                {
+                    @java.lang.Override public void respondToDeletedTemplate(
+                    @androidx.annotation.IntRange(from = 1) final long templateId)
+                    {
+                        org.wheatgenetics.coordinate.templates
+                            .TemplatesActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.templateDeleterInstance;
     }
+
+    private void deleteTemplate(@androidx.annotation.IntRange(from = 1) final long templateId)
+    { this.templateDeleter().delete(templateId); }
+    // endregion
 
     // region exportTemplate() Private Methods
     @androidx.annotation.NonNull
@@ -163,30 +184,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     { this.templateExportPreprocessor().preprocess(templateId); }
     // endregion
 
-    private void notifyDataSetChanged()
-    { if (null != this.templatesAdapter) this.templatesAdapter.notifyDataSetChanged(); }
-
-    // region deleteTemplate() Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.deleter.TemplateDeleter templateDeleter()
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long templateId)
     {
-        if (null == this.templateDeleterInstance) this.templateDeleterInstance =
-            new org.wheatgenetics.coordinate.deleter.TemplateDeleter(this,
-                new org.wheatgenetics.coordinate.deleter.TemplateDeleter.TemplateHandler()
-                {
-                    @java.lang.Override public void respondToDeletedTemplate(
-                    @androidx.annotation.IntRange(from = 1) final long templateId)
-                    {
-                        org.wheatgenetics.coordinate.templates
-                            .TemplatesActivity.this.notifyDataSetChanged();
-                    }
-                });
-        return this.templateDeleterInstance;
+        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.templateIdIntent(
+            this, templateId));
     }
-
-    private void deleteTemplate(@androidx.annotation.IntRange(from = 1) final long templateId)
-    { this.templateDeleter().delete(templateId); }
-    // endregion
 
     // region importMenuItem Private Methods
     @androidx.annotation.NonNull
@@ -297,14 +299,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                             org.wheatgenetics.coordinate.templates.TemplatesActivity
                                 .this.createGrid((java.lang.Long) view.getTag());
                     }
-                },
-                /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
+                }, /* onDeleteButtonClickListener => */ new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     {
                         if (null != view)
                             org.wheatgenetics.coordinate.templates.TemplatesActivity
-                                .this.startGridsActivity((java.lang.Long) view.getTag());
+                                .this.deleteTemplate((java.lang.Long) view.getTag());
                     }
                 }, /* onExportButtonClickListener => */ new android.view.View.OnClickListener()
                 {
@@ -314,13 +315,13 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
                             org.wheatgenetics.coordinate.templates.TemplatesActivity
                                 .this.exportTemplate((java.lang.Long) view.getTag());
                     }
-                }, /* onDeleteButtonClickListener => */ new android.view.View.OnClickListener()
+                }, /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     {
                         if (null != view)
                             org.wheatgenetics.coordinate.templates.TemplatesActivity
-                                .this.deleteTemplate((java.lang.Long) view.getTag());
+                                .this.startGridsActivity((java.lang.Long) view.getTag());
                     }
                 }));
     }
