@@ -35,16 +35,16 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.Nullable
+    abstract org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels();
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull org.wheatgenetics.coordinate.database.GridsTable gridsTable()
     {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
             new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
         return this.gridsTableInstance;
     }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable
-    abstract org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels();
     // endregion
 
     GridsAdapter(
@@ -101,11 +101,11 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                 return this.makeEmptyTableLayout();
             else
             {
+                @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
                 {
                     final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemId);
-                    if (null != textView) textView.setText(
-                        java.lang.String.valueOf(joinedGridModel.getId()));
+                    if (null != textView) textView.setText(java.lang.String.valueOf(gridId));
                 }
                 {
                     final android.widget.TextView textView = view.findViewById(
@@ -117,8 +117,6 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                         org.wheatgenetics.coordinate.R.id.gridsListItemTimestamp);
                     if (null != textView) textView.setText(joinedGridModel.getFormattedTimestamp());
                 }
-
-                @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemCollectDataButton);

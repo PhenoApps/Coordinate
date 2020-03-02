@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.grids;
  * android.content.pm.PackageManager
  * android.content.Intent
  * android.Manifest.permission
+ * android.os.Bundle
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
@@ -47,17 +48,18 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // endregion
 
     // region Fields
-    private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
+    private android.view.View.OnClickListener  onCollectDataButtonClickListenerInstance = null,
+        onDeleteButtonClickListenerInstance = null, onExportButtonClickListenerInstance = null;//lls
 
     private org.wheatgenetics.coordinate.deleter.GridDeleter gridDeleterInstance = null;// lazy load
 
+    // region exportGrid() Fields
     private org.wheatgenetics.coordinate.ge.GridExporter           gridExporterInstance = null;// ll
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor
         gridExportPreprocessorInstance = null;                                          // lazy load
+    // endregion
 
-    private android.view.View.OnClickListener        onCollectDataButtonClickListenerInstance = null,
-        onDeleteButtonClickListenerInstance   = null, onExportButtonClickListenerInstance    = null,
-        onShowGridsButtonClickListenerInstance = null;                                 // lazy loads
+    private org.wheatgenetics.coordinate.grids.GridsAdapter gridsAdapter = null;
 
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator
         statelessGridCreatorInstance = null;                                            // lazy load
@@ -66,14 +68,14 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // endregion
 
     // region Private Methods
-    private void notifyDataSetChanged()
-    { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
-
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
         this.startActivity(
             org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
     }
+
+    private void notifyDataSetChanged()
+    { if (null != this.gridsAdapter) this.gridsAdapter.notifyDataSetChanged(); }
 
     // region deleteGrid() Private Methods
     @androidx.annotation.NonNull
@@ -97,7 +99,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // endregion
 
     // region exportGrid() Private Methods
-    private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
+    @androidx.annotation.NonNull private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
     {
         if (null == this.gridExporterInstance) this.gridExporterInstance =
             new org.wheatgenetics.coordinate.ge.GridExporter(this,
@@ -185,6 +187,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     }
     // endregion
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.grids.AllGridsAdapter makeAllGridsAdapter()
     {
         return new org.wheatgenetics.coordinate.grids.AllGridsAdapter(this,

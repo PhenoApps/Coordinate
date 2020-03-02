@@ -42,7 +42,11 @@ package org.wheatgenetics.coordinate.projects;
  */
 public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
-    private static final int EXPORT_PROJECT_REQUEST_CODE = 10;
+    // region Constants
+    private static final int              EXPORT_PROJECT_REQUEST_CODE = 10;
+    private static final java.lang.String
+        PROJECT_ID_KEY = "projectId", DIRECTORY_NAME_KEY = "directoryName";
+    // endregion
 
     // region Fields
     private org.wheatgenetics.coordinate.projects.ProjectsAdapter projectsAdapter = null;
@@ -52,9 +56,13 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 
     private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
 
+    // region exportProject() Fields
+    @androidx.annotation.IntRange(from = 1) private long              projectId    ;
+                                            private java.lang.String  directoryName;
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
         projectExportPreprocessorInstance = null;                                       // lazy load
     private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporterInstance = null;    // ll
+    // endregion
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;      // ll
 
@@ -126,9 +134,12 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
         return this.projectExporterInstance;
     }
 
+    private void exportProject()
+    { this.projectExporter().export(this.projectId, this.directoryName); }
+
     private void exportProject(@androidx.annotation.IntRange(from = 1) final long projectId,
     final java.lang.String directoryName)
-    { this.projectExporter().export(projectId, directoryName); }
+    { this.projectId = projectId; this.directoryName = directoryName; this.exportProject(); }
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
@@ -181,6 +192,14 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_projects);
+
+        if (null != savedInstanceState)
+        {
+            this.projectId = savedInstanceState.getLong(
+                org.wheatgenetics.coordinate.projects.ProjectsActivity.PROJECT_ID_KEY);
+            this.directoryName = savedInstanceState.getString(
+                org.wheatgenetics.coordinate.projects.ProjectsActivity.DIRECTORY_NAME_KEY);
+        }
 
         final android.widget.ListView projectsListView = this.findViewById(
             org.wheatgenetics.coordinate.R.id.projectsListView);
@@ -254,11 +273,20 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.projects.ProjectsActivity
-                    .EXPORT_PROJECT_REQUEST_CODE:
-                        if (null != this.projectExporterInstance)
-                            this.projectExporterInstance.export();
-                        break;
+                    .EXPORT_PROJECT_REQUEST_CODE: this.exportProject(); break;
                 }
+    }
+
+    @java.lang.Override protected void onSaveInstanceState(
+    @androidx.annotation.NonNull final android.os.Bundle outState)
+    {
+        outState.putLong(
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.PROJECT_ID_KEY, this.projectId);
+        outState.putString(
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.DIRECTORY_NAME_KEY,
+            this.directoryName                                                       );
+
+        super.onSaveInstanceState(outState);
     }
     // endregion
 
