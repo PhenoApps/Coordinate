@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate.grids;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.lifecycle.ViewModelProvider
  *
  * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.CollectorActivity
@@ -34,6 +35,8 @@ package org.wheatgenetics.coordinate.grids;
  * org.wheatgenetics.coordinate.ge.GridExportPreprocessor.Handler
  * org.wheatgenetics.coordinate.ge.GridExporter
  *
+ * org.wheatgenetics.coordinate.viewmodel.ExportingViewModel
+ *
  * org.wheatgenetics.coordinate.grids.AllGridsAdapter
  * org.wheatgenetics.coordinate.grids.GridsAdapter
  * org.wheatgenetics.coordinate.grids.ProjectGridsAdapter
@@ -41,13 +44,15 @@ package org.wheatgenetics.coordinate.grids;
  */
 public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
-    // region Consts
+    // region Constants
     private static final java.lang.String
         TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
     private static final int EXPORT_GRID = 10;
     // endregion
 
     // region Fields
+    private org.wheatgenetics.coordinate.viewmodel.ExportingViewModel gridsViewModel;
+
     private android.view.View.OnClickListener  onCollectDataButtonClickListenerInstance = null,
         onDeleteButtonClickListenerInstance = null, onExportButtonClickListenerInstance = null;//lls
 
@@ -98,6 +103,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     { this.gridDeleter().deleteWithConfirm(gridId); }
     // endregion
 
+    // region Export Private Methods
     // region exportGrid() Private Methods
     @androidx.annotation.NonNull private org.wheatgenetics.coordinate.ge.GridExporter gridExporter()
     {
@@ -115,9 +121,18 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
         return this.gridExporterInstance;
     }
 
-    private void exportGrid(@androidx.annotation.IntRange(from = 1) final long gridId,
-    final java.lang.String fileName) { this.gridExporter().export(gridId, fileName); }
+    private void exportGrid()
+    {
+        this.gridExporter().export(
+            this.gridsViewModel.getId(), this.gridsViewModel.getExportFileName());
+    }
 
+    private void exportGrid(@androidx.annotation.IntRange(from = 1) final long gridId,
+    final java.lang.String fileName)
+    { this.gridsViewModel.setIdAndExportFileName(gridId, fileName); this.exportGrid(); }
+    // endregion
+
+    // region preprocessGridExport() Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.ge.GridExportPreprocessor gridExportPreprocessor()
     {
@@ -136,8 +151,9 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
         return this.gridExportPreprocessorInstance;
     }
 
-    private void exportGrid(@androidx.annotation.IntRange(from = 1) final long gridId)
+    private void preprocessGridExport(@androidx.annotation.IntRange(from = 1) final long gridId)
     { this.gridExportPreprocessor().preprocess(gridId); }
+    // endregion
     // endregion
 
     // region onButtonClickListener() Private Methods
@@ -180,7 +196,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                 @java.lang.Override public void onClick(final android.view.View view)
                 {
                     if (null != view) org.wheatgenetics.coordinate.grids.GridsActivity
-                        .this.exportGrid((java.lang.Long) view.getTag());
+                        .this.preprocessGridExport((java.lang.Long) view.getTag());
                 }
             };
         return this.onExportButtonClickListenerInstance;
@@ -262,6 +278,9 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_grids);
 
+        this.gridsViewModel = new androidx.lifecycle.ViewModelProvider(this).get(
+            org.wheatgenetics.coordinate.viewmodel.ExportingViewModel.class);
+
         final android.widget.ListView gridsListView = this.findViewById(
             org.wheatgenetics.coordinate.R.id.gridsListView);
         if (null != gridsListView)
@@ -331,8 +350,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID:
-                        if (null != this.gridExporterInstance) this.gridExporterInstance.export();
-                        break;
+                        this.exportGrid(); break;
                 }
     }
 
