@@ -44,7 +44,8 @@ package org.wheatgenetics.coordinate.projects;
  */
 public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
-    private static final int EXPORT_PROJECT_REQUEST_CODE = 10;
+    private static final int COLLECT_DATA_REQUEST_CODE = 10,
+        EXPORT_PROJECT_REQUEST_CODE = 20, SHOW_GRIDS_REQUEST_CODE = 30;
 
     // region Fields
     private org.wheatgenetics.coordinate.projects.ProjectsViewModel projectsViewModel     ;
@@ -70,8 +71,9 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region createGrid() Private Methods
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
-        this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
+        this.startActivityForResult(
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId)      ,
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.COLLECT_DATA_REQUEST_CODE);
     }
 
     @androidx.annotation.NonNull
@@ -172,10 +174,13 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 
     private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
     {
-        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
-            this, projectId));
+        this.startActivityForResult(
+            org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
+                this, projectId),
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.SHOW_GRIDS_REQUEST_CODE);
     }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
     {
         if (null == this.projectCreatorInstance) this.projectCreatorInstance =
@@ -249,13 +254,17 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (android.app.Activity.RESULT_OK == resultCode && null != data)
-            // noinspection SwitchStatementWithTooFewBranches
-            switch (requestCode)
-            {
-                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    this.statelessGridCreator().continueExcluding(data.getExtras()); break;
-            }
+        switch (requestCode)
+        {
+            case org.wheatgenetics.coordinate.projects.ProjectsActivity.COLLECT_DATA_REQUEST_CODE:
+            case org.wheatgenetics.coordinate.projects.ProjectsActivity.SHOW_GRIDS_REQUEST_CODE  :
+                this.notifyDataSetChanged(); break;
+
+            case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                if (android.app.Activity.RESULT_OK == resultCode && null != data)
+                    this.statelessGridCreator().continueExcluding(data.getExtras());
+                break;
+        }
     }
 
     @java.lang.Override public void onRequestPermissionsResult(final int requestCode,

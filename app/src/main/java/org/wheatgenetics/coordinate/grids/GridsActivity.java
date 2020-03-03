@@ -47,7 +47,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region Constants
     private static final java.lang.String
         TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
-    private static final int EXPORT_GRID = 10;
+    private static final int EXPORT_GRID_REQUEST_CODE = 10;
     // endregion
 
     // region Fields
@@ -109,7 +109,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     {
         if (null == this.gridExporterInstance) this.gridExporterInstance =
             new org.wheatgenetics.coordinate.ge.GridExporter(this,
-                org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID,
+                org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID_REQUEST_CODE,
                 new org.wheatgenetics.coordinate.deleter.GridDeleter.Handler()
                 {
                     @java.lang.Override public void respondToDeletedGrid()
@@ -349,7 +349,7 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
                 // noinspection SwitchStatementWithTooFewBranches
                 switch (requestCode)
                 {
-                    case org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID:
+                    case org.wheatgenetics.coordinate.grids.GridsActivity.EXPORT_GRID_REQUEST_CODE:
                         this.exportGrid(); break;
                 }
     }
@@ -359,13 +359,14 @@ public class GridsActivity extends org.wheatgenetics.coordinate.BackActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (android.app.Activity.RESULT_OK == resultCode && null != data)
-            // noinspection SwitchStatementWithTooFewBranches
-            switch (requestCode)
-            {
-                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    this.statelessGridCreator().continueExcluding(data.getExtras()); break;
-            }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (requestCode)
+        {
+            case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                if (android.app.Activity.RESULT_OK == resultCode && null != data)
+                    this.statelessGridCreator().continueExcluding(data.getExtras());
+                break;
+        }
     }
     // endregion
 
