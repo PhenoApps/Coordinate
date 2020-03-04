@@ -20,6 +20,9 @@ package org.wheatgenetics.coordinate.main;
  *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
+ *
  * org.wheatgenetics.coordinate.gc.GridCreator
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
@@ -27,9 +30,6 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Types
  */
 abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 {
@@ -64,9 +64,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String versionName() { return this.versionName; }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
     org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
     {
@@ -81,6 +78,9 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    java.lang.String versionName() { return this.versionName; }
     // endregion
 
     // region Overridden Methods
@@ -149,6 +149,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
         // endregion
 
         // region Set version.
+        @androidx.annotation.NonNull
         final org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences =
             this.sharedPreferences();
         if (!sharedPreferences.updateVersionIsSet(versionCode))
