@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.javalib.Utils
@@ -155,6 +156,14 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
         if (!sharedPreferences.updateVersionIsSet(versionCode))
             { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
         // endregion
+    }
+
+    @java.lang.Override protected void onPostCreate(final android.os.Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
+        if (null != supportActionBar) supportActionBar.setTitle(null);
     }
 
     @java.lang.Override protected void onActivityResult(final int requestCode,
