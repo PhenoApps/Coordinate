@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
@@ -11,54 +10,68 @@
     android:stretchColumns="0">
 
     <TableRow tools:ignore="UselessParent">
+
         <TableLayout>
+
             <TableRow>
-                <TextView android:id="@+id/templatesListItemTitle" android:layout_span="2" />
+
+                <TextView
+                    android:id="@+id/templatesListItemTitle"
+                    android:layout_span="2"
+                    android:textSize="20sp" />
             </TableRow>
 
             <TableRow>
-                <TextView android:id="@+id/templatesListItemRows"    />
-                <TextView android:id="@+id/templatesListItemColumns" />
+
+                <TextView android:id="@+id/templatesListItemRows"
+                    android:textSize="16sp" />
+
+                <TextView android:id="@+id/templatesListItemColumns"
+                    android:textSize="16sp" />
             </TableRow>
 
             <TableRow>
-                <TextView android:id="@+id/templatesListItemTimestamp" android:layout_span="2" />
+
+                <TextView
+                    android:id="@+id/templatesListItemTimestamp"
+                    android:textSize="16sp"
+                    android:layout_span="2" />
             </TableRow>
         </TableLayout>
 
         <ImageButton
-            android:id="@+id/templatesListItemCreateGridButton"
-            android:src="@drawable/selector_create_grid"
-            android:background="?android:selectableItemBackground"
+            android:id="@+id/templatesListItemDeleteButton"
             android:layout_height="match_parent"
-            android:padding="9dp"
-
-            tools:ignore="ContentDescription" />
-
-        <ImageButton
-            android:id="@+id/templatesListItemShowGridsButton"
-            android:src="@drawable/selector_show_grids"
             android:background="?android:selectableItemBackground"
-            android:layout_height="match_parent"
             android:padding="9dp"
+            android:src="@drawable/selector_delete"
 
             tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/templatesListItemExportButton"
-            android:src="@drawable/selector_export"
-            android:background="?android:selectableItemBackground"
             android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
             android:padding="9dp"
+            android:src="@drawable/selector_export"
 
             tools:ignore="ContentDescription" />
 
         <ImageButton
-            android:id="@+id/templatesListItemDeleteButton"
-            android:src="@drawable/selector_delete"
-            android:background="?android:selectableItemBackground"
+            android:id="@+id/templatesListItemShowGridsButton"
             android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
             android:padding="9dp"
+            android:src="@drawable/selector_show_grids"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/templatesListItemCreateGridButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_create_grid"
 
             tools:ignore="ContentDescription" />
     </TableRow>

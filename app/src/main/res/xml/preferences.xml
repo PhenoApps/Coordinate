@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        android:key="@string/AdvancementPreferenceKey"
-        android:title="@string/AdvancementPreferenceTitle"
-        app:useSimpleSummaryProvider="false"
-        android:summary="@string/AdvancementPreferenceSummary"
+        android:defaultValue="@string/AdvancementPreferenceDefault"
         android:entries="@array/AdvancementPreferenceEntries"
         android:entryValues="@array/AdvancementPreferenceEntryValues"
-        android:defaultValue="@string/AdvancementPreferenceDefault" />
+        android:icon="@drawable/ic_preferences_direction"
+        android:key="@string/AdvancementPreferenceKey"
+        android:summary="@string/AdvancementPreferenceSummary"
+        android:title="@string/AdvancementPreferenceTitle"
+        app:useSimpleSummaryProvider="false" />
 
     <CheckBoxPreference
+        android:defaultValue="true"
+        android:icon="@drawable/ic_preferences_sounds"
         android:key="@string/SoundOnPreferenceKey"
-        android:title="@string/SoundOnPreferenceTitle"
-        android:defaultValue="true" />
+        android:title="@string/SoundOnPreferenceTitle" />
 
     <ListPreference
-        android:key="@string/ProjectExportPreferenceKey"
-        android:title="@string/ProjectExportPreferenceTitle"
-        app:useSimpleSummaryProvider="false"
-        android:summary="@string/ProjectExportPreferenceSummary"
+        android:defaultValue="@string/ProjectExportPreferenceDefault"
         android:entries="@array/ProjectExportPreferenceEntries"
         android:entryValues="@array/ProjectExportPreferenceEntryValues"
-        android:defaultValue="@string/ProjectExportPreferenceDefault" />
+        android:icon="@drawable/ic_preferences_project_export"
+        android:key="@string/ProjectExportPreferenceKey"
+        android:summary="@string/ProjectExportPreferenceSummary"
+        android:title="@string/ProjectExportPreferenceTitle"
+        app:useSimpleSummaryProvider="false" />
 
     <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_preferences_unique_required"
         android:key="@string/UniquenessCheckBoxPreferenceKey"
-        android:title="@string/UniquenessCheckBoxPreferenceTitle"
-        android:defaultValue="false" />
+        android:title="@string/UniquenessCheckBoxPreferenceTitle" />
 
     <ListPreference
-        android:key="@string/UniquenessListPreferenceKey"
-        android:title="@string/UniquenessListPreferenceTitle"
-        app:useSimpleSummaryProvider="false"
-        android:summary="@string/UniquenessListPreferenceSummary"
+        android:defaultValue="@string/UniquenessListPreferenceDefault"
+        android:enabled="false"
         android:entries="@array/UniquenessListPreferenceEntries"
         android:entryValues="@array/UniquenessListPreferenceEntryValues"
-        android:defaultValue="@string/UniquenessListPreferenceDefault"
-        android:enabled="false" />
+        android:icon="@drawable/ic_preferences_unique_options"
+        android:key="@string/UniquenessListPreferenceKey"
+        android:summary="@string/UniquenessListPreferenceSummary"
+        android:title="@string/UniquenessListPreferenceTitle"
+        app:useSimpleSummaryProvider="false" />
 
 </androidx.preference.PreferenceScreen>
