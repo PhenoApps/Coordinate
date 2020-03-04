@@ -136,43 +136,39 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
 
+        final android.widget.ListView mainListView = this.findViewById(
+            org.wheatgenetics.coordinate.R.id.mainListView);        // From layout/content_main.xml.
+        if (null != mainListView)
         {
-            final android.widget.ListView mainListView = this.findViewById(
-                org.wheatgenetics.coordinate.R.id.mainListView);    // From layout/content_main.xml.
-            if (null != mainListView)
-            {
-                // noinspection Convert2Diamond
-                mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
-                    this, org.wheatgenetics.coordinate.R.layout.main_list_item,
-                    new java.lang.String[]{"Grids", "Templates",
-                        "Projects", "Settings", "About"}));
-                mainListView.setOnItemClickListener(
-                    new android.widget.AdapterView.OnItemClickListener()
+            // noinspection Convert2Diamond
+            mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
+                this, org.wheatgenetics.coordinate.R.layout.main_list_item,
+                new java.lang.String[]{"Grids", "Templates", "Projects", "Settings", "About"}));
+            mainListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+                {
+                    @java.lang.Override
+                    public void onItemClick(final android.widget.AdapterView<?> parent,
+                    final android.view.View view, final int position, final long id)
                     {
-                        @java.lang.Override
-                        public void onItemClick(final android.widget.AdapterView<?> parent,
-                        final android.view.View view, final int position, final long id)
+                        switch (position)
                         {
-                            switch (position)
-                            {
-                                case 0: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startGridsActivity(); break;
+                            case 0: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startGridsActivity(); break;
 
-                                case 1: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startTemplatesActivity(); break;
+                            case 1: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startTemplatesActivity(); break;
 
-                                case 2: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startProjectsActivity(); break;
+                            case 2: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startProjectsActivity(); break;
 
-                                case 3: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startPreferenceActivity(); break;
+                            case 3: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startPreferenceActivity(); break;
 
-                                case 4: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.showAboutAlertDialog(); break;
-                            }
+                            case 4: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.showAboutAlertDialog(); break;
                         }
-                    });
-            }
+                    }
+                });
         }
     }
 
