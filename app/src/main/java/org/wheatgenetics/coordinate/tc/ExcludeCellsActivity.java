@@ -15,7 +15,6 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.DisplayModel
- * org.wheatgenetics.coordinate.model.DisplayTemplateModel
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
