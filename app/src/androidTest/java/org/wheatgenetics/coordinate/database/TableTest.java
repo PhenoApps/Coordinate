@@ -33,8 +33,6 @@ public class TableTest extends java.lang.Object
             super(
                 /* context => */ androidx.test.platform.app.InstrumentationRegistry
                     .getInstrumentation().getTargetContext(),
-                /* tableName => */"sqlite_master",
-                /* tag       => */"TableTest",
                 /* databaseName => */
                     org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
         }

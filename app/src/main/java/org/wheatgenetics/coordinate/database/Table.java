@@ -38,11 +38,10 @@ abstract class Table extends java.lang.Object
 
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE) Table(
-    final android.content.Context context, final java.lang.String tableName   ,
-    final java.lang.String        tag    , final java.lang.String databaseName)
+    final android.content.Context context, final java.lang.String databaseName)
     {
         this(org.wheatgenetics.coordinate.database.Database.db(context, databaseName),
-            tableName, tag);
+            "sqlite_master","TableTest");
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)

@@ -41,7 +41,8 @@
                 android:inputType="text|textNoSuggestions"
                 android:lines="1"
                 android:minEms="8"
-                android:selectAllOnFocus="true" />
+                android:selectAllOnFocus="true"
+                android:importantForAutofill="no" />
 
         </LinearLayout>
 

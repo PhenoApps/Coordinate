@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/CreateProjectAlertDialogEditTextHint"
         android:inputType="text"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:autofillHints="text" />
 
 </LinearLayout>

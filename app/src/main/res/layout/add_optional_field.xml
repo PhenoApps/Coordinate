@@ -19,7 +19,8 @@
                 android:inputType="text"
                 android:hint="Field name"
                 tools:ignore="HardcodedText"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:autofillHints="text" />
 
         </LinearLayout>
 
@@ -36,7 +37,8 @@
                 android:inputType="text"
                 android:hint="Default text"
                 tools:ignore="HardcodedText"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:importantForAutofill="no" />
 
         </LinearLayout>
 

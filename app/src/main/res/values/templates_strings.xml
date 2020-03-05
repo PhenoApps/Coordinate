@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
 
+    <!-- TemplatesAdapter -->
     <plurals name="TemplatesListRows">
         <item quantity="one"  >%d row</item>
         <item quantity="other">%d rows</item>
