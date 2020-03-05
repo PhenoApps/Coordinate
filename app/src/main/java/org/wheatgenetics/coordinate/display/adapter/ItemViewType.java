@@ -22,7 +22,8 @@ enum ItemViewType
             if (org.wheatgenetics.coordinate.display.adapter.ItemViewType.LEFT.getCode() == code)
                 return org.wheatgenetics.coordinate.display.adapter.ItemViewType.LEFT;
             else
-                if (org.wheatgenetics.coordinate.display.adapter.ItemViewType.DATA.getCode() == code)
+                if (
+                org.wheatgenetics.coordinate.display.adapter.ItemViewType.DATA.getCode() == code)
                     return org.wheatgenetics.coordinate.display.adapter.ItemViewType.DATA;
                 else
                     return org.wheatgenetics.coordinate.display.adapter.ItemViewType.UNSPECIFIED;

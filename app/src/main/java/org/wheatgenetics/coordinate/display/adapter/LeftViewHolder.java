@@ -4,6 +4,7 @@ package org.wheatgenetics.coordinate.display.adapter;
  * Uses:
  * android.widget.LinearLayout
  *
+ * androidx.annotation.IdRes
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.RestrictTo

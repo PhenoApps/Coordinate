@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Utils
  *
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel

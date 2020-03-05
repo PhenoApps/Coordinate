@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.tc.adapter;
  * android.widget.ImageView
  *
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
