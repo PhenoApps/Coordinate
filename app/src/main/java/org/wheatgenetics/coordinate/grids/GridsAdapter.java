@@ -119,15 +119,6 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                 }
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.gridsListItemCollectDataButton);
-                    if (null != imageButton)
-                    {
-                        imageButton.setTag            (gridId                               );
-                        imageButton.setOnClickListener(this.onCollectDataButtonClickListener);
-                    }
-                }
-                {
-                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemDeleteButton);
                     if (null != imageButton)
                     {
@@ -142,6 +133,15 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                     {
                         imageButton.setTag            (gridId                            );
                         imageButton.setOnClickListener(this.onExportButtonClickListener());
+                    }
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.gridsListItemCollectDataButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (gridId                               );
+                        imageButton.setOnClickListener(this.onCollectDataButtonClickListener);
                     }
                 }
                 return view;

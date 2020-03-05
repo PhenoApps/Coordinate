@@ -142,26 +142,6 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapt
                 }
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.projectsListItemCreateGridButton);
-                    if (null != imageButton)
-                    {
-                        imageButton.setTag            (projectId                             );
-                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener());
-                    }
-                }
-                {
-                    final android.widget.ImageButton imageButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.projectsListItemShowGridsButton);
-                    if (null != imageButton)
-                        if (projectHasGrids)
-                        {
-                            imageButton.setTag            (projectId                            );
-                            imageButton.setOnClickListener(this.onShowGridsButtonClickListener());
-                        }
-                        else imageButton.setEnabled(false);
-                }
-                {
-                    final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemDeleteButton);
                     if (null != imageButton)
                     {
@@ -179,6 +159,26 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapt
                             imageButton.setOnClickListener(this.onExportButtonClickListener());
                         }
                         else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemShowGridsButton);
+                    if (null != imageButton)
+                        if (projectHasGrids)
+                        {
+                            imageButton.setTag            (projectId                            );
+                            imageButton.setOnClickListener(this.onShowGridsButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemCreateGridButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (projectId                             );
+                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener());
+                    }
                 }
 
                 return view;
