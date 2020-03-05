@@ -28,7 +28,7 @@ package org.wheatgenetics.coordinate.database;
 public class CurrentProjectUniqueGridsTable extends org.wheatgenetics.coordinate.database.GridsTable
 implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
 {
-    // region Consts
+    // region Constants
     private static final java.lang.String GRIDS_TABLE =
         '[' + org.wheatgenetics.coordinate.database.CurrentProjectUniqueGridsTable.TABLE_NAME + ']';
     private static final java.lang.String GRIDS_TABLE_PROJECTID_FIELD =

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- TemplateClickAlertDialog -->
-    <string name="TemplateClickAlertDialogCreateGrid">New grid from this template</string>
-    <string name="TemplateClickAlertDialogShowGrids">Show grids using this template</string>
-    <string name="TemplateClickAlertDialogExportTemplate">Export</string>
-    <string name="TemplateClickAlertDialogDeleteTemplate">Delete</string>
-
-
+<resources>
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
 
-    <string name="TemplatesListTitle">title:</string>
-    <string name="TemplatesListDimensions">dimensions:</string>
-    <string name="TemplatesListRows">rows,</string>
-    <string name="TemplatesListColumns">columns</string>
-    <string name="TemplatesListTimestamp">timestamp:</string>
+    <!-- TemplatesAdapter -->
+    <plurals name="TemplatesListRows">
+        <item quantity="one"  >%d row</item>
+        <item quantity="other">%d rows</item>
+    </plurals>
+    <plurals name="TemplatesListColumns">
+        <item quantity="one"  >, %d column</item>
+        <item quantity="other">, %d columns</item>
+    </plurals>
 </resources>

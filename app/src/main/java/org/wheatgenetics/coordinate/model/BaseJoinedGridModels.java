@@ -22,7 +22,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    abstract boolean isInRange(final int i);
+    @java.lang.SuppressWarnings({"unused"}) abstract boolean isInRange(final int i);
 
     // region Public Methods
     public abstract boolean add(

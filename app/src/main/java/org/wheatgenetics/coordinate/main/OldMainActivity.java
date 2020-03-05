@@ -22,7 +22,6 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
- * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.ActionBarDrawerToggle
  * androidx.appcompat.widget.Toolbar
  * androidx.core.view.GravityCompat
@@ -513,12 +512,6 @@ org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler
             final androidx.appcompat.widget.Toolbar toolbar = this.findViewById(
                 org.wheatgenetics.coordinate.R.id.toolbar);         // From layout/app_bar_main.xml.
             this.setSupportActionBar(toolbar);
-
-            {
-                final androidx.appcompat.app.ActionBar supportActionBar =
-                    this.getSupportActionBar();
-                if (null != supportActionBar) supportActionBar.setTitle(null);
-            }
 
             final androidx.appcompat.app.ActionBarDrawerToggle actionBarDrawerToggle =
                 new androidx.appcompat.app.ActionBarDrawerToggle(
