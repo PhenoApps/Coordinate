@@ -17,10 +17,10 @@ package org.wheatgenetics.coordinate.model;
 public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Types
-    class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
+    static class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
     { private MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
 
-    public class AmountIsTooLarge extends java.lang.IllegalArgumentException
+    public static class AmountIsTooLarge extends java.lang.IllegalArgumentException
     {
         private AmountIsTooLarge(final int maxAmount)
         {
