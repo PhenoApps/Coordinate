@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:padding="6dp"
+
+    android:stretchColumns="0">
+
+    <TableRow tools:ignore="UselessParent">
+
+        <TableLayout>
+
+            <TableRow>
+
+                <TextView android:id="@+id/gridsListItemId"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:id="@+id/gridsListItemTemplateTitle"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:id="@+id/gridsListItemTimestamp"
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/gridsListItemDeleteButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_delete"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/gridsListItemExportButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_export"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/gridsListItemCollectDataButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_collect"
+
+            tools:ignore="ContentDescription" />
+    </TableRow>
+</TableLayout>

@@ -17,4 +17,8 @@
 
     <!-- multiple activities -->
     <string name="AppBarNewTitle">New</string>
+
+
+    <!-- CollectorActivity -->
+    <string name="CollectorActivityLabel">Collect Data</string>
 </resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:padding="6dp"
+
+    android:stretchColumns="0">
+
+    <TableRow tools:ignore="UselessParent">
+
+        <TableLayout>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/projectsListItemTitle"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:id="@+id/projectsListItemNumberOfGrids"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:id="@+id/projectsListItemTimestamp"
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/projectsListItemDeleteButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_delete"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemExportButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_export"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemShowGridsButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_show_grids"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemCreateGridButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_create_grid"
+
+            tools:ignore="ContentDescription" />
+    </TableRow>
+</TableLayout>

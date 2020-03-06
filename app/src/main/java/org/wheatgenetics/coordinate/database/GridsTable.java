@@ -458,13 +458,15 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         return null == baseJoinedGridModels ? false : baseJoinedGridModels.size() > 0;
     }
 
-    public boolean existsInProject(final long projectId)
+    @androidx.annotation.IntRange(from = 0) public int numberInProject(final long projectId)
     {
         final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
             this.loadByProjectId(projectId);
-        // noinspection SimplifiableConditionalExpression
-        return null == baseJoinedGridModels ? false : baseJoinedGridModels.size() > 0;
+        return null == baseJoinedGridModels ? 0 : baseJoinedGridModels.size();
     }
+
+    public boolean existsInProject(final long projectId)
+    { return this.numberInProject(projectId) > 0; }
 
     public boolean deleteByTemplateId(final long templateId)
     {

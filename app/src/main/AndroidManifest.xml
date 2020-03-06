@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- To switch to the old user interface perform the three steps indicated below. -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.wheatgenetics.coordinate">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- Step 1: Change android:theme from "@style/AppTheme" to "@style/OldAppTheme". -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/OldAppTheme">
+        android:theme="@style/AppTheme">
 
+        <!-- Step 2: Change android:name from ".main.MainActivity" to ".main.OldMainActivity". -->
         <activity
-            android:name=".main.OldMainActivity"
+            android:name=".main.MainActivity"
             android:configChanges="keyboardHidden|keyboard">
 
             <intent-filter>
@@ -21,6 +24,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Step 3: Change android:name from ".main.OldMainActivity" to ".main.MainActivity". -->
+        <activity android:name=".main.OldMainActivity" />
+
+        <activity
+            android:name=".CollectorActivity"
+            android:label="@string/CollectorActivityLabel" />
+
+        <activity android:name=".grids.GridsActivity" android:label="@string/GridsActivityLabel" />
+
+        <activity
+            android:name=".templates.TemplatesActivity"
+            android:label="@string/TemplatesActivityLabel" />
+
+        <activity
+            android:name=".projects.ProjectsActivity"
+            android:label="@string/ProjectsActivityLabel" />
 
         <activity android:name=".tc.ExcludeCellsActivity">
             <intent-filter>
