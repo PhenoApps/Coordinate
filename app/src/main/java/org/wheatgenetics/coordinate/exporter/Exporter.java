@@ -205,6 +205,7 @@ abstract class Exporter extends java.lang.Object
     }
 
     // region Public Methods
-    public abstract void execute(); public abstract void cancel();
+    @java.lang.SuppressWarnings({"unused"}) public abstract void execute();
+    @java.lang.SuppressWarnings({"unused"}) public abstract void cancel ();
     // endregion
 }

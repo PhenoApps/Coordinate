@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.tc;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  * android.content.Intent
+ * android.os.Bundle
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
@@ -72,10 +73,12 @@ class ExcludeAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
         if (null == this.intentInstance) this.intentInstance = new android.content.Intent(
             this.activity(), org.wheatgenetics.coordinate.tc.ExcludeCellsActivity.class);
 
-        if (null == this.templateModel)
-            org.wheatgenetics.coordinate.model.TemplateModel.removeState(this.intentInstance);
-        else
-            this.intentInstance.putExtras(this.templateModel.getState());
+        if (null != this.templateModel)
+        {
+            final android.os.Bundle bundle = new android.os.Bundle();
+            this.templateModel.export(bundle);
+            this.intentInstance.putExtras(bundle);
+        }
 
         return this.intentInstance;
     }

@@ -49,7 +49,7 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
             throw new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();
         else
         {
-            final int i = java.lang.Integer.valueOf(text);
+            final int i = java.lang.Integer.parseInt(text);
             if (i < 1)
                 throw new
                     org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();

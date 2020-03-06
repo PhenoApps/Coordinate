@@ -17,6 +17,8 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -25,6 +27,7 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
  *
+ * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler
  *
@@ -49,9 +52,11 @@ public class MainActivity extends org.wheatgenetics.coordinate.main.BaseMainActi
 implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
     // region Fields
-    private org.wheatgenetics.coordinate.AboutAlertDialog   aboutAlertDialogInstance = null;   // ll
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance  = null;   // ll
-    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreatorInstance   = null;   // ll
+    private org.wheatgenetics.coordinate.AboutAlertDialog aboutAlertDialogInstance = null;     // ll
+    private org.wheatgenetics.coordinate.gc.StatelessGridCreator
+        statelessGridCreatorInstance = null;                                            // lazy load
+    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance = null;    // ll
+    private org.wheatgenetics.coordinate.pc.ProjectCreator  projectCreatorInstance  = null;    // ll
     // endregion
 
     // region Private Methods
@@ -102,24 +107,6 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void showAboutAlertDialog() { this.aboutAlertDialog().show(); }
     // endregion
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.StatelessGridCreator statelessGridCreator()
-    {
-        if (null == this.gridCreatorInstance) this.gridCreatorInstance =
-            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
-                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,
-                new org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler()
-                {
-                    @java.lang.Override public void handleGridCreated(
-                    @androidx.annotation.IntRange(from = 1) final long gridId)
-                    {
-                        org.wheatgenetics.coordinate.main.MainActivity.this.startCollectorActivity(
-                            gridId);
-                    }
-                });
-        return (org.wheatgenetics.coordinate.gc.StatelessGridCreator) this.gridCreatorInstance;
-    }
-
     // region Create Template Private Methods
     private void showLongToast(final java.lang.String text)
     { org.wheatgenetics.androidlibrary.Utils.showLongToast(this, text); }
@@ -149,43 +136,39 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_main);
 
+        final android.widget.ListView mainListView = this.findViewById(
+            org.wheatgenetics.coordinate.R.id.mainListView);        // From layout/content_main.xml.
+        if (null != mainListView)
         {
-            final android.widget.ListView mainListView = this.findViewById(
-                org.wheatgenetics.coordinate.R.id.mainListView);    // From layout/content_main.xml.
-            if (null != mainListView)
-            {
-                // noinspection Convert2Diamond
-                mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
-                    this, org.wheatgenetics.coordinate.R.layout.main_list_item,
-                    new java.lang.String[]{"Grids", "Templates",
-                        "Projects", "Settings", "About"}));
-                mainListView.setOnItemClickListener(
-                    new android.widget.AdapterView.OnItemClickListener()
+            // noinspection Convert2Diamond
+            mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
+                this, org.wheatgenetics.coordinate.R.layout.main_list_item,
+                new java.lang.String[]{"Grids", "Templates", "Projects", "Settings", "About"}));
+            mainListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+                {
+                    @java.lang.Override
+                    public void onItemClick(final android.widget.AdapterView<?> parent,
+                    final android.view.View view, final int position, final long id)
                     {
-                        @java.lang.Override
-                        public void onItemClick(final android.widget.AdapterView<?> parent,
-                        final android.view.View view, final int position, final long id)
+                        switch (position)
                         {
-                            switch (position)
-                            {
-                                case 0: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startGridsActivity(); break;
+                            case 0: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startGridsActivity(); break;
 
-                                case 1: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startTemplatesActivity(); break;
+                            case 1: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startTemplatesActivity(); break;
 
-                                case 2: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startProjectsActivity(); break;
+                            case 2: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startProjectsActivity(); break;
 
-                                case 3: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.startPreferenceActivity(); break;
+                            case 3: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.startPreferenceActivity(); break;
 
-                                case 4: org.wheatgenetics.coordinate.main.MainActivity
-                                    .this.showAboutAlertDialog(); break;
-                            }
+                            case 4: org.wheatgenetics.coordinate.main.MainActivity
+                                .this.showAboutAlertDialog(); break;
                         }
-                    });
-            }
+                    }
+                });
         }
     }
 
@@ -205,10 +188,27 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE:
-                    if (null != this.templateCreatorInstance)
-                        this.templateCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
+                    this.templateCreator().continueExcluding(data.getExtras()); break;
             }
+    }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @java.lang.Override @androidx.annotation.NonNull
+    org.wheatgenetics.coordinate.gc.GridCreator gridCreator()
+    {
+        if (null == this.statelessGridCreatorInstance) this.statelessGridCreatorInstance =
+            new org.wheatgenetics.coordinate.gc.StatelessGridCreator(
+                this, org.wheatgenetics.coordinate.Types.CREATE_GRID,
+                new org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler()
+                {
+                    @java.lang.Override public void handleGridCreated(
+                    @androidx.annotation.IntRange(from = 1) final long gridId)
+                    {
+                        org.wheatgenetics.coordinate.main.MainActivity.this.startCollectorActivity(
+                            gridId);
+                    }
+                });
+        return this.statelessGridCreatorInstance;
     }
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
@@ -223,7 +223,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     // region MenuItem Event Handlers
     public void onGridMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem) { this.statelessGridCreator().create(); }
+    final android.view.MenuItem menuItem)
+    { ((org.wheatgenetics.coordinate.gc.StatelessGridCreator) this.gridCreator()).create(); }
 
     public void onTemplateMenuItemClick(@java.lang.SuppressWarnings({"unused"})
     final android.view.MenuItem menuItem) { this.templateCreator().create(); }

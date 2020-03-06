@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TemplatesActivity -->
+    <string name="TemplatesActivityLabel">Templates</string>
+    <string name="TemplatesActivityImportMenuItemTitle">Import</string>
+
+    <!-- TemplatesAdapter -->
+    <plurals name="TemplatesListRows">
+        <item quantity="one"  >%d row</item>
+        <item quantity="other">%d rows</item>
+    </plurals>
+    <plurals name="TemplatesListColumns">
+        <item quantity="one"  >, %d column</item>
+        <item quantity="other">, %d columns</item>
+    </plurals>
+</resources>

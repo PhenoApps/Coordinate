@@ -1,38 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
 
-    <TableRow>
-        <TextView
-            android:text="@string/ProjectsListTitle"
-            android:paddingEnd="6sp"
-            android:paddingRight="6sp"
-            
-            tools:ignore="RtlSymmetry" />
+    android:padding="6dp"
 
-        <TextView
-            android:id="@+id/projectsListItemTitle"
-            android:text="test title"
+    android:stretchColumns="0">
 
-            tools:ignore="HardcodedText" />
-    </TableRow>
+    <TableRow tools:ignore="UselessParent">
 
-    <TableRow>
-        <TextView
-            android:text="@string/ProjectsListTimestamp"
-            android:paddingEnd="6sp"
-            android:paddingRight="6sp"
+        <TableLayout>
 
-            tools:ignore="RtlSymmetry" />
+            <TableRow>
+                <TextView
+                    android:id="@+id/projectsListItemTitle"
+                    android:textSize="20sp" />
+            </TableRow>
 
-        <TextView
-            android:id="@+id/projectsListItemTimestamp"
-            android:text="test timestamp"
+            <TableRow>
 
-            tools:ignore="HardcodedText" />
+                <TextView android:id="@+id/projectsListItemNumberOfGrids"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:id="@+id/projectsListItemTimestamp"
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/projectsListItemDeleteButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_delete"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemExportButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_export"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemShowGridsButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_show_grids"
+
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/projectsListItemCreateGridButton"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/selector_create_grid"
+
+            tools:ignore="ContentDescription" />
     </TableRow>
 </TableLayout>

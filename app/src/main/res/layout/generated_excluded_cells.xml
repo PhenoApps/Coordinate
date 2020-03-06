@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textAlignment="center"
+        android:gravity="center_horizontal"
         android:visibility="invisible" />
 
 </LinearLayout>

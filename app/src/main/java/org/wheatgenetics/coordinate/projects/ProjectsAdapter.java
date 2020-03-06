@@ -5,28 +5,38 @@ package org.wheatgenetics.coordinate.projects;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.ViewGroup
+ * android.widget.ImageButton
  * android.widget.TextView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.database.ProjectsTable
- *
- * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.adapter.NonGridsAdapter
+ *
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.ProjectsTable
  *
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  */
-class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
+class ProjectsAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapter
 {
     // region Fields
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null; // ll
-    private org.wheatgenetics.coordinate.model.ProjectModels    projectModelsInstance = null; // ll
+    // region Table Fields
+    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
+    private org.wheatgenetics.coordinate.database.GridsTable    gridsTableInstance    = null;  // ll
     // endregion
 
+    private org.wheatgenetics.coordinate.model.ProjectModels projectModelsInstance = null;  // lazy
+    // endregion                                                                            //  load
+
     // region Private Methods
+    // region Table Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
     {
@@ -34,6 +44,15 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
             new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity());
         return this.projectsTableInstance;
     }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+        return this.gridsTableInstance;
+    }
+    // endregion
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.ProjectModels projectModels()
@@ -44,13 +63,22 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
     }
     // endregion
 
-    ProjectsAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(activity); }
+    ProjectsAdapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onCreateGridButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
+    {
+        super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
+            onExportButtonClickListener, onShowGridsButtonClickListener);
+    }
 
     // region Overridden Methods
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.projectModelsInstance = null; super.notifyDataSetChanged(); }
-
     @java.lang.Override public int getCount()
     {
         final org.wheatgenetics.coordinate.model.ProjectModels projectModels = this.projectModels();
@@ -90,19 +118,75 @@ class ProjectsAdapter extends org.wheatgenetics.coordinate.Adapter
             else
             {
                 {
-                    final android.widget.TextView titleTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTitle);
-                    if (null != titleTextView) titleTextView.setText(projectModel.getTitle());
+                    if (null != textView) textView.setText(projectModel.getTitle());
                 }
                 {
-                    final android.widget.TextView timestampTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.projectsListItemTimestamp);
-                    if (null != timestampTextView)
-                        timestampTextView.setText(projectModel.getFormattedTimestamp());
+                    if (null != textView) textView.setText(projectModel.getFormattedTimestamp());
                 }
+
+                @androidx.annotation.IntRange(from = 1) final long projectId = projectModel.getId();
+                                                        final boolean projectHasGrids              ;
+                {
+                    @androidx.annotation.IntRange(from = 0) final int numberOfGrids =
+                        this.gridsTable().numberInProject(projectId);
+                    projectHasGrids = numberOfGrids > 0;
+                    final android.widget.TextView textView = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemNumberOfGrids);
+                    if (null != textView) textView.setText(this.resources().getQuantityString(
+                        org.wheatgenetics.coordinate.R.plurals.ProjectsListNumberOfGrids,
+                        numberOfGrids, numberOfGrids                                    ));
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemDeleteButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (projectId                         );
+                        imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                    }
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemExportButton);
+                    if (null != imageButton)
+                        if (projectHasGrids)
+                        {
+                            imageButton.setTag            (projectId                         );
+                            imageButton.setOnClickListener(this.onExportButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemShowGridsButton);
+                    if (null != imageButton)
+                        if (projectHasGrids)
+                        {
+                            imageButton.setTag            (projectId                            );
+                            imageButton.setOnClickListener(this.onShowGridsButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.projectsListItemCreateGridButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (projectId                             );
+                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener());
+                    }
+                }
+
                 return view;
             }
         }
     }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.projectModelsInstance = null; super.notifyDataSetChanged(); }
     // endregion
 }

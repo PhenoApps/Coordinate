@@ -13,7 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class RowOrCols extends java.lang.Object
+class RowOrCols extends java.lang.Object
 {
     // region Fields
     @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.RowOrCol

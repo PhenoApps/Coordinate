@@ -351,8 +351,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Constructors
-    /** Used by GridCreator. */
-    public JoinedGridModel(
+    /** Used by GridCreator. */ public JoinedGridModel(
     @androidx.annotation.IntRange(from = 0) final long             projectId,
                                             final java.lang.String person   ,
     @androidx.annotation.Nullable           final
@@ -368,8 +367,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         this.templateModel = templateModel;
     }
 
-    /** Used by GridsTable. */
-    public JoinedGridModel(
+    /** Used by GridsTable. */ public JoinedGridModel(
     @androidx.annotation.IntRange(from = 1) final long             id            ,
     @androidx.annotation.IntRange(from = 0) final long             projectId     ,
                                             final java.lang.String person        ,
@@ -424,6 +422,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
+    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
+    java.lang.String name()
+    {
+        return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
+            this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
+            this.getFormattedTimestamp());
+    }
+
     @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()
     {
         // noinspection ConstantConditions
@@ -454,14 +460,6 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Public Methods
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
-    public java.lang.String name()
-    {
-        return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
-            this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
-            this.getFormattedTimestamp());
-    }
-
     public java.lang.String getTemplateTitle() { return this.templateModel.getTitle(); }
 
     public void makeEntryModels() throws

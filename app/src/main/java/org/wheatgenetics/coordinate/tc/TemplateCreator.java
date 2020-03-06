@@ -36,9 +36,32 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
-        assignTitleRowsColsAlertDialog = null;                                          // lazy load
+        assignTitleRowsColsAlertDialogInstance = null;                                  // lazy load
     private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-        setExcludesOptionalFieldsNumberingAlertDialog = null;                           // lazy load
+        setExcludesOptionalFieldsNumberingAlertDialogInstance = null;                   // lazy load
+    // endregion
+
+    // region Private Methods
+    @androidx.annotation.NonNull private
+    org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog assignTitleRowsColsAlertDialog()
+    {
+        if (null == this.assignTitleRowsColsAlertDialogInstance)
+            this.assignTitleRowsColsAlertDialogInstance =
+                new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
+                    this.activity,this);
+        return this.assignTitleRowsColsAlertDialogInstance;
+    }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
+    setExcludesOptionalFieldsNumberingAlertDialog()
+    {
+        if (null == this.setExcludesOptionalFieldsNumberingAlertDialogInstance)
+            this.setExcludesOptionalFieldsNumberingAlertDialogInstance =
+                new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
+                    this.activity, this.requestCode,this);
+        return this.setExcludesOptionalFieldsNumberingAlertDialogInstance;
+    }
     // endregion
 
     public TemplateCreator(final android.app.Activity activity,
@@ -50,13 +73,7 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler Overridden Method
     @java.lang.Override public void handleAssignDone()
-    {
-        if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
-            this.setExcludesOptionalFieldsNumberingAlertDialog =
-                new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
-                    this.activity, this.requestCode,this);
-        this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
-    }
+    { this.setExcludesOptionalFieldsNumberingAlertDialog().show(this.templateModel); }
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
@@ -68,14 +85,15 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     // region Public Methods
     public void create()
     {
-        if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
-                this.activity,this);
         this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined();
-        this.assignTitleRowsColsAlertDialog.show(this.templateModel);
+        this.assignTitleRowsColsAlertDialog().show(this.templateModel);
     }
 
-    public void setExcludedCells(final android.os.Bundle bundle)
-    { if (null != this.templateModel) this.templateModel.setExcludedCells(bundle); }
+    public void continueExcluding(final android.os.Bundle bundle)
+    {
+        this.templateModel =
+            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(bundle);
+        this.handleAssignDone();
+    }
     // endregion
 }

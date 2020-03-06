@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ProjectsActivity -->
+    <string name="ProjectsActivityLabel">Projects</string>
+
+    <plurals name="ProjectsListNumberOfGrids">
+        <item quantity="one"  >%d grid</item>
+        <item quantity="other">%d grids</item>
+    </plurals>
+</resources>

@@ -11,18 +11,21 @@ package org.wheatgenetics.coordinate.projects;
  * android.view.Menu
  * android.view.MenuItem
  * android.view.View
- * android.widget.AdapterView<>
- * android.widget.AdapterView.OnItemClickListener
+ * android.view.View.OnClickListener
  * android.widget.ListView
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.lifecycle.ViewModelProvider
  *
  * org.wheatgenetics.coordinate.BackActivity
  * org.wheatgenetics.coordinate.CollectorActivity
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.Types
+ *
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter
+ * org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler
  *
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator
  * org.wheatgenetics.coordinate.gc.StatelessGridCreator.Handler
@@ -32,26 +35,33 @@ package org.wheatgenetics.coordinate.projects;
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
  *
+ * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
+ * org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler
  * org.wheatgenetics.coordinate.pe.ProjectExporter
  *
  * org.wheatgenetics.coordinate.projects.ProjectsAdapter
- * org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
- * org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler
+ * org.wheatgenetics.coordinate.projects.ProjectsViewModel
  */
 public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
 {
-    private static final int EXPORT_PROJECT_REQUEST_CODE = 10;
+    private static final int COLLECT_DATA_REQUEST_CODE = 10,
+        EXPORT_PROJECT_REQUEST_CODE = 20, SHOW_GRIDS_REQUEST_CODE = 30;
 
     // region Fields
-    private org.wheatgenetics.coordinate.projects.ProjectsAdapter projectsAdapter = null;
+    private org.wheatgenetics.coordinate.projects.ProjectsViewModel projectsViewModel     ;
+    private org.wheatgenetics.coordinate.projects.ProjectsAdapter   projectsAdapter = null;
 
     private org.wheatgenetics.coordinate.gc.StatelessGridCreator
         statelessGridCreatorInstance = null;                                            // lazy load
 
-    private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporterInstance = null;    // ll
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleterInstance = null; // ll
 
-    private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog
-        projectClickAlertDialogInstance = null;                                         // lazy load
+    // region exportProject() Fields
+    private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
+        projectExportPreprocessorInstance = null;                                       // lazy load
+    private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporterInstance = null;    // ll
+    // endregion
+
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;      // ll
 
     private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
@@ -61,8 +71,9 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     // region createGrid() Private Methods
     private void startCollectorActivity(@androidx.annotation.IntRange(from = 1) final long gridId)
     {
-        this.startActivity(
-            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId));
+        this.startActivityForResult(
+            org.wheatgenetics.coordinate.CollectorActivity.intent(this, gridId)      ,
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.COLLECT_DATA_REQUEST_CODE);
     }
 
     @androidx.annotation.NonNull
@@ -87,15 +98,32 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     { this.statelessGridCreator().createInProject(projectId); }
     // endregion
 
-    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        this.startActivity(org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
-            this, projectId));
-    }
-
     private void notifyDataSetChanged()
     { if (null != this.projectsAdapter) this.projectsAdapter.notifyDataSetChanged(); }
 
+    // region deleteProject() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.deleter.ProjectDeleter projectDeleter()
+    {
+        if (null == this.projectDeleterInstance) this.projectDeleterInstance =
+            new org.wheatgenetics.coordinate.deleter.ProjectDeleter(this,
+                new org.wheatgenetics.coordinate.deleter.ProjectDeleter.Handler()
+                {
+                    @java.lang.Override public void respondToDeletedProject(
+                    @androidx.annotation.IntRange(from = 1) final long projectId)
+                    {
+                        org.wheatgenetics.coordinate.projects
+                            .ProjectsActivity.this.notifyDataSetChanged();
+                    }
+                });
+        return this.projectDeleterInstance;
+    }
+
+    private void deleteProject(@androidx.annotation.IntRange(from = 1) final long projectId)
+    { this.projectDeleter().delete(projectId); }
+    // endregion
+
+    // region Export Private Methods
     // region exportProject() Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pe.ProjectExporter projectExporter()
@@ -106,38 +134,28 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
         return this.projectExporterInstance;
     }
 
+    private void exportProject()
+    {
+        this.projectExporter().export(
+            this.projectsViewModel.getId(), this.projectsViewModel.getDirectoryName());
+    }
+
     private void exportProject(@androidx.annotation.IntRange(from = 1) final long projectId,
     final java.lang.String directoryName)
-    { this.projectExporter().export(projectId, directoryName); }
+    {
+        this.projectsViewModel.setProjectIdAndDirectoryName(projectId, directoryName);
+        this.exportProject();
+    }
     // endregion
 
-    // region projectClickAlertDialog() Private Methods
-    private org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog projectClickAlertDialog()
+    // region preprocessProjectExport() Private Methods
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor projectExportPreprocessor()
     {
-        if (null == this.projectClickAlertDialogInstance) this.projectClickAlertDialogInstance =
-            new org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog(this,
-                new org.wheatgenetics.coordinate.projects.ProjectClickAlertDialog.Handler()
+        if (null == this.projectExportPreprocessorInstance) this.projectExportPreprocessorInstance =
+            new org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor(this,
+                new org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler()
                 {
-                    @java.lang.Override public void createGrid(
-                    @androidx.annotation.IntRange(from = 1) final long projectId)
-                    {
-                        org.wheatgenetics.coordinate.projects.ProjectsActivity.this.createGrid(
-                            projectId);
-                    }
-
-                    @java.lang.Override public void showGrids(
-                    @androidx.annotation.IntRange(from = 1) final long projectId)
-                    {
-                        org.wheatgenetics.coordinate.projects.ProjectsActivity
-                            .this.startGridsActivity(projectId);
-                    }
-
-                    @java.lang.Override public void respondToDeletedProject()
-                    {
-                        org.wheatgenetics.coordinate.projects.ProjectsActivity
-                            .this.notifyDataSetChanged();
-                    }
-
                     @java.lang.Override public void exportProject(
                     @androidx.annotation.IntRange(from = 1) final long             projectId    ,
                                                             final java.lang.String directoryName)
@@ -146,18 +164,28 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
                             .this.exportProject(projectId, directoryName);
                     }
                 });
-        return this.projectClickAlertDialogInstance;
+        return this.projectExportPreprocessorInstance;
     }
 
-    private void showProjectClickAlertDialog(@androidx.annotation.IntRange(from = 1)
-    final long projectId) { this.projectClickAlertDialog().show(projectId); }
+    private void preprocessProjectExport(@androidx.annotation.IntRange(from = 1)
+    final long projectId) { this.projectExportPreprocessor().preprocess(projectId); }
+    // endregion
     // endregion
 
+    private void startGridsActivity(@androidx.annotation.IntRange(from = 1) final long projectId)
+    {
+        this.startActivityForResult(
+            org.wheatgenetics.coordinate.grids.GridsActivity.projectIdIntent(
+                this, projectId),
+            org.wheatgenetics.coordinate.projects.ProjectsActivity.SHOW_GRIDS_REQUEST_CODE);
+    }
+
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreator()
     {
-        if (null == this.projectCreatorInstance)
-            this.projectCreatorInstance = new org.wheatgenetics.coordinate.pc.ProjectCreator(
-                this, new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
+        if (null == this.projectCreatorInstance) this.projectCreatorInstance =
+            new org.wheatgenetics.coordinate.pc.ProjectCreator(this,
+                new org.wheatgenetics.coordinate.pc.ProjectCreator.Handler()
                 {
                     @java.lang.Override public void handleCreateProjectDone(
                     @androidx.annotation.IntRange(from = 1) final long projectId)
@@ -177,24 +205,42 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
         super.onCreate(savedInstanceState);
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_projects);
 
+        this.projectsViewModel = new androidx.lifecycle.ViewModelProvider(this).get(
+                org.wheatgenetics.coordinate.projects.ProjectsViewModel.class);
+
         final android.widget.ListView projectsListView = this.findViewById(
             org.wheatgenetics.coordinate.R.id.projectsListView);
-        if (null != projectsListView)
-        {
-            projectsListView.setAdapter(this.projectsAdapter =
-                new org.wheatgenetics.coordinate.projects.ProjectsAdapter(this));
-            projectsListView.setOnItemClickListener(
-                new android.widget.AdapterView.OnItemClickListener()
+        if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
+            new org.wheatgenetics.coordinate.projects.ProjectsAdapter(this,
+                /* onCreateGridButtonClickListener => */ new android.view.View.OnClickListener()
                 {
-                    @java.lang.Override public void onItemClick(
-                    final android.widget.AdapterView<?> parent, final android.view.View view,
-                    final int position, final long id)
+                    @java.lang.Override public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.projects.ProjectsActivity
-                            .this.showProjectClickAlertDialog(id);
+                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.createGrid((java.lang.Long) view.getTag());
                     }
-                });
-        }
+                }, /* onDeleteButtonClickListener => */ new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override public void onClick(final android.view.View view)
+                    {
+                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.deleteProject((java.lang.Long) view.getTag());
+                    }
+                }, /* onExportButtonClickListener => */ new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override public void onClick(final android.view.View view)
+                    {
+                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.preprocessProjectExport((java.lang.Long) view.getTag());
+                    }
+                }, /* onShowGridsButtonClickListener => */ new android.view.View.OnClickListener()
+                {
+                    @java.lang.Override public void onClick(final android.view.View view)
+                    {
+                        if (null != view) org.wheatgenetics.coordinate.projects.ProjectsActivity
+                            .this.startGridsActivity((java.lang.Long) view.getTag());
+                    }
+                }));
     }
 
     @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
@@ -208,15 +254,17 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (android.app.Activity.RESULT_OK == resultCode && null != data)
-            // noinspection SwitchStatementWithTooFewBranches
-            switch (requestCode)
-            {
-                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.statelessGridCreatorInstance)
-                        this.statelessGridCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
-            }
+        switch (requestCode)
+        {
+            case org.wheatgenetics.coordinate.projects.ProjectsActivity.COLLECT_DATA_REQUEST_CODE:
+            case org.wheatgenetics.coordinate.projects.ProjectsActivity.SHOW_GRIDS_REQUEST_CODE  :
+                this.notifyDataSetChanged(); break;
+
+            case org.wheatgenetics.coordinate.Types.CREATE_GRID:
+                if (android.app.Activity.RESULT_OK == resultCode && null != data)
+                    this.statelessGridCreator().continueExcluding(data.getExtras());
+                break;
+        }
     }
 
     @java.lang.Override public void onRequestPermissionsResult(final int requestCode,
@@ -236,10 +284,7 @@ public class ProjectsActivity extends org.wheatgenetics.coordinate.BackActivity
                 switch (requestCode)
                 {
                     case org.wheatgenetics.coordinate.projects.ProjectsActivity
-                    .EXPORT_PROJECT_REQUEST_CODE:
-                        if (null != this.projectExporterInstance)
-                            this.projectExporterInstance.export();
-                        break;
+                    .EXPORT_PROJECT_REQUEST_CODE: this.exportProject(); break;
                 }
     }
     // endregion

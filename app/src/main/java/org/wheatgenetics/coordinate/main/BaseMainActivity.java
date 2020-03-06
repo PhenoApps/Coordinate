@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.javalib.Utils
@@ -20,6 +21,9 @@ package org.wheatgenetics.coordinate.main;
  *
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.Types
+ *
  * org.wheatgenetics.coordinate.gc.GridCreator
  *
  * org.wheatgenetics.coordinate.database.TemplatesTable
@@ -27,9 +31,6 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  * org.wheatgenetics.coordinate.model.TemplateType
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.Types
  */
 abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 {
@@ -41,9 +42,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     private org.wheatgenetics.changelog.ChangeLogAlertDialog
         changeLogAlertDialogInstance = null;                                            // lazy load
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    org.wheatgenetics.coordinate.gc.GridCreator gridCreatorInstance = null;             // lazy load
     // endregion
 
     @androidx.annotation.NonNull
@@ -67,9 +65,6 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String versionName() { return this.versionName; }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
     org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
     {
@@ -81,6 +76,12 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void showChangeLog() { this.changeLogAlertDialog().show(); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    java.lang.String versionName() { return this.versionName; }
     // endregion
 
     // region Overridden Methods
@@ -149,11 +150,20 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
         // endregion
 
         // region Set version.
+        @androidx.annotation.NonNull
         final org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences =
             this.sharedPreferences();
         if (!sharedPreferences.updateVersionIsSet(versionCode))
             { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
         // endregion
+    }
+
+    @java.lang.Override protected void onPostCreate(final android.os.Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
+        if (null != supportActionBar) supportActionBar.setTitle(null);
     }
 
     @java.lang.Override protected void onActivityResult(final int requestCode,
@@ -166,9 +176,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
             switch (requestCode)
             {
                 case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    if (null != this.gridCreatorInstance)
-                        this.gridCreatorInstance.setExcludedCells(data.getExtras());
-                    break;
+                    this.gridCreator().continueExcluding(data.getExtras()); break;
             }
     }
     // endregion

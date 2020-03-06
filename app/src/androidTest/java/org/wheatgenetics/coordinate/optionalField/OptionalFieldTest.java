@@ -19,7 +19,7 @@ public class OptionalFieldTest extends java.lang.Object
      * directly?  Because OptionalField is abstract.  Why does that matter?  Because I can't
      * instantiate an abstract class.  If I can't instantiate it I can't test it.
      */
-    private class ConcreteOptionalField extends
+    private static class ConcreteOptionalField extends
     org.wheatgenetics.coordinate.optionalField.OptionalField
     {
         private ConcreteOptionalField(@androidx.annotation.NonNull

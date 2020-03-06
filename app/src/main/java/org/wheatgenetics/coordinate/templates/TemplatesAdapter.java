@@ -5,28 +5,38 @@ package org.wheatgenetics.coordinate.templates;
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.view.View
+ * android.view.View.OnClickListener
  * android.view.ViewGroup
+ * android.widget.ImageButton
  * android.widget.TextView
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.Adapter
  * org.wheatgenetics.coordinate.R
+ *
+ * org.wheatgenetics.coordinate.adapter.NonGridsAdapter
+ *
+ * org.wheatgenetics.coordinate.database.GridsTable
+ * org.wheatgenetics.coordinate.database.TemplatesTable
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  */
-class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
+class TemplatesAdapter extends org.wheatgenetics.coordinate.adapter.NonGridsAdapter
 {
     // region Fields
+    // region Table Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.model.TemplateModels    templateModelsInstance = null;// ll
+    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null;// ll
+    // endregion
+
+    private org.wheatgenetics.coordinate.model.TemplateModels templateModelsInstance = null;   // ll
     // endregion
 
     // region Private Methods
+    // region Table Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
     {
@@ -34,6 +44,15 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
             new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity());
         return this.templatesTableInstance;
     }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
+    {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+        return this.gridsTableInstance;
+    }
+    // endregion
 
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.TemplateModels templateModels()
@@ -44,13 +63,22 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
     }
     // endregion
 
-    TemplatesAdapter(@androidx.annotation.NonNull final android.app.Activity activity)
-    { super(activity); }
+    TemplatesAdapter(
+    @androidx.annotation.NonNull final android.app.Activity              activity,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onCreateGridButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onShowGridsButtonClickListener)
+    {
+        super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
+            onExportButtonClickListener, onShowGridsButtonClickListener);
+    }
 
     // region Overridden Methods
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.templateModelsInstance = null; super.notifyDataSetChanged(); }
-
     @java.lang.Override public int getCount()
     {
         final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
@@ -92,29 +120,92 @@ class TemplatesAdapter extends org.wheatgenetics.coordinate.Adapter
             else
             {
                 {
-                    final android.widget.TextView titleTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemTitle);
-                    if (null != titleTextView) titleTextView.setText(templateModel.getTitle());
+                    if (null != textView) textView.setText(templateModel.getTitle());
                 }
                 {
-                    final android.widget.TextView rowsTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemRows);
-                    if (null != rowsTextView) rowsTextView.setText(templateModel.getRowsAsString());
+                    if (null != textView)
+                    {
+                        @androidx.annotation.IntRange(from = 1) final int rows =
+                            templateModel.getRows();
+                        textView.setText(this.resources().getQuantityString(
+                            org.wheatgenetics.coordinate.R.plurals.TemplatesListRows, rows, rows));
+                    }
                 }
                 {
-                    final android.widget.TextView colsTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemColumns);
-                    if (null != colsTextView) colsTextView.setText(templateModel.getColsAsString());
+                    if (null != textView)
+                    {
+                        @androidx.annotation.IntRange(from = 1) final int cols =
+                            templateModel.getCols();
+                        textView.setText(this.resources().getQuantityString(
+                            org.wheatgenetics.coordinate.R.plurals.TemplatesListColumns,
+                            cols, cols                                                 ));
+                    }
                 }
                 {
-                    final android.widget.TextView timestampTextView = view.findViewById(
+                    final android.widget.TextView textView = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.templatesListItemTimestamp);
-                    if (null != timestampTextView)
-                        timestampTextView.setText(templateModel.getFormattedTimestamp());
+                    if (null != textView) textView.setText(templateModel.getFormattedTimestamp());
                 }
+
+                @androidx.annotation.IntRange(from = 1) final long templateId =
+                    templateModel.getId();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemShowGridsButton);
+                    if (null != imageButton)
+                        if (this.gridsTable().existsInTemplate(templateId))
+                        {
+                            imageButton.setTag            (templateId                           );
+                            imageButton.setOnClickListener(this.onShowGridsButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemCreateGridButton);
+                    if (null != imageButton)
+                    {
+                        imageButton.setTag            (templateId                            );
+                        imageButton.setOnClickListener(this.onCreateGridButtonClickListener());
+                    }
+                }
+
+                final boolean isUserDefined = !templateModel.isDefaultTemplate();
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemDeleteButton);
+                    if (null != imageButton)
+                        if (isUserDefined)
+                        {
+                            imageButton.setTag            (templateId                        );
+                            imageButton.setOnClickListener(this.onDeleteButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+                {
+                    final android.widget.ImageButton imageButton = view.findViewById(
+                        org.wheatgenetics.coordinate.R.id.templatesListItemExportButton);
+                    if (null != imageButton)
+                        if (isUserDefined)
+                        {
+                            imageButton.setTag            (templateId                        );
+                            imageButton.setOnClickListener(this.onExportButtonClickListener());
+                        }
+                        else imageButton.setEnabled(false);
+                }
+
                 return view;
             }
         }
     }
+
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.templateModelsInstance = null; super.notifyDataSetChanged(); }
     // endregion
 }

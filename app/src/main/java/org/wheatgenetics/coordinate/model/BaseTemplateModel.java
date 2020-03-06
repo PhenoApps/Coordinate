@@ -201,25 +201,25 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setRows(final java.lang.String rows) { this.setRows(java.lang.Integer.valueOf(rows)); }
+    void setRows(final java.lang.String rows) { this.setRows(java.lang.Integer.parseInt(rows)); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setCols(final java.lang.String cols) { this.setCols(java.lang.Integer.valueOf(cols)); }
+    void setCols(final java.lang.String cols) { this.setCols(java.lang.Integer.parseInt(cols)); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setGeneratedExcludedCellsAmount(final java.lang.String generatedExcludedCellsAmount)
     {
         this.setGeneratedExcludedCellsAmount(
-            java.lang.Integer.valueOf(generatedExcludedCellsAmount));
+            java.lang.Integer.parseInt(generatedExcludedCellsAmount));
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setColNumbering(final java.lang.String colNumbering)
-    { this.setColNumbering(java.lang.Boolean.valueOf(colNumbering)); }
+    { this.setColNumbering(java.lang.Boolean.parseBoolean(colNumbering)); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setRowNumbering(final java.lang.String rowNumbering)
-    { this.setRowNumbering(java.lang.Boolean.valueOf(rowNumbering)); }
+    { this.setRowNumbering(java.lang.Boolean.parseBoolean(rowNumbering)); }
 
     boolean entryLabelIsNotNull() { return null != this.getEntryLabel(); }
 

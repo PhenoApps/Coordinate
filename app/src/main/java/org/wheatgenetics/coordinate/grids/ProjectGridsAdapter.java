@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.grids;
 /**
  * Uses:
  * android.app.Activity
+ * android.view.View.OnClickListener
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
@@ -17,10 +18,29 @@ package org.wheatgenetics.coordinate.grids;
 class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapter
 {
     // region Fields
-    @androidx.annotation.IntRange(from = 1) private final long projectId;
+    @androidx.annotation.IntRange(from = 1) private final long      projectId;
     private org.wheatgenetics.coordinate.model.BaseJoinedGridModels
         baseJoinedGridModelsInstance = null;                                            // lazy load
     // endregion
+
+    ProjectGridsAdapter(
+    @androidx.annotation.NonNull            final android.app.Activity              activity ,
+    @androidx.annotation.IntRange(from = 1) final long                              projectId,
+    @androidx.annotation.NonNull            final android.view.View.OnClickListener
+        onCollectDataButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onDeleteButtonClickListener,
+    @androidx.annotation.NonNull final android.view.View.OnClickListener
+        onExportButtonClickListener)
+    {
+        super(activity, onCollectDataButtonClickListener,
+            onDeleteButtonClickListener, onExportButtonClickListener);
+        this.projectId = projectId;
+    }
+
+    // region Overridden Methods
+    @java.lang.Override public void notifyDataSetChanged()
+    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override @androidx.annotation.Nullable
@@ -30,11 +50,5 @@ class ProjectGridsAdapter extends org.wheatgenetics.coordinate.grids.GridsAdapte
             this.baseJoinedGridModelsInstance = this.gridsTable().loadByProjectId(this.projectId);
         return this.baseJoinedGridModelsInstance;
     }
-
-    ProjectGridsAdapter(@androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    { super(activity); this.projectId = projectId; }
-
-    @java.lang.Override public void notifyDataSetChanged()
-    { this.baseJoinedGridModelsInstance = null; super.notifyDataSetChanged(); }
+    // endregion
 }

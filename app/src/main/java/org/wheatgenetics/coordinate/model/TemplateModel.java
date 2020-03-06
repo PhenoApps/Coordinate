@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.os.Bundle
  * android.util.Xml
  *
  * androidx.annotation.IntRange
@@ -13,6 +14,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.xmlpull.v1.XmlSerializer
  * org.xml.sax.Attributes
+ * org.xml.sax.InputSource
  * org.xml.sax.SAXException
  * org.xml.sax.helpers.DefaultHandler
  *
@@ -26,7 +28,10 @@ package org.wheatgenetics.coordinate.model;
  */
 public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTemplateModel
 {
-    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME = "optionalFields";
+    // region Constants
+    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME  = "optionalFields";
+    private static final java.lang.String TEMPLATE_MODEL_EXTRA_NAME = "templateModel" ;
+    // endregion
 
     // region Fields
     @androidx.annotation.Nullable private
@@ -67,6 +72,72 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             final javax.xml.parsers.ParserConfigurationException | org.xml.sax.SAXException e)
             { org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance = null; }
         return org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance;
+    }
+
+    @androidx.annotation.Nullable private static org.wheatgenetics.coordinate.model.TemplateModel
+    makeUserDefined(@androidx.annotation.NonNull final org.xml.sax.InputSource inputSource)
+    {
+        class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
+        {
+            // region Fields
+            @androidx.annotation.Nullable
+            private java.lang.String elementName;
+
+            private org.wheatgenetics.coordinate.model.TemplateModel
+                templateModelInstance = null;                                       // lazy load
+            // endregion
+
+            @androidx.annotation.NonNull
+            private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
+            {
+                if (null == this.templateModelInstance) this.templateModelInstance =
+                    new org.wheatgenetics.coordinate.model.TemplateModel();
+                return templateModelInstance;
+            }
+
+            // region Overridden Methods
+            @java.lang.Override
+            public void startElement(final java.lang.String uri,
+                final java.lang.String localName, final java.lang.String qName,
+                final org.xml.sax.Attributes attributes)
+            { this.elementName = qName; }
+
+            @java.lang.Override
+            public void characters(
+                @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final char ch[],
+                final int start, final int length)
+            {
+                this.templateModel().assignCharacterData(this.elementName,
+                    /* characterData => */ new java.lang.String(ch, start, length));
+            }
+
+            @java.lang.Override
+            public void endElement(final java.lang.String uri,
+                final java.lang.String localName, final java.lang.String qName)
+            { this.elementName = null; }
+            // endregion
+
+            @androidx.annotation.Nullable
+            private org.wheatgenetics.coordinate.model.TemplateModel getTemplateModel()
+            { return this.templateModelInstance; }
+        }
+
+        final DefaultHandler defaultHandler = new DefaultHandler();
+        {
+            final javax.xml.parsers.SAXParser saxParser =
+                org.wheatgenetics.coordinate.model.TemplateModel.saxParser();
+            if (null == saxParser)
+                return null;
+            else
+                try
+                {
+                    saxParser.parse(inputSource,                     // throws org.xml.sax.SAXExcep-
+                        defaultHandler);                             //  tion, java.io.IOException
+                }
+                catch (final org.xml.sax.SAXException | java.io.IOException e) { return null; }
+        }
+
+        return defaultHandler.getTemplateModel();
     }
     // endregion
 
@@ -328,6 +399,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     }
     // endregion
 
+    // region export() Public Methods
     public boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
     {
         final boolean failure = false;
@@ -338,9 +410,32 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
             catch (final java.io.IOException e) { return failure; }
     }
 
+    public void export(@androidx.annotation.NonNull final android.os.Bundle bundle)
+    {
+                                      final boolean          remove;
+        @androidx.annotation.Nullable final java.lang.String string;
+        {
+            final java.io.StringWriter stringWriter = new java.io.StringWriter();
+            if (this.export(stringWriter))
+            {
+                string = stringWriter.toString().trim();
+                remove = string.length() < 1;
+            }
+            else
+                { remove = true; string = null; }
+        }
+
+        final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
+            org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+        if (remove)
+            bundle.remove(TEMPLATE_MODEL_EXTRA_NAME);
+        else
+            bundle.putString(TEMPLATE_MODEL_EXTRA_NAME, string);
+    }
+    // endregion
+
     // region Make Public Methods
-    /** Called by TemplateModels. */
-    @androidx.annotation.NonNull
+    /** Called by TemplateModels. */ @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
@@ -357,8 +452,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         return result;
     }
 
-    /** Called by TemplateModels. */
-    @androidx.annotation.NonNull
+    /** Called by TemplateModels. */ @androidx.annotation.NonNull
     static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -372,8 +466,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 .NonNullOptionalFields.makeDNADefault());
     }
 
-    /** Called by TemplateCreator. */
-    @androidx.annotation.NonNull
+    /** Called by TemplateCreator. */ @androidx.annotation.NonNull
     public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -386,48 +479,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         if (null == file)
             return null;
         else
-        {
-            class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
-            {
-                // region Fields
-                @androidx.annotation.Nullable private java.lang.String elementName;
-
-                private org.wheatgenetics.coordinate.model.TemplateModel
-                    templateModelInstance = null;                                       // lazy load
-                // endregion
-
-                @androidx.annotation.NonNull
-                private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
-                {
-                    if (null == this.templateModelInstance) this.templateModelInstance =
-                        new org.wheatgenetics.coordinate.model.TemplateModel();
-                    return templateModelInstance;
-                }
-
-                // region Overridden Methods
-                @java.lang.Override public void startElement(final java.lang.String uri,
-                final java.lang.String localName, final java.lang.String qName,
-                final org.xml.sax.Attributes attributes) { this.elementName = qName; }
-
-                @java.lang.Override public void characters(
-                @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final char ch[],
-                final int start, final int length)
-                {
-                    this.templateModel().assignCharacterData(this.elementName,
-                        /* characterData => */ new java.lang.String(ch, start, length));
-                }
-
-                @java.lang.Override public void endElement(final java.lang.String uri,
-                final java.lang.String localName, final java.lang.String qName)
-                { this.elementName = null; }
-                // endregion
-
-                @androidx.annotation.Nullable
-                private org.wheatgenetics.coordinate.model.TemplateModel getTemplateModel()
-                { return this.templateModelInstance; }
-            }
-
-            final DefaultHandler defaultHandler = new DefaultHandler();
             try
             {
                 final java.io.FileInputStream fileInputStream =
@@ -436,23 +487,39 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 // noinspection TryFinallyCanBeTryWithResources
                 try
                 {
-                    try
-                    {
-                        final javax.xml.parsers.SAXParser saxParser =
-                            org.wheatgenetics.coordinate.model.TemplateModel.saxParser();
-                        if (null == saxParser)
-                            return null;
-                        else
-                            saxParser.parse(fileInputStream,         // throws org.xml.sax.SAXExcep-
-                                defaultHandler);                     //  tion, java.io.IOException
-                    }
-                    catch (final org.xml.sax.SAXException e) { return null; }
+                    return org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
+                        new org.xml.sax.InputSource(fileInputStream));
                 }
                 finally { fileInputStream.close() /* throws java.io.IOException */; }
             }
-            catch (final java.io.IOException e) { /* Don't close fileInputStream. */ }
+            catch (final java.io.IOException e) { return null; }
+    }
 
-            return defaultHandler.getTemplateModel();
+    @androidx.annotation.Nullable public static org.wheatgenetics.coordinate.model.TemplateModel
+    makeUserDefined(@androidx.annotation.Nullable final android.os.Bundle bundle)
+    {
+        if (null == bundle)
+            return null;
+        else
+        {
+            final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
+                org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+            if (bundle.containsKey(TEMPLATE_MODEL_EXTRA_NAME))
+            {
+                @androidx.annotation.Nullable
+                java.lang.String string = bundle.getString(TEMPLATE_MODEL_EXTRA_NAME);
+                if (null == string)
+                    return null;
+                {
+                    string = string.trim();
+                    if (string.length() < 1)
+                        return null;
+                    else
+                        return org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
+                            new org.xml.sax.InputSource(new java.io.StringReader(string)));
+                }
+            }
+            else return null;
         }
     }
     // endregion

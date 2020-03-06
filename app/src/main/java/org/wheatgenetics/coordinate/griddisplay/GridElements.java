@@ -74,7 +74,7 @@ implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
     @java.lang.Override protected void clear()
     { super.clear(); this.activeRow = this.activeCol = -1; }
 
-    // region org.wheatgenetics.coordinate.griddisplay.GridElement.Handler Overridden Method
+    // region org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler Overridden Method
     @java.lang.Override public void activate(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.griddisplay.GridElement gridElement)
     {
