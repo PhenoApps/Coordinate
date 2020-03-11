@@ -351,8 +351,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                             success = false;
                         else
                         {
-                            if (null != this.nonNullOptionalFieldsInstance)
-                                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(
+                            if (null != this.nonNullOptionalFieldsInstance) org.wheatgenetics
+                                .coordinate.model.DisplayTemplateModel.writeElement(
                                     xmlSerializer, indent, org.wheatgenetics.coordinate.model
                                         .TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
                                     this.nonNullOptionalFieldsInstance.toJson());
