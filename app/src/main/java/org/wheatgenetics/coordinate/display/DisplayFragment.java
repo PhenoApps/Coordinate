@@ -21,13 +21,20 @@ package org.wheatgenetics.coordinate.display;
  * org.wheatgenetics.coordinate.R
  *
  * org.wheatgenetics.coordinate.model.DisplayModel
+ * org.wheatgenetics.coordinate.model.ElementModel
  *
  * org.wheatgenetics.coordinate.display.adapter.Adapter
  */
 public abstract class DisplayFragment extends androidx.fragment.app.Fragment
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) protected interface Handler
-    { public abstract org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel(); }
+    {
+        public abstract org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel();
+
+        @androidx.annotation.Nullable
+        public abstract org.wheatgenetics.coordinate.model.ElementModel toggle(
+        @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.ElementModel elementModel);
+    }
 
     // region Fields
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -76,6 +83,17 @@ public abstract class DisplayFragment extends androidx.fragment.app.Fragment
     protected abstract org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel
         displayModel);
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.model.ElementModel toggle(
+    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
+        elementModel)
+    {
+        if (null == this.handler)
+            return null;
+        else
+            return this.handler.toggle(elementModel);
+    }
     // endregion
 
     // region Overridden Methods

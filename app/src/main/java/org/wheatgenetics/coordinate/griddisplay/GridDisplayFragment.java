@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.griddisplay;
 
 /**
  * Uses:
+ * android.app.Activity
  * android.content.Context
  *
  * androidx.annotation.NonNull
@@ -9,6 +10,7 @@ package org.wheatgenetics.coordinate.griddisplay;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.ElementModel
  * org.wheatgenetics.coordinate.model.DisplayModel
  *
@@ -28,6 +30,9 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
     {
         public abstract int getActiveRow(); public abstract int getActiveCol();
         public abstract void activate(int row, int col);
+
+        @androidx.annotation.Nullable public abstract
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker();
     }
 
     private org.wheatgenetics.coordinate.griddisplay.adapter.Adapter adapter = null;
@@ -86,24 +91,40 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
     @java.lang.Override protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel)
     {
-        return this.adapter = new org.wheatgenetics.coordinate.griddisplay.adapter.Adapter(
-            displayModel, this.getActiveRow(), this.getActiveCol(),
-            new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler()
-            {
-                @java.lang.Override @androidx.annotation.Nullable
-                public org.wheatgenetics.coordinate.model.ElementModel toggle(
-                @androidx.annotation.Nullable final
-                    org.wheatgenetics.coordinate.model.ElementModel elementModel)
-                { return elementModel; /* TODO */ }
-            }, new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler()
-            {
-                @java.lang.Override public void activate(@androidx.annotation.NonNull final
-                org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder dataViewHolder)
-                {
-                    org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.this.activate(
-                        dataViewHolder);
-                }
-            });
+        final android.app.Activity activity = this.getActivity();
+        if (null == activity)
+            throw new java.lang.NullPointerException();
+        else
+        {
+            final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
+                gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+            if (null == gridDisplayFragmentHandler)
+                throw new java.lang.NullPointerException();
+            else
+                return this.adapter = new org.wheatgenetics.coordinate.griddisplay.adapter.Adapter(
+                    displayModel, activity, this.getActiveRow(), this.getActiveCol(),
+                    new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler()
+                    {
+                        @java.lang.Override @androidx.annotation.Nullable
+                        public org.wheatgenetics.coordinate.model.ElementModel toggle(
+                        @androidx.annotation.Nullable final
+                            org.wheatgenetics.coordinate.model.ElementModel elementModel)
+                        {
+                            return org.wheatgenetics.coordinate.griddisplay
+                                .GridDisplayFragment.this.toggle(elementModel);
+                        }
+                    }, new
+                    org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler()
+                    {
+                        @java.lang.Override public void activate(@androidx.annotation.NonNull
+                        final org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder
+                            dataViewHolder)
+                        {
+                            org.wheatgenetics.coordinate.griddisplay
+                                .GridDisplayFragment.this.activate(dataViewHolder);
+                        }
+                    }, gridDisplayFragmentHandler.getChecker());
+        }
     }
     // endregion
 

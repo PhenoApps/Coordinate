@@ -181,14 +181,17 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.joinedGridModel; }
 
-    /*@java.lang.Override public void toggle(@androidx.annotation.Nullable                   // TODO
+    @java.lang.Override @androidx.annotation.Nullable
+    public org.wheatgenetics.coordinate.model.ElementModel toggle(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
-            if (null != entriesTable)
+            if (null == entriesTable)
+                return null;
+            else
             {
                 final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                     (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
@@ -205,16 +208,18 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
                     }
                     catch (final
                     org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
-                    { return; }
+                    { return null; }
                 }
                 else this.joinedGridModel.setEntryModel(entryModel);
                 entriesTable.insertOrUpdate(entryModel);
                 if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
                     if (this.joinedGridModel.getActiveEntryModel() == entryModel)
                         this.goToNext(entryModel);
+                return entryModel;
             }
         }
-    }*/
+        else return null;
+    }
 
     @java.lang.Override public int getActiveRow()
     { return this.joinedGridModelIsLoaded() ? this.joinedGridModel.getActiveRow() : -1; }
@@ -235,7 +240,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         }
     }
 
-    /*@java.lang.Override @androidx.annotation.Nullable                                      // TODO
+    @java.lang.Override @androidx.annotation.Nullable
     public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
     {
         if (this.joinedGridModel instanceof
@@ -243,7 +248,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
             return (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels)
                 this.joinedGridModel.getEntryModels();
         else return null;
-    }*/
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Methods

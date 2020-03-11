@@ -25,40 +25,21 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
     interface Handler extends org.wheatgenetics.coordinate.display.DisplayFragment.Handler
-    {
-        @androidx.annotation.Nullable
-        public abstract org.wheatgenetics.coordinate.model.ElementModel toggle(
-        @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.ElementModel elementModel);
-
-        public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell);
-    }
+    { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     // region Private Methods
-    @androidx.annotation.NonNull
+    @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler templateHandler()
-    {
-        if (null == this.handler)
-            throw new java.lang.NullPointerException();
-        else
-            return (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) this.handler;
-    }
-
-    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.ElementModel toggle(
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
-        elementModel)
-    {
-        if (null == this.handler)
-            return null;
-        else
-            return this.templateHandler().toggle(elementModel);
-    }
+    { return (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) this.handler; }
 
     private boolean isExcluded(final org.wheatgenetics.coordinate.model.Cell cell)
     {
-        if (null == this.handler)
+        final org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler templateHandler =
+            this.templateHandler();
+        if (null == templateHandler)
             throw new java.lang.NullPointerException();
         else
-            return this.templateHandler().isExcluded(cell);
+            return templateHandler.isExcluded(cell);
     }
     // endregion
 
