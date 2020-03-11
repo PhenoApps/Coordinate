@@ -79,6 +79,7 @@ public abstract class DisplayFragment extends androidx.fragment.app.Fragment
     @androidx.annotation.NonNull final android.content.Context context);
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull
     protected abstract org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel
         displayModel);

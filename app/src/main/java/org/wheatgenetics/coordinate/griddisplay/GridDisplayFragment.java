@@ -88,7 +88,8 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
+    @java.lang.Override @androidx.annotation.NonNull
+    protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel)
     {
         final android.app.Activity activity = this.getActivity();

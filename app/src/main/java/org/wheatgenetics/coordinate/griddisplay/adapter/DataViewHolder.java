@@ -47,6 +47,9 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     // region Private Methods
     private boolean elementModelIsNotNull() { return null != this.elementModel; }
 
+    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.EntryModel entryModel()
+    { return (org.wheatgenetics.coordinate.model.EntryModel) this.elementModel; }
+
     private void activate()
     {
         this.setImage(org.wheatgenetics.coordinate.R.drawable.active_entry);
@@ -57,17 +60,32 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     private void exclude()
     {
         if (this.elementModelIsNotNull())
+        {
             this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
                 (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
-        this.clearOnClickListener(); this.toggle();
+            this.clearOnClickListener(); this.toggle();
+        }
     }
 
-    private boolean onLongClick()
+    private void include()
     {
         if (this.elementModelIsNotNull())
         {
-            final org.wheatgenetics.coordinate.model.EntryModel entryModel =
-                (org.wheatgenetics.coordinate.model.EntryModel) this.elementModel;
+            final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel =
+                (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel;
+            this.elementModel = null == this.checker ?
+                new org.wheatgenetics.coordinate.model.IncludedEntryModel(excludedEntryModel) :
+                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    excludedEntryModel, this.checker);
+            this.setOnClickListener(); this.toggle();
+        }
+    }
+
+    @java.lang.SuppressWarnings({"SameReturnValue"}) private boolean onLongClick()
+    {
+        if (this.elementModelIsNotNull())
+        {
+            final org.wheatgenetics.coordinate.model.EntryModel entryModel = this.entryModel();
             if (entryModel instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel)
             {
                 final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel =
@@ -93,16 +111,7 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
                             });
                 }
             }
-            else
-            {
-                final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel =
-                    (org.wheatgenetics.coordinate.model.ExcludedEntryModel) entryModel;
-                this.elementModel = null == this.checker ?
-                    new org.wheatgenetics.coordinate.model.IncludedEntryModel(excludedEntryModel) :
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        excludedEntryModel, this.checker);
-                this.setOnClickListener(); this.toggle();
-            }
+            else this.include();
         }
         return true;
     }
@@ -140,11 +149,7 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     // region Overridden Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void setImage()
-    {
-        if (this.elementModelIsNotNull())
-            this.setImage(((org.wheatgenetics.coordinate.model.EntryModel)
-                this.elementModel).backgroundResource());
-    }
+    { if (this.elementModelIsNotNull()) this.setImage(this.entryModel().backgroundResource()); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void respondToClick() { this.activate(); }

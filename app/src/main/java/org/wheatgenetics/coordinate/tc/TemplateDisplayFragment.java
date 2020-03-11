@@ -64,7 +64,8 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
+    @java.lang.Override @androidx.annotation.NonNull
+    protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel)
     {
         return new org.wheatgenetics.coordinate.tc.adapter.Adapter(displayModel,
