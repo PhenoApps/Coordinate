@@ -338,10 +338,13 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                                  final java.lang.String             text         )
     throws java.io.IOException
     {
-        xmlSerializer.ignorableWhitespace(indent);
-        xmlSerializer.startTag           (null, tagName);           // throws java.io.IOException
-        xmlSerializer.text               (text);                       // throws java.io.IOException
-        xmlSerializer.endTag             (null, tagName);           // throws java.io.IOException
+        if (null != text) if (text.length() > 0)
+        {
+            xmlSerializer.ignorableWhitespace(indent);
+            xmlSerializer.startTag           (null, tagName);       // throws java.io.IOException
+            xmlSerializer.text               (text);                   // throws java.io.IOException
+            xmlSerializer.endTag             (null, tagName);       // throws java.io.IOException
+        }
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -356,13 +359,10 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         else
             try
             {
-                {
-                    final java.lang.String title = this.getTitle();
-                    if (null != title) if (title.length() > 0) org.wheatgenetics.coordinate.model
-                        .DisplayTemplateModel.writeElement(xmlSerializer, indent,          // throws
-                            org.wheatgenetics.coordinate.model.DisplayTemplateModel.TITLE_TAG_NAME,
-                            title                                                                 );
-                }
+                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
+                    xmlSerializer, indent,
+                    org.wheatgenetics.coordinate.model.DisplayTemplateModel.TITLE_TAG_NAME,
+                    this.getTitle()                                                       );
 
                 org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(      // throws
                     xmlSerializer, indent,
