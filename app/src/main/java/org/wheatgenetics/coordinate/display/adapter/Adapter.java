@@ -105,7 +105,8 @@ org.wheatgenetics.coordinate.display.adapter.ViewHolder>
     { return this.handler; }
     // endregion
 
-    public Adapter(
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected Adapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler handler)

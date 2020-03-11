@@ -241,12 +241,6 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @androidx.annotation.IntRange(from = 1) public int getRows() { return this.rows; }
     @androidx.annotation.IntRange(from = 1) public int getCols() { return this.cols; }
 
-    @androidx.annotation.NonNull public java.lang.String getRowsAsString()
-    { return java.lang.String.valueOf(this.getRows()); }
-
-    @androidx.annotation.NonNull public java.lang.String getColsAsString()
-    { return java.lang.String.valueOf(this.getCols()); }
-
 
     @androidx.annotation.IntRange(from = 0) public int getGeneratedExcludedCellsAmount()
     { return this.generatedExcludedCellsAmount; }

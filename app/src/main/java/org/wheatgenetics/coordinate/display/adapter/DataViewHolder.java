@@ -84,7 +84,8 @@ public abstract class DataViewHolder extends org.wheatgenetics.coordinate.displa
     // endregion
     // endregion
 
-    public DataViewHolder(
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    protected DataViewHolder(
     @androidx.annotation.NonNull final android.widget.ImageView itemView,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler handler )
