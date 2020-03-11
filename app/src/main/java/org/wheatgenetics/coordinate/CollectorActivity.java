@@ -89,10 +89,9 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.collector().getDisplayModel(); }
 
-    @androidx.annotation.Nullable @java.lang.Override
-    public org.wheatgenetics.coordinate.model.ElementModel toggle(
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { return this.collector().toggle(elementModel); }
+    { this.collector().toggle(elementModel); }
 
     @java.lang.Override public int getActiveRow() { return this.collector().getActiveRow(); }
     @java.lang.Override public int getActiveCol() { return this.collector().getActiveCol(); }

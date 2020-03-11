@@ -20,8 +20,7 @@ public abstract class DataViewHolder extends org.wheatgenetics.coordinate.displa
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
-        @androidx.annotation.Nullable
-        public abstract org.wheatgenetics.coordinate.model.ElementModel toggle(
+        public abstract void toggle(
         @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.ElementModel elementModel);
     }
 
@@ -71,8 +70,7 @@ public abstract class DataViewHolder extends org.wheatgenetics.coordinate.displa
     { this.elementModel = elementModel; this.setImage(); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void toggle()
-    { this.setElementModelAndImage(this.handler.toggle(this.elementModel)); }
+    protected void toggle() { this.handler.toggle(this.elementModel); this.setImage(); }
 
     // region onClickListener Protected Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)

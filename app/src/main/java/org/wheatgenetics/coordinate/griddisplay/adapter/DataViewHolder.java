@@ -59,7 +59,7 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         if (this.elementModelIsNotNull())
             this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
                 (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
-        this.clearOnClickListener(); this.toggle();                    // TODO: Is toggle() correct?
+        this.clearOnClickListener(); this.toggle();
     }
 
     private boolean onLongClick()
@@ -101,7 +101,7 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
                     new org.wheatgenetics.coordinate.model.IncludedEntryModel(excludedEntryModel) :
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
                         excludedEntryModel, this.checker);
-                this.setOnClickListener(); this.toggle();              // TODO: Is toggle() correct?
+                this.setOnClickListener(); this.toggle();
             }
         }
         return true;

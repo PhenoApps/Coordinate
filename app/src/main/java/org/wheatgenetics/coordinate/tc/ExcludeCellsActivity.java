@@ -120,14 +120,11 @@ implements org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.displayModel; }
 
-    @java.lang.Override @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.ElementModel toggle(
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
-        elementModel)
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (null != this.templateModel)
             this.templateModel.toggle((org.wheatgenetics.coordinate.model.Cell) elementModel);
-        return elementModel;
     }
 
     @java.lang.Override

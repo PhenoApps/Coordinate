@@ -31,8 +31,7 @@ public abstract class DisplayFragment extends androidx.fragment.app.Fragment
     {
         public abstract org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel();
 
-        @androidx.annotation.Nullable
-        public abstract org.wheatgenetics.coordinate.model.ElementModel toggle(
+        public abstract void toggle(
         @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.ElementModel elementModel);
     }
 
@@ -85,15 +84,9 @@ public abstract class DisplayFragment extends androidx.fragment.app.Fragment
         displayModel);
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.model.ElementModel toggle(
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
-        elementModel)
-    {
-        if (null == this.handler)
-            return null;
-        else
-            return this.handler.toggle(elementModel);
-    }
+    protected void toggle(@androidx.annotation.Nullable
+    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+    { if (null != this.handler) this.handler.toggle(elementModel); }
     // endregion
 
     // region Overridden Methods

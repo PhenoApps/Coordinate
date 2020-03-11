@@ -181,17 +181,14 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
     { return this.joinedGridModel; }
 
-    @java.lang.Override @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.ElementModel toggle(@androidx.annotation.Nullable
+    @java.lang.Override public void toggle(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
     {
         if (this.joinedGridModelIsLoaded())
         {
             final org.wheatgenetics.coordinate.database.EntriesTable entriesTable =
                 this.entriesTable();
-            if (null == entriesTable)
-                return null;
-            else
+            if (null != entriesTable)
             {
                 final org.wheatgenetics.coordinate.model.EntryModel entryModel =
                     (org.wheatgenetics.coordinate.model.EntryModel) elementModel;
@@ -208,17 +205,15 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
                     }
                     catch (final
                     org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
-                    { return null; }
+                    { return; }
                 }
                 else this.joinedGridModel.setEntryModel(entryModel);
                 entriesTable.insertOrUpdate(entryModel);
                 if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)
                     if (this.joinedGridModel.getActiveEntryModel() == entryModel)
                         this.goToNext(entryModel);
-                return entryModel;
             }
         }
-        else return null;
     }
 
     @java.lang.Override public int getActiveRow()

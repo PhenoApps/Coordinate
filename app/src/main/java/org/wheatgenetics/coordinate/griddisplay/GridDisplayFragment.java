@@ -105,12 +105,10 @@ public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.Di
                     displayModel, activity, this.getActiveRow(), this.getActiveCol(),
                     new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.Handler()
                     {
-                        @java.lang.Override @androidx.annotation.Nullable
-                        public org.wheatgenetics.coordinate.model.ElementModel toggle(
-                        @androidx.annotation.Nullable final
-                            org.wheatgenetics.coordinate.model.ElementModel elementModel)
+                        @java.lang.Override public void toggle(@androidx.annotation.Nullable
+                        final org.wheatgenetics.coordinate.model.ElementModel elementModel)
                         {
-                            return org.wheatgenetics.coordinate.griddisplay
+                            org.wheatgenetics.coordinate.griddisplay
                                 .GridDisplayFragment.this.toggle(elementModel);
                         }
                     }, new

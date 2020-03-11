@@ -70,12 +70,10 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
         return new org.wheatgenetics.coordinate.tc.adapter.Adapter(displayModel,
             new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler()
             {
-                @java.lang.Override @androidx.annotation.Nullable
-                public org.wheatgenetics.coordinate.model.ElementModel toggle(
-                @androidx.annotation.Nullable final
-                    org.wheatgenetics.coordinate.model.ElementModel elementModel)
+                @java.lang.Override public void toggle(@androidx.annotation.Nullable
+                final org.wheatgenetics.coordinate.model.ElementModel elementModel)
                 {
-                    return org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.this.toggle(
+                    org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.this.toggle(
                         elementModel);
                 }
             }, new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler()
