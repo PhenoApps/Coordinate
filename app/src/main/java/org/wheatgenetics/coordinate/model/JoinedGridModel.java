@@ -14,7 +14,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
  *
- * org.wheatgenetics.coordinate.preference.Utils.Advancement
+ * org.wheatgenetics.coordinate.preference.Utils.Direction
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
@@ -320,12 +320,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @androidx.annotation.Nullable
     private org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
-    final org.wheatgenetics.coordinate.preference.Utils.Advancement    advancement     ,
+    final org.wheatgenetics.coordinate.preference.Utils.Direction      direction       ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         // noinspection ConstantConditions
         return this.entryModelsIsNull() ? null : this.getEntryModels().next(
-            activeEntryModel, advancement, filledHandler);
+            activeEntryModel, direction, filledHandler);
     }
 
     private boolean setActiveRowAndActiveCol(
@@ -528,24 +528,24 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     public boolean goToNext(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
-    final org.wheatgenetics.coordinate.preference.Utils.Advancement    advancement     ,
+    final org.wheatgenetics.coordinate.preference.Utils.Direction      direction       ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         final org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
-            this.next(activeEntryModel, advancement, filledHandler);
+            this.next(activeEntryModel, direction, filledHandler);
         // noinspection SimplifiableConditionalExpression
         return null == nextIncludedEntryModel ? false :
             this.setActiveRowAndActiveCol(nextIncludedEntryModel);
     }
 
     public boolean activeRowAndOrActiveColWasAdjusted(
-    final org.wheatgenetics.coordinate.preference.Utils.Advancement advancement)
+    final org.wheatgenetics.coordinate.preference.Utils.Direction direction)
     {
         final org.wheatgenetics.coordinate.model.EntryModel activeEntryModel =
             this.getActiveEntryModel();
         // noinspection SimplifiableConditionalExpression
         return activeEntryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel ?
-            this.goToNext(activeEntryModel, advancement,null) : false;
+            this.goToNext(activeEntryModel, direction,null) : false;
     }
 
     public boolean export(final java.io.File exportFile, final java.lang.String exportFileName,

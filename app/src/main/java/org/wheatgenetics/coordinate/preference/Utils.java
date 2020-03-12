@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.preference;
 public class Utils extends java.lang.Object
 {
     // region Types
-    public enum Advancement      { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
+    public enum Direction        { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
     public enum ProjectExport    { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT            }
     public enum TypeOfUniqueness { ERROR, CURRENT_GRID     , CURRENT_PROJECT        , ALL_GRIDS }
     // endregion
@@ -32,34 +32,34 @@ public class Utils extends java.lang.Object
     }
 
     // region Public Methods
-    public static org.wheatgenetics.coordinate.preference.Utils.Advancement getAdvancement(
+    public static org.wheatgenetics.coordinate.preference.Utils.Direction getDirection(
     @androidx.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
             org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.Advancement.ERROR;
+            return org.wheatgenetics.coordinate.preference.Utils.Direction.ERROR;
         else
         {
-            final java.lang.String advancement;
+            final java.lang.String direction;
             {
                 final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.AdvancementPreferenceKey);
-                advancement = defaultSharedPreferences.getString(
+                    org.wheatgenetics.coordinate.R.string.DirectionPreferenceKey);
+                direction = defaultSharedPreferences.getString(
                     /* key      => */ key,
                     /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDefault));
+                        org.wheatgenetics.coordinate.R.string.DirectionPreferenceDefault));
             }
-            if (advancement.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceDownThenAcrossEntryValue)))
-                return org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS;
+            if (direction.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.DirectionPreferenceDownThenAcrossEntryValue)))
+                return org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS;
             else
-                if (advancement.equals(context.getString(org.wheatgenetics.coordinate
-                .R.string.AdvancementPreferenceAcrossThenDownEntryValue)))
+                if (direction.equals(context.getString(
+                org.wheatgenetics.coordinate.R.string.DirectionPreferenceAcrossThenDownEntryValue)))
                     return
-                        org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN;
+                        org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN;
                 else
-                    return org.wheatgenetics.coordinate.preference.Utils.Advancement.ERROR;
+                    return org.wheatgenetics.coordinate.preference.Utils.Direction.ERROR;
         }
     }
 

@@ -88,8 +88,8 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     }
 
     // region Preference Private Methods
-    private org.wheatgenetics.coordinate.preference.Utils.Advancement getAdvancement()
-    { return org.wheatgenetics.coordinate.preference.Utils.getAdvancement(this.activity); }
+    private org.wheatgenetics.coordinate.preference.Utils.Direction getDirection()
+    { return org.wheatgenetics.coordinate.preference.Utils.getDirection(this.activity); }
 
     private boolean getUniqueness()
     { return org.wheatgenetics.coordinate.preference.Utils.getUniqueness(this.activity); }
@@ -105,7 +105,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     {
         final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
         if (this.joinedGridModelIsLoaded() && null != gridsTable)
-            if (this.joinedGridModel.goToNext(entryModel, this.getAdvancement(),this))
+            if (this.joinedGridModel.goToNext(entryModel, this.getDirection(),this))
             {
                 gridsTable.update(this.joinedGridModel);             // Update activeRow, activeCol.
 

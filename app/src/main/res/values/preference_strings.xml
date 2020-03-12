@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AdvancementPreferenceKey">Advancement</string>
-    <string name="AdvancementPreferenceTitle">Direction</string>
-    <string name="AdvancementPreferenceSummary">Advance %s</string>
+    <!-- Direction -->
+    <string name="DirectionPreferenceKey">Direction</string>
+    <string name="DirectionPreferenceSummary">Advance %s</string>
+    <string name="DirectionPreferenceTitle">Direction</string>
 
-    <string-array name="AdvancementPreferenceEntries">
+    <string-array name="DirectionPreferenceEntries">
         <item>down each column</item>
         <item>across each row</item>
     </string-array>
 
-    <string name="AdvancementPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
-    <string name="AdvancementPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+    <string name="DirectionPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
+    <string name="DirectionPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
 
-    <string-array name="AdvancementPreferenceEntryValues">
-        <item>@string/AdvancementPreferenceDownThenAcrossEntryValue</item>
-        <item>@string/AdvancementPreferenceAcrossThenDownEntryValue</item>
+    <string-array name="DirectionPreferenceEntryValues">
+        <item>@string/DirectionPreferenceDownThenAcrossEntryValue</item>
+        <item>@string/DirectionPreferenceAcrossThenDownEntryValue</item>
     </string-array>
 
-    <string name="AdvancementPreferenceDefault">@string/AdvancementPreferenceDownThenAcrossEntryValue</string>
+    <string name="DirectionPreferenceDefault">@string/DirectionPreferenceDownThenAcrossEntryValue</string>
 
 
     <string name="SoundOnPreferenceKey">SoundOn</string>

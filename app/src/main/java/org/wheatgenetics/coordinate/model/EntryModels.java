@@ -10,7 +10,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.Utils
  *
- * org.wheatgenetics.coordinate.preference.Utils.Advancement
+ * org.wheatgenetics.coordinate.preference.Utils.Direction
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -218,7 +218,7 @@ public class EntryModels extends java.lang.Object
 
     @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.IncludedEntryModel next(
     final org.wheatgenetics.coordinate.model.EntryModel                activeEntryModel,
-    final org.wheatgenetics.coordinate.preference.Utils.Advancement    advancement     ,
+    final org.wheatgenetics.coordinate.preference.Utils.Direction      direction       ,
     final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler   )
     {
         if (null == activeEntryModel)
@@ -230,7 +230,7 @@ public class EntryModels extends java.lang.Object
                 lastCol   = this.entryModelArray[0].length - 1,
                 activeRow = activeEntryModel.getRow()      - 1,
                 activeCol = activeEntryModel.getCol()      - 1;
-            switch (advancement)
+            switch (direction)
             {
                 case DOWN_THEN_ACROSS: return this.downThenAcrossNext(
                     lastRow, lastCol, activeRow, activeCol, filledHandler);

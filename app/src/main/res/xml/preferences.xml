@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        android:defaultValue="@string/AdvancementPreferenceDefault"
-        android:entries="@array/AdvancementPreferenceEntries"
-        android:entryValues="@array/AdvancementPreferenceEntryValues"
+        android:defaultValue="@string/DirectionPreferenceDefault"
+        android:entries="@array/DirectionPreferenceEntries"
+        android:entryValues="@array/DirectionPreferenceEntryValues"
         android:icon="@drawable/ic_preferences_direction"
-        android:key="@string/AdvancementPreferenceKey"
-        android:summary="@string/AdvancementPreferenceSummary"
-        android:title="@string/AdvancementPreferenceTitle"
+        android:key="@string/DirectionPreferenceKey"
+        android:summary="@string/DirectionPreferenceSummary"
+        android:title="@string/DirectionPreferenceTitle"
         app:useSimpleSummaryProvider="false" />
 
     <CheckBoxPreference

@@ -27,7 +27,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     // region Fields
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     private final java.util.TreeMap<java.lang.String, java.lang.String>
-        advancementTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
+        directionTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     private final java.util.TreeMap<java.lang.String, java.lang.String>
         projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
@@ -35,9 +35,9 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     private final java.util.TreeMap<java.lang.String, java.lang.String>
         uniquenessTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String advancementKey, projectExportKey,
+    private java.lang.String directionKey, projectExportKey,
         uniquenessCheckBoxKey, uniquenessListKey;
-    private androidx.preference.ListPreference advancementPreference,
+    private androidx.preference.ListPreference directionPreference,
         projectExportPreference, uniquenessListPreference;
     private androidx.preference.CheckBoxPreference                   uniquenessCheckBoxPreference;
     private androidx.preference.Preference.OnPreferenceClickListener
@@ -82,11 +82,11 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             preference.setSummary(this.getString(summaryRes, treeMap.get(preference.getValue())));
     }
 
-    private void setAdvancementSummary()
+    private void setDirectionSummary()
     {
-        this.setSummary(this.advancementPreference,
-            org.wheatgenetics.coordinate.R.string.AdvancementPreferenceSummary,
-            this.advancementTreeMap                                           );
+        this.setSummary(this.directionPreference,
+            org.wheatgenetics.coordinate.R.string.DirectionPreferenceSummary,
+            this.directionTreeMap                                           );
     }
 
     private void setProjectExportSummary()
@@ -104,7 +104,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     }
 
     private void setSummaries()
-    { this.setAdvancementSummary(); this.setProjectExportSummary(); this.setUniquenessSummary(); }
+    { this.setDirectionSummary(); this.setProjectExportSummary(); this.setUniquenessSummary(); }
     // endregion
     // endregion
 
@@ -144,14 +144,14 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                         this.projectExportTreeMap                                              );
 
                     org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
-                        resources                                                            ,
-                        org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntryValues,
-                        org.wheatgenetics.coordinate.R.array.AdvancementPreferenceEntries    ,
-                        this.advancementTreeMap                                              );
+                        resources                                                          ,
+                        org.wheatgenetics.coordinate.R.array.DirectionPreferenceEntryValues,
+                        org.wheatgenetics.coordinate.R.array.DirectionPreferenceEntries    ,
+                        this.directionTreeMap                                              );
                 }
 
-                this.advancementKey = activity.getString(
-                    org.wheatgenetics.coordinate.R.string.AdvancementPreferenceKey);
+                this.directionKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.DirectionPreferenceKey);
                 this.projectExportKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
                 this.uniquenessCheckBoxKey = activity.getString(
@@ -159,7 +159,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 this.uniquenessListKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
 
-                this.advancementPreference    = this.findPreference(this.advancementKey   );
+                this.directionPreference      = this.findPreference(this.directionKey     );
                 this.projectExportPreference  = this.findPreference(this.projectExportKey );
                 this.uniquenessListPreference = this.findPreference(this.uniquenessListKey);
 
@@ -202,8 +202,8 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     final android.content.SharedPreferences sharedPreferences, final java.lang.String key)
     {
         if (null != key)
-            if (key.equals(this.advancementKey))
-                this.setAdvancementSummary();
+            if (key.equals(this.directionKey))
+                this.setDirectionSummary();
             else
                 if (key.equals(this.projectExportKey))
                     this.setProjectExportSummary();

@@ -169,7 +169,7 @@ public abstract class GridCreator extends java.lang.Object
                 }
 
                 if (joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-                org.wheatgenetics.coordinate.preference.Utils.getAdvancement(this.activity())))
+                org.wheatgenetics.coordinate.preference.Utils.getDirection(this.activity())))
                     gridsTable.update(joinedGridModel);              // Update activeRow, activeCol.
 
                 this.entriesTable().insert(joinedGridModel.getEntryModels());
