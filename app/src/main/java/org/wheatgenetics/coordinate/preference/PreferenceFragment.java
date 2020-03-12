@@ -35,11 +35,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     private final java.util.TreeMap<java.lang.String, java.lang.String>
         uniquenessTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String directionKey, projectExportKey,
-        uniquenessCheckBoxKey, uniquenessListKey;
+    private java.lang.String directionKey, projectExportKey, uniqueCheckBoxKey, uniquenessListKey;
     private androidx.preference.ListPreference directionPreference,
         projectExportPreference, uniquenessListPreference;
-    private androidx.preference.CheckBoxPreference                   uniquenessCheckBoxPreference;
+    private androidx.preference.CheckBoxPreference                   uniqueCheckBoxPreference;
     private androidx.preference.Preference.OnPreferenceClickListener
         onUniquenessPreferenceClickListener = null; // TODO: Replace w/ onSharedPreferenceChanged()?
 
@@ -67,8 +66,8 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
     private void setUniquenessListPreferenceEnabled()
     {
-        if (null != this.uniquenessCheckBoxPreference && null != this.uniquenessListPreference)
-            this.uniquenessListPreference.setEnabled(this.uniquenessCheckBoxPreference.isChecked());
+        if (null != this.uniqueCheckBoxPreference && null != this.uniquenessListPreference)
+            this.uniquenessListPreference.setEnabled(this.uniqueCheckBoxPreference.isChecked());
     }
 
     // region setSummaries() Private Methods
@@ -154,8 +153,8 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                     org.wheatgenetics.coordinate.R.string.DirectionPreferenceKey);
                 this.projectExportKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
-                this.uniquenessCheckBoxKey = activity.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessCheckBoxPreferenceKey);
+                this.uniqueCheckBoxKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.UniqueCheckBoxPreferenceKey);
                 this.uniquenessListKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
 
@@ -163,7 +162,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 this.projectExportPreference  = this.findPreference(this.projectExportKey );
                 this.uniquenessListPreference = this.findPreference(this.uniquenessListKey);
 
-                this.uniquenessCheckBoxPreference = this.findPreference(this.uniquenessCheckBoxKey);
+                this.uniqueCheckBoxPreference = this.findPreference(this.uniqueCheckBoxKey);
 
                 this.setUniquenessListPreferenceEnabled(); this.setSummaries();
 
@@ -208,12 +207,12 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 if (key.equals(this.projectExportKey))
                     this.setProjectExportSummary();
                 else
-                    if (key.equals(this.uniquenessCheckBoxKey))
+                    if (key.equals(this.uniqueCheckBoxKey))
                     {
                         this.setUniquenessListPreferenceEnabled();
                         if (null != this.onUniquenessPreferenceClickListener)
                             this.onUniquenessPreferenceClickListener.onPreferenceClick(
-                                this.uniquenessCheckBoxPreference);
+                                this.uniqueCheckBoxPreference);
                     }
                     else if (key.equals(this.uniquenessListKey)) this.setUniquenessSummary();
     }

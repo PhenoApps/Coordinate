@@ -31,8 +31,8 @@
     <CheckBoxPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_preferences_unique_required"
-        android:key="@string/UniquenessCheckBoxPreferenceKey"
-        android:title="@string/UniquenessCheckBoxPreferenceTitle" />
+        android:key="@string/UniqueCheckBoxPreferenceKey"
+        android:title="@string/UniqueCheckBoxPreferenceTitle" />
 
     <ListPreference
         android:defaultValue="@string/UniquenessListPreferenceDefault"

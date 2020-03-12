@@ -35,7 +35,7 @@ class Utils extends java.lang.Object
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == gridsTableInstance)
-            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUnique(context))
                 switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return new
@@ -65,7 +65,7 @@ class Utils extends java.lang.Object
     @androidx.annotation.NonNull final android.content.Context context)
     {
         if (null == entriesTableInstance)
-            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUnique(context))
                 switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return new
@@ -101,7 +101,7 @@ class Utils extends java.lang.Object
         if (null == gridsTableInstance)
             return false;
         else
-            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUnique(context))
                 switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return !(gridsTableInstance instanceof
@@ -131,7 +131,7 @@ class Utils extends java.lang.Object
         if (null == entriesTableInstance)
             return false;
         else
-            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUnique(context))
                 switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return !(entriesTableInstance instanceof
@@ -161,7 +161,7 @@ class Utils extends java.lang.Object
         if (null == joinedGridModel)
             return false;
         else
-            if (org.wheatgenetics.coordinate.preference.Utils.getUniqueness(context))
+            if (org.wheatgenetics.coordinate.preference.Utils.getUnique(context))
                 switch (org.wheatgenetics.coordinate.preference.Utils.getTypeOfUniqueness(context))
                 {
                     case CURRENT_GRID: return

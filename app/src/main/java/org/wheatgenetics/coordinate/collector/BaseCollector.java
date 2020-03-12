@@ -91,8 +91,8 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     private org.wheatgenetics.coordinate.preference.Utils.Direction getDirection()
     { return org.wheatgenetics.coordinate.preference.Utils.getDirection(this.activity); }
 
-    private boolean getUniqueness()
-    { return org.wheatgenetics.coordinate.preference.Utils.getUniqueness(this.activity); }
+    private boolean getUnique()
+    { return org.wheatgenetics.coordinate.preference.Utils.getUnique(this.activity); }
 
     private boolean getSoundsOn()
     { return org.wheatgenetics.coordinate.preference.Utils.getSoundsOn(this.activity); }
@@ -326,7 +326,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
                         activeIncludedEntryModel =
                             (org.wheatgenetics.coordinate.model.IncludedEntryModel)
                                 activeEntryModel;
-                    if (this.getUniqueness())
+                    if (this.getUnique())
                     {
                         final java.lang.String oldEntryValue = activeIncludedEntryModel.getValue();
                         final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel

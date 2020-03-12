@@ -26,9 +26,10 @@
     <string name="SoundsOnPreferenceTitle">Notification sounds</string>
 
 
+    <!-- ProjectExport -->
     <string name="ProjectExportPreferenceKey">ProjectExport</string>
-    <string name="ProjectExportPreferenceTitle">Project Export</string>
     <string name="ProjectExportPreferenceSummary">Projects export as %s</string>
+    <string name="ProjectExportPreferenceTitle">Project Export</string>
 
     <string-array name="ProjectExportPreferenceEntries">
         <item>one file per grid</item>
@@ -46,10 +47,12 @@
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
 
 
-    <string name="UniquenessCheckBoxPreferenceKey">UniquenessCheckBox</string>
-    <string name="UniquenessCheckBoxPreferenceTitle">Unique Values Required</string>
+    <!-- UniqueCheckBox -->
+    <string name="UniqueCheckBoxPreferenceKey">UniqueCheckBox</string>
+    <string name="UniqueCheckBoxPreferenceTitle">Unique Values Required</string>
 
 
+    <!-- UniquenessList -->
     <string name="UniquenessListPreferenceKey">UniquenessList</string>
     <string name="UniquenessListPreferenceTitle">Unique Options</string>
     <string name="UniquenessListPreferenceSummary">Samples must be unique %s</string>

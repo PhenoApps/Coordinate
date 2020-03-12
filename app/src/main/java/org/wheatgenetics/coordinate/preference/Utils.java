@@ -109,7 +109,7 @@ public class Utils extends java.lang.Object
         }
     }
 
-    public static boolean getUniqueness(
+    public static boolean getUnique(
     @androidx.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
@@ -119,7 +119,7 @@ public class Utils extends java.lang.Object
         else
         {
             final java.lang.String key = context.getString(
-                org.wheatgenetics.coordinate.R.string.UniquenessCheckBoxPreferenceKey);
+                org.wheatgenetics.coordinate.R.string.UniqueCheckBoxPreferenceKey);
             return defaultSharedPreferences.getBoolean(key, /* defValue => */false);
         }
     }
