@@ -63,7 +63,7 @@ public class Utils extends java.lang.Object
         }
     }
 
-    public static boolean getSoundOn(final android.content.Context context)
+    public static boolean getSoundsOn(final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
             org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
@@ -72,7 +72,7 @@ public class Utils extends java.lang.Object
         else
         {
             final java.lang.String key = context.getString(
-                org.wheatgenetics.coordinate.R.string.SoundOnPreferenceKey);
+                org.wheatgenetics.coordinate.R.string.SoundsOnPreferenceKey);
             return defaultSharedPreferences.getBoolean(key, /* defValue => */true);
         }
     }

@@ -94,8 +94,8 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     private boolean getUniqueness()
     { return org.wheatgenetics.coordinate.preference.Utils.getUniqueness(this.activity); }
 
-    private boolean getSoundOn()
-    { return org.wheatgenetics.coordinate.preference.Utils.getSoundOn(this.activity); }
+    private boolean getSoundsOn()
+    { return org.wheatgenetics.coordinate.preference.Utils.getSoundsOn(this.activity); }
     // endregion
 
     private void populateDataEntryFragment()
@@ -121,7 +121,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     private void handleDuplicateCheckException(
     @androidx.annotation.NonNull final java.lang.String message)
     {
-        if (this.getSoundOn())
+        if (this.getSoundsOn())
         {
             if (null == this.disallowedDuplicateMediaPlayer)
                 this.disallowedDuplicateMediaPlayer = android.media.MediaPlayer.create(
@@ -252,7 +252,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         org.wheatgenetics.coordinate.Utils.alert(this.activity,
             org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
 
-        if (this.getSoundOn())
+        if (this.getSoundsOn())
         {
             if (null == this.gridEndMediaPlayer)
                 this.gridEndMediaPlayer = android.media.MediaPlayer.create(
@@ -263,7 +263,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
 
     @java.lang.Override public void handleFilledRowOrCol()
     {
-        if (this.getSoundOn())
+        if (this.getSoundsOn())
         {
             if (null == this.rowOrColumnEndMediaPlayer)
                 this.rowOrColumnEndMediaPlayer = android.media.MediaPlayer.create(

@@ -21,8 +21,9 @@
     <string name="DirectionPreferenceDefault">@string/DirectionPreferenceDownThenAcrossEntryValue</string>
 
 
-    <string name="SoundOnPreferenceKey">SoundOn</string>
-    <string name="SoundOnPreferenceTitle">Notification sounds</string>
+    <!-- SoundsOn -->
+    <string name="SoundsOnPreferenceKey">SoundsOn</string>
+    <string name="SoundsOnPreferenceTitle">Notification sounds</string>
 
 
     <string name="ProjectExportPreferenceKey">ProjectExport</string>

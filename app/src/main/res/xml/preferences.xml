@@ -15,8 +15,8 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:icon="@drawable/ic_preferences_sounds"
-        android:key="@string/SoundOnPreferenceKey"
-        android:title="@string/SoundOnPreferenceTitle" />
+        android:key="@string/SoundsOnPreferenceKey"
+        android:title="@string/SoundsOnPreferenceTitle" />
 
     <ListPreference
         android:defaultValue="@string/ProjectExportPreferenceDefault"
