@@ -33,14 +33,14 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
         projectExportTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
     @java.lang.SuppressWarnings({"Convert2Diamond"})
     private final java.util.TreeMap<java.lang.String, java.lang.String>
-        uniquenessTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
+        uniqueTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String directionKey, projectExportKey, uniqueCheckBoxKey, uniquenessListKey;
+    private java.lang.String directionKey, projectExportKey, uniqueCheckBoxKey, uniqueListKey;
     private androidx.preference.ListPreference directionPreference,
-        projectExportPreference, uniquenessListPreference;
+        projectExportPreference, uniqueListPreference;
     private androidx.preference.CheckBoxPreference                   uniqueCheckBoxPreference;
     private androidx.preference.Preference.OnPreferenceClickListener
-        onUniquenessPreferenceClickListener = null; // TODO: Replace w/ onSharedPreferenceChanged()?
+        onUniquePreferenceClickListener = null;     // TODO: Replace w/ onSharedPreferenceChanged()?
 
     private android.content.SharedPreferences sharedPreferences;
     // endregion
@@ -64,10 +64,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
         }
     }
 
-    private void setUniquenessListPreferenceEnabled()
+    private void setUniqueListPreferenceEnabled()
     {
-        if (null != this.uniqueCheckBoxPreference && null != this.uniquenessListPreference)
-            this.uniquenessListPreference.setEnabled(this.uniqueCheckBoxPreference.isChecked());
+        if (null != this.uniqueCheckBoxPreference && null != this.uniqueListPreference)
+            this.uniqueListPreference.setEnabled(this.uniqueCheckBoxPreference.isChecked());
     }
 
     // region setSummaries() Private Methods
@@ -95,15 +95,14 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             this.projectExportTreeMap                                           );
     }
 
-    private void setUniquenessSummary()
+    private void setUniqueSummary()
     {
-        this.setSummary(this.uniquenessListPreference,
-            org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceSummary,
-            this.uniquenessTreeMap                                               );
+        this.setSummary(this.uniqueListPreference,
+            org.wheatgenetics.coordinate.R.string.UniqueListPreferenceSummary, this.uniqueTreeMap);
     }
 
     private void setSummaries()
-    { this.setDirectionSummary(); this.setProjectExportSummary(); this.setUniquenessSummary(); }
+    { this.setDirectionSummary(); this.setProjectExportSummary(); this.setUniqueSummary(); }
     // endregion
     // endregion
 
@@ -114,7 +113,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
         super.onAttach(context);
 
         if (context instanceof androidx.preference.Preference.OnPreferenceClickListener)
-            this.onUniquenessPreferenceClickListener =
+            this.onUniquePreferenceClickListener =
                 (androidx.preference.Preference.OnPreferenceClickListener) context;
         else throw new java.lang.RuntimeException(
             context.toString() + " must implement OnPreferenceClickListener");
@@ -131,10 +130,10 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 {
                     final android.content.res.Resources resources = activity.getResources();
                     org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
-                        resources                                                               ,
-                        org.wheatgenetics.coordinate.R.array.UniquenessListPreferenceEntryValues,
-                        org.wheatgenetics.coordinate.R.array.UniquenessListPreferenceEntries    ,
-                        this.uniquenessTreeMap                                                  );
+                        resources                                                           ,
+                        org.wheatgenetics.coordinate.R.array.UniqueListPreferenceEntryValues,
+                        org.wheatgenetics.coordinate.R.array.UniqueListPreferenceEntries    ,
+                        this.uniqueTreeMap                                                  );
 
                     org.wheatgenetics.coordinate.preference.PreferenceFragment.populateTreeMap(
                         resources                                                              ,
@@ -155,20 +154,20 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
                 this.uniqueCheckBoxKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniqueCheckBoxPreferenceKey);
-                this.uniquenessListKey = activity.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
+                this.uniqueListKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.UniqueListPreferenceKey);
 
-                this.directionPreference      = this.findPreference(this.directionKey     );
-                this.projectExportPreference  = this.findPreference(this.projectExportKey );
-                this.uniquenessListPreference = this.findPreference(this.uniquenessListKey);
+                this.directionPreference     = this.findPreference(this.directionKey    );
+                this.projectExportPreference = this.findPreference(this.projectExportKey);
+                this.uniqueListPreference    = this.findPreference(this.uniqueListKey   );
 
                 this.uniqueCheckBoxPreference = this.findPreference(this.uniqueCheckBoxKey);
 
-                this.setUniquenessListPreferenceEnabled(); this.setSummaries();
+                this.setUniqueListPreferenceEnabled(); this.setSummaries();
 
-                if (null != this.uniquenessListPreference)
-                    this.uniquenessListPreference.setOnPreferenceClickListener(
-                        this.onUniquenessPreferenceClickListener);
+                if (null != this.uniqueListPreference)
+                    this.uniqueListPreference.setOnPreferenceClickListener(
+                        this.onUniquePreferenceClickListener);
             }
         }
         {
@@ -194,7 +193,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     }
 
     @java.lang.Override public void onDetach()
-    { this.onUniquenessPreferenceClickListener = null; super.onDetach(); }
+    { this.onUniquePreferenceClickListener = null; super.onDetach(); }
 
     // region android.content.SharedPreferences.OnSharedPreferenceChangeListener Overridden Method
     @java.lang.Override public void onSharedPreferenceChanged(
@@ -209,12 +208,12 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 else
                     if (key.equals(this.uniqueCheckBoxKey))
                     {
-                        this.setUniquenessListPreferenceEnabled();
-                        if (null != this.onUniquenessPreferenceClickListener)
-                            this.onUniquenessPreferenceClickListener.onPreferenceClick(
+                        this.setUniqueListPreferenceEnabled();
+                        if (null != this.onUniquePreferenceClickListener)
+                            this.onUniquePreferenceClickListener.onPreferenceClick(
                                 this.uniqueCheckBoxPreference);
                     }
-                    else if (key.equals(this.uniquenessListKey)) this.setUniquenessSummary();
+                    else if (key.equals(this.uniqueListKey)) this.setUniqueSummary();
     }
     // endregion
     // endregion

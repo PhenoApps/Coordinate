@@ -35,14 +35,14 @@
         android:title="@string/UniqueCheckBoxPreferenceTitle" />
 
     <ListPreference
-        android:defaultValue="@string/UniquenessListPreferenceDefault"
+        android:defaultValue="@string/UniqueListPreferenceDefault"
         android:enabled="false"
-        android:entries="@array/UniquenessListPreferenceEntries"
-        android:entryValues="@array/UniquenessListPreferenceEntryValues"
+        android:entries="@array/UniqueListPreferenceEntries"
+        android:entryValues="@array/UniqueListPreferenceEntryValues"
         android:icon="@drawable/ic_preferences_unique_options"
-        android:key="@string/UniquenessListPreferenceKey"
-        android:summary="@string/UniquenessListPreferenceSummary"
-        android:title="@string/UniquenessListPreferenceTitle"
+        android:key="@string/UniqueListPreferenceKey"
+        android:summary="@string/UniqueListPreferenceSummary"
+        android:title="@string/UniqueListPreferenceTitle"
         app:useSimpleSummaryProvider="false" />
 
 </androidx.preference.PreferenceScreen>

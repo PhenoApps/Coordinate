@@ -15,9 +15,9 @@ package org.wheatgenetics.coordinate.preference;
 public class Utils extends java.lang.Object
 {
     // region Types
-    public enum Direction        { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
-    public enum ProjectExport    { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT            }
-    public enum TypeOfUniqueness { ERROR, CURRENT_GRID     , CURRENT_PROJECT        , ALL_GRIDS }
+    public enum Direction     { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
+    public enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT            }
+    public enum TypeOfUnique  { ERROR, CURRENT_GRID     , CURRENT_PROJECT        , ALL_GRIDS }
     // endregion
 
     private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;  // ll
@@ -124,34 +124,34 @@ public class Utils extends java.lang.Object
         }
     }
 
-    public static org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness
-    getTypeOfUniqueness(@androidx.annotation.NonNull final android.content.Context context)
+    public static org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique getTypeOfUniqueness(
+    @androidx.annotation.NonNull final android.content.Context context)
     {
         final android.content.SharedPreferences defaultSharedPreferences =
             org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness.ERROR;
+            return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.ERROR;
         else
         {
-            final java.lang.String uniqueness;
+            final java.lang.String unique;
             {
                 final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceKey);
-                uniqueness = defaultSharedPreferences.getString(
+                    org.wheatgenetics.coordinate.R.string.UniqueListPreferenceKey);
+                unique = defaultSharedPreferences.getString(
                     /* key      => */ key,
                     /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceDefault));
+                        org.wheatgenetics.coordinate.R.string.UniqueListPreferenceDefault));
             }
-            if (uniqueness.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentGrid)))
-                return org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness.CURRENT_GRID;
+            if (unique.equals(context.getString(
+            org.wheatgenetics.coordinate.R.string.UniqueListPreferenceCurrentGrid)))
+                return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.CURRENT_GRID;
             else
-                if (uniqueness.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.UniquenessListPreferenceCurrentProject)))
-                    return org.wheatgenetics.coordinate.preference
-                        .Utils.TypeOfUniqueness.CURRENT_PROJECT;
+                if (unique.equals(context.getString(
+                org.wheatgenetics.coordinate.R.string.UniqueListPreferenceCurrentProject)))
+                    return
+                        org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.CURRENT_PROJECT;
                 else
-                    return org.wheatgenetics.coordinate.preference.Utils.TypeOfUniqueness.ALL_GRIDS;
+                    return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.ALL_GRIDS;
         }
     }
     // endregion

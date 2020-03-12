@@ -52,28 +52,28 @@
     <string name="UniqueCheckBoxPreferenceTitle">Unique Values Required</string>
 
 
-    <!-- UniquenessList -->
-    <string name="UniquenessListPreferenceKey">UniquenessList</string>
-    <string name="UniquenessListPreferenceTitle">Unique Options</string>
-    <string name="UniquenessListPreferenceSummary">Samples must be unique %s</string>
+    <!-- UniqueList -->
+    <string name="UniqueListPreferenceKey">UniqueList</string>
+    <string name="UniqueListPreferenceSummary">Samples must be unique %s</string>
+    <string name="UniqueListPreferenceTitle">Unique Options</string>
 
-    <string-array name="UniquenessListPreferenceEntries">
+    <string-array name="UniqueListPreferenceEntries">
         <item>within current grid</item>
         <item>among all grids of current project</item>
         <item>among all grids</item>
     </string-array>
 
-    <string name="UniquenessListPreferenceCurrentGrid">UniqueCurrentGrid</string>
-    <string name="UniquenessListPreferenceCurrentProject">UniqueCurrentProject</string>
-    <string name="UniquenessListPreferenceAllGrids">UniqueAllGrids</string>
+    <string name="UniqueListPreferenceCurrentGrid">UniqueCurrentGrid</string>
+    <string name="UniqueListPreferenceCurrentProject">UniqueCurrentProject</string>
+    <string name="UniqueListPreferenceAllGrids">UniqueAllGrids</string>
 
-    <string-array name="UniquenessListPreferenceEntryValues">
-        <item>@string/UniquenessListPreferenceCurrentGrid</item>
-        <item>@string/UniquenessListPreferenceCurrentProject</item>
-        <item>@string/UniquenessListPreferenceAllGrids</item>
+    <string-array name="UniqueListPreferenceEntryValues">
+        <item>@string/UniqueListPreferenceCurrentGrid</item>
+        <item>@string/UniqueListPreferenceCurrentProject</item>
+        <item>@string/UniqueListPreferenceAllGrids</item>
     </string-array>
 
-    <string name="UniquenessListPreferenceDefault">@string/UniquenessListPreferenceCurrentGrid</string>
+    <string name="UniqueListPreferenceDefault">@string/UniqueListPreferenceCurrentGrid</string>
 
 
 
