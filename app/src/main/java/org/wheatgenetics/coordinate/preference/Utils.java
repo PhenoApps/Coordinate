@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.preference;
  * android.content.SharedPreferences
  * android.preference.PreferenceManager
  *
+ * androidx.annotation.FloatRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
@@ -14,6 +15,8 @@ package org.wheatgenetics.coordinate.preference;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
+    private static final float minScaling = 1.0f, maxScaling = 2.0f;
+
     // region Types
     public enum Direction     { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
     public enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT            }
@@ -106,6 +109,28 @@ public class Utils extends java.lang.Object
                         .Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
                 else
                     return org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ERROR;
+        }
+    }
+
+    @androidx.annotation.FloatRange(
+    from = org.wheatgenetics.coordinate.preference.Utils.minScaling,
+    to   = org.wheatgenetics.coordinate.preference.Utils.maxScaling)
+    public static float getScaling(
+    @androidx.annotation.NonNull final android.content.Context context)
+    {
+        final android.content.SharedPreferences defaultSharedPreferences =
+            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+        if (null == defaultSharedPreferences)
+            return org.wheatgenetics.coordinate.preference.Utils.minScaling;
+        else
+        {
+            final int scaling;
+            {
+                final java.lang.String key = context.getString(
+                    org.wheatgenetics.coordinate.R.string.ScalingPreferenceKey);
+                scaling = defaultSharedPreferences.getInt(key, /* defValue => */100);
+            }
+            return (float) scaling / 100.0f;
         }
     }
 
