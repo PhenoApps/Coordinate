@@ -47,6 +47,12 @@
     <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
 
 
+    <!-- Scaling -->
+    <string name="ScalingPreferenceKey">Scaling</string>
+    <string name="ScalingPreferenceTitle">Scaling (%)</string>
+    <string name="ScalingPreferenceSummary">Amount to scale grid up by</string>
+
+
     <!-- UniqueCheckBox -->
     <string name="UniqueCheckBoxPreferenceKey">UniqueCheckBox</string>
     <string name="UniqueCheckBoxPreferenceTitle">Unique Values Required</string>

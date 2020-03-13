@@ -28,6 +28,16 @@
         android:title="@string/ProjectExportPreferenceTitle"
         app:useSimpleSummaryProvider="false" />
 
+    <SeekBarPreference
+        android:key="@string/ScalingPreferenceKey"
+        android:title="@string/ScalingPreferenceTitle"
+        android:summary="@string/ScalingPreferenceSummary"
+        app:min="76"
+        android:max="224"
+        android:defaultValue="100"
+        app:showSeekBarValue="true"
+        app:updatesContinuously="false" />
+
     <CheckBoxPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_preferences_unique_required"

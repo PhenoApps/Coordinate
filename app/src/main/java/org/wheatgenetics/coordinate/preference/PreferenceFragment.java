@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate.preference;
  * androidx.preference.Preference.OnPreferenceClickListener
  * androidx.preference.PreferenceFragmentCompat
  * androidx.preference.PreferenceScreen
+ * androidx.preference.SeekBarPreference
  *
  * org.wheatgenetics.coordinate.R
  */
@@ -35,9 +36,11 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     private final java.util.TreeMap<java.lang.String, java.lang.String>
         uniqueTreeMap = new java.util.TreeMap<java.lang.String, java.lang.String>();
 
-    private java.lang.String directionKey, projectExportKey, uniqueCheckBoxKey, uniqueListKey;
+    private java.lang.String directionKey, projectExportKey,
+        scalingKey, uniqueCheckBoxKey, uniqueListKey;
     private androidx.preference.ListPreference directionPreference,
         projectExportPreference, uniqueListPreference;
+    private androidx.preference.SeekBarPreference                    scalingPreference       ;
     private androidx.preference.CheckBoxPreference                   uniqueCheckBoxPreference;
     private androidx.preference.Preference.OnPreferenceClickListener
         onUniquePreferenceClickListener = null;     // TODO: Replace w/ onSharedPreferenceChanged()?
@@ -62,6 +65,12 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
             final int first = 0, last = keys.length - 1;
             for (int i = first; i <= last; i++) treeMap.put(keys[i], values[i]);
         }
+    }
+
+    private void setScaling()
+    {
+        if (null != this.scalingPreference) this.scalingPreference.setValue(
+            java.lang.Math.max((this.scalingPreference.getValue() / 25) * 25, 100));
     }
 
     private void setUniqueListPreferenceEnabled()
@@ -152,16 +161,18 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                     org.wheatgenetics.coordinate.R.string.DirectionPreferenceKey);
                 this.projectExportKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
+                this.scalingKey = activity.getString(
+                    org.wheatgenetics.coordinate.R.string.ScalingPreferenceKey);
                 this.uniqueCheckBoxKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniqueCheckBoxPreferenceKey);
                 this.uniqueListKey = activity.getString(
                     org.wheatgenetics.coordinate.R.string.UniqueListPreferenceKey);
 
-                this.directionPreference     = this.findPreference(this.directionKey    );
-                this.projectExportPreference = this.findPreference(this.projectExportKey);
-                this.uniqueListPreference    = this.findPreference(this.uniqueListKey   );
-
+                this.directionPreference      = this.findPreference(this.directionKey     );
+                this.projectExportPreference  = this.findPreference(this.projectExportKey );
+                this.scalingPreference        = this.findPreference(this.scalingKey       );
                 this.uniqueCheckBoxPreference = this.findPreference(this.uniqueCheckBoxKey);
+                this.uniqueListPreference     = this.findPreference(this.uniqueListKey    );
 
                 this.setUniqueListPreferenceEnabled(); this.setSummaries();
 
@@ -206,14 +217,17 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
                 if (key.equals(this.projectExportKey))
                     this.setProjectExportSummary();
                 else
-                    if (key.equals(this.uniqueCheckBoxKey))
-                    {
-                        this.setUniqueListPreferenceEnabled();
-                        if (null != this.onUniquePreferenceClickListener)
-                            this.onUniquePreferenceClickListener.onPreferenceClick(
-                                this.uniqueCheckBoxPreference);
-                    }
-                    else if (key.equals(this.uniqueListKey)) this.setUniqueSummary();
+                    if (key.equals(this.scalingKey))
+                        this.setScaling();
+                    else
+                        if (key.equals(this.uniqueCheckBoxKey))
+                        {
+                            this.setUniqueListPreferenceEnabled();
+                            if (null != this.onUniquePreferenceClickListener)
+                                this.onUniquePreferenceClickListener.onPreferenceClick(
+                                    this.uniqueCheckBoxPreference);
+                        }
+                        else if (key.equals(this.uniqueListKey)) this.setUniqueSummary();
     }
     // endregion
     // endregion
