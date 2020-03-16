@@ -1,78 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
 
-    android:padding="6dp"
+    android:padding="6dp">
 
-    android:stretchColumns="0">
 
-    <TableRow tools:ignore="UselessParent">
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        <TableLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow>
 
-                <TextView
-                    android:id="@+id/templatesListItemTitle"
-                    android:layout_span="2"
-                    android:textSize="20sp" />
-            </TableRow>
+        <TableRow>
+            <TextView android:id="@+id/templatesListItemTitle"
+                android:textSize="20sp"
+                android:layout_span="2" />
+        </TableRow>
 
-            <TableRow>
 
-                <TextView android:id="@+id/templatesListItemRows"
-                    android:textSize="16sp" />
+        <TableRow>
+            <TextView android:id="@+id/templatesListItemRows"
+                android:textSize="16sp" />
 
-                <TextView android:id="@+id/templatesListItemColumns"
-                    android:textSize="16sp" />
-            </TableRow>
+            <TextView android:id="@+id/templatesListItemColumns"
+                android:textSize="16sp" />
+        </TableRow>
 
-            <TableRow>
+        <TableRow>
+            <TextView android:id="@+id/templatesListItemTimestamp"
+                android:textSize="16sp"
+                android:layout_span="2" />
+        </TableRow>
+    </TableLayout>
 
-                <TextView
-                    android:id="@+id/templatesListItemTimestamp"
-                    android:textSize="16sp"
-                    android:layout_span="2" />
-            </TableRow>
-        </TableLayout>
 
-        <ImageButton
-            android:id="@+id/templatesListItemDeleteButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_delete"
+    <ImageButton
+        android:id="@+id/templatesListItemDeleteButton"
 
-            tools:ignore="ContentDescription" />
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
 
-        <ImageButton
-            android:id="@+id/templatesListItemExportButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_export"
+        android:src="@drawable/selector_delete"
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
 
-            tools:ignore="ContentDescription" />
+        app:layout_constraintRight_toLeftOf="@id/templatesListItemExportButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
 
-        <ImageButton
-            android:id="@+id/templatesListItemShowGridsButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_show_grids"
+        tools:ignore="ContentDescription" />
 
-            tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/templatesListItemCreateGridButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_create_grid"
+    <ImageButton
+        android:id="@+id/templatesListItemExportButton"
 
-            tools:ignore="ContentDescription" />
-    </TableRow>
-</TableLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:src="@drawable/selector_export"
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+
+        app:layout_constraintRight_toLeftOf="@id/templatesListItemShowGridsButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/templatesListItemShowGridsButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:src="@drawable/selector_show_grids"
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+
+        app:layout_constraintRight_toLeftOf="@id/templatesListItemCreateGridButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/templatesListItemCreateGridButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:src="@drawable/selector_create_grid"
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        tools:ignore="ContentDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>
