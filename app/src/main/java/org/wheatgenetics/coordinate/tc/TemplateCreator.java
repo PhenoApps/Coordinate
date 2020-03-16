@@ -4,7 +4,7 @@ package org.wheatgenetics.coordinate.tc;
  * Uses:
  * android.app.Activity
  * android.os.Bundle
- * 
+ *
  * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -28,10 +28,12 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     }
 
     // region Fields
+    // region Constructor Fields
                                                     private final android.app.Activity activity   ;
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
     @androidx.annotation.NonNull                    private final
         org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler;
+    // endregion
 
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 

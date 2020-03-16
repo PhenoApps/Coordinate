@@ -110,7 +110,6 @@ class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.Al
         {
             final android.view.View view =
                 this.inflate(org.wheatgenetics.coordinate.R.layout.assign_title_rows_cols);
-
             if (null != view)
             {
                 if (null == this.titleEditText) this.titleEditText =

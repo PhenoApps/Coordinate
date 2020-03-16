@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.tc;
  * android.view.View
  * android.widget.Spinner
  *
+ * androidx.annotation.NonNull
+ *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
  * org.wheatgenetics.coordinate.R
@@ -22,17 +24,25 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
     private org.wheatgenetics.coordinate.model.TemplateModel templateModel         ;
     // endregion
 
+    // region Private Methods
+    private static boolean numbering(
+    @androidx.annotation.NonNull final android.widget.Spinner spinner)
+    { return spinner.getSelectedItemPosition() == 0; }
+
     private void setNumbering()
     {
         if (null != this.templateModel)
         {
-            if (null != this.rowSpinner)
-                this.templateModel.setRowNumbering(this.rowSpinner.getSelectedItemPosition() == 0);
+            if (null != this.rowSpinner) this.templateModel.setRowNumbering(
+                org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog.numbering(this.rowSpinner));
 
-            if (null != this.colSpinner)
-                this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
+            if (null != this.colSpinner) this.templateModel.setColNumbering(
+                org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog.numbering(this.colSpinner));
         }
     }
+
+    private static int position(final boolean numbering) { return numbering ? 0 : 1; }
+    // endregion
 
     SetNumberingAlertDialog(final android.app.Activity activity) { super(activity); }
 
@@ -70,11 +80,12 @@ class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDial
         {
             this.templateModel = templateModel;
 
-            if (null != this.rowSpinner)
-                this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
-
-            if (null != this.colSpinner)
-                this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+            if (null != this.rowSpinner) this.rowSpinner.setSelection(
+                org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog.position(
+                    this.templateModel.getRowNumbering()));
+            if (null != this.colSpinner) this.colSpinner.setSelection(
+                org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog.position(
+                    this.templateModel.getColNumbering()));
 
             this.show();
         }
