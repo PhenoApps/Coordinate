@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.display.adapter;
 
 /**
  * Uses:
+ * android.content.Context
  * android.widget.LinearLayout
  *
  * androidx.annotation.IdRes
@@ -20,12 +21,15 @@ class LeftViewHolder extends org.wheatgenetics.coordinate.display.adapter.TopOrL
     // region Constructors
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     LeftViewHolder(
+    @androidx.annotation.NonNull final android.content.Context     context ,
     @androidx.annotation.NonNull final android.widget.LinearLayout itemView  ,
     @androidx.annotation.IdRes   final int                         textViewId)
-    { super(itemView, textViewId); }
+    { super(context, itemView, textViewId); }
 
-    LeftViewHolder(@androidx.annotation.NonNull final android.widget.LinearLayout itemView)
-    { this(itemView, org.wheatgenetics.coordinate.R.id.leftDisplayTextView); }
+    LeftViewHolder(
+    @androidx.annotation.NonNull final android.content.Context     context ,
+    @androidx.annotation.NonNull final android.widget.LinearLayout itemView)
+    { this(context, itemView, org.wheatgenetics.coordinate.R.id.leftDisplayTextView); }
     // endregion
 
     void bind(@androidx.annotation.IntRange(from = 1) final int rowOrCol, final boolean numbering)

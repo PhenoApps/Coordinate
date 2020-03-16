@@ -27,7 +27,6 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
 {
     // region Fields
     // region Constructor Fields
-    @androidx.annotation.NonNull private final android.content.Context context;
     @androidx.annotation.NonNull private final
         org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler gridHandler;
     @androidx.annotation.Nullable private final
@@ -60,10 +59,10 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     @androidx.annotation.Nullable final
         org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
     {
-        super(displayModel, handler);
+        super(context, displayModel, handler);
 
-        this.context     = context    ; this.activeRow = activeRow; this.activeCol = activeCol;
-        this.gridHandler = gridHandler;                             this.checker   = checker  ;
+        this.activeRow   = activeRow  ; this.activeCol = activeCol;
+        this.gridHandler = gridHandler; this.checker   = checker  ;
     }
 
     // region Overridden Methods
@@ -73,7 +72,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     @androidx.annotation.NonNull final android.widget.ImageView itemView)
     {
         return new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder(
-            itemView, this.context, this.getHandler(),
+            itemView, this.getContext(), this.getHandler(),
             new org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder.GridHandler()
             {
                 @java.lang.Override public void activate(@androidx.annotation.NonNull final

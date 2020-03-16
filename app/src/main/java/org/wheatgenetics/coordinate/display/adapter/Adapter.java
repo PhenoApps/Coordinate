@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.display.adapter;
 /**
  * Uses:
  * android.annotation.SuppressLint
+ * android.content.Context
  * android.view.LayoutInflater
  * android.view.View
  * android.view.ViewGroup
@@ -33,6 +34,8 @@ public abstract class Adapter extends androidx.recyclerview.widget.RecyclerView.
 org.wheatgenetics.coordinate.display.adapter.ViewHolder>
 {
     // region Fields
+    @androidx.annotation.NonNull private final android.content.Context context;
+
     @androidx.annotation.NonNull private org.wheatgenetics.coordinate.model.DisplayModel
         displayModel;
     @androidx.annotation.NonNull private final
@@ -101,16 +104,21 @@ org.wheatgenetics.coordinate.display.adapter.ViewHolder>
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull
+    protected android.content.Context getContext() { return this.context; }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull
     protected org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler getHandler()
     { return this.handler; }
     // endregion
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     protected Adapter(
+    @androidx.annotation.NonNull final android.content.Context                         context     ,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler handler)
-    { super(); this.displayModel = displayModel; this.handler = handler; }
+    { super(); this.context = context; this.displayModel = displayModel; this.handler = handler; }
 
     // region Overridden Methods
     @java.lang.Override public int getItemViewType(final int position)
@@ -133,10 +141,12 @@ org.wheatgenetics.coordinate.display.adapter.ViewHolder>
         switch (itemViewType)
         {
             case TOP: return new org.wheatgenetics.coordinate.display.adapter.TopViewHolder(
+                /* context  => */ this.getContext(),
                 /* itemView => */ this.inflateTopOrLeft(parent,
                     org.wheatgenetics.coordinate.R.layout.top_display_table_cell));
 
             case LEFT: return new org.wheatgenetics.coordinate.display.adapter.LeftViewHolder(
+                /* context  => */ this.getContext(),
                 /* itemView => */ this.inflateTopOrLeft(parent,
                     org.wheatgenetics.coordinate.R.layout.left_display_table_cell));
 

@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.tc.adapter;
 
 /**
  * Uses:
+ * android.content.Context
  * android.widget.ImageView
  *
  * androidx.annotation.NonNull
@@ -25,11 +26,12 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
 
     public Adapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
+    @androidx.annotation.NonNull final android.content.Context                         context     ,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler handler,
     @androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler templateHandler)
-    { super(displayModel, handler); this.templateHandler = templateHandler; }
+    { super(context, displayModel, handler); this.templateHandler = templateHandler; }
 
     // region Overridden Methods
     @java.lang.Override @androidx.annotation.NonNull

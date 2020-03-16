@@ -68,24 +68,28 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
     protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel)
     {
-        return new org.wheatgenetics.coordinate.tc.adapter.Adapter(displayModel,
-            new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler()
-            {
-                @java.lang.Override public void toggle(@androidx.annotation.Nullable
-                final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+        final android.content.Context context = this.getContext();
+        if (null == context)
+            throw new java.lang.NullPointerException();
+        else
+            return new org.wheatgenetics.coordinate.tc.adapter.Adapter(displayModel, context,
+                new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler()
                 {
-                    org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.this.toggle(
-                        elementModel);
-                }
-            }, new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler()
-            {
-                @java.lang.Override public boolean isExcluded(
-                final org.wheatgenetics.coordinate.model.Cell cell)
+                    @java.lang.Override public void toggle(@androidx.annotation.Nullable
+                    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
+                    {
+                        org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.this.toggle(
+                            elementModel);
+                    }
+                }, new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler()
                 {
-                    return org.wheatgenetics.coordinate.tc
-                        .TemplateDisplayFragment.this.isExcluded(cell);
-                }
-            });
+                    @java.lang.Override public boolean isExcluded(
+                    final org.wheatgenetics.coordinate.model.Cell cell)
+                    {
+                        return org.wheatgenetics.coordinate.tc
+                            .TemplateDisplayFragment.this.isExcluded(cell);
+                    }
+                });
     }
     // endregion
 }
