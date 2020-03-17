@@ -4,6 +4,8 @@ package org.wheatgenetics.coordinate.tc.exclude;
  * Uses:
  * android.app.Activity
  *
+ * androidx.annotation.NonNull
+ *
  * org.wheatgenetics.coordinate.Types.RequestCode
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
@@ -19,8 +21,17 @@ public class ExcludeAlertDialogTester extends java.lang.Object
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
     private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog
-        excludeAlertDialog = null;                                                      // lazy load
+        excludeAlertDialogInstance = null;                                              // lazy load
     // endregion
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog excludeAlertDialog()
+    {
+        if (null == this.excludeAlertDialogInstance) this.excludeAlertDialogInstance =
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog(
+                this.activity, this.requestCode);
+        return this.excludeAlertDialogInstance;
+    }
 
     public ExcludeAlertDialogTester(final android.app.Activity activity,
     @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
@@ -33,11 +44,5 @@ public class ExcludeAlertDialogTester extends java.lang.Object
         this.templateModel = templateModel;
     }
 
-    public void testExclude()
-    {
-        if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog(
-                this.activity, this.requestCode);
-        this.excludeAlertDialog.show(this.templateModel);
-    }
+    public void testExclude() { this.excludeAlertDialog().show(this.templateModel); }
 }
