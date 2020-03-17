@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc;
+package org.wheatgenetics.coordinate.tc.exclude;
 
 /**
  * Uses:
@@ -90,7 +90,7 @@ class GeneratedExcludedCellsAlertDialog extends org.wheatgenetics.androidlibrary
                 {
                     @java.lang.Override public void onClick(final android.view.View view)
                     {
-                        org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialog
+                        org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialog
                             .this.setGeneratedExcludedCellsAmount();
                     }
                 });

@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc.adapter;
+package org.wheatgenetics.coordinate.tc.exclude.adapter;
 
 /**
  * Uses:
@@ -21,7 +21,8 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler templateHandler;
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
+        templateHandler;
 
     private boolean isExcluded()
     {
@@ -32,9 +33,10 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
     DataViewHolder(
     @androidx.annotation.NonNull final android.widget.ImageView itemView,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler handler,
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler handler,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler templateHandler)
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
+        templateHandler)
     { super(itemView, handler); this.templateHandler = templateHandler; this.setOnClickListener(); }
 
     // region Overridden Methods

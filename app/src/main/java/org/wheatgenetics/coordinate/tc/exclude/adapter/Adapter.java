@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc.adapter;
+package org.wheatgenetics.coordinate.tc.exclude.adapter;
 
 /**
  * Uses:
@@ -15,22 +15,24 @@ package org.wheatgenetics.coordinate.tc.adapter;
  * org.wheatgenetics.coordinate.display.adapter.Adapter
  * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
  *
- * org.wheatgenetics.coordinate.tc.adapter.DataViewHolder
- * org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler
- * org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
  */
 public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapter
 {
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler templateHandler;
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
+        templateHandler;
 
     public Adapter(
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
     @androidx.annotation.NonNull final android.content.Context                         context     ,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler handler,
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler handler,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler templateHandler)
+        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
+        templateHandler)
     { super(context, displayModel, handler); this.templateHandler = templateHandler; }
 
     // region Overridden Methods
@@ -38,7 +40,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     protected org.wheatgenetics.coordinate.display.adapter.DataViewHolder dataViewHolder(
     @androidx.annotation.NonNull final android.widget.ImageView itemView)
     {
-        return new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder(
+        return new org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder(
             itemView, this.getHandler(), this.templateHandler);
     }
 
@@ -48,7 +50,7 @@ public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapte
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
         elementModel)
     {
-        ((org.wheatgenetics.coordinate.tc.adapter.DataViewHolder) dataViewHolder).bind(
+        ((org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder) dataViewHolder).bind(
             (org.wheatgenetics.coordinate.model.Cell) elementModel);
     }
     // endregion

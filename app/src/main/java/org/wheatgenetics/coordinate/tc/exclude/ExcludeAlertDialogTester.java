@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc;
+package org.wheatgenetics.coordinate.tc.exclude;
 
 /**
  * Uses:
@@ -8,7 +8,7 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ExcludeAlertDialogTester extends java.lang.Object
@@ -18,7 +18,7 @@ public class ExcludeAlertDialogTester extends java.lang.Object
     @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
     private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
 
-    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog
         excludeAlertDialog = null;                                                      // lazy load
     // endregion
 
@@ -36,7 +36,8 @@ public class ExcludeAlertDialogTester extends java.lang.Object
     public void testExclude()
     {
         if (null == this.excludeAlertDialog) this.excludeAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludeAlertDialog(this.activity, this.requestCode);
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog(
+                this.activity, this.requestCode);
         this.excludeAlertDialog.show(this.templateModel);
     }
 }

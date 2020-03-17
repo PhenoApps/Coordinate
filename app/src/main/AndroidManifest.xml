@@ -42,7 +42,7 @@
             android:name=".projects.ProjectsActivity"
             android:label="@string/ProjectsActivityLabel" />
 
-        <activity android:name=".tc.ExcludeCellsActivity">
+        <activity android:name=".tc.exclude.ExcludeCellsActivity">
             <intent-filter>
                 <action   android:name="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity" />
                 <category android:name="android.intent.category.DEFAULT"                      />

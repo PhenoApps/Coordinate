@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc;
+package org.wheatgenetics.coordinate.tc.exclude;
 
 /**
  * Uses:
@@ -10,18 +10,18 @@ package org.wheatgenetics.coordinate.tc;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  *
- * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
 {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity;
+    @androidx.annotation.NonNull private final android.app.Activity                        activity;
     @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
         templateModel;
 
-    private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog
         excludedRowsAlertDialog = null, excludedColsAlertDialog = null;                // lazy loads
     private java.lang.String rowLabel = null, colLabel = null;
     // endregion
@@ -60,16 +60,16 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
     public void testExcludedRows()
     {
         if (null == this.excludedRowsAlertDialog) this.excludedRowsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog(this.activity,
                 org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
-                new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
+                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler()
                 {
                     @java.lang.Override public void excludeRowsOrCols(
                     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
                     @androidx.annotation.NonNull final boolean checkedItems[])
                     {
-                        org.wheatgenetics.coordinate.tc
-                            .ExcludedRowsOrColsAlertDialogTester.this.excludeRows(checkedItems);
+                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
+                            .this.excludeRows(checkedItems);
                     }
                 });
 
@@ -84,16 +84,16 @@ public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
     public void testExcludedCols()
     {
         if (null == this.excludedColsAlertDialog) this.excludedColsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog(this.activity,
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog(this.activity,
                 org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
-                new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler()
+                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler()
                 {
                     @java.lang.Override public void excludeRowsOrCols(
                     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
                     @androidx.annotation.NonNull final boolean checkedItems[])
                     {
-                        org.wheatgenetics.coordinate.tc
-                            .ExcludedRowsOrColsAlertDialogTester.this.excludeCols(checkedItems);
+                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
+                            .this.excludeCols(checkedItems);
                     }
                 });
 

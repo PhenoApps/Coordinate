@@ -25,13 +25,14 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
- * org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
- * org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
- * org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
  * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
  * org.wheatgenetics.coordinate.tc.TemplateCreator
  * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
+ *
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
+ * org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester
  */
 @java.lang.SuppressWarnings({"unused"})
 class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog implements
@@ -59,11 +60,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         optionalFieldAlertDialogUnderTest =
             org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest.NEITHER;
 
-    private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
         excludedRowsOrColsAlertDialogTesterInstance = null;                             // lazy load
-    private org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester
+    private org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester
         generatedExcludedCellsAlertDialogTester = null;                                 // lazy load
-    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester
         excludeAlertDialogTester = null;                                                // lazy load
     private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
         setNumberingAlertDialogTester = null;                                           // lazy load
@@ -153,12 +154,12 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
     excludedRowsOrColsAlertDialogTester()
     {
         if (null == this.excludedRowsOrColsAlertDialogTesterInstance)
             this.excludedRowsOrColsAlertDialogTesterInstance =
-                new org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialogTester(
+                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester(
                     this.activity(), this.templateModel);
         return this.excludedRowsOrColsAlertDialogTesterInstance;
     }
@@ -170,7 +171,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     {
         if (null == this.generatedExcludedCellsAlertDialogTester)
             this.generatedExcludedCellsAlertDialogTester =
-                new org.wheatgenetics.coordinate.tc.GeneratedExcludedCellsAlertDialogTester(
+                new org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester(
                     this.activity(), this.templateModel);
         this.generatedExcludedCellsAlertDialogTester.testGeneratedExcludedCells();
     }
@@ -178,7 +179,7 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     private void exclude()
     {
         if (null == this.excludeAlertDialogTester) this.excludeAlertDialogTester =
-            new org.wheatgenetics.coordinate.tc.ExcludeAlertDialogTester(
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester(
                 this.activity(), this.requestCode, this.templateModel);
         this.excludeAlertDialogTester.testExclude();
     }

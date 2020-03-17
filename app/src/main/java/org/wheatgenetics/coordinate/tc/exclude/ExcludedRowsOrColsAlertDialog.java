@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc;
+package org.wheatgenetics.coordinate.tc.exclude;
 
 /**
  * Uses:
@@ -27,7 +27,7 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     // region Fields
                                  private final java.lang.String label;
     @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler;
+        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler handler;
 
     private boolean titleHasBeenSet = false;
     // endregion
@@ -39,7 +39,7 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
     @androidx.annotation.StringRes final int label,
     @androidx.annotation.NonNull   final
-        org.wheatgenetics.coordinate.tc.ExcludedRowsOrColsAlertDialog.Handler handler)
+        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler handler)
     { super(activity); this.label = this.getString(label); this.handler = handler; }
 
     void show(
@@ -61,16 +61,16 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
                     @java.lang.Override public void onClick(
                     final android.content.DialogInterface dialog, final int which)
                     {
-                        org.wheatgenetics.coordinate.tc
-                            .ExcludedRowsOrColsAlertDialog.this.excludeRowsOrCols(checkedItems);
+                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog
+                            .this.excludeRowsOrCols(checkedItems);
                     }
                 });
             this.show(items, checkedItems,
                 new android.content.DialogInterface.OnMultiChoiceClickListener()
                 {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialog,
-                    final int which, final boolean isChecked) { checkedItems[which] = isChecked; }
+                    @java.lang.Override public void onClick(
+                    final android.content.DialogInterface dialog, final int which,
+                    final boolean isChecked) { checkedItems[which] = isChecked; }
                 });
         }
     }

@@ -21,7 +21,8 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
  * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
  *
- * org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
+ * org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog
+ *
  * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog
  */
 class SetExcludesOptionalFieldsNumberingAlertDialog
@@ -41,7 +42,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
     private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
         checkAndAddOptionalFieldsAlertDialogInstance = null;                            // lazy load
-    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog
         excludeAlertDialogInstance = null;                                              // lazy load
     private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog
         setNumberingAlertDialogInstance = null;                                         // lazy load
@@ -69,10 +70,10 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
 
     // region exclude() Private Methods
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.tc.ExcludeAlertDialog excludeAlertDialog()
+    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog excludeAlertDialog()
     {
         if (null == this.excludeAlertDialogInstance) this.excludeAlertDialogInstance =
-            new org.wheatgenetics.coordinate.tc.ExcludeAlertDialog(
+            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialog(
                 this.activity(), this.requestCode);
         return this.excludeAlertDialogInstance;
     }

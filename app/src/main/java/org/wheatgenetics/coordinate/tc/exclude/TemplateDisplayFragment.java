@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.tc;
+package org.wheatgenetics.coordinate.tc.exclude;
 
 /**
  * Uses:
@@ -17,9 +17,9 @@ package org.wheatgenetics.coordinate.tc;
  * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
  * org.wheatgenetics.coordinate.display.adapter.Adapter
  *
- * org.wheatgenetics.coordinate.tc.adapter.Adapter
- * org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler
- * org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.Adapter
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler
+ * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
  */
 public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
 {
@@ -28,14 +28,17 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
     { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
 
     // region Private Methods
-    @androidx.annotation.Nullable
-    private org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler templateHandler()
-    { return (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) this.handler; }
+    @androidx.annotation.Nullable private
+    org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler templateHandler()
+    {
+        return
+            (org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler) this.handler;
+    }
 
     private boolean isExcluded(final org.wheatgenetics.coordinate.model.Cell cell)
     {
-        final org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler templateHandler =
-            this.templateHandler();
+        final org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler
+            templateHandler = this.templateHandler();
         if (null == templateHandler)
             throw new java.lang.NullPointerException();
         else
@@ -52,10 +55,11 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
     {
         final boolean success;
 
-        if (context instanceof org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler)
+        if (context instanceof
+        org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler)
         {
             this.handler =
-                (org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.Handler) context;
+                (org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler) context;
             success = true;
         }
         else { this.handler = null; success = false; }
@@ -72,21 +76,23 @@ public class TemplateDisplayFragment extends org.wheatgenetics.coordinate.displa
         if (null == context)
             throw new java.lang.NullPointerException();
         else
-            return new org.wheatgenetics.coordinate.tc.adapter.Adapter(displayModel, context,
-                new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.Handler()
+            return new org.wheatgenetics.coordinate.tc.exclude.adapter.Adapter(
+                displayModel, context,
+                new org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler()
                 {
                     @java.lang.Override public void toggle(@androidx.annotation.Nullable
                     final org.wheatgenetics.coordinate.model.ElementModel elementModel)
                     {
-                        org.wheatgenetics.coordinate.tc.TemplateDisplayFragment.this.toggle(
+                        org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.this.toggle(
                             elementModel);
                     }
-                }, new org.wheatgenetics.coordinate.tc.adapter.DataViewHolder.TemplateHandler()
+                },
+                new org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler()
                 {
                     @java.lang.Override public boolean isExcluded(
                     final org.wheatgenetics.coordinate.model.Cell cell)
                     {
-                        return org.wheatgenetics.coordinate.tc
+                        return org.wheatgenetics.coordinate.tc.exclude
                             .TemplateDisplayFragment.this.isExcluded(cell);
                     }
                 });

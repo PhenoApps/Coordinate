@@ -7,11 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity">
+    tools:context="org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity">
 
     <fragment
         android:id="@+id/templateDisplayFragment"
-        android:name="org.wheatgenetics.coordinate.tc.TemplateDisplayFragment"
+        android:name="org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
 
