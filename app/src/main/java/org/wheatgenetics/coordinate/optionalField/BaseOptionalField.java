@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * Uses:
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.Size
  *
  * org.wheatgenetics.javalib.Utils
  */
@@ -24,26 +26,22 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull private static java.lang.String valid(final java.lang.String name)
+    @androidx.annotation.NonNull private static java.lang.String valid(
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name)
     {
-        if (null == name)
+        final java.lang.String result = name.trim();
+        if (result.length() <= 0)
             throw new java.lang.AssertionError();
         else
-        {
-            final java.lang.String result = name.trim();
-            if (result.length() <= 0)
-                throw new java.lang.AssertionError();
-            else
-                return result;
-        }
+            return result;
     }
 
     private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
     // endregion
 
     // region Constructors
-    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name,
-    final java.lang.String hint)
+    BaseOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    final java.lang.String name, @androidx.annotation.Nullable final java.lang.String hint)
     {
         super();
 
@@ -51,8 +49,8 @@ public abstract class BaseOptionalField extends java.lang.Object
         this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull                   (hint).trim();
     }
 
-    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name)
-    { this(name,""); }
+    BaseOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    final java.lang.String name) { this(name,""); }
     // endregion
 
     // region Overridden Methods
@@ -84,7 +82,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     boolean namesAreEqual(final java.lang.String name)
     { return this.getName().equalsIgnoreCase(name); }
 
-    java.lang.String getSafeValue()
+    @androidx.annotation.NonNull java.lang.String getSafeValue()
     {
         return this.nameIsPerson() ?
             this.getValue().replace(" ","_") : this.getValue();

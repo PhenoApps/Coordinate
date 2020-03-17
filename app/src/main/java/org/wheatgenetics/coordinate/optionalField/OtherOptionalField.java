@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * Uses:
  * androidx.annotation.NonNull
+ * androidx.annotation.Size
  *
  * org.json.JSONObject
  *
@@ -16,13 +17,14 @@ class OtherOptionalField extends org.wheatgenetics.coordinate.optionalField.Opti
     static class WrongClass extends java.lang.Exception { WrongClass() { super(); } }
 
     // region Constructors
-    private OtherOptionalField(@androidx.annotation.NonNull final java.lang.String name,
-    final java.lang.String hint) { super(name, hint); }
+    private OtherOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    final java.lang.String name, final java.lang.String hint) { super(name, hint); }
 
-    OtherOptionalField(@androidx.annotation.NonNull final java.lang.String name) { super(name); }
+    OtherOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    final java.lang.String name) { super(name); }
 
-    OtherOptionalField(@androidx.annotation.NonNull final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint)
+    OtherOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    final java.lang.String name, final java.lang.String value, final java.lang.String hint)
     { this(name, hint); this.setValue(value); }
 
     OtherOptionalField(@androidx.annotation.NonNull final org.json.JSONObject jsonObject)

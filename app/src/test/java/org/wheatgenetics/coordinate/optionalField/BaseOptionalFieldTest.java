@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * androidx.annotation.NonNull
+ * androidx.annotation.Size
  *
  * org.junit.Assert
  * org.junit.Test
@@ -20,12 +21,12 @@ public class BaseOptionalFieldTest extends java.lang.Object
     private static class ConcreteBaseOptionalField extends
     org.wheatgenetics.coordinate.optionalField.BaseOptionalField
     {
-        private ConcreteBaseOptionalField(
-        @androidx.annotation.NonNull final java.lang.String name,
-                                     final java.lang.String hint) { super(name, hint); }
+        private ConcreteBaseOptionalField(@androidx.annotation.NonNull
+        @androidx.annotation.Size(min = 1) final java.lang.String name, final java.lang.String hint)
+        { super(name, hint); }
 
-        private ConcreteBaseOptionalField(@androidx.annotation.NonNull final java.lang.String name)
-        { super(name); }
+        private ConcreteBaseOptionalField(@androidx.annotation.NonNull
+        @androidx.annotation.Size(min = 1) final java.lang.String name) { super(name); }
     }
 
     // region Constructor Tests
@@ -216,7 +217,7 @@ public class BaseOptionalFieldTest extends java.lang.Object
     // region Package Method Tests
     @org.junit.Test() public void namesAreEqualWorks()
     {
-        final java.lang.String testName = "testName";
+        final java.lang.String                                                testName = "testName";
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
                 .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(testName);

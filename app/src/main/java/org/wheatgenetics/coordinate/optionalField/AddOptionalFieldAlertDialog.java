@@ -2,12 +2,12 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
- * android.app.Activity
  * android.annotation.SuppressLint
+ * android.app.Activity
  * android.view.View
  * android.view.View.OnClickListener
  * android.widget.EditText
- * 
+ *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *

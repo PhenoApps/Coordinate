@@ -3,7 +3,7 @@ package org.wheatgenetics.coordinate.optionalField;
 /**
  * Uses:
  * android.annotation.SuppressLint
- * 
+ *
  * androidx.annotation.NonNull
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
@@ -19,13 +19,13 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOpt
     implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
     {
         // region Fields
-        @androidx.annotation.NonNull
         @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.NonNull
         final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             arrayList;
 
-        @androidx.annotation.NonNull
         @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+        @androidx.annotation.NonNull
         final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
             listIterator;
         // endregion

@@ -24,8 +24,19 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
             handler;
 
     private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
-        addOptionalFieldAlertDialog = null;                                             // lazy load
+        addOptionalFieldAlertDialogInstance = null;                                     // lazy load
     // endregion
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
+    addOptionalFieldAlertDialog()
+    {
+        if (null == this.addOptionalFieldAlertDialogInstance)
+            this.addOptionalFieldAlertDialogInstance =
+                new org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog(
+                    this.activity,this);
+        return this.addOptionalFieldAlertDialogInstance;
+    }
 
     public AddOptionalFieldAlertDialogTester(final android.app.Activity activity,
     @androidx.annotation.NonNull final
@@ -41,11 +52,6 @@ implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialo
     nonNullOptionalFields)
     {
         if (null != nonNullOptionalFields)
-        {
-            if (null == this.addOptionalFieldAlertDialog) this.addOptionalFieldAlertDialog =
-                new org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog(
-                    this.activity,this);
-            this.addOptionalFieldAlertDialog.show(nonNullOptionalFields);
-        }
+            this.addOptionalFieldAlertDialog().show(nonNullOptionalFields);
     }
 }

@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.Size
  * androidx.annotation.VisibleForTesting
  *
  * org.json.JSONArray
@@ -22,9 +23,10 @@ package org.wheatgenetics.coordinate.optionalField;
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields checkedAdd(
-    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint)
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name,
+    final java.lang.String value, final java.lang.String hint)
     {
         if (null != value && value.trim().length() > 0)
             return this.add(name, /* value => */ value, /* hint => */ hint);
@@ -117,22 +119,25 @@ implements java.lang.Cloneable
     }
 
     // region Add Methods
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @androidx.annotation.NonNull final java.lang.String name)
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name)
     {
         this.arrayList.add(new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name));
         return this;
     }
 
+    @androidx.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint)
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name,
+    final java.lang.String value, final java.lang.String hint)
     {
         this.arrayList.add(
             new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, value, hint));
         return this;
     }
 
+    @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields addDate()
     {
         this.arrayList.add(new org.wheatgenetics.coordinate.optionalField.DateOptionalField());
@@ -157,7 +162,8 @@ implements java.lang.Cloneable
             baseOptionalField: this)
                 checkedArrayList.add(baseOptionalField.getChecked());
 
-            final int checkedArrayListSize = checkedArrayList.size();
+            @androidx.annotation.IntRange(from = 0) final int checkedArrayListSize =
+                checkedArrayList.size();
             result = new boolean[checkedArrayListSize];
 
             for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
@@ -169,6 +175,7 @@ implements java.lang.Cloneable
     // region Public Methods
     public boolean isEmpty() { return !this.iterator().hasNext(); }
 
+    @androidx.annotation.NonNull
     public org.wheatgenetics.coordinate.optionalField.BaseOptionalField get(
     @androidx.annotation.IntRange(from = 0) final int index)
     {
