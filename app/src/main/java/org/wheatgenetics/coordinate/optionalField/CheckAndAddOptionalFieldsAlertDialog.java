@@ -44,7 +44,8 @@ extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
     private void checkOptionalField(final int index, final boolean checked)
     {
         if (null != this.nonNullOptionalFields)
-            this.nonNullOptionalFields.setChecked(index, checked);
+            if (this.nonNullOptionalFields.setChecked(index, checked))
+                { this.cancelAlertDialog(); this.showCheckAndAddOptionalFieldsAlertDialogAgain(); }
     }
 
     @androidx.annotation.NonNull
