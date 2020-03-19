@@ -146,8 +146,14 @@ implements java.lang.Cloneable
     // endregion
 
     // region Package Methods
-    void setChecked(@androidx.annotation.IntRange(from = 0) final int index, final boolean checked)
-    { this.get(index).setChecked(checked); }
+    boolean setChecked(@androidx.annotation.IntRange(from = 0)
+    final int index, final boolean checked)
+    {
+        final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField =
+            this.get(index);
+        baseOptionalField.setChecked(checked);
+        return baseOptionalField.nameIsIdentification();
+    }
 
     @androidx.annotation.NonNull boolean[] checks()
     {
@@ -347,8 +353,8 @@ implements java.lang.Cloneable
     final java.lang.String identification, final java.lang.String person)
     {
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            "Identification", identification,null).checkedAdd(
-            "Person"        , person        ,null).addDate();
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME,
+            identification,null).checkedAdd("Person", person,null).addDate();
     }
 
     @androidx.annotation.NonNull

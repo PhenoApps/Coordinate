@@ -17,7 +17,7 @@ package org.wheatgenetics.coordinate.optionalField;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
 {
-    static final java.lang.String DATE_HINT = "yyyy-mm-dd";
+    static final java.lang.String DATE_HINT = "yyyy-mm-dd", IDENTIFIER_NAME = "Identification";
 
     // region Fields
     @androidx.annotation.NonNull private final java.lang.String name, hint    ;
@@ -29,11 +29,17 @@ public abstract class BaseOptionalField extends java.lang.Object
     @androidx.annotation.NonNull private static java.lang.String valid(
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name)
     {
-        final java.lang.String result = name.trim();
-        if (result.length() <= 0)
+        // noinspection ConstantConditions
+        if (null == name)
             throw new java.lang.AssertionError();
         else
-            return result;
+        {
+            final java.lang.String result = name.trim();
+            if (result.length() <= 0)
+                throw new java.lang.AssertionError();
+            else
+                return result;
+        }
     }
 
     private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
@@ -82,6 +88,12 @@ public abstract class BaseOptionalField extends java.lang.Object
     boolean namesAreEqual(final java.lang.String name)
     { return this.getName().equalsIgnoreCase(name); }
 
+    boolean nameIsIdentification()
+    {
+        return this.getName().equals(
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+    }
+
     @androidx.annotation.NonNull java.lang.String getSafeValue()
     {
         return this.nameIsPerson() ?
@@ -101,7 +113,8 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     @androidx.annotation.NonNull public java.lang.String getHint() { return this.hint; }
 
-    public void setChecked(final boolean checked) { this.checked = checked; }
+    public void setChecked(final boolean checked)
+    { this.checked = this.nameIsIdentification() || checked; }
     // endregion
 
     public boolean isAPerson() { return this.nameIsPerson() || this.namesAreEqual("Name"); }

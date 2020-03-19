@@ -41,9 +41,6 @@ org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.
 org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler           ,
 org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 {
-    @java.lang.SuppressWarnings({"UnnecessaryEnumModifier"})
-    private static enum OptionalFieldAlertDialogUnderTest { NEITHER, ADD, CHECK_AND_ADD }
-
     // region Fields
     @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode;
 
@@ -56,9 +53,6 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         addOptionalFieldAlertDialogTester = null;                                       // lazy load
     private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
         checkAndAddOptionalFieldsAlertDialog = null;                                    // lazy load
-    private org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest
-        optionalFieldAlertDialogUnderTest =
-            org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest.NEITHER;
 
     private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
         excludedRowsOrColsAlertDialogTesterInstance = null;                             // lazy load
@@ -136,8 +130,6 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         if (null == this.addOptionalFieldAlertDialogTester) this.addOptionalFieldAlertDialogTester =
             new org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester(
                 this.activity(),this);
-        this.optionalFieldAlertDialogUnderTest =
-            org.wheatgenetics.coordinate.TestAlertDialog.OptionalFieldAlertDialogUnderTest.ADD;
         this.addOptionalFieldAlertDialogTester.test(this.nonNullOptionalFields());
     }
 
@@ -147,8 +139,6 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             this.checkAndAddOptionalFieldsAlertDialog =
                 new org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog(
                     this.activity(),this);
-        this.optionalFieldAlertDialogUnderTest = org.wheatgenetics.coordinate
-            .TestAlertDialog.OptionalFieldAlertDialogUnderTest.CHECK_AND_ADD;
         this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
     }
 
@@ -372,23 +362,16 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         this.setOKPositiveButton();
     }
 
-    // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler and org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler Overridden Method
-    @java.lang.Override public void handleAddOptionalFieldDone()
+    // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler Overridden Method
+    @java.lang.Override public void handleAddOptionalFieldDone() { this.refreshText(); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler Overridden Method
+    @java.lang.Override public void showCheckAndAddOptionalFieldsAlertDialogAgain()
     {
         this.refreshText();
-
-        switch (this.optionalFieldAlertDialogUnderTest)
-        {
-            case CHECK_AND_ADD:
-                if (null != this.checkAndAddOptionalFieldsAlertDialog)
-                    this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
-                break;
-
-            case ADD:
-                this.optionalFieldAlertDialogUnderTest = org.wheatgenetics.coordinate
-                    .TestAlertDialog.OptionalFieldAlertDialogUnderTest.NEITHER;
-                break;
-        }
+        if (null != this.checkAndAddOptionalFieldsAlertDialog)
+            this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
     }
     // endregion
 

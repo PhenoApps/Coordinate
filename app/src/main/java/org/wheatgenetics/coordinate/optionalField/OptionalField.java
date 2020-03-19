@@ -30,9 +30,19 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         private static final java.lang.String VALUE_JSON_NAME = "value",
             CHECKED_JSON_NAME = "checked";
 
-        @androidx.annotation.NonNull private final org.json.JSONObject jsonObject;
+        // region Fields
+        @androidx.annotation.NonNull private final org.json.JSONObject jsonObject          ;
+                                     private final boolean             nameIsIdentification;
+        // endregion
 
         // region Private Methods
+        private static boolean nameIsIdentification(@androidx.annotation.NonNull
+        @androidx.annotation.Size(min = 1) final java.lang.String name)
+        {
+            return name.equals(
+                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+        }
+
         private void put(@androidx.annotation.Size(min = 1)
         @androidx.annotation.NonNull  final java.lang.String name ,
         @androidx.annotation.Nullable       java.lang.String value)
@@ -46,13 +56,13 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             }
         }
 
-        void putChecked(final boolean checked)
+        private void putChecked(final boolean checked)
         {
             try
             {
                 this.jsonObject.put(org.wheatgenetics               // throws org.json.JSONException
                         .coordinate.optionalField.OptionalField.JSONObject.CHECKED_JSON_NAME,
-                    checked                                                                 );
+                    this.nameIsIdentification || checked                              );
             }
             catch (final org.json.JSONException e) { /* Don't put checked. */ }
         }
@@ -60,18 +70,37 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
 
         // region Constructors
         private JSONObject(@androidx.annotation.NonNull final org.json.JSONObject jsonObject)
-        { super(); this.jsonObject = jsonObject; }
+        {
+            super();
+
+            this.jsonObject           = jsonObject;
+            this.nameIsIdentification = org.wheatgenetics.coordinate.optionalField
+                .OptionalField.JSONObject.nameIsIdentification(this.jsonObject.optString(
+                    org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
+        }
 
         private JSONObject(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
         final java.lang.String name, final java.lang.String value, final java.lang.String hint)
         {
-            super(); this.jsonObject = new org.json.JSONObject();
+            super();
 
-            this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME, name);
-            this.put(
-                org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject.VALUE_JSON_NAME,
-                value);
-            this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME, hint);
+            // noinspection ConstantConditions
+            if (null == name)
+                throw new java.lang.AssertionError();
+            else
+            {
+                this.jsonObject           = new org.json.JSONObject();
+                this.nameIsIdentification = org.wheatgenetics.coordinate.optionalField
+                    .OptionalField.JSONObject.nameIsIdentification(name);
+
+                this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME,
+                    name);
+                this.put(org.wheatgenetics.coordinate.optionalField
+                        .OptionalField.JSONObject.VALUE_JSON_NAME,
+                    value);
+                this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME,
+                    hint);
+                }
         }
 
 

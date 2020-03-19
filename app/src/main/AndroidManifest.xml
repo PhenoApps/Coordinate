@@ -44,8 +44,8 @@
 
         <activity android:name=".tc.exclude.ExcludeCellsActivity">
             <intent-filter>
-                <action   android:name="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity" />
-                <category android:name="android.intent.category.DEFAULT"                      />
+                <action   android:name="org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity" />
+                <category android:name="android.intent.category.DEFAULT"                              />
             </intent-filter>
         </activity>
 

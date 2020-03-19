@@ -174,7 +174,7 @@ implements org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsA
     }
 
     // region org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler Overridden Method
-    @java.lang.Override public void handleAddOptionalFieldDone()
+    @java.lang.Override public void showCheckAndAddOptionalFieldsAlertDialogAgain()
     {
         if (null != this.templateModel && null != this.checkAndAddOptionalFieldsAlertDialogInstance)
             this.checkAndAddOptionalFieldsAlertDialogInstance.show(

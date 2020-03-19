@@ -333,6 +333,18 @@ public class BaseOptionalFieldTest extends java.lang.Object
             .BaseOptionalFieldTest.ConcreteBaseOptionalField("name", hint).getHint());
     }
 
+    @org.junit.Test() public void setCheckedWorks()
+    {
+        final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
+            .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
+                .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
+                    org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+        org.junit.Assert.assertTrue(concreteBaseOptionalField.getChecked());
+
+        concreteBaseOptionalField.setChecked(false);
+        org.junit.Assert.assertTrue(concreteBaseOptionalField.getChecked());
+    }
+
     @org.junit.Test() public void isAPersonWorks()
     {
         org.junit.Assert.assertTrue(new org.wheatgenetics.coordinate.optionalField

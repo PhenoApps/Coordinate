@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -170,6 +171,37 @@ public class OptionalFieldTest extends java.lang.Object
 
         concreteOptionalField.setChecked(false);
         org.junit.Assert.assertNotEquals(jsonObjectAsString,
+            concreteOptionalField.makeJSONObject().toString());
+    }
+
+    @org.junit.Test() public void identificationMakeJSONObject()
+    {
+        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+            concreteOptionalField;
+        final java.lang.String jsonObjectAsString;
+        {
+            final org.json.JSONObject jsonObject;
+            {
+                final java.lang.String testName = org.wheatgenetics.coordinate.optionalField
+                        .BaseOptionalField.IDENTIFIER_NAME,
+                    testHint = null, testValue = "testValue";
+
+                // noinspection ConstantConditions
+                concreteOptionalField = new org.wheatgenetics.coordinate.optionalField
+                    .OptionalFieldTest.ConcreteOptionalField(testName, testHint);
+                concreteOptionalField.setValue(testValue);
+
+                // noinspection ConstantConditions
+                jsonObject =
+                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                        testName, testValue, testHint);
+            }
+            org.wheatgenetics.coordinate.optionalField.OptionalField.putChecked(
+                jsonObject,false);                        // Should change false into true.
+            jsonObjectAsString = jsonObject.toString();
+        }
+
+        org.junit.Assert.assertEquals(jsonObjectAsString,
             concreteOptionalField.makeJSONObject().toString());
     }
     // endregion

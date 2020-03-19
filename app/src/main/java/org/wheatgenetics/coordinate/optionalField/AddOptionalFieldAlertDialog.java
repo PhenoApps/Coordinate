@@ -36,7 +36,7 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         final java.lang.String name =
             org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
 
-        if (0 == name.length())
+        if (name.length() < 1)
             this.showToast(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogToast);
         else
         {
