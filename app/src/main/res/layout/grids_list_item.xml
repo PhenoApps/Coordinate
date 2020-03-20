@@ -19,7 +19,7 @@
 
 
         <TextView
-            android:id="@+id/gridsListItemId"
+            android:id="@+id/gridsListItemTitle"
             android:textSize="20sp"
 
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
 
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/gridsListItemId"  />
+            app:layout_constraintTop_toBottomOf="@id/gridsListItemTitle"  />
 
 
         <TextView

@@ -17,7 +17,8 @@ package org.wheatgenetics.coordinate.optionalField;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
 {
-    static final java.lang.String DATE_HINT = "yyyy-mm-dd", IDENTIFIER_NAME = "Identification";
+           static final java.lang.String DATE_HINT       = "yyyy-mm-dd"    ;
+    public static final java.lang.String IDENTIFIER_NAME = "Identification";
 
     // region Fields
     @androidx.annotation.NonNull private final java.lang.String name, hint    ;

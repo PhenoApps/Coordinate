@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.javalib.CsvWriter
+ * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.Utils
  *
@@ -256,6 +257,26 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
     // endregion
 
+    @androidx.annotation.Nullable private java.lang.String optionalFieldValue(
+    @androidx.annotation.Nullable final java.lang.String name)
+    {
+        @androidx.annotation.Nullable final java.lang.String result;
+        {
+            final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
+                this.optionalFields();
+            if (null == optionalFields)
+                result = null;
+            else
+            {
+                // noinspection CStyleArrayDeclaration
+                final java.lang.String values[] = optionalFields.values(/* names[] => */
+                    org.wheatgenetics.javalib.Utils.stringArray(name));
+                result = null == values ? null : values[0];
+            }
+        }
+        return result;
+    }
+
     private boolean isExcludedRow(@androidx.annotation.IntRange(from = 1) final int row)
     { return this.templateModel.isExcludedRow(row); }
 
@@ -460,6 +481,24 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Public Methods
+    @androidx.annotation.Nullable public java.lang.String getTitle()
+    {
+        @androidx.annotation.Nullable final java.lang.String name;
+        {
+            final org.wheatgenetics.coordinate.model.TemplateType templateType =
+                this.templateModel.getType();
+            if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
+                name = "Tray";
+            else
+                if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
+                    name = "Plate";
+                else
+                    name = org.wheatgenetics.coordinate.optionalField
+                        .BaseOptionalField.IDENTIFIER_NAME;
+        }
+        return this.optionalFieldValue(name);
+    }
+
     public java.lang.String getTemplateTitle() { return this.templateModel.getTitle(); }
 
     public void makeEntryModels() throws

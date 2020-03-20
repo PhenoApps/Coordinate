@@ -101,11 +101,10 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                 return this.makeEmptyTableLayout();
             else
             {
-                @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
                 {
                     final android.widget.TextView textView = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.gridsListItemId);
-                    if (null != textView) textView.setText(java.lang.String.valueOf(gridId));
+                        org.wheatgenetics.coordinate.R.id.gridsListItemTitle);
+                    if (null != textView) textView.setText(joinedGridModel.getTitle());
                 }
                 {
                     final android.widget.TextView textView = view.findViewById(
@@ -117,6 +116,7 @@ abstract class GridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
                         org.wheatgenetics.coordinate.R.id.gridsListItemTimestamp);
                     if (null != textView) textView.setText(joinedGridModel.getFormattedTimestamp());
                 }
+                @androidx.annotation.IntRange(from = 1) final long gridId = joinedGridModel.getId();
                 {
                     final android.widget.ImageButton imageButton = view.findViewById(
                         org.wheatgenetics.coordinate.R.id.gridsListItemDeleteButton);
