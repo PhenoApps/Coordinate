@@ -337,8 +337,8 @@ public class BaseOptionalFieldTest extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.optionalField.BaseOptionalFieldTest
             .ConcreteBaseOptionalField concreteBaseOptionalField = new org.wheatgenetics.coordinate
-                .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(
-                    org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+                .optionalField.BaseOptionalFieldTest.ConcreteBaseOptionalField(org.wheatgenetics
+                    .coordinate.optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME);
         org.junit.Assert.assertTrue(concreteBaseOptionalField.getChecked());
 
         concreteBaseOptionalField.setChecked(false);

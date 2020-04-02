@@ -183,7 +183,7 @@ public class OptionalFieldTest extends java.lang.Object
             final org.json.JSONObject jsonObject;
             {
                 final java.lang.String testName = org.wheatgenetics.coordinate.optionalField
-                        .BaseOptionalField.IDENTIFIER_NAME,
+                        .BaseOptionalField.IDENTIFICATION_FIELD_NAME,
                     testHint = null, testValue = "testValue";
 
                 // noinspection ConstantConditions

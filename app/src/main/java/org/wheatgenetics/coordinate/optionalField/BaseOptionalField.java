@@ -17,13 +17,16 @@ package org.wheatgenetics.coordinate.optionalField;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
 {
-           static final java.lang.String DATE_HINT       = "yyyy-mm-dd"    ;
-    public static final java.lang.String IDENTIFIER_NAME = "Identification";
+           static final java.lang.String DATE_HINT                 = "yyyy-mm-dd"    ;
+    public static final java.lang.String IDENTIFICATION_FIELD_NAME = "Identification";
 
     // region Fields
-    @androidx.annotation.NonNull private final java.lang.String name, hint    ;
-    @androidx.annotation.NonNull private       java.lang.String value   = ""  ;
-                                 private       boolean          checked = true;
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) private final java.lang.String
+        name;
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 0) private final java.lang.String
+        hint;
+    @androidx.annotation.NonNull private java.lang.String value   = ""  ;
+                                 private boolean          checked = true;
     // endregion
 
     // region Private Methods
@@ -92,7 +95,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     boolean nameIsIdentification()
     {
         return this.getName().equals(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME);
     }
 
     @androidx.annotation.NonNull java.lang.String getSafeValue()
@@ -106,13 +109,16 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Public Methods
     // region Getter and Setter Public Methods
-    @androidx.annotation.NonNull public java.lang.String getName () { return this.name ; }
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    public java.lang.String getName () { return this.name ; }
+
     @androidx.annotation.NonNull public java.lang.String getValue() { return this.value; }
 
     public void setValue(final java.lang.String value)
     { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value).trim(); }
 
-    @androidx.annotation.NonNull public java.lang.String getHint() { return this.hint; }
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 0)
+    public java.lang.String getHint() { return this.hint; }
 
     public void setChecked(final boolean checked)
     { this.checked = this.nameIsIdentification() || checked; }

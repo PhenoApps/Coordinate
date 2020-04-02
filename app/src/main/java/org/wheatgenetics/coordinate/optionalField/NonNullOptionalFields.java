@@ -350,11 +350,12 @@ implements java.lang.Cloneable
     @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew(
-    final java.lang.String identification, final java.lang.String person)
+    final java.lang.String identificationValue, final java.lang.String personValue)
     {
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME,
-            identification,null).checkedAdd("Person", person,null).addDate();
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME,
+            identificationValue,null).checkedAdd(
+                "Person", personValue,null).addDate();
     }
 
     @androidx.annotation.NonNull
@@ -368,11 +369,11 @@ implements java.lang.Cloneable
     @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault(
-    final java.lang.String trayId, final java.lang.String person)
+    final java.lang.String trayIdValue, final java.lang.String personValue)
     {
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            "Tray"  , trayId,"Tray ID"    ).checkedAdd(
-            "Person", person,"Person name").addDate();
+            "Tray"  , trayIdValue,"Tray ID"    ).checkedAdd(
+            "Person", personValue,"Person name").addDate();
     }
 
     @androidx.annotation.NonNull
@@ -386,14 +387,15 @@ implements java.lang.Cloneable
     @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
     public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault(
-    final java.lang.String plateId, final java.lang.String plateName, final java.lang.String person)
+    final java.lang.String plateIdValue, final java.lang.String plateNameValue,
+    final java.lang.String personValue)
     {
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields()
-            .checkedAdd("Plate"     , plateId  ,"Plate ID")                 // TODO: dna
-            .checkedAdd("Plate Name", plateName,null      ).add("Notes")
+            .checkedAdd("Plate"     , plateIdValue  ,"Plate ID")             // TODO: dna
+            .checkedAdd("Plate Name", plateNameValue,null      ).add("Notes")
             .add       ("tissue_type","Leaf","")
             .add       ("extraction" ,"CTAB","")
-            .checkedAdd("person", person,null).addDate();
+            .checkedAdd("person"     , personValue,null).addDate();
     }
 
     @androidx.annotation.NonNull
