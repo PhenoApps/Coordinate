@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- UniqueAlertDialog -->
-    <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
-
-
-
-    <!-- fragment_data_entry.xml -->
-    <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+    <!-- nav_header_main.xml -->
+    <string name="nav_header_mainImageViewContentDescription">personImageView</string>
 
 
 

@@ -11,8 +11,7 @@
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Plate ID:"
-        tools:ignore="HardcodedText"
+        android:text="@string/optional_field_showNameText"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
@@ -22,8 +21,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
         android:paddingLeft="10dp"
-        android:text="..."
-        tools:ignore="RtlSymmetry,HardcodedText"
+        android:text="@string/optional_field_showValueText"
+        tools:ignore="RtlSymmetry"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
