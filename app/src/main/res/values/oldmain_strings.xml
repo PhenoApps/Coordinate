@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- UniqueAlertDialog -->
-    <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
-
-
-
-    <!-- fragment_data_entry.xml -->
-    <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
-
-
-
     <!-- activity_main_drawer.xml -->
     <string name="grid">Grid</string>
     <string name="create_grid">Create</string>

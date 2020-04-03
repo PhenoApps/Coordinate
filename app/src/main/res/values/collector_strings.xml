@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- fragment_data_entry.xml -->
+    <string name="DataEntryFragmentCellIDEditTextActionLabel">Save</string>
+
+    <!-- UniqueAlertDialog -->
+    <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
+</resources>
