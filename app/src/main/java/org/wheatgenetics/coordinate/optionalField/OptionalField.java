@@ -39,8 +39,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         private static boolean nameIsIdentification(@androidx.annotation.NonNull
         @androidx.annotation.Size(min = 1) final java.lang.String name)
         {
-            return name.equals(
-                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFIER_NAME);
+            return name.equals(org.wheatgenetics.coordinate
+                .optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME);
         }
 
         private void put(@androidx.annotation.Size(min = 1)
