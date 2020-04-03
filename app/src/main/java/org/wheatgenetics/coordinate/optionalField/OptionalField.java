@@ -40,7 +40,7 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         @androidx.annotation.Size(min = 1) final java.lang.String name)
         {
             return name.equals(org.wheatgenetics.coordinate
-                .optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME);
+                .optionalField.BaseOptionalField.identificationFieldName());
         }
 
         private void put(@androidx.annotation.Size(min = 1)

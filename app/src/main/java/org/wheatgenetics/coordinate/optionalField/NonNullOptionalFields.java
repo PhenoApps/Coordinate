@@ -353,7 +353,7 @@ implements java.lang.Cloneable
     final java.lang.String identificationValue, final java.lang.String personValue)
     {
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME,
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.identificationFieldName(),
             identificationValue,null).checkedAdd(
                 "Person", personValue,null).addDate();
     }

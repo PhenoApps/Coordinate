@@ -17,8 +17,7 @@ package org.wheatgenetics.coordinate.optionalField;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
 {
-           static final java.lang.String DATE_HINT                 = "yyyy-mm-dd"    ;
-    public static final java.lang.String IDENTIFICATION_FIELD_NAME = "Identification";
+    static final java.lang.String DATE_HINT = "yyyy-mm-dd";
 
     // region Fields
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) private final java.lang.String
@@ -95,7 +94,7 @@ public abstract class BaseOptionalField extends java.lang.Object
     boolean nameIsIdentification()
     {
         return this.getName().equals(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.IDENTIFICATION_FIELD_NAME);
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.identificationFieldName());
     }
 
     @androidx.annotation.NonNull java.lang.String getSafeValue()
@@ -108,6 +107,9 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Public Methods
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
+    public static java.lang.String identificationFieldName() { return "Identification"; }
+
     // region Getter and Setter Public Methods
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
     public java.lang.String getName () { return this.name ; }

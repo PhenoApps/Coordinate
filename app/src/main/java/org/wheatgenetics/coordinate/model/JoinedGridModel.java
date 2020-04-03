@@ -494,7 +494,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                     name = "Plate";
                 else
                     name = org.wheatgenetics.coordinate.optionalField
-                        .BaseOptionalField.IDENTIFICATION_FIELD_NAME;
+                        .BaseOptionalField.identificationFieldName();
         }
         return this.optionalFieldValue(name);
     }
