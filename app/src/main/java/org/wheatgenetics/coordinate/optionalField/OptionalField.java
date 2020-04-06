@@ -18,6 +18,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONException
  * org.json.JSONObject
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  */
 abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -134,18 +136,22 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
 
     // region Constructors
     OptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-    final java.lang.String name, final java.lang.String hint) { super(name, hint); }
+    final java.lang.String name, final java.lang.String hint, @androidx.annotation.NonNull final
+    org.wheatgenetics.coordinate.StringGetter stringGetter) { super(name, hint, stringGetter); }
 
     OptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-    final java.lang.String name) { super(name); }
+    final java.lang.String name, @androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter) { super(name, stringGetter); }
 
-    OptionalField(@androidx.annotation.NonNull final org.json.JSONObject jsonObject)
+    OptionalField(@androidx.annotation.NonNull final org.json.JSONObject jsonObject,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         this(
             /* name => */ jsonObject.optString(
                 org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME),
             /* hint => */ jsonObject.optString(
-                org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME));
+                org.wheatgenetics.coordinate.optionalField.OptionalField.HINT_JSON_NAME),
+            /* stringGetter => */ stringGetter);
 
         final org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject customJSONObject =
             new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(jsonObject);

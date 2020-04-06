@@ -73,10 +73,10 @@ public class CurrentGridUniqueGridsTable extends org.wheatgenetics.coordinate.da
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
         return new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(id,
-            projectId, person, activeRow, activeCol, optionalFields, timestamp, templateId, title,
-            code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells, excludedRows,
-            excludedCols, colNumbering, rowNumbering, entryLabel, templateOptionalFields,
-            templateTimestamp,
+            projectId, person, activeRow, activeCol, optionalFields,this, timestamp,
+            templateId, title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
+            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
+            templateOptionalFields, templateTimestamp,
             (org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels) entryModels);
     }
     // endregion

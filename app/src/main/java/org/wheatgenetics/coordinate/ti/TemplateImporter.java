@@ -6,12 +6,14 @@ package org.wheatgenetics.coordinate.ti;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.javalib.Dir.PermissionException
  * org.wheatgenetics.javalib.Dir.PermissionRequestedException
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.TemplatesDir
  * org.wheatgenetics.coordinate.Utils
  *
@@ -19,8 +21,8 @@ package org.wheatgenetics.coordinate.ti;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateImporter extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateImporter
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Adapter
     { public abstract void notifyDataSetChanged(); }
@@ -64,6 +66,11 @@ public class TemplateImporter extends java.lang.Object
     { this(activity, requestCode,null); }
     // endregion
 
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.activity.getString(resId); }
+    // endregion
+
     // region Public Methods
     public void importTemplate()
     {
@@ -85,7 +92,8 @@ public class TemplateImporter extends java.lang.Object
         if (null != file)
         {
             final boolean templateImported = this.templatesTable().insert(
-                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(file)) > 0;
+                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
+                    file,this)) > 0;
             if (templateImported) this.notifyDataSetChanged();
         }
     }

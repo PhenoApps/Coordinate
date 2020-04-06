@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.javalib.CsvWriter
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -389,13 +390,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     }
 
     /** Used by GridsTable. */ public JoinedGridModel(
-    @androidx.annotation.IntRange(from = 1) final long             id            ,
-    @androidx.annotation.IntRange(from = 0) final long             projectId     ,
-                                            final java.lang.String person        ,
-    @androidx.annotation.IntRange(from = 0) final int              activeRow     ,
-    @androidx.annotation.IntRange(from = 0) final int              activeCol     ,
-    @androidx.annotation.Nullable           final java.lang.String optionalFields,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp     ,
+    @androidx.annotation.IntRange(from = 1) final long                           id            ,
+    @androidx.annotation.IntRange(from = 0) final long                           projectId     ,
+                                            final java.lang.String               person        ,
+    @androidx.annotation.IntRange(from = 0) final int                            activeRow     ,
+    @androidx.annotation.IntRange(from = 0) final int                            activeCol     ,
+    @androidx.annotation.Nullable           final java.lang.String               optionalFields,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter  ,
+    @androidx.annotation.IntRange(from = 0) final long                           timestamp     ,
 
     @androidx.annotation.IntRange(from = 1        ) final long             templateId     ,
                                                     final java.lang.String title          ,
@@ -414,11 +416,12 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
 
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
-        super(id, templateId, projectId, person, activeRow, activeCol, optionalFields, timestamp);
+        super(id, templateId, projectId, person, activeRow,
+            activeCol, optionalFields, stringGetter, timestamp);
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
-            templateOptionalFields, templateTimestamp);
+            templateOptionalFields, stringGetter, templateTimestamp);
         this.entryModels = entryModels;
     }
     // endregion

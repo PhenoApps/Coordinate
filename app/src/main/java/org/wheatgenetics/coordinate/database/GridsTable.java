@@ -12,8 +12,11 @@ package org.wheatgenetics.coordinate.database;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.javalib.Utils
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.EntryModels
@@ -27,6 +30,7 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.TemplatesTable
  */
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
+implements org.wheatgenetics.coordinate.StringGetter
 {
     // region Constants
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES) static final
@@ -90,10 +94,10 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
         return new org.wheatgenetics.coordinate.model.JoinedGridModel(id, projectId, person,
-            activeRow, activeCol, optionalFields, timestamp, templateId, title, code, rows, cols,
-            generatedExcludedCellsAmount, initialExcludedCells, excludedRows, excludedCols,
-            colNumbering, rowNumbering, entryLabel, templateOptionalFields, templateTimestamp,
-            entryModels);
+            activeRow, activeCol, optionalFields,this, timestamp, templateId, title,
+            code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells, excludedRows,
+            excludedCols, colNumbering, rowNumbering, entryLabel, templateOptionalFields,
+            templateTimestamp, entryModels);
     }
     // endregion
 
@@ -101,7 +105,7 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
     {
-        if (null == this.entriesTableInstance) this.entriesTableInstance = this.makeEntriesTable();
+        if (this.entriesTableInstance == null) this.entriesTableInstance = this.makeEntriesTable();
         return this.entriesTableInstance;
     }
 
@@ -416,6 +420,11 @@ public class GridsTable extends org.wheatgenetics.coordinate.database.Table
         }
         return result;
     }
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
+    // endregion
     // endregion
 
     // region Operations

@@ -9,6 +9,8 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
@@ -17,17 +19,21 @@ package org.wheatgenetics.coordinate.optionalField;
 public class DateOptionalField extends org.wheatgenetics.coordinate.optionalField.OptionalField
 {
     // region Constructors
-    DateOptionalField()
+    DateOptionalField(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super(
             /* name => */"Date",
-            /* hint => */ org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT);
+            /* hint => */ org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+            /* stringGetter => */ stringGetter);
     }
 
-    DateOptionalField(final org.json.JSONObject jsonObject)
+    DateOptionalField(final org.json.JSONObject jsonObject,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        this(); this.setChecked(org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(
-            jsonObject));
+        this(stringGetter);
+        this.setChecked(
+            org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(jsonObject));
     }
     // endregion
 
@@ -35,7 +41,7 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
     @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.optionalField.DateOptionalField result =
-            new org.wheatgenetics.coordinate.optionalField.DateOptionalField();
+            new org.wheatgenetics.coordinate.optionalField.DateOptionalField(this.stringGetter());
         result.setValue(this.getValue()); result.setChecked(this.getChecked());
         return result;
     }

@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  * androidx.appcompat.app.ActionBar
  * androidx.appcompat.app.AppCompatActivity
  *
@@ -22,6 +23,7 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.sharedpreferences.SharedPreferences
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Types
  *
  * org.wheatgenetics.coordinate.gc.GridCreator
@@ -33,6 +35,7 @@ package org.wheatgenetics.coordinate.main;
  * org.wheatgenetics.coordinate.model.TemplateType
  */
 abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
+implements org.wheatgenetics.coordinate.StringGetter
 {
     // region Fields
     private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;//ll
@@ -96,7 +99,7 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
             // then they are updated to their default values.
             @androidx.annotation.NonNull
             final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
-                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault(this);
             if (defaultTemplateModels.size() > 0)
             {
                 @androidx.annotation.NonNull
@@ -179,5 +182,10 @@ abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
                     this.gridCreator().continueExcluding(data.getExtras()); break;
             }
     }
+
+    // region Overridden Methods
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.getString(resId); }
+    // endregion
     // endregion
 }

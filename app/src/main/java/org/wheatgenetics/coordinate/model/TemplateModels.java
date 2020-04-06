@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -103,7 +105,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
     }
 
     @androidx.annotation.NonNull
-    public static org.wheatgenetics.coordinate.model.TemplateModels makeDefault()
+    public static org.wheatgenetics.coordinate.model.TemplateModels makeDefault(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         final org.wheatgenetics.coordinate.model.TemplateModels result =
             new org.wheatgenetics.coordinate.model.TemplateModels();
@@ -112,8 +115,8 @@ implements java.lang.Iterable<org.wheatgenetics.coordinate.model.TemplateModel>
         // template is second.  Client code assumes the templates are present in the order just
         // described.  If these two default templates are not present (and not present in the order
         // just described), client code will break.
-        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
-        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ());
+        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault(stringGetter));
+        result.add(org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault (stringGetter));
 
         return result;
     }

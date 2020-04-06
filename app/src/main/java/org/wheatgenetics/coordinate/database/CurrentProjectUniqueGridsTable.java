@@ -165,10 +165,10 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     final org.wheatgenetics.coordinate.model.EntryModels entryModels)
     {
         return new org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel(id,
-            projectId, person, activeRow, activeCol, optionalFields, timestamp, templateId, title,
-            code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells, excludedRows,
-            excludedCols, colNumbering, rowNumbering, entryLabel, templateOptionalFields,
-            templateTimestamp,
+            projectId, person, activeRow, activeCol, optionalFields,this, timestamp,
+            templateId, title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
+            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
+            templateOptionalFields, templateTimestamp,
             (org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels) entryModels,
             this);
     }

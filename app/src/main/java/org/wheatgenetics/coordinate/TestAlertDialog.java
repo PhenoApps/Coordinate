@@ -9,10 +9,13 @@ package org.wheatgenetics.coordinate;
  * android.widget.TextView
  *
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.AlertDialog
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Types.RequestCode
  *
  * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester
@@ -39,7 +42,8 @@ class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog imple
 org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler   ,
 org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler,
 org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler           ,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
+org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                                ,
+org.wheatgenetics.coordinate.StringGetter
 {
     // region Fields
     @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode;
@@ -117,10 +121,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
 
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
     {
-        return null == this.templateModel                                                  ?
-            null == this.nonNullOptionalFieldsInstance                                     ?
+        return null == this.templateModel                                                 ?
+            null == this.nonNullOptionalFieldsInstance                                    ?
                 this.nonNullOptionalFieldsInstance =
-                    new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields() :
+                    new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
+                        this)                                                   :
                 this.nonNullOptionalFieldsInstance                                         :
             this.templateModel.optionalFields()                                            ;
     }
@@ -383,6 +388,11 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     { this.templateModel = templateModel; this.refreshText(); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.activity().getString(resId); }
     // endregion
     // endregion
 }

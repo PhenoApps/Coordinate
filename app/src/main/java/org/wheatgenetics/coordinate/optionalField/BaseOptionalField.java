@@ -10,9 +10,13 @@ package org.wheatgenetics.coordinate.optionalField;
  * Uses:
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.RestrictTo
+ * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.Size
  *
  * org.wheatgenetics.javalib.Utils
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class BaseOptionalField extends java.lang.Object
@@ -20,10 +24,15 @@ public abstract class BaseOptionalField extends java.lang.Object
     static final java.lang.String DATE_HINT = "yyyy-mm-dd";
 
     // region Fields
+    // region Constructor Fields
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) private final java.lang.String
         name;
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 0) private final java.lang.String
         hint;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+    // endregion
+
     @androidx.annotation.NonNull private java.lang.String value   = ""  ;
                                  private boolean          checked = true;
     // endregion
@@ -50,16 +59,20 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Constructors
     BaseOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-    final java.lang.String name, @androidx.annotation.Nullable final java.lang.String hint)
+    final java.lang.String name, @androidx.annotation.Nullable final java.lang.String hint,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super();
 
         this.name = org.wheatgenetics.coordinate.optionalField.BaseOptionalField.valid(name)       ;
         this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull                   (hint).trim();
+        this.stringGetter = stringGetter;
     }
 
-    BaseOptionalField(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-    final java.lang.String name) { this(name,""); }
+    BaseOptionalField(
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String name    ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { this(name,"", stringGetter); }
     // endregion
 
     // region Overridden Methods
@@ -88,6 +101,10 @@ public abstract class BaseOptionalField extends java.lang.Object
     // endregion
 
     // region Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
+    { return this.stringGetter; }
+
     boolean namesAreEqual(final java.lang.String name)
     { return this.getName().equalsIgnoreCase(name); }
 

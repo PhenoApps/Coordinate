@@ -9,9 +9,11 @@ package org.wheatgenetics.coordinate.tc.exclude;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
  * androidx.appcompat.app.AppCompatActivity
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.DisplayModel
@@ -20,8 +22,9 @@ package org.wheatgenetics.coordinate.tc.exclude;
  *
  * org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler
  */
-public class ExcludeCellsActivity extends androidx.appcompat.app.AppCompatActivity
-implements org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler
+public class ExcludeCellsActivity extends androidx.appcompat.app.AppCompatActivity implements
+org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handler,
+org.wheatgenetics.coordinate.StringGetter
 {
     @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) private static class DisplayModel
     extends java.lang.Object implements org.wheatgenetics.coordinate.model.DisplayModel
@@ -89,7 +92,8 @@ implements org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handl
         this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_exclude_cells);
 
         this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
-            null == savedInstanceState ? this.getIntent().getExtras() : savedInstanceState);
+            null == savedInstanceState ? this.getIntent().getExtras() : savedInstanceState,
+            this                                                                );
         if (null != this.templateModel) this.displayModel =
             new org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity.DisplayModel(
                 this.templateModel);
@@ -140,6 +144,11 @@ implements org.wheatgenetics.coordinate.tc.exclude.TemplateDisplayFragment.Handl
                 // noinspection SimplifiableConditionalExpression
                 return this.isExcludedCol(cell.getColValue()) ? true : this.isExcludedCell(cell);
     }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.getString(resId); }
     // endregion
     // endregion
 }

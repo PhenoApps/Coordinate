@@ -3,12 +3,14 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -54,14 +56,15 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     /** Used by second JoinedGridModel constructor. */
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     GridModel(
-    @androidx.annotation.IntRange(from = 1) final long             id                ,
-    @androidx.annotation.IntRange(from = 1) final long             templateId        ,
-    @androidx.annotation.IntRange(from = 0) final long             projectId         ,
-                                            final java.lang.String person            ,
-    @androidx.annotation.IntRange(from = 0) final int              activeRow         ,
-    @androidx.annotation.IntRange(from = 0) final int              activeCol         ,
-    @androidx.annotation.Nullable                 java.lang.String optionalFields    ,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp         )
+    @androidx.annotation.IntRange(from = 1) final long                           id                ,
+    @androidx.annotation.IntRange(from = 1) final long                           templateId        ,
+    @androidx.annotation.IntRange(from = 0) final long                           projectId         ,
+                                            final java.lang.String               person            ,
+    @androidx.annotation.IntRange(from = 0) final int                            activeRow         ,
+    @androidx.annotation.IntRange(from = 0) final int                            activeCol         ,
+    @androidx.annotation.Nullable                 java.lang.String               optionalFields    ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter      ,
+    @androidx.annotation.IntRange(from = 0) final long                           timestamp         )
     {
         super(id);
 
@@ -75,7 +78,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         if (null != optionalFields) optionalFields = optionalFields.trim();
         this.nonNullOptionalFieldsInstance = null == optionalFields ? null :
             optionalFields.equals("") ? null : new
-                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(optionalFields);
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
+                    optionalFields, stringGetter);
 
         this.timestamp = timestamp;
     }

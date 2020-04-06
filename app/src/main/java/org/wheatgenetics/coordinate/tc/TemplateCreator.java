@@ -6,10 +6,13 @@ package org.wheatgenetics.coordinate.tc;
  * android.os.Bundle
  *
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.coordinate.StringGetter
+ * org.wheatgenetics.coordinate.Types.RequestCode
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.Types.RequestCode
  *
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
  * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
@@ -18,8 +21,9 @@ package org.wheatgenetics.coordinate.tc;
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class TemplateCreator extends java.lang.Object implements
-org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler,
-org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
+org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler               ,
+org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler,
+org.wheatgenetics.coordinate.StringGetter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
@@ -82,19 +86,24 @@ org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Ha
     @java.lang.Override public void handleSetDone()
     { this.handler.handleTemplateCreated(this.templateModel); }
     // endregion
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.activity.getString(resId); }
+    // endregion
     // endregion
 
     // region Public Methods
     public void create()
     {
-        this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined();
+        this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(this);
         this.assignTitleRowsColsAlertDialog().show(this.templateModel);
     }
 
     public void continueExcluding(final android.os.Bundle bundle)
     {
         this.templateModel =
-            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(bundle);
+            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(bundle,this);
         this.handleAssignDone();
     }
     // endregion
