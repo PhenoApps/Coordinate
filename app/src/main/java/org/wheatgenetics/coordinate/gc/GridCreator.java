@@ -11,8 +11,10 @@ package org.wheatgenetics.coordinate.gc;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
  *
@@ -37,8 +39,8 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.gc.vs.Handler
  * org.wheatgenetics.coordinate.gc.vs.ValueSetter
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public abstract class GridCreator extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public abstract class GridCreator
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     // region Types
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
@@ -115,6 +117,7 @@ public abstract class GridCreator extends java.lang.Object
                     /* projectId      => */ this.projectId,
                     /* person         => */ this.person   ,
                     /* optionalFields => */ optionalFields,
+                    /* stringGetter   => */this,
                     /* templateModel  => */ templateModel );
             this.setPerson(null);
 
@@ -306,6 +309,11 @@ public abstract class GridCreator extends java.lang.Object
     @androidx.annotation.Nullable                   final
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.activity().getString(resId); }
+    // endregion
 
     public void continueExcluding(final android.os.Bundle bundle)
     { this.choosingTemplateSetter().continueExcluding(bundle); }

@@ -32,8 +32,8 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         this(stringGetter);
-        this.setChecked(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(jsonObject));
+        this.setChecked(org.wheatgenetics.coordinate.optionalField.OptionalField.getChecked(
+            jsonObject, stringGetter));
     }
     // endregion
 

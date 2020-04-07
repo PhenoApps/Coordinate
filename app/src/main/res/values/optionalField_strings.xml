@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- add_optional_field -->
+    <!-- BaseOptionalField -->
+    <string name="BaseOptionalFieldPersonFieldName">Person</string>
+    <string name="BaseOptionalFieldNameFieldName">Name</string>
+    <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
+
+
+    <!-- add_optional_field.xml -->
     <string name="add_optional_fieldNameHint">Field name</string>
     <string name="add_optional_fieldDefaultValueHint">Default text</string>
 

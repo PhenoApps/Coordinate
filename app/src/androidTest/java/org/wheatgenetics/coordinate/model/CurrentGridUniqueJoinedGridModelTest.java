@@ -2,7 +2,13 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
@@ -11,7 +17,28 @@ package org.wheatgenetics.coordinate.model;
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
+implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
     public void setEntryModelThrows()
     {
@@ -24,6 +51,7 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
                     /* activeRow                    => */0,
                     /* activeCol                    => */0,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */123,
 
                     /* templateId                   => */6,
@@ -70,6 +98,7 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
                     /* activeRow                     => */0,
                     /* activeCol                     => */0,
                     /* optionalFields                => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                     => */123,
 
                     /* templateId                    => */6,
@@ -145,6 +174,7 @@ public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
                     /* activeRow                     => */0,
                     /* activeCol                     => */0,
                     /* optionalFields                => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                     => */123,
 
                     /* templateId                    => */6,

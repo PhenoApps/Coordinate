@@ -27,6 +27,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.Nullable           private final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
     @androidx.annotation.IntRange(from = 0) private final long timestamp;
     // endregion
 
@@ -38,7 +40,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.IntRange(from = 0) final long             projectId ,
                                             final java.lang.String person    ,
     @androidx.annotation.Nullable           final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
+        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super();
 
@@ -50,6 +53,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         this.activeRow = this.activeCol = 0;
 
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
+        this.stringGetter                  = stringGetter                        ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
 
@@ -80,8 +84,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             optionalFields.equals("") ? null : new
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
                     optionalFields, stringGetter);
-
-        this.timestamp = timestamp;
+        this.stringGetter = stringGetter; this.timestamp = timestamp;
     }
     // endregion
 
@@ -93,6 +96,10 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveCol(@androidx.annotation.IntRange(from = 0) final int activeCol)
     { this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol,0); }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
+    { return this.stringGetter; }
     // endregion
 
     // region Public Methods

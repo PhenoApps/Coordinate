@@ -239,7 +239,7 @@ implements java.lang.Cloneable
                     dateOptionalField =
                         (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
                             baseOptionalField;
-                jsonArray.put(dateOptionalField.makeJSONObject());
+                jsonArray.put(dateOptionalField.makeJSONObject(this.stringGetter));
             }
             else
                 if (baseOptionalField instanceof
@@ -249,7 +249,7 @@ implements java.lang.Cloneable
                         otherOptionalField =
                             (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
                                 baseOptionalField;
-                    jsonArray.put(otherOptionalField.makeJSONObject());
+                    jsonArray.put(otherOptionalField.makeJSONObject(this.stringGetter));
                 }
 
         return jsonArray.toString();
@@ -366,7 +366,7 @@ implements java.lang.Cloneable
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
             stringGetter).checkedAdd(
                 org.wheatgenetics.coordinate.optionalField
-                    .BaseOptionalField.identificationFieldName(),
+                    .BaseOptionalField.identificationFieldName(stringGetter),
                 identificationValue,null).checkedAdd(
                     "Person", personValue,null).addDate();
     }

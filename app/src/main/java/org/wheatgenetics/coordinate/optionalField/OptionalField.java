@@ -39,10 +39,11 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
 
         // region Private Methods
         private static boolean nameIsIdentification(@androidx.annotation.NonNull
-        @androidx.annotation.Size(min = 1) final java.lang.String name)
+        @androidx.annotation.Size(min = 1) final java.lang.String name,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             return name.equals(org.wheatgenetics.coordinate
-                .optionalField.BaseOptionalField.identificationFieldName());
+                .optionalField.BaseOptionalField.identificationFieldName(stringGetter));
         }
 
         private void put(@androidx.annotation.Size(min = 1)
@@ -71,18 +72,21 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         // endregion
 
         // region Constructors
-        private JSONObject(@androidx.annotation.NonNull final org.json.JSONObject jsonObject)
+        private JSONObject(@androidx.annotation.NonNull final org.json.JSONObject jsonObject,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             super();
 
             this.jsonObject           = jsonObject;
             this.nameIsIdentification = org.wheatgenetics.coordinate.optionalField
                 .OptionalField.JSONObject.nameIsIdentification(this.jsonObject.optString(
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME));
+                    org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME),
+                stringGetter                                                               );
         }
 
         private JSONObject(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-        final java.lang.String name, final java.lang.String value, final java.lang.String hint)
+        final java.lang.String name, final java.lang.String value, final java.lang.String hint,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             super();
 
@@ -93,7 +97,7 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             {
                 this.jsonObject           = new org.json.JSONObject();
                 this.nameIsIdentification = org.wheatgenetics.coordinate.optionalField
-                    .OptionalField.JSONObject.nameIsIdentification(name);
+                    .OptionalField.JSONObject.nameIsIdentification(name, stringGetter);
 
                 this.put(org.wheatgenetics.coordinate.optionalField.OptionalField.NAME_JSON_NAME,
                     name);
@@ -108,10 +112,14 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
 
         private JSONObject(@androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
         final java.lang.String name, final java.lang.String value, final java.lang.String hint,
-        final boolean checked) { this(name, value, hint); this.putChecked(checked); }
+        final boolean checked,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        { this(name, value, hint, stringGetter); this.putChecked(checked); }
 
         private JSONObject(@androidx.annotation.NonNull final org.json.JSONObject jsonObject,
-        final boolean checked) { this(jsonObject); this.putChecked(checked); }
+        final boolean checked,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        { this(jsonObject, stringGetter); this.putChecked(checked); }
         // endregion
 
         private java.lang.String getValue()
@@ -154,7 +162,8 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
             /* stringGetter => */ stringGetter);
 
         final org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject customJSONObject =
-            new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(jsonObject);
+            new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
+                jsonObject, stringGetter);
         this.setValue(customJSONObject.getValue()); this.setChecked(customJSONObject.getChecked());
     }
     // endregion
@@ -164,46 +173,51 @@ abstract class OptionalField extends org.wheatgenetics.coordinate.optionalField.
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE) @androidx.annotation.NonNull
     static org.json.JSONObject makeJSONObject(@androidx.annotation.NonNull
     @androidx.annotation.Size(min = 1)final java.lang.String name,
-    final java.lang.String value, final java.lang.String hint)
+    final java.lang.String value, final java.lang.String hint,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
-            name, value, hint).jsonObject();
+            name, value, hint, stringGetter).jsonObject();
     }
 
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE) @androidx.annotation.NonNull
     static org.json.JSONObject makeJSONObject(@androidx.annotation.NonNull
     @androidx.annotation.Size(min = 1) final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint, final boolean checked)
+    final java.lang.String hint, final boolean checked,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
-            name, value, hint, checked).jsonObject();
+            name, value, hint, checked, stringGetter).jsonObject();
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    static boolean getChecked(final org.json.JSONObject jsonObject)
+    static boolean getChecked(final org.json.JSONObject jsonObject,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         if (null == jsonObject)
             return true;
         else
             return new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
-                jsonObject).getChecked();
+                jsonObject, stringGetter).getChecked();
     }
 
     @java.lang.SuppressWarnings({"DefaultAnnotationParam", "SameParameterValue"})
     @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
-    static void putChecked(final org.json.JSONObject jsonObject, final boolean checked)
+    static void putChecked(final org.json.JSONObject jsonObject, final boolean checked,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         if (null != jsonObject)
             new org.wheatgenetics.coordinate.optionalField.OptionalField.JSONObject(
-                jsonObject, checked);
+                jsonObject, checked, stringGetter);
     }
 
-    @androidx.annotation.NonNull org.json.JSONObject makeJSONObject()
+    @androidx.annotation.NonNull org.json.JSONObject makeJSONObject(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         return org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-            this.getName(), this.getValue(), this.getHint(), this.getChecked());
+            this.getName(), this.getValue(), this.getHint(), this.getChecked(), stringGetter);
     }
     // endregion
 }

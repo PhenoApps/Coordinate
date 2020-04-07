@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -54,7 +55,11 @@ public abstract class BaseOptionalField extends java.lang.Object
         }
     }
 
-    private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
+    private boolean nameIsPerson()
+    {
+        return this.namesAreEqual(this.stringGetter.get(
+            org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName));
+    }
     // endregion
 
     // region Constructors
@@ -111,7 +116,8 @@ public abstract class BaseOptionalField extends java.lang.Object
     boolean nameIsIdentification()
     {
         return this.getName().equals(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.identificationFieldName());
+            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.identificationFieldName(
+                this.stringGetter));
     }
 
     @androidx.annotation.NonNull java.lang.String getSafeValue()
@@ -125,7 +131,16 @@ public abstract class BaseOptionalField extends java.lang.Object
 
     // region Public Methods
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
-    public static java.lang.String identificationFieldName() { return "Identification"; }
+    public static java.lang.String identificationFieldName(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    {
+        final java.lang.String result = stringGetter.get(
+            org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName);
+        if (null == result)
+            throw new NullPointerException();
+        else
+            return result;
+    }
 
     // region Getter and Setter Public Methods
     @androidx.annotation.NonNull @androidx.annotation.Size(min = 1)
@@ -143,6 +158,10 @@ public abstract class BaseOptionalField extends java.lang.Object
     { this.checked = this.nameIsIdentification() || checked; }
     // endregion
 
-    public boolean isAPerson() { return this.nameIsPerson() || this.namesAreEqual("Name"); }
+    public boolean isAPerson()
+    {
+        return this.nameIsPerson() || this.namesAreEqual(this.stringGetter.get(
+            org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName));
+    }
     // endregion
 }

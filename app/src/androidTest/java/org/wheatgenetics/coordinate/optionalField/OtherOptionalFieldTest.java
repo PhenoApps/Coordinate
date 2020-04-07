@@ -5,14 +5,40 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.junit.Assert
  * org.junit.Test
  *
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class OtherOptionalFieldTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class OtherOptionalFieldTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     // region Constructor Tests
     @org.junit.Test(
         expected = org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass.class)
@@ -22,7 +48,8 @@ public class OtherOptionalFieldTest extends java.lang.Object
         new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 "testName",null,
-                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT));
+                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+                this),this);
     }
 
     @org.junit.Test() public void constructorSucceeds()
@@ -30,7 +57,7 @@ public class OtherOptionalFieldTest extends java.lang.Object
     {
         new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                "testName",null,"testHint"));
+                "testName",null,"testHint",this),this);
     }
     // endregion
 
@@ -42,7 +69,7 @@ public class OtherOptionalFieldTest extends java.lang.Object
             final java.lang.String testName = "testName",
                 testValue = "testValue", testHint = "testHint";
             otherOptionalField = new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
-                testName, testValue, testHint);
+                testName, testValue, testHint,this);
             otherOptionalField.setChecked(false);
 
             clonedOtherOptionalField =

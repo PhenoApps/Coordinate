@@ -378,6 +378,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                                             final java.lang.String person   ,
     @androidx.annotation.Nullable           final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter       stringGetter,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
         templateModel)
     {
@@ -385,7 +386,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             /* templateId     => */ templateModel.getId(),
             /* projectId      => */ projectId            ,
             /* person         => */ person               ,
-            /* optionalFields => */ optionalFields       );
+            /* optionalFields => */ optionalFields       ,
+            /* stringGetter   => */ stringGetter         );
         this.templateModel = templateModel;
     }
 
@@ -497,7 +499,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                     name = "Plate";
                 else
                     name = org.wheatgenetics.coordinate.optionalField
-                        .BaseOptionalField.identificationFieldName();
+                        .BaseOptionalField.identificationFieldName(this.stringGetter());
         }
         return this.optionalFieldValue(name);
     }

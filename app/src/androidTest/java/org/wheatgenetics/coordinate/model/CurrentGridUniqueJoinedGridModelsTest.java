@@ -2,8 +2,14 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
@@ -11,7 +17,28 @@ package org.wheatgenetics.coordinate.model;
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CurrentGridUniqueJoinedGridModelsTest extends java.lang.Object
+implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     @org.junit.Test() public void addWorks()
     {
         final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
@@ -29,6 +56,7 @@ public class CurrentGridUniqueJoinedGridModelsTest extends java.lang.Object
                     /* activeRow                    => */0,
                     /* activeCol                    => */0,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */123,
 
                     /* templateId                   => */6,
@@ -61,6 +89,7 @@ public class CurrentGridUniqueJoinedGridModelsTest extends java.lang.Object
                         /* activeRow                    => */0,
                         /* activeCol                    => */0,
                         /* optionalFields               => */null,
+                        /* stringGetter                 => */this,
                         /* timestamp                    => */123,
 
                         /* templateId                   => */6,

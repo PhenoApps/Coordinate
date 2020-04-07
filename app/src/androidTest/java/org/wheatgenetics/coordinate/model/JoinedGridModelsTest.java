@@ -3,11 +3,16 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
  *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.javalib.Utils
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -15,9 +20,30 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
  * org.wheatgenetics.coordinate.model.RowOrCols
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class JoinedGridModelsTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class JoinedGridModelsTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
+    // region Overridden Method Tests
     @org.junit.Test() public void addAndSizeAndGetWork()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
@@ -34,6 +60,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* activeRow                    => */0,
                     /* activeCol                    => */0,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */123,
 
                     /* templateId                   => */6,
@@ -65,44 +92,6 @@ public class JoinedGridModelsTest extends java.lang.Object
         org.junit.Assert.assertNull(joinedGridModels.get(0  ));
         org.junit.Assert.assertNull(joinedGridModels.get(999));
         org.junit.Assert.assertNull(joinedGridModels.get( -5));
-    }
-
-    @org.junit.Test() public void namesWorks()
-    {
-        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
-        org.junit.Assert.assertNull(joinedGridModels.names());
-
-        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-            new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                /* id                           => */5,
-                /* projectId                    => */0,
-                /* person                       => */"testPerson",
-                /* activeRow                    => */0,
-                /* activeCol                    => */0,
-                /* optionalFields               => */null,
-                /* timestamp                    => */123,
-
-                /* templateId                   => */6,
-                /* title                        => */"testTitle",
-                /* code                         => */1,
-                /* rows                         => */5,
-                /* cols                         => */2,
-                /* generatedExcludedCellsAmount => */0,
-                /* initialExcludedCells         => */null,
-                /* excludedRows                 => */null,
-                /* excludedCols                 => */null,
-                /* colNumbering                 => */1,
-                /* rowNumbering                 => */0,
-                /* entryLabel                   => */null,
-                /* templateOptionalFields       => */null,
-                /* templateTimestamp            => */333,
-
-                /* entryModels                  => */null);
-        org.junit.Assert.assertTrue       (joinedGridModels.add(joinedGridModel));
-        org.junit.Assert.assertArrayEquals(
-            org.wheatgenetics.javalib.Utils.stringArray(joinedGridModel.name()),
-            joinedGridModels.names()                                           );
     }
 
     @org.junit.Test() public void processAllWorks()
@@ -139,6 +128,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                         /* activeRow                    => */0,
                         /* activeCol                    => */0,
                         /* optionalFields               => */null,
+                        /* stringGetter                 => */this,
                         /* timestamp                    => */123,
 
                         /* templateId                   => */6,
@@ -164,6 +154,47 @@ public class JoinedGridModelsTest extends java.lang.Object
         }
         joinedGridModels.processAll(processor);
     }
+    // endregion
+
+    // region Public Method Tests
+    @org.junit.Test() public void namesWorks()
+    {
+        final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
+            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+        org.junit.Assert.assertNull(joinedGridModels.names());
+
+        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
+            new org.wheatgenetics.coordinate.model.JoinedGridModel(
+                /* id                           => */5,
+                /* projectId                    => */0,
+                /* person                       => */"testPerson",
+                /* activeRow                    => */0,
+                /* activeCol                    => */0,
+                /* optionalFields               => */null,
+                /* stringGetter                 => */this,
+                /* timestamp                    => */123,
+
+                /* templateId                   => */6,
+                /* title                        => */"testTitle",
+                /* code                         => */1,
+                /* rows                         => */5,
+                /* cols                         => */2,
+                /* generatedExcludedCellsAmount => */0,
+                /* initialExcludedCells         => */null,
+                /* excludedRows                 => */null,
+                /* excludedCols                 => */null,
+                /* colNumbering                 => */1,
+                /* rowNumbering                 => */0,
+                /* entryLabel                   => */null,
+                /* templateOptionalFields       => */null,
+                /* templateTimestamp            => */333,
+
+                /* entryModels                  => */null);
+        org.junit.Assert.assertTrue       (joinedGridModels.add(joinedGridModel));
+        org.junit.Assert.assertArrayEquals(
+            org.wheatgenetics.javalib.Utils.stringArray(joinedGridModel.name()),
+            joinedGridModels.names()                                           );
+    }
 
     @org.junit.Test() public void excludedCellsWorks()
     {
@@ -186,6 +217,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId                   => */6,
@@ -227,6 +259,7 @@ public class JoinedGridModelsTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId                   => */6,
@@ -253,4 +286,5 @@ public class JoinedGridModelsTest extends java.lang.Object
         org.junit.Assert.assertNotNull(excludedCells);
         org.junit.Assert.assertEquals (rows + cols - 1, excludedCells.size());
     }
+    // endregion
 }

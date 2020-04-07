@@ -2,10 +2,16 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.androidlibrary.Utils
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -23,9 +29,29 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.RowOrCols
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class JoinedGridModelTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class JoinedGridModelTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     // region Types
     private static class Helper extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
@@ -47,6 +73,7 @@ public class JoinedGridModelTest extends java.lang.Object
             /* projectId      => */5,
             /* person         => */"John Doe",
             /* optionalFields => */null,
+            /* stringGetter   => */this,
             /* templateModel  => */null /* throws */);
     }
 
@@ -61,6 +88,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -103,6 +131,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -152,6 +181,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */ timestamp,
 
                 /* templateId                   => */6,
@@ -189,6 +219,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -228,6 +259,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -274,6 +306,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -320,6 +353,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -360,6 +394,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -409,6 +444,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -464,7 +500,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 {
                     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
                         optionalFields = org.wheatgenetics.coordinate.optionalField
-                            .NonNullOptionalFields.makeSeedDefault(trayId, person);
+                            .NonNullOptionalFields.makeSeedDefault(trayId, person,this);
                     joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                         /* id             => */5,
                         /* projectId      => */0,
@@ -472,6 +508,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */ optionalFields.toJson(),                // Not null.
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -530,6 +567,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */null,
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -584,6 +622,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -634,6 +673,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -699,7 +739,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 {
                     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
                         optionalFields = org.wheatgenetics.coordinate.optionalField
-                            .NonNullOptionalFields.makeDNADefault(plateId, plateName, person);
+                            .NonNullOptionalFields.makeDNADefault(plateId, plateName, person,this);
                     joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                         /* id             => */5,
                         /* projectId      => */0,
@@ -707,6 +747,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */ optionalFields.toJson(),                // Not null.
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -765,6 +806,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */null,
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -817,6 +859,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -867,6 +910,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -924,7 +968,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 {
                     final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
                         optionalFields = org.wheatgenetics.coordinate.optionalField
-                            .NonNullOptionalFields.makeNew(identification, person);
+                            .NonNullOptionalFields.makeNew(identification, person,this);
                     joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                         /* id             => */5,
                         /* projectId      => */0,
@@ -932,6 +976,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */ optionalFields.toJson(),                // Not null.
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -990,6 +1035,7 @@ public class JoinedGridModelTest extends java.lang.Object
                         /* activeRow      => */0,
                         /* activeCol      => */0,
                         /* optionalFields => */null,
+                        /* stringGetter   => */this,
                         /* timestamp      => */123,
 
                         /* templateId => */6,
@@ -1040,6 +1086,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -1073,6 +1120,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow                    => */0,
                 /* activeCol                    => */0,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */123,
 
                 /* templateId                   => */6,
@@ -1135,6 +1183,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */0,
                 /* activeCol      => */0,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1172,6 +1221,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */0,
                 /* activeCol      => */0,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1208,6 +1258,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */0,
                 /* activeCol      => */0,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1243,6 +1294,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */activeRow - 1,
                 /* activeCol      => */activeCol - 1,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1280,6 +1332,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */ oldActiveRow,
                 /* activeCol      => */ oldActiveCol,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1329,6 +1382,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */0,
                     /* activeCol      => */0,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -1391,6 +1445,7 @@ public class JoinedGridModelTest extends java.lang.Object
                     /* activeRow      => */ activeRow,
                     /* activeCol      => */ activeCol,
                     /* optionalFields => */null,
+                    /* stringGetter   => */this,
                     /* timestamp      => */123,
 
                     /* templateId => */6,
@@ -1450,6 +1505,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */0,
                 /* activeCol      => */0,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,
@@ -1494,6 +1550,7 @@ public class JoinedGridModelTest extends java.lang.Object
                 /* activeRow      => */0,
                 /* activeCol      => */0,
                 /* optionalFields => */null,
+                /* stringGetter   => */this,
                 /* timestamp      => */123,
 
                 /* templateId => */6,

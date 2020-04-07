@@ -5,11 +5,37 @@ package org.wheatgenetics.coordinate.model;
  * org.junit.Assert
  * org.junit.Test
  *
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateModelTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateModelTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+                return "Person";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+                return "Name";
+
+            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     // region Overridden Method Tests
     @org.junit.Test() public void toStringSucceeds()
     {
@@ -32,6 +58,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */0);
         org.junit.Assert.assertEquals(expectedString, templateModel.toString());
     }
@@ -58,6 +85,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */ rowNumbering,
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */ timestamp);
         org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
             new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -74,6 +102,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */ rowNumbering,
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,                   // Notice.
+                /* stringGetter                 => */this,
                 /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
@@ -95,6 +124,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering                 => */ rowNumbering,
             /* entryLabel                   => */null,
             /* optionalFields               => */"",                         // Notice.
+            /* stringGetter                 => */this,
             /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
@@ -116,6 +146,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering                 => */ rowNumbering,
             /* entryLabel                   => */null,
             /* optionalFields               => */"  ",                       // Notice.
+            /* stringGetter                 => */this,
             /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
@@ -137,6 +168,7 @@ public class TemplateModelTest extends java.lang.Object
             /* rowNumbering                 => */ rowNumbering,
             /* entryLabel                   => */null,
             /* optionalFields               => */null,
+            /* stringGetter                 => */this,
             /* timestamp                    => */5087);                         // Notice.
 
         // noinspection SimplifiableJUnitAssertion
@@ -162,6 +194,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */0);
         final org.wheatgenetics.coordinate.model.TemplateModel clonedTemplateModel =
             (org.wheatgenetics.coordinate.model.TemplateModel) templateModel.clone();
@@ -201,6 +234,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */0,
                     /* entryLabel                   => */null,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */0);
             org.junit.Assert.assertTrue(templateModel.export(stringWriter));
         }
@@ -237,6 +271,7 @@ public class TemplateModelTest extends java.lang.Object
                     /* rowNumbering                 => */0,
                     /* entryLabel                   => */null,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */0);
             templateModel.setEntryLabel("testEntryLabel");
             org.junit.Assert.assertTrue(templateModel.export(stringWriter));
@@ -262,6 +297,7 @@ public class TemplateModelTest extends java.lang.Object
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
                 /* optionalFields               => */null,
+                /* stringGetter                 => */this,
                 /* timestamp                    => */880);
         org.junit.Assert.assertNull(templateModel.optionalFields       ());
         org.junit.Assert.assertTrue(templateModel.optionalFieldsIsEmpty());
