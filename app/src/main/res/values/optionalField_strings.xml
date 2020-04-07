@@ -6,6 +6,10 @@
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
 
 
+    <!-- DateOptionalField -->
+    <string name="DateOptionalFieldDateFieldName">Date</string>
+
+
     <!-- add_optional_field.xml -->
     <string name="add_optional_fieldNameHint">Field name</string>
     <string name="add_optional_fieldDefaultValueHint">Default text</string>

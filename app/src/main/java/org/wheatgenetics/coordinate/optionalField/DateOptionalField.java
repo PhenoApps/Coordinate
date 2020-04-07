@@ -9,6 +9,7 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -22,8 +23,12 @@ public class DateOptionalField extends org.wheatgenetics.coordinate.optionalFiel
     DateOptionalField(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
+        // noinspection ConstantConditions
         super(
-            /* name => */"Date",
+            /* name => */ null == stringGetter.get(
+                org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName) ? "Date" :
+                    stringGetter.get(
+                        org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName),
             /* hint => */ org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
             /* stringGetter => */ stringGetter);
     }
