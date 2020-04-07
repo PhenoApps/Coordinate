@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.json.JSONObject
  * org.json.JSONTokener
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
@@ -25,8 +26,21 @@ package org.wheatgenetics.coordinate.optionalField;
 public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
 implements java.lang.Cloneable
 {
+    private static final java.lang.String PERSON_FIELD_DEFAULT_NAME = "Person";
+
     @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
         stringGetter;
+
+    // region Private Methods
+    @androidx.annotation.NonNull private static java.lang.String getString(
+    @androidx.annotation.StringRes final int                                       resId       ,
+    @androidx.annotation.NonNull   final org.wheatgenetics.coordinate.StringGetter stringGetter,
+    @androidx.annotation.NonNull @androidx.annotation.Size(min = 1) final java.lang.String
+        defaultValue)
+    {
+        final java.lang.String candidateResult = stringGetter.get(resId);
+        return null == candidateResult ? defaultValue : candidateResult;
+    }
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields checkedAdd(
@@ -38,6 +52,7 @@ implements java.lang.Cloneable
         else
             return this.add(name);
     }
+    // endregion
 
     // region Constructors
     public NonNullOptionalFields(@androidx.annotation.NonNull
@@ -363,12 +378,17 @@ implements java.lang.Cloneable
     final java.lang.String identificationValue, final java.lang.String personValue,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
+        @androidx.annotation.NonNull final java.lang.String personName =
+            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName,
+                stringGetter, org.wheatgenetics.coordinate
+                    .optionalField.NonNullOptionalFields.PERSON_FIELD_DEFAULT_NAME);
         return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
             stringGetter).checkedAdd(
                 org.wheatgenetics.coordinate.optionalField
                     .BaseOptionalField.identificationFieldName(stringGetter),
                 identificationValue,null).checkedAdd(
-                    "Person", personValue,null).addDate();
+                    personName, personValue,null).addDate();
     }
 
     @androidx.annotation.NonNull
@@ -386,10 +406,35 @@ implements java.lang.Cloneable
     final java.lang.String trayIdValue, final java.lang.String personValue,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
-            stringGetter).checkedAdd(
-                "Tray"  , trayIdValue,"Tray ID"    ).checkedAdd(
-                "Person", personValue,"Person name").addDate();
+        @androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(stringGetter);
+        {
+            @androidx.annotation.NonNull final java.lang.String trayIdName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldName,
+                    stringGetter,"Tray");
+            @androidx.annotation.NonNull final java.lang.String trayIdHint =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldHint,
+                    stringGetter,"Tray ID");
+            result.checkedAdd(trayIdName, trayIdValue, trayIdHint);
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String personName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string
+                        .NonNullOptionalFieldsSeedTrayPersonFieldName,
+                    stringGetter, org.wheatgenetics.coordinate
+                        .optionalField.NonNullOptionalFields.PERSON_FIELD_DEFAULT_NAME);
+            @androidx.annotation.NonNull final java.lang.String personHint =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string
+                        .NonNullOptionalFieldsSeedTrayPersonFieldHint,
+                    stringGetter,"Person name");
+            result.checkedAdd(personName, personValue, personHint).addDate();
+        }
+        return result;
     }
 
     @androidx.annotation.NonNull
@@ -408,12 +453,65 @@ implements java.lang.Cloneable
     final java.lang.String personValue,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(stringGetter)
-            .checkedAdd("Plate"     , plateIdValue  ,"Plate ID")             // TODO: dna
-            .checkedAdd("Plate Name", plateNameValue,null      ).add("Notes")
-            .add       ("tissue_type","Leaf","")
-            .add       ("extraction" ,"CTAB","")
-            .checkedAdd("person"     , personValue,null).addDate();
+        @androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(stringGetter);
+        {
+            @androidx.annotation.NonNull final java.lang.String plateIDName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldName,
+                    stringGetter,"Plate");
+            @androidx.annotation.NonNull final java.lang.String plateIDHint =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldHint,
+                    stringGetter,"Plate ID");
+            result.checkedAdd(plateIDName, plateIdValue, plateIDHint);
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String plateName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateNameFieldName,
+                    stringGetter,"Plate Name");
+            result.checkedAdd(plateName, plateNameValue,null);
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String notesName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsNotesFieldName,
+                    stringGetter,"Notes");
+            result.add(notesName);
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String tissueTypeName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldName,
+                    stringGetter,"tissue_type");
+            @androidx.annotation.NonNull final java.lang.String tissueTypeValue =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldValue,
+                    stringGetter,"Leaf");
+            result.add(tissueTypeName,tissueTypeValue,"");
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String extractionName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldName,
+                    stringGetter,"extraction");
+            @androidx.annotation.NonNull final java.lang.String extractionValue =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldValue,
+                    stringGetter,"CTAB");
+            result.add(extractionName, extractionValue,"");
+        }
+        {
+            @androidx.annotation.NonNull final java.lang.String personName =
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.getString(
+                    org.wheatgenetics.coordinate.R.string
+                        .NonNullOptionalFieldsDNAPlatePersonFieldName,
+                    stringGetter,"person");
+            result.checkedAdd(personName, personValue,null);
+        }
+        return result.addDate();
     }
 
     @androidx.annotation.NonNull
