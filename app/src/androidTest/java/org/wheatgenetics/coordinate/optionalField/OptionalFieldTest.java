@@ -43,6 +43,7 @@ public class OptionalFieldTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void constructorEmptyParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 null,null,null));
@@ -51,6 +52,7 @@ public class OptionalFieldTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void constructorNullNameParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 null,"testValue",null));
