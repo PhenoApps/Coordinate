@@ -72,6 +72,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void constructorEmptyParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 null,null,null,this),this);
@@ -80,6 +81,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test(expected = java.lang.AssertionError.class)
     public void constructorNullNameParameterFails()
     {
+        // noinspection ConstantConditions
         new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
             org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
                 null,"testValue",null,this),this);

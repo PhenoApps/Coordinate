@@ -177,9 +177,8 @@ class RowOrCols extends java.lang.Object
             }
         }
     }
-    // endregion
 
-    public boolean contains(@androidx.annotation.IntRange(from = 1) final int candidateValue)
+    boolean contains(@androidx.annotation.IntRange(from = 1) final int candidateValue)
     {
         if (null == this.rowOrColTreeSetInstance)
             return false;
@@ -198,4 +197,5 @@ class RowOrCols extends java.lang.Object
             return this.rowOrColTreeSetInstance.contains(candidateRowOrCol);
         }
     }
+    // endregion
 }

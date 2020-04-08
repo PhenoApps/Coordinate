@@ -253,11 +253,9 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
 
     int size() { return null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size(); }
-    // endregion
 
-    // region Public Methods
-    public boolean contains(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell candidateCell)
+    boolean contains(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.model.Cell candidateCell)
     {
         // The following code checks to see if candidateCell is inRange().  If it isn't then we know
         // that it can't be present so contains() returns false.  (The check is actually not
@@ -271,7 +269,9 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         return null == this.cellTreeSetInstance ? false :
             this.cellTreeSetInstance.contains(candidateCell);
     }
+    // endregion
 
+    // region Public Methods
     public boolean add(final org.wheatgenetics.coordinate.model.Cell cell)
     {
         // noinspection SimplifiableConditionalExpression
