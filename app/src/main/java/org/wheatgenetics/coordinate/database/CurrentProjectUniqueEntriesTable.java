@@ -46,7 +46,7 @@ extends org.wheatgenetics.coordinate.database.CheckedEntriesTable
     {
         this.currentProjectUniqueEntryModels =
             new org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels(
-                gridId, rows, cols, this.checker);
+                gridId, rows, cols, this.checker,this);
         return this.getCurrentProjectUniqueEntryModels();
     }
     // endregion

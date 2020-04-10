@@ -10,6 +10,8 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.xmlpull.v1.XmlSerializer
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
  * org.wheatgenetics.coordinate.model.Cell
  * org.wheatgenetics.coordinate.model.Cells
@@ -27,6 +29,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         EXCLUDED_ROWS_TAG_NAME  = "excludedRows", EXCLUDED_COLS_TAG_NAME  = "excludedCols" ;
 
     // region Fields
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+
     @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.Cells
         excludedCellsInstance = null;
     @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.RowOrCols
@@ -53,9 +58,10 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
             json = json.trim();
             this.excludedCellsInstance = json.length() <= 0 ? null :
                 new org.wheatgenetics.coordinate.model.Cells(
-                    /* json   => */ json          ,
-                    /* maxRow => */ this.getRows(),
-                    /* maxCol => */ this.getCols());
+                    /* json         => */ json             ,
+                    /* maxRow       => */ this.getRows()   ,
+                    /* maxCol       => */ this.getCols()   ,
+                    /* stringGetter => */ this.stringGetter);
         }
     }
 
@@ -141,10 +147,14 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
     final boolean colNumbering, final boolean rowNumbering,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super(id, title, type, rows, cols, generatedExcludedCellsAmount,
             colNumbering, rowNumbering, timestamp);
+
+        this.stringGetter = stringGetter;
+
         this.excludedCellsInstance = excludedCells;
         this.excludedRowsInstance  = excludedRows ;
         this.excludedColsInstance  = excludedCols ;
@@ -161,10 +171,14 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
     final boolean colNumbering, final boolean rowNumbering,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super(title, type, rows, cols, generatedExcludedCellsAmount,
             colNumbering, rowNumbering, timestamp);
+
+        this.stringGetter = stringGetter;
+
         this.excludedCellsInstance = excludedCells;
         this.excludedRowsInstance  = excludedRows ;
         this.excludedColsInstance  = excludedCols ;
@@ -172,29 +186,34 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     /** Called by fourth and fifth TemplateModel constructors. */
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    DisplayTemplateModel() { super(); }
+    DisplayTemplateModel(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(); this.stringGetter = stringGetter; }
 
     /** Called by sixth TemplateModel constructor. */
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     DisplayTemplateModel(
-    @androidx.annotation.IntRange(from = 1        ) final long             id             ,
-                                                    final java.lang.String title          ,
-    @androidx.annotation.IntRange(from = 0, to = 2) final int              code           ,
-    @androidx.annotation.IntRange(from = 1        ) final int              rows           ,
-    @androidx.annotation.IntRange(from = 1        ) final int              cols           ,
-    @androidx.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    @androidx.annotation.Nullable                   final java.lang.String excludedCells,
-    @androidx.annotation.Nullable                   final java.lang.String excludedRows ,
-    @androidx.annotation.Nullable                   final java.lang.String excludedCols ,
-    @androidx.annotation.IntRange(from = 0, to = 1) final int              colNumbering ,
-    @androidx.annotation.IntRange(from = 0, to = 1) final int              rowNumbering ,
-                                                    final java.lang.String entryLabel   ,
-    @androidx.annotation.IntRange(from = 0        ) final long             timestamp    )
+    @androidx.annotation.IntRange(from = 1        ) final long             id                      ,
+                                                    final java.lang.String title                   ,
+    @androidx.annotation.IntRange(from = 0, to = 2) final int              code                    ,
+    @androidx.annotation.IntRange(from = 1        ) final int              rows                    ,
+    @androidx.annotation.IntRange(from = 1        ) final int              cols                    ,
+    @androidx.annotation.IntRange(from = 0        ) final int          generatedExcludedCellsAmount,
+    @androidx.annotation.Nullable                   final java.lang.String            excludedCells,
+    @androidx.annotation.Nullable                   final java.lang.String            excludedRows ,
+    @androidx.annotation.Nullable                   final java.lang.String            excludedCols ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int                         colNumbering ,
+    @androidx.annotation.IntRange(from = 0, to = 1) final int                         rowNumbering ,
+                                                    final java.lang.String            entryLabel   ,
+    @androidx.annotation.IntRange(from = 0        ) final long                        timestamp    ,
+    @androidx.annotation.NonNull      final org.wheatgenetics.coordinate.StringGetter stringGetter )
     {
         super(id, title, org.wheatgenetics.coordinate.model.TemplateType.get(code), rows, cols,
             generatedExcludedCellsAmount,
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(colNumbering),
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.valid(rowNumbering), timestamp);
+
+        this.stringGetter = stringGetter;
 
         this.setExcludedCells(excludedCells); this.setExcludedRows(excludedRows);
         this.setExcludedCols (excludedCols ); this.setEntryLabel  (entryLabel  );
@@ -284,7 +303,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                     /* excludedCols                 => */ excludedCols                          ,
                     /* colNumbering                 => */ this.getColNumbering()                ,
                     /* rowNumbering                 => */ this.getRowNumbering()                ,
-                    /* timestamp                    => */ this.getTimestamp   ()                );
+                    /* timestamp                    => */ this.getTimestamp   ()                ,
+                    /* stringGetter                 => */ this.stringGetter                     );
             else
                 result = new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
                     /* id                           => */ id                                    ,
@@ -298,7 +318,8 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
                     /* excludedCols                 => */ excludedCols                          ,
                     /* colNumbering                 => */ this.getColNumbering()                ,
                     /* rowNumbering                 => */ this.getRowNumbering()                ,
-                    /* timestamp                    => */ this.getTimestamp   ()                );
+                    /* timestamp                    => */ this.getTimestamp   ()                ,
+                    /* stringGetter                 => */ this.stringGetter                     );
         }
         if (this.entryLabelIsNotNull()) result.setEntryLabel(this.getEntryLabel());
         return result;
@@ -306,6 +327,10 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     // endregion
 
     // region Package Methods
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
+    { return this.stringGetter; }
+
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.Cells excludedCellsClone()
     {
@@ -483,8 +508,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
             {
                 if (null == this.excludedCellsInstance)
                     this.excludedCellsInstance = new org.wheatgenetics.coordinate.model.Cells(
-                        /* maxRow => */ this.getRows(),
-                        /* maxCol => */ this.getCols());
+                        /* maxRow       => */ this.getRows()   ,
+                        /* maxCol       => */ this.getCols()   ,
+                        /* stringGetter => */ this.stringGetter);
                 this.excludedCellsInstance.add(cell);
             }
     }

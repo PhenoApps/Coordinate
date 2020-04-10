@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
@@ -46,9 +48,11 @@ implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     }
 
     UniqueEntryModels(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  rows  ,
-    @androidx.annotation.IntRange(from = 1) final int  cols  ) { super(gridId, rows, cols); }
+    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                                  rows        ,
+    @androidx.annotation.IntRange(from = 1) final int                                  cols        ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, rows, cols, stringGetter); }
 
     // region org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker Overridden Method
     @java.lang.Override @androidx.annotation.Nullable abstract public java.lang.String check(

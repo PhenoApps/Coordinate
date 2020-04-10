@@ -9,7 +9,6 @@ package org.wheatgenetics.coordinate.database;
  *
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
- * androidx.annotation.StringRes
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -23,7 +22,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.Table
  */
 public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
-implements org.wheatgenetics.coordinate.StringGetter
 {
     // region Constants
     static final java.lang.String TABLE_NAME = "templates";
@@ -37,8 +35,6 @@ implements org.wheatgenetics.coordinate.StringGetter
     static final java.lang.String OPTIONS_FIELD_NAME     = "options"                          ;
     static final java.lang.String STAMP_FIELD_NAME       = "stamp"                            ;
     // endregion
-
-    private final android.content.Context context;
 
     // region Private Methods
     private android.database.Cursor query(@androidx.annotation.NonNull
@@ -78,7 +74,6 @@ implements org.wheatgenetics.coordinate.StringGetter
             /* context   => */ context                                                        ,
             /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
             /* tag       => */"TemplatesTable");
-        this.context = context;
     }
 
     // region Overridden Methods
@@ -252,11 +247,6 @@ implements org.wheatgenetics.coordinate.StringGetter
         }
         return result;
     }
-
-    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
-    // endregion
     // endregion
 
     // region Operations

@@ -43,7 +43,10 @@ public class CurrentGridUniqueGridsTable extends org.wheatgenetics.coordinate.da
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels makeJoinedGridModels()
-    { return new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels(); }
+    {
+        return new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels(
+            this);
+    }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.model.JoinedGridModel makeJoinedGridModel(

@@ -43,7 +43,7 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     {
         this.allGridsUniqueEntryModels =
             new org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels(
-                gridId, rows, cols,this);
+                gridId, rows, cols,this,this);
         return this.getAllGridsUniqueEntryModels();
     }
 

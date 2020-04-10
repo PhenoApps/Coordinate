@@ -28,7 +28,7 @@ extends org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
     @androidx.annotation.IntRange(from = 1) final int cols)
     {
         return new org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels(
-            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols, this.checker);
+            /* gridId => */ this.getId(), rows, cols, this.checker, this.stringGetter());
     }
 
     /** Used by AllGridsUniqueGridsTable. */

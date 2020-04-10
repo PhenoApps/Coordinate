@@ -12,7 +12,6 @@ package org.wheatgenetics.coordinate.database;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
- * androidx.annotation.StringRes
  *
  * org.wheatgenetics.javalib.Utils
  *
@@ -30,7 +29,6 @@ package org.wheatgenetics.coordinate.database;
  * org.wheatgenetics.coordinate.database.TemplatesTable
  */
 public class GridsTable extends org.wheatgenetics.coordinate.database.Table
-implements org.wheatgenetics.coordinate.StringGetter
 {
     // region Constants
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES) static final
@@ -47,24 +45,19 @@ implements org.wheatgenetics.coordinate.StringGetter
     // endregion
 
     // region Fields
-    private static java.lang.String idFieldName, joinedQuery;
-
-    private final android.content.Context                            context;
-    private       org.wheatgenetics.coordinate.database.EntriesTable
+    private static java.lang.String                                   idFieldName, joinedQuery;
+    private        org.wheatgenetics.coordinate.database.EntriesTable
         entriesTableInstance = null;                                                    // lazy load
     // endregion
 
     // region Package Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.content.Context getContext() { return this.context; }
-
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.database.EntriesTable makeEntriesTable()
     { return new org.wheatgenetics.coordinate.database.EntriesTable(this.getContext()); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels makeJoinedGridModels()
-    { return new org.wheatgenetics.coordinate.model.JoinedGridModels(); }
+    { return new org.wheatgenetics.coordinate.model.JoinedGridModels(this); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.JoinedGridModel makeJoinedGridModel(
@@ -140,7 +133,6 @@ implements org.wheatgenetics.coordinate.StringGetter
             /* context   => */ context                                                    ,
             /* tableName => */ org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME,
             /* tag       => */ tag                                                        );
-        this.context = context;
 
         final java.lang.String
             gridsTableName     = org.wheatgenetics.coordinate.database.GridsTable.TABLE_NAME    ,
@@ -420,11 +412,6 @@ implements org.wheatgenetics.coordinate.StringGetter
         }
         return result;
     }
-
-    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
-    // endregion
     // endregion
 
     // region Operations

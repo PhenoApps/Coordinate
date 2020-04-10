@@ -88,8 +88,10 @@ class RowOrCols extends java.lang.Object
         if (null == this.rowOrColTreeSetInstance)
             return "null";
         else
+        {
+            final java.lang.String EMPTY_STRING = "empty";
             if (this.rowOrColTreeSetInstance.isEmpty())
-                return "empty";
+                return EMPTY_STRING;
             else
             {
                 final java.lang.String result;
@@ -107,8 +109,9 @@ class RowOrCols extends java.lang.Object
                     }
                     result = stringBuilder.toString();
                 }
-                return result.length() > 0 ? result : "empty";
+                return result.length() > 0 ? result : EMPTY_STRING;
             }
+        }
     }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)

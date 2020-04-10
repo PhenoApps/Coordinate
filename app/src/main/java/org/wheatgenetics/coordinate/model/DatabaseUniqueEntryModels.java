@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
@@ -44,8 +46,9 @@ extends org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
     @androidx.annotation.IntRange(from = 1) final int              cols  ,
     @androidx.annotation.NonNull            final java.lang.String scope ,
     @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker checker)
-    { super(gridId, rows, cols); this.scope = scope; this.checker = checker; }
+        org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, rows, cols, stringGetter); this.scope = scope; this.checker = checker; }
 
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
     @androidx.annotation.IntRange(from = 1) final int              rowIndex,

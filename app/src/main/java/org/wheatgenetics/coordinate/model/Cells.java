@@ -11,6 +11,8 @@ package org.wheatgenetics.coordinate.model;
  * org.json.JSONObject
  * org.json.JSONTokener
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.Cell
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -36,7 +38,12 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     // endregion
 
     // region Fields
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.Cell maxCell;
+    // region Constructor Fields
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.Cell   maxCell;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+    // endregion
+
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.Cell>
         cellTreeSetInstance = null;                                                     // lazy load
     // endregion
@@ -70,26 +77,39 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 
     // region Constructors
     /** Assigns this.maxCell. */
-    private Cells(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell
-        maxCell) { super(); this.maxCell = maxCell; }
+    private Cells(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cell   maxCell    ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(); this.maxCell = maxCell; this.stringGetter = stringGetter; }
 
     /** Creates this.maxCell. */
-    @java.lang.SuppressWarnings({"CopyConstructorMissesField"}) private Cells(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells cells)
-    { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell)); }
+    private Cells(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells  cells       ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    {
+        this(
+            /* maxCell      => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell),
+            /* stringGetter => */ stringGetter                                              );
+    }
 
     /** Creates this.maxCell. */
     public Cells(
-    @androidx.annotation.IntRange(from = 1) final int maxRow,
-    @androidx.annotation.IntRange(from = 1) final int maxCol)
-    { this(/* maxCell => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol)); }
+    @androidx.annotation.IntRange(from = 1) final int                            maxRow      ,
+    @androidx.annotation.IntRange(from = 1) final int                            maxCol      ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    {
+        this(
+            /* maxCell      => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol),
+            /* stringGetter => */ stringGetter                                               );
+    }
 
     /** Creates this.maxCell. */
-    public Cells(                           final java.lang.String json  ,
-    @androidx.annotation.IntRange(from = 1) final int              maxRow,
-    @androidx.annotation.IntRange(from = 1) final int              maxCol)
+    public Cells(                           final java.lang.String               json        ,
+    @androidx.annotation.IntRange(from = 1) final int                            maxRow      ,
+    @androidx.annotation.IntRange(from = 1) final int                            maxCol      ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        this(maxRow, maxCol);
+        this(maxRow, maxCol, stringGetter);
 
         if (null != json) if (json.trim().length() > 0)
         {
@@ -122,8 +142,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         if (null == this.cellTreeSetInstance)
             return "null";
         else
+        {
+            final java.lang.String EMPTY_STRING = "empty";
             if (this.cellTreeSetInstance.isEmpty())
-                return "empty";
+                return EMPTY_STRING;
             else
             {
                 final java.lang.String result;
@@ -140,8 +162,9 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                     }
                     result = stringBuilder.toString();
                 }
-                return result.length() > 0 ? result : "empty";
+                return result.length() > 0 ? result : EMPTY_STRING;
             }
+        }
     }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
@@ -173,7 +196,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.Cells result =
-            new org.wheatgenetics.coordinate.model.Cells(this);
+            new org.wheatgenetics.coordinate.model.Cells(this, this.stringGetter);
 
         if (null != this.cellTreeSetInstance)
             // noinspection Convert2Diamond
@@ -225,7 +248,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             else
             {
                 final org.wheatgenetics.coordinate.model.Cells result =
-                    new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+                    new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol, this.stringGetter);
                 do
                 {
                     org.wheatgenetics.coordinate.model.Cell cell;

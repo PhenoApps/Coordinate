@@ -41,6 +41,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // region Fields
     @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
         templateModel;
+
     private org.wheatgenetics.coordinate.model.EntryModels entryModels = null;
     // endregion
 
@@ -314,8 +315,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             final org.wheatgenetics.coordinate.model.Cells initialExcludedCells =
                 this.initialExcludedCells();
             result = null == initialExcludedCells ?
-                new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols()) :
-                (org.wheatgenetics.coordinate.model.Cells) initialExcludedCells.clone()      ;
+                new org.wheatgenetics.coordinate.model.Cells(
+                    this.getRows(), this.getCols(), this.stringGetter())               :
+                (org.wheatgenetics.coordinate.model.Cells) initialExcludedCells.clone();
         }
         this.excludedCellsFromExcludedRowsAndCols(result);
 
@@ -368,7 +370,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     @androidx.annotation.IntRange(from = 1) final int cols)
     {
         return new org.wheatgenetics.coordinate.model.EntryModels(
-            /* gridId => */ this.getId(), /* rows => */ rows, /* cols => */ cols);
+            /* gridId => */ this.getId(), rows, cols, this.stringGetter());
     }
     // endregion
 
@@ -388,6 +390,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
             /* person         => */ person               ,
             /* optionalFields => */ optionalFields       ,
             /* stringGetter   => */ stringGetter         );
+
         this.templateModel = templateModel;
     }
 
@@ -420,6 +423,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         super(id, templateId, projectId, person, activeRow,
             activeCol, optionalFields, stringGetter, timestamp);
+
         this.templateModel = new org.wheatgenetics.coordinate.model.TemplateModel(templateId,
             title, code, rows, cols, generatedExcludedCellsAmount, initialExcludedCells,
             excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel,
@@ -460,8 +464,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     {
         // noinspection ConstantConditions
         final org.wheatgenetics.coordinate.model.Cells result = this.entryModelsIsNull() ?
-            new org.wheatgenetics.coordinate.model.Cells(this.getRows(), this.getCols()) :
-            this.getEntryModels().excludedCells()                                        ;
+            new org.wheatgenetics.coordinate.model.Cells(
+                this.getRows(), this.getCols(), this.stringGetter()) :
+            this.getEntryModels().excludedCells()                    ;
         this.excludedCellsFromExcludedRowsAndCols(result);
         return result;
     }

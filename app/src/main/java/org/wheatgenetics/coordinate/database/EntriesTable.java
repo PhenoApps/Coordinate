@@ -67,7 +67,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
     final long gridId, final int rows, final int cols)
-    { return new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols); }
+    { return new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols,this); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     boolean setEntryModel(

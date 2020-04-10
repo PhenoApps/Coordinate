@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
@@ -20,6 +22,13 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         public abstract void process(
         org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
     }
+
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+
+    public BaseJoinedGridModels(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(); this.stringGetter = stringGetter; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.SuppressWarnings({"unused"}) abstract boolean isInRange(final int i);
@@ -71,7 +80,7 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         else
         {
             final org.wheatgenetics.coordinate.model.Cells result =
-                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol, this.stringGetter);
             {
                 final int first = 0, last = size - 1;
                 for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)

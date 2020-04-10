@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.preference.Utils.Direction
@@ -30,7 +31,12 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     // region Fields
+    // region Constructor Fields
     @androidx.annotation.IntRange(from = 1) private final long gridId;
+    @androidx.annotation.NonNull            private final
+        org.wheatgenetics.coordinate.StringGetter stringGetter;
+    // endregion
+
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
         private final org.wheatgenetics.coordinate.model.EntryModel entryModelArray[][];
     // endregion
@@ -172,13 +178,15 @@ public class EntryModels extends java.lang.Object
     // endregion
 
     public EntryModels(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  rows  ,
-    @androidx.annotation.IntRange(from = 1) final int  cols  )
+    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                                  rows        ,
+    @androidx.annotation.IntRange(from = 1) final int                                  cols        ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super();
 
         this.gridId          = org.wheatgenetics.coordinate.model.Model.valid(gridId);
+        this.stringGetter    = stringGetter                                          ;
         this.entryModelArray = new org.wheatgenetics.coordinate.model.EntryModel
             [org.wheatgenetics.coordinate.Utils.valid(rows,1)]
             [org.wheatgenetics.coordinate.Utils.valid(cols,1)];
@@ -207,8 +215,9 @@ public class EntryModels extends java.lang.Object
     {
         final org.wheatgenetics.coordinate.model.Cells result =
             new org.wheatgenetics.coordinate.model.Cells(
-                /* maxRow => */ this.entryModelArray.length   ,
-                /* maxCol => */ this.entryModelArray[0].length);
+                /* maxRow       => */ this.entryModelArray.length   ,
+                /* maxCol       => */ this.entryModelArray[0].length,
+                /* stringGetter => */ this.stringGetter             );
         for (final org.wheatgenetics.coordinate.model.EntryModel[] row: this.entryModelArray)
             for (final org.wheatgenetics.coordinate.model.EntryModel entryModel: row)
                 if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)

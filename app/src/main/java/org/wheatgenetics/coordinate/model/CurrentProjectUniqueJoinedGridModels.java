@@ -8,6 +8,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
  * org.wheatgenetics.coordinate.model.JoinedGridModel
@@ -29,6 +31,10 @@ java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoined
                 org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>();
         return this.arrayListInstance;
     }
+
+    public CurrentProjectUniqueJoinedGridModels(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(stringGetter); }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override boolean isInRange(final int i)

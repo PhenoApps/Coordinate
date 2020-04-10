@@ -36,9 +36,6 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     // endregion
 
     // region Fields
-    @androidx.annotation.NonNull
-    private final org.wheatgenetics.coordinate.StringGetter stringGetter;
-
     @androidx.annotation.Nullable private
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
@@ -53,7 +50,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
         if (null != json) json = json.trim();
         this.nonNullOptionalFieldsInstance = null == json ? null : json.equals("") ? null :
             new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
-                json, this.stringGetter);
+                json, this.stringGetter());
     }
 
     @androidx.annotation.NonNull
@@ -170,8 +167,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(id, title, type, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
-        this.stringGetter = stringGetter; this.nonNullOptionalFieldsInstance = optionalFields;
+            excludedRows, excludedCols, colNumbering, rowNumbering, timestamp, stringGetter);
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
     /** Called by clone() and third constructor. */
@@ -189,8 +186,8 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     @androidx.annotation.IntRange(from = 0) final long timestamp)
     {
         super(title, type, rows, cols, generatedExcludedCellsAmount, excludedCells, excludedRows,
-            excludedCols, colNumbering, rowNumbering, timestamp);
-        this.stringGetter = stringGetter; this.nonNullOptionalFieldsInstance = optionalFields;
+            excludedCols, colNumbering, rowNumbering, timestamp, stringGetter);
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
     /** Called by makeSeedDefault() and makeDNADefault(). */
@@ -215,17 +212,16 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super();
+        super(stringGetter);
 
         this.setGeneratedExcludedCellsAmount(1);
         this.setColNumbering(true); this.setRowNumbering(false);
 
-        this.stringGetter = stringGetter; this.nonNullOptionalFieldsInstance = optionalFields;
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
-    /** Called by DefaultHandler class. */ private TemplateModel(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(); this.stringGetter = stringGetter; }
+    /** Called by DefaultHandler class. */ private TemplateModel(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter) { super(stringGetter); }
 
     /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
     public TemplateModel(
@@ -246,8 +242,9 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     @androidx.annotation.IntRange(from = 0        ) final long                   timestamp      )
     {
         super(id, title, code, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp);
-        this.stringGetter = stringGetter; this.setOptionalFields(optionalFields);
+            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp,
+            stringGetter);
+        this.setOptionalFields(optionalFields);
     }
     // endregion
 
@@ -309,7 +306,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 /* colNumbering                 => */ this.getColNumbering()                ,
                 /* rowNumbering                 => */ this.getRowNumbering()                ,
                 /* optionalFields               => */ optionalFields                        ,
-                /* stringGetter                 => */ this.stringGetter                     ,
+                /* stringGetter                 => */ this.stringGetter()                   ,
                 /* timestamp                    => */ this.getTimestamp()                   );
         else
             return new org.wheatgenetics.coordinate.model.TemplateModel(
@@ -325,7 +322,7 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                 /* colNumbering                 => */ this.getColNumbering()                ,
                 /* rowNumbering                 => */ this.getRowNumbering()                ,
                 /* optionalFields               => */ optionalFields                        ,
-                /* stringGetter                 => */ this.stringGetter                     ,
+                /* stringGetter                 => */ this.stringGetter()                   ,
                 /* timestamp                    => */ this.getTimestamp()                   );
     }
 

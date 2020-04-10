@@ -135,7 +135,10 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override
     org.wheatgenetics.coordinate.model.BaseJoinedGridModels makeJoinedGridModels()
-    { return new org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModels(); }
+    {
+        return new org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModels(
+            this);
+    }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override org.wheatgenetics.coordinate.model.JoinedGridModel makeJoinedGridModel(

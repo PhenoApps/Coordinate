@@ -13,41 +13,51 @@ package org.wheatgenetics.coordinate.database;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  * androidx.annotation.VisibleForTesting
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.database.Database
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-abstract class Table extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) abstract class Table
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     static final java.lang.String ID_FIELD_NAME = "_id";
 
     // region Fields
-    @androidx.annotation.NonNull private final android.database.sqlite.SQLiteDatabase db;
-                                 private final java.lang.String           tableName, tag;
+    @androidx.annotation.NonNull private final android.content.Context                context      ;
+    @androidx.annotation.NonNull private final android.database.sqlite.SQLiteDatabase db           ;
+                                 private final java.lang.String                      tableName, tag;
     // endregion
 
     // region Constructors
     private Table(
     @androidx.annotation.NonNull final android.database.sqlite.SQLiteDatabase db       ,
                                  final java.lang.String                       tableName,
-                                 final java.lang.String                       tag      )
-    { super(); this.db = db; this.tableName = tableName; this.tag = tag; }
+                                 final java.lang.String                       tag      ,
+    @androidx.annotation.NonNull final android.content.Context                context  )
+    { super(); this.context = context; this.db = db; this.tableName = tableName; this.tag = tag; }
 
     @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
         otherwise = androidx.annotation.VisibleForTesting.PRIVATE) Table(
     final android.content.Context context, final java.lang.String databaseName)
     {
         this(org.wheatgenetics.coordinate.database.Database.db(context, databaseName),
-            "sqlite_master","TableTest");
+            "sqlite_master","TableTest", context);
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     Table(final android.content.Context context, final java.lang.String tableName,
     final java.lang.String tag)
-    { this(org.wheatgenetics.coordinate.database.Database.db(context), tableName, tag); }
+    { this(org.wheatgenetics.coordinate.database.Database.db(context), tableName, tag, context); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
     // endregion
 
     // region Internal Operations
@@ -90,6 +100,9 @@ abstract class Table extends java.lang.Object
 
     // region External Operations
     // region Package External Operations
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull android.content.Context getContext() { return this.context; }
+
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @androidx.annotation.NonNull static java.lang.String whereClause()
     { return org.wheatgenetics.coordinate.database.Table.ID_FIELD_NAME + " = ?"; }
