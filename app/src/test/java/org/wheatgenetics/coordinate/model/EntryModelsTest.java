@@ -2,10 +2,16 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.coordinate.preference.Utils.Direction
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -15,8 +21,8 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class EntryModelsTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class EntryModelsTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     private static class FilledHandler extends java.lang.Object
     implements org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
@@ -25,18 +31,32 @@ public class EntryModelsTest extends java.lang.Object
         @java.lang.Override public void handleFilledRowOrCol() {}
     }
 
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
+                return "maxRow and/or maxCol is out of range";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     // region Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badGridIdConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(0,5,5); }
+    { new org.wheatgenetics.coordinate.model.EntryModels(0,5,5,this); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badRowsConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(1,0,5); }
+    { new org.wheatgenetics.coordinate.model.EntryModels(1,0,5,this); }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void badColsConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(1,5,0); }
+    { new org.wheatgenetics.coordinate.model.EntryModels(1,5,0,this); }
     // endregion
 
     // region Package Method Tests
@@ -44,7 +64,7 @@ public class EntryModelsTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
     public void makeExcludedEntryFails()
     {
-        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5)
+        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5,this)
             .makeExcludedEntry(50,1);
     }
 
@@ -56,7 +76,8 @@ public class EntryModelsTest extends java.lang.Object
             final long gridId = 1;
             {
                 final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-                    new org.wheatgenetics.coordinate.model.EntryModels(gridId,5,5);
+                    new org.wheatgenetics.coordinate.model.EntryModels(
+                        gridId,5,5,this);
                 entryModels.makeExcludedEntry(row, col);
                 org.junit.Assert.assertTrue(entryModels.get(row, col)
                     instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel);
@@ -74,7 +95,7 @@ public class EntryModelsTest extends java.lang.Object
     @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
     public void makeIncludedEntryFails()
     {
-        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5)
+        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5,this)
             .makeIncludedEntry(5,10);
     }
 
@@ -86,7 +107,8 @@ public class EntryModelsTest extends java.lang.Object
             final long gridId = 1;
             {
                 final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-                    new org.wheatgenetics.coordinate.model.EntryModels(gridId, 5,5);
+                    new org.wheatgenetics.coordinate.model.EntryModels(
+                        gridId,5,5,this);
                 entryModels.makeIncludedEntry(row, col);
                 org.junit.Assert.assertTrue(entryModels.get(row, col)
                     instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel);
@@ -107,9 +129,9 @@ public class EntryModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.EntryModels entryModels  ;
         {
             final int rows = 5, cols = 5;
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells      (rows, cols);
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols,this);
             entryModels   = new org.wheatgenetics.coordinate.model.EntryModels(
-                1, rows, cols);
+                1, rows, cols,this);
         }
         org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
@@ -121,10 +143,11 @@ public class EntryModelsTest extends java.lang.Object
         {
             final int rows = 5, cols = 5, excludedRow = 3, excludedCol = 3;
 
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols,this);
             expectedCells.add(excludedRow, excludedCol);
 
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
+                1, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (excludedRow == row && excludedCol == col)
                     entryModels.makeExcludedEntry(row, col);
@@ -141,7 +164,7 @@ public class EntryModelsTest extends java.lang.Object
         final long                                           gridId = 1          ;
         final int                                            rows   = 5, cols = 5;
         final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-            new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+            new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols,this);
         for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
             entryModels.makeIncludedEntry(row, col);
 
@@ -283,7 +306,8 @@ public class EntryModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
+                gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (2 == row && 2 == col)
                     entryModels.makeExcludedEntry(row, col);
@@ -345,7 +369,8 @@ public class EntryModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
+                gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 entryModels.makeIncludedEntry(row, col);
         }
@@ -386,7 +411,8 @@ public class EntryModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(
+                1, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 entryModels.makeIncludedEntry(row, col);
         }

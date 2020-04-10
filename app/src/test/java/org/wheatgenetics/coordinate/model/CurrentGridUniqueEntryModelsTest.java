@@ -2,7 +2,13 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
@@ -11,7 +17,22 @@ package org.wheatgenetics.coordinate.model;
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
+implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
+                return "maxRow and/or maxCol is out of range";
+
+            default: return null;
+        }
+    }
+    // endregion
+
     @org.junit.Test(expected = org.wheatgenetics.coordinate.model
         .CurrentGridUniqueEntryModels.DuplicateCheckException.class)
     public void checkThenSetThrows()
@@ -20,7 +41,7 @@ public class CurrentGridUniqueEntryModelsTest extends java.lang.Object
         final org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
             currentGridUniqueEntryModels =
                 new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
-                    1,1,2);
+                    1,1,2,this);
         {
             // Set first entry.
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
