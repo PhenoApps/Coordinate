@@ -20,19 +20,24 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
 {
     // region Types
     static class MaxRowAndOrMaxColOutOfRange extends java.lang.IllegalArgumentException
-    { private MaxRowAndOrMaxColOutOfRange() { super("maxRow and/or maxCol is out of range"); } }
+    {
+        private MaxRowAndOrMaxColOutOfRange(@androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        {
+            super(stringGetter.get(
+                org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange));
+        }
+    }
 
     public static class AmountIsTooLarge extends java.lang.IllegalArgumentException
     {
-        private AmountIsTooLarge(final int maxAmount)
+        private AmountIsTooLarge(final int maxAmount, @androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
-            super(java.lang.String.format(
-                /* format => */ maxAmount <= 0 ?
-                    "There is no more room for entries." :
-                    1 == maxAmount ?
-                        "There is room for only %d more entry."  :
-                        "There is room for only %d more entries.",
-                /* args => */ maxAmount));
+            super(stringGetter.getQuantity(
+                /* resId      => */ org.wheatgenetics.coordinate.R.plurals.AmountIsTooLarge,
+                /* quantity   => */ java.lang.Math.max(maxAmount, 0)                       ,
+                /* formatArgs => */ maxAmount                                              ));
         }
     }
     // endregion
@@ -239,12 +244,16 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                     this.maxCell);                                                  //  lang.Ille-
             }                                                                       //  galArgument-
             catch (final java.lang.IllegalArgumentException e)                      //  Exception
-            { throw new org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange(); }
+            {
+                throw new org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange(
+                    this.stringGetter);
+            }
 
             final int maxAmount = maxRow * maxCol -
                 (null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size());
             if (amount > maxAmount)
-                throw new org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge(maxAmount);
+                throw new org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge(
+                    maxAmount, this.stringGetter);
             else
             {
                 final org.wheatgenetics.coordinate.model.Cells result =
