@@ -2,9 +2,12 @@ package org.wheatgenetics.coordinate.optionalField;
 
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.StringRes
  *
  * org.json.JSONArray
@@ -30,6 +33,7 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     private static class StringGetter extends java.lang.Object
     implements org.wheatgenetics.coordinate.StringGetter
     {
+        // region Overridden Methods
         @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
         @androidx.annotation.StringRes final int resId)
         {
@@ -88,6 +92,13 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
                 default: org.junit.Assert.fail(); return null;
             }
         }
+
+        @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+        @androidx.annotation.PluralsRes         final int                 resId     ,
+        @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+        @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+        throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+        // endregion
     }
 
     private static final java.lang.String NAME1 = "name1", VALUE1 = "value1", HINT1 = "hint1";

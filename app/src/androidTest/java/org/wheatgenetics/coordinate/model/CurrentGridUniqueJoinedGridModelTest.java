@@ -2,7 +2,11 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.StringRes
  *
  * org.junit.Assert
@@ -19,13 +23,19 @@ package org.wheatgenetics.coordinate.model;
 public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
 implements org.wheatgenetics.coordinate.StringGetter
 {
-    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
         switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
     // endregion
 
     @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
