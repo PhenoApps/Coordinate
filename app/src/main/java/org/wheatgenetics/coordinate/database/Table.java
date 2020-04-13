@@ -4,13 +4,16 @@ package org.wheatgenetics.coordinate.database;
  * Uses:
  * android.content.ContentValues
  * android.content.Context
+ * android.content.res.Resources.NotFoundException
  * android.database.Cursor
  * android.database.sqlite.SQLiteDatabase
  * android.util.Log
  *
  * androidx.annotation.CallSuper
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.StringRes
@@ -55,9 +58,16 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     { this(org.wheatgenetics.coordinate.database.Database.db(context), tableName, tag, context); }
     // endregion
 
-    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException
+    { return this.context.getResources().getQuantityString(resId, quantity, formatArgs); }
     // endregion
 
     // region Internal Operations

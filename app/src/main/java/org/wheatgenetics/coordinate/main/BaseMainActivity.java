@@ -6,10 +6,13 @@ package org.wheatgenetics.coordinate.main;
  * android.content.Intent
  * android.content.pm.PackageInfo
  * android.content.pm.PackageManager.NameNotFoundException
+ * android.content.res.Resources.NotFoundException
  * android.os.Bundle
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.StringRes
@@ -183,9 +186,16 @@ implements org.wheatgenetics.coordinate.StringGetter
             }
     }
 
-    // region Overridden Methods
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId) { return this.getString(resId); }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException
+    { return this.getResources().getQuantityString(resId, quantity, formatArgs); }
     // endregion
     // endregion
 }

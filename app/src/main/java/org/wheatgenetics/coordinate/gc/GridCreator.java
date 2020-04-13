@@ -4,11 +4,13 @@ package org.wheatgenetics.coordinate.gc;
  * Uses:
  * android.annotation.SuppressLint
  * android.app.Activity
+ * android.content.res.Resources.NotFoundException
  * android.os.Bundle
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.StringRes
@@ -310,9 +312,16 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
     { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
 
-    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId) { return this.activity().getString(resId); }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException
+    { return this.activity().getResources().getQuantityString(resId, quantity, formatArgs); }
     // endregion
 
     public void continueExcluding(final android.os.Bundle bundle)
