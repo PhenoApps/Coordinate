@@ -32,14 +32,33 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @androidx.annotation.StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
+                return "maxRow and/or maxCol is out of range";
+
+            default: org.junit.Assert.fail(); return null;
+        }
     }
 
     @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
     @androidx.annotation.PluralsRes         final int                 resId     ,
     @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
     @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    throws android.content.res.Resources.NotFoundException
+    {
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.plurals.AmountIsTooLarge:
+                return quantity < 1 ? "There is no more room for entries." :
+                    1 == quantity ? "There is room for only 1 more entry." :
+                        java.lang.String.format(
+                            "There is room for only %d more entries.", quantity);
+
+            default: org.junit.Assert.fail(); return null;
+        }
+    }
     // endregion
 
     // region Constructor Tests
