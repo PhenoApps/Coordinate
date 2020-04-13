@@ -32,16 +32,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     {
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
             case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            default: return null;
+            case org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName:
+                return "Date";
+
+            default: org.junit.Assert.fail(); return null;
         }
     }
     // endregion

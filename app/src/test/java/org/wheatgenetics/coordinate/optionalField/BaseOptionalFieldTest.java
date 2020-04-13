@@ -51,7 +51,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            default: return null;
+            default: org.junit.Assert.fail(); return null;
         }
     }
     // endregion

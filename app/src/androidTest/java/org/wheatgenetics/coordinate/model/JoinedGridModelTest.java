@@ -41,13 +41,55 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
                 return "Person";
 
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
             case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            default: return null;
+
+            case org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName:
+                return "Date";
+
+
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldName:
+                return "Tray";
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldHint:
+                return "Tray ID";
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsSeedTrayPersonFieldName:
+                return "Person";
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsSeedTrayPersonFieldHint:
+                return "Person name";
+
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldName:
+                return "Plate";
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldHint:
+                return "Plate ID";
+
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateNameFieldName:
+                return "Plate Name";
+
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsNotesFieldName:
+                return "Notes";
+
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldName:
+                return "tissue_type";
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldValue:
+                return "Leaf";
+
+            case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldName:
+                return "extraction";
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldValue:
+                return "CTAB";
+
+            case
+            org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsDNAPlatePersonFieldName:
+                return "person";
+
+
+            default: org.junit.Assert.fail(); return null;
         }
     }
     // endregion
@@ -117,7 +159,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         {
             final long                                           gridId      = 1;
             final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-                new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+                new org.wheatgenetics.coordinate.model.EntryModels(
+                    gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (excludedRow == row && excludedCol == col)
                     entryModels.makeExcludedEntry(row, col);
@@ -211,7 +254,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
         {
             final int rows = 5, cols = 5;
-            expectedCells   = new org.wheatgenetics.coordinate.model.Cells(rows, cols);    // Empty.
+            expectedCells   = new org.wheatgenetics.coordinate.model.Cells(                // Empty.
+                rows, cols,this);
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id                           => */5,
                 /* projectId                    => */0,
@@ -249,7 +293,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         {
             final int rows = 5, cols = 5;
 
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols,this);
             expectedCells.add(3,3);
 
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
@@ -290,7 +334,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         {
             final int rows = 5, cols = 5;
 
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols,this);
             final org.wheatgenetics.coordinate.model.RowOrCols excludedRows;
             {
                 final int excludedRow = 3;
@@ -337,7 +381,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         {
             final int rows = 5, cols = 5;
 
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols,this);
             final org.wheatgenetics.coordinate.model.RowOrCols excludedCols;
             {
                 final int excludedCol = 4;
@@ -1157,7 +1201,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.RowOrCols excludedRows, excludedCols;
             final int                                          rows = 3    , cols = 3    ;
             expectedCells = new org.wheatgenetics.coordinate.model.Cells(
-                /* maxRow => */ rows, /* maxCols => */ cols);
+                /* maxRow => */ rows, /* maxCols => */ cols,this);
             {
                 final int excludedRow = 1, excludedCol = 1;
                 expectedCells.add(excludedRow,1); expectedCells.add(1, excludedCol);
@@ -1173,7 +1217,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 expectedCells.add(excludedCellRow, excludedCellCol);
 
                 initialExcludedCells = new org.wheatgenetics.coordinate.model.Cells(
-                    /* maxRow => */ rows, /* maxCols => */ cols);
+                    /* maxRow => */ rows, /* maxCols => */ cols,this);
                 initialExcludedCells.add(excludedCellRow, excludedCellCol);
             }
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(

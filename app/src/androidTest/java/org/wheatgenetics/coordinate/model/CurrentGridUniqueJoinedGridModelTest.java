@@ -5,9 +5,9 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.Nullable
  * androidx.annotation.StringRes
  *
+ * org.junit.Assert
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
@@ -23,19 +23,8 @@ implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        switch (resId)
-        {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
-                return "Identification";
-
-            default: return null;
-        }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
     // endregion
 
@@ -84,7 +73,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final int rows = 5, cols = 5;
             currentGridUniqueEntryModels =
                 new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
-                    gridId, rows, cols);
+                    gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 currentGridUniqueEntryModels.makeIncludedEntry(row, col);
         }
@@ -160,7 +149,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final int rows = 5, cols = 5;
             currentGridUniqueEntryModels =
                 new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
-                    gridId, rows, cols);
+                    gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 currentGridUniqueEntryModels.makeIncludedEntry(row, col);
         }

@@ -23,18 +23,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
+        // noinspection SwitchStatementWithTooFewBranches
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
             case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            default: return null;
+            default: org.junit.Assert.fail(); return null;
         }
     }
     // endregion

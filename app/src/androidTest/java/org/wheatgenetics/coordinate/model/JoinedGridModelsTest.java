@@ -11,7 +11,6 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.javalib.Utils
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
@@ -27,19 +26,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        switch (resId)
-        {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
-                return "Identification";
-
-            default: return null;
-        }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
     // endregion
 
@@ -47,7 +35,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test() public void addAndSizeAndGetWork()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+            new org.wheatgenetics.coordinate.model.JoinedGridModels(this);
         org.junit.Assert.assertFalse (joinedGridModels.add(null));
         org.junit.Assert.assertEquals(0, joinedGridModels.size());
 
@@ -88,7 +76,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test() public void getWorks()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+            new org.wheatgenetics.coordinate.model.JoinedGridModels(this);
         org.junit.Assert.assertNull(joinedGridModels.get(0  ));
         org.junit.Assert.assertNull(joinedGridModels.get(999));
         org.junit.Assert.assertNull(joinedGridModels.get( -5));
@@ -97,7 +85,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test() public void processAllWorks()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+            new org.wheatgenetics.coordinate.model.JoinedGridModels(this);
 
         class Processor extends java.lang.Object
         implements org.wheatgenetics.coordinate.model.JoinedGridModels.Processor
@@ -160,7 +148,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @org.junit.Test() public void namesWorks()
     {
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+            new org.wheatgenetics.coordinate.model.JoinedGridModels(this);
         org.junit.Assert.assertNull(joinedGridModels.names());
 
         final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
@@ -200,7 +188,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     {
         final int                                                 rows             = 3, cols = 3;
         final org.wheatgenetics.coordinate.model.JoinedGridModels joinedGridModels =
-            new org.wheatgenetics.coordinate.model.JoinedGridModels();
+            new org.wheatgenetics.coordinate.model.JoinedGridModels(this);
         org.junit.Assert.assertNull(joinedGridModels.excludedCells(
             /* maxRow => */ rows, /* maxCol => */ cols));
 

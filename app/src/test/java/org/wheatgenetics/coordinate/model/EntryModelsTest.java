@@ -10,7 +10,6 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.preference.Utils.Direction
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
@@ -35,13 +34,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        switch (resId)
-        {
-            case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
-                return "maxRow and/or maxCol is out of range";
-
-            default: return null;
-        }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
     // endregion
 

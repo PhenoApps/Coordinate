@@ -4,16 +4,30 @@ package org.wheatgenetics.coordinate.model;
  * Uses:
  * android.os.Bundle
  *
+ * androidx.annotation.Nullable
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.DisplayTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class DisplayTemplateModelTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class DisplayTemplateModelTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Method
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
+    }
+    // endregion
+
     // region Constructor Tests
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void invalidCodeFourthConstructorFails()
@@ -31,7 +45,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* colNumbering                 => */1,
             /* rowNumbering                 => */0,
             /* entryLabel                   => */null,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -50,7 +65,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* colNumbering                 => */3,  // invalid
             /* rowNumbering                 => */0,
             /* entryLabel                   => */null,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -69,7 +85,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
             /* colNumbering                 => */1,
             /* rowNumbering                 => */56,  // invalid
             /* entryLabel                   => */null,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
     // endregion
 
@@ -94,7 +111,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */0);
+                /* timestamp                    => */0,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(expectedString, displayTemplateModel.toString());
     }
 
@@ -119,7 +137,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */ colNumbering,
                 /* rowNumbering                 => */ rowNumbering,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */ timestamp),
+                /* timestamp                    => */ timestamp,
+                /* stringGetter                 => */this),
             secondDisplayTemplateModel =
                 new org.wheatgenetics.coordinate.model.DisplayTemplateModel(
                     /* id                           => */ id   ,
@@ -134,7 +153,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                     /* colNumbering                 => */ colNumbering,
                     /* rowNumbering                 => */ rowNumbering,
                     /* entryLabel                   => */null,
-                    /* timestamp                    => */ timestamp);
+                    /* timestamp                    => */ timestamp,
+                    /* stringGetter                 => */this);
 
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue  (firstDisplayTemplateModel.equals(secondDisplayTemplateModel));
@@ -232,7 +252,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */0);
+                /* timestamp                    => */0,
+                /* stringGetter                 => */this);
         displayTemplateModel.setEntryLabel("abc");
 
         final org.wheatgenetics.coordinate.model.DisplayTemplateModel clonedDisplayTemplateModel =
@@ -260,7 +281,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedCellsAsJson());
     }
 
@@ -280,7 +302,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         final org.wheatgenetics.coordinate.model.Cell cell =
             new org.wheatgenetics.coordinate.model.Cell(1,1);
 
@@ -311,7 +334,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         final int row = 1;
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(row));
 
@@ -338,7 +362,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedRowsAsJson());
     }
 
@@ -358,7 +383,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedRow(1));
     }
     // endregion
@@ -380,7 +406,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         final int col = 1;
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(col));
 
@@ -407,7 +434,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertNull(displayTemplateModel.getExcludedColsAsJson());
     }
 
@@ -427,7 +455,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCol(1));
     }
     // endregion
@@ -449,7 +478,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(new boolean[]{false, false, false, false, false},
             displayTemplateModel.rowCheckedItems());
 
@@ -474,7 +504,8 @@ public class DisplayTemplateModelTest extends java.lang.Object
                 /* colNumbering                 => */1,
                 /* rowNumbering                 => */0,
                 /* entryLabel                   => */null,
-                /* timestamp                    => */880);
+                /* timestamp                    => */880,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(
             new boolean[]{false, false}, displayTemplateModel.colCheckedItems());
 

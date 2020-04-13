@@ -7,9 +7,9 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.Nullable
  * androidx.annotation.StringRes
  *
+ * org.junit.Assert
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
@@ -74,13 +74,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        switch (resId)
-        {
-            case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
-                return "maxRow and/or maxCol is out of range";
-
-            default: return null;
-        }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
     // endregion
 

@@ -37,14 +37,55 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
             {
                 case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
                     return "Person";
-
-                case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                    return "Name";
-
                 case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
                     return "Identification";
 
-                default: return null;
+
+                case org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName:
+                    return "Date";
+
+
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldName:
+                    return "Tray";
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTrayIDFieldHint:
+                    return "Tray ID";
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsSeedTrayPersonFieldName:
+                    return "Person";
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsSeedTrayPersonFieldHint:
+                    return "Person name";
+
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldName:
+                    return "Plate";
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateIDFieldHint:
+                    return "Plate ID";
+
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsPlateNameFieldName:
+                    return "Plate Name";
+
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsNotesFieldName:
+                    return "Notes";
+
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldName:
+                    return "tissue_type";
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsTissueTypeFieldValue:
+                    return "Leaf";
+
+                case org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldName:
+                    return "extraction";
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsExtractionFieldValue:
+                    return "CTAB";
+
+                case
+                org.wheatgenetics.coordinate.R.string.NonNullOptionalFieldsDNAPlatePersonFieldName:
+                    return "person";
+
+
+                default: org.junit.Assert.fail(); return null;
             }
         }
     }
@@ -120,8 +161,9 @@ public class NonNullOptionalFieldsTest extends java.lang.Object
     @org.junit.Test() public void secondConstructorNullParameterSucceeds()
     {
         org.junit.Assert.assertTrue(
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
-                null).isEmpty());
+            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(null,
+                org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest.stringGetter)
+                    .isEmpty());
     }
 
     @org.junit.Test() public void secondConstructorEmptyParameterSucceeds()

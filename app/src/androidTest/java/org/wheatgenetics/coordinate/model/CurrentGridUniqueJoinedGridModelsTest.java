@@ -8,7 +8,6 @@ package org.wheatgenetics.coordinate.model;
  * org.junit.Assert
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
@@ -23,27 +22,16 @@ implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        switch (resId)
-        {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
-                return "Person";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
-                return "Name";
-
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
-                return "Identification";
-
-            default: return null;
-        }
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
     }
     // endregion
 
     @org.junit.Test() public void addWorks()
     {
         final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
-            currentGridUniqueJoinedGridModels =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels();
+            currentGridUniqueJoinedGridModels = new
+            org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels(this);
         org.junit.Assert.assertFalse (currentGridUniqueJoinedGridModels.add(null));
         org.junit.Assert.assertEquals(0, currentGridUniqueJoinedGridModels.size());
 
