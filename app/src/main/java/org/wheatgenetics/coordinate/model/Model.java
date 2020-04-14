@@ -21,9 +21,11 @@ public abstract class Model extends java.lang.Object implements java.lang.Clonea
     // endregion
 
     // region Overridden Methods
-    @java.lang.SuppressWarnings({"DefaultLocale"}) @java.lang.Override @androidx.annotation.NonNull
-    public java.lang.String toString()
-    { return java.lang.String.format("id: %02d", this.getId()); }
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
+    {
+        return java.lang.String.format(java.util.Locale.getDefault(),
+            "id: %02d", this.getId());
+    }
 
     @java.lang.Override public boolean equals(final java.lang.Object object)
     {

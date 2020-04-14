@@ -58,8 +58,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     }
 
 
-    @java.lang.SuppressWarnings({"DefaultLocale"}) @androidx.annotation.Nullable
-    private static java.lang.String[] items(
+    @androidx.annotation.Nullable private static java.lang.String[] items(
     @androidx.annotation.IntRange(from = 1) final int length, final java.lang.String label)
     {
         if (length <= 0)
@@ -68,8 +67,8 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
         {
             // noinspection CStyleArrayDeclaration
             final java.lang.String result[] = new java.lang.String[length];
-            for (int i = 0; i < length; i++)
-                result[i] = java.lang.String.format("%s %d", label, i + 1);
+            for (int i = 0; i < length; i++) result[i] = java.lang.String.format(
+                java.util.Locale.getDefault(),"%s %d", label, i + 1);
             return result;
         }
     }
@@ -191,13 +190,14 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.SuppressWarnings({"DefaultLocale"}) java.lang.String formatString()
+    java.lang.String formatString()
     {
-        return "%s" + java.lang.String.format(" [%s, title=%s, type=%d, rows=%d, cols=%d, genera" +
-            "tedExcludedCellsAmount=%d, colNumbering=%b, rowNumbering=%b, entryLabel=%s, stamp=%d",
-            super.toString(), this.getTitle(), this.getType().getCode(), this.getRows(),
-            this.getCols(), this.getGeneratedExcludedCellsAmount(), this.getColNumbering(),
-            this.getRowNumbering(), this.getEntryLabel(), this.getTimestamp());
+        return "%s" + java.lang.String.format(java.util.Locale.getDefault(),
+            " [%s, title=%s, type=%d, rows=%d, cols=%d, generatedExcludedCellsAmount=%d, " +
+                "colNumbering=%b, rowNumbering=%b, entryLabel=%s, stamp=%d", super.toString(),
+            this.getTitle(), this.getType().getCode(), this.getRows(), this.getCols(),
+            this.getGeneratedExcludedCellsAmount(), this.getColNumbering(), this.getRowNumbering(),
+            this.getEntryLabel(), this.getTimestamp());
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)

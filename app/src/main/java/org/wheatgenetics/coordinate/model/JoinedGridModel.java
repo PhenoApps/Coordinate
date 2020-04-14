@@ -113,7 +113,7 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         csvWriter.close();
     }
 
-    @java.lang.SuppressWarnings({"DefaultLocale"}) private void exportDNA(
+    private void exportDNA(
     @androidx.annotation.NonNull  final org.wheatgenetics.javalib.CsvWriter csvWriter,
     @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
         helper,
@@ -168,8 +168,8 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                             {
                                 final java.lang.String rowName =
                                     org.wheatgenetics.coordinate.Utils.convert(r);
-                                final java.lang.String colName =
-                                    java.lang.String.format("%02d", col);
+                                final java.lang.String colName = java.lang.String.format(
+                                    java.util.Locale.getDefault(),"%02d", col);
 
                                 sample_id = java.lang.String.format(
                                     "%s_%s%s", plate_id, rowName, colName);
@@ -452,12 +452,11 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
     // endregion
 
     // region Package Methods
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultLocale"})
-    java.lang.String name()
+    @androidx.annotation.NonNull java.lang.String name()
     {
-        return java.lang.String.format("Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n",
-            this.getPerson(), this.getTemplateTitle(), this.getCols(), this.getRows(),
-            this.getFormattedTimestamp());
+        return java.lang.String.format(java.util.Locale.getDefault(),
+            "Person: %s\n Template: %s\n Size: (%d, %d) Date: %s\n", this.getPerson(),
+            this.getTemplateTitle(), this.getCols(), this.getRows(), this.getFormattedTimestamp());
     }
 
     @androidx.annotation.NonNull org.wheatgenetics.coordinate.model.Cells excludedCellsFromEntries()

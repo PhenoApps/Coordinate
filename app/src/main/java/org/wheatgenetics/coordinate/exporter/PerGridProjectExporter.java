@@ -132,9 +132,9 @@ public class PerGridProjectExporter extends org.wheatgenetics.coordinate.exporte
                             joinedGridModel = baseJoinedGridModels.get(this.i++);
                         if (null != joinedGridModel)
                         {
-                            @java.lang.SuppressWarnings({"DefaultLocale"})
                             final java.lang.String exportFileName = java.lang.String.format(
-                                "grid%d_%s.csv", joinedGridModel.getId(), this.exportDirectoryName);
+                                java.util.Locale.getDefault(),"grid%d_%s.csv",
+                                joinedGridModel.getId(), this.exportDirectoryName);
                             try
                             {
                                 this.asyncTask = new org.wheatgenetics.coordinate

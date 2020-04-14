@@ -78,7 +78,7 @@ org.wheatgenetics.coordinate.StringGetter
     // endregion
 
     // region Private Methods
-    @java.lang.SuppressWarnings({"DefaultLocale"}) private void refreshText()
+    private void refreshText()
     {
         final java.lang.StringBuilder textBuilder = new java.lang.StringBuilder();
 
@@ -114,9 +114,10 @@ org.wheatgenetics.coordinate.StringGetter
                 this.templateModel.getColNumbering(), this.templateModel.getRowNumbering()));
 
             if (textBuilder.length() > 0) textBuilder.append('\n');
-            textBuilder.append(java.lang.String.format("title=%s, type=%d, rows=%d, cols=%d",
-                this.templateModel.getTitle(), this.templateModel.getType().getCode(),
-                this.templateModel.getRows (), this.templateModel.getCols()          ));
+            textBuilder.append(java.lang.String.format(java.util.Locale.getDefault(),
+                "title=%s, type=%d, rows=%d, cols=%d", this.templateModel.getTitle(),
+                this.templateModel.getType().getCode(), this.templateModel.getRows(),
+                this.templateModel.getCols()));
         }
 
         if (null != this.textView) this.textView.setText(textBuilder.toString());
