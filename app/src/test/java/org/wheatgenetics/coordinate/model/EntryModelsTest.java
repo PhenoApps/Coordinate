@@ -186,7 +186,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 
 
         org.wheatgenetics.coordinate.model.IncludedEntryModel activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,1);
+            new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                gridId,1,1,this);
         org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
             entryModels.next(activeIncludedEntryModel,
                 org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
@@ -203,8 +204,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId, rows,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
             filledHandler                                                           );
@@ -212,8 +213,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1, cols);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,1, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
             filledHandler                                                           );
@@ -222,8 +223,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,999,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
             filledHandler                                                           );
@@ -231,8 +232,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,999);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,1,999,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
             filledHandler                                                           );
@@ -241,8 +242,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1, cols);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,1, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
             filledHandler                                                           );
@@ -250,8 +251,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId, rows,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
             filledHandler                                                           );
@@ -260,8 +261,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,999);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,1,999,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
             filledHandler                                                           );
@@ -269,8 +270,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,999,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
             filledHandler                                                           );
@@ -279,8 +280,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows, cols);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId, rows, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
             filledHandler                                                           );
@@ -292,11 +293,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertNull(nextIncludedEntryModel);
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,999);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,999,999,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
+            filledHandler                                                           );
         org.junit.Assert.assertNull(nextIncludedEntryModel);
 
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
@@ -325,7 +326,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 
 
         org.wheatgenetics.coordinate.model.IncludedEntryModel activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,2);
+            new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                gridId,1,2,this);
         org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
             entryModels.next(activeIncludedEntryModel,
                 org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
@@ -334,8 +336,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (3, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,2,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,2,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
             filledHandler                                                           );
@@ -344,8 +346,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (3, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,2);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,1,2,this);
         entryModels.makeExcludedEntry(3,2);    // Two excluded entries next to each other.
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS,
@@ -354,8 +356,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         org.junit.Assert.assertEquals (4, nextIncludedEntryModel.getRow());
         org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,2,1);
+        activeIncludedEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+            gridId,2,1,this);
         entryModels.makeExcludedEntry(2,3);    // Two excluded entries next to each other.
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
             org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN,
@@ -396,7 +398,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModels.get(row, col);
         {
             final org.wheatgenetics.coordinate.model.IncludedEntryModel newIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, row, col);
+                new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                    gridId, row, col,this);
             newIncludedEntryModel.setValue("gobbledygook");
             entryModels.set(newIncludedEntryModel);
         }

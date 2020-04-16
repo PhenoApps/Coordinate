@@ -2,18 +2,26 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
  * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
  *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.BaseTemplateModel
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class BaseTemplateModelTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class BaseTemplateModelTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     /**
      * This class was defined in order to test BaseTemplateModel.  Why not just test
@@ -29,10 +37,11 @@ public class BaseTemplateModelTest extends java.lang.Object
         @androidx.annotation.IntRange(from = 1) final int rows                        ,
         @androidx.annotation.IntRange(from = 1) final int cols                        ,
         @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-        final boolean colNumbering, final boolean rowNumbering, final long timestamp)
+        final boolean colNumbering, final boolean rowNumbering, final long timestamp,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             super(id, title, type, rows, cols, generatedExcludedCellsAmount,
-                colNumbering, rowNumbering, timestamp);
+                colNumbering, rowNumbering, timestamp, stringGetter);
         }
 
         private ConcreteBaseTemplateModel(
@@ -43,12 +52,28 @@ public class BaseTemplateModelTest extends java.lang.Object
         @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 0)
             final int generatedExcludedCellsAmount,
         final boolean colNumbering, final boolean rowNumbering,
-        @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp)
+        @java.lang.SuppressWarnings({"SameParameterValue"}) final long timestamp,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             super(title, type, rows, cols, generatedExcludedCellsAmount,
-                colNumbering, rowNumbering, timestamp);
+                colNumbering, rowNumbering, timestamp, stringGetter);
         }
     }
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
+    }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    // endregion
 
     // region Constructor Tests
     // region First Constructor Tests
@@ -64,7 +89,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */true,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -79,7 +105,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */true,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -94,7 +121,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */false,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -109,7 +137,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */true,
             /* rowNumbering                 => */true,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -124,7 +153,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */-90,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */false,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test() public void firstConstructorSucceeds()
@@ -138,7 +168,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */true,
             /* rowNumbering                 => */false,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
     // endregion
 
@@ -154,7 +185,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */true,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -168,7 +200,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */false,
             /* rowNumbering                 => */false,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
@@ -182,7 +215,8 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* generatedExcludedCellsAmount => */0,
             /* colNumbering                 => */true,
             /* rowNumbering                 => */true,
-            /* timestamp                    => */0);
+            /* timestamp                    => */0,
+            /* stringGetter                 => */this);
     }
 
     @org.junit.Test() public void secondConstructorSucceeds()
@@ -197,7 +231,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */true,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+            /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(concreteBaseTemplateModel.getId(),0);
     }
     // endregion
@@ -221,7 +256,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
             org.junit.Assert.assertEquals(firstTestTitle, concreteBaseTemplateModel.getTitle());
 
             secondTestTitle = "secondTestTitle";
@@ -246,7 +282,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false ,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(firstTemplateType, concreteBaseTemplateModel.getType());
 
         final org.wheatgenetics.coordinate.model.TemplateType secondTemplateType =
@@ -270,7 +307,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(rows, concreteBaseTemplateModel.getRows());
         org.junit.Assert.assertEquals(cols, concreteBaseTemplateModel.getCols());
     }
@@ -289,7 +327,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */ firstGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(firstGeneratedExcludedCellsAmount,
             concreteBaseTemplateModel.getGeneratedExcludedCellsAmount());
 
@@ -312,9 +351,10 @@ public class BaseTemplateModelTest extends java.lang.Object
             /* rows  => */9,
             /* cols  => */20,
             /* generatedExcludedCellsAmount => */0,
-            /* colNumbering                 => */false,
-            /* rowNumbering                 => */true,
-            /* timestamp                    => */0).setGeneratedExcludedCellsAmount(-7);
+            /* colNumbering => */false,
+            /* rowNumbering => */true,
+            /* timestamp    => */0,
+            /* stringGetter => */this).setGeneratedExcludedCellsAmount(-7);
     }
 
     @org.junit.Test() public void getAndSetColNumberingSucceed()
@@ -331,7 +371,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */ firstColNumbering,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(firstColNumbering,
             concreteBaseTemplateModel.getColNumbering());
 
@@ -357,7 +398,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */ firstRowNumbering,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(firstRowNumbering,
             concreteBaseTemplateModel.getRowNumbering());
 
@@ -382,7 +424,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */true,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertFalse(concreteBaseTemplateModel.entryLabelIsNotNull());
         org.junit.Assert.assertNull (concreteBaseTemplateModel.getEntryLabel()      );
 
@@ -406,7 +449,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */true,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */ timestamp);
+                    /* timestamp                    => */ timestamp,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertEquals(timestamp, concreteBaseTemplateModel.getTimestamp());
     }
     // endregion
@@ -425,7 +469,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */9,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         final java.lang.String expectedString =
             "BaseTemplateModel [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcl" +
             "udedCellsAmount=9, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0]";
@@ -452,7 +497,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
-                    /* timestamp                    => */0),
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this),
             secondConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id                           => */ testId                          ,
@@ -463,7 +509,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
 
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstConcreteBaseTemplateModel.equals(
@@ -569,7 +616,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         final java.lang.String expectedFormatString =
             "%s [id: 05, title=testTitle, type=0, rows=9, cols=20, generatedExcludedCel" +
             "lsAmount=0, colNumbering=false, rowNumbering=false, entryLabel=null, stamp=0";
@@ -599,7 +647,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
-                    /* timestamp                    => */ testTimestamp                   ),
+                    /* timestamp                    => */ testTimestamp                   ,
+                    /* stringGetter                 => */this),
             secondConcreteBaseTemplateModel = new
                 org.wheatgenetics.coordinate.model.BaseTemplateModelTest.ConcreteBaseTemplateModel(
                     /* id    => */ testId,
@@ -610,7 +659,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */ testGeneratedExcludedCellsAmount,
                     /* colNumbering                 => */ testColNumbering                ,
                     /* rowNumbering                 => */ testRowNumbering                ,
-                    /* timestamp                    => */ testTimestamp                   ); // same
+                    /* timestamp                    => */ testTimestamp                   ,  // same
+                    /* stringGetter                 => */this);
 
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertFalse(firstConcreteBaseTemplateModel.equals(
@@ -638,7 +688,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertFalse(concreteBaseTemplateModel.isDefaultTemplate());
 
         concreteBaseTemplateModel.setType(org.wheatgenetics.coordinate.model.TemplateType.SEED);
@@ -658,7 +709,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(
             org.wheatgenetics.javalib.Utils.stringArray("Row 1"),
             concreteBaseTemplateModel.rowItems("Row"));
@@ -673,7 +725,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* generatedExcludedCellsAmount => */0,
                 /* colNumbering                 => */false,
                 /* rowNumbering                 => */false,
-                /* timestamp                    => */0);
+                /* timestamp                    => */0,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(new java.lang.String[]{"Row 1", "Row 2", "Row 3"},
             concreteBaseTemplateModel.rowItems("Row"));
     }
@@ -691,7 +744,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                     /* generatedExcludedCellsAmount => */0,
                     /* colNumbering                 => */false,
                     /* rowNumbering                 => */false,
-                    /* timestamp                    => */0);
+                    /* timestamp                    => */0,
+                    /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(
             org.wheatgenetics.javalib.Utils.stringArray("Column 1"),
             concreteBaseTemplateModel.colItems("Column"));
@@ -706,7 +760,8 @@ public class BaseTemplateModelTest extends java.lang.Object
                 /* generatedExcludedCellsAmount => */0,
                 /* colNumbering                 => */false,
                 /* rowNumbering                 => */false,
-                /* timestamp                    => */0);
+                /* timestamp                    => */0,
+                /* stringGetter                 => */this);
         org.junit.Assert.assertArrayEquals(
             new java.lang.String[]{"Column 1", "Column 2", "Column 3"},
             concreteBaseTemplateModel.colItems("Column"));

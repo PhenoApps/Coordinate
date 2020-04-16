@@ -2,15 +2,23 @@ package org.wheatgenetics.coordinate.model;
 
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
  * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
  *
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.Model
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ModelTest extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class ModelTest
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     /**
      * This class was defined in order to test Model.  Why not just test Model directly?  Because
@@ -19,28 +27,47 @@ public class ModelTest extends java.lang.Object
      */
     private static class ConcreteModel extends org.wheatgenetics.coordinate.model.Model
     {
-        ConcreteModel()                                                      { super()  ; }
-        ConcreteModel(@androidx.annotation.IntRange(from = 1) final long id) { super(id); }
+        ConcreteModel(@androidx.annotation.NonNull
+        final org.wheatgenetics.coordinate.StringGetter stringGetter) { super(stringGetter); }
+
+        ConcreteModel(@androidx.annotation.IntRange(from = 1) final long id,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        { super(id, stringGetter); }
     }
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId)
+    {
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: org.junit.Assert.fail(); return null; }
+    }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    // endregion
 
     // region Constructor Tests
     @org.junit.Test() public void firstConstructorSucceeds()
     {
         org.junit.Assert.assertEquals(0,
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel().getId());
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(this).getId());
     }
 
     @org.junit.Test() public void secondConstructorSucceeds()
     {
         final long                                                       testId        = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this);
         org.junit.Assert.assertEquals(testId, concreteModel.getId());
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
     public void secondConstructorFails()
-    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(0); }
+    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(0,this); }
     // endregion
 
     // region Overridden Method Tests
@@ -48,7 +75,7 @@ public class ModelTest extends java.lang.Object
     {
         final long                                                       testId        = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this);
         org.junit.Assert.assertEquals(java.lang.String.format("id: %02d", testId),
             concreteModel.toString());
     }
@@ -57,7 +84,7 @@ public class ModelTest extends java.lang.Object
     {
         final long                                                       testId        = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this);
         org.junit.Assert.assertEquals(java.lang.String.format("id: %02d", testId).hashCode(),
             concreteModel.hashCode());
     }
@@ -85,10 +112,10 @@ public class ModelTest extends java.lang.Object
     {
         final long                                                       testId = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel
-            firstConcreteModel =
-                new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId),
-            secondConcreteModel =
-                new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+            firstConcreteModel = new
+                org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this),
+            secondConcreteModel = new
+                org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this);
 
         // noinspection SimplifiableJUnitAssertion
         org.junit.Assert.assertTrue(firstConcreteModel.equals(secondConcreteModel));
@@ -103,12 +130,12 @@ public class ModelTest extends java.lang.Object
     {
         final long                                                       testId        = 5;
         final org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel concreteModel =
-            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId);
+            new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(testId,this);
         org.junit.Assert.assertEquals   (testId, concreteModel.getId());
         org.junit.Assert.assertNotEquals(3, concreteModel.getId());
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void setIdFails()
-    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel().setId(-9); }
+    { new org.wheatgenetics.coordinate.model.ModelTest.ConcreteModel(this).setId(-9); }
     // endregion
 }

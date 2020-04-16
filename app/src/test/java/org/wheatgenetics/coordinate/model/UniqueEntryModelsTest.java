@@ -100,7 +100,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                     1,1,1,this);
         meanUniqueEntryModels.checkThenSet(                                                // throws
             new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                1,1,1, meanUniqueEntryModels));
+                1,1,1, meanUniqueEntryModels,this));
     }
 
     @org.junit.Test() public void niceCheckThenSetThrows()

@@ -52,7 +52,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        1,1,1, currentGridUniqueEntryModels);
+                        1,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("1.1");                            // throws
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
@@ -61,7 +61,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        1,1,1, currentGridUniqueEntryModels);
+                        1,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("1.1");                            // throws
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
@@ -70,7 +70,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        1,1,2, currentGridUniqueEntryModels);
+                        1,1,2, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("2.2");                            // throws
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
@@ -79,7 +79,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                 new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    1,1,1, currentGridUniqueEntryModels);
+                    1,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("2.2");                            // throws
             currentGridUniqueEntryModels.checkThenSet(checkedIncludedEntryModel);          // throws
         }
