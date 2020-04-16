@@ -120,7 +120,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        gridId,1,1, currentGridUniqueEntryModels);
+                        gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
@@ -130,7 +130,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        gridId,1,1, currentGridUniqueEntryModels);
+                        gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
@@ -140,7 +140,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        gridId,2,2, currentGridUniqueEntryModels);
+                        gridId,2,2, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("DEF");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
@@ -196,7 +196,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        gridId,1,1, currentGridUniqueEntryModels);
+                        gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
@@ -205,7 +205,7 @@ implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
                     new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                        gridId,2,2, currentGridUniqueEntryModels);
+                        gridId,2,2, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);

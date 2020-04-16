@@ -646,7 +646,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                         final org.wheatgenetics.coordinate.model.IncludedEntryModel
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                                    gridId,2,2);
+                                    gridId,2,2,this);
                         includedEntryModel.setValue(value);
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
@@ -884,7 +884,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                         final org.wheatgenetics.coordinate.model.IncludedEntryModel
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                                    gridId,2,2);
+                                    gridId,2,2,this);
                         includedEntryModel.setValue(value);
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
@@ -1114,7 +1114,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                         final org.wheatgenetics.coordinate.model.IncludedEntryModel
                             includedEntryModel =
                                 new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                                    gridId,2,2);
+                                    gridId,2,2,this);
                         includedEntryModel.setValue(value);
                         joinedGridModel.setEntryModel(includedEntryModel);
                     }
@@ -1459,7 +1459,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 joinedGridModel.makeEntryModels();
 
                 activeEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-                    gridId, currentRow, currentCol);
+                    gridId, currentRow, currentCol,this);
             }
             final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler =
                 new org.wheatgenetics.coordinate.model.JoinedGridModelTest.FilledHandler();
@@ -1521,8 +1521,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                     /* entryModels => */null);
                 joinedGridModel.makeEntryModels();
 
-                activeEntryModel =
-                    new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows, cols);
+                activeEntryModel = new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                    gridId, rows, cols,this);
             }
             final org.wheatgenetics.coordinate.model.EntryModels.FilledHandler filledHandler =
                 new org.wheatgenetics.coordinate.model.JoinedGridModelTest.FilledHandler();
