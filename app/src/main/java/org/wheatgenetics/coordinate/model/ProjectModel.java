@@ -3,29 +3,37 @@ package org.wheatgenetics.coordinate.model;
 /**
  * Uses:
  * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
  * org.wheatgenetics.androidlibrary.Utils
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Model
  */
 public class ProjectModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-                                            private       java.lang.String title    ;
     @androidx.annotation.IntRange(from = 0) private final long             timestamp;
+                                            private       java.lang.String title    ;
     // endregion
 
     // region Constructors
-    private ProjectModel() { super(); this.timestamp = java.lang.System.currentTimeMillis(); }
+    private ProjectModel(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(stringGetter); this.timestamp = java.lang.System.currentTimeMillis(); }
 
-    public ProjectModel(final java.lang.String title) { this(); this.title = title; }
+    public ProjectModel(final java.lang.String title, @androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { this(stringGetter); this.title = title; }
 
     public ProjectModel(
-    @androidx.annotation.IntRange(from = 1) final long             id       ,
-                                            final java.lang.String title    ,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp)
-    { super(id); this.title = title; this.timestamp = timestamp; }
+    @androidx.annotation.IntRange(from = 1) final long                                 id          ,
+                                            final java.lang.String                     title       ,
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(id, stringGetter); this.title = title; this.timestamp = timestamp; }
     // endregion
 
     // region Public Methods

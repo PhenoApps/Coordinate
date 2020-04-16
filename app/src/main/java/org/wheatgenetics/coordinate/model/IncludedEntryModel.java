@@ -12,6 +12,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -26,22 +27,27 @@ public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Constructors
     IncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  row   ,
-    @androidx.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
+    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                                  row         ,
+    @androidx.annotation.IntRange(from = 1) final int                                  col         ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, row, col, stringGetter); }
 
     public IncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long             id       ,
-    @androidx.annotation.IntRange(from = 1) final long             gridId   ,
-    @androidx.annotation.IntRange(from = 1) final int              row      ,
-    @androidx.annotation.IntRange(from = 1) final int              col      ,
-                                            final java.lang.String value    ,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp)
-    { super(id, gridId, row, col, timestamp); this.uncheckedSetValue(value); }
+    @androidx.annotation.IntRange(from = 1) final long                                 id          ,
+    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                                  row         ,
+    @androidx.annotation.IntRange(from = 1) final int                                  col         ,
+                                            final java.lang.String                     value       ,
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(id, gridId, row, col, timestamp, stringGetter); this.uncheckedSetValue(value); }
 
-    public IncludedEntryModel(@androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
-    { super(excludedEntryModel); }
+    public IncludedEntryModel(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.ExcludedEntryModel
+        excludedEntryModel,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(excludedEntryModel, stringGetter); }
     // endregion
 
     // region Overridden Methods

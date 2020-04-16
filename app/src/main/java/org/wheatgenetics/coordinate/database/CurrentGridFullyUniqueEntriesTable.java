@@ -40,13 +40,14 @@ extends org.wheatgenetics.coordinate.database.CurrentGridUniqueEntriesTable
         try
         {
             return new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(  // throws
-                /* id        => */ id                                    ,
-                /* gridId    => */ gridId                                ,
-                /* row       => */ row                                   ,
-                /* col       => */ col                                   ,
-                /* value     => */ value                                 ,
-                /* timestamp => */ timestamp                             ,
-                /* checker   => */ this.getCurrentGridUniqueEntryModels());
+                /* id           => */ id                                    ,
+                /* gridId       => */ gridId                                ,
+                /* row          => */ row                                   ,
+                /* col          => */ col                                   ,
+                /* value        => */ value                                 ,
+                /* timestamp    => */ timestamp                             ,
+                /* checker      => */ this.getCurrentGridUniqueEntryModels(),
+                /* stringGetter => */this);
         }
         catch (final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException e)
         { this.handler.handleCGFUETCheckException(); return null; }

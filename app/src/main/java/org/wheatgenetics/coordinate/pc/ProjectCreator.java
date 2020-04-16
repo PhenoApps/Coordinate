@@ -3,10 +3,15 @@ package org.wheatgenetics.coordinate.pc;
 /**
  * Uses:
  * android.app.Activity
+ * android.content.res.Resources.NotFoundException
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.database.ProjectsTable
  *
@@ -15,8 +20,8 @@ package org.wheatgenetics.coordinate.pc;
  * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
  * org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog.Handler
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ProjectCreator extends java.lang.Object
+@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class ProjectCreator
+extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
     {
@@ -25,9 +30,11 @@ public class ProjectCreator extends java.lang.Object
     }
 
     // region Fields
+    // region Constructor Fields
                                   private final android.app.Activity activity;
     @androidx.annotation.Nullable private final
         org.wheatgenetics.coordinate.pc.ProjectCreator.Handler handler;
+    // endregion
 
     private org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog                   // lazy loads
         createProjectAlertDialogInstance = null, createAndReturnProjectAlertDialogInstance = null;
@@ -47,7 +54,7 @@ public class ProjectCreator extends java.lang.Object
     private long sharedInsert(final java.lang.String projectTitle)
     {
         return this.projectsTable().insert(
-            new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle));
+            new org.wheatgenetics.coordinate.model.ProjectModel(projectTitle,this));
     }
 
     // region create() Private Methods
@@ -112,6 +119,18 @@ public class ProjectCreator extends java.lang.Object
 
     public ProjectCreator(@androidx.annotation.NonNull final android.app.Activity activity)
     { this(activity,null); }
+    // endregion
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.activity.getString(resId); }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException
+    { return this.activity.getResources().getQuantityString(resId, quantity, formatArgs); }
     // endregion
 
     // region Public Methods

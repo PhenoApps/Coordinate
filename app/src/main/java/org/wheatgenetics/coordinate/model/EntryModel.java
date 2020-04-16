@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.ElementModel
@@ -25,11 +26,12 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     // region Constructors
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntryModel(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  row   ,
-    @androidx.annotation.IntRange(from = 1) final int  col   )
+    @androidx.annotation.IntRange(from = 1) final long                           gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                            row         ,
+    @androidx.annotation.IntRange(from = 1) final int                            col         ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super();
+        super(stringGetter);
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
         this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
@@ -39,13 +41,14 @@ implements org.wheatgenetics.coordinate.model.ElementModel
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntryModel(
-    @androidx.annotation.IntRange(from = 1) final long id       ,
-    @androidx.annotation.IntRange(from = 1) final long gridId   ,
-    @androidx.annotation.IntRange(from = 1) final int  row      ,
-    @androidx.annotation.IntRange(from = 1) final int  col      ,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 1) final long                           id          ,
+    @androidx.annotation.IntRange(from = 1) final long                           gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                            row         ,
+    @androidx.annotation.IntRange(from = 1) final int                            col         ,
+    @androidx.annotation.IntRange(from = 0) final long                           timestamp   ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super(id);
+        super(id, stringGetter);
 
         this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
         this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
@@ -55,10 +58,11 @@ implements org.wheatgenetics.coordinate.model.ElementModel
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     EntryModel(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel entryModel)
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.EntryModel entryModel  ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter     stringGetter)
     {
         this(entryModel.getId(), entryModel.getGridId(), entryModel.getRow(), entryModel.getCol(),
-            entryModel.getTimestamp());
+            entryModel.getTimestamp(), stringGetter);
     }
     // endregion
 

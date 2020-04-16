@@ -30,12 +30,13 @@ abstract class CheckedEntriesTable extends org.wheatgenetics.coordinate.database
     final java.lang.String value, final long timestamp)
     {
         return new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-            /* id        => */ id             ,
-            /* gridId    => */ gridId         ,
-            /* row       => */ row            ,
-            /* col       => */ col            ,
-            /* value     => */ value          ,
-            /* timestamp => */ timestamp      ,
-            /* checker   => */ this.checker());
+            /* id           => */ id            ,
+            /* gridId       => */ gridId        ,
+            /* row          => */ row           ,
+            /* col          => */ col           ,
+            /* value        => */ value         ,
+            /* timestamp    => */ timestamp     ,
+            /* checker      => */ this.checker(),
+            /* stringGetter => */this);
     }
 }

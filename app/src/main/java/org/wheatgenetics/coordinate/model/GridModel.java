@@ -20,15 +20,13 @@ package org.wheatgenetics.coordinate.model;
 public class GridModel extends org.wheatgenetics.coordinate.model.Model
 {
     // region Fields
-    @androidx.annotation.IntRange(from = 1) private final long             templateId;
-    @androidx.annotation.IntRange(from = 0) private final long             projectId ;
-                                            private final java.lang.String person    ;
-    @androidx.annotation.IntRange(from = 0) private       int    activeRow, activeCol;
+    @androidx.annotation.IntRange(from = 1) private final long             templateId          ;
+    @androidx.annotation.IntRange(from = 0) private final long             projectId           ;
+                                            private final java.lang.String person              ;
+    @androidx.annotation.IntRange(from = 0) private       int              activeRow, activeCol;
     @androidx.annotation.Nullable           private final
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
         nonNullOptionalFieldsInstance;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
-        stringGetter;
     @androidx.annotation.IntRange(from = 0) private final long timestamp;
     // endregion
 
@@ -43,7 +41,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super();
+        super(stringGetter);
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
         this.projectId  =
@@ -53,7 +51,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
         this.activeRow = this.activeCol = 0;
 
         this.nonNullOptionalFieldsInstance = optionalFields                      ;
-        this.stringGetter                  = stringGetter                        ;
         this.timestamp                     = java.lang.System.currentTimeMillis();
     }
 
@@ -70,7 +67,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter      ,
     @androidx.annotation.IntRange(from = 0) final long                           timestamp         )
     {
-        super(id);
+        super(id, stringGetter);
 
         this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
         this.projectId  =
@@ -84,7 +81,7 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
             optionalFields.equals("") ? null : new
                 org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
                     optionalFields, stringGetter);
-        this.stringGetter = stringGetter; this.timestamp = timestamp;
+        this.timestamp = timestamp;
     }
     // endregion
 
@@ -96,10 +93,6 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveCol(@androidx.annotation.IntRange(from = 0) final int activeCol)
     { this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol,0); }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
-    { return this.stringGetter; }
     // endregion
 
     // region Public Methods

@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
@@ -17,21 +18,26 @@ public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.Entry
 
     // region Constructors
     ExcludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  row   ,
-    @androidx.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
+    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
+    @androidx.annotation.IntRange(from = 1) final int                                  row         ,
+    @androidx.annotation.IntRange(from = 1) final int                                  col         ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, row, col, stringGetter); }
 
     public ExcludedEntryModel(
     @androidx.annotation.IntRange(from = 1) final long id       ,
     @androidx.annotation.IntRange(from = 1) final long gridId   ,
     @androidx.annotation.IntRange(from = 1) final int  row      ,
     @androidx.annotation.IntRange(from = 1) final int  col      ,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
-    { super(id, gridId, row, col, timestamp); }
+    @androidx.annotation.IntRange(from = 0) final long timestamp,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(id, gridId, row, col, timestamp, stringGetter); }
 
-    public ExcludedEntryModel(@androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel)
-    { super(includedEntryModel); }
+    public ExcludedEntryModel(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.IncludedEntryModel
+        includedEntryModel,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(includedEntryModel, stringGetter); }
     // endregion
 
     // region Overridden Methods

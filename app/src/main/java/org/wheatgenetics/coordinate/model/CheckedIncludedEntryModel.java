@@ -6,6 +6,8 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  */
@@ -37,8 +39,9 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
     @androidx.annotation.IntRange(from = 1) final int  row   ,
     @androidx.annotation.IntRange(from = 1) final int  col   ,
     @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    { super(gridId, row, col); this.checker = checker; }
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, row, col, stringGetter); this.checker = checker; }
 
     public CheckedIncludedEntryModel(
     @androidx.annotation.IntRange(from = 1) final long             id       ,
@@ -48,14 +51,16 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
                                             final java.lang.String value    ,
     @androidx.annotation.IntRange(from = 0) final long             timestamp,
     @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    { super(id, gridId, row, col, value, timestamp); this.checker = checker; }
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(id, gridId, row, col, value, timestamp, stringGetter); this.checker = checker; }
 
     public CheckedIncludedEntryModel(@androidx.annotation.NonNull final
         org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel,
     @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    { super(excludedEntryModel); this.checker = checker; }
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(excludedEntryModel, stringGetter); this.checker = checker; }
     // endregion
 
     @java.lang.Override public void setValue(

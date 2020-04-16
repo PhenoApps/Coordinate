@@ -6,18 +6,31 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public abstract class Model extends java.lang.Object implements java.lang.Cloneable
 {
+    // region Fields
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
     @androidx.annotation.IntRange(from = 1) private long id;
+    // endregion
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
+    { return this.stringGetter; }
 
     // region Constructors
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model() { super(); }
+    Model(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(); this.stringGetter = stringGetter; }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model(@androidx.annotation.IntRange(from = 1) final long id) { this(); this.setId(id); }
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES) Model(
+    @androidx.annotation.IntRange(from = 1) final long                                 id          ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { this(stringGetter); this.setId(id); }
     // endregion
 
     // region Overridden Methods

@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
 /**
  * Uses:
  * android.content.Context
+ * android.content.res.Resources.NotFoundException
  * android.view.View
  * android.view.View.OnLongClickListener
  * android.widget.ImageView
@@ -10,10 +11,13 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
@@ -25,6 +29,7 @@ package org.wheatgenetics.coordinate.griddisplay.adapter;
  * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
  */
 public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter.DataViewHolder
+implements org.wheatgenetics.coordinate.StringGetter
 {
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface GridHandler
     {
@@ -62,7 +67,8 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
         if (this.elementModelIsNotNull())
         {
             this.elementModel = new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel);
+                (org.wheatgenetics.coordinate.model.IncludedEntryModel) this.elementModel,
+                this);
             this.clearOnClickListener(); this.toggle();
         }
     }
@@ -74,9 +80,10 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
             final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel =
                 (org.wheatgenetics.coordinate.model.ExcludedEntryModel) this.elementModel;
             this.elementModel = null == this.checker ?
-                new org.wheatgenetics.coordinate.model.IncludedEntryModel(excludedEntryModel) :
+                new org.wheatgenetics.coordinate.model.IncludedEntryModel(
+                    excludedEntryModel,this) :
                 new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    excludedEntryModel, this.checker);
+                    excludedEntryModel, this.checker,this);
             this.setOnClickListener(); this.toggle();
         }
     }
@@ -153,6 +160,18 @@ public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override protected void respondToClick() { this.activate(); }
+
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
+    @androidx.annotation.StringRes final int resId) { return this.context.getString(resId); }
+
+    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
+    @androidx.annotation.PluralsRes         final int                 resId     ,
+    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
+    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
+    throws android.content.res.Resources.NotFoundException
+    { return this.context.getResources().getQuantityString(resId, quantity, formatArgs); }
+    // endregion
     // endregion
 
     void bind(@androidx.annotation.Nullable

@@ -17,8 +17,9 @@ extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
     @androidx.annotation.IntRange(from = 1) final int  row   ,
     @androidx.annotation.IntRange(from = 1) final int  col   ,
     @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    { super(gridId, row, col, checker); }
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(gridId, row, col, checker, stringGetter); }
 
     public FullyCheckedIncludedEntryModel(
     @androidx.annotation.IntRange(from = 1) final long             id       ,
@@ -28,10 +29,11 @@ extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
                                             final java.lang.String value    ,
     @androidx.annotation.IntRange(from = 0) final long             timestamp,
     @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
+        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker     checker     ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
     {
         super(id, gridId, row, col, checker.check( /* throws CheckException */
-            row, col, value), timestamp, checker);
+            row, col, value), timestamp, checker, stringGetter);
     }
 }

@@ -24,7 +24,7 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
     @androidx.annotation.IntRange(from = 1) final int col)
     {
         return new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(
-            this.getGridId(), row, col,this);
+            this.getGridId(), row, col,this, this.stringGetter());
     }
 
     FullyUniqueEntryModels(

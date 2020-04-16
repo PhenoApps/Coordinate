@@ -16,6 +16,7 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
  * org.wheatgenetics.coordinate.model.Model
@@ -83,9 +84,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @androidx.annotation.IntRange(from = 1) final int cols                        ,
     @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super(id);
+        super(id, stringGetter);
         this.assign(title, type, rows, cols,
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
         this.timestamp = timestamp;
@@ -99,9 +101,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @androidx.annotation.IntRange(from = 1) final int cols                        ,
     @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
     final boolean colNumbering, final boolean rowNumbering,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
+    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super();
+        super(stringGetter);
         this.assign(title, type, rows, cols,
             generatedExcludedCellsAmount, colNumbering, rowNumbering);
         this.timestamp = timestamp;
@@ -109,9 +112,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     /** Called by third DisplayTemplateModel constructor. */
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    BaseTemplateModel()
+    BaseTemplateModel(@androidx.annotation.NonNull
+    final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        super();
+        super(stringGetter);
 
         this.type      = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
         this.timestamp = java.lang.System.currentTimeMillis()                       ;

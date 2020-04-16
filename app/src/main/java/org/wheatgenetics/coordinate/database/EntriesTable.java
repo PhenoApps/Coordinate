@@ -14,6 +14,8 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.EntryModel
  * org.wheatgenetics.coordinate.model.EntryModels
  * org.wheatgenetics.coordinate.model.EntryModels.Processor
@@ -56,12 +58,13 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
     final long timestamp)
     {
         return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-            /* id        => */ id       ,
-            /* gridId    => */ gridId   ,
-            /* row       => */ row      ,
-            /* col       => */ col      ,
-            /* value     => */ value    ,
-            /* timestamp => */ timestamp);
+            /* id           => */ id       ,
+            /* gridId       => */ gridId   ,
+            /* row          => */ row      ,
+            /* col          => */ col      ,
+            /* value        => */ value    ,
+            /* timestamp    => */ timestamp,
+            /* stringGetter => */this);
     }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
@@ -86,6 +89,9 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
         {
             class CursorWrapper extends android.database.CursorWrapper
             {
+                @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+                    stringGetter;
+
                 private boolean excluded()
                 {
                     final java.lang.String value = this.value();
@@ -131,18 +137,21 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                 }
                 // endregion
 
-                private CursorWrapper(@androidx.annotation.NonNull
-                final android.database.Cursor cursor) { super(cursor); }
+                private CursorWrapper(
+                @androidx.annotation.NonNull final android.database.Cursor                   cursor,
+                @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter
+                    stringGetter) { super(cursor); this.stringGetter = stringGetter; }
 
                 private org.wheatgenetics.coordinate.model.EntryModel make()
                 {
                     if (this.excluded())
                         return new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-                            /* id        => */ this.id       (),
-                            /* gridId    => */ this.gridId   (),
-                            /* row       => */ this.row      (),
-                            /* col       => */ this.col      (),
-                            /* timestamp => */ this.timestamp());
+                            /* id           => */ this.id          (),
+                            /* gridId       => */ this.gridId      (),
+                            /* row          => */ this.row         (),
+                            /* col          => */ this.col         (),
+                            /* timestamp    => */ this.timestamp   (),
+                            /* stringGetter => */ this.stringGetter  );
                     else return org.wheatgenetics.coordinate.database
                         .EntriesTable.this.makeIncludedEntryModel(
                             /* id        => */ this.id       (),
@@ -153,7 +162,7 @@ implements org.wheatgenetics.coordinate.model.EntryModels.Processor
                             /* timestamp => */ this.timestamp());
                 }
             }
-            return new CursorWrapper(cursor).make();
+            return new CursorWrapper(cursor,this).make();
         }
     }
 

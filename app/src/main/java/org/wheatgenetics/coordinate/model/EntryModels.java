@@ -160,6 +160,10 @@ public class EntryModels extends java.lang.Object
     @androidx.annotation.IntRange(from = 1) long getGridId() { return this.gridId; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @androidx.annotation.NonNull org.wheatgenetics.coordinate.StringGetter stringGetter()
+    { return this.stringGetter; }
+
+    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void uncheckedSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
     {
         if (null != entryModel)
@@ -173,7 +177,7 @@ public class EntryModels extends java.lang.Object
     @androidx.annotation.IntRange(from = 1) final int col)
     {
         return new org.wheatgenetics.coordinate.model.IncludedEntryModel(
-            this.getGridId(), row, col);
+            this.getGridId(), row, col, this.stringGetter());
     }
     // endregion
 
@@ -198,7 +202,7 @@ public class EntryModels extends java.lang.Object
     @androidx.annotation.IntRange(from = 1) final int col)
     {
         this.uncheckedSet(new org.wheatgenetics.coordinate.model.ExcludedEntryModel(
-            this.getGridId(), row, col));
+            this.getGridId(), row, col, this.stringGetter()));
     }
 
     void makeIncludedEntry(
@@ -217,7 +221,7 @@ public class EntryModels extends java.lang.Object
             new org.wheatgenetics.coordinate.model.Cells(
                 /* maxRow       => */ this.entryModelArray.length   ,
                 /* maxCol       => */ this.entryModelArray[0].length,
-                /* stringGetter => */ this.stringGetter             );
+                /* stringGetter => */ this.stringGetter()           );
         for (final org.wheatgenetics.coordinate.model.EntryModel[] row: this.entryModelArray)
             for (final org.wheatgenetics.coordinate.model.EntryModel entryModel: row)
                 if (entryModel instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel)

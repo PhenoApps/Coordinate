@@ -44,7 +44,7 @@ implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
     @androidx.annotation.IntRange(from = 1) final int col)
     {
         return new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-            this.getGridId(), row, col,this);
+            this.getGridId(), row, col,this, this.stringGetter());
     }
 
     UniqueEntryModels(

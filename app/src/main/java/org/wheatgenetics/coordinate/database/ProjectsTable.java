@@ -82,7 +82,8 @@ public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
             /* title => */ cursor.getString(cursor.getColumnIndex(
                 org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME)),
             /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME)));
+                org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME)),
+            /* stringGetter => */this);
     }
 
     @java.lang.Override @androidx.annotation.NonNull
