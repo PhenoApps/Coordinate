@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Model
@@ -40,7 +41,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @androidx.annotation.StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.ModelIdMustBeGreaterThanZero:
+                return "id must be > 0";
+
+            default: org.junit.Assert.fail(); return null;
+        }
     }
 
     @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
@@ -102,11 +109,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     {
         final long testId = 5;
         org.junit.Assert.assertEquals(testId,
-            org.wheatgenetics.coordinate.model.Model.valid(testId));
+            org.wheatgenetics.coordinate.model.Model.valid(testId,this));
     }
 
     @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void validThrows()
-    { org.wheatgenetics.coordinate.model.Model.valid(-5); }
+    { org.wheatgenetics.coordinate.model.Model.valid(-5,this); }
 
     @org.junit.Test() public void equalsAndSetIdWork()
     {
