@@ -7,6 +7,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -54,10 +55,12 @@ public abstract class Model extends java.lang.Object implements java.lang.Clonea
     // region Public Methods
     public static boolean illegal(final long id) { return id < 1; }
 
-    public static long valid(final long id)
+    public static long valid(final long id,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-            throw new java.lang.IllegalArgumentException("id must be > 0");
+            throw new java.lang.IllegalArgumentException(stringGetter.get(
+                org.wheatgenetics.coordinate.R.string.ModelIdMustBeGreaterThanZero));
         else
             return id;
     }
@@ -65,6 +68,9 @@ public abstract class Model extends java.lang.Object implements java.lang.Clonea
     @androidx.annotation.IntRange(from = 1) public long getId() { return this.id; }
 
     public void setId(@androidx.annotation.IntRange(from = 1) final long id)
-    { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }
+    {
+        this.id = org.wheatgenetics.coordinate.model.Model.valid(                          // throws
+            id, this.stringGetter());
+    }
     // endregion
 }

@@ -7,6 +7,8 @@ package org.wheatgenetics.sharedpreferences;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
@@ -15,6 +17,9 @@ public class SharedPreferences
 extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
 {
     private static final java.lang.String GRID_ID = "CurrentGrid", PROJECT_ID = "CurrentProject";
+
+    @androidx.annotation.NonNull
+    private final org.wheatgenetics.coordinate.StringGetter stringGetter;
 
     // region Private Methods
     private void uncheckedSetGridId(@androidx.annotation.IntRange(from = -1) final long gridId)
@@ -25,8 +30,10 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID, projectId); }
     // endregion
 
-    public SharedPreferences(@androidx.annotation.NonNull
-    final android.content.SharedPreferences sharedPreferences) { super(sharedPreferences); }
+    public SharedPreferences(
+    @androidx.annotation.NonNull final android.content.SharedPreferences         sharedPreferences,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter     )
+    { super(sharedPreferences); this.stringGetter = stringGetter; }
 
     // region Public Methods
     // region GridId Public Methods
@@ -34,7 +41,10 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID); }
 
     public void setGridId(@androidx.annotation.IntRange(from = 1) final long gridId)
-    { this.uncheckedSetGridId(org.wheatgenetics.coordinate.model.Model.valid(gridId)); }
+    {
+        this.uncheckedSetGridId(
+            org.wheatgenetics.coordinate.model.Model.valid(gridId, this.stringGetter));
+    }
 
     public void clearGridId() { this.uncheckedSetGridId(-1); }
 
@@ -46,7 +56,10 @@ extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
     { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID); }
 
     public void setProjectId(@androidx.annotation.IntRange(from = 1) final long projectId)
-    { this.uncheckedSetProjectId(org.wheatgenetics.coordinate.model.Model.valid(projectId)); }
+    {
+        this.uncheckedSetProjectId(
+            org.wheatgenetics.coordinate.model.Model.valid(projectId, this.stringGetter));
+    }
 
     public void clearProjectId() { this.uncheckedSetProjectId(-1); }
 

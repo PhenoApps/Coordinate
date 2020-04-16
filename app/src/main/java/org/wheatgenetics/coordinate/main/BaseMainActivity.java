@@ -76,7 +76,7 @@ implements org.wheatgenetics.coordinate.StringGetter
     {
         if (null == this.sharedPreferencesInstances) this.sharedPreferencesInstances =
             new org.wheatgenetics.sharedpreferences.SharedPreferences(
-                this.getSharedPreferences("Settings", /* mode => */0));
+                this.getSharedPreferences("Settings", /* mode => */0),this);
         return this.sharedPreferencesInstances;
     }
 

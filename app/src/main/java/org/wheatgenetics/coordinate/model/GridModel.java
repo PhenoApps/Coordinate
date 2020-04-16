@@ -43,7 +43,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     {
         super(stringGetter);
 
-        this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
+        this.templateId =
+            org.wheatgenetics.coordinate.model.Model.valid(templateId, this.stringGetter());
         this.projectId  =
             org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
         this.person = person;
@@ -69,7 +70,8 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     {
         super(id, stringGetter);
 
-        this.templateId = org.wheatgenetics.coordinate.model.Model.valid(templateId);
+        this.templateId =
+            org.wheatgenetics.coordinate.model.Model.valid(templateId, this.stringGetter());
         this.projectId  =
             org.wheatgenetics.coordinate.model.Model.illegal(projectId) ? 0 : projectId;
         this.person = person;

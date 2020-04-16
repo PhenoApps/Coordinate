@@ -8,4 +8,8 @@
         <item quantity="one"  >There is room for only %d more entry.</item>
         <item quantity="other">There is room for only %d more entries.</item>
     </plurals>
+
+
+    <!-- Model -->
+    <string name="ModelIdMustBeGreaterThanZero">id must be > 0</string>
 </resources>

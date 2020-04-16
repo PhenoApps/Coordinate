@@ -33,7 +33,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     {
         super(stringGetter);
 
-        this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
+        this.gridId = org.wheatgenetics.coordinate.model.Model.valid(
+            gridId, this.stringGetter());
         this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
         this.col       = org.wheatgenetics.coordinate.Utils.valid(col,1);
         this.timestamp = java.lang.System.currentTimeMillis();
@@ -50,7 +51,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
     {
         super(id, stringGetter);
 
-        this.gridId    = org.wheatgenetics.coordinate.model.Model.valid(gridId);
+        this.gridId =
+            org.wheatgenetics.coordinate.model.Model.valid(gridId, this.stringGetter());
         this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
         this.col       = org.wheatgenetics.coordinate.Utils.valid(col,1);
         this.timestamp = timestamp;
