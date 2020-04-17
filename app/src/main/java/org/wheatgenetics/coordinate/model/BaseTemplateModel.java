@@ -69,7 +69,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
             // noinspection CStyleArrayDeclaration
             final java.lang.String result[] = new java.lang.String[length];
             for (int i = 0; i < length; i++) result[i] = java.lang.String.format(
-                java.util.Locale.getDefault(),"%s %d", label, i + 1);
+                java.util.Locale.getDefault(),"%s %d",label, i + 1);
             return result;
         }
     }

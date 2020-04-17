@@ -18,6 +18,7 @@ package org.wheatgenetics.coordinate.model;
  * org.xml.sax.SAXException
  * org.xml.sax.helpers.DefaultHandler
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
@@ -460,10 +461,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     {
         final org.wheatgenetics.coordinate.model.TemplateModel result =
             new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* title => */"Seed Tray",
-                /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                /* rows  => */6,
-                /* cols  => */20,
+                /* title => */stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.SeedDefaultTemplateTitle),
+                /* type => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
+                /* rows => */6,
+                /* cols => */20,
                 /* generatedExcludedCellsAmount => */0,
                 /* rowNumbering                 => */true,
                 /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
@@ -478,10 +480,11 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title => */"DNA Plate",
-            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
-            /* rows  => */8,
-            /* cols  => */12,
+            /* title => */ stringGetter.get(
+                org.wheatgenetics.coordinate.R.string.DNADefaultTemplateTitle),
+            /* type => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
+            /* rows => */8,
+            /* cols => */12,
             /* generatedExcludedCellsAmount => */1,
             /* rowNumbering                 => */false,
             /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField

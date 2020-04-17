@@ -12,4 +12,9 @@
 
     <!-- Model -->
     <string name="ModelIdMustBeGreaterThanZero">id must be > 0</string>
+
+
+    <!-- TemplateModel -->
+    <string name="SeedDefaultTemplateTitle">Seed Tray</string>
+    <string name="DNADefaultTemplateTitle">DNA Plate</string>
 </resources>
