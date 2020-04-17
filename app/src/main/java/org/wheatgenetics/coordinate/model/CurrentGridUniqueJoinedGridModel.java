@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
@@ -66,7 +67,10 @@ extends org.wheatgenetics.coordinate.model.JoinedGridModel
 
     @java.lang.Override
     public void setEntryModel(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    { throw new java.lang.UnsupportedOperationException("Call checkThenSetEntryModel() instead"); }
+    {
+        throw new java.lang.UnsupportedOperationException(this.stringGetter().get(
+            org.wheatgenetics.coordinate.R.string.CallCheckThenSetEntryModelInstead));
+    }
 
     public void checkThenSetEntryModel(
     final org.wheatgenetics.coordinate.model.EntryModel entryModel)

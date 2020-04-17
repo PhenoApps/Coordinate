@@ -34,6 +34,8 @@ implements org.wheatgenetics.coordinate.StringGetter
                 return "The %s already has an entry with that value.";
             case org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope:
                 return "current grid";
+            case org.wheatgenetics.coordinate.R.string.CallCheckThenSetEntryModelInstead:
+                return "Call checkThenSetEntryModel() instead";
 
             default: org.junit.Assert.fail(); return null;
         }

@@ -43,4 +43,8 @@
     <!-- JoinedGridModel -->
     <string name="JoinedGridModelSeedTrayDateFieldName">date</string>
     <string name="JoinedGridModelDNAPlateDateFieldName">date</string>
+
+
+    <!-- CurrentGridUniqueJoinedGridModel -->
+    <string name="CallCheckThenSetEntryModelInstead">Call checkThenSetEntryModel() instead</string>
 </resources>
