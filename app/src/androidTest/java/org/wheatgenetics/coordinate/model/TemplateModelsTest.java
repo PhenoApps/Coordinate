@@ -70,6 +70,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 return "person";
 
 
+            case org.wheatgenetics.coordinate.R.string.SeedDefaultTemplateTitle: return "Seed Tray";
+            case org.wheatgenetics.coordinate.R.string.DNADefaultTemplateTitle : return "DNA Plate";
+
+
             default: org.junit.Assert.fail(); return null;
         }
     }
