@@ -19,5 +19,13 @@ extends org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels
     @androidx.annotation.NonNull            final
         org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels.Checker checker     ,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter   stringGetter)
-    { super(gridId, rows, cols,"current project", checker, stringGetter); }
+    {
+        // noinspection ConstantConditions
+        super(gridId, rows, cols, /* scope => */ null == stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentProjectUniqueEntryModelsScope) ?
+                "current project"                                                               :
+                stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentProjectUniqueEntryModelsScope) ,
+            checker, stringGetter);
+    }
 }

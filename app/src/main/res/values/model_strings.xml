@@ -30,4 +30,8 @@
 
     <!-- AllGridsUniqueEntryModels -->
     <string name="AllGridsUniqueEntryModelsScope">database</string>
+
+
+    <!-- CurrentProjectUniqueEntryModels -->
+    <string name="CurrentProjectUniqueEntryModelsScope">current project</string>
 </resources>
