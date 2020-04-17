@@ -34,4 +34,8 @@
 
     <!-- CurrentProjectUniqueEntryModels -->
     <string name="CurrentProjectUniqueEntryModelsScope">current project</string>
+
+
+    <!-- FullyUniqueEntryModels -->
+    <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
 </resources>
