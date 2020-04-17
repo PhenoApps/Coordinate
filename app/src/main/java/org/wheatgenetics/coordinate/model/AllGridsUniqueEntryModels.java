@@ -5,6 +5,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels
@@ -19,5 +20,13 @@ extends org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels
     @androidx.annotation.NonNull            final
         org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker     checker     ,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(gridId, rows, cols,"database", checker, stringGetter); }
+    {
+        // noinspection ConstantConditions
+        super(gridId, rows, cols, /* scope => */ null == stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.AllGridsUniqueEntryModelsScope) ?
+                "database"                                                                :
+                stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.AllGridsUniqueEntryModelsScope) ,
+            checker, stringGetter);
+    }
 }

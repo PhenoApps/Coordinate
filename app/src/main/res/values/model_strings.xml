@@ -26,4 +26,8 @@
     <!-- CurrentGridUniqueEntryModels -->
     <string name="CurrentGridDuplicateCheckExceptionMsg">The %s already has an entry with that value.</string>
     <string name="CurrentGridDuplicateCheckExceptionScope">current grid</string>
+
+
+    <!-- AllGridsUniqueEntryModels -->
+    <string name="AllGridsUniqueEntryModelsScope">database</string>
 </resources>

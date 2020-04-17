@@ -30,13 +30,11 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
         @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             // noinspection ConstantConditions
-            super(java.lang.String.format(
-                null == stringGetter.get(
-                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ?
-                "The %s already has an entry with that value."                                   :
-                stringGetter.get(
-                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ,
-
+            super(java.lang.String.format(null == stringGetter.get(org.wheatgenetics
+                        .coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ?
+                    "The %s already has an entry with that value."     :
+                    stringGetter.get(org.wheatgenetics.coordinate.R
+                        .string.CurrentGridDuplicateCheckExceptionMsg) ,
                 scope));
         }
 
@@ -44,12 +42,11 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
         @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
         {
             // noinspection ConstantConditions
-            this(null == stringGetter.get(
-                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ?
-                "current grid"                                                                     :
-                stringGetter.get(
-                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ,
-
+            this(/* scope => */ null == stringGetter.get(org.wheatgenetics
+                        .coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ?
+                    "current grid"                                                    :
+                    stringGetter.get(org.wheatgenetics.coordinate.R
+                        .string.CurrentGridDuplicateCheckExceptionScope)              ,
                 stringGetter);
         }
     }
