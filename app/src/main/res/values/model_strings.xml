@@ -38,4 +38,9 @@
 
     <!-- FullyUniqueEntryModels -->
     <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
+
+
+    <!-- JoinedGridModel -->
+    <string name="JoinedGridModelSeedTrayDateFieldName">date</string>
+    <string name="JoinedGridModelDNAPlateDateFieldName">date</string>
 </resources>

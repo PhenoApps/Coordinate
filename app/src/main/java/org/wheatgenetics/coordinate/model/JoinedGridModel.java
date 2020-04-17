@@ -11,6 +11,7 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.javalib.CsvWriter
  * org.wheatgenetics.javalib.Utils
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  *
@@ -63,21 +64,37 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         helper,
     final boolean includeHeader) throws java.io.IOException
     {
-        final java.lang.String tray_id, person, date;
+        final java.lang.String tray_idValue, personValue, dateValue;
         {
             final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
                 this.optionalFields();
             if (null == optionalFields)
-                tray_id = person = date = null;
+                tray_idValue = personValue = dateValue = null;
             else
             {
                 // noinspection CStyleArrayDeclaration
-                final java.lang.String values[] = optionalFields.values(
-                    /* names[] => */ new java.lang.String[]{"Tray", "Person", "date"});
+                final java.lang.String values[];
+                {
+                    final java.lang.String trayName, personName, dateName;
+                    {
+                        @androidx.annotation.NonNull
+                        final org.wheatgenetics.coordinate.StringGetter stringGetter =
+                            this.stringGetter();
+
+                        trayName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsTrayIDFieldName);
+                        personName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsSeedTrayPersonFieldName);
+                        dateName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.JoinedGridModelSeedTrayDateFieldName);
+                    }
+                    values = optionalFields.values(
+                        /* names[] => */ new java.lang.String[]{trayName, personName, dateName});
+                }
                 if (null == values)
-                    tray_id = person = date = null;
+                    tray_idValue = personValue = dateValue = null;
                 else
-                    { tray_id = values[0]; person = values[1]; date = values[2]; }
+                    { tray_idValue = values[0]; personValue = values[1]; dateValue = values[2]; }
             }
         }
 
@@ -95,14 +112,14 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         this.getEntryModel(row, col);
                     if (null != entryModel)
                     {
-                        csvWriter.write(tray_id                                 );    // tray id
+                        csvWriter.write(tray_idValue                            );    // tray id
                         csvWriter.write("%s_C%02d_R%d", exportFileName, col, row);    // cell_id
                         csvWriter.write(                                        );    // tray_num
                         csvWriter.write(col                                     );    // tray_column
                         csvWriter.write(row                                     );    // tray_row
                         csvWriter.write(entryModel.getSeedExportValue()         );    // seed_id
-                        csvWriter.write(person                                  );    // person
-                        csvWriter.write(date                                    );    // date
+                        csvWriter.write(personValue                             );    // person
+                        csvWriter.write(dateValue                               );    // date
 
                         csvWriter.endRecord();
                     }
@@ -119,27 +136,54 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         helper,
     final boolean includeHeader) throws java.io.IOException
     {
-        final java.lang.String date, plate_id, plate_name,
-            dna_person, notes, tissue_type, extraction;
+        final java.lang.String dateValue, plate_idValue, plate_nameValue,
+            dna_personValue, notesValue, tissue_typeValue, extractionValue;
         {
             final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
                 this.optionalFields();
             if (null == optionalFields)
-                date = plate_id = plate_name = dna_person = notes = tissue_type = extraction = null;
+                dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                    notesValue = tissue_typeValue = extractionValue = null;
             else
             {
                 // noinspection CStyleArrayDeclaration
-                final java.lang.String values[] = optionalFields.values(
-                    /* names[] => */ new java.lang.String[]{"date", "Plate",
-                        "Plate Name", "person", "Notes", "tissue_type", "extraction"});
+                final java.lang.String values[];
+                {
+                    final java.lang.String dateName, plate_idName, plate_nameName,
+                        dna_personName, notesName, tissue_typeName, extractionName;
+                    {
+                        @androidx.annotation.NonNull
+                        final org.wheatgenetics.coordinate.StringGetter stringGetter =
+                            this.stringGetter();
+
+                        dateName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.JoinedGridModelDNAPlateDateFieldName);
+                        plate_idName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsPlateIDFieldName);
+                        plate_nameName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsPlateNameFieldName);
+                        dna_personName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsDNAPlatePersonFieldName);
+                        notesName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsNotesFieldName);
+                        tissue_typeName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsTissueTypeFieldName);
+                        extractionName = stringGetter.get(org.wheatgenetics.coordinate
+                            .R.string.NonNullOptionalFieldsExtractionFieldName);
+                    }
+                    values = optionalFields.values(/* names[] => */ new java.lang.String[]{
+                        dateName, plate_idName, plate_nameName, dna_personName,
+                        notesName, tissue_typeName, extractionName});
+                }
                 if (null == values)
-                    date = plate_id = plate_name = dna_person =
-                        notes = tissue_type = extraction = null;
+                    dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                        notesValue = tissue_typeValue = extractionValue = null;
                 else
                 {
-                    date       = values[0]; plate_id = values[1]; plate_name  = values[2];
-                    dna_person = values[3]; notes    = values[4]; tissue_type = values[5];
-                    extraction = values[6];
+                    dateValue       = values[0]; plate_idValue    = values[1];
+                    plate_nameValue = values[2]; dna_personValue  = values[3];
+                    notesValue      = values[4]; tissue_typeValue = values[5];
+                    extractionValue = values[6];
                 }
             }
         }
@@ -160,9 +204,9 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                         this.getEntryModel(row, col);
                     if (null != entryModel)
                     {
-                        csvWriter.write(date      );
-                        csvWriter.write(plate_id  );
-                        csvWriter.write(plate_name);
+                        csvWriter.write(dateValue      );
+                        csvWriter.write(plate_idValue  );
+                        csvWriter.write(plate_nameValue);
                         {
                             final java.lang.String sample_id;
                             {
@@ -172,15 +216,15 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
                                     java.util.Locale.getDefault(),"%02d", col);
 
                                 sample_id = java.lang.String.format(
-                                    "%s_%s%s", plate_id, rowName, colName);
+                                    "%s_%s%s", plate_idValue, rowName, colName);
                                 csvWriter.write(sample_id               );              // sample_id
                                 csvWriter.write("%s%s", rowName, colName);              // well_A01
                                 csvWriter.write("%s%s", colName, rowName);              // well_01A
                             }
                             csvWriter.write(entryModel.getDNAExportValue(sample_id));   // tissue_id
                         }
-                        csvWriter.write(dna_person ); csvWriter.write(notes     );
-                        csvWriter.write(tissue_type); csvWriter.write(extraction);
+                        csvWriter.write(dna_personValue ); csvWriter.write(notesValue     );
+                        csvWriter.write(tissue_typeValue); csvWriter.write(extractionValue);
 
                         csvWriter.endRecord();
                     }
@@ -496,14 +540,19 @@ implements org.wheatgenetics.coordinate.model.DisplayModel
         {
             final org.wheatgenetics.coordinate.model.TemplateType templateType =
                 this.templateModel.getType();
+            @androidx.annotation.NonNull
+            final org.wheatgenetics.coordinate.StringGetter stringGetter = this.stringGetter();
+
             if (org.wheatgenetics.coordinate.model.TemplateType.SEED == templateType)
-                name = "Tray";
+                name = stringGetter.get(org.wheatgenetics.coordinate
+                    .R.string.NonNullOptionalFieldsTrayIDFieldName);
             else
                 if (org.wheatgenetics.coordinate.model.TemplateType.DNA == templateType)
-                    name = "Plate";
+                    name = stringGetter.get(org.wheatgenetics.coordinate
+                        .R.string.NonNullOptionalFieldsPlateIDFieldName);
                 else
                     name = org.wheatgenetics.coordinate.optionalField
-                        .BaseOptionalField.identificationFieldName(this.stringGetter());
+                        .BaseOptionalField.identificationFieldName(stringGetter);
         }
         return this.optionalFieldValue(name);
     }

@@ -93,6 +93,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 return "person";
 
 
+            case org.wheatgenetics.coordinate.R.string.JoinedGridModelSeedTrayDateFieldName:
+                return "date";
+            case org.wheatgenetics.coordinate.R.string.JoinedGridModelDNAPlateDateFieldName:
+                return "date";
+
             default: org.junit.Assert.fail(); return null;
         }
     }
