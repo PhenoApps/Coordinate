@@ -13,6 +13,7 @@ package org.wheatgenetics.coordinate.model;
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
@@ -49,7 +50,13 @@ implements org.wheatgenetics.coordinate.StringGetter
     @androidx.annotation.StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId)
+        {
+            case org.wheatgenetics.coordinate.R.string.CallCheckThenSetValueInstead:
+                return "Call checkThenSetValue() instead";
+
+            default: org.junit.Assert.fail(); return null;
+        }
     }
 
     @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
