@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
@@ -65,7 +66,10 @@ public class CheckedIncludedEntryModel extends org.wheatgenetics.coordinate.mode
 
     @java.lang.Override public void setValue(
     @androidx.annotation.Nullable final java.lang.String value)
-    { throw new java.lang.UnsupportedOperationException("Call checkThenSetValue() instead"); }
+    {
+        throw new java.lang.UnsupportedOperationException(this.stringGetter().get(
+            org.wheatgenetics.coordinate.R.string.CallCheckThenSetValueInstead));
+    }
 
     public void checkThenSetValue(@androidx.annotation.Nullable final java.lang.String value)
     throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException

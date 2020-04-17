@@ -17,4 +17,8 @@
     <!-- TemplateModel -->
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
+
+
+    <!-- CheckedIncludedEntryModel -->
+    <string name="CallCheckThenSetValueInstead">Call checkThenSetValue() instead</string>
 </resources>
