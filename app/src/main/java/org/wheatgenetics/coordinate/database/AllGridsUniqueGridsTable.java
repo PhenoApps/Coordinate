@@ -119,7 +119,7 @@ implements org.wheatgenetics.coordinate.model.AllGridsUniqueEntryModels.Checker
     {
         if (this.exists(gridId, value))
             throw new org.wheatgenetics.coordinate.model
-                .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope);
+                .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope, this);
         else
             return value;
     }

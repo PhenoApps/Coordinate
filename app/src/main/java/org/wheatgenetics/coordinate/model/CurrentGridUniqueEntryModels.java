@@ -8,6 +8,7 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
@@ -25,10 +26,32 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
     {
         @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
         CurrentGridDuplicateCheckException(
-        @androidx.annotation.NonNull final java.lang.String scope)
-        { super(java.lang.String.format("The %s already has an entry with that value.", scope)); }
+        @androidx.annotation.NonNull final java.lang.String                          scope       ,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        {
+            // noinspection ConstantConditions
+            super(java.lang.String.format(
+                null == stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ?
+                "The %s already has an entry with that value."                                   :
+                stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ,
 
-        CurrentGridDuplicateCheckException() { this("current grid"); }
+                scope));
+        }
+
+        CurrentGridDuplicateCheckException(
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        {
+            // noinspection ConstantConditions
+            this(null == stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ?
+                "current grid"                                                                     :
+                stringGetter.get(
+                    org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ,
+
+                stringGetter);
+        }
     }
 
     public CurrentGridUniqueEntryModels(
@@ -86,8 +109,8 @@ extends org.wheatgenetics.coordinate.model.UniqueEntryModels
             final Processor processor = new Processor(rowIndex, colIndex, value);
             this.processAll(processor);
             if (processor.getDuplicateFound())
-                throw new org.wheatgenetics.coordinate.model
-                    .CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException();
+                throw new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
+                    .CurrentGridDuplicateCheckException(this.stringGetter());
             else
                 return value;
         }

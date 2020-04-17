@@ -21,4 +21,9 @@
 
     <!-- CheckedIncludedEntryModel -->
     <string name="CallCheckThenSetValueInstead">Call checkThenSetValue() instead</string>
+
+
+    <!-- CurrentGridUniqueEntryModels -->
+    <string name="CurrentGridDuplicateCheckExceptionMsg">The %s already has an entry with that value.</string>
+    <string name="CurrentGridDuplicateCheckExceptionScope">current grid</string>
 </resources>

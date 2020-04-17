@@ -65,7 +65,7 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
         if (org.wheatgenetics.coordinate.database.AllGridsUniqueEntriesTable.exists(
         this.queryAll(selection, selectionArgs)))
             throw new org.wheatgenetics.coordinate.model
-                .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope);
+                .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope, this);
         else
             return value;
     }

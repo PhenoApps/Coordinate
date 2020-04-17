@@ -190,13 +190,13 @@ implements org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
             if (org.wheatgenetics.coordinate.model.Model.illegal(joinedGridModel.getProjectId()))
                 if (this.existsOutsideProject(gridId, value))
                     throw new org.wheatgenetics.coordinate.model
-                        .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope);
+                        .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope, this);
                  else
                      return value;
             else
                 if (this.existsInsideProject(gridId, value, joinedGridModel.getProjectId()))
                     throw new org.wheatgenetics.coordinate.model
-                        .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope);
+                        .DatabaseUniqueEntryModels.DatabaseDuplicateCheckException(scope, this);
                 else
                     return value;
     }

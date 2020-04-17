@@ -21,7 +21,9 @@ extends org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
     .coordinate.model.CurrentGridUniqueEntryModels.CurrentGridDuplicateCheckException
     {
         public DatabaseDuplicateCheckException(
-        @androidx.annotation.NonNull final java.lang.String scope) { super(scope); }
+        @androidx.annotation.NonNull final java.lang.String                          scope       ,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        { super(scope, stringGetter); }
     }
 
     @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Checker
