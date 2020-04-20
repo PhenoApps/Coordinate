@@ -83,6 +83,11 @@
 
 
 
+    <!-- PreferenceFragment -->
+    <string name="PreferenceFragmentWrongContext">"%s must implement OnPreferenceClickListener"</string>
+
+
+
     <!-- PreferenceActivity -->
     <string name="PreferenceActivityLabel">Settings</string>
 </resources>

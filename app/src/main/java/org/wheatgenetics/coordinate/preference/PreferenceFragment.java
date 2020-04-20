@@ -124,8 +124,9 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
         if (context instanceof androidx.preference.Preference.OnPreferenceClickListener)
             this.onUniquePreferenceClickListener =
                 (androidx.preference.Preference.OnPreferenceClickListener) context;
-        else throw new java.lang.RuntimeException(
-            context.toString() + " must implement OnPreferenceClickListener");
+        else throw new java.lang.RuntimeException(java.lang.String.format(
+            this.getString(org.wheatgenetics.coordinate.R.string.PreferenceFragmentWrongContext),
+            context.toString()                                                                  ));
     }
 
     @java.lang.Override public void onCreatePreferences(
