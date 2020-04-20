@@ -15,7 +15,7 @@
 
 
 
-    <!-- MainActivity, NavigationItemSelectedListener -->
+    <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
     <string name="TemplateNotCreatedToast">%s not created</string>
     <string name="TemplateCreatedToast">%s created</string>
 

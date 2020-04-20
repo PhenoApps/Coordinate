@@ -423,15 +423,25 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        final java.lang.String not;
+        @androidx.annotation.NonNull final java.lang.String text;
         {
-            final boolean templateCreated = this.templatesTable().insert(templateModel) > 0;
-            if (templateCreated)
-                { not = ""; this.notifyDataSetChanged(); }
-            else
-                not = " not";
+            @androidx.annotation.NonNull final java.lang.String format;
+            {
+                @androidx.annotation.StringRes final int resId;
+                {
+                    final boolean templateCreated = this.templatesTable().insert(templateModel) > 0;
+                    if (templateCreated)
+                    {
+                        resId = org.wheatgenetics.coordinate.R.string.TemplateCreatedToast;
+                        this.notifyDataSetChanged();
+                    }
+                    else resId = org.wheatgenetics.coordinate.R.string.TemplateNotCreatedToast;
+                }
+                format = this.getString(resId);
+            }
+            text = java.lang.String.format(format, templateModel.getTitle());
         }
-        this.showLongToast(templateModel.getTitle() + not + " created");
+        this.showLongToast(text);
     }
     // endregion
     // endregion
