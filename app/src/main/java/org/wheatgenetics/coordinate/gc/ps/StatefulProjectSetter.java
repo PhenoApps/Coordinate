@@ -92,8 +92,9 @@ public class StatefulProjectSetter extends org.wheatgenetics.coordinate.gc.ps.Pr
             { thirdItem = null; this.clearProjectId(); }
         else
         {
-            thirdItem = java.lang.String.format("Add this grid to \"%s\" project.",
-                projectModel.getTitle());
+            thirdItem = java.lang.String.format(this.activity().getString(
+                org.wheatgenetics.coordinate.R.string.StatefulProjectSetterThirdItem),
+                projectModel.getTitle()                                              );
             this.setProjectId(projectModel.getId());
         }
         this.showProjectChoiceAlertDialog(thirdItem);
