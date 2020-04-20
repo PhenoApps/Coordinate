@@ -112,7 +112,7 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
 
     public void set()
     {
-        this.showProjectChoiceAlertDialog(this.projectsTable().exists() ?
-            "Add this grid to an existing project." : null);
+        this.showProjectChoiceAlertDialog(this.projectsTable().exists() ? this.activity().getString(
+            org.wheatgenetics.coordinate.R.string.StatelessProjectSetterThirdItem) : null);
     }
 }

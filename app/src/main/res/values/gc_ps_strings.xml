@@ -8,4 +8,7 @@
     <!-- StatelessProjectSetter -->
     <string name="StatefulProjectSetterThirdItem">Add this grid to "%s" project.</string>
     <string name="StatelessProjectSetterSelectProject">Select Existing Project</string>
+
+    <!-- StatelessProjectSetter -->
+    <string name="StatelessProjectSetterThirdItem">Add this grid to an existing project.</string>
 </resources>
