@@ -15,6 +15,11 @@
 
 
 
+    <!-- MainActivity, NavigationItemSelectedListener -->
+    <string name="TemplateNotCreatedToast">%s not created</string>
+    <string name="TemplateCreatedToast">%s created</string>
+
+
     <!-- multiple activities -->
     <string name="AppBarNewTitle">New</string>
 

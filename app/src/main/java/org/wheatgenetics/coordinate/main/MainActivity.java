@@ -229,8 +229,8 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
             {
                 @androidx.annotation.StringRes final int resId =
                     this.templatesTable().insert(templateModel) > 0 ?
-                        org.wheatgenetics.coordinate.R.string.MainActivityTemplateCreatedToast :
-                        org.wheatgenetics.coordinate.R.string.MainActivityTemplateNotCreatedToast;
+                        org.wheatgenetics.coordinate.R.string.TemplateCreatedToast   :
+                        org.wheatgenetics.coordinate.R.string.TemplateNotCreatedToast;
                 format = this.getString(resId);
             }
             text = java.lang.String.format(format, templateModel.getTitle());

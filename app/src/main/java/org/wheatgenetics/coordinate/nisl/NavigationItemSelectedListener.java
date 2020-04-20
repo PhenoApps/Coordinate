@@ -737,8 +737,19 @@ org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        final java.lang.String not = this.templatesTable().insert(templateModel) > 0 ? "" : " not";
-        this.showLongToast(templateModel.getTitle() + not + " created");
+        @androidx.annotation.NonNull final java.lang.String text;
+        {
+            @androidx.annotation.NonNull final java.lang.String format;
+            {
+                @androidx.annotation.StringRes final int resId =
+                    this.templatesTable().insert(templateModel) > 0 ?
+                        org.wheatgenetics.coordinate.R.string.TemplateCreatedToast   :
+                        org.wheatgenetics.coordinate.R.string.TemplateNotCreatedToast;
+                format = this.activity.getString(resId);
+            }
+            text = java.lang.String.format(format, templateModel.getTitle());
+        }
+        this.showLongToast(text);
     }
     // endregion
     // endregion
