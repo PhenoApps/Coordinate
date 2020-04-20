@@ -47,11 +47,14 @@ abstract class ProjectSetter extends java.lang.Object
 
     // region Private Methods
     @androidx.annotation.NonNull private static java.lang.String[] items(
-    @androidx.annotation.Nullable final java.lang.String thirdItem)
+    @androidx.annotation.Nullable final java.lang.String     thirdItem,
+                                  final android.app.Activity activity )
     {
         final java.lang.String
-            firstItem  = "Don't add this grid to a project.",
-            secondItem = "Create a project for this grid."  ;
+            firstItem  = activity.getString(
+                org.wheatgenetics.coordinate.R.string.ProjectSetterFirstItem),
+            secondItem = activity.getString(
+                org.wheatgenetics.coordinate.R.string.ProjectSetterSecondItem);
         if (null == thirdItem)
             return new java.lang.String[]{firstItem, secondItem};
         else
@@ -129,8 +132,8 @@ abstract class ProjectSetter extends java.lang.Object
     @androidx.annotation.Nullable final java.lang.String thirdItem)
     {
         this.projectChoiceAlertDialog().show(
-            org.wheatgenetics.coordinate.R.string.ProjectSetterProjectChoiceAlertDialogTitle,
-            org.wheatgenetics.coordinate.gc.ps.ProjectSetter.items(thirdItem)               );
+            org.wheatgenetics.coordinate.R.string.ProjectSetterProjectChoiceAlertDialogTitle  ,
+            org.wheatgenetics.coordinate.gc.ps.ProjectSetter.items(thirdItem, this.activity()));
     }
     // endregion
 

@@ -291,13 +291,15 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
         {
             @androidx.annotation.IntRange(from = 0) final long projectId =
                 this.joinedGridModel.getProjectId();
+            final java.lang.String NONE = "none";
+
             if (org.wheatgenetics.coordinate.model.Model.illegal(projectId))
-                return "none";
+                return NONE;
             else
             {
                 final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
                     this.projectsTable().get(projectId);
-                return null == projectModel ? "none" : projectModel.getTitle();
+                return null == projectModel ? NONE : projectModel.getTitle();
             }
         }
         else return "";

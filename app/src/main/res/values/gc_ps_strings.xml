@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ProjectSetter -->
     <string name="ProjectSetterProjectChoiceAlertDialogTitle">Create Grid</string>
+    <string name="ProjectSetterFirstItem">Don\'t add this grid to a project.</string>
+    <string name="ProjectSetterSecondItem">Create a project for this grid.</string>
+
+    <!-- StatelessProjectSetter -->
     <string name="StatelessProjectSetterSelectProject">Select Existing Project</string>
 </resources>
