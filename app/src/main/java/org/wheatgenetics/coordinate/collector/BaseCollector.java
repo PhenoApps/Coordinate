@@ -250,7 +250,7 @@ org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
     @java.lang.Override public void handleFilledGrid()
     {
         org.wheatgenetics.coordinate.Utils.alert(this.activity,
-            org.wheatgenetics.coordinate.R.string.MainActivityFilledGridAlertMessage);
+            org.wheatgenetics.coordinate.R.string.BaseCollectorFilledGridAlertMessage);
 
         if (this.getSoundsOn())
         {

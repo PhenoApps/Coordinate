@@ -19,9 +19,11 @@ class TemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDi
     { public abstract void chooseOld(); public abstract void chooseNew(); }
 
     // region Fields
+    // region Constructor Fields
     @androidx.annotation.StringRes private final int firstItem;
     @androidx.annotation.NonNull   private final
         org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog.Handler handler;
+    // endregion
 
     @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
     private int                                             itemsInstance[]         = null;    // ll
