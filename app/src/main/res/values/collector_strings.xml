@@ -5,4 +5,7 @@
 
     <!-- UniqueAlertDialog -->
     <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
+
+    <!-- BaseCollector -->
+    <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
 </resources>
