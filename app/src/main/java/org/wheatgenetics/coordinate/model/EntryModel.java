@@ -35,8 +35,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
 
         this.gridId = org.wheatgenetics.coordinate.model.Model.valid(
             gridId, this.stringGetter());
-        this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
-        this.col       = org.wheatgenetics.coordinate.Utils.valid(col,1);
+        this.row = org.wheatgenetics.coordinate.Utils.valid(row,1, this.stringGetter());
+        this.col = org.wheatgenetics.coordinate.Utils.valid(col,1, this.stringGetter());
         this.timestamp = java.lang.System.currentTimeMillis();
     }
 
@@ -53,8 +53,8 @@ implements org.wheatgenetics.coordinate.model.ElementModel
 
         this.gridId =
             org.wheatgenetics.coordinate.model.Model.valid(gridId, this.stringGetter());
-        this.row       = org.wheatgenetics.coordinate.Utils.valid(row,1);
-        this.col       = org.wheatgenetics.coordinate.Utils.valid(col,1);
+        this.row = org.wheatgenetics.coordinate.Utils.valid(row,1, this.stringGetter());
+        this.col = org.wheatgenetics.coordinate.Utils.valid(col,1, this.stringGetter());
         this.timestamp = timestamp;
     }
 

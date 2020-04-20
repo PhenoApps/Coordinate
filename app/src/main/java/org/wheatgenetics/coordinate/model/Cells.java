@@ -60,7 +60,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
             try
             {
                 this.add(new org.wheatgenetics.coordinate.model.Cell(             // throws org.json
-                    (org.json.JSONObject) object));                               //  .JSONException
+                    (org.json.JSONObject) object, this.stringGetter));            //  .JSONException
             }
             catch (final org.json.JSONException e) { /* Don't add(). */ }
     }
@@ -92,9 +92,8 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Cells  cells       ,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        this(
-            /* maxCell      => */ new org.wheatgenetics.coordinate.model.Cell(cells.maxCell),
-            /* stringGetter => */ stringGetter                                              );
+        this(new org.wheatgenetics.coordinate.model.Cell(
+            cells.maxCell, stringGetter), stringGetter);
     }
 
     /** Creates this.maxCell. */
@@ -103,9 +102,8 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     @androidx.annotation.IntRange(from = 1) final int                            maxCol      ,
     @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        this(
-            /* maxCell      => */ new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol),
-            /* stringGetter => */ stringGetter                                               );
+        this(new org.wheatgenetics.coordinate.model.Cell(
+            maxRow, maxCol, stringGetter), stringGetter);
     }
 
     /** Creates this.maxCell. */
@@ -240,10 +238,10 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
         {
             try
             {
-                new org.wheatgenetics.coordinate.model.Cell(maxRow, maxCol).inRange(// throws java.-
-                    this.maxCell);                                                  //  lang.Ille-
-            }                                                                       //  galArgument-
-            catch (final java.lang.IllegalArgumentException e)                      //  Exception
+                new org.wheatgenetics.coordinate.model.Cell(
+                    maxRow, maxCol, this.stringGetter).inRange(this.maxCell);  // throws java.lang
+            }                                                                  //  .IllegalArgument-
+            catch (final java.lang.IllegalArgumentException e)                 //  Exception
             {
                 throw new org.wheatgenetics.coordinate.model.Cells.MaxRowAndOrMaxColOutOfRange(
                     this.stringGetter);
@@ -263,7 +261,7 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
                     org.wheatgenetics.coordinate.model.Cell cell;
                     do
                         cell = org.wheatgenetics.coordinate.model.Cell.makeWithRandomValues(
-                            maxRow, maxCol);
+                            maxRow, maxCol, this.stringGetter);
                     while (this.contains(cell));
 
                     this.add(cell); result.add(cell);
@@ -277,12 +275,15 @@ public class Cells extends java.lang.Object implements java.lang.Cloneable
     boolean contains(
     @androidx.annotation.IntRange(from = 1) final int row,
     @androidx.annotation.IntRange(from = 1) final int col)
-    { return this.contains(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+    {
+        return this.contains(
+            new org.wheatgenetics.coordinate.model.Cell(row, col, this.stringGetter));
+    }
 
     void add(
     @androidx.annotation.IntRange(from = 1) final int row,
     @androidx.annotation.IntRange(from = 1) final int col)
-    { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col)); }
+    { this.add(new org.wheatgenetics.coordinate.model.Cell(row, col, this.stringGetter)); }
 
     int size() { return null == this.cellTreeSetInstance ? 0 : this.cellTreeSetInstance.size(); }
 

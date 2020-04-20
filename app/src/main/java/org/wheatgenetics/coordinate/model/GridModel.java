@@ -90,11 +90,17 @@ public class GridModel extends org.wheatgenetics.coordinate.model.Model
     // region Package Methods
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveRow(@androidx.annotation.IntRange(from = 0) final int activeRow)
-    { this.activeRow = org.wheatgenetics.coordinate.Utils.valid(activeRow,0); }
+    {
+        this.activeRow = org.wheatgenetics.coordinate.Utils.valid(
+            activeRow,0, this.stringGetter());
+    }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setActiveCol(@androidx.annotation.IntRange(from = 0) final int activeCol)
-    { this.activeCol = org.wheatgenetics.coordinate.Utils.valid(activeCol,0); }
+    {
+        this.activeCol = org.wheatgenetics.coordinate.Utils.valid(
+            activeCol,0, this.stringGetter());
+    }
     // endregion
 
     // region Public Methods

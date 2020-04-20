@@ -5,23 +5,32 @@ package org.wheatgenetics.coordinate.model;
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  *
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lang.Comparable
 {
-    @androidx.annotation.IntRange(from = 1) private final int value;
+    // region Fields
+    @androidx.annotation.IntRange(from = 1) private final int                                 value;
+    @androidx.annotation.NonNull            private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+    // endregion
 
     // region Constructors
-    RowOrCol(@androidx.annotation.IntRange(from = 1) final int value)
+    RowOrCol(@androidx.annotation.IntRange(from = 1) final int value,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         super();
-        this.value = org.wheatgenetics.coordinate.Utils.valid(value,1);    // throws java
-    }                                                                               //  .lang.Ille-
-                                                                                    //  galArgument-
-    RowOrCol(                                                                       //  Exception
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol)
-    { this(rowOrCol.getValue()) /* throws java.lang.IllegalArgumentException */; }
+        this.value = org.wheatgenetics.coordinate.Utils.valid(             // throws java.lang.Ille-
+            value,1, stringGetter);                               //  galArgumentException
+        this.stringGetter = stringGetter;
+    }
+
+    RowOrCol(
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol rowOrCol    ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter   stringGetter)
+    { this(rowOrCol.getValue(), stringGetter) /* throws java.lang.IllegalArgumentException */; }
     // endregion
 
     @androidx.annotation.NonNull private java.lang.String getValueAsString()
@@ -46,7 +55,7 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
 
     @java.lang.SuppressWarnings({"CloneDoesntDeclareCloneNotSupportedException"})
     @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
-    { return new org.wheatgenetics.coordinate.model.RowOrCol(this); }
+    { return new org.wheatgenetics.coordinate.model.RowOrCol(this, this.stringGetter); }
 
     // region java.lang.Comparable Overridden Method
     @java.lang.Override
@@ -73,10 +82,11 @@ class RowOrCol extends java.lang.Object implements java.lang.Cloneable, java.lan
     }
 
     @androidx.annotation.NonNull static org.wheatgenetics.coordinate.model.RowOrCol
-    makeWithRandomValue(@androidx.annotation.IntRange(from = 1) final int maxValue)
+    makeWithRandomValue(@androidx.annotation.IntRange(from = 1) final int        maxValue    ,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         return new org.wheatgenetics.coordinate.model.RowOrCol(
-            /* value => */new java.util.Random().nextInt(maxValue) + 1);
+            new java.util.Random().nextInt(maxValue) + 1, stringGetter);
     }
     // endregion
 }

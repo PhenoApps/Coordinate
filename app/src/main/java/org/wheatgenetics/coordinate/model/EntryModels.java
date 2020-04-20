@@ -192,8 +192,8 @@ public class EntryModels extends java.lang.Object
         this.gridId          = org.wheatgenetics.coordinate.model.Model.valid(gridId, stringGetter);
         this.stringGetter    = stringGetter                                          ;
         this.entryModelArray = new org.wheatgenetics.coordinate.model.EntryModel
-            [org.wheatgenetics.coordinate.Utils.valid(rows,1)]
-            [org.wheatgenetics.coordinate.Utils.valid(cols,1)];
+            [org.wheatgenetics.coordinate.Utils.valid(rows,1, this.stringGetter())]
+            [org.wheatgenetics.coordinate.Utils.valid(cols,1, this.stringGetter())];
     }
 
     // region Package Methods

@@ -39,10 +39,10 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
 
     // region Private Methods
     private void setRows(@androidx.annotation.IntRange(from = 1) final int rows)
-    { this.rows = org.wheatgenetics.coordinate.Utils.valid(rows,1); }
+    { this.rows = org.wheatgenetics.coordinate.Utils.valid(rows,1, this.stringGetter()); }
 
     private void setCols(@androidx.annotation.IntRange(from = 1) final int cols)
-    { this.cols = org.wheatgenetics.coordinate.Utils.valid(cols,1); }
+    { this.cols = org.wheatgenetics.coordinate.Utils.valid(cols,1, this.stringGetter()); }
 
 
     /** Called by first and second constructor. */
@@ -253,7 +253,7 @@ abstract class BaseTemplateModel extends org.wheatgenetics.coordinate.model.Mode
     @androidx.annotation.IntRange(from = 0) final int amount)
     {
         this.generatedExcludedCellsAmount =
-            org.wheatgenetics.coordinate.Utils.valid(amount,0);
+            org.wheatgenetics.coordinate.Utils.valid(amount,0, this.stringGetter());
     }
 
 

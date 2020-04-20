@@ -10,14 +10,21 @@ package org.wheatgenetics.coordinate.model;
  * org.json.JSONException
  * org.json.JSONTokener
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.RowOrCol
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 class RowOrCols extends java.lang.Object
 {
     // region Fields
+    // region Constructor Fields
     @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.RowOrCol
         maxRowOrCol;
+    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+        stringGetter;
+    // endregion
+
     private java.util.TreeSet<org.wheatgenetics.coordinate.model.RowOrCol>
         rowOrColTreeSetInstance = null;                                                 // lazy load
     // endregion
@@ -44,18 +51,24 @@ class RowOrCols extends java.lang.Object
     // region Constructors
     /** Assigns this.maxRowOrCol. */
     private RowOrCols(@androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.RowOrCol
-        maxRowOrCol)
-    { super(); this.maxRowOrCol = maxRowOrCol; }
+        maxRowOrCol,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    { super(); this.maxRowOrCol = maxRowOrCol; this.stringGetter = stringGetter; }
 
     /** Creates this.maxRowOrCol. */
-    RowOrCols(@androidx.annotation.IntRange(from = 1) final int maxValue)
-    { this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(maxValue)); }
-
-    /** Creates this.maxRowOrCol. */
-    public RowOrCols(                       final java.lang.String json    ,
-    @androidx.annotation.IntRange(from = 1) final int              maxValue)
+    RowOrCols(@androidx.annotation.IntRange(from = 1) final int maxValue,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
-        this(maxValue);
+        this(/* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(
+            maxValue, stringGetter), stringGetter);
+    }
+
+    /** Creates this.maxRowOrCol. */
+    public RowOrCols(                       final java.lang.String json                            ,
+    @androidx.annotation.IntRange(from = 1) final int                                  maxValue    ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
+    {
+        this(maxValue, stringGetter);
 
         if (null != json) if (json.trim().length() > 0)
         {
@@ -144,8 +157,10 @@ class RowOrCols extends java.lang.Object
     @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
     {
         final org.wheatgenetics.coordinate.model.RowOrCols result =
-            new org.wheatgenetics.coordinate.model.RowOrCols(/* maxRowOrCol => */
-                new org.wheatgenetics.coordinate.model.RowOrCol(this.maxRowOrCol));
+            new org.wheatgenetics.coordinate.model.RowOrCols(
+                /* maxRowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(
+                    this.maxRowOrCol, this.stringGetter),
+                this.stringGetter);
 
         if (null != this.rowOrColTreeSetInstance)
             // noinspection Convert2Diamond
@@ -158,7 +173,10 @@ class RowOrCols extends java.lang.Object
 
     // region Package Methods
     void add(@androidx.annotation.IntRange(from = 1) final int value)
-    { this.add(/* rowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(value)); }
+    {
+        this.add(/* rowOrCol => */ new org.wheatgenetics.coordinate.model.RowOrCol(
+            value, this.stringGetter));
+    }
 
     void clear() { if (null != this.rowOrColTreeSetInstance) this.rowOrColTreeSetInstance.clear(); }
 
@@ -192,7 +210,7 @@ class RowOrCols extends java.lang.Object
             {
                 candidateRowOrCol =
                     new org.wheatgenetics.coordinate.model.RowOrCol(       // throws java.lang.Ille-
-                        candidateValue);                                   //  galArgumentException
+                        candidateValue, this.stringGetter);                //  galArgumentException
                 candidateRowOrCol.inRange(this.maxRowOrCol);               // throws java.lang.Ille-
             }                                                              //  galArgumentException
             catch (final java.lang.IllegalArgumentException e) { return false; }

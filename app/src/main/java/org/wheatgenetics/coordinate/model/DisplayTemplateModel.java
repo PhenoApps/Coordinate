@@ -65,8 +65,9 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     // region setExcluded[Row|Col]s() Private Methods
     @androidx.annotation.Nullable
     private static org.wheatgenetics.coordinate.model.RowOrCols makeFromJSON(
-    @androidx.annotation.Nullable                 java.lang.String json    ,
-    @androidx.annotation.IntRange(from = 1) final int              maxValue)
+    @androidx.annotation.Nullable                 java.lang.String                     json        ,
+    @androidx.annotation.IntRange(from = 1) final int                                  maxValue    ,
+    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         if (null == json)
             return null;
@@ -74,7 +75,7 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
         {
             json = json.trim();
             return json.length() <= 0 ? null : new org.wheatgenetics.coordinate.model.RowOrCols(
-                /* json => */ json, /* maxValue => */ maxValue);
+                /* json => */ json, /* maxValue => */ maxValue, stringGetter);
         }
     }
 
@@ -82,14 +83,14 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
     {
         this.excludedRowsInstance =
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
-                /* json => */ json, /* maxValue => */ this.getRows());
+                /* json => */ json, /* maxValue => */ this.getRows(), this.stringGetter());
     }
 
     private void setExcludedCols(@androidx.annotation.Nullable final java.lang.String json)
     {
         this.excludedColsInstance =
             org.wheatgenetics.coordinate.model.DisplayTemplateModel.makeFromJSON(
-                /* json => */ json, /* maxValue => */ this.getCols());
+                /* json => */ json, /* maxValue => */ this.getCols(), this.stringGetter());
     }
     // endregion
 
@@ -119,15 +120,17 @@ public class DisplayTemplateModel extends org.wheatgenetics.coordinate.model.Bas
 
     @androidx.annotation.NonNull private org.wheatgenetics.coordinate.model.RowOrCols excludedRows()
     {
-        if (null == this.excludedRowsInstance) this.excludedRowsInstance =
-            new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getRows());
+        if (null == this.excludedRowsInstance)
+            this.excludedRowsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                /* maxValue => */ this.getRows(), this.stringGetter());
         return this.excludedRowsInstance;
     }
 
     @androidx.annotation.NonNull private org.wheatgenetics.coordinate.model.RowOrCols excludedCols()
     {
-        if (null == this.excludedColsInstance) this.excludedColsInstance =
-            new org.wheatgenetics.coordinate.model.RowOrCols(/* maxValue => */ this.getCols());
+        if (null == this.excludedColsInstance)
+            this.excludedColsInstance = new org.wheatgenetics.coordinate.model.RowOrCols(
+                /* maxValue => */ this.getCols(), this.stringGetter());
         return this.excludedColsInstance;
     }
     // endregion

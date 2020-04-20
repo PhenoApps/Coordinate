@@ -20,6 +20,7 @@ package org.wheatgenetics.coordinate;
  *
  * org.wheatgenetics.coordinate.Consts
  * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.TemplatesDir
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -45,8 +46,9 @@ public class Utils extends java.lang.Object
     {
         final android.app.AlertDialog.Builder builder =
             new android.app.AlertDialog.Builder(context);
-        if (null != negativeButtonOnClickListener)
-            builder.setNegativeButton("No", negativeButtonOnClickListener);
+        if (null != negativeButtonOnClickListener) builder.setNegativeButton(
+            context.getString(org.wheatgenetics.coordinate.R.string.UtilsNegativeButtonText),
+            negativeButtonOnClickListener                                                   );
         builder.setTitle(title).setMessage(message).setPositiveButton(positiveButtonText,
             positiveButtonOnClickListener).show();
     }
@@ -56,9 +58,9 @@ public class Utils extends java.lang.Object
     @androidx.annotation.NonNull   final android.content.Context context,
     @androidx.annotation.StringRes final int title, final java.lang.String message)
     {
-        org.wheatgenetics.coordinate.Utils.alert(
-            context, context.getString(title), message,"Ok",
-            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(),
+        org.wheatgenetics.coordinate.Utils.alert(context, context.getString(title), message,
+            context.getString(org.wheatgenetics.coordinate.R.string.UtilsPositiveButtonText),
+            org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener()              ,
             null);
     }
 
@@ -77,8 +79,9 @@ public class Utils extends java.lang.Object
     @androidx.annotation.StringRes final int message, final java.lang.Runnable yesRunnable)
     {
         org.wheatgenetics.coordinate.Utils.alert(context,
-            context.getString(org.wheatgenetics.coordinate.R.string.app_name),
-            context.getString(message),"Ok",
+            context.getString(org.wheatgenetics.coordinate.R.string.app_name               ),
+            context.getString(message                                                      ),
+            context.getString(org.wheatgenetics.coordinate.R.string.UtilsPositiveButtonText),
             new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
@@ -99,8 +102,9 @@ public class Utils extends java.lang.Object
                                    final java.lang.Runnable yesRunnable,
     @androidx.annotation.Nullable  final java.lang.Runnable noRunnable )
     {
-        org.wheatgenetics.coordinate.Utils.alert(context, context.getString(title),
-            message,"Yes", new android.content.DialogInterface.OnClickListener()
+        org.wheatgenetics.coordinate.Utils.alert(context, context.getString(title), message,
+            context.getString(org.wheatgenetics.coordinate.R.string.UtilsPositiveButtonText),
+            new android.content.DialogInterface.OnClickListener()
             {
                 @java.lang.Override
                 public void onClick(final android.content.DialogInterface dialog, final int which)
@@ -173,13 +177,20 @@ public class Utils extends java.lang.Object
     // endregion
     // endregion
 
-    public static int valid(final int value, final int minValue)
+    public static int valid(final int value, final int minValue,
+    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
     {
         if (value < minValue)
-            throw new java.lang.IllegalArgumentException(
-                java.lang.String.format("value must be >= %d", minValue));
-        else
-            return value;
+        {
+            @androidx.annotation.NonNull final java.lang.String format;
+            {
+                @androidx.annotation.Nullable final java.lang.String string =
+                    stringGetter.get(org.wheatgenetics.coordinate.R.string.UtilsInvalidValue);
+                format = null == string ? "value must be >= %d" : string;
+            }
+            throw new java.lang.IllegalArgumentException(java.lang.String.format(format, minValue));
+        }
+        else return value;
     }
 
     public static java.lang.String convert(

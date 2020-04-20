@@ -3,16 +3,19 @@
     <string name="app_name" tools:override="true">Coordinate</string>
 
 
+    <!-- Utils -->
+    <string name="UtilsNegativeButtonText">No</string>
+    <string name="UtilsPositiveButtonText">Ok</string>
+    <string name="UtilsInvalidValue">value must be >= %d</string>
+
 
     <!-- AboutAlertDialog -->
     <string name="AboutAlertDialogTitle">About Coordinate</string>
     <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
 
 
-
     <!-- TestAlertDialog -->
     <string name="TestAlertDialogTitle">Test Coordinate</string>
-
 
 
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->

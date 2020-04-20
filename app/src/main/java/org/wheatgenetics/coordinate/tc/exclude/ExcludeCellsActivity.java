@@ -31,12 +31,18 @@ org.wheatgenetics.coordinate.StringGetter
     @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) private static class DisplayModel
     extends java.lang.Object implements org.wheatgenetics.coordinate.model.DisplayModel
     {
-        @androidx.annotation.NonNull
-        private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+        // region Fields
+        @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
+            templateModel;
+        @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
+            stringGetter;
+        // endregion
 
-        private DisplayModel(@androidx.annotation.NonNull
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-        { super(); this.templateModel = templateModel; }
+        private DisplayModel(
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
+            templateModel,
+        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        { super(); this.templateModel = templateModel; this.stringGetter = stringGetter; }
 
         // region Overridden Methods
         @java.lang.Override @androidx.annotation.IntRange(from = 1) public int getRows()
@@ -55,7 +61,10 @@ org.wheatgenetics.coordinate.StringGetter
         public org.wheatgenetics.coordinate.model.ElementModel getElementModel(
         @androidx.annotation.IntRange(from = 1) final int row,
         @androidx.annotation.IntRange(from = 1) final int col)
-        { return new org.wheatgenetics.coordinate.model.Cell(/* row => */ row, /* col => */ col); }
+        {
+            return new org.wheatgenetics.coordinate.model.Cell(
+                row, col,this.stringGetter);
+        }
         // endregion
     }
 
@@ -98,7 +107,7 @@ org.wheatgenetics.coordinate.StringGetter
             this                                                                );
         if (null != this.templateModel) this.displayModel =
             new org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity.DisplayModel(
-                this.templateModel);
+                this.templateModel,this);
     }
 
     @java.lang.Override protected void onSaveInstanceState(
