@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- MainActivity -->
+    <string name="MainActivityGridsItem">Grids</string>
+    <string name="MainActivityTemplatesItem">Templates</string>
+    <string name="MainActivityProjectsItem">Projects</string>
+    <string name="MainActivitySettingsItem">Settings</string>
+    <string name="MainActivityAboutItem">About</string>
+
+    <string name="MainActivityTemplateNotCreatedToast">%s not created</string>
+    <string name="MainActivityTemplateCreatedToast">%s created</string>
+
+
+    <!-- menu_main.xml -->
     <string name="MainActivityGridMenuItemTitle">Grid</string>
     <string name="MainActivityTemplateMenuItemTitle">Template</string>
     <string name="MainActivityProjectMenuItemTitle">Project</string>

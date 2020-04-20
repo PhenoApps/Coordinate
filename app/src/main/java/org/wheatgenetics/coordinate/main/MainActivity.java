@@ -19,6 +19,7 @@ package org.wheatgenetics.coordinate.main;
  * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
@@ -142,8 +143,15 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
         {
             // noinspection Convert2Diamond
             mainListView.setAdapter(new android.widget.ArrayAdapter<java.lang.String>(
-                this, org.wheatgenetics.coordinate.R.layout.main_list_item,
-                new java.lang.String[]{"Grids", "Templates", "Projects", "Settings", "About"}));
+                this, /* resource => */ org.wheatgenetics.coordinate.R.layout.main_list_item,
+                /* objects => */ new java.lang.String[]{
+                    this.getString(org.wheatgenetics.coordinate.R.string.MainActivityGridsItem),
+                    this.getString(
+                        org.wheatgenetics.coordinate.R.string.MainActivityTemplateMenuItemTitle),
+                    this.getString(
+                        org.wheatgenetics.coordinate.R.string.MainActivityProjectMenuItemTitle),
+                    this.getString(org.wheatgenetics.coordinate.R.string.MainActivitySettingsItem),
+                    this.getString(org.wheatgenetics.coordinate.R.string.MainActivityAboutItem )}));
             mainListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
                 {
                     @java.lang.Override
@@ -215,8 +223,19 @@ implements org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
     @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
     final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
     {
-        final java.lang.String not = this.templatesTable().insert(templateModel) > 0 ? "" : " not";
-        this.showLongToast(templateModel.getTitle() + not + " created");
+        @androidx.annotation.NonNull final java.lang.String text;
+        {
+            @androidx.annotation.NonNull final java.lang.String format;
+            {
+                @androidx.annotation.StringRes final int resId =
+                    this.templatesTable().insert(templateModel) > 0 ?
+                        org.wheatgenetics.coordinate.R.string.MainActivityTemplateCreatedToast :
+                        org.wheatgenetics.coordinate.R.string.MainActivityTemplateNotCreatedToast;
+                format = this.getString(resId);
+            }
+            text = java.lang.String.format(format, templateModel.getTitle());
+        }
+        this.showLongToast(text);
     }
     // endregion
     // endregion
