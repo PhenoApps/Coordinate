@@ -40,11 +40,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        // noinspection SwitchStatementWithTooFewBranches
         switch (resId)
         {
             case org.wheatgenetics.coordinate.R.string.ModelIdMustBeGreaterThanZero:
                 return "id must be > 0";
+
+            case org.wheatgenetics.coordinate.R.string.UtilsInvalidValue:
+                return "value must be >= %d";
 
             default: org.junit.Assert.fail(); return null;
         }

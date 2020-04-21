@@ -314,7 +314,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* timestamp                    => */880,
                 /* stringGetter                 => */this);
         final org.wheatgenetics.coordinate.model.Cell cell =
-            new org.wheatgenetics.coordinate.model.Cell(1,1);
+            new org.wheatgenetics.coordinate.model.Cell(1,1,this);
 
         org.junit.Assert.assertFalse(displayTemplateModel.isExcludedCell(cell));
 

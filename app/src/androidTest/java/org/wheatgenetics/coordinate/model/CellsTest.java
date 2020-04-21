@@ -31,11 +31,13 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
     @androidx.annotation.StringRes final int resId)
     {
-        // noinspection SwitchStatementWithTooFewBranches
         switch (resId)
         {
             case org.wheatgenetics.coordinate.R.string.CellsMaxRowAndOrMaxColOutOfRange:
                 return "maxRow and/or maxCol is out of range";
+
+            case org.wheatgenetics.coordinate.R.string.UtilsInvalidValue:
+                return "value must be >= %d";
 
             default: org.junit.Assert.fail(); return null;
         }
@@ -363,7 +365,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     {
         org.junit.Assert.assertFalse(new org.wheatgenetics.coordinate.model.Cells(
             5,5,this).contains(
-                new org.wheatgenetics.coordinate.model.Cell(10,10)));
+                new org.wheatgenetics.coordinate.model.Cell(10,10,this)));
     }
     // endregion
 
@@ -378,19 +380,19 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     public void tooBigCellAddFails()
     {
         new org.wheatgenetics.coordinate.model.Cells(5,5,this).add(
-            new org.wheatgenetics.coordinate.model.Cell(9,9));
+            new org.wheatgenetics.coordinate.model.Cell(9,9,this));
     }
     // endregion
 
     @org.junit.Test() public void removeWorks()
     {
         final org.wheatgenetics.coordinate.model.Cell cell =
-            new org.wheatgenetics.coordinate.model.Cell(3,3);
+            new org.wheatgenetics.coordinate.model.Cell(3,3,this);
         final org.wheatgenetics.coordinate.model.Cells cells =
             new org.wheatgenetics.coordinate.model.Cells(5,5,this);
         org.junit.Assert.assertFalse(cells.remove(cell));
         org.junit.Assert.assertFalse(cells.remove(
-            new org.wheatgenetics.coordinate.model.Cell(4,4)));
+            new org.wheatgenetics.coordinate.model.Cell(4,4,this)));
         cells.add(cell); org.junit.Assert.assertTrue(cells.remove(cell));
         org.junit.Assert.assertFalse(cells.remove(cell));
     }

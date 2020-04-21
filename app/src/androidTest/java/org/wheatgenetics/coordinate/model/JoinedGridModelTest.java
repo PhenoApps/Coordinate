@@ -355,7 +355,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 final int excludedRow = 3;
                 for (int col = 1; col <= cols; col++) expectedCells.add(excludedRow, col);
 
-                excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(rows);
+                excludedRows =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(rows,this);
                 excludedRows.add(excludedRow);
             }
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
@@ -402,7 +403,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 final int excludedCol = 4;
                 for (int row = 1; row <= rows; row++) expectedCells.add(row, excludedCol);
 
-                excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(cols);
+                excludedCols =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(cols,this);
                 excludedCols.add(excludedCol);
             }
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
@@ -1223,8 +1225,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 expectedCells.add(excludedRow,2); expectedCells.add(2, excludedCol);
                 expectedCells.add(excludedRow,3); expectedCells.add(3, excludedCol);
 
-                excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(rows);
-                excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(cols);
+                excludedRows =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(rows,this);
+                excludedCols =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(cols,this);
                 excludedRows.add(excludedRow); excludedCols.add(excludedCol);
             }
             {
@@ -1599,8 +1603,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         {
             final int                                          rows = 3, cols = 3;
             final org.wheatgenetics.coordinate.model.RowOrCols
-                excludedRows = new org.wheatgenetics.coordinate.model.RowOrCols(rows),
-                excludedCols = new org.wheatgenetics.coordinate.model.RowOrCols(cols);
+                excludedRows =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(rows,this),
+                excludedCols =
+                    new org.wheatgenetics.coordinate.model.RowOrCols(cols,this);
             excludedRows.add(1); excludedCols.add(1);
             joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                 /* id             => */5,

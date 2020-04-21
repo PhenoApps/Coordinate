@@ -205,7 +205,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
             {
                 final org.wheatgenetics.coordinate.model.RowOrCols excludedRows =
-                    new org.wheatgenetics.coordinate.model.RowOrCols(rows);
+                    new org.wheatgenetics.coordinate.model.RowOrCols(rows,this);
                 excludedRows.add(1);
                 joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                     /* id             => */5,
@@ -247,7 +247,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel;
             {
                 final org.wheatgenetics.coordinate.model.RowOrCols excludedCols =
-                    new org.wheatgenetics.coordinate.model.RowOrCols(cols);
+                    new org.wheatgenetics.coordinate.model.RowOrCols(cols,this);
                 excludedCols.add(1);
                 joinedGridModel = new org.wheatgenetics.coordinate.model.JoinedGridModel(
                     /* id             => */5,
