@@ -70,7 +70,7 @@ implements android.content.SharedPreferences.OnSharedPreferenceChangeListener
     private void setScaling()
     {
         if (null != this.scalingPreference) this.scalingPreference.setValue(
-            java.lang.Math.max((this.scalingPreference.getValue() / 25) * 25, 100));
+            java.lang.Math.max((this.scalingPreference.getValue() / 25) * 25, 50));
     }
 
     private void setUniqueListPreferenceEnabled()

@@ -15,7 +15,7 @@ package org.wheatgenetics.coordinate.preference;
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 public class Utils extends java.lang.Object
 {
-    private static final float minScaling = 1.0f, maxScaling = 2.0f;
+    private static final float minScaling = 0.5f, maxScaling = 2.0f;
 
     // region Types
     public enum Direction     { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
@@ -121,7 +121,7 @@ public class Utils extends java.lang.Object
         final android.content.SharedPreferences defaultSharedPreferences =
             org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.minScaling;
+            return 1.0f;
         else
         {
             final int scaling;

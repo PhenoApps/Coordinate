@@ -32,7 +32,7 @@
         android:key="@string/ScalingPreferenceKey"
         android:title="@string/ScalingPreferenceTitle"
         android:summary="@string/ScalingPreferenceSummary"
-        app:min="76"
+        app:min="26"
         android:max="224"
         android:defaultValue="100"
         app:showSeekBarValue="true"

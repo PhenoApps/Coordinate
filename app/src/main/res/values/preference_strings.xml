@@ -50,7 +50,7 @@
     <!-- Scaling -->
     <string name="ScalingPreferenceKey">Scaling</string>
     <string name="ScalingPreferenceTitle">Scaling (%)</string>
-    <string name="ScalingPreferenceSummary">Amount to scale grid up by</string>
+    <string name="ScalingPreferenceSummary">Amount to scale grid by</string>
 
 
     <!-- UniqueCheckBox -->
