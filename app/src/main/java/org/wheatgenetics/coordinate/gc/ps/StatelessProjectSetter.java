@@ -42,6 +42,7 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
         return this.projectsTableInstance;
     }
 
+    // region SelectAlertDialog Private Methods
     private void chooseExistingAfterSelect(final int which)
     {
         if (null != this.projectModels)
@@ -77,6 +78,7 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
             org.wheatgenetics.coordinate.R.string.StatelessProjectSetterSelectProject,
             this.projectModels.titles()                                              );
     }
+    // endregion
     // endregion
 
     public StatelessProjectSetter(final android.app.Activity activity, @androidx.annotation.NonNull

@@ -11,14 +11,13 @@ package org.wheatgenetics.coordinate.gc.ps;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.SelectAlertDialog
- * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- *
  * org.wheatgenetics.coordinate.model.Model
  *
  * org.wheatgenetics.coordinate.pc.ProjectCreator
  * org.wheatgenetics.coordinate.pc.ProjectCreator.Handler
+ *
+ * org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog
+ * org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog.Handler
  */
 @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class ProjectSetter extends java.lang.Object
@@ -41,32 +40,17 @@ abstract class ProjectSetter extends java.lang.Object
     @androidx.annotation.IntRange(from = 0) private long projectId;
 
     private org.wheatgenetics.coordinate.pc.ProjectCreator projectCreatorInstance = null;      // ll
-    private org.wheatgenetics.coordinate.SelectAlertDialog
+    private org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog
         projectChoiceAlertDialogInstance = null;                                        // lazy load
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull private static java.lang.String[] items(
-    @androidx.annotation.Nullable final java.lang.String     thirdItem,
-                                  final android.app.Activity activity )
-    {
-        final java.lang.String
-            firstItem  = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterFirstItem),
-            secondItem = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterSecondItem);
-        if (null == thirdItem)
-            return new java.lang.String[]{firstItem, secondItem};
-        else
-            return new java.lang.String[]{firstItem, secondItem, thirdItem};
-    }
-
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.SelectAlertDialog projectChoiceAlertDialog()
+    private org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog projectChoiceAlertDialog()
     {
         if (null == this.projectChoiceAlertDialogInstance) this.projectChoiceAlertDialogInstance =
-            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity(),
-                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
+            new org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog(this.activity(),
+                new org.wheatgenetics.coordinate.gc.ps.ProjectChoiceAlertDialog.Handler()
                 {
                     @java.lang.Override public void select(final int which)
                     {
@@ -130,11 +114,7 @@ abstract class ProjectSetter extends java.lang.Object
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void showProjectChoiceAlertDialog(
     @androidx.annotation.Nullable final java.lang.String thirdItem)
-    {
-        this.projectChoiceAlertDialog().show(
-            org.wheatgenetics.coordinate.R.string.ProjectSetterProjectChoiceAlertDialogTitle  ,
-            org.wheatgenetics.coordinate.gc.ps.ProjectSetter.items(thirdItem, this.activity()));
-    }
+    { this.projectChoiceAlertDialog().show(thirdItem); }
     // endregion
 
     // region handler Package Methods

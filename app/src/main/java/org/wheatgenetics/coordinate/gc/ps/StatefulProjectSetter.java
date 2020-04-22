@@ -13,6 +13,8 @@ package org.wheatgenetics.coordinate.gc.ps;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  *
+ * org.wheatgenetics.coordinate.R
+ *
  * org.wheatgenetics.coordinate.model.ProjectModel
  *
  * org.wheatgenetics.coordinate.gc.ps.ProjectSetter
