@@ -6,7 +6,7 @@
     <string name="ProjectSetterCreateProjectItem">Create a project for this grid.</string>
 
     <!-- StatefulProjectSetter -->
-    <string name="StatefulProjectSetterThirdItem">Add this grid to "%s" project.</string>
+    <string name="StatefulProjectSetterSelectProjectItem">Add this grid to "%s" project.</string>
 
     <!-- StatelessProjectSetter -->
     <string name="StatelessProjectSetterSelectProjectItem">Add this grid to an existing project.</string>
