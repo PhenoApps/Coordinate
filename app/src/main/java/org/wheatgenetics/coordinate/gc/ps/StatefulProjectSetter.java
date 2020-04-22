@@ -89,16 +89,24 @@ public class StatefulProjectSetter extends org.wheatgenetics.coordinate.gc.ps.Pr
     public void set(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
     {
-        @androidx.annotation.Nullable final java.lang.String thirdItem;
-        if (null == projectModel)
-            { thirdItem = null; this.clearProjectId(); }
-        else
+        @androidx.annotation.NonNull  final java.lang.String secondItem;
+        @androidx.annotation.Nullable final java.lang.String thirdItem ;
         {
-            thirdItem = java.lang.String.format(this.activity().getString(
-                org.wheatgenetics.coordinate.R.string.StatefulProjectSetterSelectProjectItem),
-                projectModel.getTitle()                                                     );
-            this.setProjectId(projectModel.getId());
+            final android.app.Activity activity = this.activity();
+
+            secondItem = activity.getString(
+                org.wheatgenetics.coordinate.R.string.ProjectSetterCreateProjectItem);
+
+            if (null == projectModel)
+                { thirdItem = null; this.clearProjectId(); }
+            else
+            {
+                thirdItem = java.lang.String.format(activity.getString(
+                    org.wheatgenetics.coordinate.R.string.StatefulProjectSetterSelectProjectItem),
+                    projectModel.getTitle()                                                      );
+                this.setProjectId(projectModel.getId());
+            }
         }
-        this.showProjectChoiceAlertDialog(thirdItem);
+        this.showProjectChoiceAlertDialog(secondItem, thirdItem);
     }
 }

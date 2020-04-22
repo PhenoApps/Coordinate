@@ -11,8 +11,12 @@ package org.wheatgenetics.coordinate.gc.ps;
  *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
+ * androidx.annotation.StringRes
+ *
+ * org.wheatgenetics.javalib.Utils
  *
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.SelectAlertDialog
@@ -29,8 +33,10 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
 {
     // region Fields
     private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance  = null; // ll
+    private boolean                                             projectsExist                ;
     private org.wheatgenetics.coordinate.model.ProjectModels    projectModels          = null;
-    private org.wheatgenetics.coordinate.SelectAlertDialog   selectAlertDialogInstance = null; // ll
+    private org.wheatgenetics.coordinate.SelectAlertDialog
+        secondProjectChoiceAlertDialogInstance = null;                                  // lazy load
     // endregion
 
     // region Private Methods
@@ -42,8 +48,10 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
         return this.projectsTableInstance;
     }
 
+    private void createProject() { this.projectCreator().createAndReturn(); }
+
     // region SelectAlertDialog Private Methods
-    private void chooseExistingAfterSelect(final int which)
+    private void chooseExistingAfterSelect(@androidx.annotation.IntRange(from = 0) final int which)
     {
         if (null != this.projectModels)
         {
@@ -56,27 +64,63 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
     }
 
     @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog()
+    private org.wheatgenetics.coordinate.SelectAlertDialog secondProjectChoiceAlertDialog()
     {
-        if (null == this.selectAlertDialogInstance) this.selectAlertDialogInstance =
-            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity(),
-                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                {
-                    @java.lang.Override public void select(final int which)
+        if (null == this.secondProjectChoiceAlertDialogInstance)
+            this.secondProjectChoiceAlertDialogInstance =
+                new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity(),
+                    new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
                     {
-                        org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter
-                            .this.chooseExistingAfterSelect(which);
-                    }
-                });
-        return this.selectAlertDialogInstance;
+                        @java.lang.Override public void select(final int which)
+                        {
+                            if (which < 0)
+                                throw new java.lang.IllegalArgumentException();
+                            else
+                                if (which == 0)
+                                    org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter
+                                        .this.createProject();
+                                else
+                                    org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter
+                                        .this.chooseExistingAfterSelect(which - 1);
+                        }
+                    });
+        return this.secondProjectChoiceAlertDialogInstance;
     }
 
-    private void showSelectAlertDialog()
+    private void showSecondProjectChoiceAlertDialog()
     {
-        this.projectModels = this.projectsTable().load();
-        if (null != this.projectModels) this.selectAlertDialog().show(
-            org.wheatgenetics.coordinate.R.string.StatelessProjectSetterSelectProject,
-            this.projectModels.titles()                                              );
+        @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) @androidx.annotation.NonNull
+        final java.lang.String items[];
+        {
+            @androidx.annotation.NonNull final java.lang.String firstItem =
+                this.activity().getString(
+                    org.wheatgenetics.coordinate.R.string.ProjectSetterCreateProjectItem);
+
+            this.projectModels = this.projectsTable().load();
+            if (null == this.projectModels)
+                items = org.wheatgenetics.javalib.Utils.stringArray(firstItem);
+            else
+            {
+                @androidx.annotation.Nullable final java.lang.String[] titles =
+                    this.projectModels.titles();
+                if (null == titles)
+                    items = org.wheatgenetics.javalib.Utils.stringArray(firstItem);
+                else
+                    if (titles.length <= 0)
+                        items = org.wheatgenetics.javalib.Utils.stringArray(firstItem);
+                    else
+                    {
+                        // noinspection Convert2Diamond
+                        final java.util.ArrayList<java.lang.String> arrayList =
+                            new java.util.ArrayList<java.lang.String>(
+                                1 + titles.length);
+                        arrayList.add(firstItem); arrayList.addAll(java.util.Arrays.asList(titles));
+                        arrayList.toArray(items = new java.lang.String[arrayList.size()]);
+                    }
+            }
+        }
+        this.secondProjectChoiceAlertDialog().show(
+            org.wheatgenetics.coordinate.R.string.SecondProjectChoiceAlertDialogTitle, items);
     }
     // endregion
     // endregion
@@ -92,11 +136,11 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
     { this.setProjectId(projectId); this.handleNewProjectSet(); }
 
     /**
-     * which                 item
+     * which         first project choice
      * ===== =====================================
      *   0   Don't add this grid to a project.
-     *   1   Create a project for this grid.
-     *   2   Add this grid to an existing project.
+     *   1   If projects exist, add this grid to a project (newly created or existing).  If no pro-
+     *       jects exist, add this grid to a newly created project.
      */
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     @java.lang.Override void handleProjectChoice(
@@ -104,17 +148,25 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
     {
         switch (which)
         {
-            case 0 : this.clearProjectId(); this.handleNoProjectSet(); break;
-            case 1 : this.projectCreator().createAndReturn()         ; break;
-            case 2 : this.showSelectAlertDialog()                    ; break;
-            default: throw new java.lang.IllegalArgumentException()         ;
+            case 0: this.clearProjectId(); this.handleNoProjectSet(); break;
+
+            case 1: if (this.projectsExist)
+                    this.showSecondProjectChoiceAlertDialog();
+                else
+                    this.createProject();
+                break;
+
+            default: throw new java.lang.IllegalArgumentException();
         }
     }
     // endregion
 
     public void set()
     {
-        this.showProjectChoiceAlertDialog(this.projectsTable().exists() ? this.activity().getString(
-            org.wheatgenetics.coordinate.R.string.StatelessProjectSetterSelectProjectItem) : null);
+        this.projectsExist = this.projectsTable().exists();
+        @androidx.annotation.StringRes final int resId = this.projectsExist ?
+            org.wheatgenetics.coordinate.R.string.StatelessProjectSetterAddItem :
+            org.wheatgenetics.coordinate.R.string.ProjectSetterCreateProjectItem;
+        this.showProjectChoiceAlertDialog(this.activity().getString(resId),null);
     }
 }

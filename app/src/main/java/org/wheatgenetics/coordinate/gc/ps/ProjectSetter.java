@@ -113,8 +113,9 @@ abstract class ProjectSetter extends java.lang.Object
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void showProjectChoiceAlertDialog(
-    @androidx.annotation.Nullable final java.lang.String thirdItem)
-    { this.projectChoiceAlertDialog().show(thirdItem); }
+    @androidx.annotation.NonNull  final java.lang.String secondItem,
+    @androidx.annotation.Nullable final java.lang.String thirdItem )
+    { this.projectChoiceAlertDialog().show(secondItem, thirdItem); }
     // endregion
 
     // region handler Package Methods

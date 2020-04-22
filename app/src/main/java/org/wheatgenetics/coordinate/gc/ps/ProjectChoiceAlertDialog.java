@@ -14,16 +14,11 @@ package org.wheatgenetics.coordinate.gc.ps;
 class ProjectChoiceAlertDialog extends org.wheatgenetics.coordinate.SelectAlertDialog
 {
     @androidx.annotation.NonNull private java.lang.String[] items(
-    @androidx.annotation.Nullable final java.lang.String thirdItem)
+    @androidx.annotation.NonNull  final java.lang.String secondItem,
+    @androidx.annotation.Nullable final java.lang.String thirdItem )
     {
-        final java.lang.String firstItem, secondItem;
-        {
-            final android.app.Activity activity = this.activity();
-            firstItem = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterDontAddItem);
-            secondItem = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterCreateProjectItem);
-        }
+        final java.lang.String firstItem = this.activity().getString(
+            org.wheatgenetics.coordinate.R.string.ProjectSetterDontAddItem);
         if (null == thirdItem)
             return new java.lang.String[]{firstItem, secondItem};
         else
@@ -33,9 +28,11 @@ class ProjectChoiceAlertDialog extends org.wheatgenetics.coordinate.SelectAlertD
     ProjectChoiceAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull final
     org.wheatgenetics.coordinate.SelectAlertDialog.Handler handler) { super(activity, handler); }
 
-    void show(@androidx.annotation.Nullable final java.lang.String thirdItem)
+    void show(
+    @androidx.annotation.NonNull  final java.lang.String secondItem,
+    @androidx.annotation.Nullable final java.lang.String thirdItem )
     {
-        this.show(org.wheatgenetics.coordinate.R.string.ProjectSetterProjectChoiceAlertDialogTitle,
-            this.items(thirdItem));
+        this.show(org.wheatgenetics.coordinate.R.string.ProjectChoiceAlertDialogTitle,
+            this.items(secondItem, thirdItem));
     }
 }
