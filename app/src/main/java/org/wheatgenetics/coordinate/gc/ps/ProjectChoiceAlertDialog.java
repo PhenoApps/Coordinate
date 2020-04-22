@@ -20,9 +20,9 @@ class ProjectChoiceAlertDialog extends org.wheatgenetics.coordinate.SelectAlertD
         {
             final android.app.Activity activity = this.activity();
             firstItem = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterFirstItem);
+                org.wheatgenetics.coordinate.R.string.ProjectSetterDontAddItem);
             secondItem = activity.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectSetterSecondItem);
+                org.wheatgenetics.coordinate.R.string.ProjectSetterCreateProjectItem);
         }
         if (null == thirdItem)
             return new java.lang.String[]{firstItem, secondItem};

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- ProjectSetter -->
-    <string name="ProjectSetterFirstItem">Don\'t add this grid to a project.</string>
-    <string name="ProjectSetterSecondItem">Create a project for this grid.</string>
+    <!-- ProjectChoiceAlertDialog -->
     <string name="ProjectSetterProjectChoiceAlertDialogTitle">Create Grid</string>
+    <string name="ProjectSetterDontAddItem">Don\'t add this grid to a project.</string>
+    <string name="ProjectSetterCreateProjectItem">Create a project for this grid.</string>
 
-    <!-- StatelessProjectSetter -->
+    <!-- StatefulProjectSetter -->
     <string name="StatefulProjectSetterThirdItem">Add this grid to "%s" project.</string>
-    <string name="StatelessProjectSetterSelectProject">Select Existing Project</string>
 
     <!-- StatelessProjectSetter -->
-    <string name="StatelessProjectSetterThirdItem">Add this grid to an existing project.</string>
+    <string name="StatelessProjectSetterSelectProjectItem">Add this grid to an existing project.</string>
+    <string name="StatelessProjectSetterSelectProject">Select Existing Project</string>
 </resources>
