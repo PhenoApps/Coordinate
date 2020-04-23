@@ -13,20 +13,12 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter
  * org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter.Handler
  *
- * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
- * org.wheatgenetics.coordinate.gc.ts.StatelessTemplateSetter
- * org.wheatgenetics.coordinate.gc.ts.StatelessTemplateSetter.Handler
- *
  * org.wheatgenetics.coordinate.gc.GridCreator
  */
 public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCreator
 {
-    // region Fields
-    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
-        choosingTemplateSetterInstance = null;                                          // lazy load
     private org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter
         statelessProjectSetterInstance = null;                                          // lazy load
-    // endregion
 
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.ps.StatelessProjectSetter statelessProjectSetter()
@@ -64,24 +56,6 @@ public class StatelessGridCreator extends org.wheatgenetics.coordinate.gc.GridCr
     @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode)
     { this(activity, requestCode,null); }
     // endregion
-
-    @java.lang.Override @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
-    {
-        if (null == this.choosingTemplateSetterInstance) this.choosingTemplateSetterInstance =
-            new org.wheatgenetics.coordinate.gc.ts.StatelessTemplateSetter(
-                this.activity(), this.requestCode(),
-                new org.wheatgenetics.coordinate.gc.ts.StatelessTemplateSetter.Handler()
-                {
-                    @java.lang.Override public void handleTemplateSet(
-                    @androidx.annotation.IntRange(from = 1) final long templateId)
-                    {
-                        org.wheatgenetics.coordinate.gc.StatelessGridCreator
-                            .this.handleTemplateSet(templateId);
-                    }
-                });
-        return this.choosingTemplateSetterInstance;
-    }
 
     // region Public Methods
     public void create()

@@ -36,6 +36,7 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.preference.Utils
  *
  * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
+ * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler
  * org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter
  *
  * org.wheatgenetics.coordinate.gc.vs.Handler
@@ -74,9 +75,16 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
 
     private org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter
         projectTemplateSetterInstance = null;                                           // lazy load
+    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
+        choosingTemplateSetterInstance = null;                                          // lazy load
     // endregion
 
     // region Private Methods
+    // region Field Access Private Method
+    @org.wheatgenetics.coordinate.Types.RequestCode private int requestCode()
+    { return this.requestCode; }
+    // endregion
+
     // region Value Setter Private Methods
     private void setPerson(final java.lang.String person) { this.person = person; }
 
@@ -212,7 +220,7 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     }
     // endregion
 
-    // region Template Setter Private Methods
+    // region TemplateSetter Private Methods
     @androidx.annotation.NonNull
     private org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter projectTemplateSetter()
     {
@@ -221,7 +229,30 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
         return this.projectTemplateSetterInstance;
     }
 
+    // region ChoosingTemplateSetter Private Methods
+    private void handleTemplateSet(@androidx.annotation.IntRange(from = 1) long templateId)
+    { this.setTemplateId(templateId); this.setValues(); }
+
+    @androidx.annotation.NonNull
+    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
+    {
+        if (null == this.choosingTemplateSetterInstance) this.choosingTemplateSetterInstance =
+            new org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter(
+                this.activity(), this.requestCode(),
+                new org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler()
+                {
+                    @java.lang.Override public void handleTemplateSet(
+                    @androidx.annotation.IntRange(from = 1) final long templateId)
+                    {
+                        org.wheatgenetics.coordinate.gc.GridCreator.this.handleTemplateSet(
+                            templateId);
+                    }
+                });
+        return this.choosingTemplateSetterInstance;
+    }
+
     private void setTemplate() { this.choosingTemplateSetter().set(); }
+    // endregion
     // endregion
     // endregion
 
@@ -231,11 +262,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     android.app.Activity activity() { return this.activity; }
 
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @org.wheatgenetics.coordinate.Types.RequestCode int requestCode() { return this.requestCode; }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable
-    org.wheatgenetics.coordinate.gc.GridCreator.Handler handler() { return this.handler; }
+    @androidx.annotation.Nullable org.wheatgenetics.coordinate.gc.GridCreator.Handler handler()
+    { return this.handler; }
     // endregion
 
     // region templateIdStatus Package Methods
@@ -251,18 +279,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     { this.templateIdStatus = org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.SET; }
     // endregion
 
-    // region Template Setter Package Methods
+    // region Template Setter Package Method
     @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
     void setTemplateId(@androidx.annotation.IntRange(from = 1) long templateId)
     { this.templateId = templateId; }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void handleTemplateSet(@androidx.annotation.IntRange(from = 1) long templateId)
-    { this.setTemplateId(templateId); this.setValues(); }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull
-    abstract org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter();
     // endregion
 
     // region Project Setter Package Methods

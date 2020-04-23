@@ -48,9 +48,9 @@ public class StatelessProjectSetter extends org.wheatgenetics.coordinate.gc.ps.P
         return this.projectsTableInstance;
     }
 
+    // region secondProjectChoiceAlertDialog Private Methods
     private void createProject() { this.projectCreator().createAndReturn(); }
 
-    // region SelectAlertDialog Private Methods
     private void chooseExistingAfterSelect(@androidx.annotation.IntRange(from = 0) final int which)
     {
         if (null != this.projectModels)

@@ -15,10 +15,6 @@ package org.wheatgenetics.coordinate.gc;
  * org.wheatgenetics.coordinate.gc.ps.StatefulProjectSetter
  * org.wheatgenetics.coordinate.gc.ps.StatefulProjectSetter.Handler
  *
- * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
- * org.wheatgenetics.coordinate.gc.ts.StatefulTemplateSetter
- * org.wheatgenetics.coordinate.gc.ts.StatefulTemplateSetter.Handler
- *
  * org.wheatgenetics.coordinate.gc.GridCreator
  * org.wheatgenetics.coordinate.gc.GridCreator.Handler
  */
@@ -32,12 +28,8 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
         public abstract void clearProjectModel();
     }
 
-    // region Fields
-    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
-        choosingTemplateSetterInstance = null;                                          // lazy load
     private org.wheatgenetics.coordinate.gc.ps.StatefulProjectSetter
         statefulProjectSetterInstance = null;                                           // lazy load
-    // endregion
 
     // region Private Methods
     @androidx.annotation.NonNull
@@ -99,24 +91,6 @@ public class StatefulGridCreator extends org.wheatgenetics.coordinate.gc.GridCre
     @androidx.annotation.NonNull                    final
         org.wheatgenetics.coordinate.gc.StatefulGridCreator.Handler handler)
     { super(activity, requestCode, handler); }
-
-    @java.lang.Override @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
-    {
-        if (null == this.choosingTemplateSetterInstance) this.choosingTemplateSetterInstance =
-            new org.wheatgenetics.coordinate.gc.ts.StatefulTemplateSetter(
-                this.activity(), this.requestCode(),
-                new org.wheatgenetics.coordinate.gc.ts.StatefulTemplateSetter.Handler()
-                {
-                    @java.lang.Override public void handleTemplateSet(
-                    @androidx.annotation.IntRange(from = 1) final long templateId)
-                    {
-                        org.wheatgenetics.coordinate.gc.StatefulGridCreator
-                            .this.handleTemplateSet(templateId);
-                    }
-                });
-        return this.choosingTemplateSetterInstance;
-    }
 
     public void create(@androidx.annotation.Nullable
     final org.wheatgenetics.coordinate.model.ProjectModel projectModel)

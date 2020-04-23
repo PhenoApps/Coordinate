@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TemplateChoiceAlertDialog -->
+    <!-- ChoosingTemplateSetter-->
     <string name="TemplateChoiceAlertDialogTitle">Template Options</string>
     <string name="TemplateChoiceAlertDialogNewItem">New Template</string>
 
-    <!-- ChoosingTemplateSetter-->
-    <string name="TemplateSetterTemplateAlertMessage">Unable to create template.</string>
-
-    <!-- StatefulTemplateSetter -->
-    <string name="StatefulTemplateChoiceAlertDialogOldItem">Load Template</string>
-
-    <!-- StatelessTemplateSetter -->
-    <string name="StatelessTemplateChoiceAlertDialogOldItem">Existing Template</string>
+    <string name="ChoosingTemplateSetterAlertMessage">Unable to create template.</string>
 </resources>
