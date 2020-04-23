@@ -35,6 +35,7 @@ public class ProjectTemplateSetter extends org.wheatgenetics.coordinate.gc.ts.Te
             this.gridsTable().loadByProjectId(projectId);
         if (null != baseJoinedGridModels && baseJoinedGridModels.size() > 0)
         {
+            // All grids will have the same templateId.  Using the first one is an arbitrary choice.
             final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
                 baseJoinedGridModels.get(0);
             return null == joinedGridModel ? 0 :joinedGridModel.getTemplateId();

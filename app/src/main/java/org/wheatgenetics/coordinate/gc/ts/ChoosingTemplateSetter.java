@@ -41,9 +41,9 @@ extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
 
     // region Fields
     // region Constructor Fields
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode    ;
-    @androidx.annotation.StringRes private final int templateChoiceAlertDialogOldItem;
-    @androidx.annotation.NonNull   private final
+    @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode                  ;
+    @androidx.annotation.StringRes               private final int templateChoiceAlertDialogOldItem;
+    @androidx.annotation.NonNull                 private final
         org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler handler;
     // endregion
 

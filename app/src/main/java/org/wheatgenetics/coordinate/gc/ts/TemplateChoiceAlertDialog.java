@@ -6,6 +6,7 @@ package org.wheatgenetics.coordinate.gc.ts;
  * android.content.DialogInterface
  * android.content.DialogInterface.OnClickListener
  *
+ * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.StringRes
  *
@@ -38,7 +39,8 @@ class TemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDi
         return this.itemsInstance;
     }
 
-    private void choose(final int which)
+    // region onClickListener Private Methods
+    private void choose(@androidx.annotation.IntRange(from = 0, to = 1) final int which)
     {
         switch (which)
         {
@@ -59,6 +61,7 @@ class TemplateChoiceAlertDialog extends org.wheatgenetics.androidlibrary.AlertDi
             };
         return this.onClickListenerInstance;
     }
+    // endregion
     // endregion
 
     TemplateChoiceAlertDialog(final android.app.Activity activity,
