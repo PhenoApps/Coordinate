@@ -1,5 +1,4 @@
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
@@ -36,11 +35,11 @@
                 android:imeActionId="100"
                 android:imeActionLabel="@string/fragment_data_entryEntryActionLabel"
                 android:imeOptions="actionDone"
+                android:importantForAutofill="no"
                 android:inputType="text|textNoSuggestions"
                 android:lines="1"
                 android:minEms="8"
-                android:selectAllOnFocus="true"
-                android:importantForAutofill="no" />
+                android:selectAllOnFocus="true" />
 
         </LinearLayout>
 
@@ -79,8 +78,8 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="@string/fragment_data_entryProjectTitleText"
-                tools:ignore="RtlSymmetry"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
 
@@ -104,8 +103,8 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="@string/fragment_data_entryTemplateTitleText"
-                tools:ignore="RtlSymmetry"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:ignore="RtlSymmetry" />
 
             <LinearLayout
                 android:id="@+id/optionalFieldsLayout"

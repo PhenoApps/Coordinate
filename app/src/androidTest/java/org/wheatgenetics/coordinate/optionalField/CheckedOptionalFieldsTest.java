@@ -1,5 +1,8 @@
 package org.wheatgenetics.coordinate.optionalField;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * Uses:
  * org.junit.Assert
@@ -10,37 +13,34 @@ package org.wheatgenetics.coordinate.optionalField;
  *
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFieldsTest
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class CheckedOptionalFieldsTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class CheckedOptionalFieldsTest extends Object
 {
     // region Constructor Tests
-    @org.junit.Test() public void constructorNullParameterSucceeds()
+    @Test() public void constructorNullParameterSucceeds()
     {
-        org.junit.Assert.assertEquals(0,
-            new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(null).size());
+        Assert.assertEquals(0,
+            new CheckedOptionalFields(null).size());
     }
 
-    @org.junit.Test() public void constructorSucceeds()
+    @Test() public void constructorSucceeds()
     {
-        org.junit.Assert.assertEquals(2, new org.wheatgenetics.coordinate.optionalField
-            .CheckedOptionalFields(org.wheatgenetics.coordinate.optionalField
-                .NonNullOptionalFieldsTest.makeNonNullOptionalFields()).size());
+        Assert.assertEquals(2, new CheckedOptionalFields(NonNullOptionalFieldsTest.makeNonNullOptionalFields()).size());
     }
     // endregion
 
-    @org.junit.Test() public void iteratorWorks()
+    @Test() public void iteratorWorks()
     {
-        final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
+        final CheckedOptionalFields
             checkedOptionalFields;
         {
-            final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                nonNullOptionalFields = org.wheatgenetics.coordinate.optionalField
-                    .NonNullOptionalFieldsTest.makeNonNullOptionalFields();
+            final NonNullOptionalFields
+                nonNullOptionalFields = NonNullOptionalFieldsTest.makeNonNullOptionalFields();
             nonNullOptionalFields.get(0).setChecked(false);
             checkedOptionalFields =
-                new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
+                new CheckedOptionalFields(
                     nonNullOptionalFields);
         }
-        org.junit.Assert.assertEquals(1, checkedOptionalFields.size());
+        Assert.assertEquals(1, checkedOptionalFields.size());
     }
 }

@@ -1,145 +1,162 @@
 package org.wheatgenetics.coordinate;
 
-/**
- * Uses:
- * android.content.Context
- * android.content.Intent
- * android.os.Bundle
- * android.view.Menu
- * android.view.MenuItem
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
- *
- * org.wheatgenetics.coordinate.collector.Collector
- * org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- * org.wheatgenetics.coordinate.model.DisplayModel
- * org.wheatgenetics.coordinate.model.ElementModel
- *
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
- * org.wheatgenetics.coordinate.BackActivity
- * org.wheatgenetics.coordinate.R
- */
-public class CollectorActivity extends org.wheatgenetics.coordinate.BackActivity implements
-org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler,
-org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler
-{
-    private static final java.lang.String GRID_ID_KEY = "gridId";
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.collector.Collector;
+import org.wheatgenetics.coordinate.collector.DataEntryFragment;
+import org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment;
+import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
+import org.wheatgenetics.coordinate.model.DisplayModel;
+import org.wheatgenetics.coordinate.model.ElementModel;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+
+public class CollectorActivity extends BackActivity implements
+        GridDisplayFragment.Handler,
+        DataEntryFragment.Handler {
+    private static final String GRID_ID_KEY = "gridId";
+    private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
-    private org.wheatgenetics.coordinate.collector.Collector collectorInstance = null;  // lazy load
-
-    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
+    private Collector collectorInstance = null;  // lazy load
     // endregion
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.collector.Collector collector()
-    {
+    @NonNull
+    public static Intent intent(
+            @NonNull final Context context,
+            @IntRange(from = 1) final long gridId) {
+        @NonNull final Intent result =
+                null == CollectorActivity.INTENT_INSTANCE ?
+                        CollectorActivity.INTENT_INSTANCE =
+                                new Intent(context,
+                                        CollectorActivity.class) :
+                        CollectorActivity.INTENT_INSTANCE;
+        return result.putExtra(CollectorActivity.GRID_ID_KEY, gridId);
+    }
+
+    @NonNull
+    private Collector collector() {
         if (null == this.collectorInstance) this.collectorInstance =
-            new org.wheatgenetics.coordinate.collector.Collector(this);
+                new Collector(this);
         return this.collectorInstance;
     }
 
     // region Overridden Methods
-    @java.lang.Override protected void onCreate(
-    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
-    {
+    @Override
+    protected void onCreate(
+            @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(org.wheatgenetics.coordinate.R.layout.activity_collector);
+        this.setContentView(R.layout.activity_collector);
 
-        @androidx.annotation.Nullable final android.content.Intent intent = this.getIntent();
-        if (null != intent)
-        {
-            final java.lang.String GRID_ID_KEY =
-                org.wheatgenetics.coordinate.CollectorActivity.GRID_ID_KEY;
+        @Nullable final Intent intent = this.getIntent();
+        if (null != intent) {
+            final String GRID_ID_KEY =
+                    CollectorActivity.GRID_ID_KEY;
             if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(
-                intent.getLongExtra(GRID_ID_KEY,-1));
+                    intent.getLongExtra(GRID_ID_KEY, -1));
         }
     }
 
-    @java.lang.Override public boolean onCreateOptionsMenu(final android.view.Menu menu)
-    {
-        this.getMenuInflater().inflate(org.wheatgenetics.coordinate.R.menu.menu_collector, menu);
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        this.getMenuInflater().inflate(R.menu.menu_collector, menu);
         return true;
     }
 
-    @java.lang.Override protected void onStart()
-    { super.onStart(); this.collector().populateFragments(); }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.collector().populateFragments();
+    }
 
-    @java.lang.Override protected void onActivityResult(final int requestCode,
-    final int resultCode, final android.content.Intent data)
-    {
+    @Override
+    protected void onActivityResult(final int requestCode,
+                                    final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.collector().parseActivityResult(requestCode, resultCode, data);
     }
 
-    @java.lang.Override protected void onDestroy()
-    {
+    @Override
+    protected void onDestroy() {
         if (null != this.collectorInstance) this.collectorInstance.release();
         super.onDestroy();
     }
 
     // region org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler Overridden Methods
-    @java.lang.Override public org.wheatgenetics.coordinate.model.DisplayModel getDisplayModel()
-    { return this.collector().getDisplayModel(); }
+    @Override
+    public DisplayModel getDisplayModel() {
+        return this.collector().getDisplayModel();
+    }
 
-    @java.lang.Override public void toggle(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { this.collector().toggle(elementModel); }
+    @Override
+    public void toggle(@Nullable final ElementModel elementModel) {
+        this.collector().toggle(elementModel);
+    }
 
-    @java.lang.Override public int getActiveRow() { return this.collector().getActiveRow(); }
-    @java.lang.Override public int getActiveCol() { return this.collector().getActiveCol(); }
+    @Override
+    public int getActiveRow() {
+        return this.collector().getActiveRow();
+    }
 
-    @java.lang.Override public void activate(final int row, final int col)
-    { this.collector().activate(row, col); }
+    @Override
+    public int getActiveCol() {
+        return this.collector().getActiveCol();
+    }
 
-    @java.lang.Override @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker()
-    { return this.collector().getChecker(); }
+    @Override
+    public void activate(final int row, final int col) {
+        this.collector().activate(row, col);
+    }
     // endregion
+
+    @Override
+    @Nullable
+    public CheckedIncludedEntryModel.Checker getChecker() {
+        return this.collector().getChecker();
+    }
 
     // region org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler Overridden Methods
-    @java.lang.Override public java.lang.String getEntryValue()
-    { return this.collector().getEntryValue(); }
+    @Override
+    public String getEntryValue() {
+        return this.collector().getEntryValue();
+    }
 
-    @java.lang.Override public java.lang.String getProjectTitle()
-    { return this.collector().getProjectTitle(); }
+    @Override
+    public String getProjectTitle() {
+        return this.collector().getProjectTitle();
+    }
 
-    @java.lang.Override public java.lang.String getTemplateTitle()
-    { return this.collector().getTemplateTitle(); }
+    @Override
+    public String getTemplateTitle() {
+        return this.collector().getTemplateTitle();
+    }
 
-    @java.lang.Override
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields getOptionalFields()
-    { return this.collector().getOptionalFields(); }
+    @Override
+    public NonNullOptionalFields getOptionalFields() {
+        return this.collector().getOptionalFields();
+    }
 
-    @java.lang.Override public void saveEntry(final java.lang.String entryValue)
-    { this.collector().saveEntry(entryValue); }
-
-    @java.lang.Override public void clearEntry() { this.collector().clearEntry(); }
+    @Override
+    public void saveEntry(final String entryValue) {
+        this.collector().saveEntry(entryValue);
+    }
     // endregion
+    // endregion
+
+    @Override
+    public void clearEntry() {
+        this.collector().clearEntry();
+    }
     // endregion
 
     // region MenuItem Event Handler
-    public void onCameraMenuItemClick(@java.lang.SuppressWarnings({"unused"})
-    final android.view.MenuItem menuItem) { this.collector().scanBarcode(); }
-    // endregion
-
-    @androidx.annotation.NonNull public static android.content.Intent intent(
-    @androidx.annotation.NonNull            final android.content.Context context,
-    @androidx.annotation.IntRange(from = 1) final long                    gridId )
-    {
-        @androidx.annotation.NonNull final android.content.Intent result =
-            null == org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE ?
-                org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE =
-                    new android.content.Intent(context,
-                        org.wheatgenetics.coordinate.CollectorActivity.class) :
-                org.wheatgenetics.coordinate.CollectorActivity.INTENT_INSTANCE;
-        return result.putExtra(org.wheatgenetics.coordinate.CollectorActivity.GRID_ID_KEY, gridId);
+    public void onCameraMenuItemClick(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
+        this.collector().scanBarcode();
     }
 }

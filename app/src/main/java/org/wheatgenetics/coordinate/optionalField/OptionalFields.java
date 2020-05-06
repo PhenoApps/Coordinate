@@ -1,119 +1,121 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * Uses:
- * android.annotation.SuppressLint
- *
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-abstract class OptionalFields extends java.lang.Object
-implements java.lang.Iterable<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
-{
-    /** Iterates over non-null optional fields. */
-    static class Iterator extends java.lang.Object
-    implements java.util.Iterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
-    {
-        // region Fields
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @androidx.annotation.NonNull
-        final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
-            arrayList;
+import android.annotation.SuppressLint;
 
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @androidx.annotation.NonNull
-        final java.util.ListIterator<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
-            listIterator;
-        // endregion
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
-        Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
-        org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
-        { super(); this.arrayList = arrayList; this.listIterator = this.arrayList.listIterator(); }
+import java.util.ArrayList;
+import java.util.ListIterator;
 
-        // region java.util.Iterator<> Overridden Methods
-        @java.lang.Override public boolean hasNext()
-        {
-            while (this.listIterator.hasNext())
-            {
-                final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                    baseOptionalField = this.arrayList.get(this.listIterator.nextIndex());
-                if (null == baseOptionalField) this.listIterator.next(); else return true;
-            }
-            return false;
-        }
-
-        @java.lang.Override
-        public org.wheatgenetics.coordinate.optionalField.BaseOptionalField next()
-        {
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField result;
-            do result = this.listIterator.next(); while (null == result);
-            return result;
-        }
-
-        @java.lang.Override public void remove()
-        { throw new java.lang.UnsupportedOperationException(); }
-        // endregion
-    }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull @android.annotation.SuppressLint({"RestrictedApi"})
-    @java.lang.SuppressWarnings({"Convert2Diamond"})
-    final java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>
-        arrayList =
-            new java.util.ArrayList<org.wheatgenetics.coordinate.optionalField.BaseOptionalField>();
+abstract class OptionalFields implements Iterable<BaseOptionalField> {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    @SuppressLint({"RestrictedApi"})
+    @SuppressWarnings({"Convert2Diamond"})
+    final ArrayList<BaseOptionalField>
+            arrayList =
+            new ArrayList<BaseOptionalField>();
 
     // region Overridden Methods
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
-    {
-        final java.lang.StringBuilder stringBuilder = new java.lang.StringBuilder("{");
+    @Override
+    @NonNull
+    public String toString() {
+        final StringBuilder stringBuilder = new StringBuilder("{");
         {
             boolean firstOptionalField = true;
-            for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-            baseOptionalField: this)
-            {
-                if (firstOptionalField) firstOptionalField = false; else stringBuilder.append(", ");
+            for (final BaseOptionalField
+                    baseOptionalField : this) {
+                if (firstOptionalField) firstOptionalField = false;
+                else stringBuilder.append(", ");
                 stringBuilder.append(baseOptionalField.toString());                  // polymorphism
             }
         }
         return stringBuilder.append("}").toString();
     }
 
-    @java.lang.Override public boolean equals(final java.lang.Object object)
-    {
-        if (object instanceof org.wheatgenetics.coordinate.optionalField.OptionalFields)
-        {
-            final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields =
-                (org.wheatgenetics.coordinate.optionalField.OptionalFields) object;
+    @Override
+    public boolean equals(final Object object) {
+        if (object instanceof OptionalFields) {
+            final OptionalFields optionalFields =
+                    (OptionalFields) object;
 
             if (this.arrayList.size() != optionalFields.arrayList.size())
                 return false;
-            else
-            {
+            else {
                 {
                     int i = 0;
-                    for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                    baseOptionalField: this)
+                    for (final BaseOptionalField
+                            baseOptionalField : this)
                         if (!baseOptionalField.equals(optionalFields.arrayList.get(i++)))
                             return false;
                 }
                 return true;
             }
-        }
-        else return false;
+        } else return false;
     }
 
-    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
 
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override @androidx.annotation.NonNull
-    public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
-    {
-        return new org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator(
-            this.arrayList);
+    @Override
+    @NonNull
+    public OptionalFields.Iterator iterator() {
+        return new OptionalFields.Iterator(
+                this.arrayList);
+    }
+
+    /**
+     * Iterates over non-null optional fields.
+     */
+    static class Iterator extends Object
+            implements java.util.Iterator<BaseOptionalField> {
+        // region Fields
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @NonNull
+        final ArrayList<BaseOptionalField>
+                arrayList;
+
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @NonNull
+        final ListIterator<BaseOptionalField>
+                listIterator;
+        // endregion
+
+        Iterator(@NonNull final ArrayList<
+                BaseOptionalField> arrayList) {
+            super();
+            this.arrayList = arrayList;
+            this.listIterator = this.arrayList.listIterator();
+        }
+
+        // region java.util.Iterator<> Overridden Methods
+        @Override
+        public boolean hasNext() {
+            while (this.listIterator.hasNext()) {
+                final BaseOptionalField
+                        baseOptionalField = this.arrayList.get(this.listIterator.nextIndex());
+                if (null == baseOptionalField) this.listIterator.next();
+                else return true;
+            }
+            return false;
+        }
+
+        @Override
+        public BaseOptionalField next() {
+            BaseOptionalField result;
+            do result = this.listIterator.next(); while (null == result);
+            return result;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+        // endregion
     }
     // endregion
     // endregion

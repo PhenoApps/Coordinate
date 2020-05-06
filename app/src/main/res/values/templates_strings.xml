@@ -6,11 +6,11 @@
 
     <!-- TemplatesAdapter -->
     <plurals name="TemplatesListRows">
-        <item quantity="one"  >%d row</item>
+        <item quantity="one">%d row</item>
         <item quantity="other">%d rows</item>
     </plurals>
     <plurals name="TemplatesListColumns">
-        <item quantity="one"  >, %d column</item>
+        <item quantity="one">, %d column</item>
         <item quantity="other">, %d columns</item>
     </plurals>
 </resources>

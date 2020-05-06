@@ -29,12 +29,12 @@
         app:useSimpleSummaryProvider="false" />
 
     <SeekBarPreference
-        android:key="@string/ScalingPreferenceKey"
-        android:title="@string/ScalingPreferenceTitle"
-        android:summary="@string/ScalingPreferenceSummary"
-        app:min="26"
-        android:max="224"
         android:defaultValue="100"
+        android:key="@string/ScalingPreferenceKey"
+        android:max="224"
+        android:summary="@string/ScalingPreferenceSummary"
+        android:title="@string/ScalingPreferenceTitle"
+        app:min="26"
         app:showSeekBarValue="true"
         app:updatesContinuously="false" />
 

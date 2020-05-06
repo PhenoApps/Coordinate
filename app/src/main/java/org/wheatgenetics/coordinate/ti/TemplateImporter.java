@@ -1,114 +1,119 @@
 package org.wheatgenetics.coordinate.ti;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.res.Resources.NotFoundException
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.PluralsRes
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.javalib.Dir.PermissionException
- * org.wheatgenetics.javalib.Dir.PermissionRequestedException
- *
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.StringGetter
- * org.wheatgenetics.coordinate.TemplatesDir
- * org.wheatgenetics.coordinate.Utils
- *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateImporter
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Adapter
-    { public abstract void notifyDataSetChanged(); }
+import android.app.Activity;
+import android.content.res.Resources;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.TemplatesDir;
+import org.wheatgenetics.coordinate.Utils;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.javalib.Dir;
+
+import java.io.File;
+import java.io.IOException;
+
+public class TemplateImporter implements StringGetter {
     // region Fields
-    @androidx.annotation.NonNull  private final android.app.Activity activity   ;
-                                  private final int                  requestCode;
-    @androidx.annotation.Nullable private final
-        org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter adapter;
-
-    private java.lang.String                                     fileName                     ;
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    // endregion
-
-    // region Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity);
-        return this.templatesTableInstance;
-    }
-
-    private void notifyDataSetChanged()
-    { if (null != this.adapter) this.adapter.notifyDataSetChanged(); }
-    // endregion
-
+    @NonNull
+    private final Activity activity;
+    private final int requestCode;
+    @Nullable
+    private final
+    TemplateImporter.Adapter adapter;
+    private String fileName;
+    private TemplatesTable templatesTableInstance = null;// ll
     // region Constructors
     public TemplateImporter(
-    @androidx.annotation.NonNull  final android.app.Activity                            activity   ,
-                                  final int                                             requestCode,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.ti.TemplateImporter.Adapter
-        adapter)
-    { super(); this.activity = activity; this.requestCode = requestCode; this.adapter = adapter; }
-
-    public TemplateImporter(@androidx.annotation.NonNull final android.app.Activity activity   ,
-                                                         final int                  requestCode)
-    { this(activity, requestCode,null); }
+            @NonNull final Activity activity,
+            final int requestCode,
+            @Nullable final TemplateImporter.Adapter
+                    adapter) {
+        super();
+        this.activity = activity;
+        this.requestCode = requestCode;
+        this.adapter = adapter;
+    }
     // endregion
+
+    public TemplateImporter(@NonNull final Activity activity,
+                            final int requestCode) {
+        this(activity, requestCode, null);
+    }
+
+    // region Private Methods
+    private void showLongToast(final String text) {
+        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+    }
+
+    @NonNull
+    private TemplatesTable templatesTable() {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+                new TemplatesTable(this.activity);
+        return this.templatesTableInstance;
+    }
+    // endregion
+
+    private void notifyDataSetChanged() {
+        if (null != this.adapter) this.adapter.notifyDataSetChanged();
+    }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.activity.getString(resId); }
-
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException
-    { return this.activity.getResources().getQuantityString(resId, quantity, formatArgs); }
+    @Override
+    @Nullable
+    public String get(
+            @StringRes final int resId) {
+        return this.activity.getString(resId);
+    }
     // endregion
 
+    @Override
+    @NonNull
+    public String getQuantity(
+            @PluralsRes final int resId,
+            @IntRange(from = 0) final int quantity,
+            @Nullable final Object... formatArgs)
+            throws Resources.NotFoundException {
+        return this.activity.getResources().getQuantityString(resId, quantity, formatArgs);
+    }
+
     // region Public Methods
-    public void importTemplate()
-    {
-        java.io.File file;
-        try
-        {
-            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
-                    this.activity, this.requestCode);                        //  PermissionException
+    public void importTemplate() {
+        File file;
+        try {
+            final TemplatesDir templatesDir =
+                    Utils.templatesDir(             // throws IOException,
+                            this.activity, this.requestCode);                        //  PermissionException
             file = templatesDir.makeFile(this.fileName);  // throws IOException, PermissionException
-        }
-        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-        {
-            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+        } catch (final IOException | Dir.PermissionException e) {
+            if (!(e instanceof Dir.PermissionRequestedException))
                 this.showLongToast(e.getMessage());
             file = null;
         }
 
-        if (null != file)
-        {
+        if (null != file) {
             final boolean templateImported = this.templatesTable().insert(
-                org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
-                    file,this)) > 0;
+                    TemplateModel.makeUserDefined(
+                            file, this)) > 0;
             if (templateImported) this.notifyDataSetChanged();
         }
     }
+    // endregion
 
-    public void importTemplate(final java.lang.String fileName)
-    { this.fileName = fileName; this.importTemplate(); }
+    public void importTemplate(final String fileName) {
+        this.fileName = fileName;
+        this.importTemplate();
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Adapter {
+        public abstract void notifyDataSetChanged();
+    }
     // endregion
 }

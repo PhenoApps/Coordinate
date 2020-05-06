@@ -1,57 +1,50 @@
 package org.wheatgenetics.coordinate.tc.exclude.adapter;
 
-/**
- * Uses:
- * android.content.Context
- * android.widget.ImageView
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.coordinate.model.Cell
- * org.wheatgenetics.coordinate.model.DisplayModel
- * org.wheatgenetics.coordinate.model.ElementModel
- *
- * org.wheatgenetics.coordinate.display.adapter.Adapter
- * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
- *
- * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder
- * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler
- * org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
- */
-public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapter
-{
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
-        templateHandler;
+import android.content.Context;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.model.Cell;
+import org.wheatgenetics.coordinate.model.DisplayModel;
+import org.wheatgenetics.coordinate.model.ElementModel;
+
+public class Adapter extends org.wheatgenetics.coordinate.display.adapter.Adapter {
+    @NonNull
+    private final
+    DataViewHolder.TemplateHandler
+            templateHandler;
 
     public Adapter(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.DisplayModel displayModel,
-    @androidx.annotation.NonNull final android.content.Context                         context     ,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler handler,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
-        templateHandler)
-    { super(context, displayModel, handler); this.templateHandler = templateHandler; }
-
-    // region Overridden Methods
-    @java.lang.Override @androidx.annotation.NonNull
-    protected org.wheatgenetics.coordinate.display.adapter.DataViewHolder dataViewHolder(
-    @androidx.annotation.NonNull final android.widget.ImageView itemView)
-    {
-        return new org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder(
-            itemView, this.getHandler(), this.templateHandler);
+            @NonNull final DisplayModel displayModel,
+            @NonNull final Context context,
+            @NonNull final
+            DataViewHolder.Handler handler,
+            @NonNull final
+            DataViewHolder.TemplateHandler
+                    templateHandler) {
+        super(context, displayModel, handler);
+        this.templateHandler = templateHandler;
     }
 
-    @java.lang.Override protected void bind(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.display.adapter.DataViewHolder
-        dataViewHolder,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.ElementModel
-        elementModel)
-    {
-        ((org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder) dataViewHolder).bind(
-            (org.wheatgenetics.coordinate.model.Cell) elementModel);
+    // region Overridden Methods
+    @Override
+    @NonNull
+    protected org.wheatgenetics.coordinate.display.adapter.DataViewHolder dataViewHolder(
+            @NonNull final ImageView itemView) {
+        return new DataViewHolder(
+                itemView, this.getHandler(), this.templateHandler);
+    }
+
+    @Override
+    protected void bind(
+            @NonNull final org.wheatgenetics.coordinate.display.adapter.DataViewHolder
+                    dataViewHolder,
+            @Nullable final ElementModel
+                    elementModel) {
+        ((DataViewHolder) dataViewHolder).bind(
+                (Cell) elementModel);
     }
     // endregion
 }

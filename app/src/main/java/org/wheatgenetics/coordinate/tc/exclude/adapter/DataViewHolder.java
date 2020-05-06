@@ -1,57 +1,59 @@
 package org.wheatgenetics.coordinate.tc.exclude.adapter;
 
-/**
- * Uses:
- * android.widget.ImageView
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.Cell
- *
- * org.wheatgenetics.coordinate.display.adapter.DataViewHolder
- */
-public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter.DataViewHolder
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface TemplateHandler
-    { public abstract boolean isExcluded(org.wheatgenetics.coordinate.model.Cell cell); }
+import android.widget.ImageView;
 
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
-        templateHandler;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
-    private boolean isExcluded()
-    {
-        return this.templateHandler.isExcluded(
-            (org.wheatgenetics.coordinate.model.Cell) this.elementModel);
-    }
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.model.Cell;
+
+public class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter.DataViewHolder {
+    @NonNull
+    private final
+    DataViewHolder.TemplateHandler
+            templateHandler;
 
     DataViewHolder(
-    @androidx.annotation.NonNull final android.widget.ImageView itemView,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.Handler handler,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.exclude.adapter.DataViewHolder.TemplateHandler
-        templateHandler)
-    { super(itemView, handler); this.templateHandler = templateHandler; this.setOnClickListener(); }
-
-    // region Overridden Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected void setImage()
-    {
-        this.setImage(this.isExcluded() ?
-            org.wheatgenetics.coordinate.R.drawable.excluded_entry       :
-            org.wheatgenetics.coordinate.R.drawable.empty_included_entry);
+            @NonNull final ImageView itemView,
+            @NonNull final
+            DataViewHolder.Handler handler,
+            @NonNull final
+            DataViewHolder.TemplateHandler
+                    templateHandler) {
+        super(itemView, handler);
+        this.templateHandler = templateHandler;
+        this.setOnClickListener();
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected void respondToClick() { this.toggle(); }
+    private boolean isExcluded() {
+        return this.templateHandler.isExcluded(
+                (Cell) this.elementModel);
+    }
+
+    // region Overridden Methods
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    protected void setImage() {
+        this.setImage(this.isExcluded() ?
+                R.drawable.excluded_entry :
+                R.drawable.empty_included_entry);
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    protected void respondToClick() {
+        this.toggle();
+    }
+
+    void bind(@Nullable final Cell cell) {
+        this.setElementModelAndImage(cell);
+    }
     // endregion
 
-    void bind(@androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.Cell cell)
-    { this.setElementModelAndImage(cell); }
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface TemplateHandler {
+        public abstract boolean isExcluded(Cell cell);
+    }
 }

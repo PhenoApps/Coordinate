@@ -1,52 +1,53 @@
 package org.wheatgenetics.coordinate.database;
 
-/**
- * Uses:
- * android.content.Context
- * 
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- * org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels
- * org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker
- * org.wheatgenetics.coordinate.model.EntryModels
- *
- * org.wheatgenetics.coordinate.database.CheckedEntriesTable
- */
-public class CurrentProjectUniqueEntriesTable
-extends org.wheatgenetics.coordinate.database.CheckedEntriesTable
-{
-    // region Fields
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker checker;
+import android.content.Context;
 
-    private org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels
-        currentProjectUniqueEntryModels = null;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
+import org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels;
+import org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels;
+import org.wheatgenetics.coordinate.model.EntryModels;
+
+public class CurrentProjectUniqueEntriesTable
+        extends CheckedEntriesTable {
+    // region Fields
+    @NonNull
+    private final
+    DatabaseUniqueEntryModels.Checker checker;
+
+    private CurrentProjectUniqueEntryModels
+            currentProjectUniqueEntryModels = null;
     // endregion
 
-    private org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels
-    getCurrentProjectUniqueEntryModels() { return this.currentProjectUniqueEntryModels; }
+    public CurrentProjectUniqueEntriesTable(final Context context,
+                                            @NonNull final
+                                            DatabaseUniqueEntryModels.Checker checker) {
+        super(context, "CurrentProjectUniqueEntriesTable");
+        this.checker = checker;
+    }
 
-    public CurrentProjectUniqueEntriesTable(final android.content.Context context,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels.Checker checker)
-    { super(context,"CurrentProjectUniqueEntriesTable"); this.checker = checker; }
+    private CurrentProjectUniqueEntryModels
+    getCurrentProjectUniqueEntryModels() {
+        return this.currentProjectUniqueEntryModels;
+    }
 
     // region Overridden Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker()
-    { return this.getCurrentProjectUniqueEntryModels(); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    @NonNull
+    CheckedIncludedEntryModel.Checker checker() {
+        return this.getCurrentProjectUniqueEntryModels();
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override org.wheatgenetics.coordinate.model.EntryModels makeEntryModels(
-    final long gridId, final int rows, final int cols)
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    EntryModels makeEntryModels(
+            final long gridId, final int rows, final int cols) {
         this.currentProjectUniqueEntryModels =
-            new org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels(
-                gridId, rows, cols, this.checker,this);
+                new CurrentProjectUniqueEntryModels(
+                        gridId, rows, cols, this.checker, this);
         return this.getCurrentProjectUniqueEntryModels();
     }
     // endregion

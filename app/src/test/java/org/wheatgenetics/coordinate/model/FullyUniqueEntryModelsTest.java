@@ -1,5 +1,18 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -19,92 +32,91 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
  * org.wheatgenetics.coordinate.model.FullyUniqueEntryModels.DuplicateCheckException
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class FullyUniqueEntryModelsTest extends java.lang.Object
-implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class FullyUniqueEntryModelsTest extends Object
+implements StringGetter
 {
     // region Types
     private static class DuplicateCheckException
-    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels.DuplicateCheckException
+    extends FullyUniqueEntryModels.DuplicateCheckException
     { DuplicateCheckException() { super("A duplicate was simulated."); } }
 
 
     private static class MeanUniqueEntryModels
-    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
+    extends FullyUniqueEntryModels
     {
         MeanUniqueEntryModels(
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final long gridId,
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final int rows,
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final int cols,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        @NonNull final StringGetter stringGetter)
         { super(gridId, rows, cols, stringGetter); }
 
-        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-        @androidx.annotation.IntRange(from = 1) final int              colIndex,
-        @androidx.annotation.Nullable           final java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+        @Override @Nullable public String check(
+        @IntRange(from = 1) final int              rowIndex,
+        @IntRange(from = 1) final int              colIndex,
+        @Nullable           final String value   )
+        throws CheckedIncludedEntryModel.CheckException
         {
-            throw new org.wheatgenetics.coordinate.model
-                .FullyUniqueEntryModelsTest.DuplicateCheckException();
+            throw new FullyUniqueEntryModelsTest.DuplicateCheckException();
         }
     }
 
     private static class NiceUniqueEntryModels
-    extends org.wheatgenetics.coordinate.model.FullyUniqueEntryModels
+    extends FullyUniqueEntryModels
     {
         NiceUniqueEntryModels(
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final long gridId,
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final int rows,
-        @java.lang.SuppressWarnings({"SameParameterValue"}) @androidx.annotation.IntRange(from = 1)
+        @SuppressWarnings({"SameParameterValue"}) @IntRange(from = 1)
             final int cols,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        @NonNull final StringGetter stringGetter)
         { super(gridId, rows, cols, stringGetter); }
 
-        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-        @androidx.annotation.IntRange(from = 1) final int              colIndex,
-        @androidx.annotation.Nullable           final java.lang.String value   ) { return value; }
+        @Override @Nullable public String check(
+        @IntRange(from = 1) final int              rowIndex,
+        @IntRange(from = 1) final int              colIndex,
+        @Nullable           final String value   ) { return value; }
     }
     // endregion
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.CallCheckThenSetInstead:
+            case R.string.CallCheckThenSetInstead:
                 return "Call checkThenSet() instead";
-            default: org.junit.Assert.fail(); return null;
+            default: Assert.fail(); return null;
         }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
     // region set() Overridden Method Tests
-    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void meanSetThrows()
     {
-        new org.wheatgenetics.coordinate.model.FullyUniqueEntryModelsTest.MeanUniqueEntryModels(
+        new FullyUniqueEntryModelsTest.MeanUniqueEntryModels(
             1,1,1,this).set(null) /* throws */;
     }
 
-    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void niceSetThrows()
     {
-        new org.wheatgenetics.coordinate.model.FullyUniqueEntryModelsTest.NiceUniqueEntryModels(
+        new FullyUniqueEntryModelsTest.NiceUniqueEntryModels(
             1,1,1,this).set(null) /* throws */;
     }
     // endregion

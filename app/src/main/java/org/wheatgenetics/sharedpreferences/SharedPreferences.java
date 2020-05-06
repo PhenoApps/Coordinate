@@ -1,69 +1,74 @@
 package org.wheatgenetics.sharedpreferences;
 
-/**
- * Uses:
- * android.content.SharedPreferences
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.Model
- *
- * org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
- */
-public class SharedPreferences
-extends org.wheatgenetics.sharedpreferences.UpdateVersionSharedPreferences
-{
-    private static final java.lang.String GRID_ID = "CurrentGrid", PROJECT_ID = "CurrentProject";
+import org.wheatgenetics.coordinate.StringGetter;
 
-    @androidx.annotation.NonNull
-    private final org.wheatgenetics.coordinate.StringGetter stringGetter;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
-    // region Private Methods
-    private void uncheckedSetGridId(@androidx.annotation.IntRange(from = -1) final long gridId)
-    { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID, gridId); }
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.model.Model;
 
-    private void uncheckedSetProjectId(
-    @androidx.annotation.IntRange(from = -1) final long projectId)
-    { this.setLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID, projectId); }
-    // endregion
+public class SharedPreferences extends UpdateVersionSharedPreferences {
+    private static final String GRID_ID = "CurrentGrid", PROJECT_ID = "CurrentProject";
+
+    @NonNull
+    private final StringGetter stringGetter;
 
     public SharedPreferences(
-    @androidx.annotation.NonNull final android.content.SharedPreferences         sharedPreferences,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter     )
-    { super(sharedPreferences); this.stringGetter = stringGetter; }
+            @NonNull final android.content.SharedPreferences sharedPreferences,
+            @NonNull final StringGetter stringGetter) {
+        super(sharedPreferences);
+        this.stringGetter = stringGetter;
+    }
+
+    // region Private Methods
+    private void uncheckedSetGridId(@IntRange(from = -1) final long gridId) {
+        this.setLong(SharedPreferences.GRID_ID, gridId);
+    }
+    // endregion
+
+    private void uncheckedSetProjectId(
+            @IntRange(from = -1) final long projectId) {
+        this.setLong(SharedPreferences.PROJECT_ID, projectId);
+    }
 
     // region Public Methods
     // region GridId Public Methods
-    public long getGridId()
-    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.GRID_ID); }
-
-    public void setGridId(@androidx.annotation.IntRange(from = 1) final long gridId)
-    {
-        this.uncheckedSetGridId(
-            org.wheatgenetics.coordinate.model.Model.valid(gridId, this.stringGetter));
+    public long getGridId() {
+        return this.getLong(SharedPreferences.GRID_ID);
     }
 
-    public void clearGridId() { this.uncheckedSetGridId(-1); }
+    public void setGridId(@IntRange(from = 1) final long gridId) {
+        this.uncheckedSetGridId(
+                Model.valid(gridId, this.stringGetter));
+    }
 
-    public boolean gridIdIsSet() { return this.getGridId() > -1; }
+    public void clearGridId() {
+        this.uncheckedSetGridId(-1);
+    }
+
+    public boolean gridIdIsSet() {
+        return this.getGridId() > -1;
+    }
     // endregion
 
     // region ProjectId Public Methods
-    public long getProjectId()
-    { return this.getLong(org.wheatgenetics.sharedpreferences.SharedPreferences.PROJECT_ID); }
-
-    public void setProjectId(@androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        this.uncheckedSetProjectId(
-            org.wheatgenetics.coordinate.model.Model.valid(projectId, this.stringGetter));
+    public long getProjectId() {
+        return this.getLong(SharedPreferences.PROJECT_ID);
     }
 
-    public void clearProjectId() { this.uncheckedSetProjectId(-1); }
+    public void setProjectId(@IntRange(from = 1) final long projectId) {
+        this.uncheckedSetProjectId(
+                Model.valid(projectId, this.stringGetter));
+    }
 
-    public boolean projectIdIsSet() { return this.getProjectId() > -1; }
+    public void clearProjectId() {
+        this.uncheckedSetProjectId(-1);
+    }
+
+    public boolean projectIdIsSet() {
+        return this.getProjectId() > -1;
+    }
     // endregion
     // endregion
 }

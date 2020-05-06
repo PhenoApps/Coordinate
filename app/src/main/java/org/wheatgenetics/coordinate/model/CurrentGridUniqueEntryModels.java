@@ -1,115 +1,106 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
- * org.wheatgenetics.coordinate.model.EntryModel
- * org.wheatgenetics.coordinate.model.EntryModels.Processor
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
- * org.wheatgenetics.coordinate.model.UniqueEntryModels
- * org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
- */
-public class CurrentGridUniqueEntryModels
-extends org.wheatgenetics.coordinate.model.UniqueEntryModels
-{
-    static class CurrentGridDuplicateCheckException
-    extends org.wheatgenetics.coordinate.model.UniqueEntryModels.DuplicateCheckException
-    {
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        CurrentGridDuplicateCheckException(
-        @androidx.annotation.NonNull final java.lang.String                          scope       ,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
-        {
-            // noinspection ConstantConditions
-            super(java.lang.String.format(null == stringGetter.get(org.wheatgenetics
-                        .coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg) ?
-                    "The %s already has an entry with that value."     :
-                    stringGetter.get(org.wheatgenetics.coordinate.R
-                        .string.CurrentGridDuplicateCheckExceptionMsg) ,
-                scope));
-        }
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
-        CurrentGridDuplicateCheckException(
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
-        {
-            // noinspection ConstantConditions
-            this(/* scope => */ null == stringGetter.get(org.wheatgenetics
-                        .coordinate.R.string.CurrentGridDuplicateCheckExceptionScope) ?
-                    "current grid"                                                    :
-                    stringGetter.get(org.wheatgenetics.coordinate.R
-                        .string.CurrentGridDuplicateCheckExceptionScope)              ,
-                stringGetter);
-        }
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
+public class CurrentGridUniqueEntryModels
+        extends UniqueEntryModels {
+    public CurrentGridUniqueEntryModels(
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int rows,
+            @IntRange(from = 1) final int cols,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, rows, cols, stringGetter);
     }
 
-    public CurrentGridUniqueEntryModels(
-    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
-    @androidx.annotation.IntRange(from = 1) final int                                  rows        ,
-    @androidx.annotation.IntRange(from = 1) final int                                  cols        ,
-    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(gridId, rows, cols, stringGetter); }
-
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-    @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-    @androidx.annotation.IntRange(from = 1) final int              colIndex,
-    @androidx.annotation.Nullable           final java.lang.String value   )
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
+    @Override
+    @Nullable
+    public String check(
+            @IntRange(from = 1) final int rowIndex,
+            @IntRange(from = 1) final int colIndex,
+            @Nullable final String value)
+            throws CheckedIncludedEntryModel.CheckException {
         if (null == value)
             return null;
-        else
-        {
-            @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-            class Processor extends java.lang.Object
-            implements org.wheatgenetics.coordinate.model.EntryModels.Processor
-            {
+        else {
+            @SuppressWarnings({"ClassExplicitlyExtendsObject"})
+            class Processor extends Object
+                    implements EntryModels.Processor {
                 // region Fields
-                @androidx.annotation.IntRange(from = 1) private final int rowIndex, colIndex;
-                @androidx.annotation.Nullable           private final java.lang.String value;
+                @IntRange(from = 1)
+                private final int rowIndex, colIndex;
+                @Nullable
+                private final String value;
 
                 private boolean duplicateFound = false;
                 // endregion
 
                 private Processor(
-                @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-                @androidx.annotation.IntRange(from = 1) final int              colIndex,
-                @androidx.annotation.Nullable           final java.lang.String value   )
-                { super(); this.rowIndex = rowIndex; this.colIndex = colIndex; this.value = value; }
+                        @IntRange(from = 1) final int rowIndex,
+                        @IntRange(from = 1) final int colIndex,
+                        @Nullable final String value) {
+                    super();
+                    this.rowIndex = rowIndex;
+                    this.colIndex = colIndex;
+                    this.value = value;
+                }
 
-                @java.lang.Override public void process(
-                final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-                {
+                @Override
+                public void process(
+                        final EntryModel entryModel) {
                     if (!this.duplicateFound)
                         if (entryModel instanceof
-                        org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                                IncludedEntryModel)
                             if (entryModel.getRow() != this.rowIndex
-                            ||  entryModel.getCol() != this.colIndex)
-                            {
-                                final java.lang.String existingValue = entryModel.getValue();
+                                    || entryModel.getCol() != this.colIndex) {
+                                final String existingValue = entryModel.getValue();
                                 if (null != existingValue && existingValue.equals(this.value))
                                     this.duplicateFound = true;
                             }
                 }
 
-                private boolean getDuplicateFound() { return this.duplicateFound; }
+                private boolean getDuplicateFound() {
+                    return this.duplicateFound;
+                }
             }
 
             final Processor processor = new Processor(rowIndex, colIndex, value);
             this.processAll(processor);
             if (processor.getDuplicateFound())
-                throw new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
-                    .CurrentGridDuplicateCheckException(this.stringGetter());
+                throw new CurrentGridUniqueEntryModels
+                        .CurrentGridDuplicateCheckException(this.stringGetter());
             else
                 return value;
+        }
+    }
+
+    static class CurrentGridDuplicateCheckException
+            extends UniqueEntryModels.DuplicateCheckException {
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        CurrentGridDuplicateCheckException(
+                @NonNull final String scope,
+                @NonNull final StringGetter stringGetter) {
+            // noinspection ConstantConditions
+            super(String.format(null == stringGetter.get(R.string.CurrentGridDuplicateCheckExceptionMsg) ?
+                            "The %s already has an entry with that value." :
+                            stringGetter.get(R
+                                    .string.CurrentGridDuplicateCheckExceptionMsg),
+                    scope));
+        }
+
+        CurrentGridDuplicateCheckException(
+                @NonNull final StringGetter stringGetter) {
+            // noinspection ConstantConditions
+            this(/* scope => */ null == stringGetter.get(R.string.CurrentGridDuplicateCheckExceptionScope) ?
+                            "current grid" :
+                            stringGetter.get(R
+                                    .string.CurrentGridDuplicateCheckExceptionScope),
+                    stringGetter);
         }
     }
 }

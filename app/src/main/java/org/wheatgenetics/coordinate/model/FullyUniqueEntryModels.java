@@ -1,44 +1,35 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.EntryModel
- * org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
- * org.wheatgenetics.coordinate.model.UniqueEntryModels
- */
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 public abstract class FullyUniqueEntryModels
-extends org.wheatgenetics.coordinate.model.UniqueEntryModels
-{
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.model.IncludedEntryModel makeButDontSetIncludedEntry(
-    @androidx.annotation.IntRange(from = 1) final int row,
-    @androidx.annotation.IntRange(from = 1) final int col)
-    {
-        return new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(
-            this.getGridId(), row, col,this, this.stringGetter());
+        extends UniqueEntryModels {
+    FullyUniqueEntryModels(
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int rows,
+            @IntRange(from = 1) final int cols,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, rows, cols, stringGetter);
     }
 
-    FullyUniqueEntryModels(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  rows  ,
-    @androidx.annotation.IntRange(from = 1) final int  cols  ,
-    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(gridId, rows, cols, stringGetter); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    @NonNull
+    IncludedEntryModel makeButDontSetIncludedEntry(
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col) {
+        return new FullyCheckedIncludedEntryModel(
+                this.getGridId(), row, col, this, this.stringGetter());
+    }
 
-    @java.lang.Override
-    public void set(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    {
-        throw new java.lang.UnsupportedOperationException(this.stringGetter().get(
-            org.wheatgenetics.coordinate.R.string.CallCheckThenSetInstead));
+    @Override
+    public void set(final EntryModel entryModel) {
+        throw new UnsupportedOperationException(this.stringGetter().get(
+                R.string.CallCheckThenSetInstead));
     }
 }

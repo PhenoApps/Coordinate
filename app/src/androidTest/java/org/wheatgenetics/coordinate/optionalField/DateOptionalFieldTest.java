@@ -1,5 +1,19 @@
 package org.wheatgenetics.coordinate.optionalField;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -21,78 +35,78 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.DateOptionalField
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class DateOptionalFieldTest
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class DateOptionalFieldTest
+extends Object implements StringGetter
 {
-    @androidx.annotation.NonNull private static java.lang.String expectedCurrentDate()
+    @NonNull private static String expectedCurrentDate()
     {
-        return org.wheatgenetics.androidlibrary.Utils.formatDate(
-            java.lang.System.currentTimeMillis()).toString();
+        return Utils.formatDate(
+            System.currentTimeMillis()).toString();
     }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+            case R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            case org.wheatgenetics.coordinate.R.string.DateOptionalFieldDateFieldName:
+            case R.string.DateOptionalFieldDateFieldName:
                 return "Date";
 
-            default: org.junit.Assert.fail(); return null;
+            default: Assert.fail(); return null;
         }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
-    @org.junit.Test() public void constructorSucceeds()
+    @Test() public void constructorSucceeds()
     {
-        final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
-            new org.wheatgenetics.coordinate.optionalField.DateOptionalField(this);
-        org.junit.Assert.assertEquals("Date", dateOptionalField.getName());
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+        final DateOptionalField dateOptionalField =
+            new DateOptionalField(this);
+        Assert.assertEquals("Date", dateOptionalField.getName());
+        Assert.assertEquals(
+            BaseOptionalField.DATE_HINT,
             dateOptionalField.getHint()                                           );
     }
 
     // region Overridden Method Tests
-    @org.junit.Test() public void cloneSucceeds()
+    @Test() public void cloneSucceeds()
     {
-        final org.wheatgenetics.coordinate.optionalField.DateOptionalField dateOptionalField =
-            new org.wheatgenetics.coordinate.optionalField.DateOptionalField(this);
-        final org.wheatgenetics.coordinate.optionalField.DateOptionalField clonedDateOptionalField =
-            (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
+        final DateOptionalField dateOptionalField =
+            new DateOptionalField(this);
+        final DateOptionalField clonedDateOptionalField =
+            (DateOptionalField)
                     dateOptionalField.clone();
-        org.junit.Assert.assertEquals("Date", clonedDateOptionalField.getName());
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT,
+        Assert.assertEquals("Date", clonedDateOptionalField.getName());
+        Assert.assertEquals(
+            BaseOptionalField.DATE_HINT,
             clonedDateOptionalField.getHint()                                     );
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue(dateOptionalField.equals(clonedDateOptionalField));
+        Assert.assertTrue(dateOptionalField.equals(clonedDateOptionalField));
     }
 
-    @org.junit.Test() public void getValue()
+    @Test() public void getValue()
     {
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.optionalField.DateOptionalFieldTest.expectedCurrentDate(),
-            new org.wheatgenetics.coordinate.optionalField.DateOptionalField(
+        Assert.assertEquals(
+            DateOptionalFieldTest.expectedCurrentDate(),
+            new DateOptionalField(
                 this).getValue());
     }
     // endregion
 
-    @org.junit.Test() public void getCurrentDate()
+    @Test() public void getCurrentDate()
     {
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.coordinate.optionalField.DateOptionalFieldTest.expectedCurrentDate(),
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate()         );
+        Assert.assertEquals(
+            DateOptionalFieldTest.expectedCurrentDate(),
+            DateOptionalField.getCurrentDate()         );
     }
 }

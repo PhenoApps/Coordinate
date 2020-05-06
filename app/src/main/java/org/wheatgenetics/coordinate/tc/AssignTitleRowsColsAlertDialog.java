@@ -1,155 +1,142 @@
 package org.wheatgenetics.coordinate.tc;
 
-/**
- * Uses:
- * android.app.Activity
- * android.view.View
- * android.view.View.OnClickListener
- * android.widget.EditText
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.androidlibrary.AlertDialog
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- */
-class AssignTitleRowsColsAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
-{
-    // region Types
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
-    { public abstract void handleAssignDone(); }
+import android.app.Activity;
+import android.view.View;
+import android.widget.EditText;
 
-    private static class Unspecified extends java.lang.Exception {}
-    // endregion
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
+import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+class AssignTitleRowsColsAlertDialog extends AlertDialog {
     // region Fields
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler;
-
-    private android.widget.EditText titleEditText, rowsEditText, colsEditText;
-    private org.wheatgenetics.coordinate.model.TemplateModel    templateModel;
+    @NonNull
+    private final
+    AssignTitleRowsColsAlertDialog.Handler handler;
+    private EditText titleEditText, rowsEditText, colsEditText;
     // endregion
+    private TemplateModel templateModel;
+
+    AssignTitleRowsColsAlertDialog(final Activity activity,
+                                   @NonNull final
+                                   AssignTitleRowsColsAlertDialog.Handler handler) {
+        super(activity);
+        this.handler = handler;
+    }
 
     // region Private Methods
     // region convert() Private Methods
-    private static java.lang.String convert(
-    @androidx.annotation.IntRange(from = 1) final int integer)
-    { return integer <= 0 ? "" : java.lang.String.valueOf(integer); }
+    private static String convert(
+            @IntRange(from = 1) final int integer) {
+        return integer <= 0 ? "" : String.valueOf(integer);
+    }
+    // endregion
 
-    @androidx.annotation.IntRange(from = 1) private static int convert(
-    final android.widget.EditText editText)
-    throws org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified
-    {
-        final java.lang.String text = org.wheatgenetics.androidlibrary.Utils.getText(editText);
+    @IntRange(from = 1)
+    private static int convert(
+            final EditText editText)
+            throws AssignTitleRowsColsAlertDialog.Unspecified {
+        final String text = Utils.getText(editText);
         if (text.length() < 1)
-            throw new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();
-        else
-        {
-            final int i = java.lang.Integer.parseInt(text);
+            throw new AssignTitleRowsColsAlertDialog.Unspecified();
+        else {
+            final int i = Integer.parseInt(text);
             if (i < 1)
                 throw new
-                    org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified();
+                        AssignTitleRowsColsAlertDialog.Unspecified();
             else return i;
         }
     }
-    // endregion
 
-    private void assignTemplate()
-    {
-        final java.lang.String title =
-            org.wheatgenetics.androidlibrary.Utils.getText(this.titleEditText);
+    private void assignTemplate() {
+        final String title =
+                Utils.getText(this.titleEditText);
         if (title.length() < 1)
             this.showToast(
-                org.wheatgenetics.coordinate.R.string.AssignTitleRowsColsAlertDialogTitleToast);
+                    R.string.AssignTitleRowsColsAlertDialogTitleToast);
         else
-            try
-            {
+            try {
                 final int rows =
-                    org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                        this.rowsEditText);          // throws org.wheatgenetics.coordinate.tc
+                        AssignTitleRowsColsAlertDialog.convert(
+                                this.rowsEditText);          // throws org.wheatgenetics.coordinate.tc
                 try                                  //  .AssignTitleRowsColsAlertDialog.Unspecified
                 {
                     final int cols =
-                        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                            this.colsEditText);      // throws org.wheatgenetics.coordinate.tc
-                                                     //  .AssignTitleRowsColsAlertDialog.Unspecified
+                            AssignTitleRowsColsAlertDialog.convert(
+                                    this.colsEditText);      // throws org.wheatgenetics.coordinate.tc
+                    //  .AssignTitleRowsColsAlertDialog.Unspecified
                     if (null != this.templateModel) this.templateModel.assign(
-                        /* title => */ title, /* rows => */ rows, /* cols => */ cols);
+                            /* title => */ title, /* rows => */ rows, /* cols => */ cols);
                     this.cancelAlertDialog();
                     this.handler.handleAssignDone();
+                } catch (
+                        final AssignTitleRowsColsAlertDialog.Unspecified e) {
+                    this.showToast(R.string.AssignTitleRowsColsAlertDialogColsToast);
                 }
-                catch (
-                final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified e)
-                {
-                    this.showToast(org.wheatgenetics.coordinate
-                        .R.string.AssignTitleRowsColsAlertDialogColsToast);
-                }
-            }
-            catch (
-            final org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Unspecified e)
-            {
+            } catch (
+                    final AssignTitleRowsColsAlertDialog.Unspecified e) {
                 this.showToast(
-                    org.wheatgenetics.coordinate.R.string.AssignTitleRowsColsAlertDialogRowsToast);
+                        R.string.AssignTitleRowsColsAlertDialogRowsToast);
             }
     }
     // endregion
 
-    AssignTitleRowsColsAlertDialog(final android.app.Activity activity,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
-
-    @java.lang.Override public void configure()
-    {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.AssignTitleRowsColsAlertDialogTitle);
+    @Override
+    public void configure() {
+        this.setTitle(R.string.AssignTitleRowsColsAlertDialogTitle);
 
         {
-            final android.view.View view =
-                this.inflate(org.wheatgenetics.coordinate.R.layout.assign_title_rows_cols);
-            if (null != view)
-            {
+            final View view =
+                    this.inflate(R.layout.assign_title_rows_cols);
+            if (null != view) {
                 if (null == this.titleEditText) this.titleEditText =
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.titleEditText);
+                        view.findViewById(R.id.titleEditText);
                 if (null == this.rowsEditText) this.rowsEditText =
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.rowsEditText);
+                        view.findViewById(R.id.rowsEditText);
                 if (null == this.colsEditText) this.colsEditText =
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.colsEditText);
+                        view.findViewById(R.id.colsEditText);
             }
             this.setView(view);
         }
 
-        this.setPositiveButton(org.wheatgenetics.coordinate
-                .R.string.AssignTitleRowsColsAlertDialogPositiveButtonText)
-            .setCancelNegativeButton();
+        this.setPositiveButton(R.string.AssignTitleRowsColsAlertDialogPositiveButtonText)
+                .setCancelNegativeButton();
     }
+    // endregion
 
-    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel)
-        {
+    void show(final TemplateModel templateModel) {
+        if (null != templateModel) {
             this.templateModel = templateModel;
             if (null != this.titleEditText) this.titleEditText.setText("");
-            if (null != this.rowsEditText ) this.rowsEditText.setText(
-                org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                    this.templateModel.getRows()));
+            if (null != this.rowsEditText) this.rowsEditText.setText(
+                    AssignTitleRowsColsAlertDialog.convert(
+                            this.templateModel.getRows()));
             if (null != this.colsEditText) this.colsEditText.setText(
-                org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.convert(
-                    this.templateModel.getCols()));
+                    AssignTitleRowsColsAlertDialog.convert(
+                            this.templateModel.getCols()));
             this.show();
 
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
-                new android.view.View.OnClickListener()
-                {
-                    @java.lang.Override public void onClick(final android.view.View view)
-                    {
-                        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
-                            .this.assignTemplate();
-                    }
-                });
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            AssignTitleRowsColsAlertDialog
+                                    .this.assignTemplate();
+                        }
+                    });
         }
+    }
+
+    // region Types
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    interface Handler {
+        public abstract void handleAssignDone();
+    }
+
+    private static class Unspecified extends Exception {
     }
 }

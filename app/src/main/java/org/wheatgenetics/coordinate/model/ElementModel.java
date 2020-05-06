@@ -1,11 +1,11 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- */
-@java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface ElementModel
-{
-    @androidx.annotation.IntRange(from = 1) public abstract int getRowValue();
-    @androidx.annotation.IntRange(from = 1) public abstract int getColValue();
+import androidx.annotation.IntRange;
+
+public interface ElementModel {
+    @IntRange(from = 1)
+    public abstract int getRowValue();
+
+    @IntRange(from = 1)
+    public abstract int getColValue();
 }

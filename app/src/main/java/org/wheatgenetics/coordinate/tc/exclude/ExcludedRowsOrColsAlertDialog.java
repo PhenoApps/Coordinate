@@ -1,77 +1,73 @@
 package org.wheatgenetics.coordinate.tc.exclude;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
- * android.content.DialogInterface.OnMultiChoiceClickListener
- *
- * androidx.annotation.NonNull
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
- *
- * org.wheatgenetics.coordinate.R
- */
+import android.app.Activity;
+import android.content.DialogInterface;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+
+import org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog;
+import org.wheatgenetics.coordinate.R;
+
 class ExcludedRowsOrColsAlertDialog
-extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
-    {
-        public abstract void excludeRowsOrCols(
-        @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-        @androidx.annotation.NonNull boolean checkedItems[]);
-    }
-
+        extends MultiChoiceItemsAlertDialog {
     // region Fields
-                                 private final java.lang.String label;
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler handler;
-
+    private final String label;
+    @NonNull
+    private final
+    ExcludedRowsOrColsAlertDialog.Handler handler;
     private boolean titleHasBeenSet = false;
+
+    ExcludedRowsOrColsAlertDialog(final Activity activity,
+                                  @StringRes final int label,
+                                  @NonNull final
+                                  ExcludedRowsOrColsAlertDialog.Handler handler) {
+        super(activity);
+        this.label = this.getString(label);
+        this.handler = handler;
+    }
     // endregion
 
-    private void excludeRowsOrCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @androidx.annotation.NonNull final boolean checkedItems[])
-    { this.handler.excludeRowsOrCols(checkedItems); }
-
-    ExcludedRowsOrColsAlertDialog(final android.app.Activity activity,
-    @androidx.annotation.StringRes final int label,
-    @androidx.annotation.NonNull   final
-        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler handler)
-    { super(activity); this.label = this.getString(label); this.handler = handler; }
+    private void excludeRowsOrCols(@SuppressWarnings({"CStyleArrayDeclaration"})
+                                   @NonNull final boolean checkedItems[]) {
+        this.handler.excludeRowsOrCols(checkedItems);
+    }
 
     void show(
-    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final java.lang.String items       [],
-    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final boolean          checkedItems[])
-    {
-        if (null != items && null != checkedItems)
-        {
-            if (!this.titleHasBeenSet)
-            {
+            @SuppressWarnings({"CStyleArrayDeclaration"}) final String items[],
+            @SuppressWarnings({"CStyleArrayDeclaration"}) final boolean checkedItems[]) {
+        if (null != items && null != checkedItems) {
+            if (!this.titleHasBeenSet) {
                 this.setTitle(this.getString(
-                    org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogTitle) +
-                    " - " + this.label + 's');
+                        R.string.ExcludedRowsOrColsAlertDialogTitle) +
+                        " - " + this.label + 's');
                 this.titleHasBeenSet = true;
             }
 
-            this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override public void onClick(
-                    final android.content.DialogInterface dialog, final int which)
-                    {
-                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog
+            this.setOKPositiveButton(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(
+                        final DialogInterface dialog, final int which) {
+                    ExcludedRowsOrColsAlertDialog
                             .this.excludeRowsOrCols(checkedItems);
-                    }
-                });
+                }
+            });
             this.show(items, checkedItems,
-                new android.content.DialogInterface.OnMultiChoiceClickListener()
-                {
-                    @java.lang.Override public void onClick(
-                    final android.content.DialogInterface dialog, final int which,
-                    final boolean isChecked) { checkedItems[which] = isChecked; }
-                });
+                    new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(
+                                final DialogInterface dialog, final int which,
+                                final boolean isChecked) {
+                            checkedItems[which] = isChecked;
+                        }
+                    });
         }
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    interface Handler {
+        public abstract void excludeRowsOrCols(
+                @SuppressWarnings({"CStyleArrayDeclaration"})
+                @NonNull boolean checkedItems[]);
     }
 }

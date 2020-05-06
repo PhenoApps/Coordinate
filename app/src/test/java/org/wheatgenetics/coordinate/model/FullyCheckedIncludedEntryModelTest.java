@@ -1,5 +1,17 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -19,62 +31,61 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class FullyCheckedIncludedEntryModelTest extends java.lang.Object
-implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class FullyCheckedIncludedEntryModelTest extends Object
+implements StringGetter
 {
     // region Types
     private static class MeanCheckException
-    extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    extends CheckedIncludedEntryModel.CheckException
     { MeanCheckException() { super("You will always fail the check"); } }
 
-    private static class MeanChecker extends java.lang.Object
-    implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
+    private static class MeanChecker extends Object
+    implements CheckedIncludedEntryModel.Checker
     {
-        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-        @androidx.annotation.IntRange(from = 1) final int              colIndex,
-        @androidx.annotation.Nullable           final java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+        @Override @Nullable public String check(
+        @IntRange(from = 1) final int              rowIndex,
+        @IntRange(from = 1) final int              colIndex,
+        @Nullable           final String value   )
+        throws CheckedIncludedEntryModel.CheckException
         {
-            throw new org.wheatgenetics.coordinate.model
-                .FullyCheckedIncludedEntryModelTest.MeanCheckException();
+            throw new FullyCheckedIncludedEntryModelTest.MeanCheckException();
         }
     }
     // endregion
 
-    private org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker
+    private FullyCheckedIncludedEntryModelTest.MeanChecker
         meanCheckerInstance = null;                                                     // lazy load
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker meanChecker()
+    @NonNull private
+    FullyCheckedIncludedEntryModelTest.MeanChecker meanChecker()
     {
         if (null == this.meanCheckerInstance) this.meanCheckerInstance = new
-            org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker();
+            FullyCheckedIncludedEntryModelTest.MeanChecker();
         return this.meanCheckerInstance;
     }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId) { default: Assert.fail(); return null; }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
-    @org.junit.Test(expected =
-    org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
+    @Test(expected =
+    FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
     public void meanSecondConstructorThrows()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    throws CheckedIncludedEntryModel.CheckException
     {
-        new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(1,1,
+        new FullyCheckedIncludedEntryModel(1,1,
             1,1,"value",0, this.meanChecker(),this);   // throws
     }
 }

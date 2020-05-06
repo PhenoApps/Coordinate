@@ -6,10 +6,8 @@
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
 
 
-
     <!-- DateOptionalField -->
     <string name="DateOptionalFieldDateFieldName">Date</string>
-
 
 
     <!-- NonNullOptionalFields seed tray template -->
@@ -35,7 +33,6 @@
     <string name="NonNullOptionalFieldsDNAPlatePersonFieldName">person</string>
 
 
-
     <!-- add_optional_field.xml -->
     <string name="add_optional_fieldNameHint">Field name</string>
     <string name="add_optional_fieldDefaultValueHint">Default text</string>
@@ -44,7 +41,6 @@
     <!-- AddOptionalFieldAlertDialog -->
     <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
     <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
-
 
 
     <!-- CheckAndAddOptionalFieldsAlertDialog -->

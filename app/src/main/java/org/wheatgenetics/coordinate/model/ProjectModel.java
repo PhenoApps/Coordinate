@@ -1,50 +1,55 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.Model
- */
-public class ProjectModel extends org.wheatgenetics.coordinate.model.Model
-{
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.StringGetter;
+
+public class ProjectModel extends Model {
     // region Fields
-    @androidx.annotation.IntRange(from = 0) private final long             timestamp;
-                                            private       java.lang.String title    ;
+    @IntRange(from = 0)
+    private final long timestamp;
+    private String title;
     // endregion
 
     // region Constructors
-    private ProjectModel(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(stringGetter); this.timestamp = java.lang.System.currentTimeMillis(); }
+    private ProjectModel(@NonNull final StringGetter stringGetter) {
+        super(stringGetter);
+        this.timestamp = System.currentTimeMillis();
+    }
 
-    public ProjectModel(final java.lang.String title, @androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { this(stringGetter); this.title = title; }
+    public ProjectModel(final String title, @NonNull final StringGetter stringGetter) {
+        this(stringGetter);
+        this.title = title;
+    }
 
     public ProjectModel(
-    @androidx.annotation.IntRange(from = 1) final long                                 id          ,
-                                            final java.lang.String                     title       ,
-    @androidx.annotation.IntRange(from = 0) final long                                 timestamp   ,
-    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(id, stringGetter); this.title = title; this.timestamp = timestamp; }
+            @IntRange(from = 1) final long id,
+            final String title,
+            @IntRange(from = 0) final long timestamp,
+            @NonNull final StringGetter stringGetter) {
+        super(id, stringGetter);
+        this.title = title;
+        this.timestamp = timestamp;
+    }
     // endregion
 
     // region Public Methods
-    public java.lang.String getTitle() { return this.title; }
+    public String getTitle() {
+        return this.title;
+    }
 
-    @androidx.annotation.IntRange(from = 0) public long getTimestamp() { return this.timestamp; }
+    @IntRange(from = 0)
+    public long getTimestamp() {
+        return this.timestamp;
+    }
 
-    @androidx.annotation.Nullable public java.lang.CharSequence getFormattedTimestamp()
-    {
+    @Nullable
+    public CharSequence getFormattedTimestamp() {
         final long timestamp = this.getTimestamp();
-        return timestamp < 1 ? null : org.wheatgenetics.androidlibrary.Utils.formatDate(timestamp);
+        return timestamp < 1 ? null : Utils.formatDate(timestamp);
     }
     // endregion
 }

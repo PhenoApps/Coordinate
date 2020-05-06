@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
@@ -22,7 +21,7 @@
         android:paddingStart="10dp"
         android:paddingLeft="10dp"
         android:text="@string/optional_field_showValueText"
-        tools:ignore="RtlSymmetry"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

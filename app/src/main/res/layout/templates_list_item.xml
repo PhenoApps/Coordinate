@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -20,31 +19,31 @@
 
         <TextView
             android:id="@+id/templatesListItemTitle"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
             android:textSize="20sp"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
             android:id="@+id/templatesListItemRows"
-            android:textSize="16sp"
-
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            android:textSize="16sp"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/templatesListItemTitle" />
 
         <TextView
             android:id="@+id/templatesListItemColumns"
-            android:textSize="16sp"
-
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            android:textSize="16sp"
 
             app:layout_constraintLeft_toRightOf="@id/templatesListItemRows"
             app:layout_constraintTop_toBottomOf="@id/templatesListItemTitle" />
@@ -52,13 +51,13 @@
 
         <TextView
             android:id="@+id/templatesListItemTimestamp"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
             android:textSize="16sp"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@id/templatesListItemRows"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/templatesListItemRows" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -68,13 +67,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
 
-        android:src="@drawable/selector_delete"
         android:background="?android:selectableItemBackground"
         android:padding="9dp"
+        android:src="@drawable/selector_delete"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/templatesListItemExportButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
         tools:ignore="ContentDescription" />
 
@@ -85,13 +84,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
 
-        android:src="@drawable/selector_export"
         android:background="?android:selectableItemBackground"
         android:padding="9dp"
+        android:src="@drawable/selector_export"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/templatesListItemShowGridsButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
         tools:ignore="ContentDescription" />
 
@@ -102,13 +101,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
 
-        android:src="@drawable/selector_show_grids"
         android:background="?android:selectableItemBackground"
         android:padding="9dp"
+        android:src="@drawable/selector_show_grids"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/templatesListItemCreateGridButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
         tools:ignore="ContentDescription" />
 
@@ -119,13 +118,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
 
-        android:src="@drawable/selector_create_grid"
         android:background="?android:selectableItemBackground"
         android:padding="9dp"
+        android:src="@drawable/selector_create_grid"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

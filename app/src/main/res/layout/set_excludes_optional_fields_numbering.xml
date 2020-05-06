@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,22 +10,22 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:paddingTop="5dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="5dp"
         android:text="@string/SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/excludeButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:paddingTop="5dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="5dp"
         android:text="@string/SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText"
         android:textAllCaps="false" />
 
@@ -35,10 +34,10 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:paddingTop="5dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="5dp"
         android:text="@string/SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText"
         android:textAllCaps="false" />
 

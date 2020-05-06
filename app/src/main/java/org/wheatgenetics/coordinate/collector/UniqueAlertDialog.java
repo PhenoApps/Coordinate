@@ -1,22 +1,24 @@
 package org.wheatgenetics.coordinate.collector;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.androidlibrary.AlertDialog
- *
- * org.wheatgenetics.coordinate.R
- */
-class UniqueAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
-{
-    UniqueAlertDialog(final android.app.Activity activity) { super(activity); }
+import android.app.Activity;
 
-    @java.lang.Override public void configure()
-    { this.setTitle(org.wheatgenetics.coordinate.R.string.UniqueAlertDialogTitle); }
+import androidx.annotation.NonNull;
 
-    void show(@androidx.annotation.NonNull final java.lang.String message)
-    { this.setMessage(message); this.createShow(); }
+import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.R;
+
+class UniqueAlertDialog extends AlertDialog {
+    UniqueAlertDialog(final Activity activity) {
+        super(activity);
+    }
+
+    @Override
+    public void configure() {
+        this.setTitle(R.string.UniqueAlertDialogTitle);
+    }
+
+    void show(@NonNull final String message) {
+        this.setMessage(message);
+        this.createShow();
+    }
 }

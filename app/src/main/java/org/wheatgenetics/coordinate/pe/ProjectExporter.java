@@ -1,179 +1,167 @@
 package org.wheatgenetics.coordinate.pe;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.javalib.Dir.PermissionException
- * org.wheatgenetics.javalib.Dir.PermissionRequestedException
- *
- * org.wheatgenetics.androidlibrary.RequestDir
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.Consts
- * org.wheatgenetics.coordinate.Utils
- *
- * org.wheatgenetics.coordinate.database.GridsTable
- *
- * org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter
- * org.wheatgenetics.coordinate.exporter.PerGridProjectExporter
- *
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- *
- * org.wheatgenetics.coordinate.preference.Utils
- * org.wheatgenetics.coordinate.preference.Utils.ProjectExport
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ProjectExporter extends java.lang.Object
-{
+import android.app.Activity;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.androidlibrary.RequestDir;
+import org.wheatgenetics.coordinate.Consts;
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter;
+import org.wheatgenetics.coordinate.exporter.PerGridProjectExporter;
+import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.preference.Utils;
+import org.wheatgenetics.javalib.Dir;
+
+import java.io.IOException;
+
+public class ProjectExporter {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity   ;
-                                 private final int                  requestCode;
+    @NonNull
+    private final Activity activity;
+    private final int requestCode;
 
-    @androidx.annotation.IntRange(from = 1) private long             projectId    ;
-                                            private java.lang.String directoryName;
+    @IntRange(from = 1)
+    private long projectId;
+    private String directoryName;
 
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
+    private GridsTable gridsTableInstance = null; // lazy load
 
-    private org.wheatgenetics.coordinate.exporter.PerGridProjectExporter
-        perGridProjectExporter = null;
-    private org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter
-        entireProjectProjectExporter = null;
+    private PerGridProjectExporter
+            perGridProjectExporter = null;
+    private EntireProjectProjectExporter
+            entireProjectProjectExporter = null;
     // endregion
 
+    public ProjectExporter(@NonNull final Activity activity,
+                           final int requestCode) {
+        super();
+        this.activity = activity;
+        this.requestCode = requestCode;
+    }
+
     // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
+    @NonNull
+    private GridsTable gridsTable() {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.activity);
+                new GridsTable(this.activity);
         return this.gridsTableInstance;
     }
 
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
-
-    /** Exported data is saved to this folder. */
-    private org.wheatgenetics.androidlibrary.RequestDir exportDir()
-    throws java.io.IOException, org.wheatgenetics.javalib.Dir.PermissionException
-    {
-        org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
-            this.activity, this.requestCode);                           //  tion, org.wheatgenetics-
-                                                                        //  .javalib.Dir.Permission-
-                                                                        //  Exception
-        final org.wheatgenetics.androidlibrary.RequestDir result =
-            org.wheatgenetics.coordinate.Utils.makeRequestDir(this.activity,
-                org.wheatgenetics.coordinate.Consts.COORDINATE_DIR_NAME + "/Export",
-                this.requestCode);
-        result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
-        return result;                                   //  netics.javalib.Dir.PermissionException
+    private void showLongToast(final String text) {
+        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
     }
     // endregion
 
-    public ProjectExporter(@androidx.annotation.NonNull final android.app.Activity activity   ,
-                                                        final int                  requestCode)
-    { super(); this.activity = activity; this.requestCode = requestCode; }
+    /**
+     * Exported data is saved to this folder.
+     */
+    private RequestDir exportDir()
+            throws IOException, Dir.PermissionException {
+        org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
+                this.activity, this.requestCode);                           //  tion, org.wheatgenetics-
+        //  .javalib.Dir.Permission-
+        //  Exception
+        final RequestDir result =
+                org.wheatgenetics.coordinate.Utils.makeRequestDir(this.activity,
+                        Consts.COORDINATE_DIR_NAME + "/Export",
+                        this.requestCode);
+        result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
+        return result;                                   //  netics.javalib.Dir.PermissionException
+    }
 
-    @java.lang.Override protected void finalize() throws java.lang.Throwable
-    {
-        if (null != this.entireProjectProjectExporter)
-        {
+    @Override
+    protected void finalize() throws Throwable {
+        if (null != this.entireProjectProjectExporter) {
             this.entireProjectProjectExporter.cancel();
             this.entireProjectProjectExporter = null;
         }
 
-        if (null != this.perGridProjectExporter)
-            { this.perGridProjectExporter.cancel(); this.perGridProjectExporter = null; }
+        if (null != this.perGridProjectExporter) {
+            this.perGridProjectExporter.cancel();
+            this.perGridProjectExporter = null;
+        }
 
         super.finalize();
     }
 
     // region Public Methods
-    public void export()
-    {
-        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-            this.gridsTable().loadByProjectId(this.projectId);
-        if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0)
-        {
-            final org.wheatgenetics.coordinate.preference.Utils.ProjectExport projectExport =
-                org.wheatgenetics.coordinate.preference.Utils.getProjectExport(this.activity);
-            if (org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ONE_FILE_PER_GRID
-            == projectExport)
-            {
-                org.wheatgenetics.androidlibrary.RequestDir exportDir;
+    public void export() {
+        final BaseJoinedGridModels baseJoinedGridModels =
+                this.gridsTable().loadByProjectId(this.projectId);
+        if (null != baseJoinedGridModels) if (baseJoinedGridModels.size() > 0) {
+            final Utils.ProjectExport projectExport =
+                    Utils.getProjectExport(this.activity);
+            if (Utils.ProjectExport.ONE_FILE_PER_GRID
+                    == projectExport) {
+                RequestDir exportDir;
 
-                final org.wheatgenetics.coordinate.model.JoinedGridModel firstJoinedGridModel =
-                    baseJoinedGridModels.get(0);
+                final JoinedGridModel firstJoinedGridModel =
+                        baseJoinedGridModels.get(0);
                 if (null == firstJoinedGridModel)
                     exportDir = null;
                 else
-                    try
-                    {
-                        final org.wheatgenetics.androidlibrary.RequestDir parentDir =
-                            new org.wheatgenetics.androidlibrary.RequestDir(
-                                /* activity => */ this.activity   ,
-                                /* parent   => */ this.exportDir(),          // throws IOException,
-                                                                             //  PermissionException
-                                /* name        => */ firstJoinedGridModel.getTemplateTitle(),
-                                /* requestCode => */ this.requestCode                       );
+                    try {
+                        final RequestDir parentDir =
+                                new RequestDir(
+                                        /* activity => */ this.activity,
+                                        /* parent   => */ this.exportDir(),          // throws IOException,
+                                        //  PermissionException
+                                        /* name        => */ firstJoinedGridModel.getTemplateTitle(),
+                                        /* requestCode => */ this.requestCode);
                         parentDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
-                                                         //  netics.javalib.Dir.PermissionException
-                        exportDir = new org.wheatgenetics.androidlibrary.RequestDir(
-                            /* activity    => */ this.activity     ,
-                            /* parent      => */ parentDir         ,
-                            /* name        => */ this.directoryName,
-                            /* requestCode => */ this.requestCode  );
+                        //  netics.javalib.Dir.PermissionException
+                        exportDir = new RequestDir(
+                                /* activity    => */ this.activity,
+                                /* parent      => */ parentDir,
+                                /* name        => */ this.directoryName,
+                                /* requestCode => */ this.requestCode);
                         exportDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
                     }                                    //  netics.javalib.Dir.PermissionException
-                    catch (final java.io.IOException |
-                    org.wheatgenetics.javalib.Dir.PermissionException e)
-                    {
+                    catch (final IOException |
+                            Dir.PermissionException e) {
                         if (!(e instanceof
-                        org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+                                Dir.PermissionRequestedException))
                             this.showLongToast(e.getMessage());
                         exportDir = null;
                     }
 
-                if (null != exportDir)
-                {
+                if (null != exportDir) {
                     this.perGridProjectExporter =
-                        new org.wheatgenetics.coordinate.exporter.PerGridProjectExporter(
-                            /* baseJoinedGridModels => */ baseJoinedGridModels,
-                            /* context              => */ this.activity       ,
-                            /* exportDir            => */ exportDir           ,
-                            /* exportDirectoryName  => */ this.directoryName  );
+                            new PerGridProjectExporter(
+                                    /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                    /* context              => */ this.activity,
+                                    /* exportDir            => */ exportDir,
+                                    /* exportDirectoryName  => */ this.directoryName);
                     this.perGridProjectExporter.execute();
                 }
-            }
-            else if (
-            org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
-            == projectExport)
-                try
-                {
+            } else if (
+                    Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
+                            == projectExport)
+                try {
                     this.entireProjectProjectExporter =
-                        new org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter(
-                            /* baseJoinedGridModels => */ baseJoinedGridModels,
-                            /* context              => */ this.activity       ,
-                            /* exportDir            => */ this.exportDir(),  // throws IOException,
-                                                                             //  PermissionException
-                            /* exportFileName => */ this.directoryName);
+                            new EntireProjectProjectExporter(
+                                    /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                    /* context              => */ this.activity,
+                                    /* exportDir            => */ this.exportDir(),  // throws IOException,
+                                    //  PermissionException
+                                    /* exportFileName => */ this.directoryName);
                     this.entireProjectProjectExporter.execute();
-                }
-                catch (final java.io.IOException |
-                org.wheatgenetics.javalib.Dir.PermissionException e)
-                {
-                    if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+                } catch (final IOException |
+                        Dir.PermissionException e) {
+                    if (!(e instanceof Dir.PermissionRequestedException))
                         this.showLongToast(e.getMessage());
                 }
         }
     }
 
-    public void export(@androidx.annotation.IntRange(from = 1) final long             projectId    ,
-                                                               final java.lang.String directoryName)
-    { this.projectId = projectId; this.directoryName = directoryName; this.export(); }
+    public void export(@IntRange(from = 1) final long projectId,
+                       final String directoryName) {
+        this.projectId = projectId;
+        this.directoryName = directoryName;
+        this.export();
+    }
     // endregion
 }

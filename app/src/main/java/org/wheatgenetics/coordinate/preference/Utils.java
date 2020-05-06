@@ -1,133 +1,112 @@
 package org.wheatgenetics.coordinate.preference;
 
-/**
- * Uses:
- * android.content.Context
- * android.content.SharedPreferences
- * android.preference.PreferenceManager
- *
- * androidx.annotation.FloatRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.coordinate.R
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class Utils extends java.lang.Object
-{
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.R;
+
+public class Utils {
     private static final float minScaling = 0.5f, maxScaling = 2.0f;
+    private static SharedPreferences defaultSharedPreferencesInstance = null;  // ll
 
-    // region Types
-    public enum Direction     { ERROR, DOWN_THEN_ACROSS , ACROSS_THEN_DOWN                   }
-    public enum ProjectExport { ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT            }
-    public enum TypeOfUnique  { ERROR, CURRENT_GRID     , CURRENT_PROJECT        , ALL_GRIDS }
-    // endregion
-
-    private static android.content.SharedPreferences defaultSharedPreferencesInstance = null;  // ll
-
-    @androidx.annotation.Nullable private static android.content.SharedPreferences
-    getDefaultSharedPreferences(final android.content.Context context)
-    {
-        if (null == org.wheatgenetics.coordinate.preference.Utils.defaultSharedPreferencesInstance)
-            org.wheatgenetics.coordinate.preference.Utils.defaultSharedPreferencesInstance =
-                android.preference.PreferenceManager.getDefaultSharedPreferences(context);
-        return org.wheatgenetics.coordinate.preference.Utils.defaultSharedPreferencesInstance;
+    @Nullable
+    private static SharedPreferences
+    getDefaultSharedPreferences(final Context context) {
+        if (null == Utils.defaultSharedPreferencesInstance)
+            Utils.defaultSharedPreferencesInstance =
+                    PreferenceManager.getDefaultSharedPreferences(context);
+        return Utils.defaultSharedPreferencesInstance;
     }
 
     // region Public Methods
-    public static org.wheatgenetics.coordinate.preference.Utils.Direction getDirection(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+    public static Utils.Direction getDirection(
+            @NonNull final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.Direction.ERROR;
-        else
-        {
-            final java.lang.String direction;
+            return Utils.Direction.ERROR;
+        else {
+            final String direction;
             {
-                final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.DirectionPreferenceKey);
+                final String key = context.getString(
+                        R.string.DirectionPreferenceKey);
                 direction = defaultSharedPreferences.getString(
-                    /* key      => */ key,
-                    /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.DirectionPreferenceDefault));
+                        /* key      => */ key,
+                        /* defValue => */ context.getString(
+                                R.string.DirectionPreferenceDefault));
             }
             if (direction.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.DirectionPreferenceDownThenAcrossEntryValue)))
-                return org.wheatgenetics.coordinate.preference.Utils.Direction.DOWN_THEN_ACROSS;
+                    R.string.DirectionPreferenceDownThenAcrossEntryValue)))
+                return Utils.Direction.DOWN_THEN_ACROSS;
+            else if (direction.equals(context.getString(
+                    R.string.DirectionPreferenceAcrossThenDownEntryValue)))
+                return
+                        Utils.Direction.ACROSS_THEN_DOWN;
             else
-                if (direction.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.DirectionPreferenceAcrossThenDownEntryValue)))
-                    return
-                        org.wheatgenetics.coordinate.preference.Utils.Direction.ACROSS_THEN_DOWN;
-                else
-                    return org.wheatgenetics.coordinate.preference.Utils.Direction.ERROR;
+                return Utils.Direction.ERROR;
         }
     }
+    // endregion
 
-    public static boolean getSoundsOn(final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+    public static boolean getSoundsOn(final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
             return true;
-        else
-        {
-            final java.lang.String key = context.getString(
-                org.wheatgenetics.coordinate.R.string.SoundsOnPreferenceKey);
+        else {
+            final String key = context.getString(
+                    R.string.SoundsOnPreferenceKey);
             return defaultSharedPreferences.getBoolean(key, /* defValue => */true);
         }
     }
 
-    public static org.wheatgenetics.coordinate.preference.Utils.ProjectExport getProjectExport(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+    public static Utils.ProjectExport getProjectExport(
+            @NonNull final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ERROR;
-        else
-        {
-            final java.lang.String projectExport;
+            return Utils.ProjectExport.ERROR;
+        else {
+            final String projectExport;
             {
-                final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceKey);
+                final String key = context.getString(
+                        R.string.ProjectExportPreferenceKey);
                 projectExport = defaultSharedPreferences.getString(
-                    /* key      => */ key,
-                    /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceDefault));
+                        /* key      => */ key,
+                        /* defValue => */ context.getString(
+                                R.string.ProjectExportPreferenceDefault));
             }
             if (projectExport.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFilePerGrid)))
+                    R.string.ProjectExportPreferenceOneFilePerGrid)))
                 return
-                    org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ONE_FILE_PER_GRID;
+                        Utils.ProjectExport.ONE_FILE_PER_GRID;
+            else if (projectExport.equals(context.getString(
+                    R.string.ProjectExportPreferenceOneFileEntireProject)))
+                return Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
             else
-                if (projectExport.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.ProjectExportPreferenceOneFileEntireProject)))
-                    return org.wheatgenetics.coordinate.preference
-                        .Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
-                else
-                    return org.wheatgenetics.coordinate.preference.Utils.ProjectExport.ERROR;
+                return Utils.ProjectExport.ERROR;
         }
     }
 
-    @androidx.annotation.FloatRange(
-    from = org.wheatgenetics.coordinate.preference.Utils.minScaling,
-    to   = org.wheatgenetics.coordinate.preference.Utils.maxScaling)
+    @FloatRange(
+            from = Utils.minScaling,
+            to = Utils.maxScaling)
     public static float getScaling(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+            @NonNull final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
             return 1.0f;
-        else
-        {
+        else {
             final int scaling;
             {
-                final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.ScalingPreferenceKey);
+                final String key = context.getString(
+                        R.string.ScalingPreferenceKey);
                 scaling = defaultSharedPreferences.getInt(key, /* defValue => */100);
             }
             return (float) scaling / 100.0f;
@@ -135,49 +114,51 @@ public class Utils extends java.lang.Object
     }
 
     public static boolean getUnique(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+            @NonNull final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
             return false;
-        else
-        {
-            final java.lang.String key = context.getString(
-                org.wheatgenetics.coordinate.R.string.UniqueCheckBoxPreferenceKey);
+        else {
+            final String key = context.getString(
+                    R.string.UniqueCheckBoxPreferenceKey);
             return defaultSharedPreferences.getBoolean(key, /* defValue => */false);
         }
     }
 
-    public static org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique getTypeOfUniqueness(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
-        final android.content.SharedPreferences defaultSharedPreferences =
-            org.wheatgenetics.coordinate.preference.Utils.getDefaultSharedPreferences(context);
+    public static Utils.TypeOfUnique getTypeOfUniqueness(
+            @NonNull final Context context) {
+        final SharedPreferences defaultSharedPreferences =
+                Utils.getDefaultSharedPreferences(context);
         if (null == defaultSharedPreferences)
-            return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.ERROR;
-        else
-        {
-            final java.lang.String unique;
+            return Utils.TypeOfUnique.ERROR;
+        else {
+            final String unique;
             {
-                final java.lang.String key = context.getString(
-                    org.wheatgenetics.coordinate.R.string.UniqueListPreferenceKey);
+                final String key = context.getString(
+                        R.string.UniqueListPreferenceKey);
                 unique = defaultSharedPreferences.getString(
-                    /* key      => */ key,
-                    /* defValue => */ context.getString(
-                        org.wheatgenetics.coordinate.R.string.UniqueListPreferenceDefault));
+                        /* key      => */ key,
+                        /* defValue => */ context.getString(
+                                R.string.UniqueListPreferenceDefault));
             }
             if (unique.equals(context.getString(
-            org.wheatgenetics.coordinate.R.string.UniqueListPreferenceCurrentGrid)))
-                return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.CURRENT_GRID;
+                    R.string.UniqueListPreferenceCurrentGrid)))
+                return Utils.TypeOfUnique.CURRENT_GRID;
+            else if (unique.equals(context.getString(
+                    R.string.UniqueListPreferenceCurrentProject)))
+                return
+                        Utils.TypeOfUnique.CURRENT_PROJECT;
             else
-                if (unique.equals(context.getString(
-                org.wheatgenetics.coordinate.R.string.UniqueListPreferenceCurrentProject)))
-                    return
-                        org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.CURRENT_PROJECT;
-                else
-                    return org.wheatgenetics.coordinate.preference.Utils.TypeOfUnique.ALL_GRIDS;
+                return Utils.TypeOfUnique.ALL_GRIDS;
         }
     }
+
+    // region Types
+    public enum Direction {ERROR, DOWN_THEN_ACROSS, ACROSS_THEN_DOWN}
+
+    public enum ProjectExport {ERROR, ONE_FILE_PER_GRID, ONE_FILE_ENTIRE_PROJECT}
+
+    public enum TypeOfUnique {ERROR, CURRENT_GRID, CURRENT_PROJECT, ALL_GRIDS}
     // endregion
 }

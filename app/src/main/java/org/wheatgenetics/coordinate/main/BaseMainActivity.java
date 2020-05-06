@@ -1,130 +1,115 @@
 package org.wheatgenetics.coordinate.main;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.Intent
- * android.content.pm.PackageInfo
- * android.content.pm.PackageManager.NameNotFoundException
- * android.content.res.Resources.NotFoundException
- * android.os.Bundle
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.PluralsRes
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- * androidx.annotation.StringRes
- * androidx.appcompat.app.ActionBar
- * androidx.appcompat.app.AppCompatActivity
- *
- * org.wheatgenetics.javalib.Utils
- *
- * org.wheatgenetics.changelog.ChangeLogAlertDialog
- *
- * org.wheatgenetics.sharedpreferences.SharedPreferences
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.StringGetter
- * org.wheatgenetics.coordinate.Types
- *
- * org.wheatgenetics.coordinate.gc.GridCreator
- *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateModels
- * org.wheatgenetics.coordinate.model.TemplateType
- */
-abstract class BaseMainActivity extends androidx.appcompat.app.AppCompatActivity
-implements org.wheatgenetics.coordinate.StringGetter
-{
-    // region Fields
-    private org.wheatgenetics.coordinate.database.TemplatesTable  templatesTableInstance = null;//ll
-    private java.lang.String                                      versionName                  ;
-    private org.wheatgenetics.sharedpreferences.SharedPreferences
-        sharedPreferencesInstances = null;                                              // lazy load
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.os.Bundle;
 
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog
-        changeLogAlertDialogInstance = null;                                            // lazy load
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.wheatgenetics.changelog.ChangeLogAlertDialog;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.gc.GridCreator;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateModels;
+import org.wheatgenetics.coordinate.model.TemplateType;
+import org.wheatgenetics.javalib.Utils;
+import org.wheatgenetics.sharedpreferences.SharedPreferences;
+
+abstract class BaseMainActivity extends AppCompatActivity
+        implements StringGetter {
+    // region Fields
+    private TemplatesTable templatesTableInstance = null;//ll
+    private String versionName;
+    private SharedPreferences
+            sharedPreferencesInstances = null;                                              // lazy load
+
+    private ChangeLogAlertDialog
+            changeLogAlertDialogInstance = null;                                            // lazy load
     // endregion
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.changelog.ChangeLogAlertDialog changeLogAlertDialog()
-    {
+    @NonNull
+    private ChangeLogAlertDialog changeLogAlertDialog() {
         if (null == this.changeLogAlertDialogInstance) this.changeLogAlertDialogInstance =
-            new org.wheatgenetics.changelog.ChangeLogAlertDialog(
-                /* activity               => */this,
-                /* changeLogRawResourceId => */ org.wheatgenetics.coordinate.R.raw.changelog);
+                new ChangeLogAlertDialog(
+                        /* activity               => */this,
+                        /* changeLogRawResourceId => */ R.raw.changelog);
         return this.changeLogAlertDialogInstance;
     }
 
     // region Package Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    TemplatesTable templatesTable() {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this);
+                new TemplatesTable(this);
         return this.templatesTableInstance;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull
-    org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences()
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    SharedPreferences sharedPreferences() {
         if (null == this.sharedPreferencesInstances) this.sharedPreferencesInstances =
-            new org.wheatgenetics.sharedpreferences.SharedPreferences(
-                this.getSharedPreferences("Settings", /* mode => */0),this);
+                new SharedPreferences(
+                        this.getSharedPreferences("Settings", /* mode => */0), this);
         return this.sharedPreferencesInstances;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void showChangeLog() { this.changeLogAlertDialog().show(); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void showChangeLog() {
+        this.changeLogAlertDialog().show();
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull abstract org.wheatgenetics.coordinate.gc.GridCreator gridCreator();
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    abstract GridCreator gridCreator();
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    java.lang.String versionName() { return this.versionName; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    String versionName() {
+        return this.versionName;
+    }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override protected void onCreate(
-    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
-    {
+    @Override
+    protected void onCreate(
+            @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // region Initialize Default Templates
         {
             // Adds default templates to database if they aren't there already.  If they are there
             // then they are updated to their default values.
-            @androidx.annotation.NonNull
-            final org.wheatgenetics.coordinate.model.TemplateModels defaultTemplateModels =
-                org.wheatgenetics.coordinate.model.TemplateModels.makeDefault(this);
-            if (defaultTemplateModels.size() > 0)
-            {
-                @androidx.annotation.NonNull
-                final org.wheatgenetics.coordinate.database.TemplatesTable templatesTable =
-                    this.templatesTable();
-                for (final org.wheatgenetics.coordinate.model.TemplateModel defaultTemplateModel:
-                defaultTemplateModels)
-                {
-                    final org.wheatgenetics.coordinate.model.TemplateType defaultTemplateType =
-                        defaultTemplateModel.getType();
-                    if (templatesTable.exists(defaultTemplateType))
-                    {
+            @NonNull final TemplateModels defaultTemplateModels =
+                    TemplateModels.makeDefault(this);
+            if (defaultTemplateModels.size() > 0) {
+                @NonNull final TemplatesTable templatesTable =
+                        this.templatesTable();
+                for (final TemplateModel defaultTemplateModel :
+                        defaultTemplateModels) {
+                    final TemplateType defaultTemplateType =
+                            defaultTemplateModel.getType();
+                    if (templatesTable.exists(defaultTemplateType)) {
                         {
-                            @androidx.annotation.Nullable
-                            final org.wheatgenetics.coordinate.model.TemplateModel
-                                existingTemplateModel = templatesTable.get(defaultTemplateType);
+                            @Nullable final TemplateModel
+                                    existingTemplateModel = templatesTable.get(defaultTemplateType);
                             if (null != existingTemplateModel)
                                 defaultTemplateModel.setId(existingTemplateModel.getId());
                         }
                         templatesTable.update(defaultTemplateModel);
-                    }
-                    else templatesTable.insert(defaultTemplateModel);
+                    } else templatesTable.insert(defaultTemplateModel);
                 }
             }
         }
@@ -132,70 +117,72 @@ implements org.wheatgenetics.coordinate.StringGetter
 
         // region Get version.
         int versionCode;
-        try
-        {
-            final android.content.pm.PackageInfo packageInfo =
-                this.getPackageManager().getPackageInfo(       // throws android.content.pm.Package-
-                    this.getPackageName(),0);               //  Manager.NameNotFoundException
-            if (null == packageInfo)
-            {
-                versionCode      = 0;
-                this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
-            }
-            else
-            {
-                versionCode      = packageInfo.versionCode;
+        try {
+            final PackageInfo packageInfo =
+                    this.getPackageManager().getPackageInfo(       // throws android.content.pm.Package-
+                            this.getPackageName(), 0);               //  Manager.NameNotFoundException
+            if (null == packageInfo) {
+                versionCode = 0;
+                this.versionName = Utils.adjust(null);
+            } else {
+                versionCode = packageInfo.versionCode;
                 this.versionName = packageInfo.versionName;
             }
-        }
-        catch (final android.content.pm.PackageManager.NameNotFoundException e)
-        {
-            versionCode      = 0;
-            this.versionName = org.wheatgenetics.javalib.Utils.adjust(null);
+        } catch (final PackageManager.NameNotFoundException e) {
+            versionCode = 0;
+            this.versionName = Utils.adjust(null);
         }
         // endregion
 
         // region Set version.
-        @androidx.annotation.NonNull
-        final org.wheatgenetics.sharedpreferences.SharedPreferences sharedPreferences =
-            this.sharedPreferences();
-        if (!sharedPreferences.updateVersionIsSet(versionCode))
-            { sharedPreferences.setUpdateVersion(versionCode); this.showChangeLog(); }
+        @NonNull final SharedPreferences sharedPreferences =
+                this.sharedPreferences();
+        if (!sharedPreferences.updateVersionIsSet(versionCode)) {
+            sharedPreferences.setUpdateVersion(versionCode);
+            this.showChangeLog();
+        }
         // endregion
     }
 
-    @java.lang.Override protected void onPostCreate(final android.os.Bundle savedInstanceState)
-    {
+    @Override
+    protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        final androidx.appcompat.app.ActionBar supportActionBar = this.getSupportActionBar();
+        final ActionBar supportActionBar = this.getSupportActionBar();
         if (null != supportActionBar) supportActionBar.setTitle(null);
     }
 
-    @java.lang.Override protected void onActivityResult(final int requestCode,
-    final int resultCode, final android.content.Intent data)
-    {
+    @Override
+    protected void onActivityResult(final int requestCode,
+                                    final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (android.app.Activity.RESULT_OK == resultCode && null != data)
+        if (Activity.RESULT_OK == resultCode && null != data)
             // noinspection SwitchStatementWithTooFewBranches
-            switch (requestCode)
-            {
-                case org.wheatgenetics.coordinate.Types.CREATE_GRID:
-                    this.gridCreator().continueExcluding(data.getExtras()); break;
+            switch (requestCode) {
+                case Types.CREATE_GRID:
+                    this.gridCreator().continueExcluding(data.getExtras());
+                    break;
             }
     }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.getString(resId); }
+    @Override
+    @Nullable
+    public String get(
+            @StringRes final int resId) {
+        return this.getString(resId);
+    }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException
-    { return this.getResources().getQuantityString(resId, quantity, formatArgs); }
+    @Override
+    @NonNull
+    public String getQuantity(
+            @PluralsRes final int resId,
+            @IntRange(from = 0) final int quantity,
+            @Nullable final Object... formatArgs)
+            throws Resources.NotFoundException {
+        return this.getResources().getQuantityString(resId, quantity, formatArgs);
+    }
     // endregion
     // endregion
 }

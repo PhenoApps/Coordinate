@@ -1,288 +1,258 @@
 package org.wheatgenetics.coordinate.database;
 
-/**
- * Uses:
- * android.content.ContentValues
- * android.content.Context
- * android.database.Cursor
- * android.database.CursorWrapper
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.javalib.Utils
- *
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateModels
- * org.wheatgenetics.coordinate.model.TemplateType
- *
- * org.wheatgenetics.coordinate.database.Table
- */
-public class TemplatesTable extends org.wheatgenetics.coordinate.database.Table
-{
-    // region Constants
-    static final java.lang.String TABLE_NAME = "templates";
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 
-    static final java.lang.String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME   = "type"  ;
-    static final java.lang.String ROWS_FIELD_NAME  = "rows" , COLS_FIELD_NAME   = "cols"  ;
-    static final java.lang.String ERAND_FIELD_NAME = "erand", ECELLS_FIELD_NAME = "ecells",
-        EROWS_FIELD_NAME = "erows", ECOLS_FIELD_NAME = "ecols";
-    static final java.lang.String CNUMB_FIELD_NAME       = "cnumb", RNUMB_FIELD_NAME = "rnumb";
-    static final java.lang.String ENTRY_LABEL_FIELD_NAME = "entryLabel"                       ;
-    static final java.lang.String OPTIONS_FIELD_NAME     = "options"                          ;
-    static final java.lang.String STAMP_FIELD_NAME       = "stamp"                            ;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.model.Model;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateModels;
+import org.wheatgenetics.coordinate.model.TemplateType;
+import org.wheatgenetics.javalib.Utils;
+
+public class TemplatesTable extends Table {
+    // region Constants
+    static final String TABLE_NAME = "templates";
+
+    static final String TITLE_FIELD_NAME = "title", TYPE_FIELD_NAME = "type";
+    static final String ROWS_FIELD_NAME = "rows", COLS_FIELD_NAME = "cols";
+    static final String ERAND_FIELD_NAME = "erand", ECELLS_FIELD_NAME = "ecells",
+            EROWS_FIELD_NAME = "erows", ECOLS_FIELD_NAME = "ecols";
+    static final String CNUMB_FIELD_NAME = "cnumb", RNUMB_FIELD_NAME = "rnumb";
+    static final String ENTRY_LABEL_FIELD_NAME = "entryLabel";
+    static final String OPTIONS_FIELD_NAME = "options";
+    static final String STAMP_FIELD_NAME = "stamp";
     // endregion
 
-    // region Private Methods
-    private android.database.Cursor query(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        return this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " = " +
-                templateType.getCode());
+    public TemplatesTable(final Context context) {
+        super(
+                /* context   => */ context,
+                /* tableName => */ TemplatesTable.TABLE_NAME,
+                /* tag       => */"TemplatesTable");
     }
 
-    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.TemplateModels
-    makeTemplateModels(@androidx.annotation.Nullable final android.database.Cursor cursor)
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModels result;
+    // region Private Methods
+    private Cursor query(@NonNull final TemplateType templateType) {
+        return this.queryDistinct(/* selection => */
+                TemplatesTable.TYPE_FIELD_NAME + " = " +
+                        templateType.getCode());
+    }
+    // endregion
+
+    @Nullable
+    private TemplateModels
+    makeTemplateModels(@Nullable final Cursor cursor) {
+        final TemplateModels result;
         if (null == cursor)
             result = null;
         else
-            try
-            {
+            try {
                 if (cursor.getCount() <= 0)
                     result = null;
-                else
-                {
-                    result = new org.wheatgenetics.coordinate.model.TemplateModels();
+                else {
+                    result = new TemplateModels();
                     while (cursor.moveToNext()) result.add(
-                        (org.wheatgenetics.coordinate.model.TemplateModel) this.make(cursor));
+                            (TemplateModel) this.make(cursor));
                 }
+            } finally {
+                cursor.close();
             }
-            finally { cursor.close(); }
         return result;
-    }
-    // endregion
-
-    public TemplatesTable(final android.content.Context context)
-    {
-        super(
-            /* context   => */ context                                                        ,
-            /* tableName => */ org.wheatgenetics.coordinate.database.TemplatesTable.TABLE_NAME,
-            /* tag       => */"TemplatesTable");
     }
 
     // region Overridden Methods
-    @java.lang.Override org.wheatgenetics.coordinate.model.Model make(
-    final android.database.Cursor cursor)
-    {
+    @Override
+    Model make(
+            final Cursor cursor) {
         if (null == cursor)
             return null;
-        else
-        {
-            class CursorWrapper extends android.database.CursorWrapper
-            {
-                @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.StringGetter
-                    stringGetter;
+        else {
+            class CursorWrapper extends android.database.CursorWrapper {
+                @NonNull
+                private final StringGetter
+                        stringGetter;
+
+                private CursorWrapper(
+                        @NonNull final Cursor cursor,
+                        @NonNull final StringGetter
+                                stringGetter) {
+                    super(cursor);
+                    this.stringGetter = stringGetter;
+                }
 
                 // region get() Methods
-                private long id()
-                {
+                private long id() {
                     return this.getLong(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.ID_FIELD_NAME));
+                            TemplatesTable.ID_FIELD_NAME));
                 }
 
-                private java.lang.String title()
-                {
+                private String title() {
                     return this.getString(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME));
+                            TemplatesTable.TITLE_FIELD_NAME));
                 }
 
-                private int code()
-                {
+                private int code() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME));
+                            TemplatesTable.TYPE_FIELD_NAME));
                 }
 
-                private int rows()
-                {
+                private int rows() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME));
+                            TemplatesTable.ROWS_FIELD_NAME));
                 }
 
-                private int cols()
-                {
+                private int cols() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME));
+                            TemplatesTable.COLS_FIELD_NAME));
                 }
 
-                private int generatedExcludedCellsAmount()
-                {
+                private int generatedExcludedCellsAmount() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME));
+                            TemplatesTable.ERAND_FIELD_NAME));
                 }
 
-                private java.lang.String excludeCells()
-                {
+                private String excludeCells() {
                     return this.getString(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME));
+                            TemplatesTable.ECELLS_FIELD_NAME));
                 }
 
-                private java.lang.String excludeRows()
-                {
+                private String excludeRows() {
                     return this.getString(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME));
+                            TemplatesTable.EROWS_FIELD_NAME));
                 }
 
-                private java.lang.String excludeCols()
-                {
+                private String excludeCols() {
                     return this.getString(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME));
+                            TemplatesTable.ECOLS_FIELD_NAME));
                 }
 
-                private int colNumbering()
-                {
+                private int colNumbering() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME));
+                            TemplatesTable.CNUMB_FIELD_NAME));
                 }
 
-                private int rowNumbering()
-                {
+                private int rowNumbering() {
                     return this.getInt(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME));
+                            TemplatesTable.RNUMB_FIELD_NAME));
                 }
 
-                private java.lang.String entryLabel()
-                {
-                    return this.getString(this.getColumnIndex(org.wheatgenetics
-                        .coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME));
+                private String entryLabel() {
+                    return this.getString(this.getColumnIndex(TemplatesTable.ENTRY_LABEL_FIELD_NAME));
                 }
 
-                private java.lang.String optionalFields()
-                {
+                private String optionalFields() {
                     return this.getString(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME));
-                }
-
-                private long timestamp()
-                {
-                    return this.getLong(this.getColumnIndex(
-                        org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME));
+                            TemplatesTable.OPTIONS_FIELD_NAME));
                 }
                 // endregion
 
-                private CursorWrapper(
-                @androidx.annotation.NonNull final android.database.Cursor                   cursor,
-                @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter
-                    stringGetter) { super(cursor); this.stringGetter = stringGetter; }
+                private long timestamp() {
+                    return this.getLong(this.getColumnIndex(
+                            TemplatesTable.STAMP_FIELD_NAME));
+                }
 
-                private org.wheatgenetics.coordinate.model.TemplateModel make()
-                {
-                    return new org.wheatgenetics.coordinate.model.TemplateModel(
-                        /* id                           => */ this.id                          (),
-                        /* title                        => */ this.title                       (),
-                        /* code                         => */ this.code                        (),
-                        /* rows                         => */ this.rows                        (),
-                        /* cols                         => */ this.cols                        (),
-                        /* generatedExcludedCellsAmount => */ this.generatedExcludedCellsAmount(),
-                        /* excludeCells                 => */ this.excludeCells                (),
-                        /* excludeRows                  => */ this.excludeRows                 (),
-                        /* excludeCols                  => */ this.excludeCols                 (),
-                        /* colNumbering                 => */ this.colNumbering                (),
-                        /* rowNumbering                 => */ this.rowNumbering                (),
-                        /* entryLabel                   => */ this.entryLabel                  (),
-                        /* optionalFields               => */ this.optionalFields              (),
-                        /* stringGetter                 => */ this.stringGetter                  ,
-                        /* timestamp                    => */ this.timestamp                   ());
+                private TemplateModel make() {
+                    return new TemplateModel(
+                            /* id                           => */ this.id(),
+                            /* title                        => */ this.title(),
+                            /* code                         => */ this.code(),
+                            /* rows                         => */ this.rows(),
+                            /* cols                         => */ this.cols(),
+                            /* generatedExcludedCellsAmount => */ this.generatedExcludedCellsAmount(),
+                            /* excludeCells                 => */ this.excludeCells(),
+                            /* excludeRows                  => */ this.excludeRows(),
+                            /* excludeCols                  => */ this.excludeCols(),
+                            /* colNumbering                 => */ this.colNumbering(),
+                            /* rowNumbering                 => */ this.rowNumbering(),
+                            /* entryLabel                   => */ this.entryLabel(),
+                            /* optionalFields               => */ this.optionalFields(),
+                            /* stringGetter                 => */ this.stringGetter,
+                            /* timestamp                    => */ this.timestamp());
                 }
             }
-            return new CursorWrapper(cursor,this).make();
+            return new CursorWrapper(cursor, this).make();
         }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull
-    android.content.ContentValues getContentValuesForInsert(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
-    {
-        final android.content.ContentValues result = super.getContentValuesForInsert(model);
+    @Override
+    @NonNull
+    ContentValues getContentValuesForInsert(
+            @NonNull final Model model) {
+        final ContentValues result = super.getContentValuesForInsert(model);
         {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                (org.wheatgenetics.coordinate.model.TemplateModel) model;
+            final TemplateModel templateModel =
+                    (TemplateModel) model;
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TITLE_FIELD_NAME,
-                templateModel.getTitle());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME,
-                templateModel.getType().getCode());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ROWS_FIELD_NAME,
-                templateModel.getRows());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.COLS_FIELD_NAME,
-                templateModel.getCols());
+            result.put(TemplatesTable.TITLE_FIELD_NAME,
+                    templateModel.getTitle());
+            result.put(TemplatesTable.TYPE_FIELD_NAME,
+                    templateModel.getType().getCode());
+            result.put(TemplatesTable.ROWS_FIELD_NAME,
+                    templateModel.getRows());
+            result.put(TemplatesTable.COLS_FIELD_NAME,
+                    templateModel.getCols());
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ERAND_FIELD_NAME,
-                templateModel.getGeneratedExcludedCellsAmount());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECELLS_FIELD_NAME,
-                templateModel.getExcludedCellsAsJson());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.EROWS_FIELD_NAME,
-                templateModel.getExcludedRowsAsJson());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ECOLS_FIELD_NAME,
-                templateModel.getExcludedColsAsJson());
+            result.put(TemplatesTable.ERAND_FIELD_NAME,
+                    templateModel.getGeneratedExcludedCellsAmount());
+            result.put(TemplatesTable.ECELLS_FIELD_NAME,
+                    templateModel.getExcludedCellsAsJson());
+            result.put(TemplatesTable.EROWS_FIELD_NAME,
+                    templateModel.getExcludedRowsAsJson());
+            result.put(TemplatesTable.ECOLS_FIELD_NAME,
+                    templateModel.getExcludedColsAsJson());
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.CNUMB_FIELD_NAME,
-                templateModel.getColNumbering());
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.RNUMB_FIELD_NAME,
-                templateModel.getRowNumbering());
+            result.put(TemplatesTable.CNUMB_FIELD_NAME,
+                    templateModel.getColNumbering());
+            result.put(TemplatesTable.RNUMB_FIELD_NAME,
+                    templateModel.getRowNumbering());
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.ENTRY_LABEL_FIELD_NAME,
-                templateModel.getEntryLabel());
+            result.put(TemplatesTable.ENTRY_LABEL_FIELD_NAME,
+                    templateModel.getEntryLabel());
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.OPTIONS_FIELD_NAME,
-                templateModel.optionalFieldsAsJson());
+            result.put(TemplatesTable.OPTIONS_FIELD_NAME,
+                    templateModel.optionalFieldsAsJson());
 
-            result.put(org.wheatgenetics.coordinate.database.TemplatesTable.STAMP_FIELD_NAME,
-                templateModel.getTimestamp());
+            result.put(TemplatesTable.STAMP_FIELD_NAME,
+                    templateModel.getTimestamp());
         }
         return result;
     }
     // endregion
 
     // region Operations
-    public boolean exists(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        return org.wheatgenetics.coordinate.database.TemplatesTable.exists(
-            this.query(templateType));
+    public boolean exists(@NonNull final TemplateType templateType) {
+        return TemplatesTable.exists(
+                this.query(templateType));
     }
 
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.TemplateModel get(final long id)
-    {
-        return (org.wheatgenetics.coordinate.model.TemplateModel) this.makeFromFirst(this.queryAll(
-            /* selection => */ org.wheatgenetics.coordinate.database.TemplatesTable.whereClause(),
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)               ));
+    @Nullable
+    public TemplateModel get(final long id) {
+        return (TemplateModel) this.makeFromFirst(this.queryAll(
+                /* selection => */ TemplatesTable.whereClause(),
+                /* selectionArgs => */ Utils.stringArray(id)));
     }
 
-    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.TemplateModel get(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateType templateType)
-    {
-        return (org.wheatgenetics.coordinate.model.TemplateModel)
-            this.makeFromFirst(this.query(templateType));
+    @Nullable
+    public TemplateModel get(
+            @NonNull final TemplateType templateType) {
+        return (TemplateModel)
+                this.makeFromFirst(this.query(templateType));
     }
 
-    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.TemplateModels load()
-    {
+    @Nullable
+    public TemplateModels load() {
         return this.makeTemplateModels(this.queryAll(/* orderBy => */
-            org.wheatgenetics.coordinate.database.TemplatesTable.TYPE_FIELD_NAME + " ASC"));
+                TemplatesTable.TYPE_FIELD_NAME + " ASC"));
     }
 
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.TemplateModels loadUserDefined()
-    {
+    @Nullable
+    public TemplateModels loadUserDefined() {
         return this.makeTemplateModels(this.query(
-            org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED));
+                TemplateType.USERDEFINED));
     }
     // endregion
 }

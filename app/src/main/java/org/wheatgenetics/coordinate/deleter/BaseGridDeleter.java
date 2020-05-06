@@ -1,30 +1,25 @@
 package org.wheatgenetics.coordinate.deleter;
 
-/**
- * Uses:
- * android.content.Context
- *
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.database.EntriesTable
- *
- * org.wheatgenetics.coordinate.deleter.Deleter
- */
-abstract class BaseGridDeleter extends org.wheatgenetics.coordinate.deleter.Deleter
-{
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTableInstance = null;    // ll
+import android.content.Context;
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
-        if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.context());
-        return this.entriesTableInstance;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.database.EntriesTable;
+
+abstract class BaseGridDeleter extends Deleter {
+    private EntriesTable entriesTableInstance = null;    // ll
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    BaseGridDeleter(@NonNull final Context context) {
+        super(context);
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    BaseGridDeleter(@androidx.annotation.NonNull final android.content.Context context)
-    { super(context); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    EntriesTable entriesTable() {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+                new EntriesTable(this.context());
+        return this.entriesTableInstance;
+    }
 }

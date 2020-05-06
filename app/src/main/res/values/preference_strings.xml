@@ -82,10 +82,8 @@
     <string name="UniqueListPreferenceDefault">@string/UniqueListPreferenceCurrentGrid</string>
 
 
-
     <!-- PreferenceFragment -->
     <string name="PreferenceFragmentWrongContext">"%s must implement OnPreferenceClickListener"</string>
-
 
 
     <!-- PreferenceActivity -->

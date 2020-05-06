@@ -1,47 +1,42 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- * org.wheatgenetics.coordinate.optionalField.OptionalFields
- * org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
- */
-public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
-{
-    public CheckedOptionalFields(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.optionalField.OptionalFields optionalFields)
-    { super(); if (null != optionalFields) this.arrayList.addAll(optionalFields.arrayList); }
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-    @java.lang.Override @androidx.annotation.NonNull
-    public org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator()
-    {
+import java.util.ArrayList;
+
+public class CheckedOptionalFields extends OptionalFields {
+    public CheckedOptionalFields(@Nullable final OptionalFields optionalFields) {
+        super();
+        if (null != optionalFields) this.arrayList.addAll(optionalFields.arrayList);
+    }
+
+    @Override
+    @NonNull
+    public OptionalFields.Iterator iterator() {
         // Only iterates over checked optional fields.
-        class Iterator extends org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
-        {
-            private Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField> arrayList)
-            { super(arrayList); }
+        class Iterator extends OptionalFields.Iterator {
+            private Iterator(@NonNull final ArrayList<
+                    BaseOptionalField> arrayList) {
+                super(arrayList);
+            }
 
             // region Overridden Methods
-            @java.lang.Override public boolean hasNext()
-            {
-                while (super.hasNext())
-                {
-                    final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                        baseOptionalField = this.arrayList.get(this.listIterator.nextIndex());
-                    if (baseOptionalField.getChecked()) return true; else super.next();
+            @Override
+            public boolean hasNext() {
+                while (super.hasNext()) {
+                    final BaseOptionalField
+                            baseOptionalField = this.arrayList.get(this.listIterator.nextIndex());
+                    if (baseOptionalField.getChecked()) return true;
+                    else super.next();
                 }
                 return false;
             }
 
-            @java.lang.Override
-            public org.wheatgenetics.coordinate.optionalField.BaseOptionalField next()
-            {
-                org.wheatgenetics.coordinate.optionalField.BaseOptionalField result;
+            @Override
+            public BaseOptionalField next() {
+                BaseOptionalField result;
                 do result = super.next(); while (!result.getChecked());
                 return result;
             }
@@ -50,13 +45,13 @@ public class CheckedOptionalFields extends org.wheatgenetics.coordinate.optional
         return new Iterator(this.arrayList);
     }
 
-    @androidx.annotation.IntRange(from = 0) public int size()
-    {
-        @androidx.annotation.IntRange(from = 0) int result = 0;
+    @IntRange(from = 0)
+    public int size() {
+        @IntRange(from = 0) int result = 0;
 
         // noinspection UnusedParameters
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
-        this)
+        for (final BaseOptionalField baseOptionalField :
+                this)
             result++;
 
         return result;

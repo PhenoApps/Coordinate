@@ -1,12 +1,42 @@
 package org.wheatgenetics.coordinate.gc;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.res.Resources;
+import android.os.Bundle;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StringRes;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.EntriesTable;
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter;
+import org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter;
+import org.wheatgenetics.coordinate.gc.vs.Handler;
+import org.wheatgenetics.coordinate.gc.vs.ValueSetter;
+import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
+import org.wheatgenetics.coordinate.model.Cells;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.model.Model;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.preference.Utils;
+
 /**
  * Uses:
  * android.annotation.SuppressLint
  * android.app.Activity
  * android.content.res.Resources.NotFoundException
  * android.os.Bundle
- *
+ * <p>
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
@@ -14,175 +44,172 @@ package org.wheatgenetics.coordinate.gc;
  * androidx.annotation.RestrictTo
  * androidx.annotation.RestrictTo.Scope
  * androidx.annotation.StringRes
- *
+ * <p>
  * org.wheatgenetics.coordinate.R
  * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Types.RequestCode
  * org.wheatgenetics.coordinate.Utils
- *
+ * <p>
  * org.wheatgenetics.coordinate.database.EntriesTable
  * org.wheatgenetics.coordinate.database.GridsTable
  * org.wheatgenetics.coordinate.database.TemplatesTable
- *
+ * <p>
  * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.Model
- *
+ * <p>
  * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
+ * <p>
  * org.wheatgenetics.coordinate.preference.Utils
- *
+ * <p>
  * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
  * org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler
  * org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter
- *
+ * <p>
  * org.wheatgenetics.coordinate.gc.vs.Handler
  * org.wheatgenetics.coordinate.gc.vs.ValueSetter
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public abstract class GridCreator
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
-{
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public abstract class GridCreator
+        extends Object implements StringGetter {
     // region Types
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    { public abstract void handleGridCreated(@androidx.annotation.IntRange(from = 1) long gridId); }
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void handleGridCreated(@IntRange(from = 1) long gridId);
+    }
 
-    private enum TemplateIdStatus { UNSPECIFIED, CLEARED, SET }
+    private enum TemplateIdStatus {UNSPECIFIED, CLEARED, SET}
     // endregion
 
     // region Fields
     // region Constructor Fields
-                                                    private final android.app.Activity activity   ;
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    @androidx.annotation.Nullable                   private final
-        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler;
+    private final Activity activity;
+    @Types.RequestCode
+    private final int requestCode;
+    @Nullable
+    private final
+    GridCreator.Handler handler;
     // endregion
 
-    private org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus templateIdStatus =
-        org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.UNSPECIFIED;
+    private GridCreator.TemplateIdStatus templateIdStatus =
+            GridCreator.TemplateIdStatus.UNSPECIFIED;
 
-    @androidx.annotation.IntRange(from = 0) private long             projectId, templateId;
-                                            private java.lang.String person               ;
+    @IntRange(from = 0)
+    private long projectId, templateId;
+    private String person;
 
     // region Value Setter Fields
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null; //ll
-    private org.wheatgenetics.coordinate.database.GridsTable     gridsTableInstance     = null; //ll
-    private org.wheatgenetics.coordinate.database.EntriesTable   entriesTableInstance   = null; //ll
-    private org.wheatgenetics.coordinate.gc.vs.ValueSetter       valueSetterInstance    = null; //ll
+    private TemplatesTable templatesTableInstance = null; //ll
+    private GridsTable gridsTableInstance = null; //ll
+    private EntriesTable entriesTableInstance = null; //ll
+    private ValueSetter valueSetterInstance = null; //ll
     // endregion
 
-    private org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter
-        projectTemplateSetterInstance = null;                                           // lazy load
-    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
-        choosingTemplateSetterInstance = null;                                          // lazy load
+    private ProjectTemplateSetter
+            projectTemplateSetterInstance = null;                                           // lazy load
+    private ChoosingTemplateSetter
+            choosingTemplateSetterInstance = null;                                          // lazy load
     // endregion
 
     // region Private Methods
     // region Field Access Private Method
-    @org.wheatgenetics.coordinate.Types.RequestCode private int requestCode()
-    { return this.requestCode; }
+    @Types.RequestCode
+    private int requestCode() {
+        return this.requestCode;
+    }
     // endregion
 
     // region Value Setter Private Methods
-    private void setPerson(final java.lang.String person) { this.person = person; }
+    private void setPerson(final String person) {
+        this.person = person;
+    }
 
     // region handleSetValuesDone() Value Setter Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
+    @NonNull
+    private TemplatesTable templatesTable() {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity());
+                new TemplatesTable(this.activity());
         return this.templatesTableInstance;
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
+    @NonNull
+    private GridsTable gridsTable() {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+                new GridsTable(this.activity());
         return this.gridsTableInstance;
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.EntriesTable entriesTable()
-    {
+    @NonNull
+    private EntriesTable entriesTable() {
         if (null == this.entriesTableInstance) this.entriesTableInstance =
-            new org.wheatgenetics.coordinate.database.EntriesTable(this.activity());
+                new EntriesTable(this.activity());
         return this.entriesTableInstance;
     }
 
     private void handleSetValuesDone(
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            this.templatesTable().get(this.templateId);
+            final NonNullOptionalFields optionalFields) {
+        final TemplateModel templateModel =
+                this.templatesTable().get(this.templateId);
         this.templateIdStatus =
-            org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.UNSPECIFIED;
-        if (null != templateModel)
-        {
-            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                new org.wheatgenetics.coordinate.model.JoinedGridModel(
-                    /* projectId      => */ this.projectId,
-                    /* person         => */ this.person   ,
-                    /* optionalFields => */ optionalFields,
-                    /* stringGetter   => */this,
-                    /* templateModel  => */ templateModel );
+                GridCreator.TemplateIdStatus.UNSPECIFIED;
+        if (null != templateModel) {
+            final JoinedGridModel joinedGridModel =
+                    new JoinedGridModel(
+                            /* projectId      => */ this.projectId,
+                            /* person         => */ this.person,
+                            /* optionalFields => */ optionalFields,
+                            /* stringGetter   => */this,
+                            /* templateModel  => */ templateModel);
             this.setPerson(null);
 
-            final org.wheatgenetics.coordinate.database.GridsTable gridsTable = this.gridsTable();
+            final GridsTable gridsTable = this.gridsTable();
             final long gridId = gridsTable.insert(joinedGridModel);
-            if (org.wheatgenetics.coordinate.model.Model.illegal(gridId))
+            if (Model.illegal(gridId))
                 org.wheatgenetics.coordinate.Utils.alert(this.activity(),
-                    org.wheatgenetics.coordinate.R.string.GridCreatorGridAlertMessage);
-            else
-            {
+                        R.string.GridCreatorGridAlertMessage);
+            else {
                 joinedGridModel.setId(gridId);
 
-                try
-                {
-                    if (org.wheatgenetics.coordinate.model.Model.illegal(                 // no pro-
-                    this.projectId))                                                      //  ject
+                try {
+                    if (Model.illegal(                 // no pro-
+                            this.projectId))                                                      //  ject
                         joinedGridModel.makeEntryModels();                // throws AmountIsTooLarge
-                    else
-                    {
-                        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels
-                            baseJoinedGridModels = gridsTable.loadByProjectId(this.projectId);
+                    else {
+                        final BaseJoinedGridModels
+                                baseJoinedGridModels = gridsTable.loadByProjectId(this.projectId);
                         if (null == baseJoinedGridModels)
                             joinedGridModel.makeEntryModels();            // throws AmountIsTooLarge
-                        else
-                            if (baseJoinedGridModels.size() <= 1)    // includes the just added grid
-                                joinedGridModel.makeEntryModels();        // throws AmountIsTooLarge
-                            else
-                            {
-                                final org.wheatgenetics.coordinate.model.Cells excludedCells =
+                        else if (baseJoinedGridModels.size() <= 1)    // includes the just added grid
+                            joinedGridModel.makeEntryModels();        // throws AmountIsTooLarge
+                        else {
+                            final Cells excludedCells =
                                     baseJoinedGridModels.excludedCells(
-                                        joinedGridModel.getRows(), joinedGridModel.getCols());
-                                if (null == excludedCells)
-                                    joinedGridModel.makeEntryModels();
-                                else
-                                    try
-                                    {
-                                        joinedGridModel.makeEntryModels(excludedCells);// throws
-                                    }                                                  //  AmountIs-
-                                    catch (final                                       //  TooLarge
-                                    org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
-                                    { joinedGridModel.makeEntryModels() /* throws AITL */; }
-                            }
+                                            joinedGridModel.getRows(), joinedGridModel.getCols());
+                            if (null == excludedCells)
+                                joinedGridModel.makeEntryModels();
+                            else
+                                try {
+                                    joinedGridModel.makeEntryModels(excludedCells);// throws
+                                }                                                  //  AmountIs-
+                                catch (final                                       //  TooLarge
+                                        Cells.AmountIsTooLarge e) {
+                                    joinedGridModel.makeEntryModels() /* throws AITL */;
+                                }
+                        }
                     }
-                }
-                catch (final org.wheatgenetics.coordinate.model.Cells.AmountIsTooLarge e)
-                {
+                } catch (final Cells.AmountIsTooLarge e) {
                     gridsTable.delete(gridId);
-                    org.wheatgenetics.coordinate.Utils.alert(this.activity()                ,
-                        org.wheatgenetics.coordinate.R.string.GridCreatorEntriesAlertMessage,
-                        e.getMessage()                                                      );
+                    org.wheatgenetics.coordinate.Utils.alert(this.activity(),
+                            R.string.GridCreatorEntriesAlertMessage,
+                            e.getMessage());
                     return;
                 }
 
                 if (joinedGridModel.activeRowAndOrActiveColWasAdjusted(
-                org.wheatgenetics.coordinate.preference.Utils.getDirection(this.activity())))
+                        Utils.getDirection(this.activity())))
                     gridsTable.update(joinedGridModel);              // Update activeRow, activeCol.
 
                 this.entriesTable().insert(joinedGridModel.getEntryModels());
@@ -193,157 +220,178 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
     }
     // endregion
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.vs.ValueSetter valueSetter()
-    {
+    @NonNull
+    private ValueSetter valueSetter() {
         if (null == this.valueSetterInstance) this.valueSetterInstance =
-            new org.wheatgenetics.coordinate.gc.vs.ValueSetter(this.activity(),
-                new org.wheatgenetics.coordinate.gc.vs.Handler()
-                {
-                    @java.lang.Override public void setPerson(final java.lang.String person)
-                    { org.wheatgenetics.coordinate.gc.GridCreator.this.setPerson(person); }
+                new ValueSetter(this.activity(),
+                        new org.wheatgenetics.coordinate.gc.vs.Handler() {
+                            @Override
+                            public void setPerson(final String person) {
+                                GridCreator.this.setPerson(person);
+                            }
 
-                    @java.lang.Override public void handleSetValuesDone(final
-                    org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-                    {
-                        org.wheatgenetics.coordinate.gc.GridCreator.this.handleSetValuesDone(
-                            optionalFields);
-                    }
-                });
+                            @Override
+                            public void handleSetValuesDone(final
+                                                            NonNullOptionalFields optionalFields) {
+                                GridCreator.this.handleSetValuesDone(
+                                        optionalFields);
+                            }
+                        });
         return this.valueSetterInstance;
     }
 
-    @android.annotation.SuppressLint({"Range"}) private void setValues()
-    {
-        if (!org.wheatgenetics.coordinate.model.Model.illegal(this.templateId))
+    @SuppressLint({"Range"})
+    private void setValues() {
+        if (!Model.illegal(this.templateId))
             this.valueSetter().set(this.templateId);
     }
     // endregion
 
     // region TemplateSetter Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter projectTemplateSetter()
-    {
+    @NonNull
+    private ProjectTemplateSetter projectTemplateSetter() {
         if (null == this.projectTemplateSetterInstance) this.projectTemplateSetterInstance =
-            new org.wheatgenetics.coordinate.gc.ts.ProjectTemplateSetter(this.activity());
+                new ProjectTemplateSetter(this.activity());
         return this.projectTemplateSetterInstance;
     }
 
     // region ChoosingTemplateSetter Private Methods
-    private void handleTemplateSet(@androidx.annotation.IntRange(from = 1) long templateId)
-    { this.setTemplateId(templateId); this.setValues(); }
+    private void handleTemplateSet(@IntRange(from = 1) long templateId) {
+        this.setTemplateId(templateId);
+        this.setValues();
+    }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter choosingTemplateSetter()
-    {
+    @NonNull
+    private ChoosingTemplateSetter choosingTemplateSetter() {
         if (null == this.choosingTemplateSetterInstance) this.choosingTemplateSetterInstance =
-            new org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter(
-                this.activity(), this.requestCode(),
-                new org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler()
-                {
-                    @java.lang.Override public void handleTemplateSet(
-                    @androidx.annotation.IntRange(from = 1) final long templateId)
-                    {
-                        org.wheatgenetics.coordinate.gc.GridCreator.this.handleTemplateSet(
-                            templateId);
-                    }
-                });
+                new ChoosingTemplateSetter(
+                        this.activity(), this.requestCode(),
+                        new ChoosingTemplateSetter.Handler() {
+                            @Override
+                            public void handleTemplateSet(
+                                    @IntRange(from = 1) final long templateId) {
+                                GridCreator.this.handleTemplateSet(
+                                        templateId);
+                            }
+                        });
         return this.choosingTemplateSetterInstance;
     }
 
-    private void setTemplate() { this.choosingTemplateSetter().set(); }
+    private void setTemplate() {
+        this.choosingTemplateSetter().set();
+    }
     // endregion
     // endregion
     // endregion
 
     // region Package Methods
     // region Field Access Package Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    android.app.Activity activity() { return this.activity; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    Activity activity() {
+        return this.activity;
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.Nullable org.wheatgenetics.coordinate.gc.GridCreator.Handler handler()
-    { return this.handler; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Nullable
+    GridCreator.Handler handler() {
+        return this.handler;
+    }
     // endregion
 
     // region templateIdStatus Package Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setTemplateIdStatusToCleared()
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void setTemplateIdStatusToCleared() {
         this.templateIdStatus =
-            org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.CLEARED;
+                GridCreator.TemplateIdStatus.CLEARED;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setTemplateIdStatusToSet()
-    { this.templateIdStatus = org.wheatgenetics.coordinate.gc.GridCreator.TemplateIdStatus.SET; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void setTemplateIdStatusToSet() {
+        this.templateIdStatus = GridCreator.TemplateIdStatus.SET;
+    }
     // endregion
 
     // region Template Setter Package Method
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void setTemplateId(@androidx.annotation.IntRange(from = 1) long templateId)
-    { this.templateId = templateId; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void setTemplateId(@IntRange(from = 1) long templateId) {
+        this.templateId = templateId;
+    }
     // endregion
 
     // region Project Setter Package Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void handleNoProjectSet()
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void handleNoProjectSet() {
         this.projectId = 0;
 
-        switch (this.templateIdStatus)
-        {
-            case UNSPECIFIED: case CLEARED: this.setTemplate(); break;
-            case SET                      : this.setValues  (); break;
+        switch (this.templateIdStatus) {
+            case UNSPECIFIED:
+            case CLEARED:
+                this.setTemplate();
+                break;
+            case SET:
+                this.setValues();
+                break;
         }
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @android.annotation.SuppressLint({"Range"}) void handleProjectSet(
-    @androidx.annotation.IntRange(from = 1) final long projectId, final boolean existing )
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @SuppressLint({"Range"})
+    void handleProjectSet(
+            @IntRange(from = 1) final long projectId, final boolean existing) {
         this.projectId = projectId;
 
-        switch (this.templateIdStatus)
-        {
-            case UNSPECIFIED: case CLEARED:
-                if (existing)
-                {
-                    @androidx.annotation.IntRange(from = 0) final long templateId =
-                        this.projectTemplateSetter().set(projectId);
-                    if (org.wheatgenetics.coordinate.model.Model.illegal(templateId))
+        switch (this.templateIdStatus) {
+            case UNSPECIFIED:
+            case CLEARED:
+                if (existing) {
+                    @IntRange(from = 0) final long templateId =
+                            this.projectTemplateSetter().set(projectId);
+                    if (Model.illegal(templateId))
                         this.setTemplate();
                     else
                         this.handleTemplateSet(templateId);               // SuppressLint({"Range"})
-                }
-                else this.setTemplate();
+                } else this.setTemplate();
                 break;
 
-            case SET: this.setValues(); break;
+            case SET:
+                this.setValues();
+                break;
         }
     }
     // endregion
     // endregion
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    GridCreator(                                    final android.app.Activity activity   ,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int                  requestCode,
-    @androidx.annotation.Nullable                   final
-        org.wheatgenetics.coordinate.gc.GridCreator.Handler handler)
-    { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    GridCreator(final Activity activity,
+                @Types.RequestCode final int requestCode,
+                @Nullable final
+                GridCreator.Handler handler) {
+        super();
+        this.activity = activity;
+        this.requestCode = requestCode;
+        this.handler = handler;
+    }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.activity().getString(resId); }
+    @Override
+    @Nullable
+    public String get(
+            @StringRes final int resId) {
+        return this.activity().getString(resId);
+    }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException
-    { return this.activity().getResources().getQuantityString(resId, quantity, formatArgs); }
+    @Override
+    @NonNull
+    public String getQuantity(
+            @PluralsRes final int resId,
+            @IntRange(from = 0) final int quantity,
+            @Nullable final Object... formatArgs)
+            throws Resources.NotFoundException {
+        return this.activity().getResources().getQuantityString(resId, quantity, formatArgs);
+    }
     // endregion
 
-    public void continueExcluding(final android.os.Bundle bundle)
-    { this.choosingTemplateSetter().continueExcluding(bundle); }
+    public void continueExcluding(final Bundle bundle) {
+        this.choosingTemplateSetter().continueExcluding(bundle);
+    }
 }

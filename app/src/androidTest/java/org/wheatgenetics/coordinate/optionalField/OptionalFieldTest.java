@@ -1,5 +1,19 @@
 package org.wheatgenetics.coordinate.optionalField;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.json.JSONObject;
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -21,8 +35,8 @@ package org.wheatgenetics.coordinate.optionalField;
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class OptionalFieldTest
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class OptionalFieldTest
+extends Object implements StringGetter
 {
     /**
      * This class was defined in order to test OptionalField.  Why not just test OptionalField
@@ -30,220 +44,215 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
      * instantiate an abstract class.  If I can't instantiate it I can't test it.
      */
     private static class ConcreteOptionalField extends
-    org.wheatgenetics.coordinate.optionalField.OptionalField
+    OptionalField
     {
-        private ConcreteOptionalField(@java.lang.SuppressWarnings({"SameParameterValue"})
-        @androidx.annotation.NonNull final java.lang.String                          name        ,
-                                     final java.lang.String                          hint        ,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        private ConcreteOptionalField(@SuppressWarnings({"SameParameterValue"})
+        @NonNull final String                          name        ,
+                                     final String                          hint        ,
+        @NonNull final StringGetter stringGetter)
         { super(name, hint, stringGetter); }
 
         private ConcreteOptionalField(
-        @androidx.annotation.NonNull final org.json.JSONObject                       jsonObject  ,
-        @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
+        @NonNull final JSONObject                       jsonObject  ,
+        @NonNull final StringGetter stringGetter)
         { super(jsonObject, stringGetter); }
     }
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldPersonFieldName:
+            case R.string.BaseOptionalFieldPersonFieldName:
                 return "Person";
 
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldNameFieldName:
+            case R.string.BaseOptionalFieldNameFieldName:
                 return "Name";
 
-            case org.wheatgenetics.coordinate.R.string.BaseOptionalFieldIdentificationFieldName:
+            case R.string.BaseOptionalFieldIdentificationFieldName:
                 return "Identification";
 
-            default: org.junit.Assert.fail(); return null;
+            default: Assert.fail(); return null;
         }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
     // region Constructor Tests
-    @org.junit.Test(expected = java.lang.NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorNullParameterFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.optionalField
-            .OptionalFieldTest.ConcreteOptionalField(null,this);
+        new OptionalFieldTest.ConcreteOptionalField(null,this);
     }
 
-    @org.junit.Test(expected = java.lang.AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void constructorEmptyParameterFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+        new OptionalFieldTest.ConcreteOptionalField(
+            OptionalField.makeJSONObject(
                 null,null,null,this),this);
     }
 
-    @org.junit.Test(expected = java.lang.AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void constructorNullNameParameterFails()
     {
         // noinspection ConstantConditions
-        new org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+        new OptionalFieldTest.ConcreteOptionalField(
+            OptionalField.makeJSONObject(
                 null,"testValue",null,this),this);
     }
 
-    @org.junit.Test() public void constructorNameParameterIsEqual()
+    @Test() public void constructorNameParameterIsEqual()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
         {
-            final java.lang.String testName = "testName";
+            final String testName = "testName";
             concreteOptionalField = new
-                org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                OptionalFieldTest.ConcreteOptionalField(
+                    OptionalField.makeJSONObject(
                         testName,null,null,this),this);
-            org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
+            Assert.assertEquals(testName, concreteOptionalField.getName());
         }
-        org.junit.Assert.assertEquals("", concreteOptionalField.getValue());
-        org.junit.Assert.assertEquals("", concreteOptionalField.getHint ());
+        Assert.assertEquals("", concreteOptionalField.getValue());
+        Assert.assertEquals("", concreteOptionalField.getHint ());
     }
 
-    @org.junit.Test() public void constructorHintParameterIsEqual()
+    @Test() public void constructorHintParameterIsEqual()
     {
-        final java.lang.String testHint = "testHint";
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final String testHint = "testHint";
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
         {
-            final java.lang.String testName = "testName";
+            final String testName = "testName";
             concreteOptionalField = new
-                org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                OptionalFieldTest.ConcreteOptionalField(
+                    OptionalField.makeJSONObject(
                         testName,null, testHint,this),this);
-            org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
+            Assert.assertEquals(testName, concreteOptionalField.getName());
         }
-        org.junit.Assert.assertEquals("", concreteOptionalField.getValue());
-        org.junit.Assert.assertEquals(testHint, concreteOptionalField.getHint());
+        Assert.assertEquals("", concreteOptionalField.getValue());
+        Assert.assertEquals(testHint, concreteOptionalField.getHint());
     }
 
-    @org.junit.Test() public void constructorValueParameterIsEqual()
+    @Test() public void constructorValueParameterIsEqual()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
         {
-            final java.lang.String testValue = "testValue";
+            final String testValue = "testValue";
             {
-                final java.lang.String testName = "testName";
-                concreteOptionalField = new org.wheatgenetics.coordinate
-                    .optionalField.OptionalFieldTest.ConcreteOptionalField(
-                        org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                final String testName = "testName";
+                concreteOptionalField = new OptionalFieldTest.ConcreteOptionalField(
+                        OptionalField.makeJSONObject(
                             testName, testValue,null,this),this);
-                org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
+                Assert.assertEquals(testName, concreteOptionalField.getName());
             }
-            org.junit.Assert.assertEquals(testValue, concreteOptionalField.getValue());
+            Assert.assertEquals(testValue, concreteOptionalField.getValue());
         }
-        org.junit.Assert.assertEquals("", concreteOptionalField.getHint());
+        Assert.assertEquals("", concreteOptionalField.getHint());
     }
 
-    @org.junit.Test() public void constructorCheckedParameterIsTrue()
+    @Test() public void constructorCheckedParameterIsTrue()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
         {
-            final java.lang.String testName = "testName";
+            final String testName = "testName";
             concreteOptionalField = new
-                org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                OptionalFieldTest.ConcreteOptionalField(
+                    OptionalField.makeJSONObject(
                         testName,null,null,true,this),this);
-            org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
+            Assert.assertEquals(testName, concreteOptionalField.getName());
         }
-        org.junit.Assert.assertTrue(concreteOptionalField.getChecked());
+        Assert.assertTrue(concreteOptionalField.getChecked());
     }
 
-    @org.junit.Test() public void constructorCheckedParameterIsFalse()
+    @Test() public void constructorCheckedParameterIsFalse()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
         {
-            final java.lang.String testName = "testName";
+            final String testName = "testName";
             concreteOptionalField = new
-                org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField(
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                OptionalFieldTest.ConcreteOptionalField(
+                    OptionalField.makeJSONObject(
                         testName,null,null,false,this),
                     this);
-            org.junit.Assert.assertEquals(testName, concreteOptionalField.getName());
+            Assert.assertEquals(testName, concreteOptionalField.getName());
         }
-        org.junit.Assert.assertFalse(concreteOptionalField.getChecked());
+        Assert.assertFalse(concreteOptionalField.getChecked());
     }
     // endregion
 
     // region makeJSONObject() Test
-    @org.junit.Test() public void makeJSONObject()
+    @Test() public void makeJSONObject()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
-        final java.lang.String jsonObjectAsString;
+        final String jsonObjectAsString;
         {
-            final org.json.JSONObject jsonObject;
+            final JSONObject jsonObject;
             {
-                final java.lang.String testName = "testName",
+                final String testName = "testName",
                     testHint = null, testValue = "testValue";
 
                 // noinspection ConstantConditions
-                concreteOptionalField = new org.wheatgenetics.coordinate.optionalField
-                    .OptionalFieldTest.ConcreteOptionalField(testName, testHint,this);
+                concreteOptionalField = new OptionalFieldTest.ConcreteOptionalField(testName, testHint,this);
                 concreteOptionalField.setValue(testValue);
 
                 // noinspection ConstantConditions
                 jsonObject =
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                    OptionalField.makeJSONObject(
                         testName, testValue, testHint,this);
             }
-            org.wheatgenetics.coordinate.optionalField.OptionalField.putChecked(
+            OptionalField.putChecked(
                 jsonObject,true,this);
             jsonObjectAsString = jsonObject.toString();
         }
 
-        org.junit.Assert.assertEquals(jsonObjectAsString,
+        Assert.assertEquals(jsonObjectAsString,
             concreteOptionalField.makeJSONObject(this).toString());
 
         concreteOptionalField.setChecked(false);
-        org.junit.Assert.assertNotEquals(jsonObjectAsString,
+        Assert.assertNotEquals(jsonObjectAsString,
             concreteOptionalField.makeJSONObject(this).toString());
     }
 
-    @org.junit.Test() public void identificationMakeJSONObject()
+    @Test() public void identificationMakeJSONObject()
     {
-        final org.wheatgenetics.coordinate.optionalField.OptionalFieldTest.ConcreteOptionalField
+        final OptionalFieldTest.ConcreteOptionalField
             concreteOptionalField;
-        final java.lang.String jsonObjectAsString;
+        final String jsonObjectAsString;
         {
-            final org.json.JSONObject jsonObject;
+            final JSONObject jsonObject;
             {
-                final java.lang.String testName = org.wheatgenetics.coordinate.optionalField
-                        .BaseOptionalField.identificationFieldName(this),
+                final String testName = BaseOptionalField.identificationFieldName(this),
                     testHint = null, testValue = "testValue";
 
                 // noinspection ConstantConditions
-                concreteOptionalField = new org.wheatgenetics.coordinate.optionalField
-                    .OptionalFieldTest.ConcreteOptionalField(testName, testHint,this);
+                concreteOptionalField = new OptionalFieldTest.ConcreteOptionalField(testName, testHint,this);
                 concreteOptionalField.setValue(testValue);
 
                 // noinspection ConstantConditions
                 jsonObject =
-                    org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
+                    OptionalField.makeJSONObject(
                         testName, testValue, testHint,this);
             }
-            org.wheatgenetics.coordinate.optionalField.OptionalField.putChecked(
+            OptionalField.putChecked(
                 jsonObject,false,this);         // Should change false into true.
             jsonObjectAsString = jsonObject.toString();
         }
 
-        org.junit.Assert.assertEquals(jsonObjectAsString,
+        Assert.assertEquals(jsonObjectAsString,
             concreteOptionalField.makeJSONObject(this).toString());
     }
     // endregion

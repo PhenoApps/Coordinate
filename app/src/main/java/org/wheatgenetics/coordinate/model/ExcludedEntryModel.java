@@ -1,54 +1,67 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.DrawableRes
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.StringGetter
- *
- * org.wheatgenetics.coordinate.model.EntryModel
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
- */
-public class ExcludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
-{
-    public static final java.lang.String DATABASE_VALUE = "excluded";
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
+public class ExcludedEntryModel extends EntryModel {
+    public static final String DATABASE_VALUE = "excluded";
 
     // region Constructors
     ExcludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long                                 gridId      ,
-    @androidx.annotation.IntRange(from = 1) final int                                  row         ,
-    @androidx.annotation.IntRange(from = 1) final int                                  col         ,
-    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(gridId, row, col, stringGetter); }
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, row, col, stringGetter);
+    }
 
     public ExcludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long id       ,
-    @androidx.annotation.IntRange(from = 1) final long gridId   ,
-    @androidx.annotation.IntRange(from = 1) final int  row      ,
-    @androidx.annotation.IntRange(from = 1) final int  col      ,
-    @androidx.annotation.IntRange(from = 0) final long timestamp,
-    @androidx.annotation.NonNull       final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(id, gridId, row, col, timestamp, stringGetter); }
+            @IntRange(from = 1) final long id,
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            @IntRange(from = 0) final long timestamp,
+            @NonNull final StringGetter stringGetter) {
+        super(id, gridId, row, col, timestamp, stringGetter);
+    }
 
     public ExcludedEntryModel(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.IncludedEntryModel
-        includedEntryModel,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.StringGetter stringGetter)
-    { super(includedEntryModel, stringGetter); }
+            @NonNull final IncludedEntryModel
+                    includedEntryModel,
+            @NonNull final StringGetter stringGetter) {
+        super(includedEntryModel, stringGetter);
+    }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override        java.lang.String getSeedExportValue       () { return "exclude"; }
-    @java.lang.Override        java.lang.String getUserDefinedExportValue() { return "exclude"; }
-    @java.lang.Override public java.lang.String getValue                 () { return null     ; }
+    @Override
+    String getSeedExportValue() {
+        return "exclude";
+    }
 
-    @java.lang.Override public java.lang.String getDatabaseValue()
-    { return org.wheatgenetics.coordinate.model.ExcludedEntryModel.DATABASE_VALUE; }
+    @Override
+    String getUserDefinedExportValue() {
+        return "exclude";
+    }
 
-    @java.lang.Override @androidx.annotation.DrawableRes public int backgroundResource()
-    { return org.wheatgenetics.coordinate.R.drawable.excluded_entry; }
+    @Override
+    public String getValue() {
+        return null;
+    }
+
+    @Override
+    public String getDatabaseValue() {
+        return ExcludedEntryModel.DATABASE_VALUE;
+    }
+
+    @Override
+    @DrawableRes
+    public int backgroundResource() {
+        return R.drawable.excluded_entry;
+    }
     // endregion
 }

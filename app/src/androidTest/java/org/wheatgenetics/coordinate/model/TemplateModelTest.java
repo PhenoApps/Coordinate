@@ -1,5 +1,19 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
+import java.io.StringWriter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -16,33 +30,33 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateModelTest
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateModelTest
+extends Object implements StringGetter
 {
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId) { default: Assert.fail(); return null; }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
     // region Overridden Method Tests
-    @org.junit.Test() public void toStringSucceeds()
+    @Test() public void toStringSucceeds()
     {
-        final java.lang.String expectedString =
+        final String expectedString =
             "TemplateModel [id: 03, title=testTitle, type=1, rows=5, cols=2, generatedExcludedCel" +
             "lsAmount=0, colNumbering=true, rowNumbering=false, entryLabel=null, stamp=0, exclude" +
             "dCells=null, excludedRows=null, excludedCols=null, options=]";
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
+        final TemplateModel templateModel =
+            new TemplateModel(
                 /* id                           => */3,
                 /* title                        => */"testTitle",
                 /* code                         => */1,
@@ -58,18 +72,18 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* optionalFields               => */null,
                 /* stringGetter                 => */this,
                 /* timestamp                    => */0);
-        org.junit.Assert.assertEquals(expectedString, templateModel.toString());
+        Assert.assertEquals(expectedString, templateModel.toString());
     }
 
-    @org.junit.Test() public void equalsAndHashCodeWork()
+    @Test() public void equalsAndHashCodeWork()
     {
         final long             id    = 44                                                       ;
-        final java.lang.String title = "testTitle"                                              ;
+        final String title = "testTitle"                                              ;
         final int              code  = 1, rows = 5, cols = 2, colNumbering = 1, rowNumbering = 0;
         final long             timestamp = 0                                                    ;
 
-        final org.wheatgenetics.coordinate.model.TemplateModel firstTemplateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
+        final TemplateModel firstTemplateModel =
+            new TemplateModel(
                 /* id                           => */ id   ,
                 /* title                        => */ title,
                 /* code                         => */ code ,
@@ -85,8 +99,8 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* optionalFields               => */null,
                 /* stringGetter                 => */this,
                 /* timestamp                    => */ timestamp);
-        org.wheatgenetics.coordinate.model.TemplateModel secondTemplateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
+        TemplateModel secondTemplateModel =
+            new TemplateModel(
                 /* id                           => */ id   ,
                 /* title                        => */ title,
                 /* code                         => */ code ,
@@ -104,11 +118,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
-        org.junit.Assert.assertEquals(
+        Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+        Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-        secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+        secondTemplateModel = new TemplateModel(
             /* id                           => */ id   ,
             /* title                        => */ title,
             /* code                         => */ code ,
@@ -126,11 +140,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
-        org.junit.Assert.assertEquals(
+        Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+        Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-        secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+        secondTemplateModel = new TemplateModel(
             /* id                           => */ id   ,
             /* title                        => */ title,
             /* code                         => */ code ,
@@ -148,11 +162,11 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             /* timestamp                    => */ timestamp);
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
-        org.junit.Assert.assertEquals(
+        Assert.assertTrue  (firstTemplateModel.equals(secondTemplateModel));
+        Assert.assertEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
 
-        secondTemplateModel = new org.wheatgenetics.coordinate.model.TemplateModel(
+        secondTemplateModel = new TemplateModel(
             /* id                           => */ id   ,
             /* title                        => */ title,
             /* code                         => */ code ,
@@ -170,15 +184,15 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             /* timestamp                    => */5087);                         // Notice.
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
-        org.junit.Assert.assertNotEquals(
+        Assert.assertFalse    (firstTemplateModel.equals(secondTemplateModel));
+        Assert.assertNotEquals(
             firstTemplateModel.hashCode(), secondTemplateModel.hashCode());
     }
 
-    @org.junit.Test() public void cloneSucceeds()
+    @Test() public void cloneSucceeds()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
+        final TemplateModel templateModel =
+            new TemplateModel(
                 /* id                           => */12,
                 /* title                        => */"testTitle",
                 /* code                         => */1,
@@ -194,18 +208,18 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* optionalFields               => */null,
                 /* stringGetter                 => */this,
                 /* timestamp                    => */0);
-        final org.wheatgenetics.coordinate.model.TemplateModel clonedTemplateModel =
-            (org.wheatgenetics.coordinate.model.TemplateModel) templateModel.clone();
+        final TemplateModel clonedTemplateModel =
+            (TemplateModel) templateModel.clone();
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue(templateModel.equals(clonedTemplateModel));
+        Assert.assertTrue(templateModel.equals(clonedTemplateModel));
     }
     // endregion
 
     // region export() Package Method Tests
-    @org.junit.Test() public void exportWorks()
+    @Test() public void exportWorks()
     {
-        final java.lang.String expectedString =
+        final String expectedString =
             "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n"           +
             "<template>\n"                                                         +
             "    <title>testTitle</title>\n"                                       +
@@ -215,10 +229,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             "    <colNumbering>true</colNumbering>\n"                              +
             "    <rowNumbering>false</rowNumbering>\n"                             +
             "</template>"                                                          ;
-        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        final StringWriter stringWriter = new StringWriter();
         {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                new org.wheatgenetics.coordinate.model.TemplateModel(
+            final TemplateModel templateModel =
+                new TemplateModel(
                     /* id                           => */3,
                     /* title                        => */"testTitle",
                     /* code                         => */1,
@@ -234,14 +248,14 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                     /* optionalFields               => */null,
                     /* stringGetter                 => */this,
                     /* timestamp                    => */0);
-            org.junit.Assert.assertTrue(templateModel.export(stringWriter));
+            Assert.assertTrue(templateModel.export(stringWriter));
         }
-        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+        Assert.assertEquals(expectedString, stringWriter.toString());
     }
 
-    @org.junit.Test() public void entryLabelExportWorks()
+    @Test() public void entryLabelExportWorks()
     {
-        final java.lang.String expectedString =
+        final String expectedString =
             "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n"           +
             "<template>\n"                                                         +
             "    <title>testTitle</title>\n"                                       +
@@ -252,10 +266,10 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
             "    <rowNumbering>false</rowNumbering>\n"                             +
             "    <entryLabel>testEntryLabel</entryLabel>\n"                        +
             "</template>"                                                          ;
-        final java.io.StringWriter stringWriter = new java.io.StringWriter();
+        final StringWriter stringWriter = new StringWriter();
         {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                new org.wheatgenetics.coordinate.model.TemplateModel(
+            final TemplateModel templateModel =
+                new TemplateModel(
                     /* id                           => */3,
                     /* title                        => */"testTitle",
                     /* code                         => */1,
@@ -272,16 +286,16 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                     /* stringGetter                 => */this,
                     /* timestamp                    => */0);
             templateModel.setEntryLabel("testEntryLabel");
-            org.junit.Assert.assertTrue(templateModel.export(stringWriter));
+            Assert.assertTrue(templateModel.export(stringWriter));
         }
-        org.junit.Assert.assertEquals(expectedString, stringWriter.toString());
+        Assert.assertEquals(expectedString, stringWriter.toString());
     }
     // endregion
 
-    @org.junit.Test() public void optionalFieldsMethodsSucceed()
+    @Test() public void optionalFieldsMethodsSucceed()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
+        final TemplateModel templateModel =
+            new TemplateModel(
                 /* id                           => */10,
                 /* title                        => */"testTitle",
                 /* code                         => */1,
@@ -297,9 +311,9 @@ extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
                 /* optionalFields               => */null,
                 /* stringGetter                 => */this,
                 /* timestamp                    => */880);
-        org.junit.Assert.assertNull(templateModel.optionalFields       ());
-        org.junit.Assert.assertTrue(templateModel.optionalFieldsIsEmpty());
-        org.junit.Assert.assertNull(templateModel.optionalFieldsClone  ());
-        org.junit.Assert.assertNull(templateModel.optionalFieldsAsJson ());
+        Assert.assertNull(templateModel.optionalFields       ());
+        Assert.assertTrue(templateModel.optionalFieldsIsEmpty());
+        Assert.assertNull(templateModel.optionalFieldsClone  ());
+        Assert.assertNull(templateModel.optionalFieldsAsJson ());
     }
 }

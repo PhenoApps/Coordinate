@@ -4,8 +4,8 @@
     <string name="CellsMaxRowAndOrMaxColOutOfRange">maxRow and/or maxCol is out of range</string>
 
     <plurals name="AmountIsTooLarge">
-        <item quantity="zero" >There is no more room for entries.</item>
-        <item quantity="one"  >There is room for only %d more entry.</item>
+        <item quantity="zero">There is no more room for entries.</item>
+        <item quantity="one">There is room for only %d more entry.</item>
         <item quantity="other">There is room for only %d more entries.</item>
     </plurals>
 

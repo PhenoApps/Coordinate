@@ -13,14 +13,12 @@
     <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
 
 
-
     <!-- ExcludedRowsOrColsAlertDialog -->
     <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
 
     <!-- ExcludedRowsOrColsAlertDialogTester -->
     <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
     <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
-
 
 
     <!-- generated_excluded_cells.xml -->
@@ -30,14 +28,12 @@
     <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
 
 
-
     <!-- ExcludeAlertDialog -->
     <string name="ExcludeAlertDialogTitle">Exclude</string>
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
     <string name="ExcludeAlertDialogColsItem">Columns</string>
     <string name="ExcludeAlertDialogCellsItem">Cells</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
-
 
 
     <!-- set_numbering.xml -->
@@ -50,7 +46,6 @@
 
     <!-- SetNumberingAlertDialog -->
     <string name="SetNumberingAlertDialogTitle">Naming</string>
-
 
 
     <!-- set_excludes_optional_fields_numbering.xml -->

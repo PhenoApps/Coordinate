@@ -1,125 +1,113 @@
 package org.wheatgenetics.coordinate.exporter;
 
-/**
- * Uses:
- * android.content.Context
- *
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.javalib.Dir.PermissionException
- *
- * org.wheatgenetics.androidlibrary.RequestDir
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- *
- * org.wheatgenetics.coordinate.exporter.ProjectExporter
- * org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
- */
-public class EntireProjectProjectExporter
-extends org.wheatgenetics.coordinate.exporter.ProjectExporter
-{
-    private static class AsyncTask
-    extends org.wheatgenetics.coordinate.exporter.ProjectExporter.AsyncTask
-    {
-        private final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels;
+import android.content.Context;
 
-        private AsyncTask(@androidx.annotation.NonNull final android.content.Context context,
-        final java.io.File exportFile, final java.lang.String exportFileName,
-        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels)
-        {
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.androidlibrary.RequestDir;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
+import org.wheatgenetics.javalib.Dir;
+
+import java.io.File;
+import java.io.IOException;
+
+public class EntireProjectProjectExporter
+        extends ProjectExporter {
+    // region Fields
+    @NonNull
+    private final String exportFileName;
+    private EntireProjectProjectExporter.AsyncTask
+            asyncTask = null;
+
+    public EntireProjectProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final RequestDir exportDir,
+            final String exportFileName) {
+        super(baseJoinedGridModels, context, exportDir);
+        this.exportFileName = exportFileName + ".csv";
+    }
+    // endregion
+
+    // region Overridden Methods
+    @Override
+    public void execute() {
+        final BaseJoinedGridModels baseJoinedGridModels =
+                this.getBaseJoinedGridModels();
+        if (null != baseJoinedGridModels) {
+            final RequestDir exportDir = this.getExportDir();
+            if (null != exportDir)
+                try {
+                    this.asyncTask = new EntireProjectProjectExporter.AsyncTask(
+                            /* context    => */ this.getContext(),
+                            /* exportFile => */ exportDir.createNewFile(     // throws IOException,
+                            this.exportFileName),                        //  PermissionException
+                            /* exportFileName       => */ this.exportFileName,
+                            /* baseJoinedGridModels => */ baseJoinedGridModels);
+                    this.asyncTask.execute();
+                } catch (final IOException | Dir.PermissionException
+                        e) {
+                    this.unableToCreateFileAlert(this.exportFileName);
+                }
+        }
+    }
+
+    @Override
+    public void cancel() {
+        if (null != this.asyncTask) this.asyncTask.cancel();
+    }
+
+    private static class AsyncTask
+            extends ProjectExporter.AsyncTask {
+        private final BaseJoinedGridModels baseJoinedGridModels;
+
+        private AsyncTask(@NonNull final Context context,
+                          final File exportFile, final String exportFileName,
+                          final BaseJoinedGridModels baseJoinedGridModels) {
             super(context, exportFile, exportFileName);
             this.baseJoinedGridModels = baseJoinedGridModels;
         }
 
         // region Overridden Methods
-        @java.lang.Override protected void onPostExecute(final java.lang.Boolean result)
-        {
-            super.onPostExecute(this.setMessage(result, this.getString(org.wheatgenetics.coordinate
-                .R.string.EntireProjectProjectExporterAsyncTaskFailedMessage)));
+        @Override
+        protected void onPostExecute(final Boolean result) {
+            super.onPostExecute(this.setMessage(result, this.getString(R.string.EntireProjectProjectExporterAsyncTaskFailedMessage)));
         }
 
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @java.lang.Override boolean export()
-        {
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @Override
+        boolean export() {
             boolean success;
             if (null == this.baseJoinedGridModels)
                 success = false;
-            else
-            {
-                try
-                {
+            else {
+                try {
                     if (this.baseJoinedGridModels.export(              // throws java.io.IOException
-                    /* exportFile     => */ this.getExportFile    (),
-                    /* exportFileName => */ this.getExportFileName(),
-                    /* helper         => */this))
-                        { this.makeExportFileDiscoverable(); success = true; }
-                    else
+                            /* exportFile     => */ this.getExportFile(),
+                            /* exportFileName => */ this.getExportFileName(),
+                            /* helper         => */this)) {
+                        this.makeExportFileDiscoverable();
+                        success = true;
+                    } else
                         success = false;
-                }
-                catch (final java.io.IOException e)
-                {
+                } catch (final IOException e) {
                     e.printStackTrace();
-                    this.setMessage(org.wheatgenetics.coordinate
-                        .R.string.EntireProjectProjectExporterFailedMessage);
+                    this.setMessage(R.string.EntireProjectProjectExporterFailedMessage);
                     success = false;
                 }
             }
             return success;
         }
 
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @java.lang.Override void handleExportSuccess(final java.io.File exportFile)
-        { this.alert(); this.share(); }
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @Override
+        void handleExportSuccess(final File exportFile) {
+            this.alert();
+            this.share();
+        }
         // endregion
     }
-
-    // region Fields
-    @androidx.annotation.NonNull private final java.lang.String exportFileName;
-
-    private org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter.AsyncTask
-        asyncTask = null;
-    // endregion
-
-    public EntireProjectProjectExporter(
-    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels,
-    @androidx.annotation.NonNull final android.content.Context                     context       ,
-                                 final org.wheatgenetics.androidlibrary.RequestDir exportDir     ,
-                                 final java.lang.String                            exportFileName)
-    {
-        super(baseJoinedGridModels, context, exportDir);
-        this.exportFileName = exportFileName + ".csv";
-    }
-
-    // region Overridden Methods
-    @java.lang.Override public void execute()
-    {
-        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-            this.getBaseJoinedGridModels();
-        if (null != baseJoinedGridModels)
-        {
-            final org.wheatgenetics.androidlibrary.RequestDir exportDir = this.getExportDir();
-            if (null != exportDir)
-                try
-                {
-                    this.asyncTask = new org.wheatgenetics.coordinate.exporter
-                        .EntireProjectProjectExporter.AsyncTask(
-                            /* context    => */ this.getContext(),
-                            /* exportFile => */ exportDir.createNewFile(     // throws IOException,
-                                this.exportFileName),                        //  PermissionException
-                            /* exportFileName       => */ this.exportFileName ,
-                            /* baseJoinedGridModels => */ baseJoinedGridModels);
-                    this.asyncTask.execute();
-                }
-                catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException
-                e) { this.unableToCreateFileAlert(this.exportFileName); }
-        }
-    }
-
-    @java.lang.Override public void cancel()
-    { if (null != this.asyncTask) this.asyncTask.cancel(); }
     // endregion
 }

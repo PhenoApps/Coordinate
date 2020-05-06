@@ -1,90 +1,82 @@
 package org.wheatgenetics.coordinate.gc.vs;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
- * org.wheatgenetics.coordinate.gc.vs.Handler
- * org.wheatgenetics.coordinate.gc.vs.SetOptionalFieldValuesAlertDialog
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ValueSetter extends java.lang.Object
-{
+import android.app.Activity;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+
+public class ValueSetter {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity                       activity;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.gc.vs.Handler handler ;
+    @NonNull
+    private final Activity activity;
+    @NonNull
+    private final Handler handler;
 
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-    private org.wheatgenetics.coordinate.gc.vs.SetOptionalFieldValuesAlertDialog
-        setOptionalFieldValuesAlertDialogInstance = null;                               // lazy load
-    // endregion
-
-    // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
-        if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity);
-        return this.templatesTableInstance;
-    }
-
-    private void clearValues() { this.handler.handleSetValuesDone(null); }
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.vs.SetOptionalFieldValuesAlertDialog
-    setOptionalFieldValuesAlertDialog()
-    {
-        if (null == this.setOptionalFieldValuesAlertDialogInstance)
-            this.setOptionalFieldValuesAlertDialogInstance =
-                new org.wheatgenetics.coordinate.gc.vs.SetOptionalFieldValuesAlertDialog(
-                    this.activity, this.handler);
-        return this.setOptionalFieldValuesAlertDialogInstance;
-    }
-
-    private void showSetOptionalFieldValuesAlertDialog(
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-    {
-        this.setOptionalFieldValuesAlertDialog().show(templateModel.getTitle(),
-            optionalFields, /* firstCannotBeEmpty => */ templateModel.isDefaultTemplate());
-    }
+    private TemplatesTable templatesTableInstance = null;// ll
+    private SetOptionalFieldValuesAlertDialog
+            setOptionalFieldValuesAlertDialogInstance = null;                               // lazy load
     // endregion
 
     public ValueSetter(
-    @androidx.annotation.NonNull final android.app.Activity                       activity,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.gc.vs.Handler handler )
-    { super(); this.activity = activity; this.handler = handler; }
+            @NonNull final Activity activity,
+            @NonNull final Handler handler) {
+        super();
+        this.activity = activity;
+        this.handler = handler;
+    }
 
-    public void set(@androidx.annotation.IntRange(from = 1) final long templateId)
-    {
+    // region Private Methods
+    @NonNull
+    private TemplatesTable templatesTable() {
+        if (null == this.templatesTableInstance) this.templatesTableInstance =
+                new TemplatesTable(this.activity);
+        return this.templatesTableInstance;
+    }
+
+    private void clearValues() {
+        this.handler.handleSetValuesDone(null);
+    }
+
+    @NonNull
+    private SetOptionalFieldValuesAlertDialog
+    setOptionalFieldValuesAlertDialog() {
+        if (null == this.setOptionalFieldValuesAlertDialogInstance)
+            this.setOptionalFieldValuesAlertDialogInstance =
+                    new SetOptionalFieldValuesAlertDialog(
+                            this.activity, this.handler);
+        return this.setOptionalFieldValuesAlertDialogInstance;
+    }
+    // endregion
+
+    private void showSetOptionalFieldValuesAlertDialog(
+            @NonNull final
+            TemplateModel templateModel,
+            @NonNull final
+            NonNullOptionalFields optionalFields) {
+        this.setOptionalFieldValuesAlertDialog().show(templateModel.getTitle(),
+                optionalFields, /* firstCannotBeEmpty => */ templateModel.isDefaultTemplate());
+    }
+
+    public void set(@IntRange(from = 1) final long templateId) {
         this.handler.setPerson(null);
 
-        final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-            this.templatesTable().get(templateId);
+        final TemplateModel templateModel =
+                this.templatesTable().get(templateId);
         if (null == templateModel)
             this.clearValues();
-        else
-            if (templateModel.optionalFieldsIsEmpty())
+        else if (templateModel.optionalFieldsIsEmpty())
+            this.clearValues();
+        else {
+            final NonNullOptionalFields
+                    optionalFields = templateModel.optionalFieldsClone();
+            if (null == optionalFields)
                 this.clearValues();
             else
-            {
-                final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                    optionalFields = templateModel.optionalFieldsClone();
-                if (null == optionalFields)
-                    this.clearValues();
-                else
-                    this.showSetOptionalFieldValuesAlertDialog(templateModel, optionalFields);
-            }
+                this.showSetOptionalFieldValuesAlertDialog(templateModel, optionalFields);
+        }
     }
 }

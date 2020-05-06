@@ -1,369 +1,341 @@
 package org.wheatgenetics.coordinate;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.res.Resources.NotFoundException
- * android.view.View
- * android.view.View.OnClickListener
- * android.widget.Button
- * android.widget.TextView
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.PluralsRes
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.androidlibrary.AlertDialog
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.StringGetter
- * org.wheatgenetics.coordinate.Types.RequestCode
- *
- * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester
- * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler
- * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
- * org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler
- * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
- * org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
- * org.wheatgenetics.coordinate.tc.TemplateCreator
- * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
- *
- * org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester
- * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
- * org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester
- */
-@java.lang.SuppressWarnings({"unused"})
-class TestAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog implements
-org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler   ,
-org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler,
-org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler           ,
-org.wheatgenetics.coordinate.tc.TemplateCreator.Handler                                ,
-org.wheatgenetics.coordinate.StringGetter
-{
+import android.app.Activity;
+import android.content.res.Resources;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester;
+import org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester;
+import org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester;
+import org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester;
+import org.wheatgenetics.coordinate.tc.TemplateCreator;
+import org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester;
+import org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester;
+import org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester;
+
+import java.util.Locale;
+
+class TestAlertDialog extends AlertDialog implements
+        AddOptionalFieldAlertDialogTester.Handler,
+        CheckAndAddOptionalFieldsAlertDialog.Handler,
+        AssignTitleRowsColsAlertDialogTester.Handler,
+        TemplateCreator.Handler,
+        StringGetter {
     // region Fields
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode;
+    @Types.RequestCode
+    private final int requestCode;
 
-    private android.widget.TextView textView;
+    private TextView textView;
 
-    private org.wheatgenetics.coordinate.model.TemplateModel                 templateModel = null;
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-        nonNullOptionalFieldsInstance = null;                                           // lazy load
-    private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester
-        addOptionalFieldAlertDialogTester = null;                                       // lazy load
-    private org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog
-        checkAndAddOptionalFieldsAlertDialog = null;                                    // lazy load
+    private TemplateModel templateModel = null;
+    private NonNullOptionalFields
+            nonNullOptionalFieldsInstance = null;                                           // lazy load
+    private AddOptionalFieldAlertDialogTester
+            addOptionalFieldAlertDialogTester = null;                                       // lazy load
+    private CheckAndAddOptionalFieldsAlertDialog
+            checkAndAddOptionalFieldsAlertDialog = null;                                    // lazy load
 
-    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
-        excludedRowsOrColsAlertDialogTesterInstance = null;                             // lazy load
-    private org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester
-        generatedExcludedCellsAlertDialogTester = null;                                 // lazy load
-    private org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester
-        excludeAlertDialogTester = null;                                                // lazy load
-    private org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester
-        setNumberingAlertDialogTester = null;                                           // lazy load
-    private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester
-        setExcludesOptionalFieldsNumberingAlertDialogTester = null;                     // lazy load
-    private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester
-        assignTitleRowsColsAlertDialogTester = null;                                    // lazy load
+    private ExcludedRowsOrColsAlertDialogTester
+            excludedRowsOrColsAlertDialogTesterInstance = null;                             // lazy load
+    private GeneratedExcludedCellsAlertDialogTester
+            generatedExcludedCellsAlertDialogTester = null;                                 // lazy load
+    private ExcludeAlertDialogTester
+            excludeAlertDialogTester = null;                                                // lazy load
+    private SetNumberingAlertDialogTester
+            setNumberingAlertDialogTester = null;                                           // lazy load
+    private SetExcludesOptionalFieldsNumberingAlertDialogTester
+            setExcludesOptionalFieldsNumberingAlertDialogTester = null;                     // lazy load
+    private AssignTitleRowsColsAlertDialogTester
+            assignTitleRowsColsAlertDialogTester = null;                                    // lazy load
 
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator = null;     // lazy load
+    private TemplateCreator templateCreator = null;     // lazy load
     // endregion
 
+    TestAlertDialog(final Activity activity,
+                    @Types.RequestCode final int requestCode) {
+        super(activity);
+        this.requestCode = requestCode;
+    }
+
     // region Private Methods
-    private void refreshText()
-    {
-        final java.lang.StringBuilder textBuilder = new java.lang.StringBuilder();
+    private void refreshText() {
+        final StringBuilder textBuilder = new StringBuilder();
 
         if (null != this.nonNullOptionalFieldsInstance)
             textBuilder.append(this.nonNullOptionalFieldsInstance.toJson());
 
-        if (null != this.templateModel)
-        {
+        if (null != this.templateModel) {
             {
-                final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                    nonNullOptionalFields = this.templateModel.optionalFields();
-                if (null != nonNullOptionalFields)
-                {
+                final NonNullOptionalFields
+                        nonNullOptionalFields = this.templateModel.optionalFields();
+                if (null != nonNullOptionalFields) {
                     if (textBuilder.length() > 0) textBuilder.append('\n');
                     textBuilder.append(nonNullOptionalFields.toJson());
                 }
             }
             if (textBuilder.length() > 0) textBuilder.append('\n');
             textBuilder.append("generatedExcludedCellsAmount=").append(
-                this.templateModel.getGeneratedExcludedCellsAmount());
+                    this.templateModel.getGeneratedExcludedCellsAmount());
             {
-                final java.lang.String excludedCellsAsJson =
-                    this.templateModel.getExcludedCellsAsJson();
-                if (null != excludedCellsAsJson)
-                {
+                final String excludedCellsAsJson =
+                        this.templateModel.getExcludedCellsAsJson();
+                if (null != excludedCellsAsJson) {
                     if (textBuilder.length() > 0) textBuilder.append('\n');
                     textBuilder.append(excludedCellsAsJson);
                 }
             }
 
             if (textBuilder.length() > 0) textBuilder.append('\n');
-            textBuilder.append(java.lang.String.format("colNumbering=%b, rowNumbering=%b",
-                this.templateModel.getColNumbering(), this.templateModel.getRowNumbering()));
+            textBuilder.append(String.format("colNumbering=%b, rowNumbering=%b",
+                    this.templateModel.getColNumbering(), this.templateModel.getRowNumbering()));
 
             if (textBuilder.length() > 0) textBuilder.append('\n');
-            textBuilder.append(java.lang.String.format(java.util.Locale.getDefault(),
-                "title=%s, type=%d, rows=%d, cols=%d", this.templateModel.getTitle(),
-                this.templateModel.getType().getCode(), this.templateModel.getRows(),
-                this.templateModel.getCols()));
+            textBuilder.append(String.format(Locale.getDefault(),
+                    "title=%s, type=%d, rows=%d, cols=%d", this.templateModel.getTitle(),
+                    this.templateModel.getType().getCode(), this.templateModel.getRows(),
+                    this.templateModel.getCols()));
         }
 
         if (null != this.textView) this.textView.setText(textBuilder.toString());
     }
 
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields()
-    {
-        return null == this.templateModel                                                 ?
-            null == this.nonNullOptionalFieldsInstance                                    ?
-                this.nonNullOptionalFieldsInstance =
-                    new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(
-                        this)                                                   :
-                this.nonNullOptionalFieldsInstance                                         :
-            this.templateModel.optionalFields()                                            ;
+    private NonNullOptionalFields nonNullOptionalFields() {
+        return null == this.templateModel ?
+                null == this.nonNullOptionalFieldsInstance ?
+                        this.nonNullOptionalFieldsInstance =
+                                new NonNullOptionalFields(
+                                        this) :
+                        this.nonNullOptionalFieldsInstance :
+                this.templateModel.optionalFields();
     }
 
-    private void addOptionalField()
-    {
+    private void addOptionalField() {
         if (null == this.addOptionalFieldAlertDialogTester) this.addOptionalFieldAlertDialogTester =
-            new org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester(
-                this.activity(),this);
+                new AddOptionalFieldAlertDialogTester(
+                        this.activity(), this);
         this.addOptionalFieldAlertDialogTester.test(this.nonNullOptionalFields());
     }
 
-    private void checkAndAddOptionalField()
-    {
+    private void checkAndAddOptionalField() {
         if (null == this.checkAndAddOptionalFieldsAlertDialog)
             this.checkAndAddOptionalFieldsAlertDialog =
-                new org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog(
-                    this.activity(),this);
+                    new CheckAndAddOptionalFieldsAlertDialog(
+                            this.activity(), this);
         this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
     }
 
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
-    excludedRowsOrColsAlertDialogTester()
-    {
+    @NonNull
+    private ExcludedRowsOrColsAlertDialogTester
+    excludedRowsOrColsAlertDialogTester() {
         if (null == this.excludedRowsOrColsAlertDialogTesterInstance)
             this.excludedRowsOrColsAlertDialogTesterInstance =
-                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester(
-                    this.activity(), this.templateModel);
+                    new ExcludedRowsOrColsAlertDialogTester(
+                            this.activity(), this.templateModel);
         return this.excludedRowsOrColsAlertDialogTesterInstance;
     }
 
-    private void excludeRows() { this.excludedRowsOrColsAlertDialogTester().testExcludedRows(); }
-    private void excludeCols() { this.excludedRowsOrColsAlertDialogTester().testExcludedCols(); }
+    private void excludeRows() {
+        this.excludedRowsOrColsAlertDialogTester().testExcludedRows();
+    }
 
-    private void setGeneratedAmount()
-    {
+    private void excludeCols() {
+        this.excludedRowsOrColsAlertDialogTester().testExcludedCols();
+    }
+
+    private void setGeneratedAmount() {
         if (null == this.generatedExcludedCellsAlertDialogTester)
             this.generatedExcludedCellsAlertDialogTester =
-                new org.wheatgenetics.coordinate.tc.exclude.GeneratedExcludedCellsAlertDialogTester(
-                    this.activity(), this.templateModel);
+                    new GeneratedExcludedCellsAlertDialogTester(
+                            this.activity(), this.templateModel);
         this.generatedExcludedCellsAlertDialogTester.testGeneratedExcludedCells();
     }
 
-    private void exclude()
-    {
+    private void exclude() {
         if (null == this.excludeAlertDialogTester) this.excludeAlertDialogTester =
-            new org.wheatgenetics.coordinate.tc.exclude.ExcludeAlertDialogTester(
-                this.activity(), this.requestCode, this.templateModel);
+                new ExcludeAlertDialogTester(
+                        this.activity(), this.requestCode, this.templateModel);
         this.excludeAlertDialogTester.testExclude();
     }
 
-    private void setNumbering()
-    {
+    private void setNumbering() {
         if (null == this.setNumberingAlertDialogTester) this.setNumberingAlertDialogTester =
-            new org.wheatgenetics.coordinate.tc.SetNumberingAlertDialogTester(
-                this.activity(), this.templateModel);
+                new SetNumberingAlertDialogTester(
+                        this.activity(), this.templateModel);
         this.setNumberingAlertDialogTester.testSetNumbering();
     }
 
-    private void setExcludesOptionalFieldsNumbering()
-    {
+    private void setExcludesOptionalFieldsNumbering() {
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialogTester)
             this.setExcludesOptionalFieldsNumberingAlertDialogTester = new
-                org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialogTester(
+                    SetExcludesOptionalFieldsNumberingAlertDialogTester(
                     this.activity(), this.requestCode, this.templateModel);
         this.setExcludesOptionalFieldsNumberingAlertDialogTester
-            .testSetExcludesOptionalFieldsNumbering();
+                .testSetExcludesOptionalFieldsNumbering();
     }
 
-    private void assignTitleRowsCols()
-    {
+    private void assignTitleRowsCols() {
         if (null == this.assignTitleRowsColsAlertDialogTester)
             this.assignTitleRowsColsAlertDialogTester =
-                new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester(
-                    this.activity(), this.templateModel,this);
+                    new AssignTitleRowsColsAlertDialogTester(
+                            this.activity(), this.templateModel, this);
         this.assignTitleRowsColsAlertDialogTester.testAssignTitleRowsCols();
-    }
-
-
-    private void createTemplate()
-    {
-        if (null == this.templateCreator)
-            this.templateCreator = new org.wheatgenetics.coordinate.tc.TemplateCreator(
-                this.activity(), this.requestCode,this);
-        this.templateCreator.create();
     }
     // endregion
 
-    TestAlertDialog(final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode)
-    { super(activity); this.requestCode = requestCode; }
+    private void createTemplate() {
+        if (null == this.templateCreator)
+            this.templateCreator = new TemplateCreator(
+                    this.activity(), this.requestCode, this);
+        this.templateCreator.create();
+    }
 
     // region Overridden Methods
-    @java.lang.Override public void configure()
-    {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.TestAlertDialogTitle);
+    @Override
+    public void configure() {
+        this.setTitle(R.string.TestAlertDialogTitle);
         {
-            final android.view.View view = this.inflate(org.wheatgenetics.coordinate.R.layout.test);
-            if (null != view)
-            {
-                this.textView = view.findViewById(org.wheatgenetics.coordinate.R.id.textView);
+            final View view = this.inflate(R.layout.test);
+            if (null != view) {
+                this.textView = view.findViewById(R.id.textView);
                 {
-                    final android.widget.Button addOptionalFieldButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.addOptionalFieldButton);
+                    final Button addOptionalFieldButton = view.findViewById(
+                            R.id.addOptionalFieldButton);
                     if (null != addOptionalFieldButton) addOptionalFieldButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            {
-                                org.wheatgenetics.coordinate
-                                    .TestAlertDialog.this.addOptionalField();
-                            }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.addOptionalField();
+                                }
+                            });
                 }
                 {
-                    final android.widget.Button checkAndAddOptionalFieldButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.checkAndAddOptionalFieldButton);
+                    final Button checkAndAddOptionalFieldButton = view.findViewById(
+                            R.id.checkAndAddOptionalFieldButton);
                     if (null != checkAndAddOptionalFieldButton)
-                    checkAndAddOptionalFieldButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            {
-                                org.wheatgenetics.coordinate
-                                    .TestAlertDialog.this.checkAndAddOptionalField();
-                            }
-                        });
+                        checkAndAddOptionalFieldButton.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View v) {
+                                        TestAlertDialog.this.checkAndAddOptionalField();
+                                    }
+                                });
                 }
                 {
-                    final android.widget.Button refreshTextButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.refreshTextButton);
+                    final Button refreshTextButton = view.findViewById(
+                            R.id.refreshTextButton);
                     if (null != refreshTextButton) refreshTextButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.refreshText(); }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.refreshText();
+                                }
+                            });
                 }
                 {
-                    final android.widget.Button excludeRowsButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.excludeRowsButton);
+                    final Button excludeRowsButton = view.findViewById(
+                            R.id.excludeRowsButton);
                     if (null != excludeRowsButton) excludeRowsButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeRows(); }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.excludeRows();
+                                }
+                            });
 
                 }
                 {
-                    final android.widget.Button excludeColsButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.excludeColsButton);
+                    final Button excludeColsButton = view.findViewById(
+                            R.id.excludeColsButton);
                     if (null != excludeColsButton) excludeColsButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.excludeCols(); }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.excludeCols();
+                                }
+                            });
 
                 }
                 {
-                    final android.widget.Button setGeneratedAmountButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.setGeneratedAmountButton);
+                    final Button setGeneratedAmountButton = view.findViewById(
+                            R.id.setGeneratedAmountButton);
                     if (null != setGeneratedAmountButton)
                         setGeneratedAmountButton.setOnClickListener(
-                            new android.view.View.OnClickListener()
-                            {
-                                @java.lang.Override public void onClick(final android.view.View v)
-                                {
-                                    org.wheatgenetics.coordinate
-                                        .TestAlertDialog.this.setGeneratedAmount();
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View v) {
+                                        TestAlertDialog.this.setGeneratedAmount();
+                                    }
+                                });
+                }
+                {
+                    final Button excludeButton = view.findViewById(
+                            R.id.excludeButton);
+                    if (null != excludeButton) excludeButton.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.exclude();
                                 }
                             });
                 }
                 {
-                    final android.widget.Button excludeButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.excludeButton);
-                    if (null != excludeButton) excludeButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.exclude(); }
-                        });
-                }
-                {
-                    final android.widget.Button setNumberingButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.setNumberingButton);
+                    final Button setNumberingButton = view.findViewById(
+                            R.id.setNumberingButton);
                     if (null != setNumberingButton) setNumberingButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.setNumbering(); }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.setNumbering();
+                                }
+                            });
                 }
                 {
-                    final android.widget.Button setExcludesOptionalFieldsNumberingButton =
-                        view.findViewById(org.wheatgenetics.coordinate
-                            .R.id.setExcludesOptionalFieldsNumberingButton);
+                    final Button setExcludesOptionalFieldsNumberingButton =
+                            view.findViewById(R.id.setExcludesOptionalFieldsNumberingButton);
                     if (null != setExcludesOptionalFieldsNumberingButton)
                         setExcludesOptionalFieldsNumberingButton.setOnClickListener(
-                            new android.view.View.OnClickListener()
-                            {
-                                @java.lang.Override public void onClick(final android.view.View v)
-                                {
-                                    org.wheatgenetics.coordinate.TestAlertDialog
-                                        .this.setExcludesOptionalFieldsNumbering();
-                                }
-                            });
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View v) {
+                                        TestAlertDialog
+                                                .this.setExcludesOptionalFieldsNumbering();
+                                    }
+                                });
                 }
                 {
-                    final android.widget.Button assignTitleRowsColsButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.assignTitleRowsColsButton);
+                    final Button assignTitleRowsColsButton = view.findViewById(
+                            R.id.assignTitleRowsColsButton);
                     if (null != assignTitleRowsColsButton)
                         assignTitleRowsColsButton.setOnClickListener(
-                            new android.view.View.OnClickListener()
-                            {
-                                @java.lang.Override public void onClick(final android.view.View v)
-                                {
-                                    org.wheatgenetics.coordinate
-                                        .TestAlertDialog.this.assignTitleRowsCols();
-                                }
-                            });
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View v) {
+                                        TestAlertDialog.this.assignTitleRowsCols();
+                                    }
+                                });
                 }
                 {
-                    final android.widget.Button createTemplateButton = view.findViewById(
-                        org.wheatgenetics.coordinate.R.id.createTemplateButton);
+                    final Button createTemplateButton = view.findViewById(
+                            R.id.createTemplateButton);
                     if (null != createTemplateButton) createTemplateButton.setOnClickListener(
-                        new android.view.View.OnClickListener()
-                        {
-                            @java.lang.Override public void onClick(final android.view.View v)
-                            { org.wheatgenetics.coordinate.TestAlertDialog.this.createTemplate(); }
-                        });
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(final View v) {
+                                    TestAlertDialog.this.createTemplate();
+                                }
+                            });
                 }
             }
             this.setView(view);
@@ -372,12 +344,15 @@ org.wheatgenetics.coordinate.StringGetter
     }
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester.Handler Overridden Method
-    @java.lang.Override public void handleAddOptionalFieldDone() { this.refreshText(); }
+    @Override
+    public void handleAddOptionalFieldDone() {
+        this.refreshText();
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler Overridden Method
-    @java.lang.Override public void showCheckAndAddOptionalFieldsAlertDialogAgain()
-    {
+    @Override
+    public void showCheckAndAddOptionalFieldsAlertDialogAgain() {
         this.refreshText();
         if (null != this.checkAndAddOptionalFieldsAlertDialog)
             this.checkAndAddOptionalFieldsAlertDialog.show(this.nonNullOptionalFields());
@@ -385,25 +360,37 @@ org.wheatgenetics.coordinate.StringGetter
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler Overridden Method
-    @java.lang.Override public void handleAssignDone() { this.refreshText(); }
+    @Override
+    public void handleAssignDone() {
+        this.refreshText();
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.tc.TemplateCreator.Handler Overridden Method
-    @java.lang.Override public void handleTemplateCreated(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    { this.templateModel = templateModel; this.refreshText(); }
+    @Override
+    public void handleTemplateCreated(@NonNull final TemplateModel templateModel) {
+        this.templateModel = templateModel;
+        this.refreshText();
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.activity().getString(resId); }
+    @Override
+    @Nullable
+    public String get(
+            @StringRes final int resId) {
+        return this.activity().getString(resId);
+    }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException
-    { return this.activity().getResources().getQuantityString(resId, quantity, formatArgs); }
+    @Override
+    @NonNull
+    public String getQuantity(
+            @PluralsRes final int resId,
+            @IntRange(from = 0) final int quantity,
+            @Nullable final Object... formatArgs)
+            throws Resources.NotFoundException {
+        return this.activity().getResources().getQuantityString(resId, quantity, formatArgs);
+    }
     // endregion
     // endregion
 }

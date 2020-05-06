@@ -1,97 +1,86 @@
 package org.wheatgenetics.coordinate.pe;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
- * org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler
- *
- * org.wheatgenetics.coordinate.database.ProjectsTable
- *
- * org.wheatgenetics.coordinate.model.ProjectModel
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ProjectExportPreprocessor extends java.lang.Object
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    {
-        public abstract void exportProject(
-        @androidx.annotation.IntRange(from = 1) long projectId, java.lang.String directoryName);
-    }
+import android.app.Activity;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.database.ProjectsTable;
+import org.wheatgenetics.coordinate.model.ProjectModel;
+
+public class ProjectExportPreprocessor {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity;
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler handler;
-
-    @androidx.annotation.IntRange(from = 1) private long projectId;
-
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTableInstance = null;  // ll
-    private org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog
-        getExportFileNameAlertDialogInstance = null;                                    // lazy load
+    @NonNull
+    private final Activity activity;
+    @NonNull
+    private final
+    ProjectExportPreprocessor.Handler handler;
+    @IntRange(from = 1)
+    private long projectId;
+    private ProjectsTable projectsTableInstance = null;  // ll
+    private GetExportFileNameAlertDialog
+            getExportFileNameAlertDialogInstance = null;                                    // lazy load
+    public ProjectExportPreprocessor(
+            @NonNull final Activity activity,
+            @NonNull final
+            ProjectExportPreprocessor.Handler handler) {
+        super();
+        this.activity = activity;
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.ProjectsTable projectsTable()
-    {
+    @NonNull
+    private ProjectsTable projectsTable() {
         if (null == this.projectsTableInstance) this.projectsTableInstance =
-            new org.wheatgenetics.coordinate.database.ProjectsTable(this.activity);
+                new ProjectsTable(this.activity);
         return this.projectsTableInstance;
     }
 
-    private void exportProject(final java.lang.String directoryName)
-    { this.handler.exportProject(this.projectId, directoryName);  }
+    private void exportProject(final String directoryName) {
+        this.handler.exportProject(this.projectId, directoryName);
+    }
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog getExportFileNameAlertDialog()
-    {
+    @NonNull
+    private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
         if (null == this.getExportFileNameAlertDialogInstance)
             this.getExportFileNameAlertDialogInstance =
-                new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog(this.activity,
-                    new org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog.Handler()
-                    {
-                        @java.lang.Override
-                        public void handleGetFileNameDone(final java.lang.String fileName)
-                        {
-                            org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor
-                                .this.exportProject(fileName);
-                        }
-                    });
+                    new GetExportFileNameAlertDialog(this.activity,
+                            new GetExportFileNameAlertDialog.Handler() {
+                                @Override
+                                public void handleGetFileNameDone(final String fileName) {
+                                    ProjectExportPreprocessor
+                                            .this.exportProject(fileName);
+                                }
+                            });
         return this.getExportFileNameAlertDialogInstance;
     }
 
-    private void preprocessAfterSettingProjectId(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    { if (null != projectModel) this.getExportFileNameAlertDialog().show(projectModel.getTitle()); }
+    private void preprocessAfterSettingProjectId(@Nullable final ProjectModel projectModel) {
+        if (null != projectModel) this.getExportFileNameAlertDialog().show(projectModel.getTitle());
+    }
     // endregion
 
-    public ProjectExportPreprocessor(
-    @androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor.Handler handler)
-    { super(); this.activity = activity; this.handler = handler; }
-
     // region Public Methods
-    public void preprocess(@androidx.annotation.IntRange(from = 1) final long projectId)
-    {
+    public void preprocess(@IntRange(from = 1) final long projectId) {
         this.projectId = projectId;
         this.preprocessAfterSettingProjectId(this.projectsTable().get(this.projectId));
     }
 
-    public void preprocess(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ProjectModel projectModel)
-    {
-        if (null != projectModel)
-        {
+    public void preprocess(@Nullable final ProjectModel projectModel) {
+        if (null != projectModel) {
             this.projectId = projectModel.getId();
             this.preprocessAfterSettingProjectId(projectModel);
         }
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void exportProject(
+                @IntRange(from = 1) long projectId, String directoryName);
     }
     // endregion
 }

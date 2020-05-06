@@ -1,90 +1,87 @@
 package org.wheatgenetics.coordinate.ti;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.javalib.Dir.PermissionException
- * org.wheatgenetics.javalib.Dir.PermissionRequestedException
- *
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.SelectAlertDialog
- * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- * org.wheatgenetics.coordinate.TemplatesDir
- * org.wheatgenetics.coordinate.Utils
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateImportPreprocessor extends java.lang.Object
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    { public abstract void importTemplate(java.lang.String fileName); }
+import android.app.Activity;
 
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.SelectAlertDialog;
+import org.wheatgenetics.coordinate.TemplatesDir;
+import org.wheatgenetics.coordinate.Utils;
+import org.wheatgenetics.javalib.Dir;
+
+import java.io.IOException;
+
+public class TemplateImportPreprocessor {
     // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity activity   ;
-                                 private final int                  requestCode;
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler handler;
+    @NonNull
+    private final Activity activity;
+    private final int requestCode;
+    @NonNull
+    private final
+    TemplateImportPreprocessor.Handler handler;
+    public TemplateImportPreprocessor(
+            @NonNull final Activity activity, final int requestCode,
+            @NonNull final
+            TemplateImportPreprocessor.Handler handler) {
+        super();
+        this.activity = activity;
+        this.requestCode = requestCode;
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    private void showLongToast(final java.lang.String text)
-    { org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text); }
+    private void showLongToast(final String text) {
+        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+    }
 
     // region selectExportedTemplate() Private Methods
-    private void importTemplate(java.lang.String fileName)
-    { this.handler.importTemplate(fileName); }
+    private void importTemplate(String fileName) {
+        this.handler.importTemplate(fileName);
+    }
 
-    private void selectExportedTemplate(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.TemplatesDir templatesDir)
-    {
+    private void selectExportedTemplate(@NonNull final TemplatesDir templatesDir) {
         // noinspection CStyleArrayDeclaration
-        final java.lang.String fileNames[];
-        try { fileNames = templatesDir.listXml() /* throws PermissionException */; }
-        catch (final org.wheatgenetics.javalib.Dir.PermissionException e)
-        { this.showLongToast(e.getMessage()); return; }
+        final String fileNames[];
+        try {
+            fileNames = templatesDir.listXml() /* throws PermissionException */;
+        } catch (final Dir.PermissionException e) {
+            this.showLongToast(e.getMessage());
+            return;
+        }
 
-        if (null != fileNames) if (fileNames.length > 0)
-        {
-            final org.wheatgenetics.coordinate.SelectAlertDialog selectAlertDialog =
-                new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity,
-                    new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                    {
-                        @java.lang.Override public void select(final int which)
-                        {
-                            org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor
-                                .this.importTemplate(fileNames[which]);
-                        }
-                    });
+        if (null != fileNames) if (fileNames.length > 0) {
+            final SelectAlertDialog selectAlertDialog =
+                    new SelectAlertDialog(this.activity,
+                            new SelectAlertDialog.Handler() {
+                                @Override
+                                public void select(final int which) {
+                                    TemplateImportPreprocessor
+                                            .this.importTemplate(fileNames[which]);
+                                }
+                            });
             selectAlertDialog.show(
-                org.wheatgenetics.coordinate.R.string.SelectExportedTemplateTitle, fileNames);
+                    R.string.SelectExportedTemplateTitle, fileNames);
         }
     }
     // endregion
     // endregion
 
-    public TemplateImportPreprocessor(
-    @androidx.annotation.NonNull final android.app.Activity activity, final int requestCode,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor.Handler handler)
-    { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
-
-    public void preprocess()
-    {
-        try
-        {
-            final org.wheatgenetics.coordinate.TemplatesDir templatesDir =
-                org.wheatgenetics.coordinate.Utils.templatesDir(             // throws IOException,
-                    this.activity, this.requestCode);                        //  PermissionException
+    public void preprocess() {
+        try {
+            final TemplatesDir templatesDir =
+                    Utils.templatesDir(             // throws IOException,
+                            this.activity, this.requestCode);                        //  PermissionException
             this.selectExportedTemplate(templatesDir);
-        }
-        catch (final java.io.IOException | org.wheatgenetics.javalib.Dir.PermissionException e)
-        {
-            if (!(e instanceof org.wheatgenetics.javalib.Dir.PermissionRequestedException))
+        } catch (final IOException | Dir.PermissionException e) {
+            if (!(e instanceof Dir.PermissionRequestedException))
                 this.showLongToast(e.getMessage());
         }
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void importTemplate(String fileName);
     }
 }

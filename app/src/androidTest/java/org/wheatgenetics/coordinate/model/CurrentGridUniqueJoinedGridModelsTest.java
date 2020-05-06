@@ -1,5 +1,17 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -18,36 +30,36 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
  * org.wheatgenetics.coordinate.model.JoinedGridModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class CurrentGridUniqueJoinedGridModelsTest extends java.lang.Object
-implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class CurrentGridUniqueJoinedGridModelsTest extends Object
+implements StringGetter
 {
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId) { default: Assert.fail(); return null; }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
-    @org.junit.Test() public void addWorks()
+    @Test() public void addWorks()
     {
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels
+        final CurrentGridUniqueJoinedGridModels
             currentGridUniqueJoinedGridModels = new
-            org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModels(this);
-        org.junit.Assert.assertFalse (currentGridUniqueJoinedGridModels.add(null));
-        org.junit.Assert.assertEquals(0, currentGridUniqueJoinedGridModels.size());
+            CurrentGridUniqueJoinedGridModels(this);
+        Assert.assertFalse (currentGridUniqueJoinedGridModels.add(null));
+        Assert.assertEquals(0, currentGridUniqueJoinedGridModels.size());
 
         {
-            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                new org.wheatgenetics.coordinate.model.JoinedGridModel(
+            final JoinedGridModel joinedGridModel =
+                new JoinedGridModel(
                     /* id                           => */5,
                     /* projectId                    => */0,
                     /* person                       => */"testPerson",
@@ -73,14 +85,14 @@ implements org.wheatgenetics.coordinate.StringGetter
                     /* templateTimestamp            => */333,
 
                     /* entryModels                  => */null);
-            org.junit.Assert.assertFalse(currentGridUniqueJoinedGridModels.add(joinedGridModel));
-            org.junit.Assert.assertEquals(0, currentGridUniqueJoinedGridModels.size());
+            Assert.assertFalse(currentGridUniqueJoinedGridModels.add(joinedGridModel));
+            Assert.assertEquals(0, currentGridUniqueJoinedGridModels.size());
         }
 
         {
-            final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+            final CurrentGridUniqueJoinedGridModel
                 currentGridUniqueJoinedGridModel =
-                    new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
+                    new CurrentGridUniqueJoinedGridModel(
                         /* id                           => */5,
                         /* projectId                    => */0,
                         /* person                       => */"testPerson",
@@ -106,11 +118,11 @@ implements org.wheatgenetics.coordinate.StringGetter
                         /* templateTimestamp            => */333,
 
                         /* currentGridUniqueEntryModels => */null);
-            org.junit.Assert.assertTrue(
+            Assert.assertTrue(
                 currentGridUniqueJoinedGridModels.add(currentGridUniqueJoinedGridModel));
-            org.junit.Assert.assertEquals(
+            Assert.assertEquals(
                 currentGridUniqueJoinedGridModel, currentGridUniqueJoinedGridModels.get(0));
         }
-        org.junit.Assert.assertEquals(1, currentGridUniqueJoinedGridModels.size());
+        Assert.assertEquals(1, currentGridUniqueJoinedGridModels.size());
     }
 }

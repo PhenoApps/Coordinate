@@ -1,74 +1,62 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * Uses:
- * android.annotation.SuppressLint
- * android.app.Activity
- * android.view.View
- * android.view.View.OnClickListener
- * android.widget.EditText
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.androidlibrary.AlertDialog
- * org.wheatgenetics.androidlibrary.Utils
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- */
-class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) interface Handler
-    { public abstract void handleAddOptionalFieldDone(); }
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.view.View;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.R;
+
+class AddOptionalFieldAlertDialog extends AlertDialog {
     // region Fields
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler;
-
-    private android.widget.EditText                             nameEditText, defaultValueEditText;
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
+    @NonNull
+    private final
+    AddOptionalFieldAlertDialog.Handler handler;
+    private EditText nameEditText, defaultValueEditText;
+    private NonNullOptionalFields nonNullOptionalFields;
+    AddOptionalFieldAlertDialog(final Activity activity, @NonNull final AddOptionalFieldAlertDialog.Handler handler) {
+        super(activity);
+        this.handler = handler;
+    }
     // endregion
 
-    private void addOptionalField()
-    {
-        final java.lang.String name =
-            org.wheatgenetics.androidlibrary.Utils.getText(this.nameEditText);
+    private void addOptionalField() {
+        final String name =
+                Utils.getText(this.nameEditText);
 
         if (name.length() < 1)
-            this.showToast(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogToast);
-        else
-        {
+            this.showToast(R.string.AddOptionalFieldAlertDialogToast);
+        else {
             if (null != this.nonNullOptionalFields) this.nonNullOptionalFields.add(
-                /* name  => */ name,
-                /* value => */ org.wheatgenetics.androidlibrary.Utils.getText(
-                    this.defaultValueEditText),
-                /* hint => */null);
-            this.cancelAlertDialog(); this.handler.handleAddOptionalFieldDone();
+                    /* name  => */ name,
+                    /* value => */ Utils.getText(
+                            this.defaultValueEditText),
+                    /* hint => */null);
+            this.cancelAlertDialog();
+            this.handler.handleAddOptionalFieldDone();
         }
     }
 
-    AddOptionalFieldAlertDialog(final android.app.Activity activity, @androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler handler)
-    { super(activity); this.handler = handler; }
-
-    @java.lang.Override public void configure()
-    {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.AddOptionalFieldAlertDialogTitle)
-            .setCancelableToFalse();
+    @Override
+    public void configure() {
+        this.setTitle(R.string.AddOptionalFieldAlertDialogTitle)
+                .setCancelableToFalse();
 
         {
-            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
-                this.layoutInflater().inflate(
-                    org.wheatgenetics.coordinate.R.layout.add_optional_field,null);
+            @SuppressLint({"InflateParams"}) final View view =
+                    this.layoutInflater().inflate(
+                            R.layout.add_optional_field, null);
 
-            if (null != view)
-            {
+            if (null != view) {
                 if (null == this.nameEditText) this.nameEditText = view.findViewById(
-                    org.wheatgenetics.coordinate.R.id.nameEditText);
+                        R.id.nameEditText);
                 if (null == this.defaultValueEditText) this.defaultValueEditText =
-                    view.findViewById(org.wheatgenetics.coordinate.R.id.defaultValueEditText);
+                        view.findViewById(R.id.defaultValueEditText);
             }
 
             this.setView(view);
@@ -77,24 +65,25 @@ class AddOptionalFieldAlertDialog extends org.wheatgenetics.androidlibrary.Alert
         this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
-    void show(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
-    {
-        if (null != nonNullOptionalFields)
-        {
-            if (null != this.nameEditText        ) this.nameEditText.setText        ("");
+    void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
+        if (null != nonNullOptionalFields) {
+            if (null != this.nameEditText) this.nameEditText.setText("");
             if (null != this.defaultValueEditText) this.defaultValueEditText.setText("");
-            this.nonNullOptionalFields = nonNullOptionalFields; this.show();
+            this.nonNullOptionalFields = nonNullOptionalFields;
+            this.show();
 
             if (!this.positiveOnClickListenerHasBeenReplaced()) this.replacePositiveOnClickListener(
-                new android.view.View.OnClickListener()
-                {
-                    @java.lang.Override public void onClick(final android.view.View view)
-                    {
-                        org.wheatgenetics.coordinate.optionalField
-                            .AddOptionalFieldAlertDialog.this.addOptionalField();
-                    }
-                });
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            AddOptionalFieldAlertDialog.this.addOptionalField();
+                        }
+                    });
         }
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    interface Handler {
+        public abstract void handleAddOptionalFieldDone();
     }
 }

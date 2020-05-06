@@ -1,130 +1,117 @@
 package org.wheatgenetics.coordinate.tc.exclude;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog
- * org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ExcludedRowsOrColsAlertDialogTester extends java.lang.Object
-{
-    // region Fields
-    @androidx.annotation.NonNull private final android.app.Activity                        activity;
-    @androidx.annotation.NonNull private final org.wheatgenetics.coordinate.model.TemplateModel
-        templateModel;
+import android.app.Activity;
 
-    private org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog           // lazy
-        excludedRowsAlertDialogInstance = null, excludedColsAlertDialogInstance = null;     // loads
-    private java.lang.String rowLabelInstance = null, colLabelInstance = null;         // lazy loads
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+public class ExcludedRowsOrColsAlertDialogTester {
+    // region Fields
+    @NonNull
+    private final Activity activity;
+    @NonNull
+    private final TemplateModel
+            templateModel;
+
+    private ExcludedRowsOrColsAlertDialog           // lazy
+            excludedRowsAlertDialogInstance = null, excludedColsAlertDialogInstance = null;     // loads
+    private String rowLabelInstance = null, colLabelInstance = null;         // lazy loads
     // endregion
 
+    public ExcludedRowsOrColsAlertDialogTester(
+            @NonNull final Activity activity,
+            @NonNull final TemplateModel
+                    templateModel) {
+        super();
+        this.activity = activity;
+        this.templateModel = templateModel;
+    }
+
     // region Private Methods
-    @androidx.annotation.NonNull private java.lang.String rowLabel()
-    {
+    @NonNull
+    private String rowLabel() {
         if (null == this.rowLabelInstance) this.rowLabelInstance = this.activity.getString(
-            org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel);
+                R.string.ExcludedRowsOrColsAlertDialogRowLabel);
         return this.rowLabelInstance;
     }
 
     // region excludedRowsAlertDialog() Private Methods
-    private void excludeRows(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @androidx.annotation.NonNull final boolean checkedItems[])
-    {
+    private void excludeRows(@SuppressWarnings({"CStyleArrayDeclaration"})
+                             @NonNull final boolean checkedItems[]) {
         int i = 1;
-        for (final boolean checkedItem: checkedItems)
-        {
+        for (final boolean checkedItem : checkedItems) {
             if (checkedItem) this.templateModel.addExcludedRow(i);
             i++;
         }
     }
-
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog excludedRowsAlertDialog()
-    {
-        if (null == this.excludedRowsAlertDialogInstance) this.excludedRowsAlertDialogInstance =
-            new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogRowLabel,
-                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override public void excludeRowsOrCols(
-                    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-                    @androidx.annotation.NonNull final boolean checkedItems[])
-                    {
-                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
-                            .this.excludeRows(checkedItems);
-                    }
-                });
-        return this.excludedRowsAlertDialogInstance;
-    }
     // endregion
 
-    @androidx.annotation.NonNull private java.lang.String colLabel()
-    {
+    @NonNull
+    private ExcludedRowsOrColsAlertDialog excludedRowsAlertDialog() {
+        if (null == this.excludedRowsAlertDialogInstance) this.excludedRowsAlertDialogInstance =
+                new ExcludedRowsOrColsAlertDialog(this.activity,
+                        R.string.ExcludedRowsOrColsAlertDialogRowLabel,
+                        new ExcludedRowsOrColsAlertDialog.Handler() {
+                            @Override
+                            public void excludeRowsOrCols(
+                                    @SuppressWarnings({"CStyleArrayDeclaration"})
+                                    @NonNull final boolean checkedItems[]) {
+                                ExcludedRowsOrColsAlertDialogTester
+                                        .this.excludeRows(checkedItems);
+                            }
+                        });
+        return this.excludedRowsAlertDialogInstance;
+    }
+
+    @NonNull
+    private String colLabel() {
         if (null == this.colLabelInstance) this.colLabelInstance = this.activity.getString(
-            org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel);
+                R.string.ExcludedRowsOrColsAlertDialogColumnLabel);
         return this.colLabelInstance;
     }
 
     // region excludedColsAlertDialog() Private Methods
-    private void excludeCols(@java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    @androidx.annotation.NonNull final boolean checkedItems[])
-    {
+    private void excludeCols(@SuppressWarnings({"CStyleArrayDeclaration"})
+                             @NonNull final boolean checkedItems[]) {
         int i = 1;
-        for (final boolean checkedItem: checkedItems)
-        {
+        for (final boolean checkedItem : checkedItems) {
             if (checkedItem) this.templateModel.addExcludedCol(i);
             i++;
         }
     }
+    // endregion
+    // endregion
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog excludedColsAlertDialog()
-    {
+    @NonNull
+    private ExcludedRowsOrColsAlertDialog excludedColsAlertDialog() {
         if (null == this.excludedColsAlertDialogInstance) this.excludedColsAlertDialogInstance =
-            new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog(this.activity,
-                org.wheatgenetics.coordinate.R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
-                new org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialog.Handler()
-                {
-                    @java.lang.Override public void excludeRowsOrCols(
-                    @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-                    @androidx.annotation.NonNull final boolean checkedItems[])
-                    {
-                        org.wheatgenetics.coordinate.tc.exclude.ExcludedRowsOrColsAlertDialogTester
-                            .this.excludeCols(checkedItems);
-                    }
-                });
+                new ExcludedRowsOrColsAlertDialog(this.activity,
+                        R.string.ExcludedRowsOrColsAlertDialogColumnLabel,
+                        new ExcludedRowsOrColsAlertDialog.Handler() {
+                            @Override
+                            public void excludeRowsOrCols(
+                                    @SuppressWarnings({"CStyleArrayDeclaration"})
+                                    @NonNull final boolean checkedItems[]) {
+                                ExcludedRowsOrColsAlertDialogTester
+                                        .this.excludeCols(checkedItems);
+                            }
+                        });
         return this.excludedColsAlertDialogInstance;
     }
-    // endregion
-    // endregion
-
-    public ExcludedRowsOrColsAlertDialogTester(
-    @androidx.annotation.NonNull final android.app.Activity activity,
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.TemplateModel
-        templateModel)
-    { super(); this.activity = activity; this.templateModel = templateModel; }
 
     // region Public Methods
-    public void testExcludedRows()
-    {
+    public void testExcludedRows() {
         this.excludedRowsAlertDialog().show(
-            this.templateModel.rowItems       (this.rowLabel()),
-            this.templateModel.rowCheckedItems()               );
+                this.templateModel.rowItems(this.rowLabel()),
+                this.templateModel.rowCheckedItems());
     }
 
-    public void testExcludedCols()
-    {
+    public void testExcludedCols() {
         this.excludedColsAlertDialog().show(
-            this.templateModel.colItems       (this.colLabel()),
-            this.templateModel.colCheckedItems()               );
+                this.templateModel.colItems(this.colLabel()),
+                this.templateModel.colCheckedItems());
     }
     // endregion
 }

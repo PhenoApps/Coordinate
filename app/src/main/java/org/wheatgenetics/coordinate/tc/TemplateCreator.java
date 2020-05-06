@@ -1,120 +1,120 @@
 package org.wheatgenetics.coordinate.tc;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.res.Resources.NotFoundException
- * android.os.Bundle
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.PluralsRes
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.coordinate.StringGetter
- * org.wheatgenetics.coordinate.Types.RequestCode
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
- * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
- * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateCreator extends java.lang.Object implements
-org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler               ,
-org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler,
-org.wheatgenetics.coordinate.StringGetter
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    {
-        public abstract void handleTemplateCreated(@androidx.annotation.NonNull
-        org.wheatgenetics.coordinate.model.TemplateModel templateModel);
-    }
+import android.app.Activity;
+import android.content.res.Resources;
+import android.os.Bundle;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+public class TemplateCreator implements
+        AssignTitleRowsColsAlertDialog.Handler,
+        SetExcludesOptionalFieldsNumberingAlertDialog.Handler,
+        StringGetter {
     // region Fields
     // region Constructor Fields
-                                                    private final android.app.Activity activity   ;
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    @androidx.annotation.NonNull                    private final
-        org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler;
+    private final Activity activity;
+    @Types.RequestCode
+    private final int requestCode;
+    @NonNull
+    private final
+    TemplateCreator.Handler handler;
+    private TemplateModel templateModel;
     // endregion
-
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel;
-
-    private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
-        assignTitleRowsColsAlertDialogInstance = null;                                  // lazy load
-    private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-        setExcludesOptionalFieldsNumberingAlertDialogInstance = null;                   // lazy load
+    private AssignTitleRowsColsAlertDialog
+            assignTitleRowsColsAlertDialogInstance = null;                                  // lazy load
+    private SetExcludesOptionalFieldsNumberingAlertDialog
+            setExcludesOptionalFieldsNumberingAlertDialogInstance = null;                   // lazy load
+    public TemplateCreator(final Activity activity,
+                           @Types.RequestCode final int requestCode,
+                           @NonNull final
+                           TemplateCreator.Handler handler) {
+        super();
+        this.activity = activity;
+        this.requestCode = requestCode;
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog assignTitleRowsColsAlertDialog()
-    {
+    @NonNull
+    private AssignTitleRowsColsAlertDialog assignTitleRowsColsAlertDialog() {
         if (null == this.assignTitleRowsColsAlertDialogInstance)
             this.assignTitleRowsColsAlertDialogInstance =
-                new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
-                    this.activity,this);
+                    new AssignTitleRowsColsAlertDialog(
+                            this.activity, this);
         return this.assignTitleRowsColsAlertDialogInstance;
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-    setExcludesOptionalFieldsNumberingAlertDialog()
-    {
+    @NonNull
+    private SetExcludesOptionalFieldsNumberingAlertDialog
+    setExcludesOptionalFieldsNumberingAlertDialog() {
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialogInstance)
             this.setExcludesOptionalFieldsNumberingAlertDialogInstance =
-                new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
-                    this.activity, this.requestCode,this);
+                    new SetExcludesOptionalFieldsNumberingAlertDialog(
+                            this.activity, this.requestCode, this);
         return this.setExcludesOptionalFieldsNumberingAlertDialogInstance;
     }
     // endregion
 
-    public TemplateCreator(final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    @androidx.annotation.NonNull                    final
-        org.wheatgenetics.coordinate.tc.TemplateCreator.Handler handler)
-    { super(); this.activity = activity; this.requestCode = requestCode; this.handler = handler; }
-
     // region Overridden Methods
     // region org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler Overridden Method
-    @java.lang.Override public void handleAssignDone()
-    { this.setExcludesOptionalFieldsNumberingAlertDialog().show(this.templateModel); }
-    // endregion
+    @Override
+    public void handleAssignDone() {
+        this.setExcludesOptionalFieldsNumberingAlertDialog().show(this.templateModel);
+    }
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog Overridden Method
-    @java.lang.Override public void handleSetDone()
-    { this.handler.handleTemplateCreated(this.templateModel); }
+    @Override
+    public void handleSetDone() {
+        this.handler.handleTemplateCreated(this.templateModel);
+    }
     // endregion
 
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId) { return this.activity.getString(resId); }
-
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException
-    { return this.activity.getResources().getQuantityString(resId, quantity, formatArgs); }
-    // endregion
+    @Override
+    @Nullable
+    public String get(
+            @StringRes final int resId) {
+        return this.activity.getString(resId);
+    }
     // endregion
 
-    // region Public Methods
-    public void create()
-    {
-        this.templateModel = org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(this);
-        this.assignTitleRowsColsAlertDialog().show(this.templateModel);
+    @Override
+    @NonNull
+    public String getQuantity(
+            @PluralsRes final int resId,
+            @IntRange(from = 0) final int quantity,
+            @Nullable final Object... formatArgs)
+            throws Resources.NotFoundException {
+        return this.activity.getResources().getQuantityString(resId, quantity, formatArgs);
     }
 
-    public void continueExcluding(final android.os.Bundle bundle)
-    {
+    // region Public Methods
+    public void create() {
+        this.templateModel = TemplateModel.makeUserDefined(this);
+        this.assignTitleRowsColsAlertDialog().show(this.templateModel);
+    }
+    // endregion
+    // endregion
+
+    public void continueExcluding(final Bundle bundle) {
         this.templateModel =
-            org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(bundle,this);
+                TemplateModel.makeUserDefined(bundle, this);
         this.handleAssignDone();
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void handleTemplateCreated(@NonNull
+                                                           TemplateModel templateModel);
     }
     // endregion
 }

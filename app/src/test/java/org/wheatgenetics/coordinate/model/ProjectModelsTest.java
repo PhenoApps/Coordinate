@@ -1,5 +1,17 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -18,64 +30,64 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ProjectModel
  * org.wheatgenetics.coordinate.model.ProjectModels
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class ProjectModelsTest
-extends java.lang.Object implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class ProjectModelsTest
+extends Object implements StringGetter
 {
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         // noinspection SwitchStatementWithTooFewBranches
-        switch (resId) { default: org.junit.Assert.fail(); return null; }
+        switch (resId) { default: Assert.fail(); return null; }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
     // region Tests
-    @org.junit.Test() public void addAndGetAndSizeWork()
+    @Test() public void addAndGetAndSizeWork()
     {
-        final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
-            new org.wheatgenetics.coordinate.model.ProjectModels();
+        final ProjectModels projectModels =
+            new ProjectModels();
         {
-            final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
-                new org.wheatgenetics.coordinate.model.ProjectModel(
+            final ProjectModel projectModel =
+                new ProjectModel(
                     "testTitle",this);
             projectModels.add(projectModel);
-            org.junit.Assert.assertEquals(projectModel, projectModels.get(0));
+            Assert.assertEquals(projectModel, projectModels.get(0));
         }
-        org.junit.Assert.assertEquals(1, projectModels.size());
-        org.junit.Assert.assertNull  (projectModels.get(999));
+        Assert.assertEquals(1, projectModels.size());
+        Assert.assertNull  (projectModels.get(999));
     }
 
-    @org.junit.Test() public void getWorks()
-    { org.junit.Assert.assertNull(new org.wheatgenetics.coordinate.model.ProjectModels().get(0)); }
+    @Test() public void getWorks()
+    { Assert.assertNull(new ProjectModels().get(0)); }
 
-    @org.junit.Test() public void titlesWorks()
+    @Test() public void titlesWorks()
     {
-        org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.model.ProjectModels().titles());
+        Assert.assertNull(
+            new ProjectModels().titles());
     }
 
-    @org.junit.Test() public void titlesSucceeds()
+    @Test() public void titlesSucceeds()
     {
         // noinspection CStyleArrayDeclaration
-        final java.lang.String                                 expected[];
-        final org.wheatgenetics.coordinate.model.ProjectModels projectModels =
-            new org.wheatgenetics.coordinate.model.ProjectModels();
+        final String                                 expected[];
+        final ProjectModels projectModels =
+            new ProjectModels();
         {
-            final java.lang.String testTitle1 = "testTitle1", testTitle2 = "testTitle2";
-            expected = new java.lang.String[]{testTitle1, testTitle2};
-            projectModels.add(new org.wheatgenetics.coordinate.model.ProjectModel(
+            final String testTitle1 = "testTitle1", testTitle2 = "testTitle2";
+            expected = new String[]{testTitle1, testTitle2};
+            projectModels.add(new ProjectModel(
                 testTitle1,this));
-            projectModels.add(new org.wheatgenetics.coordinate.model.ProjectModel(
+            projectModels.add(new ProjectModel(
                 testTitle2,this));
         }
-        org.junit.Assert.assertArrayEquals(expected, projectModels.titles());
+        Assert.assertArrayEquals(expected, projectModels.titles());
     }
     // endregion
 }

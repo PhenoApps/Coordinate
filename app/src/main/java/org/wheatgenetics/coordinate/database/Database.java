@@ -1,110 +1,106 @@
 package org.wheatgenetics.coordinate.database;
 
-/**
- * Uses:
- * android.content.Context
- * android.database.sqlite.SQLiteDatabase
- * android.database.sqlite.SQLiteOpenHelper
- * android.util.Log
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RawRes
- * androidx.annotation.VisibleForTesting
- *
- * org.w3c.dom.Document
- * org.w3c.dom.NodeList
- *
- * org.xml.sax.SAXException
- *
- * org.wheatgenetics.coordinate.R
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-class Database extends java.lang.Object
-{
-    private static android.database.sqlite.SQLiteDatabase dbInstance = null; // singleton, lazy load
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
-        otherwise = androidx.annotation.VisibleForTesting.PRIVATE) @androidx.annotation.NonNull
-    static android.database.sqlite.SQLiteDatabase db(
-    final android.content.Context context, final java.lang.String fileName)
-    {
-        if (null == org.wheatgenetics.coordinate.database.Database.dbInstance)
-        {
-            class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper
-            {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
+import androidx.annotation.VisibleForTesting;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.wheatgenetics.coordinate.R;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+class Database extends Object {
+    private static SQLiteDatabase dbInstance = null; // singleton, lazy load
+
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    @NonNull
+    static SQLiteDatabase db(
+            final Context context, final String fileName) {
+        if (null == Database.dbInstance) {
+            class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
                 // region Fields
-                @androidx.annotation.NonNull private final android.content.Context context;
+                @NonNull
+                private final Context context;
                 private boolean createNeeded = false, createSucceeded = false;
                 // endregion
 
-                // region Private Methods
-                private void logWarning(final java.lang.String msg)
-                { android.util.Log.w("SQLiteOpenHelper", msg); }
+                private SQLiteOpenHelper(
+                        @NonNull final Context context,
+                        final String fileName) {
+                    super(
+                            /* context => */ context,
+                            /* name    => */ fileName,
+                            /* factory => */null,
+                            /* version => */2);
+                    this.context = context;
+                }
 
-                @androidx.annotation.Nullable private org.w3c.dom.NodeList statementNodeList(
-                @androidx.annotation.RawRes final int id)
-                {
-                    final org.w3c.dom.Document document;
+                // region Private Methods
+                private void logWarning(final String msg) {
+                    Log.w("SQLiteOpenHelper", msg);
+                }
+
+                @Nullable
+                private NodeList statementNodeList(
+                        @RawRes final int id) {
+                    final Document document;
                     {
-                        final java.io.InputStream inputStream =
-                            this.context.getResources().openRawResource(id);
-                        try
-                        {
-                            final javax.xml.parsers.DocumentBuilder documentBuilder =
-                                javax.xml.parsers.DocumentBuilderFactory.newInstance()
-                                    .newDocumentBuilder();           // throws java.xml.parsers.Par-
+                        final InputStream inputStream =
+                                this.context.getResources().openRawResource(id);
+                        try {
+                            final DocumentBuilder documentBuilder =
+                                    DocumentBuilderFactory.newInstance()
+                                            .newDocumentBuilder();           // throws java.xml.parsers.Par-
                             if (null == documentBuilder) return null;//  serConfigurationException
-                            try
-                            {
+                            try {
                                 document = documentBuilder.parse(         // throws org.xml.sax.SAX-
-                                    /* is       => */ inputStream,        //  Exception, java.-
-                                    /* systemId => */null);      //  io.IOException
+                                        /* is       => */ inputStream,        //  Exception, java.-
+                                        /* systemId => */null);      //  io.IOException
+                            } catch (final SAXException | IOException e) {
+                                return null;
                             }
-                            catch (final org.xml.sax.SAXException | java.io.IOException e)
-                            { return null; }
+                        } catch (final ParserConfigurationException e) {
+                            return null;
                         }
-                        catch (final javax.xml.parsers.ParserConfigurationException e)
-                        { return null; }
                     }
                     return null == document ? null : document.getElementsByTagName("statement");
                 }
+                // endregion
 
                 private void executeStatements(
-                @androidx.annotation.NonNull final org.w3c.dom.NodeList    statementNodeList,
-                @androidx.annotation.NonNull final android.database.sqlite.SQLiteDatabase db)
-                {
+                        @NonNull final NodeList statementNodeList,
+                        @NonNull final SQLiteDatabase db) {
                     final int length = statementNodeList.getLength();
-                    for (int i = 0; i < length; i++)
-                    {
-                        final java.lang.String statement =
-                            statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
+                    for (int i = 0; i < length; i++) {
+                        final String statement =
+                                statementNodeList.item(i).getChildNodes().item(0).getNodeValue();
                         this.logWarning("statement: " + statement);
                         db.execSQL(statement);
                     }
                 }
-                // endregion
-
-                private SQLiteOpenHelper(
-                @androidx.annotation.NonNull final android.content.Context context ,
-                                             final java.lang.String        fileName)
-                {
-                    super(
-                        /* context => */ context ,
-                        /* name    => */ fileName,
-                        /* factory => */null,
-                        /* version => */2);
-                    this.context = context;
-                }
 
                 // region Overridden Methods
-                @java.lang.Override
-                public void onCreate(final android.database.sqlite.SQLiteDatabase db)
-                {
+                @Override
+                public void onCreate(final SQLiteDatabase db) {
                     this.createNeeded = true;
                     {
-                        final org.w3c.dom.NodeList statementNodeList = this.statementNodeList(
-                            org.wheatgenetics.coordinate.R.raw.create_database_sql_statements);
+                        final NodeList statementNodeList = this.statementNodeList(
+                                R.raw.create_database_sql_statements);
                         if (null == statementNodeList)
                             return;                       // this.createSucceeded will remain false.
                         else
@@ -113,36 +109,32 @@ class Database extends java.lang.Object
                     this.createSucceeded = true;
                 }
 
-                @java.lang.Override public void onUpgrade(
-                final android.database.sqlite.SQLiteDatabase db,
-                final int oldVersion, final int newVersion)
-                {
-                    final org.w3c.dom.NodeList statementNodeList = this.statementNodeList(
-                        org.wheatgenetics.coordinate.R.raw.upgrade_database_sql_statements);
-                    if (null != statementNodeList)
-                    {
+                @Override
+                public void onUpgrade(
+                        final SQLiteDatabase db,
+                        final int oldVersion, final int newVersion) {
+                    final NodeList statementNodeList = this.statementNodeList(
+                            R.raw.upgrade_database_sql_statements);
+                    if (null != statementNodeList) {
                         final int length = statementNodeList.getLength();
-                        if (length > 0)
-                        {
+                        if (length > 0) {
                             this.logWarning("Upgrading database from version " +
-                                oldVersion + " to version " + newVersion + ".");
+                                    oldVersion + " to version " + newVersion + ".");
                             this.executeStatements(statementNodeList, db);
                         }
                     }
                 }
 
-                @java.lang.Override
-                public android.database.sqlite.SQLiteDatabase getReadableDatabase()
-                {
+                @Override
+                public SQLiteDatabase getReadableDatabase() {
                     if (this.createNeeded)
                         return this.createSucceeded ? super.getReadableDatabase() : null;
                     else
                         return super.getReadableDatabase();
                 }
 
-                @java.lang.Override
-                public android.database.sqlite.SQLiteDatabase getWritableDatabase()
-                {
+                @Override
+                public SQLiteDatabase getWritableDatabase() {
                     if (this.createNeeded)
                         return this.createSucceeded ? super.getWritableDatabase() : null;
                     else
@@ -150,13 +142,15 @@ class Database extends java.lang.Object
                 }
                 // endregion
             }
-            org.wheatgenetics.coordinate.database.Database.dbInstance =
-                new SQLiteOpenHelper(context, fileName).getWritableDatabase();
+            Database.dbInstance =
+                    new SQLiteOpenHelper(context, fileName).getWritableDatabase();
         }
-        return org.wheatgenetics.coordinate.database.Database.dbInstance;
+        return Database.dbInstance;
     }
 
-    @androidx.annotation.NonNull static android.database.sqlite.SQLiteDatabase db(
-    final android.content.Context context)
-    { return org.wheatgenetics.coordinate.database.Database.db(context,"seedtray1.db"); }
+    @NonNull
+    static SQLiteDatabase db(
+            final Context context) {
+        return Database.db(context, "seedtray1.db");
+    }
 }

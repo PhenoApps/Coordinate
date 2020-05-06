@@ -1,93 +1,94 @@
 package org.wheatgenetics.coordinate.display.adapter;
 
-/**
- * Uses:
- * android.view.View
- * android.view.View.OnClickListener
- * android.widget.ImageView
- *
- * androidx.annotation.DrawableRes
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.ElementModel
- *
- * org.wheatgenetics.coordinate.display.adapter.ViewHolder
- */
-public abstract class DataViewHolder extends org.wheatgenetics.coordinate.display.adapter.ViewHolder
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    {
-        public abstract void toggle(
-        @androidx.annotation.Nullable org.wheatgenetics.coordinate.model.ElementModel elementModel);
-    }
+import android.view.View;
+import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.model.ElementModel;
+
+public abstract class DataViewHolder extends ViewHolder {
     // region Fields
-    @androidx.annotation.NonNull
-    private final org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler handler;
+    @NonNull
+    private final DataViewHolder.Handler handler;
+    @Nullable
+    protected ElementModel
+            elementModel = null;
+    private View.OnClickListener onClickListenerInstance = null;           // lazy load
 
-    @androidx.annotation.Nullable protected org.wheatgenetics.coordinate.model.ElementModel
-        elementModel = null;
-
-    private android.view.View.OnClickListener onClickListenerInstance = null;           // lazy load
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected DataViewHolder(
+            @NonNull final ImageView itemView,
+            @NonNull final
+            DataViewHolder.Handler handler) {
+        super(itemView);
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull private android.view.View.OnClickListener onClickListener()
-    {
+    @NonNull
+    private View.OnClickListener onClickListener() {
         if (null == this.onClickListenerInstance) this.onClickListenerInstance =
-            new android.view.View.OnClickListener()
-            {
-                @java.lang.Override public void onClick(final android.view.View view)
-                {
-                    org.wheatgenetics.coordinate.display.adapter
-                        .DataViewHolder.this.respondToClick();
-                }
-            };
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        DataViewHolder.this.respondToClick();
+                    }
+                };
         return this.onClickListenerInstance;
     }
 
-    private void setOnClickListener(@androidx.annotation.Nullable
-    final android.view.View.OnClickListener onClickListener)
-    { this.itemView.setOnClickListener(onClickListener); }
+    private void setOnClickListener(@Nullable final View.OnClickListener onClickListener) {
+        this.itemView.setOnClickListener(onClickListener);
+    }
     // endregion
 
     // region Protected Methods
     // region setImage() Protected Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void setImage(@androidx.annotation.DrawableRes final int resId)
-    { ((android.widget.ImageView) this.itemView).setImageResource(resId); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void setImage(@DrawableRes final int resId) {
+        ((ImageView) this.itemView).setImageResource(resId);
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected abstract void setImage();
     // endregion
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void setElementModelAndImage(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.model.ElementModel elementModel)
-    { this.elementModel = elementModel; this.setImage(); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void setElementModelAndImage(@Nullable final ElementModel elementModel) {
+        this.elementModel = elementModel;
+        this.setImage();
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void toggle() { this.handler.toggle(this.elementModel); this.setImage(); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void toggle() {
+        this.handler.toggle(this.elementModel);
+        this.setImage();
+    }
 
     // region onClickListener Protected Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected abstract void respondToClick();
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void setOnClickListener() { this.setOnClickListener(this.onClickListener()); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void setOnClickListener() {
+        this.setOnClickListener(this.onClickListener());
+    }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected void clearOnClickListener() { this.setOnClickListener(null); }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void clearOnClickListener() {
+        this.setOnClickListener(null);
+    }
     // endregion
     // endregion
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    protected DataViewHolder(
-    @androidx.annotation.NonNull final android.widget.ImageView itemView,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.display.adapter.DataViewHolder.Handler handler )
-    { super(itemView); this.handler = handler; }
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void toggle(
+                @Nullable ElementModel elementModel);
+    }
 }

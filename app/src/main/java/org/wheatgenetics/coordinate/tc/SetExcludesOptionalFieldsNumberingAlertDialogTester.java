@@ -1,54 +1,45 @@
 package org.wheatgenetics.coordinate.tc;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * org.wheatgenetics.coordinate.Types.RequestCode
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
- * org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class SetExcludesOptionalFieldsNumberingAlertDialogTester extends java.lang.Object
-implements org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler
-{
-    // region Fields
-                                                    private final android.app.Activity activity   ;
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int                  requestCode;
-    private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+import android.app.Activity;
 
-    private org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog
-        setExcludesOptionalFieldsNumberingAlertDialog = null;                           // lazy load
+import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+public class SetExcludesOptionalFieldsNumberingAlertDialogTester
+        implements SetExcludesOptionalFieldsNumberingAlertDialog.Handler {
+    // region Fields
+    private final Activity activity;
+    @Types.RequestCode
+    private final int requestCode;
+    private final TemplateModel templateModel;
+
+    private SetExcludesOptionalFieldsNumberingAlertDialog
+            setExcludesOptionalFieldsNumberingAlertDialog = null;                           // lazy load
     // endregion
 
-    public SetExcludesOptionalFieldsNumberingAlertDialogTester(final android.app.Activity activity,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int requestCode,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
+    public SetExcludesOptionalFieldsNumberingAlertDialogTester(final Activity activity,
+                                                               @Types.RequestCode final int requestCode,
+                                                               final TemplateModel templateModel) {
         super();
 
-        this.activity      = activity     ;
-        this.requestCode   = requestCode  ;
+        this.activity = activity;
+        this.requestCode = requestCode;
         this.templateModel = templateModel;
     }
 
     // region org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog.Handler Overridden Method
-    @java.lang.Override public void handleSetDone()
-    {
+    @Override
+    public void handleSetDone() {
         if (null != this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
     // endregion
 
-    public void testSetExcludesOptionalFieldsNumbering()
-    {
+    public void testSetExcludesOptionalFieldsNumbering() {
         if (null == this.setExcludesOptionalFieldsNumberingAlertDialog)
             this.setExcludesOptionalFieldsNumberingAlertDialog =
-                new org.wheatgenetics.coordinate.tc.SetExcludesOptionalFieldsNumberingAlertDialog(
-                    this.activity, this.requestCode,this);
+                    new SetExcludesOptionalFieldsNumberingAlertDialog(
+                            this.activity, this.requestCode, this);
         this.setExcludesOptionalFieldsNumberingAlertDialog.show(this.templateModel);
     }
 }

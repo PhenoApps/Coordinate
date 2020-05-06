@@ -1,19 +1,19 @@
 package org.wheatgenetics.coordinate;
 
-/**
- * Uses:
- * androidx.annotation.IntDef
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class Types extends java.lang.Object
-{
-    public static final java.lang.String UNIQUENESS_BUNDLE_KEY = "uniquenessPreferenceWasClicked";
+import androidx.annotation.IntDef;
+
+import java.lang.annotation.Documented;
+
+public class Types {
+    public static final String UNIQUENESS_BUNDLE_KEY = "uniquenessPreferenceWasClicked";
 
     public static final int CREATE_TEMPLATE = 10, CREATE_GRID = 20, UNIQUENESS_CLICKED = 30;
 
-    @androidx.annotation.IntDef({
-        org.wheatgenetics.coordinate.Types.CREATE_TEMPLATE   ,
-        org.wheatgenetics.coordinate.Types.CREATE_GRID       ,
-        org.wheatgenetics.coordinate.Types.UNIQUENESS_CLICKED})
-    @java.lang.annotation.Documented public @interface RequestCode {}
+    @IntDef({
+            Types.CREATE_TEMPLATE,
+            Types.CREATE_GRID,
+            Types.UNIQUENESS_CLICKED})
+    @Documented
+    public @interface RequestCode {
+    }
 }

@@ -1,5 +1,18 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
  * android.content.res.Resources.NotFoundException
@@ -20,40 +33,40 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
  * org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class CurrentGridUniqueJoinedGridModelTest extends java.lang.Object
-implements org.wheatgenetics.coordinate.StringGetter
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class CurrentGridUniqueJoinedGridModelTest extends Object
+implements StringGetter
 {
     // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
-    @java.lang.Override @androidx.annotation.Nullable public java.lang.String get(
-    @androidx.annotation.StringRes final int resId)
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
         switch (resId)
         {
-            case org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionMsg:
+            case R.string.CurrentGridDuplicateCheckExceptionMsg:
                 return "The %s already has an entry with that value.";
-            case org.wheatgenetics.coordinate.R.string.CurrentGridDuplicateCheckExceptionScope:
+            case R.string.CurrentGridDuplicateCheckExceptionScope:
                 return "current grid";
-            case org.wheatgenetics.coordinate.R.string.CallCheckThenSetEntryModelInstead:
+            case R.string.CallCheckThenSetEntryModelInstead:
                 return "Call checkThenSetEntryModel() instead";
 
-            default: org.junit.Assert.fail(); return null;
+            default: Assert.fail(); return null;
         }
     }
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String getQuantity(
-    @androidx.annotation.PluralsRes         final int                 resId     ,
-    @androidx.annotation.IntRange(from = 0) final int                 quantity  ,
-    @androidx.annotation.Nullable           final java.lang.Object... formatArgs)
-    throws android.content.res.Resources.NotFoundException { org.junit.Assert.fail(); return null; }
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
     // endregion
 
-    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void setEntryModelThrows()
     {
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+        final CurrentGridUniqueJoinedGridModel
             currentGridUniqueJoinedGridModel =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
+                new CurrentGridUniqueJoinedGridModel(
                     /* id                           => */5,
                     /* projectId                    => */0,
                     /* person                       => */"testPerson",
@@ -83,24 +96,24 @@ implements org.wheatgenetics.coordinate.StringGetter
     }
 
     // region checkThenSetEntryModel() Public Method Tests
-    @org.junit.Test() public void checkThenSetEntryModelWorks()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    @Test() public void checkThenSetEntryModelWorks()
+    throws CheckedIncludedEntryModel.CheckException
     {
         final long                                                            gridId = 1;
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
+        final CurrentGridUniqueEntryModels
             currentGridUniqueEntryModels;
         {
             final int rows = 5, cols = 5;
             currentGridUniqueEntryModels =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
+                new CurrentGridUniqueEntryModels(
                     gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 currentGridUniqueEntryModels.makeIncludedEntry(row, col);
         }
 
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+        final CurrentGridUniqueJoinedGridModel
             currentGridUniqueJoinedGridModel =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
+                new CurrentGridUniqueJoinedGridModel(
                     /* id                            => */5,
                     /* projectId                     => */0,
                     /* person                        => */"testPerson",
@@ -127,9 +140,9 @@ implements org.wheatgenetics.coordinate.StringGetter
 
                     /* currentGridUniqueEEntryModels => */ currentGridUniqueEntryModels);
         {
-            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            final CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    new CheckedIncludedEntryModel(
                         gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
@@ -137,9 +150,9 @@ implements org.wheatgenetics.coordinate.StringGetter
         }
         {
             // Not a duplicate because although value is the same the new entry *replaces* the old.
-            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            final CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    new CheckedIncludedEntryModel(
                         gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
@@ -147,9 +160,9 @@ implements org.wheatgenetics.coordinate.StringGetter
         }
         {
             // Not a duplicate because value is different.
-            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            final CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    new CheckedIncludedEntryModel(
                         gridId,2,2, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("DEF");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
@@ -157,26 +170,26 @@ implements org.wheatgenetics.coordinate.StringGetter
         }
     }
 
-    @org.junit.Test(expected =
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException.class)
+    @Test(expected =
+        CheckedIncludedEntryModel.CheckException.class)
     public void checkThenSetEntryModelThrows()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    throws CheckedIncludedEntryModel.CheckException
     {
         final long                                                            gridId = 1;
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels
+        final CurrentGridUniqueEntryModels
             currentGridUniqueEntryModels;
         {
             final int rows = 5, cols = 5;
             currentGridUniqueEntryModels =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels(
+                new CurrentGridUniqueEntryModels(
                     gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 currentGridUniqueEntryModels.makeIncludedEntry(row, col);
         }
 
-        final org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel
+        final CurrentGridUniqueJoinedGridModel
             currentGridUniqueJoinedGridModel =
-                new org.wheatgenetics.coordinate.model.CurrentGridUniqueJoinedGridModel(
+                new CurrentGridUniqueJoinedGridModel(
                     /* id                            => */5,
                     /* projectId                     => */0,
                     /* person                        => */"testPerson",
@@ -203,18 +216,18 @@ implements org.wheatgenetics.coordinate.StringGetter
 
                     /* currentGridUniqueEEntryModels => */ currentGridUniqueEntryModels);
         {
-            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            final CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    new CheckedIncludedEntryModel(
                         gridId,1,1, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
                 checkedIncludedEntryModel);
         }
         {
-            final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+            final CheckedIncludedEntryModel
                 checkedIncludedEntryModel =
-                    new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
+                    new CheckedIncludedEntryModel(
                         gridId,2,2, currentGridUniqueEntryModels,this);
             checkedIncludedEntryModel.checkThenSetValue("ABC");                            // throws
             currentGridUniqueJoinedGridModel.checkThenSetEntryModel(                       // throws
