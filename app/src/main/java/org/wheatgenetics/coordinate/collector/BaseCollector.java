@@ -10,6 +10,9 @@ import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.GridsTable;
@@ -29,7 +32,6 @@ import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.UniqueEntryModels;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
-import org.wheatgenetics.zxing.BarcodeScanner;
 
 @SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class BaseCollector extends Object implements
@@ -56,7 +58,6 @@ abstract class BaseCollector extends Object implements
             rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
     private UniqueAlertDialog uniqueAlertDialog = null; // ll
 
-    private BarcodeScanner barcodeScannerInstance = null;       // lazy load
     // endregion
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -128,13 +129,6 @@ abstract class BaseCollector extends Object implements
         this.uniqueAlertDialog.show(message);
     }
     // endregion
-
-    @NonNull
-    private BarcodeScanner barcodeScanner() {
-        if (null == this.barcodeScannerInstance) this.barcodeScannerInstance =
-                new BarcodeScanner(this.activity);
-        return this.barcodeScannerInstance;
-    }
 
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -377,7 +371,8 @@ abstract class BaseCollector extends Object implements
     // region Barcode Public Methods
     @SuppressWarnings({"SameReturnValue"})
     public boolean scanBarcode() {
-        this.barcodeScanner().scan();
+        //this.barcodeScanner().scan();
+        new IntentIntegrator(this.activity).setPrompt("Scan a barcode").setBeepEnabled(true).initiateScan();
         return true;
     }
 
@@ -385,16 +380,22 @@ abstract class BaseCollector extends Object implements
                                        final int resultCode, final Intent data) {
         final boolean handled;
         {
-            final String barcodeScannerResult =
-                    BarcodeScanner.parseActivityResult(
-                            requestCode, resultCode, data);
-            if (null == barcodeScannerResult)
+            //final String barcodeScannerResult =
+            //        BarcodeScanner.parseActivityResult(
+            //                requestCode, resultCode, data);
+
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result == null) {
+
                 handled = false;
-            else {
+
+            }  else {
+                final String barcodeScannerResult = result.getContents();
                 this.setEntry(barcodeScannerResult);
                 this.saveEntry(barcodeScannerResult);
                 handled = true;
             }
+
         }
         return handled;
     }

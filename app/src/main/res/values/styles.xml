@@ -23,4 +23,16 @@
     <style name="NavigationViewTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textSize">@dimen/medium_text_size</item>
     </style>
+
+
+    <style name="changeLogAlertDialogVersionLine" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textSize">@dimen/changeLogAlertDialogTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/changeLogAlertDialogVersionTextColor</item>
+    </style>
+
+    <style name="changeLogAlertDialogContentLine" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textSize">@dimen/changeLogAlertDialogTextSize</item>
+        <item name="android:textColor">@color/changeLogAlertDialogContentTextColor</item>
+    </style>
 </resources>
