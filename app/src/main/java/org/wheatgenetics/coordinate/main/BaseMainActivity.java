@@ -16,6 +16,10 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.michaelflisar.changelog.ChangelogBuilder;
+import com.michaelflisar.changelog.classes.ImportanceChangelogSorter;
+import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
+
 import org.wheatgenetics.changelog.ChangeLogAlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
@@ -36,18 +40,8 @@ abstract class BaseMainActivity extends AppCompatActivity
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
 
-    private ChangeLogAlertDialog
-            changeLogAlertDialogInstance = null;                                            // lazy load
     // endregion
 
-    @NonNull
-    private ChangeLogAlertDialog changeLogAlertDialog() {
-        if (null == this.changeLogAlertDialogInstance) this.changeLogAlertDialogInstance =
-                new ChangeLogAlertDialog(
-                        /* activity               => */this,
-                        /* changeLogRawResourceId => */ R.raw.changelog);
-        return this.changeLogAlertDialogInstance;
-    }
 
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -65,11 +59,6 @@ abstract class BaseMainActivity extends AppCompatActivity
                 new SharedPreferences(
                         this.getSharedPreferences("Settings", /* mode => */0), this);
         return this.sharedPreferencesInstances;
-    }
-
-    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    void showChangeLog() {
-        this.changeLogAlertDialog().show();
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -139,9 +128,21 @@ abstract class BaseMainActivity extends AppCompatActivity
                 this.sharedPreferences();
         if (!sharedPreferences.updateVersionIsSet(versionCode)) {
             sharedPreferences.setUpdateVersion(versionCode);
-            this.showChangeLog();
+            showChangelog(true, false);
         }
         // endregion
+    }
+
+    private void showChangelog(Boolean managedShow, Boolean rateButton) {
+        ChangelogDialogFragment builder = new ChangelogBuilder()
+                .withUseBulletList(true) // true if you want to show bullets before each changelog row, false otherwise
+                .withManagedShowOnStart(managedShow)  // library will take care to show activity/dialog only if the changelog has new infos and will only show this new infos
+                .withRateButton(rateButton) // enable this to show a "rate app" button in the dialog => clicking it will open the play store; the parent activity or target fragment can also implement IChangelogRateHandler to handle the button click
+                .withSummary(false, true) // enable this to show a summary and a "show more" button, the second paramter describes if releases without summary items should be shown expanded or not
+                .withTitle(getString(R.string.changelog_title)) // provide a custom title if desired, default one is "Changelog <VERSION>"
+                .withOkButtonLabel("OK") // provide a custom ok button text if desired, default one is "OK"
+                .withSorter(new ImportanceChangelogSorter())
+                .buildAndShowDialog(this, false); // second parameter defines, if the dialog has a dark or light theme
     }
 
     @Override

@@ -1,0 +1,61 @@
+<changelog>
+    <release
+        date="2021-02-01"
+        versionCode="310"
+        versionName="v3.1">
+        <new>Added setting to change grid size</new>
+        <new>New About page and Changelog</new>
+        <info>Improved project and template layouts</info>
+        <info>Settings organized</info>
+        <info>Translate page set up for community collaboration</info>
+    </release>
+
+    <release
+        date="2020-03-06"
+        versionCode="300"
+        versionName="v3.0">
+        <new>New interface and workflow</new>
+    </release>
+
+    <release
+        date="2019-07-29"
+        versionCode="210"
+        versionName="v2.1.0">
+        <new>Added option to force sample names to be unique</new>
+    </release>
+
+
+    <release
+        date="2019-05-05"
+        versionCode="204"
+        versionName="v2.0.4">
+        <bugfix>Bug fixes and optimizations</bugfix>
+    </release>
+
+    <release
+        date="2019-01-09"
+        versionCode="202"
+        versionName="v2.0.2">
+        <info>Modified ABC naming rules</info>
+        <bugfix>Bug fix for scanning barcodes</bugfix>
+    </release>
+
+    <release
+        date="2018-06-26"
+        versionCode="200"
+        versionName="v2.0">
+        <new>Added 'Projects' to allow multiple grids to be exported together</new>
+        <new>Added ability to toggle exclusion status of a cell with long press</new>
+        <new>Added graphical selection tool for excluding cells when creating a new template</new>
+        <new>Added sound notifications for end of row/column</new>
+        <new>Added option to advance horizontally or vertically</new>
+        <bugfix>Fixed numerous bugs</bugfix>
+    </release>
+
+    <release
+        date="2015-12-12"
+        versionCode="100"
+        versionName="v1.0">
+        <info>Initial release</info>
+    </release>
+</changelog>

@@ -17,6 +17,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 
 import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.AboutAlertDialog;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -77,14 +78,18 @@ public class MainActivity extends BaseMainActivity
                         this, this.versionName(), new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        MainActivity.this.showChangeLog();
+                        //MainActivity.this.showChangeLog();
                     }
                 });
         return this.aboutAlertDialogInstance;
     }
 
     private void showAboutAlertDialog() {
-        this.aboutAlertDialog().show();
+        Intent intent = new Intent();
+
+        intent.setClassName(MainActivity.this,
+                AboutActivity.class.getName());
+        startActivity(intent);
     }
     // endregion
 

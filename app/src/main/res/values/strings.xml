@@ -83,6 +83,31 @@
     <string name="aboutNSF">\nThis material is based upon work supported by the National Science Foundation (NSF) under NSF-BREAD Grant No. 1543958. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</string>
 
 
+    <!-- AboutActivity -->
+    <string name="about_title">About</string>
+    <string name="about_version_title">Version</string>
+    <string name="about_title_other_apps">Other PhenoApps</string>
+    <string name="about_project_lead_title">Project Lead</string>
+    <string name="about_developer_title">Developer</string>
+    <string name="about_developer_trife" translatable="false">Trevor Rife</string>
+    <string name="about_developer_trife_location" translatable="false">Kansas State University</string>
+    <string name="about_developer_trife_email" translatable="false">trife@ksu.edu</string>
+    <string name="about_email_title">Email</string>
+    <string name="about_developer_trife_website" translatable="false">https://github.com/PhenoApps/Field-Book</string>
+    <string name="about_contributors_title">Contributors</string>
+    <string name="about_contributors_developers_title">Developers</string>
+    <string name="about_translators_title">Translators</string>
+    <string name="about_translators_text" translatable="false">Irazema Fuentes-Bueno,  Sandra Dunckel,  Shuangye Wu,  Narinder Singh,  Daljit Singh,  Erena Edae,  Tatiana Danilova,  Rodrigo Pedrozo,  Cristiano Lemes da Silva,  Sophie Bouchet,  Hiroyoshi Iwata,  Goro Ishikawa,  Khaled El-Shamaa, Mokhlesur Rahman, Alice Brunazzi</string>
+    <string name="about_contributors_funding_title">Funding</string>
+    <string name="about_contributors_funding_text" translatable="false">Development of Coordinate has been supported by the Collaborative Crop Research Program of The McKnight Foundation, the National Science Foundation (#1543958), and the National Institute of Food and Agriculture (#2019-67021-29931).</string>
+    <string name="about_rate">Rate this app</string>
+    <string name="about_technical_title">Technical Details</string>
+    <string name="about_github_title">GitHub</string>
+    <string name="about_licenses_title">Licenses</string>
+    <string name="about_help_translate_title">Help translate</string>
+    <string name="changelog_title">Changelog</string>
+    <string name="libraries_title">Libraries</string>
+
     <!-- ScaleExceptionAlertDialog -->
     <string name="scaleExceptionAlertDialogTitle">Scale Issue</string>
     <string name="scaleExceptionAlertDialogMessage">No scale detected.  Please connect scale with an OTG cable and turn the scale on.</string>
