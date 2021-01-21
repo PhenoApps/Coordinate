@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- ChoosingTemplateSetter-->
-    <string name="TemplateChoiceAlertDialogTitle">Template Options</string>
-    <string name="TemplateChoiceAlertDialogNewItem">New Template</string>
-
-    <string name="ChoosingTemplateSetterAlertMessage">Unable to create template.</string>
-</resources>
