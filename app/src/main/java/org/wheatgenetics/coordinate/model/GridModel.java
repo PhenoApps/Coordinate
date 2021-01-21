@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 

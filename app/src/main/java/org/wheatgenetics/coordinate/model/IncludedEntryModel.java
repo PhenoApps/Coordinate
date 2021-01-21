@@ -8,7 +8,7 @@ import androidx.annotation.RestrictTo;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public class IncludedEntryModel extends EntryModel {
     private String value;

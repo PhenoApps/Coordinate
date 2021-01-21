@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.AboutActivity;
-import org.wheatgenetics.coordinate.AboutAlertDialog;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
@@ -35,7 +34,6 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 public class MainActivity extends BaseMainActivity
         implements TemplateCreator.Handler {
     // region Fields
-    private AboutAlertDialog aboutAlertDialogInstance = null;     // ll
     private StatelessGridCreator
             statelessGridCreatorInstance = null;                                            // lazy load
     private TemplateCreator templateCreatorInstance = null;    // ll
@@ -70,20 +68,7 @@ public class MainActivity extends BaseMainActivity
     }
     // endregion
 
-    // region AboutAlertDialog Private Methods
-    @NonNull
-    private AboutAlertDialog aboutAlertDialog() {
-        if (null == this.aboutAlertDialogInstance) this.aboutAlertDialogInstance =
-                new AboutAlertDialog(
-                        this, this.versionName(), new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        //MainActivity.this.showChangeLog();
-                    }
-                });
-        return this.aboutAlertDialogInstance;
-    }
-
+    // region AboutDialog Private Methods
     private void showAboutAlertDialog() {
         Intent intent = new Intent();
 

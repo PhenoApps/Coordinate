@@ -5,13 +5,13 @@ import android.app.Activity;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
+import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.IOException;
 
@@ -52,7 +52,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
     }
 
     private void showLongToast(final String text) {
-        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+        org.phenoapps.androidlibrary.Utils.showLongToast(this.activity, text);
     }
 
     /**

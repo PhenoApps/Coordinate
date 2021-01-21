@@ -2,8 +2,8 @@ package org.wheatgenetics.coordinate;
 
 import android.app.Activity;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.RequestDir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.File;
 import java.io.FileOutputStream;

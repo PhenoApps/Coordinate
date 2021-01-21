@@ -15,7 +15,7 @@ import org.wheatgenetics.coordinate.model.GridModel;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.model.JoinedGridModels;
 import org.wheatgenetics.coordinate.model.Model;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public class GridsTable extends Table {
     // region Constants

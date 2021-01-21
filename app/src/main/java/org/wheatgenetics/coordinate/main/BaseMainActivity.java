@@ -20,7 +20,6 @@ import com.michaelflisar.changelog.ChangelogBuilder;
 import com.michaelflisar.changelog.classes.ImportanceChangelogSorter;
 import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
 
-import org.wheatgenetics.changelog.ChangeLogAlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.Types;
@@ -29,7 +28,7 @@ import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.sharedpreferences.SharedPreferences;
 
 abstract class BaseMainActivity extends AppCompatActivity

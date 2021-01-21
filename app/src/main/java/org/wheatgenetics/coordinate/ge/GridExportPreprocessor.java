@@ -5,7 +5,7 @@ import android.app.Activity;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.androidlibrary.GetExportFileNameAlertDialog;
+import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 

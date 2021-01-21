@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import org.json.JSONObject;
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 

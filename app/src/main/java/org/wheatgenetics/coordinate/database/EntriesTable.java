@@ -14,7 +14,7 @@ import org.wheatgenetics.coordinate.model.EntryModels;
 import org.wheatgenetics.coordinate.model.ExcludedEntryModel;
 import org.wheatgenetics.coordinate.model.IncludedEntryModel;
 import org.wheatgenetics.coordinate.model.Model;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public class EntriesTable extends Table
         implements EntryModels.Processor {

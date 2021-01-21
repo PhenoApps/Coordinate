@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class TemplateExporter {
 
     // region Private Methods
     private void showLongToast(final String text) {
-        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+        org.phenoapps.androidlibrary.Utils.showLongToast(this.activity, text);
     }
     // endregion
 

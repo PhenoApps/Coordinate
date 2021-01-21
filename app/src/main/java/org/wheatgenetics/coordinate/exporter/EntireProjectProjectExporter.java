@@ -5,10 +5,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
+import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.File;
 import java.io.IOException;

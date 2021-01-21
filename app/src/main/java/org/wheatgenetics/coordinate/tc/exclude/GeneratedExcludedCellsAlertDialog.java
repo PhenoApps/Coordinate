@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.wheatgenetics.androidlibrary.AlertDialog;
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.AlertDialog;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 
@@ -23,7 +23,7 @@ class GeneratedExcludedCellsAlertDialog extends AlertDialog {
     }
 
     private void setGeneratedExcludedCellsAmount() {
-        final int amount = org.wheatgenetics.javalib.Utils.convert(
+        final int amount = org.phenoapps.androidlibrary.Utils.convert(
                 Utils.getText(this.editText));
 
         if (null != this.templateModel)

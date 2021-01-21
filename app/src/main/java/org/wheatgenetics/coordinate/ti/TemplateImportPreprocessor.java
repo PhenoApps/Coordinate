@@ -8,7 +8,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.SelectAlertDialog;
 import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class TemplateImportPreprocessor {
 
     // region Private Methods
     private void showLongToast(final String text) {
-        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+        org.phenoapps.androidlibrary.Utils.showLongToast(this.activity, text);
     }
 
     // region selectExportedTemplate() Private Methods

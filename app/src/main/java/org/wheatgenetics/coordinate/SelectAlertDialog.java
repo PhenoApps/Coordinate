@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Size;
 import androidx.annotation.StringRes;
 
-import org.wheatgenetics.androidlibrary.ItemsAlertDialog;
+import org.phenoapps.androidlibrary.ItemsAlertDialog;
 
 public class SelectAlertDialog extends ItemsAlertDialog {
     @NonNull

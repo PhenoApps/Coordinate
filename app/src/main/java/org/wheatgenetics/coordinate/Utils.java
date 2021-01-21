@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.RequestDir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public class Utils {
             @StringRes final int title, final String message) {
         Utils.alert(context, context.getString(title), message,
                 context.getString(R.string.UtilsPositiveButtonText),
-                org.wheatgenetics.androidlibrary.Utils.cancellingOnClickListener(),
+                org.phenoapps.androidlibrary.Utils.cancellingOnClickListener(),
                 null);
     }
 

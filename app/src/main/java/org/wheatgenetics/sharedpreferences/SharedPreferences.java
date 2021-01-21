@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.model.Model;
+import org.phenoapps.sharedpreferences.UpdateVersionSharedPreferences;
 
 public class SharedPreferences extends UpdateVersionSharedPreferences {
     private static final String GRID_ID = "CurrentGrid", PROJECT_ID = "CurrentProject";

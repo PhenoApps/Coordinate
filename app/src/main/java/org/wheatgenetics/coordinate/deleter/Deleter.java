@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.database.GridsTable;
 
 abstract class Deleter {

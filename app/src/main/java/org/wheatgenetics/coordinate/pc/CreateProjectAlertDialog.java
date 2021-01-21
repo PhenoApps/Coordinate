@@ -6,8 +6,8 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.androidlibrary.AlertDialog;
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.AlertDialog;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 
 class CreateProjectAlertDialog extends AlertDialog {

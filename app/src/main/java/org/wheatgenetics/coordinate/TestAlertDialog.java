@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
 
-import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.phenoapps.androidlibrary.AlertDialog;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialogTester;
 import org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog;

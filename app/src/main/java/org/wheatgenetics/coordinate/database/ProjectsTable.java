@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.ProjectModels;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public class ProjectsTable extends Table {
     // region Constants

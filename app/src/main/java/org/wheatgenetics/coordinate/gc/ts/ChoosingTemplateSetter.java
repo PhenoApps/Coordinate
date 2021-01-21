@@ -15,7 +15,7 @@ import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

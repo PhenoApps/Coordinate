@@ -12,7 +12,7 @@ import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public class TemplatesTable extends Table {
     // region Constants

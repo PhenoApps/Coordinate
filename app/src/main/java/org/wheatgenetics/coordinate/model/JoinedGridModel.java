@@ -10,7 +10,7 @@ import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.preference.Utils;
-import org.wheatgenetics.javalib.CsvWriter;
+import org.wheatgenetics.coordinate.exporter.CsvWriter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -335,7 +335,7 @@ public class JoinedGridModel extends GridModel
             else {
                 // noinspection CStyleArrayDeclaration
                 final String values[] = optionalFields.values(/* names[] => */
-                        org.wheatgenetics.javalib.Utils.stringArray(name));
+                        org.phenoapps.androidlibrary.Utils.stringArray(name));
                 result = null == values ? null : values[0];
             }
         }

@@ -5,7 +5,7 @@ import android.app.Activity;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
+import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter;
@@ -13,7 +13,7 @@ import org.wheatgenetics.coordinate.exporter.PerGridProjectExporter;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
-import org.wheatgenetics.javalib.Dir;
+import org.phenoapps.permissions.Dir;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class ProjectExporter {
     }
 
     private void showLongToast(final String text) {
-        org.wheatgenetics.androidlibrary.Utils.showLongToast(this.activity, text);
+        org.phenoapps.androidlibrary.Utils.showLongToast(this.activity, text);
     }
     // endregion
 

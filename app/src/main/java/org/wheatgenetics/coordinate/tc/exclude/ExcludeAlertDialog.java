@@ -9,7 +9,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.wheatgenetics.androidlibrary.AlertDialog;
+import org.phenoapps.androidlibrary.AlertDialog;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.model.TemplateModel;

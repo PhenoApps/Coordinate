@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.wheatgenetics.androidlibrary.Utils;
+import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;

@@ -7,7 +7,7 @@ import androidx.annotation.Size;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
-import org.wheatgenetics.javalib.Utils;
+import org.phenoapps.androidlibrary.Utils;
 
 public abstract class BaseOptionalField {
     static final String DATE_HINT = "yyyy-mm-dd";

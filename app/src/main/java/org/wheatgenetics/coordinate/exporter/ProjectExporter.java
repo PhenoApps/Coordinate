@@ -6,7 +6,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
-import org.wheatgenetics.androidlibrary.RequestDir;
+import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
