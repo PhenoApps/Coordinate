@@ -5,9 +5,6 @@
     <dimen name="large_text_size">20sp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
 
-    <dimen name="changeLogAlertDialogTextSize">14sp</dimen>
-    <dimen name="aboutAlertDialogTextSize">14sp</dimen>
-
     <dimen name="masterDetailItemAppBarHeight">200dp</dimen>
     <dimen name="masterDetailListItemTextViewMargin">16dp</dimen>
     <dimen name="masterDetailListItemWidth">200dp</dimen>

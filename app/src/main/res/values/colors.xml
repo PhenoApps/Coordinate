@@ -3,9 +3,4 @@
     <color name="colorPrimary">#FF5722</color>
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorAccent">#607D8B</color>
-
-    <color name="changeLogAlertDialogVersionTextColor">#304FFE</color>
-    <color name="changeLogAlertDialogContentTextColor">#000000</color>
-
-    <color name="aboutAlertDialogAccentTextColor">#304FFE</color>
 </resources>

@@ -9,15 +9,6 @@
     <string name="UtilsInvalidValue">value must be >= %d</string>
 
 
-    <!-- AboutAlertDialog -->
-    <string name="AboutAlertDialogTitle">About Coordinate</string>
-    <string name="AboutAlertDialogMsg">\nCoordinate is a free and open source application that can be used to collect and organize grid-like data.</string>
-
-
-    <!-- TestAlertDialog -->
-    <string name="TestAlertDialogTitle">Test Coordinate</string>
-
-
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
     <string name="TemplateNotCreatedToast">%s not created</string>
     <string name="TemplateCreatedToast">%s created</string>
@@ -51,36 +42,8 @@
     <string name="getExportFileNameAlertDialogHint">Enter export filename</string>
 
 
-    <!-- ChangeLogAlertDialog -->
-    <string name="changeLogAlertDialogTitle">ChangeLog</string>
-
-
     <!-- Camera Options Menu -->
     <string name="cameraOptionsMenuItemTitle">Camera scanner</string>
-
-
-    <!-- OtherAppsAlertDialog -->
-    <string name="otherAppsAlertDialogTitle">Other Apps</string>
-    <string name="otherAppsImageViewContentDescription">other app</string>
-
-
-    <!-- AboutAlertDialog -->
-    <string name="aboutVersionTextViewText">Version</string>
-    <string name="aboutOtherAppsTextViewText">Other Apps</string>
-
-    <string name="aboutUniversity">Kansas State University</string>
-
-    <string name="aboutTrevorName">Trevor Rife</string>
-    <string name="aboutTrevorEMail">trife@ksu.edu</string>
-
-    <string name="aboutJesseName">Jesse Poland</string>
-    <string name="aboutJesseEMail">jpoland@ksu.edu</string>
-    <string name="aboutWheatGeneticsWebSite">http://wheatgenetics.org</string>
-
-    <string name="aboutPeteName">Peter J. Rosario</string>
-    <string name="aboutPeteEMail">peterrosario@ksu.edu\n</string>
-
-    <string name="aboutNSF">\nThis material is based upon work supported by the National Science Foundation (NSF) under NSF-BREAD Grant No. 1543958. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</string>
 
 
     <!-- AboutActivity -->
@@ -133,131 +96,6 @@
 
     <!-- DataTypeAlertDialog -->
     <string name="DataTypeAlertDialogTitle">DataType</string>
-
-
-    <!-- ProgramsSearchRequestAlertDialog -->
-    <string name="ProgramsSearchRequestAlertDialogTitle">ProgramsSearchRequest</string>
-    <string name="ProgramsSearchRequestAlertDialogAbbreviationsEditTextHint">abbreviations</string>
-    <string name="ProgramsSearchRequestAlertDialogCommonCropNamesEditTextHint">commonCropNames</string>
-    <string name="ProgramsSearchRequestAlertDialogLeadPersonDbIdsEditTextHint">leadPersonDbIds</string>
-    <string name="ProgramsSearchRequestAlertDialogLeadPersonNamesEditTextHint">leadPersonNames</string>
-    <string name="ProgramsSearchRequestAlertDialogObjectivesEditTextHint">objectives</string>
-    <string name="ProgramsSearchRequestAlertDialogProgramDbIdsEditTextHint">programDbIds</string>
-    <string name="ProgramsSearchRequestAlertDialogProgramNamesEditTextHint">programNames</string>
-
-
-    <!-- StudySearchRequestAlertDialog -->
-    <string name="StudySearchRequestAlertDialogTitle">StudySearchRequest</string>
-    <string name="StudySearchRequestAlertDialogCommonCropNamesEditTextHint">commonCropNames</string>
-    <string name="StudySearchRequestAlertDialogGermplasmDbIdsEditTextHint">germplasmDbIds</string>
-    <string name="StudySearchRequestAlertDialogLocationDbIdsEditTextHint">locationDbIds</string>
-    <string name="StudySearchRequestAlertDialogObservationVariableDbIdsEditTextHint">observationVariableDbIds</string>
-    <string name="StudySearchRequestAlertDialogProgramDbIdsEditTextHint">programDbIds</string>
-    <string name="StudySearchRequestAlertDialogProgramNamesEditTextHint">programNames</string>
-    <string name="StudySearchRequestAlertDialogSeasonDbIdsEditTextHint">seasonDbIds</string>
-    <string name="StudySearchRequestAlertDialogSortByLabelTextViewText">sortBy:</string>
-    <string name="StudySearchRequestAlertDialogSortOrderLabelTextViewText">sortOrder:</string>
-    <string name="StudySearchRequestAlertDialogStudyDbIdsEditTextHint">studyDbIds</string>
-    <string name="StudySearchRequestAlertDialogStudyNamesEditTextHint">studyNames</string>
-    <string name="StudySearchRequestAlertDialogStudyTypeDbIdsEditTextHint">studyTypeDbIds</string>
-    <string name="StudySearchRequestAlertDialogStudyTypeNamesEditTextHint">studyTypeNames</string>
-    <string name="StudySearchRequestAlertDialogTrialDbIdsEditTextHint">trialDbIds</string>
-
-
-    <!-- StudyLayoutRequestLayoutAlertDialog -->
-    <string name="StudyLayoutRequestLayoutAlertDialogTitle">StudyLayoutRequestLayout</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogBlockNumberEditTextHint">blockNumber</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogEntryTypeLabelTextViewText">entryType:</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogObservationUnitDbIdEditTextHint">observationUnitDbId</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogPositionCoordinateXEditTextHint">positionCoordinateX</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogPositionCoordinateXTypeLabelTextViewText">positionCoordinateXType:</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogPositionCoordinateYEditTextHint">positionCoordinateY</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogPositionCoordinateYTypeLabelTextViewText">positionCoordinateYType:</string>
-    <string name="StudyLayoutRequestLayoutAlertDialogReplicateEditTextHint">replicate</string>
-
-
-    <!-- NewObservationsRequestObservationsAlertDialog -->
-    <string name="NewObservationsRequestObservationsAlertDialogTitle">NewObservationsRequestObservations</string>
-    <string name="NewObservationsRequestObservationsAlertDialogCollectorEditTextHint">collector</string>
-    <string name="NewObservationsRequestObservationsAlertDialogObservationDbIdEditTextHint">observationDbId</string>
-    <string name="NewObservationsRequestObservationsAlertDialogObservationTimeStampEditTextHint">observationTimeStamp</string>
-    <string name="NewObservationsRequestObservationsAlertDialogObservationUnitDbIdEditTextHint">observationUnitDbId</string>
-    <string name="NewObservationsRequestObservationsAlertDialogObservationVariableDbIdEditTextHint">observationVariableDbId</string>
-    <string name="NewObservationsRequestObservationsAlertDialogValueEditTextHint">value</string>
-
-
-    <!-- NewObservationUnitRequestAlertDialog -->
-    <string name="NewObservationUnitRequestAlertDialogTitle">NewObservationUnitRequest</string>
-    <string name="NewObservationUnitRequestAlertDialogBlockNumberEditTextHint">blockNumber</string>
-    <string name="NewObservationUnitRequestAlertDialogEntryNumberEditTextHint">entryNumber</string>
-    <string name="NewObservationUnitRequestAlertDialogEntryTypeEditTextHint">entryType</string>
-    <string name="NewObservationUnitRequestAlertDialogGermplasmDbIdEditTextHint">germplasmDbId</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationLevelEditTextHint">observationLevel</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationUnitDbIdEditTextHint">observationUnitDbId</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationUnitNameEditTextHint">observationUnitName</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationUnitXrefLabelTextViewText">observationUnitXref:</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationsLabelTextViewText">observations:</string>
-    <string name="NewObservationUnitRequestAlertDialogPlantNumberEditTextHint">plantNumber</string>
-    <string name="NewObservationUnitRequestAlertDialogPlotNumberEditTextHint">plotNumber</string>
-    <string name="NewObservationUnitRequestAlertDialogPositionCoordinateXEditTextHint">positionCoordinateX</string>
-    <string name="NewObservationUnitRequestAlertDialogPositionCoordinateXTypeLabelTextViewText">positionCoordinateXType:</string>
-    <string name="NewObservationUnitRequestAlertDialogPositionCoordinateYEditTextHint">positionCoordinateY</string>
-    <string name="NewObservationUnitRequestAlertDialogPositionCoordinateYTypeLabelTextViewText">positionCoordinateYType:</string>
-    <string name="NewObservationUnitRequestAlertDialogObservationTreatmentsLabelTextViewText">treatments:</string>
-    <string name="NewObservationUnitRequestAlertDialogReplicateEditTextHint">replicate</string>
-    <string name="NewObservationUnitRequestAlertDialogStudyDbIdEditTextHint">studyDbId</string>
-
-    <string name="ObservationUnitXrefAlertDialogTitle">ObservationUnitXref</string>
-    <string name="ObservationUnitXrefAlertDialogIdEditTextHint">id</string>
-    <string name="ObservationUnitXrefAlertDialogSourceEditTextHint">source</string>
-
-    <string name="NOURObservationAlertDialogTitle">Observation</string>
-    <string name="NOURObservationAlertDialogGermplasmDbIdEditTextHint">germplasmDbId</string>
-    <string name="NOURObservationAlertDialogGermplasmNameEditTextHint">germplasmName</string>
-    <string name="NOURObservationAlertDialogObservationDbIdEditTextHint">observationDbId</string>
-    <string name="NOURObservationAlertDialogObservationLevelEditTextHint">observationLevel</string>
-    <string name="NOURObservationAlertDialogObservationTimeStampEditTextHint">observationTimeStamp</string>
-    <string name="NOURObservationAlertDialogObservationUnitDbIdEditTextHint">observationUnitDbId</string>
-    <string name="NOURObservationAlertDialogObservationUnitNameEditTextHint">observationUnitName</string>
-    <string name="NOURObservationAlertDialogObservationVariableDbIdEditTextHint">observationVariableDbId</string>
-    <string name="NOURObservationAlertDialogObservationVariableNameEditTextHint">observationVariableName</string>
-    <string name="NOURObservationAlertDialogOperatorEditTextHint">operator</string>
-    <string name="NOURObservationAlertDialogSeasonLabelTextViewText">season:</string>
-    <string name="NOURObservationAlertDialogStudyDbIdEditTextHint">studyDbId</string>
-    <string name="NOURObservationAlertDialogUploadedByEditTextHint">uploadedBy</string>
-    <string name="NOURObservationAlertDialogValueEditTextHint">value</string>
-
-    <string name="SeasonAlertDialogTitle">Season</string>
-    <string name="SeasonAlertDialogSeasonEditTextHint">season</string>
-    <string name="SeasonAlertDialogSeasonDbIdEditTextHint">seasonDbId</string>
-    <string name="SeasonAlertDialogYearEditTextHint">year</string>
-
-    <string name="ObservationTreatmentAlertDialogTitle">Treatment</string>
-    <string name="ObservationTreatmentAlertDialogFactorEditTextHint">factor</string>
-    <string name="ObservationTreatmentAlertDialogModalityEditTextHint">modality</string>
-
-
-    <!-- NewObservationsTableRequestAlertDialog -->
-    <string name="NewObservationsTableRequestAlertDialogTitle">NewObservationsTableRequest</string>
-    <string name="NewObservationsTableRequestAlertDialogHeaderRowEditTextHint">headerRow</string>
-    <string name="NewObservationsTableRequestAlertDialogObservationVariableDbIdsEditTextHint">observationVariableDbIds</string>
-    <string name="NewObservationsTableRequestAlertDialogDataEditTextHint">data</string>
-
-
-    <!-- PhenotypesRequestDataAlertDialog -->
-    <string name="PhenotypesRequestDataAlertDialogTitle">PhenotypesRequestData</string>
-    <string name="PhenotypesRequestDataAlertDialogObservationUnitDbIdEditTextHint">observationUnitDbId</string>
-    <string name="PhenotypesRequestDataAlertDialogObservationsLabelTextViewText">observations:</string>
-    <string name="PhenotypesRequestDataAlertDialogStudyDbIdEditTextHint">studyDbId</string>
-
-    <string name="PRObservationAlertDialogTitle">Observation</string>
-    <string name="PRObservationAlertDialogCollectorEditTextHint">collector</string>
-    <string name="PRObservationAlertDialogObservationDbIdEditTextHint">observationDbId</string>
-    <string name="PRObservationAlertDialogObservationTimeStampEditTextHint">observationTimeStamp</string>
-    <string name="PRObservationAlertDialogObservationVariableDbIdEditTextHint">observationVariableDbId</string>
-    <string name="PRObservationAlertDialogObservationVariableNameEditTextHint">observationVariableName</string>
-    <string name="PRObservationAlertDialogSeasonEditTextHint">season</string>
-    <string name="PRObservationAlertDialogValueEditTextHint">value</string>
 
     <!-- TemplateImporter -->
     <string name="SelectExportedTemplateTitle">Import template</string>
@@ -341,6 +179,11 @@
         <item quantity="one">%d grid</item>
         <item quantity="other">%d grids</item>
     </plurals>
+
+    <!-- Preference Categories -->
+    <string name="PreferenceCollectionCategory">Collection</string>
+    <string name="PreferenceLayoutCategory">Layout</string>
+    <string name="PreferenceExportCategory">Export</string>
 
     <!-- Direction -->
     <string name="DirectionPreferenceKey">Direction</string>

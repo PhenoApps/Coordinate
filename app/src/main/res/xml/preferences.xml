@@ -2,57 +2,77 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        android:defaultValue="@string/DirectionPreferenceDefault"
-        android:entries="@array/DirectionPreferenceEntries"
-        android:entryValues="@array/DirectionPreferenceEntryValues"
-        android:icon="@drawable/ic_preferences_direction"
-        android:key="@string/DirectionPreferenceKey"
-        android:summary="@string/DirectionPreferenceSummary"
-        android:title="@string/DirectionPreferenceTitle"
-        app:useSimpleSummaryProvider="false" />
+    <PreferenceCategory
+        android:key="transfer_defaults"
+        android:title="@string/PreferenceCollectionCategory"
+        app:iconSpaceReserved="false">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_preferences_sounds"
-        android:key="@string/SoundsOnPreferenceKey"
-        android:title="@string/SoundsOnPreferenceTitle" />
+        <ListPreference
+            android:defaultValue="@string/DirectionPreferenceDefault"
+            android:entries="@array/DirectionPreferenceEntries"
+            android:entryValues="@array/DirectionPreferenceEntryValues"
+            android:icon="@drawable/ic_preferences_direction"
+            android:key="@string/DirectionPreferenceKey"
+            android:summary="@string/DirectionPreferenceSummary"
+            android:title="@string/DirectionPreferenceTitle"
+            app:useSimpleSummaryProvider="false" />
 
-    <ListPreference
-        android:defaultValue="@string/ProjectExportPreferenceDefault"
-        android:entries="@array/ProjectExportPreferenceEntries"
-        android:entryValues="@array/ProjectExportPreferenceEntryValues"
-        android:icon="@drawable/ic_preferences_project_export"
-        android:key="@string/ProjectExportPreferenceKey"
-        android:summary="@string/ProjectExportPreferenceSummary"
-        android:title="@string/ProjectExportPreferenceTitle"
-        app:useSimpleSummaryProvider="false" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_preferences_sounds"
+            android:key="@string/SoundsOnPreferenceKey"
+            android:title="@string/SoundsOnPreferenceTitle" />
 
-    <SeekBarPreference
-        android:defaultValue="100"
-        android:key="@string/ScalingPreferenceKey"
-        android:max="224"
-        android:summary="@string/ScalingPreferenceSummary"
-        android:title="@string/ScalingPreferenceTitle"
-        app:min="26"
-        app:showSeekBarValue="true"
-        app:updatesContinuously="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_preferences_unique_required"
+            android:key="@string/UniqueCheckBoxPreferenceKey"
+            android:title="@string/UniqueCheckBoxPreferenceTitle" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:icon="@drawable/ic_preferences_unique_required"
-        android:key="@string/UniqueCheckBoxPreferenceKey"
-        android:title="@string/UniqueCheckBoxPreferenceTitle" />
+        <ListPreference
+            android:defaultValue="@string/UniqueListPreferenceDefault"
+            android:enabled="false"
+            android:entries="@array/UniqueListPreferenceEntries"
+            android:entryValues="@array/UniqueListPreferenceEntryValues"
+            android:icon="@drawable/ic_preferences_unique_options"
+            android:key="@string/UniqueListPreferenceKey"
+            android:summary="@string/UniqueListPreferenceSummary"
+            android:title="@string/UniqueListPreferenceTitle"
+            app:useSimpleSummaryProvider="false" />
+    </PreferenceCategory>
 
-    <ListPreference
-        android:defaultValue="@string/UniqueListPreferenceDefault"
-        android:enabled="false"
-        android:entries="@array/UniqueListPreferenceEntries"
-        android:entryValues="@array/UniqueListPreferenceEntryValues"
-        android:icon="@drawable/ic_preferences_unique_options"
-        android:key="@string/UniqueListPreferenceKey"
-        android:summary="@string/UniqueListPreferenceSummary"
-        android:title="@string/UniqueListPreferenceTitle"
-        app:useSimpleSummaryProvider="false" />
+    <PreferenceCategory
+        android:key="transfer_defaults"
+        android:title="@string/PreferenceLayoutCategory"
+        app:iconSpaceReserved="false">
+
+        <SeekBarPreference
+            android:defaultValue="100"
+            android:key="@string/ScalingPreferenceKey"
+            android:max="224"
+            android:summary="@string/ScalingPreferenceSummary"
+            android:title="@string/ScalingPreferenceTitle"
+            app:min="26"
+            app:showSeekBarValue="true"
+            app:updatesContinuously="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="transfer_defaults"
+        android:title="@string/PreferenceExportCategory"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:defaultValue="@string/ProjectExportPreferenceDefault"
+            android:entries="@array/ProjectExportPreferenceEntries"
+            android:entryValues="@array/ProjectExportPreferenceEntryValues"
+            android:icon="@drawable/ic_preferences_project_export"
+            android:key="@string/ProjectExportPreferenceKey"
+            android:summary="@string/ProjectExportPreferenceSummary"
+            android:title="@string/ProjectExportPreferenceTitle"
+            app:useSimpleSummaryProvider="false" />
+
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
