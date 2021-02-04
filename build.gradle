@@ -2,24 +2,31 @@
 
 buildscript {
     repositories {
-        google ()
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
     }
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 allprojects {
     repositories {
-        google ()
+        google()
         jcenter()
-        maven { url "https://dl.bintray.com/pheno-apps/pheno-apps-java-client-library" }
-        maven { url "https://dl.bintray.com/pheno-apps/pheno-apps-android-library"     }
-        maven { url "https://dl.bintray.com/trife/PhenoLib/"     }
         maven { url "https://jitpack.io" }
+        maven {
+            url = "https://maven.pkg.github.com/phenoapps/phenolib"
+            credentials {
+                username = localProperties['gpr.usr']
+                password = localProperties['gpr.key']
+            }
+        }
     }
 }
 

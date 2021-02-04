@@ -47,7 +47,7 @@ dependencies {
     implementation "com.mikepenz:aboutlibraries:6.2.3"
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'org.phenoapps:phenolib:0.9.7'
+    implementation 'org.phenoapps:phenolib:0.9.21'
 
     testImplementation "junit:junit:4.13.1"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
