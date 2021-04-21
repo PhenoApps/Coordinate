@@ -14,6 +14,17 @@
         "code",
         "design"
       ]
+    },
+    {
+      "login": "peterrosario",
+      "name": "peterrosario",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26546705?v=4",
+      "profile": "https://github.com/peterrosario",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
