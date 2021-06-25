@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
-    <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
-
-    <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
-    <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
-</resources>

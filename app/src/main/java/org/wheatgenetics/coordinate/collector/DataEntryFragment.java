@@ -1,171 +1,152 @@
 package org.wheatgenetics.coordinate.collector;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.Context
- * android.os.Bundle
- * android.view.LayoutInflater
- * android.view.View
- * android.view.ViewGroup
- * android.widget.EditText
- * android.widget.LinearLayout
- * android.widget.TextView
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.fragment.app.Fragment
- *
- * org.wheatgenetics.androidlibrary.ClearingEditorActionListener
- * org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
- *
- * org.wheatgenetics.coordinate.BuildConfig
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- * org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- */
-public class DataEntryFragment extends androidx.fragment.app.Fragment
-implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    {
-        public abstract java.lang.String getEntryValue   ();
-        public abstract java.lang.String getProjectTitle ();
-        public abstract java.lang.String getTemplateTitle();
-        public abstract org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-            getOptionalFields();
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-        public abstract void saveEntry (java.lang.String entryValue);
-        public abstract void clearEntry();
-    }
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import org.phenoapps.androidlibrary.ClearingEditorActionListener;
+import org.wheatgenetics.coordinate.BuildConfig;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
+import org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+
+public class DataEntryFragment extends Fragment
+        implements ClearingEditorActionListener.Receiver {
     // region Fields
-    private org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler handler;
-
-    private android.widget.EditText     entryEditText                              ;
-    private android.widget.TextView     projectTitleTextView, templateTitleTextView;
-    private android.widget.LinearLayout optionalFieldsLayout                       ;
+    private DataEntryFragment.Handler handler;
+    private EditText entryEditText;
+    private TextView projectTitleTextView, templateTitleTextView;
+    private LinearLayout optionalFieldsLayout;
+    public DataEntryFragment() { /* Required empty public constructor. */ }
     // endregion
 
     private static void setText(
-    @androidx.annotation.Nullable final android.widget.TextView textView,
-    @androidx.annotation.Nullable final java.lang.String        text    )
-    { if (null != textView) textView.setText(text); }
-
-    public DataEntryFragment() { /* Required empty public constructor. */ }
+            @Nullable final TextView textView,
+            @Nullable final String text) {
+        if (null != textView) textView.setText(text);
+    }
 
     // region Overridden Methods
-    @java.lang.Override public void onAttach(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
+    @Override
+    public void onAttach(
+            @NonNull final Context context) {
         super.onAttach(context);
 
-        if (context instanceof org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler)
+        if (context instanceof DataEntryFragment.Handler)
             this.handler =
-                (org.wheatgenetics.coordinate.collector.DataEntryFragment.Handler) context;
+                    (DataEntryFragment.Handler) context;
         else
-            throw new java.lang.RuntimeException(context.toString() + " must implement Handler");
+            throw new RuntimeException(context.toString() + " must implement Handler");
     }
 
-    @java.lang.Override @androidx.annotation.Nullable public android.view.View onCreateView(
-    @androidx.annotation.NonNull  final android.view.LayoutInflater inflater          ,
-    @androidx.annotation.Nullable final android.view.ViewGroup      container         ,
-    @androidx.annotation.Nullable final android.os.Bundle           savedInstanceState)
-    {
+    @Override
+    @Nullable
+    public View onCreateView(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         // Inflate the layout for this fragment:
-        return inflater.inflate(org.wheatgenetics.coordinate.R.layout.fragment_data_entry,
-            container,false);
+        return inflater.inflate(R.layout.fragment_data_entry,
+                container, false);
     }
 
-    @java.lang.Override public void onActivityCreated(
-    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
-    {
+    @Override
+    public void onActivityCreated(
+            @Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final android.app.Activity activity = this.getActivity();
-        if (null != activity)
-        {
+        final Activity activity = this.getActivity();
+        if (null != activity) {
             this.entryEditText = activity.findViewById(
-                org.wheatgenetics.coordinate.R.id.entryEditText);
+                    R.id.entryEditText);
             if (null != this.entryEditText) this.entryEditText.setOnEditorActionListener(
-                new org.wheatgenetics.androidlibrary.ClearingEditorActionListener(
-                    this.entryEditText,this,
-                    org.wheatgenetics.coordinate.BuildConfig.DEBUG));
+                    new ClearingEditorActionListener(
+                            this.entryEditText, this,
+                            BuildConfig.DEBUG));
 
             this.projectTitleTextView = activity.findViewById(
-                org.wheatgenetics.coordinate.R.id.projectTitleTextView);
+                    R.id.projectTitleTextView);
 
             this.templateTitleTextView = activity.findViewById(
-                org.wheatgenetics.coordinate.R.id.templateTitleTextView);
+                    R.id.templateTitleTextView);
 
             this.optionalFieldsLayout = activity.findViewById(
-                org.wheatgenetics.coordinate.R.id.optionalFieldsLayout);
+                    R.id.optionalFieldsLayout);
         }
 
         this.populate();
     }
 
-    @java.lang.Override public void onDetach() { this.handler = null; super.onDetach(); }
+    @Override
+    public void onDetach() {
+        this.handler = null;
+        super.onDetach();
+    }
 
     // region org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver Overridden Methods
-    @java.lang.Override public void receiveText(final java.lang.String text)
-    { if (null != this.handler) this.handler.saveEntry(text); }
+    @Override
+    public void receiveText(final String text) {
+        if (null != this.handler) this.handler.saveEntry(text);
+    }
 
-    @java.lang.Override public void clearText()
-    { if (null != this.handler) this.handler.clearEntry(); }
-    // endregion
-    // endregion
+    @Override
+    public void clearText() {
+        if (null != this.handler) this.handler.clearEntry();
+    }
 
     // region Package Methods
-    void populate()
-    {
-        if (null != this.handler)
-        {
+    void populate() {
+        if (null != this.handler) {
             this.setEntry(this.handler.getEntryValue());
 
-            org.wheatgenetics.coordinate.collector.DataEntryFragment.setText(
-                this.projectTitleTextView, this.handler.getProjectTitle());
-            org.wheatgenetics.coordinate.collector.DataEntryFragment.setText(
-                this.templateTitleTextView, this.handler.getTemplateTitle());
+            DataEntryFragment.setText(
+                    this.projectTitleTextView, this.handler.getProjectTitle());
+            DataEntryFragment.setText(
+                    this.templateTitleTextView, this.handler.getTemplateTitle());
 
-            if (null != this.optionalFieldsLayout)
-            {
+            if (null != this.optionalFieldsLayout) {
                 this.optionalFieldsLayout.removeAllViews();
-                final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-                    nonNullOptionalFields = this.handler.getOptionalFields();
-                if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty())
-                {
-                    final org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields
-                        checkedOptionalFields =
-                            new org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields(
-                                nonNullOptionalFields);
+                final NonNullOptionalFields
+                        nonNullOptionalFields = this.handler.getOptionalFields();
+                if (null != nonNullOptionalFields) if (!nonNullOptionalFields.isEmpty()) {
+                    final CheckedOptionalFields
+                            checkedOptionalFields =
+                            new CheckedOptionalFields(
+                                    nonNullOptionalFields);
 
-                    final android.app.Activity        activity       = this.getActivity();
-                    final android.view.LayoutInflater layoutInflater =
-                        null == activity ? null : activity.getLayoutInflater();
+                    final Activity activity = this.getActivity();
+                    final LayoutInflater layoutInflater =
+                            null == activity ? null : activity.getLayoutInflater();
 
                     if (null != layoutInflater)
-                        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                        baseOptionalField: checkedOptionalFields)
-                        {
-                            final android.view.View view = layoutInflater.inflate(
-                                org.wheatgenetics.coordinate.R.layout.optional_field_show,
-                                new android.widget.LinearLayout(activity),false);
-                            if (null != view)
-                            {
+                        for (final BaseOptionalField
+                                baseOptionalField : checkedOptionalFields) {
+                            final View view = layoutInflater.inflate(
+                                    R.layout.optional_field_show,
+                                    new LinearLayout(activity), false);
+                            if (null != view) {
                                 {
-                                    final android.widget.TextView nameTextView = view.findViewById(
-                                        org.wheatgenetics.coordinate.R.id.nameTextView);
-                                    org.wheatgenetics.coordinate.collector.DataEntryFragment
-                                        .setText(nameTextView, baseOptionalField.getName());
+                                    final TextView nameTextView = view.findViewById(
+                                            R.id.nameTextView);
+                                    DataEntryFragment
+                                            .setText(nameTextView, baseOptionalField.getName());
                                 }
                                 {
-                                    final android.widget.TextView valueTextView = view.findViewById(
-                                        org.wheatgenetics.coordinate.R.id.valueTextView);
-                                    org.wheatgenetics.coordinate.collector.DataEntryFragment
-                                        .setText(valueTextView, baseOptionalField.getValue());
+                                    final TextView valueTextView = view.findViewById(
+                                            R.id.valueTextView);
+                                    DataEntryFragment
+                                            .setText(valueTextView, baseOptionalField.getValue());
                                 }
                             }
                             this.optionalFieldsLayout.addView(view);
@@ -174,8 +155,27 @@ implements org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receive
             }
         }
     }
+    // endregion
+    // endregion
 
-    void setEntry(final java.lang.String entry)
-    { if (null != this.entryEditText) this.entryEditText.setText(entry); }
+    void setEntry(final String entry) {
+        if (null != this.entryEditText) this.entryEditText.setText(entry);
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract String getEntryValue();
+
+        public abstract String getProjectTitle();
+
+        public abstract String getTemplateTitle();
+
+        public abstract NonNullOptionalFields
+        getOptionalFields();
+
+        public abstract void saveEntry(String entryValue);
+
+        public abstract void clearEntry();
+    }
     // endregion
 }

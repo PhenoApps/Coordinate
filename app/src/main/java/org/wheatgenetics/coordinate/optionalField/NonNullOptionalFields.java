@@ -1,79 +1,72 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.VisibleForTesting
- *
- * org.json.JSONArray
- * org.json.JSONException
- * org.json.JSONObject
- * org.json.JSONTokener
- *
- * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
- * org.wheatgenetics.coordinate.optionalField.DateOptionalField
- * org.wheatgenetics.coordinate.optionalField.OptionalFields
- * org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator
- * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
- * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
- */
-public class NonNullOptionalFields extends org.wheatgenetics.coordinate.optionalField.OptionalFields
-implements java.lang.Cloneable
-{
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields checkedAdd(
-    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint)
-    {
-        if (null != value && value.trim().length() > 0)
-            return this.add(name, /* value => */ value, /* hint => */ hint);
-        else
-            return this.add(name);
-    }
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.annotation.VisibleForTesting;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
+import java.util.ArrayList;
+
+public class NonNullOptionalFields extends OptionalFields
+        implements Cloneable {
+    private static final String PERSON_FIELD_DEFAULT_NAME = "Person";
+
+    @NonNull
+    private final StringGetter
+            stringGetter;
 
     // region Constructors
-    public NonNullOptionalFields() { super(); }
+    public NonNullOptionalFields(@NonNull final StringGetter stringGetter) {
+        super();
+        this.stringGetter = stringGetter;
+    }
 
-    public NonNullOptionalFields(final java.lang.String json)
-    {
-        this();
+    public NonNullOptionalFields(final String json,
+                                 @NonNull final StringGetter stringGetter) {
+        this(stringGetter);
 
-        if (null != json)
-        {
-            final org.json.JSONArray jsonArray;
+        if (null != json) {
+            final JSONArray jsonArray;
             {
-                final org.json.JSONTokener jsonTokener = new org.json.JSONTokener(json);
-                try
-                {
-                    jsonArray = (org.json.JSONArray)         // throws java.lang.ClassCastException,
-                        jsonTokener.nextValue();             //  org.json.JSONException
+                final JSONTokener jsonTokener = new JSONTokener(json);
+                try {
+                    jsonArray = (JSONArray)         // throws java.lang.ClassCastException,
+                            jsonTokener.nextValue();             //  org.json.JSONException
+                } catch (final ClassCastException | JSONException e) {
+                    return;
                 }
-                catch (final java.lang.ClassCastException | org.json.JSONException e) { return; }
             }
 
-            if (null != jsonArray)
-            {
+            if (null != jsonArray) {
                 final int last = jsonArray.length() - 1;
-                for (int i = 0; i <= last; i++)
-                {
-                    org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField;
+                for (int i = 0; i <= last; i++) {
+                    BaseOptionalField baseOptionalField;
                     {
-                        final org.json.JSONObject jsonObject;
-                        try { jsonObject = (org.json.JSONObject) jsonArray.get(i); }  // throws org-
-                        catch (final org.json.JSONException e) { continue; }          //  .json.-
-                                                                                      //  JSONExcep-
+                        final JSONObject jsonObject;
+                        try {
+                            jsonObject = (JSONObject) jsonArray.get(i);
+                        }  // throws org-
+                        catch (final JSONException e) {
+                            continue;
+                        }          //  .json.-
+                        //  JSONExcep-
                         try                                                           //  tion
                         {
-                            baseOptionalField = new org.wheatgenetics.coordinate
-                                .optionalField.OtherOptionalField(jsonObject);             // throws
-                        }
-                        catch (final
-                        org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass e)
-                        {
+                            baseOptionalField = new OtherOptionalField(jsonObject, this.stringGetter);        // throws
+                        } catch (final
+                        OtherOptionalField.WrongClass e) {
                             baseOptionalField =
-                                new org.wheatgenetics.coordinate.optionalField.DateOptionalField(
-                                    jsonObject);
+                                    new DateOptionalField(
+                                            jsonObject, this.stringGetter);
                         }
                     }
                     this.arrayList.add(baseOptionalField);
@@ -83,311 +76,404 @@ implements java.lang.Cloneable
     }
     // endregion
 
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
-    {
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields result =
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields();
+    // region Private Methods
+    @NonNull
+    private static String getString(
+            @StringRes final int resId,
+            @NonNull final StringGetter stringGetter,
+            @NonNull @Size(min = 1) final String
+                    defaultValue) {
+        final String candidateResult = stringGetter.get(resId);
+        return null == candidateResult ? defaultValue : candidateResult;
+    }
 
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
-        this)
+    // region Make Public Methods
+    @NonNull
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    public static NonNullOptionalFields makeNew(
+            final String identificationValue, final String personValue,
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final String personName =
+                NonNullOptionalFields.getString(
+                        R.string.BaseOptionalFieldPersonFieldName,
+                        stringGetter, NonNullOptionalFields.PERSON_FIELD_DEFAULT_NAME);
+        return new NonNullOptionalFields(
+                stringGetter).checkedAdd(
+                BaseOptionalField.identificationFieldName(stringGetter),
+                identificationValue, null).checkedAdd(
+                personName, personValue, null).addDate();
+    }
+    // endregion
+
+    @NonNull
+    public static NonNullOptionalFields makeNew(
+            @NonNull final StringGetter stringGetter) {
+        return NonNullOptionalFields.makeNew(
+                null, null, stringGetter);
+    }
+
+    @NonNull
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    public static NonNullOptionalFields makeSeedDefault(
+            final String trayIdValue, final String personValue,
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final NonNullOptionalFields result =
+                new NonNullOptionalFields(stringGetter);
+        {
+            @NonNull final String trayIdName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsTrayIDFieldName,
+                            stringGetter, "Tray");
+            @NonNull final String trayIdHint =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsTrayIDFieldHint,
+                            stringGetter, "Tray ID");
+            result.checkedAdd(trayIdName, trayIdValue, trayIdHint);
+        }
+        {
+            @NonNull final String personName =
+                    NonNullOptionalFields.getString(
+                            R.string
+                                    .NonNullOptionalFieldsSeedTrayPersonFieldName,
+                            stringGetter, NonNullOptionalFields.PERSON_FIELD_DEFAULT_NAME);
+            @NonNull final String personHint =
+                    NonNullOptionalFields.getString(
+                            R.string
+                                    .NonNullOptionalFieldsSeedTrayPersonFieldHint,
+                            stringGetter, "Person name");
+            result.checkedAdd(personName, personValue, personHint).addDate();
+        }
+        return result;
+    }
+
+    @NonNull
+    public static NonNullOptionalFields makeSeedDefault(
+            @NonNull final StringGetter stringGetter) {
+        return NonNullOptionalFields.makeSeedDefault(
+                null, null, stringGetter);
+    }
+
+    @NonNull
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    public static NonNullOptionalFields makeDNADefault(
+            final String plateIdValue, final String plateNameValue,
+            final String personValue,
+            @NonNull final StringGetter stringGetter) {
+        @NonNull final NonNullOptionalFields result =
+                new NonNullOptionalFields(stringGetter);
+        {
+            @NonNull final String plateIDName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsPlateIDFieldName,
+                            stringGetter, "Plate");
+            @NonNull final String plateIDHint =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsPlateIDFieldHint,
+                            stringGetter, "Plate ID");
+            result.checkedAdd(plateIDName, plateIdValue, plateIDHint);
+        }
+        {
+            @NonNull final String plateName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsPlateNameFieldName,
+                            stringGetter, "Plate Name");
+            result.checkedAdd(plateName, plateNameValue, null);
+        }
+        {
+            @NonNull final String notesName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsNotesFieldName,
+                            stringGetter, "Notes");
+            result.add(notesName);
+        }
+        {
+            @NonNull final String tissueTypeName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsTissueTypeFieldName,
+                            stringGetter, "tissue_type");
+            @NonNull final String tissueTypeValue =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsTissueTypeFieldValue,
+                            stringGetter, "Leaf");
+            result.add(tissueTypeName, tissueTypeValue, "");
+        }
+        {
+            @NonNull final String extractionName =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsExtractionFieldName,
+                            stringGetter, "extraction");
+            @NonNull final String extractionValue =
+                    NonNullOptionalFields.getString(
+                            R.string.NonNullOptionalFieldsExtractionFieldValue,
+                            stringGetter, "CTAB");
+            result.add(extractionName, extractionValue, "");
+        }
+        {
+            @NonNull final String personName =
+                    NonNullOptionalFields.getString(
+                            R.string
+                                    .NonNullOptionalFieldsDNAPlatePersonFieldName,
+                            stringGetter, "person");
+            result.checkedAdd(personName, personValue, null);
+        }
+        return result.addDate();
+    }
+    // endregion
+
+    @NonNull
+    public static NonNullOptionalFields makeDNADefault(
+            @NonNull final StringGetter stringGetter) {
+        return NonNullOptionalFields.makeDNADefault(
+                null, null, null, stringGetter);
+    }
+
+    @NonNull
+    private NonNullOptionalFields checkedAdd(
+            @NonNull @Size(min = 1) final String name,
+            final String value, final String hint) {
+        if (null != value && value.trim().length() > 0)
+            return this.add(name, /* value => */ value, /* hint => */ hint);
+        else
+            return this.add(name);
+    }
+    // endregion
+
+    @Override
+    @NonNull
+    public Object clone() {
+        final NonNullOptionalFields result =
+                new NonNullOptionalFields(this.stringGetter);
+
+        for (final BaseOptionalField baseOptionalField :
+                this)
             if (baseOptionalField instanceof
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-            {
-                final org.wheatgenetics.coordinate.optionalField.DateOptionalField
-                    dateOptionalField =
-                        (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                            baseOptionalField;
-                result.arrayList.add((org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                    dateOptionalField.clone());
-            }
-            else
-                if (baseOptionalField instanceof
-                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                {
-                    final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
-                        otherOptionalField =
-                            (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                    DateOptionalField) {
+                final DateOptionalField
+                        dateOptionalField =
+                        (DateOptionalField)
                                 baseOptionalField;
-                    result.arrayList.add(
-                        (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                            otherOptionalField.clone());
-                }
+                result.arrayList.add((DateOptionalField)
+                        dateOptionalField.clone());
+            } else if (baseOptionalField instanceof
+                    OtherOptionalField) {
+                final OtherOptionalField
+                        otherOptionalField =
+                        (OtherOptionalField)
+                                baseOptionalField;
+                result.arrayList.add(
+                        (OtherOptionalField)
+                                otherOptionalField.clone());
+            }
 
         return result;
     }
 
     // region Add Methods
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @androidx.annotation.NonNull final java.lang.String name)
-    {
-        this.arrayList.add(new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name));
+    @NonNull
+    private NonNullOptionalFields add(
+            @NonNull @Size(min = 1) final String name) {
+        this.arrayList.add(new OtherOptionalField(
+                name, this.stringGetter));
         return this;
     }
 
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields add(
-    @androidx.annotation.NonNull final java.lang.String name, final java.lang.String value,
-    final java.lang.String hint)
-    {
-        this.arrayList.add(
-            new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(name, value, hint));
+    @NonNull
+    public NonNullOptionalFields add(
+            @NonNull @Size(min = 1) final String name,
+            final String value, final String hint) {
+        this.arrayList.add(new OtherOptionalField(
+                name, value, hint, this.stringGetter));
         return this;
     }
 
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields addDate()
-    {
-        this.arrayList.add(new org.wheatgenetics.coordinate.optionalField.DateOptionalField());
+    @NonNull
+    private NonNullOptionalFields addDate() {
+        this.arrayList.add(new DateOptionalField(
+                this.stringGetter));
         return this;
     }
-    // endregion
 
     // region Package Methods
-    void setChecked(@androidx.annotation.IntRange(from = 0) final int index, final boolean checked)
-    { this.get(index).setChecked(checked); }
+    boolean setChecked(@IntRange(from = 0) final int index, final boolean checked) {
+        final BaseOptionalField baseOptionalField =
+                this.get(index);
+        baseOptionalField.setChecked(checked);
+        return baseOptionalField.nameIsIdentification();
+    }
 
-    @androidx.annotation.NonNull boolean[] checks()
-    {
+    @NonNull
+    boolean[] checks() {
         // noinspection CStyleArrayDeclaration
         final boolean result[];
         {
-            @java.lang.SuppressWarnings({"Convert2Diamond"})
-            final java.util.ArrayList<java.lang.Boolean> checkedArrayList =
-                new java.util.ArrayList<java.lang.Boolean>();
+            @SuppressWarnings({"Convert2Diamond"}) final ArrayList<Boolean> checkedArrayList =
+                    new ArrayList<Boolean>();
 
-            for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-            baseOptionalField: this)
+            for (final BaseOptionalField
+                    baseOptionalField : this)
                 checkedArrayList.add(baseOptionalField.getChecked());
 
-            final int checkedArrayListSize = checkedArrayList.size();
+            @IntRange(from = 0) final int checkedArrayListSize =
+                    checkedArrayList.size();
             result = new boolean[checkedArrayListSize];
 
             for (int i = 0; i < checkedArrayListSize; i++) result[i] = checkedArrayList.get(i);
         }
         return result;
     }
-    // endregion
 
     // region Public Methods
-    public boolean isEmpty() { return !this.iterator().hasNext(); }
+    public boolean isEmpty() {
+        return !this.iterator().hasNext();
+    }
 
-    public org.wheatgenetics.coordinate.optionalField.BaseOptionalField get(
-    @androidx.annotation.IntRange(from = 0) final int index)
-    {
-        @androidx.annotation.IntRange(from = 0) int size = 0;
+    @NonNull
+    public BaseOptionalField get(
+            @IntRange(from = 0) final int index) {
+        @IntRange(from = 0) int size = 0;
         {
-            final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
-                this.iterator();
+            final OptionalFields.Iterator iterator =
+                    this.iterator();
             // noinspection WhileLoopReplaceableByForEach
-            while (iterator.hasNext()) { size++; iterator.next(); }
+            while (iterator.hasNext()) {
+                size++;
+                iterator.next();
+            }
         }
 
         if (index < 0 || index >= size)
-            throw new java.lang.IndexOutOfBoundsException();
-        else
-        {
-            org.wheatgenetics.coordinate.optionalField.BaseOptionalField result;
+            throw new IndexOutOfBoundsException();
+        else {
+            BaseOptionalField result;
             {
-                final org.wheatgenetics.coordinate.optionalField.OptionalFields.Iterator iterator =
-                    this.iterator();
-                @androidx.annotation.IntRange(from = 0) int i = 0;
+                final OptionalFields.Iterator iterator =
+                        this.iterator();
+                @IntRange(from = 0) int i = 0;
                 do result = iterator.next(); while (i++ < index);
             }
             return result;
         }
     }
 
-    @androidx.annotation.NonNull public java.lang.String getDatedFirstValue()
-    {
+    @NonNull
+    public String getDatedFirstValue() {
         final int first = 0;
         return this.get(first).getValue() + "_" +
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField.getCurrentDate().replace(
-                ".","_");
+                DateOptionalField.getCurrentDate().replace(
+                        ".", "_");
     }
 
-    @androidx.annotation.NonNull public java.lang.String toJson()
-    {
-        final org.json.JSONArray jsonArray = new org.json.JSONArray();
+    @NonNull
+    public String toJson() {
+        final JSONArray jsonArray = new JSONArray();
 
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
-        this)
+        for (final BaseOptionalField baseOptionalField :
+                this)
             if (baseOptionalField instanceof
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-            {
-                final org.wheatgenetics.coordinate.optionalField.DateOptionalField
-                    dateOptionalField =
-                        (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                            baseOptionalField;
-                jsonArray.put(dateOptionalField.makeJSONObject());
-            }
-            else
-                if (baseOptionalField instanceof
-                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                {
-                    final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
-                        otherOptionalField =
-                            (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                    DateOptionalField) {
+                final DateOptionalField
+                        dateOptionalField =
+                        (DateOptionalField)
                                 baseOptionalField;
-                    jsonArray.put(otherOptionalField.makeJSONObject());
-                }
+                jsonArray.put(dateOptionalField.makeJSONObject(this.stringGetter));
+            } else if (baseOptionalField instanceof
+                    OtherOptionalField) {
+                final OtherOptionalField
+                        otherOptionalField =
+                        (OtherOptionalField)
+                                baseOptionalField;
+                jsonArray.put(otherOptionalField.makeJSONObject(this.stringGetter));
+            }
 
         return jsonArray.toString();
     }
 
-    @androidx.annotation.NonNull public java.lang.String[] names()
-    {
-        @java.lang.SuppressWarnings({"Convert2Diamond"})
-        final java.util.ArrayList<java.lang.String> nameArrayList =
-            new java.util.ArrayList<java.lang.String>();
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
-        this)
+    @NonNull
+    public String[] names() {
+        @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> nameArrayList =
+                new ArrayList<String>();
+        for (final BaseOptionalField baseOptionalField :
+                this)
             nameArrayList.add(baseOptionalField.getName());
 
         // noinspection CStyleArrayDeclaration
-        final java.lang.String result[] = new java.lang.String[nameArrayList.size()];
+        final String result[] = new String[nameArrayList.size()];
         return nameArrayList.toArray(result);
     }
 
-    @androidx.annotation.NonNull public java.lang.String[] values()
-    {
-        @java.lang.SuppressWarnings({"Convert2Diamond"})
-        final java.util.ArrayList<java.lang.String> valueArrayList =
-            new java.util.ArrayList<java.lang.String>();
-        for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField baseOptionalField:
-        this)
+    @NonNull
+    public String[] values() {
+        @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> valueArrayList =
+                new ArrayList<String>();
+        for (final BaseOptionalField baseOptionalField :
+                this)
             if (baseOptionalField instanceof
-            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-            {
-                final org.wheatgenetics.coordinate.optionalField.DateOptionalField
-                    dateOptionalField =
-                        (org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                            baseOptionalField;
-                valueArrayList.add(dateOptionalField.getValue());
-            }
-            else
-                if (baseOptionalField instanceof
-                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                {
-                    final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
-                        otherOptionalField =
-                            (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                    DateOptionalField) {
+                final DateOptionalField
+                        dateOptionalField =
+                        (DateOptionalField)
                                 baseOptionalField;
-                    valueArrayList.add(otherOptionalField.getValue());
-                }
+                valueArrayList.add(dateOptionalField.getValue());
+            } else if (baseOptionalField instanceof
+                    OtherOptionalField) {
+                final OtherOptionalField
+                        otherOptionalField =
+                        (OtherOptionalField)
+                                baseOptionalField;
+                valueArrayList.add(otherOptionalField.getValue());
+            }
 
         // noinspection CStyleArrayDeclaration
-        final java.lang.String result[] = new java.lang.String[valueArrayList.size()];
+        final String result[] = new String[valueArrayList.size()];
         return valueArrayList.toArray(result);
     }
 
-    @androidx.annotation.Nullable @java.lang.SuppressWarnings({"CStyleArrayDeclaration"})
-    public java.lang.String[] values(final java.lang.String names[])
-    {
+    @Nullable
+    @SuppressWarnings({"CStyleArrayDeclaration"})
+    public String[] values(final String names[]) {
         if (null == names)
             return null;
-        else
-            if (names.length <= 0)
-                return null;
-            else
-            {
-                @java.lang.SuppressWarnings({"Convert2Diamond"})
-                final java.util.ArrayList<java.lang.String> valueArrayList =
-                    new java.util.ArrayList<java.lang.String>();
+        else if (names.length <= 0)
+            return null;
+        else {
+            @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> valueArrayList =
+                    new ArrayList<String>();
 
-                for (final java.lang.String name: names)
-                {
-                    boolean nameFound = false;
-                    for (final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                    baseOptionalField: this) if (baseOptionalField.namesAreEqual(name))
-                    {
-                        final java.lang.String safeValue;
+            for (final String name : names) {
+                boolean nameFound = false;
+                for (final BaseOptionalField
+                        baseOptionalField : this)
+                    if (baseOptionalField.namesAreEqual(name)) {
+                        final String safeValue;
                         {
                             if (baseOptionalField instanceof
-                            org.wheatgenetics.coordinate.optionalField.DateOptionalField)
-                            {
-                                final org.wheatgenetics.coordinate.optionalField
-                                    .DateOptionalField dateOptionalField =
-                                        (org.wheatgenetics.coordinate.optionalField
-                                            .DateOptionalField) baseOptionalField;
+                                    DateOptionalField) {
+                                final DateOptionalField dateOptionalField =
+                                        (DateOptionalField) baseOptionalField;
                                 safeValue = dateOptionalField.getSafeValue();
-                            }
-                            else
-                                if (baseOptionalField instanceof
-                                org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
-                                {
-                                    final org.wheatgenetics.coordinate.optionalField
-                                        .OtherOptionalField otherOptionalField =
-                                            (org.wheatgenetics.coordinate.optionalField
-                                                .OtherOptionalField) baseOptionalField;
-                                    safeValue = otherOptionalField.getSafeValue();
-                                }
-                                else safeValue = null;
+                            } else if (baseOptionalField instanceof
+                                    OtherOptionalField) {
+                                final OtherOptionalField otherOptionalField =
+                                        (OtherOptionalField) baseOptionalField;
+                                safeValue = otherOptionalField.getSafeValue();
+                            } else safeValue = null;
                         }
                         valueArrayList.add(safeValue);
-                        nameFound = true; break;
+                        nameFound = true;
+                        break;
                     }
-                    if (!nameFound) valueArrayList.add("");
-                }
-
-                final java.lang.String result[] = new java.lang.String[valueArrayList.size()];
-                return valueArrayList.toArray(result);
+                if (!nameFound) valueArrayList.add("");
             }
-    }
 
-    // region Make Public Methods
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @androidx.annotation.VisibleForTesting(
-        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew(
-    final java.lang.String identification, final java.lang.String person)
-    {
-        return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            "Identification", identification,null).checkedAdd(
-            "Person"        , person        ,null).addDate();
-    }
-
-    @androidx.annotation.NonNull
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeNew()
-    {
-        return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew(
-            null,null);
-    }
-
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @androidx.annotation.VisibleForTesting(
-        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault(
-    final java.lang.String trayId, final java.lang.String person)
-    {
-        return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields().checkedAdd(
-            "Tray"  , trayId,"Tray ID"    ).checkedAdd(
-            "Person", person,"Person name").addDate();
-    }
-
-    @androidx.annotation.NonNull
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeSeedDefault()
-    {
-        return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeSeedDefault(
-            null,null);
-    }
-
-    @androidx.annotation.NonNull @java.lang.SuppressWarnings({"DefaultAnnotationParam"})
-    @androidx.annotation.VisibleForTesting(
-        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault(
-    final java.lang.String plateId, final java.lang.String plateName, final java.lang.String person)
-    {
-        return new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields()
-            .checkedAdd("Plate"     , plateId  ,"Plate ID")                 // TODO: dna
-            .checkedAdd("Plate Name", plateName,null      ).add("Notes")
-            .add       ("tissue_type","Leaf","")
-            .add       ("extraction" ,"CTAB","")
-            .checkedAdd("person", person,null).addDate();
-    }
-
-    @androidx.annotation.NonNull
-    public static org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields makeDNADefault()
-    {
-        return org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeDNADefault(
-            null,null,null);
+            final String result[] = new String[valueArrayList.size()];
+            return valueArrayList.toArray(result);
+        }
     }
     // endregion
     // endregion

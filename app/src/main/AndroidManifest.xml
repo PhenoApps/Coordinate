@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!-- Step 1: Change android:theme from "@style/AppTheme" to "@style/OldAppTheme". -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Step 2: Change android:name from ".main.MainActivity" to ".main.OldMainActivity". -->
         <activity
             android:name=".main.MainActivity"
-            android:configChanges="keyboardHidden|keyboard">
+            android:configChanges="keyboardHidden|keyboard"
+            android:theme="@style/AppTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,35 +23,44 @@
             </intent-filter>
         </activity>
 
-        <!-- Step 3: Change android:name from ".main.OldMainActivity" to ".main.MainActivity". -->
-        <activity android:name=".main.OldMainActivity" />
-
         <activity
             android:name=".CollectorActivity"
-            android:label="@string/CollectorActivityLabel" />
+            android:label="@string/CollectorActivityLabel"
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".grids.GridsActivity"
-            android:label="@string/GridsActivityLabel" />
+            android:label="@string/GridsActivityLabel"
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".templates.TemplatesActivity"
-            android:label="@string/TemplatesActivityLabel" />
+            android:label="@string/TemplatesActivityLabel"
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".projects.ProjectsActivity"
-            android:label="@string/ProjectsActivityLabel" />
+            android:label="@string/ProjectsActivityLabel"
+            android:theme="@style/AppTheme" />
 
-        <activity android:name=".tc.ExcludeCellsActivity">
+        <activity
+            android:name=".AboutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|locale"
+            android:theme="@style/AppTheme.MaterialAboutActivity" />
+
+        <activity
+            android:name=".tc.exclude.ExcludeCellsActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="org.wheatgenetics.coordinate.tc.ExcludeCellsActivity" />
+                <action android:name="org.wheatgenetics.coordinate.tc.exclude.ExcludeCellsActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".preference.PreferenceActivity"
-            android:label="@string/PreferenceActivityLabel">
+            android:label="@string/PreferenceActivityLabel"
+            android:theme="@style/AppTheme">
 
             <intent-filter>
                 <action android:name="org.wheatgenetics.coordinate.preference.PreferenceActivity" />

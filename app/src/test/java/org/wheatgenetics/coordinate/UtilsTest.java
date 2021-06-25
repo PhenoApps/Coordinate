@@ -1,52 +1,98 @@
 package org.wheatgenetics.coordinate;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  * org.wheatgenetics.coordinate.Utils
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class UtilsTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class UtilsTest
+extends Object implements StringGetter
 {
-    // region Public Method Tests
-    // region valid() Public Method Tests
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void validThrows()
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
-        org.wheatgenetics.coordinate.Utils.valid(
-            /* value => */0, /* minValue => */1);
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId)
+        {
+            case R.string.UtilsInvalidValue:
+                return "value must be >= %d";
+
+            default: Assert.fail(); return null;
+        }
     }
 
-    @org.junit.Test() public void validSucceeds()
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException
+    {
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: Assert.fail(); return null; }
+    }
+    // endregion
+
+    // region Public Method Tests
+    // region valid() Public Method Tests
+    @Test(expected = IllegalArgumentException.class) public void validThrows()
+    {
+        Utils.valid(
+            /* value => */0, /* minValue => */1,this);
+    }
+
+    @Test() public void validSucceeds()
     {
         final int value = 3;
-        org.junit.Assert.assertEquals(value,
-            org.wheatgenetics.coordinate.Utils.valid(value, /* minValue => */0));
+        Assert.assertEquals(value, Utils.valid(
+            value, /* minValue => */0,this));
     }
     // endregion
 
     // region convert() Public Method Tests
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badOffsetConvertThrows()
-    { org.wheatgenetics.coordinate.Utils.convert(-5); }
+    { Utils.convert(-5); }
 
-    @org.junit.Test() public void smallOffsetConvertSucceeds()
+    @Test() public void smallOffsetConvertSucceeds()
     {
-        org.junit.Assert.assertEquals("C",
-            org.wheatgenetics.coordinate.Utils.convert(2));
+        Assert.assertEquals("C",
+            Utils.convert(2));
     }
 
-    @org.junit.Test() public void mediumOffsetConvertSucceeds()
+    @Test() public void mediumOffsetConvertSucceeds()
     {
-        org.junit.Assert.assertEquals("AC",
-            org.wheatgenetics.coordinate.Utils.convert(26 + 2));
+        Assert.assertEquals("AC",
+            Utils.convert(26 + 2));
     }
 
-    @org.junit.Test() public void largeOffsetConvertSucceeds()
+    @Test() public void largeOffsetConvertSucceeds()
     {
-        org.junit.Assert.assertEquals("BC",
-            org.wheatgenetics.coordinate.Utils.convert(26 + 26 + 2));
+        Assert.assertEquals("BC",
+            Utils.convert(26 + 26 + 2));
     }
     // endregion
     // endregion

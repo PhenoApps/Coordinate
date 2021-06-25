@@ -1,46 +1,46 @@
 package org.wheatgenetics.coordinate.adapter;
 
-/**
- * Uses:
- * android.app.Activity
- * android.view.View.OnClickListener
- *
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.adapter.Adapter
- */
-public abstract class NonGridsAdapter extends org.wheatgenetics.coordinate.adapter.Adapter
-{
-    @androidx.annotation.NonNull private final android.view.View.OnClickListener
-        onCreateGridButtonClickListener, onShowGridsButtonClickListener;
+import android.app.Activity;
+import android.view.View;
 
-    // region Protected Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull protected android.view.View.OnClickListener
-    onCreateGridButtonClickListener() { return this.onCreateGridButtonClickListener; }
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @androidx.annotation.NonNull protected android.view.View.OnClickListener
-    onShowGridsButtonClickListener() { return this.onShowGridsButtonClickListener; }
-    // endregion
+public abstract class NonGridsAdapter extends Adapter {
+    @NonNull
+    private final View.OnClickListener
+            onCreateGridButtonClickListener, onShowGridsButtonClickListener;
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected NonGridsAdapter(
-    @androidx.annotation.NonNull final android.app.Activity              activity,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onCreateGridButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onDeleteButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onExportButtonClickListener,
-    @androidx.annotation.NonNull final android.view.View.OnClickListener
-        onShowGridsButtonClickListener)
-    {
+            @NonNull final Activity activity,
+            @NonNull final View.OnClickListener
+                    onCreateGridButtonClickListener,
+            @NonNull final View.OnClickListener
+                    onDeleteButtonClickListener,
+            @NonNull final View.OnClickListener
+                    onExportButtonClickListener,
+            @NonNull final View.OnClickListener
+                    onShowGridsButtonClickListener) {
         super(activity, onDeleteButtonClickListener, onExportButtonClickListener);
 
         this.onCreateGridButtonClickListener = onCreateGridButtonClickListener;
-        this.onShowGridsButtonClickListener  = onShowGridsButtonClickListener ;
+        this.onShowGridsButtonClickListener = onShowGridsButtonClickListener;
+    }
+
+    // region Protected Methods
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected View.OnClickListener
+    onCreateGridButtonClickListener() {
+        return this.onCreateGridButtonClickListener;
+    }
+    // endregion
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected View.OnClickListener
+    onShowGridsButtonClickListener() {
+        return this.onShowGridsButtonClickListener;
     }
 }

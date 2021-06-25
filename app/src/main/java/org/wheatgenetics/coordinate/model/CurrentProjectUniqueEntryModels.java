@@ -1,20 +1,26 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels
- */
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 public class CurrentProjectUniqueEntryModels
-extends org.wheatgenetics.coordinate.model.DatabaseUniqueEntryModels
-{
+        extends DatabaseUniqueEntryModels {
     public CurrentProjectUniqueEntryModels(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  rows  ,
-    @androidx.annotation.IntRange(from = 1) final int  cols  ,
-    @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CurrentProjectUniqueEntryModels.Checker checker)
-    { super(gridId, rows, cols,"current project", checker); }
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int rows,
+            @IntRange(from = 1) final int cols,
+            @NonNull final
+            CurrentProjectUniqueEntryModels.Checker checker,
+            @NonNull final StringGetter stringGetter) {
+        // noinspection ConstantConditions
+        super(gridId, rows, cols, /* scope => */ null == stringGetter.get(
+                R.string.CurrentProjectUniqueEntryModelsScope) ?
+                        "current project" :
+                        stringGetter.get(
+                                R.string.CurrentProjectUniqueEntryModelsScope),
+                checker, stringGetter);
+    }
 }

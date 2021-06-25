@@ -1,37 +1,124 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.TemplateModel
  * org.wheatgenetics.coordinate.model.TemplateModels
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateModelsTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class TemplateModelsTest
+extends Object implements StringGetter
 {
-    @org.junit.Test() public void iteratorWorks()
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case R.string.DateOptionalFieldDateFieldName:
+                return "Date";
+
+
+            case R.string.NonNullOptionalFieldsTrayIDFieldName:
+                return "Tray";
+            case R.string.NonNullOptionalFieldsTrayIDFieldHint:
+                return "Tray ID";
+            case R.string.NonNullOptionalFieldsSeedTrayPersonFieldName:
+                return "Person";
+            case
+                R.string.NonNullOptionalFieldsSeedTrayPersonFieldHint:
+                return "Person name";
+
+            case R.string.NonNullOptionalFieldsPlateIDFieldName:
+                return "Plate";
+            case R.string.NonNullOptionalFieldsPlateIDFieldHint:
+                return "Plate ID";
+
+            case R.string.NonNullOptionalFieldsPlateNameFieldName:
+                return "Plate Name";
+
+            case R.string.NonNullOptionalFieldsNotesFieldName:
+                return "Notes";
+
+            case
+            R.string.NonNullOptionalFieldsTissueTypeFieldName:
+                return "tissue_type";
+            case
+            R.string.NonNullOptionalFieldsTissueTypeFieldValue:
+                return "Leaf";
+
+            case R.string.NonNullOptionalFieldsExtractionFieldName:
+                return "extraction";
+            case
+            R.string.NonNullOptionalFieldsExtractionFieldValue:
+                return "CTAB";
+
+            case
+            R.string.NonNullOptionalFieldsDNAPlatePersonFieldName:
+                return "person";
+
+
+            case R.string.SeedDefaultTemplateTitle: return "Seed Tray";
+            case R.string.DNADefaultTemplateTitle : return "DNA Plate";
+
+
+            default: Assert.fail(); return null;
+        }
+    }
+
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
+    @Test() public void iteratorWorks()
     {
               int                                               count          = 0;
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+        final TemplateModels templateModels =
+            TemplateModels.makeDefault(this);
 
         // noinspection UnusedParameters
-        for (final org.wheatgenetics.coordinate.model.TemplateModel templateModel: templateModels)
+        for (final TemplateModel templateModel: templateModels)
             count++;
 
-        org.junit.Assert.assertEquals(count, templateModels.size());
+        Assert.assertEquals(count, templateModels.size());
     }
 
     // region Public Method Tests
-    @org.junit.Test() public void addAndSizeAndGetWork()
+    @Test() public void addAndSizeAndGetWork()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
+        final TemplateModels templateModels =
+            TemplateModels.makeDefault(this);
         {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                new org.wheatgenetics.coordinate.model.TemplateModel(
+            final TemplateModel templateModel =
+                new TemplateModel(
                     /* id                           => */4,
                     /* title                        => */"testTitle",
                     /* code                         => */1,
@@ -45,48 +132,49 @@ public class TemplateModelsTest extends java.lang.Object
                     /* rowNumbering                 => */0,
                     /* entryLabel                   => */null,
                     /* optionalFields               => */null,
+                    /* stringGetter                 => */this,
                     /* timestamp                    => */0);
             templateModels.add(templateModel);
-            org.junit.Assert.assertEquals(templateModel, templateModels.get(2));
+            Assert.assertEquals(templateModel, templateModels.get(2));
         }
-        org.junit.Assert.assertEquals(3, templateModels.size());
-        org.junit.Assert.assertNull  (templateModels.get(999));
+        Assert.assertEquals(3, templateModels.size());
+        Assert.assertNull  (templateModels.get(999));
     }
 
-    @org.junit.Test() public void getWorks()
-    { org.junit.Assert.assertNull(new org.wheatgenetics.coordinate.model.TemplateModels().get(0)); }
+    @Test() public void getWorks()
+    { Assert.assertNull(new TemplateModels().get(0)); }
 
-    @org.junit.Test() public void makeDefaultAndSizeSucceed()
+    @Test() public void makeDefaultAndSizeSucceed()
     {
-        org.junit.Assert.assertEquals(2,
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault().size());
+        Assert.assertEquals(2,
+            TemplateModels.makeDefault(this).size());
     }
 
-    @org.junit.Test() public void titlesWorks()
+    @Test() public void titlesWorks()
     {
-        org.junit.Assert.assertNull(
-            new org.wheatgenetics.coordinate.model.TemplateModels().titles());
+        Assert.assertNull(
+            new TemplateModels().titles());
     }
 
-    @org.junit.Test() public void titlesAndMakeDefaultSucceed()
+    @Test() public void titlesAndMakeDefaultSucceed()
     {
         // noinspection CStyleArrayDeclaration
-        final java.lang.String expected[] = new java.lang.String[]{
-            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault().getTitle(),
-            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault ().getTitle()};
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-        org.junit.Assert.assertArrayEquals(expected, templateModels.titles());
+        final String expected[] = new String[]{
+            TemplateModel.makeSeedDefault(this).getTitle(),
+            TemplateModel.makeDNADefault (this).getTitle()};
+        final TemplateModels templateModels =
+            TemplateModels.makeDefault(this);
+        Assert.assertArrayEquals(expected, templateModels.titles());
     }
 
-    @org.junit.Test() public void makeDefaultAndGetSucceed()
+    @Test() public void makeDefaultAndGetSucceed()
     {
-        final org.wheatgenetics.coordinate.model.TemplateModels templateModels =
-            org.wheatgenetics.coordinate.model.TemplateModels.makeDefault();
-        org.junit.Assert.assertEquals(templateModels.get(0),
-            org.wheatgenetics.coordinate.model.TemplateModel.makeSeedDefault());
-        org.junit.Assert.assertEquals(templateModels.get(1),
-            org.wheatgenetics.coordinate.model.TemplateModel.makeDNADefault());
+        final TemplateModels templateModels =
+            TemplateModels.makeDefault(this);
+        Assert.assertEquals(templateModels.get(0),
+            TemplateModel.makeSeedDefault(this));
+        Assert.assertEquals(templateModels.get(1),
+            TemplateModel.makeDNADefault(this));
     }
     // endregion
 }

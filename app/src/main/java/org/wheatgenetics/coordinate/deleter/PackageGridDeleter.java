@@ -1,19 +1,17 @@
 package org.wheatgenetics.coordinate.deleter;
 
-/**
- * Uses:
- * android.content.Context
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.deleter.BaseGridDeleter
- */
-class PackageGridDeleter extends org.wheatgenetics.coordinate.deleter.BaseGridDeleter
-{
-    PackageGridDeleter(@androidx.annotation.NonNull final android.content.Context context)
-    { super(context); }
+import android.content.Context;
 
-    boolean delete(@androidx.annotation.IntRange(from = 1) final long gridId)
-    { this.entriesTable().deleteByGridId(gridId); return this.gridsTable().delete(gridId); }
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+class PackageGridDeleter extends BaseGridDeleter {
+    PackageGridDeleter(@NonNull final Context context) {
+        super(context);
+    }
+
+    boolean delete(@IntRange(from = 1) final long gridId) {
+        this.entriesTable().deleteByGridId(gridId);
+        return this.gridsTable().delete(gridId);
+    }
 }

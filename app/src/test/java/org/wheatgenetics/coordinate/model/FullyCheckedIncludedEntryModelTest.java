@@ -1,57 +1,91 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
  *
+ * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class FullyCheckedIncludedEntryModelTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class FullyCheckedIncludedEntryModelTest extends Object
+implements StringGetter
 {
     // region Types
     private static class MeanCheckException
-    extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    extends CheckedIncludedEntryModel.CheckException
     { MeanCheckException() { super("You will always fail the check"); } }
 
-    private static class MeanChecker extends java.lang.Object
-    implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
+    private static class MeanChecker extends Object
+    implements CheckedIncludedEntryModel.Checker
     {
-        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-        @androidx.annotation.IntRange(from = 1) final int              colIndex,
-        @androidx.annotation.Nullable           final java.lang.String value   )
-        throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+        @Override @Nullable public String check(
+        @IntRange(from = 1) final int              rowIndex,
+        @IntRange(from = 1) final int              colIndex,
+        @Nullable           final String value   )
+        throws CheckedIncludedEntryModel.CheckException
         {
-            throw new org.wheatgenetics.coordinate.model
-                .FullyCheckedIncludedEntryModelTest.MeanCheckException();
+            throw new FullyCheckedIncludedEntryModelTest.MeanCheckException();
         }
     }
     // endregion
 
-    private org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker
+    private FullyCheckedIncludedEntryModelTest.MeanChecker
         meanCheckerInstance = null;                                                     // lazy load
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker meanChecker()
+    @NonNull private
+    FullyCheckedIncludedEntryModelTest.MeanChecker meanChecker()
     {
         if (null == this.meanCheckerInstance) this.meanCheckerInstance = new
-            org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanChecker();
+            FullyCheckedIncludedEntryModelTest.MeanChecker();
         return this.meanCheckerInstance;
     }
 
-    @org.junit.Test(expected =
-    org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
-    public void meanSecondConstructorThrows()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
-        new org.wheatgenetics.coordinate.model.FullyCheckedIncludedEntryModel(
-            1,1,1,1,"value",0, this.meanChecker());  // throws
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: Assert.fail(); return null; }
+    }
+
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
+    @Test(expected =
+    FullyCheckedIncludedEntryModelTest.MeanCheckException.class)
+    public void meanSecondConstructorThrows()
+    throws CheckedIncludedEntryModel.CheckException
+    {
+        new FullyCheckedIncludedEntryModel(1,1,
+            1,1,"value",0, this.meanChecker(),this);   // throws
     }
 }

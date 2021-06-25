@@ -1,55 +1,56 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.Cells
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModel.Helper
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public abstract class BaseJoinedGridModels extends java.lang.Object
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Processor
-    {
-        public abstract void process(
-        org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.StringGetter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+
+public abstract class BaseJoinedGridModels {
+    @NonNull
+    private final StringGetter
+            stringGetter;
+
+    public BaseJoinedGridModels(@NonNull final StringGetter stringGetter) {
+        super();
+        this.stringGetter = stringGetter;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.SuppressWarnings({"unused"}) abstract boolean isInRange(final int i);
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @SuppressWarnings({"unused"})
+    abstract boolean isInRange(final int i);
 
     // region Public Methods
     public abstract boolean add(
-    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel);
+            final JoinedGridModel joinedGridModel);
 
-    @androidx.annotation.IntRange(from = 0) public abstract int size();
+    @IntRange(from = 0)
+    public abstract int size();
 
-    @androidx.annotation.Nullable
-    public abstract org.wheatgenetics.coordinate.model.JoinedGridModel get(
-    @androidx.annotation.IntRange(from = 0) final int i);
+    @Nullable
+    public abstract JoinedGridModel get(
+            @IntRange(from = 0) final int i);
 
-    @androidx.annotation.Nullable public java.lang.String[] names()
-    {
-        @androidx.annotation.IntRange(from = 0) final int size = this.size();
+    @Nullable
+    public String[] names() {
+        @IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;
-        else
-        {
+        else {
             // noinspection CStyleArrayDeclaration
-            final java.lang.String result[] = new java.lang.String[size];
+            final String result[] = new String[size];
             {
                 final int first = 0, last = size - 1;
-                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                        this.get(i);
+                for (@IntRange(from = 0) int i = first; i <= last; i++) {
+                    final JoinedGridModel joinedGridModel =
+                            this.get(i);
                     if (null != joinedGridModel) result[i] = joinedGridModel.name();
                 }
             }
@@ -58,26 +59,24 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
     }
 
     public abstract void processAll(
-    final org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor processor);
+            final BaseJoinedGridModels.Processor processor);
 
-    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.Cells excludedCells(
-    @androidx.annotation.IntRange(from = 1) final int maxRow,
-    @androidx.annotation.IntRange(from = 1) final int maxCol)
-    {
-        @androidx.annotation.IntRange(from = 0) final int size = this.size();
+    @Nullable
+    public Cells excludedCells(
+            @IntRange(from = 1) final int maxRow,
+            @IntRange(from = 1) final int maxCol) {
+        @IntRange(from = 0) final int size = this.size();
 
         if (size <= 0)
             return null;
-        else
-        {
-            final org.wheatgenetics.coordinate.model.Cells result =
-                new org.wheatgenetics.coordinate.model.Cells(maxRow, maxCol);
+        else {
+            final Cells result =
+                    new Cells(maxRow, maxCol, this.stringGetter);
             {
                 final int first = 0, last = size - 1;
-                for (@androidx.annotation.IntRange(from = 0) int i = first; i <= last; i++)
-                {
-                    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                        this.get(i);
+                for (@IntRange(from = 0) int i = first; i <= last; i++) {
+                    final JoinedGridModel joinedGridModel =
+                            this.get(i);
                     if (null != joinedGridModel)
                         result.accumulate(joinedGridModel.excludedCellsFromEntries());
                 }
@@ -86,54 +85,53 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
         }
     }
 
-    public boolean export(final java.io.File exportFile, final java.lang.String exportFileName,
-    final org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-    throws java.io.IOException
-    {
+    public boolean export(final File exportFile, final String exportFileName,
+                          final JoinedGridModel.Helper helper)
+            throws IOException {
         final boolean success;
         if (null == exportFile || null == helper)
             success = false;
-        else
-        {
+        else {
             {
-                final java.lang.String string;
+                final String string;
                 {
-                    class Processor extends java.lang.Object
-                    implements org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor
-                    {
+                    class Processor extends Object
+                            implements BaseJoinedGridModels.Processor {
                         // region Fields
-                        private final java.lang.String exportFileName;
+                        private final String exportFileName;
 
-                        @androidx.annotation.NonNull private final java.lang.StringBuilder
-                            stringBuilder = new java.lang.StringBuilder();
+                        @NonNull
+                        private final StringBuilder
+                                stringBuilder = new StringBuilder();
 
-                        @androidx.annotation.NonNull private final
-                            org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper;
+                        @NonNull
+                        private final
+                        JoinedGridModel.Helper helper;
 
                         private boolean first = true;
                         // endregion
 
-                        private Processor(final java.lang.String exportFileName,
-                        @androidx.annotation.NonNull final
-                            org.wheatgenetics.coordinate.model.JoinedGridModel.Helper helper)
-                        { super(); this.exportFileName = exportFileName; this.helper = helper; }
+                        private Processor(final String exportFileName,
+                                          @NonNull final
+                                          JoinedGridModel.Helper helper) {
+                            super();
+                            this.exportFileName = exportFileName;
+                            this.helper = helper;
+                        }
 
                         // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
-                        @java.lang.SuppressWarnings({"unused"})
-                        @java.lang.Override public void process(
-                        final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
-                        {
-                            if (null != joinedGridModel)
-                            {
-                                final java.io.StringWriter stringWriter =
-                                    new java.io.StringWriter();
-                                try
-                                {
+                        @SuppressWarnings({"unused"})
+                        @Override
+                        public void process(
+                                final JoinedGridModel joinedGridModel) {
+                            if (null != joinedGridModel) {
+                                final StringWriter stringWriter =
+                                        new StringWriter();
+                                try {
                                     joinedGridModel.export(stringWriter,          // throws java.io-
-                                        this.exportFileName, this.helper,         //  .IOException
-                                        /* includeHeader => */ this.first);
-                                }
-                                catch (final java.io.IOException e) { /* Do not process. */ }
+                                            this.exportFileName, this.helper,         //  .IOException
+                                            /* includeHeader => */ this.first);
+                                } catch (final IOException e) { /* Do not process. */ }
 
                                 this.stringBuilder.append(stringWriter.toString());
                                 if (this.first) this.first = false;
@@ -141,24 +139,34 @@ public abstract class BaseJoinedGridModels extends java.lang.Object
                         }
                         // endregion
 
-                        private java.lang.String getString()
-                        { return this.stringBuilder.toString(); }
+                        private String getString() {
+                            return this.stringBuilder.toString();
+                        }
                     }
                     final Processor processor = new Processor(exportFileName, helper);
                     this.processAll(processor);
                     string = processor.getString();
                 }
 
-                final java.io.FileOutputStream fileOutputStream =
-                    new java.io.FileOutputStream(exportFile);
+                final FileOutputStream fileOutputStream =
+                        new FileOutputStream(exportFile);
 
                 // noinspection TryFinallyCanBeTryWithResources
-                try     { fileOutputStream.write(string.getBytes()); }
-                finally { fileOutputStream.close()                 ; }
+                try {
+                    fileOutputStream.write(string.getBytes());
+                } finally {
+                    fileOutputStream.close();
+                }
             }
             success = true;
         }
         return success;
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Processor {
+        public abstract void process(
+                JoinedGridModel joinedGridModel);
     }
     // endregion
 }

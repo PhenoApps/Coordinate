@@ -1,131 +1,77 @@
 package org.wheatgenetics.coordinate.gc.ts;
 
-/**
- * Uses:
- * android.app.Activity
- * android.os.Bundle
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- * androidx.annotation.StringRes
- *
- * org.wheatgenetics.coordinate.R
- * org.wheatgenetics.coordinate.SelectAlertDialog
- * org.wheatgenetics.coordinate.SelectAlertDialog.Handler
- * org.wheatgenetics.coordinate.Types.RequestCode
- * org.wheatgenetics.coordinate.Utils
- *
- * org.wheatgenetics.coordinate.database.TemplatesTable
- *
- * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.TemplateModel
- * org.wheatgenetics.coordinate.model.TemplateModels
- *
- * org.wheatgenetics.coordinate.tc.TemplateCreator
- * org.wheatgenetics.coordinate.tc.TemplateCreator.Handler
- *
- * org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog
- * org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog.Handler
- * org.wheatgenetics.coordinate.gc.ts.TemplateSetter
- */
-public abstract class ChoosingTemplateSetter
-extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    {
-        public abstract void handleTemplateSet(
-        @androidx.annotation.IntRange(from = 1) long templateId);
-    }
+import android.app.Activity;
+import android.os.Bundle;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.SelectAlertDialog;
+import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.TemplatesTable;
+import org.wheatgenetics.coordinate.model.Model;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateModels;
+import org.wheatgenetics.coordinate.tc.TemplateCreator;
+import org.phenoapps.androidlibrary.Utils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ChoosingTemplateSetter extends TemplateSetter {
     // region Fields
     // region Constructor Fields
-    @org.wheatgenetics.coordinate.Types.RequestCode private final int requestCode    ;
-    @androidx.annotation.StringRes private final int templateChoiceAlertDialogOldItem;
-    @androidx.annotation.NonNull   private final
-        org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler handler;
+    @Types.RequestCode
+    private final int requestCode;
+    @NonNull
+    private final
+    ChoosingTemplateSetter.Handler handler;
+    private TemplatesTable templatesTableInstance = null;// ll
     // endregion
+    private TemplateCreator templateCreatorInstance = null;  // ll
+    private TemplateModels templateModels = null;
+    private SelectAlertDialog
+            templateChoiceAlertDialogInstance = null;                                       // lazy load
 
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTableInstance = null;// ll
-
-    // region Choose Old Fields
-    private org.wheatgenetics.coordinate.model.TemplateModels templateModels = null;
-    private org.wheatgenetics.coordinate.SelectAlertDialog
-        chooseOldAlertDialogInstance = null;                                            // lazy load
-    // endregion
-
-    // region Choose New Field
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreatorInstance = null;    // ll
-    // endregion
-
-    private org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog
-        templateChoiceAlertDialogInstance = null;                                       // lazy load
+    public ChoosingTemplateSetter(final Activity activity,
+                                  @Types.RequestCode final int requestCode,
+                                  @NonNull final
+                                  ChoosingTemplateSetter.Handler handler) {
+        super(activity);
+        this.requestCode = requestCode;
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.TemplatesTable templatesTable()
-    {
+    @NonNull
+    private TemplatesTable templatesTable() {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
-            new org.wheatgenetics.coordinate.database.TemplatesTable(this.activity());
+                new TemplatesTable(this.activity());
         return this.templatesTableInstance;
     }
 
-    // region Choose Old Private Methods
-    private void chooseOldAfterSelect(final int which)
-    {
-        if (null != this.templateModels)
-        {
-            final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                this.templateModels.get(which);
-            if (null != templateModel) this.handler.handleTemplateSet(templateModel.getId());
-            this.templateModels = null;
-        }
-    }
-
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.SelectAlertDialog chooseOldAlertDialog()
-    {
-        if (null == this.chooseOldAlertDialogInstance) this.chooseOldAlertDialogInstance =
-            new org.wheatgenetics.coordinate.SelectAlertDialog(this.activity(),
-                new org.wheatgenetics.coordinate.SelectAlertDialog.Handler()
-                {
-                    @java.lang.Override public void select(final int which)
-                    {
-                        org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
-                            .this.chooseOldAfterSelect(which);
-                    }
-                });
-        return this.chooseOldAlertDialogInstance;
-    }
-    // endregion
-
-    // region Choose New Private Methods
-    private void handleTemplateCreated(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
+    // region templateCreator Private Methods
+    private void handleTemplateCreated(@NonNull final TemplateModel templateModel) {
         final long templateId = this.templatesTable().insert(templateModel);
-        if (org.wheatgenetics.coordinate.model.Model.illegal(templateId))
+        if (Model.illegal(templateId))
             org.wheatgenetics.coordinate.Utils.alert(this.activity(),
-                org.wheatgenetics.coordinate.R.string.TemplateSetterTemplateAlertMessage);
+                    R.string.ChoosingTemplateSetterAlertMessage);
         else
             this.handler.handleTemplateSet(templateId);
     }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.tc.TemplateCreator templateCreator()
-    {
+    @NonNull
+    private TemplateCreator templateCreator() {
         if (null == this.templateCreatorInstance) this.templateCreatorInstance =
-            new org.wheatgenetics.coordinate.tc.TemplateCreator(this.activity(),
-                this.requestCode, new org.wheatgenetics.coordinate.tc.TemplateCreator.Handler()
-                {
-                    @java.lang.Override
-                    public void handleTemplateCreated(@androidx.annotation.NonNull
-                    final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-                    {
-                        org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter
-                            .this.handleTemplateCreated(templateModel);
+                new TemplateCreator(this.activity(),
+                        this.requestCode, new TemplateCreator.Handler() {
+                    @Override
+                    public void handleTemplateCreated(@NonNull final TemplateModel templateModel) {
+                        ChoosingTemplateSetter
+                                .this.handleTemplateCreated(templateModel);
                     }
                 });
         return this.templateCreatorInstance;
@@ -133,52 +79,84 @@ extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
     // endregion
 
     // region templateChoiceAlertDialog Private Methods
-    private void chooseOld()
-    {
-        this.templateModels = this.templatesTable().load();
-        if (null != this.templateModels) this.chooseOldAlertDialog().show(
-            this.templateChoiceAlertDialogOldItem, this.templateModels.titles());
+    private void createTemplate() {
+        this.templateCreator().create();
     }
 
-    private void chooseNew() { this.templateCreator().create(); }
+    private void chooseExisting(@IntRange(from = 0) final int which) {
+        if (null != this.templateModels) {
+            final TemplateModel templateModel =
+                    this.templateModels.get(which);
+            if (null != templateModel) this.handler.handleTemplateSet(templateModel.getId());
+            this.templateModels = null;
+        }
+    }
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog templateChoiceAlertDialog()
-    {
+    @NonNull
+    private SelectAlertDialog templateChoiceAlertDialog() {
         if (null == this.templateChoiceAlertDialogInstance) this.templateChoiceAlertDialogInstance =
-            new org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog(
-                this.activity(), this.templateChoiceAlertDialogOldItem,
-                new org.wheatgenetics.coordinate.gc.ts.TemplateChoiceAlertDialog.Handler()
-                {
-                    @java.lang.Override public void chooseOld()
-                    { org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.this.chooseOld(); }
-
-                    @java.lang.Override public void chooseNew()
-                    { org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.this.chooseNew(); }
-                });
+                new SelectAlertDialog(this.activity(),
+                        new SelectAlertDialog.Handler() {
+                            @Override
+                            public void select(final int which) {
+                                if (which < 0)
+                                    throw new IllegalArgumentException();
+                                else if (which == 0)
+                                    ChoosingTemplateSetter.this.createTemplate();
+                                else
+                                    ChoosingTemplateSetter.this.chooseExisting(which - 1);
+                            }
+                        });
         return this.templateChoiceAlertDialogInstance;
     }
-    // endregion
-    // endregion
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    ChoosingTemplateSetter(                         final android.app.Activity     activity   ,
-    @org.wheatgenetics.coordinate.Types.RequestCode final int                      requestCode,
-    @androidx.annotation.StringRes                  final int templateChoiceAlertDialogOldItem,
-    @androidx.annotation.NonNull                    final
-        org.wheatgenetics.coordinate.gc.ts.ChoosingTemplateSetter.Handler handler)
-    {
-        super(activity);
+    private void showTemplateChoiceAlertDialog() {
+        @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final String items[];
+        {
+            @NonNull final String firstItem =
+                    this.activity().getString(
+                            R.string.TemplateChoiceAlertDialogNewItem);
 
-        this.requestCode                      = requestCode                     ;
-        this.templateChoiceAlertDialogOldItem = templateChoiceAlertDialogOldItem;
-        this.handler                          = handler                         ;
+            this.templateModels = this.templatesTable().load();
+            if (null == this.templateModels)
+                items = Utils.stringArray(firstItem);
+            else {
+                @Nullable final String[] titles =
+                        this.templateModels.titles();
+                if (null == titles)
+                    items = Utils.stringArray(firstItem);
+                else if (titles.length <= 0)
+                    items = Utils.stringArray(firstItem);
+                else {
+                    // noinspection Convert2Diamond
+                    final ArrayList<String> arrayList =
+                            new ArrayList<String>(
+                                    1 + titles.length);
+                    arrayList.add(firstItem);
+                    arrayList.addAll(Arrays.asList(titles));
+                    arrayList.toArray(items = new String[arrayList.size()]);
+                }
+            }
+        }
+        this.templateChoiceAlertDialog().show(
+                R.string.TemplateChoiceAlertDialogTitle, items);
     }
+    // endregion
+    // endregion
 
     // region Public Methods
-    public void set() { this.templateChoiceAlertDialog().show(); }
+    public void set() {
+        this.showTemplateChoiceAlertDialog();
+    }
 
-    public void continueExcluding(final android.os.Bundle bundle)
-    { this.templateCreator().continueExcluding(bundle); }
+    public void continueExcluding(final Bundle bundle) {
+        this.templateCreator().continueExcluding(bundle);
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void handleTemplateSet(
+                @IntRange(from = 1) long templateId);
+    }
     // endregion
 }

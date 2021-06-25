@@ -1,11 +1,36 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.preference.Utils;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
- * org.wheatgenetics.coordinate.preference.Utils.Advancement
+ * org.wheatgenetics.coordinate.preference.Utils.Direction
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.Cells
  * org.wheatgenetics.coordinate.model.EntryModel
@@ -15,275 +40,303 @@ package org.wheatgenetics.coordinate.model;
  * org.wheatgenetics.coordinate.model.ExcludedEntryModel
  * org.wheatgenetics.coordinate.model.IncludedEntryModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class EntryModelsTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class EntryModelsTest
+extends Object implements StringGetter
 {
-    private static class FilledHandler extends java.lang.Object
-    implements org.wheatgenetics.coordinate.model.EntryModels.FilledHandler
+    private static class FilledHandler extends Object
+    implements EntryModels.FilledHandler
     {
-        @java.lang.Override public void handleFilledGrid    () {}
-        @java.lang.Override public void handleFilledRowOrCol() {}
+        @Override public void handleFilledGrid    () {}
+        @Override public void handleFilledRowOrCol() {}
     }
 
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case R.string.ModelIdMustBeGreaterThanZero:
+                return "id must be > 0";
+
+            case R.string.UtilsInvalidValue:
+                return "value must be >= %d";
+
+            default: Assert.fail(); return null;
+        }
+    }
+
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
     // region Constructor Tests
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badGridIdConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(0,5,5); }
+    { new EntryModels(0,5,5,this); }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badRowsConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(1,0,5); }
+    { new EntryModels(1,0,5,this); }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badColsConstructorFails()
-    { new org.wheatgenetics.coordinate.model.EntryModels(1,5,0); }
+    { new EntryModels(1,5,0,this); }
     // endregion
 
     // region Package Method Tests
     // region makeExcludedEntry() Package Method Tests
-    @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void makeExcludedEntryFails()
     {
-        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5)
+        new EntryModels(1,5,5,this)
             .makeExcludedEntry(50,1);
     }
 
-    @org.junit.Test() public void makeExcludedEntrySucceeds()
+    @Test() public void makeExcludedEntrySucceeds()
     {
-        final org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel;
+        final ExcludedEntryModel excludedEntryModel;
         final int                                                   row = 3, col = 3  ;
         {
             final long gridId = 1;
             {
-                final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-                    new org.wheatgenetics.coordinate.model.EntryModels(gridId,5,5);
+                final EntryModels entryModels =
+                    new EntryModels(
+                        gridId,5,5,this);
                 entryModels.makeExcludedEntry(row, col);
-                org.junit.Assert.assertTrue(entryModels.get(row, col)
-                    instanceof org.wheatgenetics.coordinate.model.ExcludedEntryModel);
-                excludedEntryModel = (org.wheatgenetics.coordinate.model.ExcludedEntryModel)
+                Assert.assertTrue(entryModels.get(row, col)
+                    instanceof ExcludedEntryModel);
+                excludedEntryModel = (ExcludedEntryModel)
                     entryModels.get(row, col);
             }
-            org.junit.Assert.assertEquals(gridId, excludedEntryModel.getGridId());
+            Assert.assertEquals(gridId, excludedEntryModel.getGridId());
         }
-        org.junit.Assert.assertEquals(row, excludedEntryModel.getRow());
-        org.junit.Assert.assertEquals(col, excludedEntryModel.getCol());
+        Assert.assertEquals(row, excludedEntryModel.getRow());
+        Assert.assertEquals(col, excludedEntryModel.getCol());
     }
     // endregion
 
     // region makeIncludedEntry() Package Method Tests
-    @org.junit.Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void makeIncludedEntryFails()
     {
-        new org.wheatgenetics.coordinate.model.EntryModels(1,5,5)
+        new EntryModels(1,5,5,this)
             .makeIncludedEntry(5,10);
     }
 
-    @org.junit.Test() public void makeIncludedEntrySucceeds()
+    @Test() public void makeIncludedEntrySucceeds()
     {
-        final org.wheatgenetics.coordinate.model.IncludedEntryModel includedEntryModel;
+        final IncludedEntryModel includedEntryModel;
         final int                                                   row = 3, col = 3  ;
         {
             final long gridId = 1;
             {
-                final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-                    new org.wheatgenetics.coordinate.model.EntryModels(gridId, 5,5);
+                final EntryModels entryModels =
+                    new EntryModels(
+                        gridId,5,5,this);
                 entryModels.makeIncludedEntry(row, col);
-                org.junit.Assert.assertTrue(entryModels.get(row, col)
-                    instanceof org.wheatgenetics.coordinate.model.IncludedEntryModel);
-                includedEntryModel = (org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                Assert.assertTrue(entryModels.get(row, col)
+                    instanceof IncludedEntryModel);
+                includedEntryModel = (IncludedEntryModel)
                     entryModels.get(row, col);
             }
-            org.junit.Assert.assertEquals(gridId, includedEntryModel.getGridId());
+            Assert.assertEquals(gridId, includedEntryModel.getGridId());
         }
-        org.junit.Assert.assertEquals(row, includedEntryModel.getRow());
-        org.junit.Assert.assertEquals(col, includedEntryModel.getCol());
+        Assert.assertEquals(row, includedEntryModel.getRow());
+        Assert.assertEquals(col, includedEntryModel.getCol());
     }
     // endregion
 
     // region excludedCells() Package Method Tests
-    @org.junit.Test() public void emptyExcludedCellsWorks()
+    @Test() public void emptyExcludedCellsWorks()
     {
-        final org.wheatgenetics.coordinate.model.Cells       expectedCells;
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels  ;
+        final Cells       expectedCells;
+        final EntryModels entryModels  ;
         {
             final int rows = 5, cols = 5;
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells      (rows, cols);
-            entryModels   = new org.wheatgenetics.coordinate.model.EntryModels(
-                1, rows, cols);
+            expectedCells = new Cells(rows, cols,this);
+            entryModels   = new EntryModels(
+                1, rows, cols,this);
         }
-        org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
+        Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
 
-    @org.junit.Test() public void oneCellExcludedCellsWorks()
+    @Test() public void oneCellExcludedCellsWorks()
     {
-        final org.wheatgenetics.coordinate.model.Cells       expectedCells;
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels  ;
+        final Cells       expectedCells;
+        final EntryModels entryModels  ;
         {
             final int rows = 5, cols = 5, excludedRow = 3, excludedCol = 3;
 
-            expectedCells = new org.wheatgenetics.coordinate.model.Cells(rows, cols);
+            expectedCells = new Cells(rows, cols,this);
             expectedCells.add(excludedRow, excludedCol);
 
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            entryModels = new EntryModels(
+                1, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (excludedRow == row && excludedCol == col)
                     entryModels.makeExcludedEntry(row, col);
                 else
                     entryModels.makeIncludedEntry(row, col);
         }
-        org.junit.Assert.assertEquals(expectedCells, entryModels.excludedCells());
+        Assert.assertEquals(expectedCells, entryModels.excludedCells());
     }
     // endregion
 
     // region next() Package Method Tests
-    @org.junit.Test() public void allIncludedNextSucceeds()
+    @Test() public void allIncludedNextSucceeds()
     {
         final long                                           gridId = 1          ;
         final int                                            rows   = 5, cols = 5;
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels =
-            new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+        final EntryModels entryModels =
+            new EntryModels(gridId, rows, cols,this);
         for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
             entryModels.makeIncludedEntry(row, col);
 
-        final org.wheatgenetics.coordinate.model.EntryModelsTest.FilledHandler filledHandler =
-            new org.wheatgenetics.coordinate.model.EntryModelsTest.FilledHandler();
+        final EntryModelsTest.FilledHandler filledHandler =
+            new EntryModelsTest.FilledHandler();
 
 
-        org.junit.Assert.assertNull(entryModels.next(null,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             ));
-        org.junit.Assert.assertNull(entryModels.next(null,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             ));
+        Assert.assertNull(entryModels.next(null,
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           ));
+        Assert.assertNull(entryModels.next(null,
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           ));
 
 
-        org.wheatgenetics.coordinate.model.IncludedEntryModel activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,1);
-        org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
+        IncludedEntryModel activeIncludedEntryModel =
+            new IncludedEntryModel(
+                gridId,1,1,this);
+        IncludedEntryModel nextIncludedEntryModel =
             entryModels.next(activeIncludedEntryModel,
-                org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-                filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getCol());
+                Utils.Direction.DOWN_THEN_ACROSS,
+                filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (1, nextIncludedEntryModel.getCol());
 
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (1, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId, rows,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (1, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1, cols);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,1, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (1, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,999,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (1, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,999);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,1,999,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (1, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (1, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1, cols);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,1, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId, rows,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel               );
-        org.junit.Assert.assertEquals (rows, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel               );
+        Assert.assertEquals (rows, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,999);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,1,999,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (cols, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,999,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel               );
-        org.junit.Assert.assertEquals (rows, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel               );
+        Assert.assertEquals (rows, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, rows, cols);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId, rows, cols,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNull(nextIncludedEntryModel);
-
-        nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNull(nextIncludedEntryModel);
-
-
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,999,999);
-        nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNull(nextIncludedEntryModel);
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNull(nextIncludedEntryModel);
 
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNull(nextIncludedEntryModel);
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNull(nextIncludedEntryModel);
+
+
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,999,999,this);
+        nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNull(nextIncludedEntryModel);
+
+        nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNull(nextIncludedEntryModel);
     }
 
-    @org.junit.Test() public void someExcludedNextSucceeds()
+    @Test() public void someExcludedNextSucceeds()
     {
         final long                                           gridId = 1 ;
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels;
+        final EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+            entryModels = new EntryModels(
+                gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 if (2 == row && 2 == col)
                     entryModels.makeExcludedEntry(row, col);
@@ -291,61 +344,63 @@ public class EntryModelsTest extends java.lang.Object
                     entryModels.makeIncludedEntry(row, col);
         }
 
-        final org.wheatgenetics.coordinate.model.EntryModelsTest.FilledHandler filledHandler =
-            new org.wheatgenetics.coordinate.model.EntryModelsTest.FilledHandler();
+        final EntryModelsTest.FilledHandler filledHandler =
+            new EntryModelsTest.FilledHandler();
 
 
-        org.wheatgenetics.coordinate.model.IncludedEntryModel activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,2);
-        org.wheatgenetics.coordinate.model.IncludedEntryModel nextIncludedEntryModel =
+        IncludedEntryModel activeIncludedEntryModel =
+            new IncludedEntryModel(
+                gridId,1,2,this);
+        IncludedEntryModel nextIncludedEntryModel =
             entryModels.next(activeIncludedEntryModel,
-                org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-                filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (3, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+                Utils.Direction.DOWN_THEN_ACROSS,
+                filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (3, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,2,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,2,1,this);
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (3, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (3, nextIncludedEntryModel.getCol());
 
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,1,2);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,1,2,this);
         entryModels.makeExcludedEntry(3,2);    // Two excluded entries next to each other.
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.DOWN_THEN_ACROSS,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (4, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getCol());
+            Utils.Direction.DOWN_THEN_ACROSS,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (4, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (2, nextIncludedEntryModel.getCol());
 
-        activeIncludedEntryModel =
-            new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId,2,1);
+        activeIncludedEntryModel = new IncludedEntryModel(
+            gridId,2,1,this);
         entryModels.makeExcludedEntry(2,3);    // Two excluded entries next to each other.
         nextIncludedEntryModel = entryModels.next(activeIncludedEntryModel,
-            org.wheatgenetics.coordinate.preference.Utils.Advancement.ACROSS_THEN_DOWN,
-            filledHandler                                                             );
-        org.junit.Assert.assertNotNull(nextIncludedEntryModel);
-        org.junit.Assert.assertEquals (2, nextIncludedEntryModel.getRow());
-        org.junit.Assert.assertEquals (4, nextIncludedEntryModel.getCol());
+            Utils.Direction.ACROSS_THEN_DOWN,
+            filledHandler                                                           );
+        Assert.assertNotNull(nextIncludedEntryModel);
+        Assert.assertEquals (2, nextIncludedEntryModel.getRow());
+        Assert.assertEquals (4, nextIncludedEntryModel.getCol());
     }
     // endregion
     // endregion
 
     // region Public Method Tests
-    @org.junit.Test() public void setSucceeds()
+    @Test() public void setSucceeds()
     {
         final long                                           gridId = 1 ;
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels;
+        final EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(gridId, rows, cols);
+            entryModels = new EntryModels(
+                gridId, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 entryModels.makeIncludedEntry(row, col);
         }
@@ -354,49 +409,51 @@ public class EntryModelsTest extends java.lang.Object
 
         final int row = 3, col = 3;
         {
-            final org.wheatgenetics.coordinate.model.IncludedEntryModel
-                expectedIncludedEntryModel = (org.wheatgenetics.coordinate.model.IncludedEntryModel)
+            final IncludedEntryModel
+                expectedIncludedEntryModel = (IncludedEntryModel)
                     entryModels.get(row, col),
-                actualIncludedEntryModel = (org.wheatgenetics.coordinate.model.IncludedEntryModel)
+                actualIncludedEntryModel = (IncludedEntryModel)
                     entryModels.get(row, col);
-            org.junit.Assert.assertEquals(expectedIncludedEntryModel, actualIncludedEntryModel);
+            Assert.assertEquals(expectedIncludedEntryModel, actualIncludedEntryModel);
         }
 
-        final org.wheatgenetics.coordinate.model.IncludedEntryModel unexpectedIncludedEntryModel =
-            (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModels.get(row, col);
+        final IncludedEntryModel unexpectedIncludedEntryModel =
+            (IncludedEntryModel) entryModels.get(row, col);
         {
-            final org.wheatgenetics.coordinate.model.IncludedEntryModel newIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.IncludedEntryModel(gridId, row, col);
+            final IncludedEntryModel newIncludedEntryModel =
+                new IncludedEntryModel(
+                    gridId, row, col,this);
             newIncludedEntryModel.setValue("gobbledygook");
             entryModels.set(newIncludedEntryModel);
         }
         {
-            final org.wheatgenetics.coordinate.model.IncludedEntryModel actualIncludedEntryModel =
-                (org.wheatgenetics.coordinate.model.IncludedEntryModel) entryModels.get(row, col);
-            org.junit.Assert.assertNotEquals(unexpectedIncludedEntryModel.getValue(),
+            final IncludedEntryModel actualIncludedEntryModel =
+                (IncludedEntryModel) entryModels.get(row, col);
+            Assert.assertNotEquals(unexpectedIncludedEntryModel.getValue(),
                 actualIncludedEntryModel.getValue());
-            org.junit.Assert.assertEquals("gobbledygook",
+            Assert.assertEquals("gobbledygook",
                 actualIncludedEntryModel.getValue());
         }
-        org.junit.Assert.assertNull(unexpectedIncludedEntryModel.getValue());
+        Assert.assertNull(unexpectedIncludedEntryModel.getValue());
     }
 
-    @org.junit.Test() public void processAll()
+    @Test() public void processAll()
     {
-        final org.wheatgenetics.coordinate.model.EntryModels entryModels;
+        final EntryModels entryModels;
         {
             final int rows = 5, cols = 5;
-            entryModels = new org.wheatgenetics.coordinate.model.EntryModels(1, rows, cols);
+            entryModels = new EntryModels(
+                1, rows, cols,this);
             for (int row = 1; row <= rows; row++) for (int col = 1; col <= cols; col++)
                 entryModels.makeIncludedEntry(row, col);
         }
 
-        class Processor extends java.lang.Object
-        implements org.wheatgenetics.coordinate.model.EntryModels.Processor
+        class Processor extends Object
+        implements EntryModels.Processor
         {
-            @java.lang.Override
-            public void process(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-            { org.junit.Assert.assertNotNull(entryModel); }
+            @Override
+            public void process(final EntryModel entryModel)
+            { Assert.assertNotNull(entryModel); }
         }
 
         entryModels.processAll(new Processor());

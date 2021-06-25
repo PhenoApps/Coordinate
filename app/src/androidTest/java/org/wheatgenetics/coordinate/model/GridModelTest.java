@@ -1,120 +1,170 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
  * org.wheatgenetics.androidlibrary.Utils
  *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.GridModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class GridModelTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class GridModelTest
+extends Object implements StringGetter
 {
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
+    {
+        switch (resId)
+        {
+            case R.string.ModelIdMustBeGreaterThanZero:
+                return "id must be > 0";
+
+            case R.string.UtilsInvalidValue:
+                return "value must be >= %d";
+
+            default: Assert.fail(); return null;
+        }
+    }
+
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
     // region Constructor Tests
     // region First Constructor Tests
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badTemplateIdFirstConstructorFails()
     {
-        new org.wheatgenetics.coordinate.model.GridModel(
-            0,0,"person",null);
+        new GridModel(
+            0,0,"person",null,this);
     }
 
-    @org.junit.Test() public void badProjectIdFirstConstructorWorks()
+    @Test() public void badProjectIdFirstConstructorWorks()
     {
-        org.junit.Assert.assertEquals(0, new org.wheatgenetics.coordinate.model.GridModel(
-            8,-10,"person",null).getProjectId());
+        Assert.assertEquals(0, new GridModel(
+            8,-10,"person",null,this)
+                .getProjectId());
     }
 
-    @org.junit.Test() public void firstConstructorAndGettersSucceed()
+    @Test() public void firstConstructorAndGettersSucceed()
     {
         final long                                         templateId = 67;
-        final org.wheatgenetics.coordinate.model.GridModel gridModel      ;
+        final GridModel gridModel      ;
         {
-            final java.lang.String person = "person";
-            gridModel = new org.wheatgenetics.coordinate.model.GridModel(
-                templateId,0, person,null);
-            org.junit.Assert.assertEquals(person, gridModel.getPerson());
+            final String person = "person";
+            gridModel = new GridModel(
+                templateId,0, person,null,this);
+            Assert.assertEquals(person, gridModel.getPerson());
         }
-        org.junit.Assert.assertEquals(templateId, gridModel.getTemplateId());
+        Assert.assertEquals(templateId, gridModel.getTemplateId());
     }
     // endregion
 
     // region Second Constructor Tests
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badIdSecondConstructorFails()
     {
-        new org.wheatgenetics.coordinate.model.GridModel(-1,1,0,
-            "abc",0,0,null,888);
+        new GridModel(-1,1,0,
+            "abc",0,0,null,this,888);
     }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badTemplateIdSecondConstructorFails()
     {
-        new org.wheatgenetics.coordinate.model.GridModel(1,-1,0,
-            "abc",0,0,null,888);
+        new GridModel(1,-1,0,
+            "abc",0,0,null,this,888);
     }
 
-    @org.junit.Test() public void badProjectIdSecondConstructorWorks()
+    @Test() public void badProjectIdSecondConstructorWorks()
     {
-        org.junit.Assert.assertEquals(0, new org.wheatgenetics.coordinate.model.GridModel(
+        Assert.assertEquals(0, new GridModel(
             1,1,-10,"abc",0,0,
-            null,888).getProjectId());
+            null,this,888).getProjectId());
     }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badActiveRowSecondConstructorFails()
     {
-        new org.wheatgenetics.coordinate.model.GridModel(1,1,0,
-            "abc",-1,0,null,888);
+        new GridModel(1,1,0,
+            "abc",-1,0,null,this,888);
     }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badActiveColSecondConstructorFails()
     {
-        new org.wheatgenetics.coordinate.model.GridModel(1,1,0,
-            "abc",0,-1,null,888);
+        new GridModel(1,1,0,
+            "abc",0,-1,null,this,888);
     }
 
-    @org.junit.Test() public void secondConstructorAndGettersSucceed()
+    @Test() public void secondConstructorAndGettersSucceed()
     {
         final long                                         timestamp = 888;
-        final org.wheatgenetics.coordinate.model.GridModel gridModel      ;
+        final GridModel gridModel      ;
         {
-            final java.lang.String person = "abc";
-            gridModel = new org.wheatgenetics.coordinate.model.GridModel(1,1,
-                0, person,0,0,null, timestamp);
-            org.junit.Assert.assertEquals(person, gridModel.getPerson());
+            final String person = "abc";
+            gridModel = new GridModel(
+                1,1,0, person,0,
+                0,null,this, timestamp);
+            Assert.assertEquals(person, gridModel.getPerson());
         }
-        org.junit.Assert.assertEquals(timestamp, gridModel.getTimestamp());
+        Assert.assertEquals(timestamp, gridModel.getTimestamp());
     }
     // endregion
     // endregion
 
     // region Public Method Tests
-    @org.junit.Test() public void getFormattedTimestamp()
+    @Test() public void getFormattedTimestamp()
     {
         final long                                         timestamp = 888;
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(1,5,0,
-                "abc",0,0,null, timestamp);
-        org.junit.Assert.assertEquals(
-            org.wheatgenetics.androidlibrary.Utils.formatDate(gridModel.getTimestamp()),
+        final GridModel gridModel =
+            new GridModel(1,5,0,
+                "abc",0,0,null,this, timestamp);
+        Assert.assertEquals(
+            Utils.formatDate(gridModel.getTimestamp()),
             gridModel.getFormattedTimestamp()                                          );
     }
 
-    @org.junit.Test() public void optionalFieldsMethodsSucceed()
+    @Test() public void optionalFieldsMethodsSucceed()
     {
-        final org.wheatgenetics.coordinate.model.GridModel gridModel =
-            new org.wheatgenetics.coordinate.model.GridModel(
+        final GridModel gridModel =
+            new GridModel(
                 /* templateId     => */10,
                 /* projectId      => */10,
                 /* person         => */"testPerson",
-                /* optionalFields => */null);
-        org.junit.Assert.assertNull(gridModel.optionalFields                 ());
-        org.junit.Assert.assertNull(gridModel.optionalFieldsAsJson           ());
-        org.junit.Assert.assertNull(gridModel.getFirstOptionalFieldDatedValue());
+                /* optionalFields => */null,
+                /* stringGetter   => */ this);
+        Assert.assertNull(gridModel.optionalFields                 ());
+        Assert.assertNull(gridModel.optionalFieldsAsJson           ());
+        Assert.assertNull(gridModel.getFirstOptionalFieldDatedValue());
     }
     // endregion
 }

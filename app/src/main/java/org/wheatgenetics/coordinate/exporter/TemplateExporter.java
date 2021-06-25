@@ -1,68 +1,74 @@
 package org.wheatgenetics.coordinate.exporter;
 
-/**
- * Uses:
- * android.content.Context
- *
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.exporter.Exporter
- * org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
- */
-public class TemplateExporter extends org.wheatgenetics.coordinate.exporter.Exporter
-{
-    private static class AsyncTask extends org.wheatgenetics.coordinate.exporter.Exporter.AsyncTask
-    {
-        private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
+import android.content.Context;
 
-        private AsyncTask(
-        @androidx.annotation.NonNull final android.content.Context context   ,
-                                     final java.io.File            exportFile,
-                                     final org.wheatgenetics.coordinate.model.TemplateModel
-                                         templateModel)
-        { super(context, exportFile); this.templateModel = templateModel; }
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
-        // region Overridden Methods
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @java.lang.Override boolean export()
-        {
-            final boolean success;
-            if (null == this.templateModel)
-                success = false;
-            else
-                if (this.templateModel.export(this.getExportFile()))
-                    { this.makeExportFileDiscoverable(); success = true; }
-                else
-                    success = false;
-            return success;
-        }
+import org.wheatgenetics.coordinate.model.TemplateModel;
 
-        @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-        @java.lang.Override void handleExportSuccess(final java.io.File exportFile)
-        { this.alert(); this.share(); }
-        // endregion
-    }
+import java.io.File;
 
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.exporter.TemplateExporter.AsyncTask asyncTask;
+public class TemplateExporter extends Exporter {
+    @NonNull
+    private final
+    TemplateExporter.AsyncTask asyncTask;
 
     public TemplateExporter(
-    @androidx.annotation.NonNull final android.content.Context context   ,
-                                 final java.io.File            exportFile,
-                                 final org.wheatgenetics.coordinate.model.TemplateModel
-                                    templateModel)
-    {
+            @NonNull final Context context,
+            final File exportFile,
+            final TemplateModel
+                    templateModel) {
         super();
-        this.asyncTask = new org.wheatgenetics.coordinate.exporter.TemplateExporter.AsyncTask(
-            context, exportFile, templateModel);
+        this.asyncTask = new TemplateExporter.AsyncTask(
+                context, exportFile, templateModel);
     }
 
     // region Overridden Methods
-    @java.lang.Override public void execute() { this.asyncTask.execute(); }
-    @java.lang.Override public void cancel () { this.asyncTask.cancel (); }
+    @Override
+    public void execute() {
+        this.asyncTask.execute();
+    }
+
+    @Override
+    public void cancel() {
+        this.asyncTask.cancel();
+    }
+
+    private static class AsyncTask extends Exporter.AsyncTask {
+        private final TemplateModel templateModel;
+
+        private AsyncTask(
+                @NonNull final Context context,
+                final File exportFile,
+                final TemplateModel
+                        templateModel) {
+            super(context, exportFile);
+            this.templateModel = templateModel;
+        }
+
+        // region Overridden Methods
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @Override
+        boolean export() {
+            final boolean success;
+            if (null == this.templateModel)
+                success = false;
+            else if (this.templateModel.export(this.getExportFile())) {
+                this.makeExportFileDiscoverable();
+                success = true;
+            } else
+                success = false;
+            return success;
+        }
+
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        @Override
+        void handleExportSuccess(final File exportFile) {
+            this.alert();
+            this.share();
+        }
+        // endregion
+    }
     // endregion
 }

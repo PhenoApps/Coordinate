@@ -1,62 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
 
-    android:padding="6dp"
+    android:padding="6dp">
 
-    android:stretchColumns="0">
 
-    <TableRow tools:ignore="UselessParent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        <TableLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow>
 
-                <TextView android:id="@+id/gridsListItemId"
-                    android:textSize="20sp" />
-            </TableRow>
+        <TextView
+            android:id="@+id/gridsListItemTitle"
+            android:layout_width="wrap_content"
 
-            <TableRow>
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
 
-                <TextView android:id="@+id/gridsListItemTemplateTitle"
-                    android:textSize="16sp" />
-            </TableRow>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TableRow>
 
-                <TextView android:id="@+id/gridsListItemTimestamp"
-                    android:textSize="16sp" />
-            </TableRow>
-        </TableLayout>
+        <TextView
+            android:id="@+id/gridsListItemTemplateTitle"
+            android:layout_width="wrap_content"
 
-        <ImageButton
-            android:id="@+id/gridsListItemDeleteButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_delete"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
 
-            tools:ignore="ContentDescription" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gridsListItemTitle" />
 
-        <ImageButton
-            android:id="@+id/gridsListItemExportButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_export"
 
-            tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/gridsListItemTimestamp"
+            android:layout_width="wrap_content"
 
-        <ImageButton
-            android:id="@+id/gridsListItemCollectDataButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_collect"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
 
-            tools:ignore="ContentDescription" />
-    </TableRow>
-</TableLayout>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gridsListItemTemplateTitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageButton
+        android:id="@+id/gridsListItemDeleteButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_delete"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/gridsListItemExportButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/gridsListItemExportButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_export"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/gridsListItemCollectDataButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/gridsListItemCollectDataButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_collect"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>

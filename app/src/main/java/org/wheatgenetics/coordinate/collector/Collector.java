@@ -1,15 +1,10 @@
 package org.wheatgenetics.coordinate.collector;
 
-/**
- * Uses:
- * androidx.annotation.NonNull
- * androidx.appcompat.app.AppCompatActivity
- *
- * org.wheatgenetics.coordinate.collector.BaseCollector
- */
-public class Collector extends org.wheatgenetics.coordinate.collector.BaseCollector
-{
-    public Collector(@androidx.annotation.NonNull
-    final androidx.appcompat.app.AppCompatActivity activity)
-    { super(activity); }
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Collector extends BaseCollector {
+    public Collector(@NonNull final AppCompatActivity activity) {
+        super(activity);
+    }
 }

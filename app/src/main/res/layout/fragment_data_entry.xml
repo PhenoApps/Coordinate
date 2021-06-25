@@ -1,5 +1,4 @@
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
@@ -22,8 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data Entry"
-                tools:ignore="HardcodedText"
+                android:text="@string/fragment_data_entryDataEntryHeaderText"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -33,16 +31,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="Cell ID"
-                tools:ignore="HardcodedText"
+                android:hint="@string/fragment_data_entryEntryHint"
                 android:imeActionId="100"
-                android:imeActionLabel="@string/DataEntryFragmentCellIDEditTextActionLabel"
+                android:imeActionLabel="@string/fragment_data_entryEntryActionLabel"
                 android:imeOptions="actionDone"
+                android:importantForAutofill="no"
                 android:inputType="text|textNoSuggestions"
                 android:lines="1"
                 android:minEms="8"
-                android:selectAllOnFocus="true"
-                android:importantForAutofill="no" />
+                android:selectAllOnFocus="true" />
 
         </LinearLayout>
 
@@ -55,8 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Grid Information"
-                tools:ignore="HardcodedText"
+                android:text="@string/fragment_data_entryGridInformationHeaderText"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -71,8 +67,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Project:"
-                tools:ignore="HardcodedText"
+                android:text="@string/fragment_data_entryProjectLabelText"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
 
@@ -82,9 +77,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:text="..."
-                tools:ignore="RtlSymmetry,HardcodedText"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:text="@string/fragment_data_entryProjectTitleText"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
 
@@ -97,8 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Template:"
-                tools:ignore="HardcodedText"
+                android:text="@string/fragment_data_entryTemplateLabelText"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
 
@@ -108,9 +102,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:text="..."
-                tools:ignore="RtlSymmetry,HardcodedText"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:text="@string/fragment_data_entryTemplateTitleText"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:ignore="RtlSymmetry" />
 
             <LinearLayout
                 android:id="@+id/optionalFieldsLayout"

@@ -1,12 +1,9 @@
 package org.wheatgenetics.coordinate.gc.vs;
 
-/**
- * Uses:
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- */
-@java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-{
-    public abstract void setPerson          (java.lang.String person);
-    public abstract void handleSetValuesDone(
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields);
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+
+public interface Handler {
+    void setPerson(String person);
+
+    void handleSetValuesDone(NonNullOptionalFields optionalFields);
 }

@@ -1,106 +1,120 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- */
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.StringGetter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+
 public class CurrentProjectUniqueJoinedGridModels
-extends org.wheatgenetics.coordinate.model.BaseJoinedGridModels implements
-java.lang.Iterable<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
-{
+        extends BaseJoinedGridModels implements
+        Iterable<CurrentProjectUniqueJoinedGridModel> {
     private
-        java.util.ArrayList<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
+    ArrayList<CurrentProjectUniqueJoinedGridModel>
             arrayListInstance = null;                                                   // lazy load
 
-    @androidx.annotation.NonNull private java.util.ArrayList<
-    org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> arrayList()
-    {
+    public CurrentProjectUniqueJoinedGridModels(@NonNull final StringGetter stringGetter) {
+        super(stringGetter);
+    }
+
+    @NonNull
+    private ArrayList<
+            CurrentProjectUniqueJoinedGridModel> arrayList() {
         if (null == this.arrayListInstance)
             // noinspection Convert2Diamond
-            this.arrayListInstance = new java.util.ArrayList<
-                org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>();
+            this.arrayListInstance = new ArrayList<
+                    CurrentProjectUniqueJoinedGridModel>();
         return this.arrayListInstance;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override boolean isInRange(final int i)
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    boolean isInRange(final int i) {
         // noinspection SimplifiableConditionalExpression
         return i < 0 ? false : null == this.arrayListInstance ?
-            false : i < this.arrayListInstance.size();
+                false : i < this.arrayListInstance.size();
     }
 
     // region Overridden Methods
     // region java.lang.Iterable<> Overridden Method
-    @java.lang.Override @androidx.annotation.NonNull public java.util.Iterator<
-    org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> iterator()
-    {
-        @java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-        class Iterator extends java.lang.Object implements
-        java.util.Iterator<org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
-        {
-            @androidx.annotation.NonNull private final java.util.ListIterator<
-                org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel>
+    @Override
+    @NonNull
+    public Iterator<
+            CurrentProjectUniqueJoinedGridModel> iterator() {
+        @SuppressWarnings({"ClassExplicitlyExtendsObject"})
+        class Iterator extends Object implements
+                java.util.Iterator<CurrentProjectUniqueJoinedGridModel> {
+            @NonNull
+            private final ListIterator<
+                    CurrentProjectUniqueJoinedGridModel>
                     listIterator;
 
-            private Iterator(@androidx.annotation.NonNull final java.util.ArrayList<
-            org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel> arrayList)
-            { super(); this.listIterator = arrayList.listIterator(); }
+            private Iterator(@NonNull final ArrayList<
+                    CurrentProjectUniqueJoinedGridModel> arrayList) {
+                super();
+                this.listIterator = arrayList.listIterator();
+            }
 
             // region Overridden Methods
-            @java.lang.Override public boolean hasNext() { return this.listIterator.hasNext(); }
+            @Override
+            public boolean hasNext() {
+                return this.listIterator.hasNext();
+            }
 
-            @java.lang.Override
-            public org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel next()
-            { return this.listIterator.next(); }
+            @Override
+            public CurrentProjectUniqueJoinedGridModel next() {
+                return this.listIterator.next();
+            }
 
-            @java.lang.Override public void remove()
-            { throw new java.lang.UnsupportedOperationException(); }
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
             // endregion
         }
         return new Iterator(this.arrayList());
     }
     // endregion
 
-    @java.lang.Override public boolean add(
-    final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel)
-    {
+    @Override
+    public boolean add(
+            final JoinedGridModel joinedGridModel) {
         if (joinedGridModel instanceof
-        org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel)
+                CurrentProjectUniqueJoinedGridModel)
             return this.arrayList().add(
-                (org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel)
-                joinedGridModel);
+                    (CurrentProjectUniqueJoinedGridModel)
+                            joinedGridModel);
         else
             return false;
     }
 
-    @java.lang.Override @androidx.annotation.IntRange(from = 0) public int size()
-    { return null == this.arrayListInstance ? 0 : this.arrayListInstance.size(); }
+    @Override
+    @IntRange(from = 0)
+    public int size() {
+        return null == this.arrayListInstance ? 0 : this.arrayListInstance.size();
+    }
 
-    @java.lang.Override @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.JoinedGridModel get(
-    @androidx.annotation.IntRange(from = 0) final int i)
-    {
+    @Override
+    @Nullable
+    public JoinedGridModel get(
+            @IntRange(from = 0) final int i) {
         if (null == this.arrayListInstance)
             return null;
         else
             return this.isInRange(i) ? this.arrayListInstance.get(i) : null;
     }
 
-    @java.lang.Override public void processAll(final
-    org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModels.Processor processor)
-    {
+    @Override
+    public void processAll(final
+                           CurrentProjectUniqueJoinedGridModels.Processor processor) {
         if (null != processor)
-            for (final org.wheatgenetics.coordinate.model.CurrentProjectUniqueJoinedGridModel
-            currentProjectUniqueJoinedGridModel: this)
+            for (final CurrentProjectUniqueJoinedGridModel
+                    currentProjectUniqueJoinedGridModel : this)
                 processor.process(currentProjectUniqueJoinedGridModel);
     }
     // endregion

@@ -1,80 +1,124 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
  * androidx.annotation.IntRange
  * androidx.annotation.NonNull
  * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
  *
  * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
  * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class CheckedIncludedEntryModelTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class CheckedIncludedEntryModelTest extends Object
+implements StringGetter
 {
-    private static class NiceChecker extends java.lang.Object
-    implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
+    private static class NiceChecker extends Object
+    implements CheckedIncludedEntryModel.Checker
     {
-        @java.lang.Override @androidx.annotation.Nullable public java.lang.String check(
-        @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-        @androidx.annotation.IntRange(from = 1) final int              colIndex,
-        @androidx.annotation.Nullable           final java.lang.String value   )
+        @Override @Nullable public String check(
+        @IntRange(from = 1) final int              rowIndex,
+        @IntRange(from = 1) final int              colIndex,
+        @Nullable           final String value   )
         { return value; }
     }
 
-    private org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.NiceChecker
+    private CheckedIncludedEntryModelTest.NiceChecker
         niceCheckerInstance = null;                                                     // lazy load
 
-    @androidx.annotation.NonNull private
-    org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.NiceChecker niceChecker()
+    @NonNull private
+    CheckedIncludedEntryModelTest.NiceChecker niceChecker()
     {
         if (null == this.niceCheckerInstance) this.niceCheckerInstance =
-            new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModelTest.NiceChecker();
+            new CheckedIncludedEntryModelTest.NiceChecker();
         return this.niceCheckerInstance;
     }
 
-    @org.junit.Test() public void niceSecondConstructorWorks()
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
-        final java.lang.String value = "value";
-        org.junit.Assert.assertEquals(value,
-            new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(1,
-                1,1,1, value,0, this.niceChecker()).getValue());
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId)
+        {
+            case R.string.CallCheckThenSetValueInstead:
+                return "Call checkThenSetValue() instead";
+
+            default: Assert.fail(); return null;
+        }
     }
 
-    @org.junit.Test(expected = java.lang.UnsupportedOperationException.class)
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
+    // region Tests
+    @Test() public void niceSecondConstructorWorks()
+    {
+        final String value = "value";
+        Assert.assertEquals(value,
+            new CheckedIncludedEntryModel(1,1,
+                1,1, value,0, this.niceChecker(),this).getValue());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
     public void setValueThrows()
     {
-        final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+        final CheckedIncludedEntryModel
             checkedIncludedEntryModel;
         {
-            final java.lang.String firstValue = "firstValue";
+            final String firstValue = "firstValue";
             checkedIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    1,1,1,1, firstValue,0, this.niceChecker());
-            org.junit.Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
+                new CheckedIncludedEntryModel(1,1,
+                    1,1, firstValue,0, this.niceChecker(),this);
+            Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
         }
         checkedIncludedEntryModel.setValue("secondValue");          // throws java.lang.Unsupported-
     }                                                               //  OperationException
 
-    @org.junit.Test() public void checkThenSetValueWorks()
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
+    @Test() public void checkThenSetValueWorks()
+    throws CheckedIncludedEntryModel.CheckException
     {
-        final org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
+        final CheckedIncludedEntryModel
             checkedIncludedEntryModel;
         {
-            final java.lang.String firstValue = "firstValue";
+            final String firstValue = "firstValue";
             checkedIncludedEntryModel =
-                new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-                    1,1,1,1, firstValue,0, this.niceChecker());
-            org.junit.Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
+                new CheckedIncludedEntryModel(1,1,
+                    1,1, firstValue,0, this.niceChecker(),this);
+            Assert.assertEquals(firstValue, checkedIncludedEntryModel.getValue());
         }
 
-        final java.lang.String secondValue = "secondValue";
+        final String secondValue = "secondValue";
         checkedIncludedEntryModel.checkThenSetValue(secondValue);                          // throws
-        org.junit.Assert.assertEquals(secondValue, checkedIncludedEntryModel.getValue());
+        Assert.assertEquals(secondValue, checkedIncludedEntryModel.getValue());
     }
+    // endregion
 }

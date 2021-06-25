@@ -1,37 +1,34 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- */
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.StringGetter;
+
 public class FullyCheckedIncludedEntryModel
-extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
-{
+        extends CheckedIncludedEntryModel {
     FullyCheckedIncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  row   ,
-    @androidx.annotation.IntRange(from = 1) final int  col   ,
-    @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    { super(gridId, row, col, checker); }
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            @NonNull final
+            CheckedIncludedEntryModel.Checker checker,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, row, col, checker, stringGetter);
+    }
 
     public FullyCheckedIncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long             id       ,
-    @androidx.annotation.IntRange(from = 1) final long             gridId   ,
-    @androidx.annotation.IntRange(from = 1) final int              row      ,
-    @androidx.annotation.IntRange(from = 1) final int              col      ,
-                                            final java.lang.String value    ,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp,
-    @androidx.annotation.NonNull            final
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker checker)
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
+            @IntRange(from = 1) final long id,
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            final String value,
+            @IntRange(from = 0) final long timestamp,
+            @NonNull final
+            CheckedIncludedEntryModel.Checker checker,
+            @NonNull final StringGetter stringGetter)
+            throws CheckedIncludedEntryModel.CheckException {
         super(id, gridId, row, col, checker.check( /* throws CheckException */
-            row, col, value), timestamp, checker);
+                row, col, value), timestamp, checker, stringGetter);
     }
 }

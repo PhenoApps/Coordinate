@@ -1,5 +1,24 @@
 package org.wheatgenetics.coordinate.database;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.RawRes;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+
 /**
  * Uses:
  * android.database.Cursor
@@ -19,44 +38,44 @@ package org.wheatgenetics.coordinate.database;
  *
  * org.wheatgenetics.coordinate.database.Database
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class DatabaseTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class DatabaseTest extends Object
 {
     // region Constants
-    private static final java.lang.String
+    private static final String
         PARENT_PATH = "/data/data/org.wheatgenetics.coordinate/databases/",
         FILE_NAME   = "test"                                              ;
 
-    private static final java.lang.String
-        FILE_PATH = org.wheatgenetics.coordinate.database.DatabaseTest.PARENT_PATH +
-            org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME,
+    private static final String
+        FILE_PATH = DatabaseTest.PARENT_PATH +
+            DatabaseTest.FILE_NAME,
         DATABASE_EXTENSION_NAME = ".db";
 
-    static final java.lang.String DATABASE_FILE_NAME =
-        org.wheatgenetics.coordinate.database.DatabaseTest.FILE_NAME +
-            org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME;
+    static final String DATABASE_FILE_NAME =
+        DatabaseTest.FILE_NAME +
+            DatabaseTest.DATABASE_EXTENSION_NAME;
     // endregion
 
-    private final java.io.File
-        databaseFile = new java.io.File(
-            org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH +
-                org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_EXTENSION_NAME),
-        journalFile = new java.io.File(
-            org.wheatgenetics.coordinate.database.DatabaseTest.FILE_PATH + ".db-journal");
+    private final File
+        databaseFile = new File(
+            DatabaseTest.FILE_PATH +
+                DatabaseTest.DATABASE_EXTENSION_NAME),
+        journalFile = new File(
+            DatabaseTest.FILE_PATH + ".db-journal");
 
     // region Private Methods
     private static void logInfo(final int a, final int e)
-    { android.util.Log.i("DatabaseTest", java.lang.String.format("'%c'|'%c'", a, e)); }
+    { Log.i("DatabaseTest", String.format("'%c'|'%c'", a, e)); }
 
-    private static void testTable(final java.lang.String                       name,
-                                  final android.database.sqlite.SQLiteDatabase db  ,
-    @androidx.annotation.RawRes   final int                                    id  )
-    throws java.io.IOException
+    private static void testTable(final String                       name,
+                                  final SQLiteDatabase db  ,
+    @RawRes   final int                                    id  )
+    throws IOException
     {
-        final java.io.StringReader actual;
+        final StringReader actual;
         {
-            org.junit.Assert.assertNotNull(db);
-            final android.database.Cursor cursor = db.rawQuery(java.lang.String.format(
+            Assert.assertNotNull(db);
+            final Cursor cursor = db.rawQuery(String.format(
                     "SELECT ALL [sql] FROM [sqlite_master] WHERE [name] = '%s'", name),
                 null);
             if (null == cursor)
@@ -65,32 +84,32 @@ public class DatabaseTest extends java.lang.Object
                 try
                 {
                     cursor.moveToFirst();
-                    actual = new java.io.StringReader(cursor.getString(0));
+                    actual = new StringReader(cursor.getString(0));
                 }
                 finally { cursor.close(); }
         }
-        org.junit.Assert.assertNotNull(actual);
+        Assert.assertNotNull(actual);
 
-        final java.io.InputStreamReader expected = new java.io.InputStreamReader(
-            androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        final InputStreamReader expected = new InputStreamReader(
+            InstrumentationRegistry.getInstrumentation()
                 .getTargetContext().getResources().openRawResource(id));
 
         // 'a' is for actual and 'e' is for expected.
-        org.wheatgenetics.coordinate.database.DatabaseTest.logInfo('a','e');
+        DatabaseTest.logInfo('a','e');
         do
         {
-            @androidx.annotation.IntRange(from = -1) int a, e;
+            @IntRange(from = -1) int a, e;
 
             do { a = actual.read() /* throws java.io.IOException */; }
-            while (java.lang.Character.isWhitespace(a));
+            while (Character.isWhitespace(a));
 
             do { e = expected.read() /* throws java.io.IOException */; }
-            while (java.lang.Character.isWhitespace(e));
+            while (Character.isWhitespace(e));
 
             if (-1 == a && -1 == e) break;
 
-            org.junit.Assert.assertEquals(e, a);
-            org.wheatgenetics.coordinate.database.DatabaseTest.logInfo(a, e);
+            Assert.assertEquals(e, a);
+            DatabaseTest.logInfo(a, e);
         }
         while (true);
     }
@@ -98,9 +117,9 @@ public class DatabaseTest extends java.lang.Object
 
     void cleanFilesystem()
     {
-        final java.io.File parent = this.databaseFile.getParentFile();
+        final File parent = this.databaseFile.getParentFile();
 
-        org.junit.Assert.assertNotNull(parent);
+        Assert.assertNotNull(parent);
         if (parent.exists())
         {
             if (this.databaseFile.exists())
@@ -112,46 +131,46 @@ public class DatabaseTest extends java.lang.Object
                 this.journalFile.delete();
 
             // noinspection CStyleArrayDeclaration
-            final java.lang.String list[] = parent.list();
+            final String list[] = parent.list();
             if (null != list) if (list.length <= 0)
                 // noinspection ResultOfMethodCallIgnored
                 parent.delete();
         }
     }
 
-    @org.junit.Before() public void setUp() { this.cleanFilesystem(); }
+    @Before() public void setUp() { this.cleanFilesystem(); }
 
     // region db() Tests
     /** nullContextDb() must be run before nonNullContextDb(). */
-    @org.junit.Test(expected = java.lang.NullPointerException.class) public void nullContextDb()
+    @Test(expected = NullPointerException.class) public void nullContextDb()
     {
-        org.junit.Assert.assertFalse(this.databaseFile.exists());
-        org.junit.Assert.assertFalse(this.journalFile.exists ());
-        org.wheatgenetics.coordinate.database.Database.db(  // throws java.lang.NullPointerException
+        Assert.assertFalse(this.databaseFile.exists());
+        Assert.assertFalse(this.journalFile.exists ());
+        Database.db(  // throws java.lang.NullPointerException
             /* context  => */null,
             /* fileName => */
-                org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
+                DatabaseTest.DATABASE_FILE_NAME);
     }
 
     /** nonNullContextDb() must be run after nullContextDb(). */
-    @org.junit.Test() public void nonNullContextDb() throws java.io.IOException
+    @Test() public void nonNullContextDb() throws IOException
     {
-        final android.database.sqlite.SQLiteDatabase db =
-            org.wheatgenetics.coordinate.database.Database.db(
-                /* context => */ androidx.test.platform.app.InstrumentationRegistry
+        final SQLiteDatabase db =
+            Database.db(
+                /* context => */ InstrumentationRegistry
                     .getInstrumentation().getTargetContext(),
                 /* fileName => */
-                    org.wheatgenetics.coordinate.database.DatabaseTest.DATABASE_FILE_NAME);
-        org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "templates", db, org.wheatgenetics.coordinate.R.raw.create_templates_table);
-        org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "projects", db, org.wheatgenetics.coordinate.R.raw.create_projects_table);
-        org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "grids", db, org.wheatgenetics.coordinate.R.raw.create_grids_table);
-        org.wheatgenetics.coordinate.database.DatabaseTest.testTable(  // throws java.io.IOException
-            "entries", db, org.wheatgenetics.coordinate.R.raw.create_entries_table);
+                    DatabaseTest.DATABASE_FILE_NAME);
+        DatabaseTest.testTable(  // throws java.io.IOException
+            "templates", db, R.raw.create_templates_table);
+        DatabaseTest.testTable(  // throws java.io.IOException
+            "projects", db, R.raw.create_projects_table);
+        DatabaseTest.testTable(  // throws java.io.IOException
+            "grids", db, R.raw.create_grids_table);
+        DatabaseTest.testTable(  // throws java.io.IOException
+            "entries", db, R.raw.create_entries_table);
     }
     // endregion
 
-    @org.junit.After() public void tearDown() { this.cleanFilesystem(); }
+    @After() public void tearDown() { this.cleanFilesystem(); }
 }

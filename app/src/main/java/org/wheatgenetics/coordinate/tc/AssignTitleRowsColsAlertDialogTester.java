@@ -1,49 +1,47 @@
 package org.wheatgenetics.coordinate.tc;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- *
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
- * org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class AssignTitleRowsColsAlertDialogTester extends java.lang.Object
-implements org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog.Handler
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    { public abstract void handleAssignDone(); }
+import android.app.Activity;
 
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+public class AssignTitleRowsColsAlertDialogTester
+        implements AssignTitleRowsColsAlertDialog.Handler {
     // region Fields
-    private final android.app.Activity                             activity     ;
-    private final org.wheatgenetics.coordinate.model.TemplateModel templateModel;
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler handler;
+    private final Activity activity;
+    private final TemplateModel templateModel;
+    @NonNull
+    private final
+    AssignTitleRowsColsAlertDialogTester.Handler handler;
+    private AssignTitleRowsColsAlertDialog
+            assignTitleRowsColsAlertDialog = null;                                          // lazy load
 
-    private org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog
-        assignTitleRowsColsAlertDialog = null;                                          // lazy load
+    public AssignTitleRowsColsAlertDialogTester(final Activity activity,
+                                                final TemplateModel templateModel,
+                                                @NonNull final
+                                                AssignTitleRowsColsAlertDialogTester.Handler handler) {
+        super();
+        this.activity = activity;
+        this.templateModel = templateModel;
+        this.handler = handler;
+    }
     // endregion
 
-    public AssignTitleRowsColsAlertDialogTester(final android.app.Activity activity,
-    final org.wheatgenetics.coordinate.model.TemplateModel templateModel,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialogTester.Handler handler)
-    {
-        super();
-        this.activity = activity; this.templateModel = templateModel; this.handler = handler;
+    @Override
+    public void handleAssignDone() {
+        this.handler.handleAssignDone();
     }
 
-    @java.lang.Override public void handleAssignDone() { this.handler.handleAssignDone(); }
-
-    public void testAssignTitleRowsCols()
-    {
+    public void testAssignTitleRowsCols() {
         if (null == this.assignTitleRowsColsAlertDialog) this.assignTitleRowsColsAlertDialog =
-            new org.wheatgenetics.coordinate.tc.AssignTitleRowsColsAlertDialog(
-                this.activity,this);
+                new AssignTitleRowsColsAlertDialog(
+                        this.activity, this);
         this.assignTitleRowsColsAlertDialog.show(this.templateModel);
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void handleAssignDone();
     }
 }

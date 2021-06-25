@@ -1,5 +1,8 @@
 package org.wheatgenetics.coordinate.model;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * Uses:
  * org.junit.Assert
@@ -7,50 +10,50 @@ package org.wheatgenetics.coordinate.model;
  *
  * org.wheatgenetics.coordinate.model.TemplateType
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class TemplateTypeTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"})
+public class TemplateTypeTest extends Object
 {
     // region get() Tests
-    @org.junit.Test() public void getSucceeds()
+    @Test() public void getSucceeds()
     {
-        org.junit.Assert.assertEquals(org.wheatgenetics.coordinate.model.TemplateType.SEED,
-            org.wheatgenetics.coordinate.model.TemplateType.get(0));
-        org.junit.Assert.assertEquals(org.wheatgenetics.coordinate.model.TemplateType.DNA,
-            org.wheatgenetics.coordinate.model.TemplateType.get(1));
-        org.junit.Assert.assertEquals(org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED,
-            org.wheatgenetics.coordinate.model.TemplateType.get(2));
+        Assert.assertEquals(TemplateType.SEED,
+            TemplateType.get(0));
+        Assert.assertEquals(TemplateType.DNA,
+            TemplateType.get(1));
+        Assert.assertEquals(TemplateType.USERDEFINED,
+            TemplateType.get(2));
     }
 
-    @org.junit.Test(expected = java.lang.IllegalArgumentException.class) public void getFails()
-    { org.wheatgenetics.coordinate.model.TemplateType.get(4); }
+    @Test(expected = IllegalArgumentException.class) public void getFails()
+    { TemplateType.get(4); }
     // endregion
 
-    @org.junit.Test() public void getCodeSucceeds()
+    @Test() public void getCodeSucceeds()
     {
-        org.wheatgenetics.coordinate.model.TemplateType templateType =
-            org.wheatgenetics.coordinate.model.TemplateType.SEED;
-        org.junit.Assert.assertEquals   (0, templateType.getCode());
-        org.junit.Assert.assertNotEquals(1, templateType.getCode());
+        TemplateType templateType =
+            TemplateType.SEED;
+        Assert.assertEquals   (0, templateType.getCode());
+        Assert.assertNotEquals(1, templateType.getCode());
 
-        templateType = org.wheatgenetics.coordinate.model.TemplateType.DNA;
-        org.junit.Assert.assertEquals   (1, templateType.getCode());
-        org.junit.Assert.assertNotEquals(0, templateType.getCode());
+        templateType = TemplateType.DNA;
+        Assert.assertEquals   (1, templateType.getCode());
+        Assert.assertNotEquals(0, templateType.getCode());
 
-        templateType = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
-        org.junit.Assert.assertEquals   ( 2, templateType.getCode());
-        org.junit.Assert.assertNotEquals(23, templateType.getCode());
+        templateType = TemplateType.USERDEFINED;
+        Assert.assertEquals   ( 2, templateType.getCode());
+        Assert.assertNotEquals(23, templateType.getCode());
     }
 
-    @org.junit.Test() public void isDefaultTemplate()
+    @Test() public void isDefaultTemplate()
     {
-        org.wheatgenetics.coordinate.model.TemplateType templateType =
-            org.wheatgenetics.coordinate.model.TemplateType.SEED;
-        org.junit.Assert.assertTrue(templateType.isDefaultTemplate());
+        TemplateType templateType =
+            TemplateType.SEED;
+        Assert.assertTrue(templateType.isDefaultTemplate());
 
-        templateType = org.wheatgenetics.coordinate.model.TemplateType.DNA;
-        org.junit.Assert.assertTrue(templateType.isDefaultTemplate());
+        templateType = TemplateType.DNA;
+        Assert.assertTrue(templateType.isDefaultTemplate());
 
-        templateType = org.wheatgenetics.coordinate.model.TemplateType.USERDEFINED;
-        org.junit.Assert.assertFalse(templateType.isDefaultTemplate());
+        templateType = TemplateType.USERDEFINED;
+        Assert.assertFalse(templateType.isDefaultTemplate());
     }
 }

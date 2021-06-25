@@ -1,84 +1,100 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.DrawableRes
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.javalib.Utils
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.EntryModel
- * org.wheatgenetics.coordinate.model.ExcludedEntryModel
- */
-public class IncludedEntryModel extends org.wheatgenetics.coordinate.model.EntryModel
-{
-    private java.lang.String value;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    void uncheckedSetValue(@androidx.annotation.Nullable final java.lang.String value)
-    { this.value = null == value ? null : value.trim(); }
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.phenoapps.androidlibrary.Utils;
+
+public class IncludedEntryModel extends EntryModel {
+    private String value;
 
     // region Constructors
     IncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  row   ,
-    @androidx.annotation.IntRange(from = 1) final int  col   ) { super(gridId, row, col); }
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, row, col, stringGetter);
+    }
 
     public IncludedEntryModel(
-    @androidx.annotation.IntRange(from = 1) final long             id       ,
-    @androidx.annotation.IntRange(from = 1) final long             gridId   ,
-    @androidx.annotation.IntRange(from = 1) final int              row      ,
-    @androidx.annotation.IntRange(from = 1) final int              col      ,
-                                            final java.lang.String value    ,
-    @androidx.annotation.IntRange(from = 0) final long             timestamp)
-    { super(id, gridId, row, col, timestamp); this.uncheckedSetValue(value); }
+            @IntRange(from = 1) final long id,
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col,
+            final String value,
+            @IntRange(from = 0) final long timestamp,
+            @NonNull final StringGetter stringGetter) {
+        super(id, gridId, row, col, timestamp, stringGetter);
+        this.uncheckedSetValue(value);
+    }
 
-    public IncludedEntryModel(@androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.model.ExcludedEntryModel excludedEntryModel)
-    { super(excludedEntryModel); }
+    public IncludedEntryModel(
+            @NonNull final ExcludedEntryModel
+                    excludedEntryModel,
+            @NonNull final StringGetter stringGetter) {
+        super(excludedEntryModel, stringGetter);
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    void uncheckedSetValue(@Nullable final String value) {
+        this.value = null == value ? null : value.trim();
+    }
     // endregion
 
     // region Overridden Methods
-    @java.lang.Override java.lang.String getSeedExportValue()
-    { return org.wheatgenetics.javalib.Utils.replaceIfNull(this.getValue(),"BLANK_"); }
+    @Override
+    String getSeedExportValue() {
+        return Utils.replaceIfNull(this.getValue(), "BLANK_");
+    }
 
-    @java.lang.Override @androidx.annotation.NonNull java.lang.String getDNAExportValue(
-    final java.lang.String sample_id)
-    {
-        final java.lang.String value = this.getValue();
+    @Override
+    @NonNull
+    String getDNAExportValue(
+            final String sample_id) {
+        final String value = this.getValue();
         if (null == value || value.length() < 1)
             return super.getDNAExportValue(sample_id);
         else
             return value;
     }
 
-    @java.lang.Override java.lang.String getUserDefinedExportValue()
-    { return org.wheatgenetics.javalib.Utils.makeEmptyIfNull(this.getValue()); }
+    @Override
+    String getUserDefinedExportValue() {
+        return Utils.makeEmptyIfNull(this.getValue());
+    }
 
-    @java.lang.Override public java.lang.String getValue        () { return this.value     ; }
-    @java.lang.Override public java.lang.String getDatabaseValue() { return this.getValue(); }
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-    @java.lang.Override @androidx.annotation.DrawableRes public int backgroundResource()
-    {
-        return this.valueIsEmpty() ?
-            org.wheatgenetics.coordinate.R.drawable.empty_included_entry :
-            org.wheatgenetics.coordinate.R.drawable.full_included_entry  ;
+    // region Public Methods
+    public void setValue(@Nullable final String value) {
+        this.uncheckedSetValue(value);
+    }
+
+    @Override
+    public String getDatabaseValue() {
+        return this.getValue();
     }
     // endregion
 
-    // region Public Methods
-    public void setValue(@androidx.annotation.Nullable final java.lang.String value)
-    { this.uncheckedSetValue(value); }
+    @Override
+    @DrawableRes
+    public int backgroundResource() {
+        return this.valueIsEmpty() ?
+                R.drawable.empty_included_entry :
+                R.drawable.full_included_entry;
+    }
 
-    public boolean valueIsEmpty()
-    {
-        final java.lang.String value = this.getValue();
+    public boolean valueIsEmpty() {
+        final String value = this.getValue();
 
         // noinspection SimplifiableConditionalExpression
         return null == value ? true : value.length() <= 0;

@@ -1,80 +1,85 @@
 package org.wheatgenetics.coordinate.tc;
 
-/**
- * Uses:
- * android.annotation.SuppressLint
- * android.app.Activity
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
- * android.view.View
- * android.widget.Spinner
- *
- * org.wheatgenetics.androidlibrary.AlertDialog
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.model.TemplateModel
- */
-class SetNumberingAlertDialog extends org.wheatgenetics.androidlibrary.AlertDialog
-{
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.view.View;
+import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+
+import org.phenoapps.androidlibrary.AlertDialog;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.model.TemplateModel;
+
+class SetNumberingAlertDialog extends AlertDialog {
     // region Fields
-    private android.widget.Spinner                           rowSpinner, colSpinner;
-    private org.wheatgenetics.coordinate.model.TemplateModel templateModel         ;
+    private Spinner rowSpinner, colSpinner;
+    private TemplateModel templateModel;
     // endregion
 
-    private void setNumbering()
-    {
-        if (null != this.templateModel)
-        {
-            if (null != this.rowSpinner)
-                this.templateModel.setRowNumbering(this.rowSpinner.getSelectedItemPosition() == 0);
+    SetNumberingAlertDialog(final Activity activity) {
+        super(activity);
+    }
 
-            if (null != this.colSpinner)
-                this.templateModel.setColNumbering(this.colSpinner.getSelectedItemPosition() == 0);
+    // region Private Methods
+    private static boolean numbering(
+            @NonNull final Spinner spinner) {
+        return spinner.getSelectedItemPosition() == 0;
+    }
+
+    private static int position(final boolean numbering) {
+        return numbering ? 0 : 1;
+    }
+    // endregion
+
+    private void setNumbering() {
+        if (null != this.templateModel) {
+            if (null != this.rowSpinner) this.templateModel.setRowNumbering(
+                    SetNumberingAlertDialog.numbering(this.rowSpinner));
+
+            if (null != this.colSpinner) this.templateModel.setColNumbering(
+                    SetNumberingAlertDialog.numbering(this.colSpinner));
         }
     }
 
-    SetNumberingAlertDialog(final android.app.Activity activity) { super(activity); }
-
-    @java.lang.Override public void configure()
-    {
-        this.setTitle(org.wheatgenetics.coordinate.R.string.SetNumberingAlertDialogTitle)
-            .setCancelableToFalse();
+    @Override
+    public void configure() {
+        this.setTitle(R.string.SetNumberingAlertDialogTitle)
+                .setCancelableToFalse();
 
         {
-            @android.annotation.SuppressLint({"InflateParams"}) final android.view.View view =
-                this.layoutInflater().inflate(
-                    org.wheatgenetics.coordinate.R.layout.set_numbering,null);
+            @SuppressLint({"InflateParams"}) final View view =
+                    this.layoutInflater().inflate(
+                            R.layout.set_numbering, null);
 
-            if (null != view)
-            {
+            if (null != view) {
                 if (null == this.rowSpinner) this.rowSpinner = view.findViewById(
-                    org.wheatgenetics.coordinate.R.id.rowSpinner);
+                        R.id.rowSpinner);
                 if (null == this.colSpinner) this.colSpinner = view.findViewById(
-                    org.wheatgenetics.coordinate.R.id.colSpinner);
+                        R.id.colSpinner);
             }
             this.setView(view);
         }
 
-        this.setOKPositiveButton(new android.content.DialogInterface.OnClickListener()
-            {
-                @java.lang.Override
-                public void onClick(final android.content.DialogInterface dialog, final int which)
-                { org.wheatgenetics.coordinate.tc.SetNumberingAlertDialog.this.setNumbering(); }
-            }).setCancelNegativeButton();
+        this.setOKPositiveButton(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, final int which) {
+                SetNumberingAlertDialog.this.setNumbering();
+            }
+        }).setCancelNegativeButton();
     }
 
-    void show(final org.wheatgenetics.coordinate.model.TemplateModel templateModel)
-    {
-        if (null != templateModel)
-        {
+    void show(final TemplateModel templateModel) {
+        if (null != templateModel) {
             this.templateModel = templateModel;
 
-            if (null != this.rowSpinner)
-                this.rowSpinner.setSelection(this.templateModel.getRowNumbering() ? 0 : 1);
-
-            if (null != this.colSpinner)
-                this.colSpinner.setSelection(this.templateModel.getColNumbering() ? 0 : 1);
+            if (null != this.rowSpinner) this.rowSpinner.setSelection(
+                    SetNumberingAlertDialog.position(
+                            this.templateModel.getRowNumbering()));
+            if (null != this.colSpinner) this.colSpinner.setSelection(
+                    SetNumberingAlertDialog.position(
+                            this.templateModel.getColNumbering()));
 
             this.show();
         }

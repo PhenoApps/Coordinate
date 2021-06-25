@@ -19,7 +19,7 @@ package org.wheatgenetics.coordinate.preference;
  * org.wheatgenetics.coordinate.preference.PreferenceFragment
  */
 public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivity
-implements androidx.preference.Preference.OnPreferenceClickListener
+        implements androidx.preference.Preference.OnPreferenceClickListener
 {
     // region Fields
     private boolean uniquenessPreferenceWasClicked;
@@ -33,8 +33,8 @@ implements androidx.preference.Preference.OnPreferenceClickListener
         {
             final android.os.Bundle bundle = new android.os.Bundle();
             bundle.putBoolean(
-                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                this.uniquenessPreferenceWasClicked                     );
+                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
+                    this.uniquenessPreferenceWasClicked                     );
             intent.putExtras(bundle);
         }
         this.setResult(android.app.Activity.RESULT_OK, intent);
@@ -42,31 +42,31 @@ implements androidx.preference.Preference.OnPreferenceClickListener
 
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
-    @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
+            @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         // noinspection SimplifiableConditionalExpression
         this.uniquenessPreferenceWasClicked =
-            null == savedInstanceState ? false : savedInstanceState.getBoolean(
-                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
+                null == savedInstanceState ? false : savedInstanceState.getBoolean(
+                        org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
 
         // Display PreferenceFragment as the main content.
         this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-            new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
+                new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
     }
 
     @java.lang.Override protected void onSaveInstanceState(
-    @androidx.annotation.NonNull final android.os.Bundle outState)
+            @androidx.annotation.NonNull final android.os.Bundle outState)
     {
         outState.putBoolean(
-            org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-            this.uniquenessPreferenceWasClicked                     );
+                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
+                this.uniquenessPreferenceWasClicked                     );
         super.onSaveInstanceState(outState);
     }
 
     @java.lang.Override public boolean onOptionsItemSelected(
-    @androidx.annotation.NonNull final android.view.MenuItem item)
+            @androidx.annotation.NonNull final android.view.MenuItem item)
     { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
 
     @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }
@@ -79,12 +79,12 @@ implements androidx.preference.Preference.OnPreferenceClickListener
     // endregion
 
     @androidx.annotation.NonNull public static android.content.Intent intent(
-    @androidx.annotation.NonNull final android.content.Context context)
+            @androidx.annotation.NonNull final android.content.Context context)
     {
         return null == org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE ?
-            org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE =
-                new android.content.Intent(context,
-                    org.wheatgenetics.coordinate.preference.PreferenceActivity.class) :
-            org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE;
+                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE =
+                        new android.content.Intent(context,
+                                org.wheatgenetics.coordinate.preference.PreferenceActivity.class) :
+                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE;
     }
 }

@@ -1,513 +1,342 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * android.os.Bundle
- * android.util.Xml
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- * androidx.annotation.VisibleForTesting
- *
- * org.xmlpull.v1.XmlSerializer
- * org.xml.sax.Attributes
- * org.xml.sax.InputSource
- * org.xml.sax.SAXException
- * org.xml.sax.helpers.DefaultHandler
- *
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- *
- * org.wheatgenetics.coordinate.model.DisplayTemplateModel
- * org.wheatgenetics.coordinate.model.Cells
- * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.RowOrCols
- * org.wheatgenetics.coordinate.model.TemplateType
- */
-public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTemplateModel
-{
+import android.os.Bundle;
+import android.util.Xml;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+public class TemplateModel extends DisplayTemplateModel {
     // region Constants
-    private static final java.lang.String OPTIONAL_FIELDS_TAG_NAME  = "optionalFields";
-    private static final java.lang.String TEMPLATE_MODEL_EXTRA_NAME = "templateModel" ;
+    private static final String OPTIONAL_FIELDS_TAG_NAME = "optionalFields";
+    private static final String TEMPLATE_MODEL_EXTRA_NAME = "templateModel";
     // endregion
-
+    private static SAXParserFactory saxParserFactoryInstance = null;  // lazy load
+    private static SAXParser saxParserInstance = null;  // lazy load
     // region Fields
-    @androidx.annotation.Nullable private
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
-        nonNullOptionalFieldsInstance;
-
-    private static javax.xml.parsers.SAXParserFactory saxParserFactoryInstance = null;  // lazy load
-    private static javax.xml.parsers.SAXParser        saxParserInstance        = null;  // lazy load
+    @Nullable
+    private
+    NonNullOptionalFields
+            nonNullOptionalFieldsInstance;
     // endregion
 
-    // region Private Methods
-    private void setOptionalFields(@androidx.annotation.Nullable java.lang.String json)
-    {
-        if (null != json) json = json.trim();
-        this.nonNullOptionalFieldsInstance = null == json ? null : json.equals("") ? null :
-            new org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields(json);
+    /**
+     * Called by clone().
+     */
+    private TemplateModel(@IntRange(from = 1) final long id,
+                          final String title, final TemplateType type,
+                          @IntRange(from = 1) final int rows,
+                          @IntRange(from = 1) final int cols,
+                          @IntRange(from = 0) final int generatedExcludedCellsAmount,
+                          @Nullable final Cells excludedCells,
+                          @Nullable final RowOrCols excludedRows,
+                          @Nullable final RowOrCols excludedCols,
+                          final boolean colNumbering, final boolean rowNumbering, @Nullable final
+                          NonNullOptionalFields optionalFields,
+                          @NonNull final StringGetter stringGetter,
+                          @IntRange(from = 0) final long timestamp) {
+        super(id, title, type, rows, cols, generatedExcludedCellsAmount, excludedCells,
+                excludedRows, excludedCols, colNumbering, rowNumbering, timestamp, stringGetter);
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
-    @androidx.annotation.NonNull
-    private static javax.xml.parsers.SAXParserFactory saxParserFactory()
-    {
-        if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance)
-            org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance =
-                javax.xml.parsers.SAXParserFactory.newInstance();
-        return org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactoryInstance;
+    /**
+     * Called by clone() and third constructor.
+     */
+    private TemplateModel(final String title,
+                          final TemplateType type,
+                          @IntRange(from = 1) final int rows,
+                          @IntRange(from = 1) final int cols,
+                          @IntRange(from = 0) final int generatedExcludedCellsAmount,
+                          @Nullable final Cells excludedCells,
+                          @Nullable final RowOrCols excludedRows,
+                          @Nullable final RowOrCols excludedCols,
+                          final boolean colNumbering, final boolean rowNumbering, @Nullable final
+                          NonNullOptionalFields optionalFields,
+                          @NonNull final StringGetter stringGetter,
+                          @IntRange(from = 0) final long timestamp) {
+        super(title, type, rows, cols, generatedExcludedCellsAmount, excludedCells, excludedRows,
+                excludedCols, colNumbering, rowNumbering, timestamp, stringGetter);
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
 
-    @androidx.annotation.Nullable private static javax.xml.parsers.SAXParser saxParser()
-    {
-        if (null == org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance)
-            try
-            {
-                org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance =
-                    org.wheatgenetics.coordinate.model.TemplateModel.saxParserFactory()
-                        .newSAXParser();   // throws javax.xml.parsers.ParserConfigurationException,
-            }                              //   org.xml.sax.SAXException
-            catch (
-            final javax.xml.parsers.ParserConfigurationException | org.xml.sax.SAXException e)
-            { org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance = null; }
-        return org.wheatgenetics.coordinate.model.TemplateModel.saxParserInstance;
+    /**
+     * Called by makeSeedDefault() and makeDNADefault().
+     */
+    private TemplateModel(final String title,
+                          final TemplateType type,
+                          @IntRange(from = 1) final int rows,
+                          @IntRange(from = 1) final int cols,
+                          @IntRange(from = 0) final int generatedExcludedCellsAmount,
+                          final boolean rowNumbering,
+                          @Nullable final
+                          NonNullOptionalFields optionalFields,
+                          @NonNull final StringGetter stringGetter) {
+        this(title, type, rows, cols, generatedExcludedCellsAmount,
+                /* excludedCells => */null, /* excludedRows => */null,
+                /* excludedCols  => */null, /* colNumbering  => */true,
+                rowNumbering, optionalFields, stringGetter, /* timestamp => */0);
     }
 
-    @androidx.annotation.Nullable private static org.wheatgenetics.coordinate.model.TemplateModel
-    makeUserDefined(@androidx.annotation.NonNull final org.xml.sax.InputSource inputSource)
-    {
-        class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
-        {
-            // region Fields
-            @androidx.annotation.Nullable
-            private java.lang.String elementName;
+    /**
+     * Called by makeUserDefined().
+     */
+    private TemplateModel(@Nullable final
+                          NonNullOptionalFields optionalFields,
+                          @NonNull final StringGetter stringGetter) {
+        super(stringGetter);
 
-            private org.wheatgenetics.coordinate.model.TemplateModel
-                templateModelInstance = null;                                       // lazy load
-            // endregion
+        this.setGeneratedExcludedCellsAmount(1);
+        this.setColNumbering(true);
+        this.setRowNumbering(false);
 
-            @androidx.annotation.NonNull
-            private org.wheatgenetics.coordinate.model.TemplateModel templateModel()
-            {
-                if (null == this.templateModelInstance) this.templateModelInstance =
-                    new org.wheatgenetics.coordinate.model.TemplateModel();
-                return templateModelInstance;
-            }
-
-            // region Overridden Methods
-            @java.lang.Override
-            public void startElement(final java.lang.String uri,
-                final java.lang.String localName, final java.lang.String qName,
-                final org.xml.sax.Attributes attributes)
-            { this.elementName = qName; }
-
-            @java.lang.Override
-            public void characters(
-                @java.lang.SuppressWarnings({"CStyleArrayDeclaration"}) final char ch[],
-                final int start, final int length)
-            {
-                this.templateModel().assignCharacterData(this.elementName,
-                    /* characterData => */ new java.lang.String(ch, start, length));
-            }
-
-            @java.lang.Override
-            public void endElement(final java.lang.String uri,
-                final java.lang.String localName, final java.lang.String qName)
-            { this.elementName = null; }
-            // endregion
-
-            @androidx.annotation.Nullable
-            private org.wheatgenetics.coordinate.model.TemplateModel getTemplateModel()
-            { return this.templateModelInstance; }
-        }
-
-        final DefaultHandler defaultHandler = new DefaultHandler();
-        {
-            final javax.xml.parsers.SAXParser saxParser =
-                org.wheatgenetics.coordinate.model.TemplateModel.saxParser();
-            if (null == saxParser)
-                return null;
-            else
-                try
-                {
-                    saxParser.parse(inputSource,                     // throws org.xml.sax.SAXExcep-
-                        defaultHandler);                             //  tion, java.io.IOException
-                }
-                catch (final org.xml.sax.SAXException | java.io.IOException e) { return null; }
-        }
-
-        return defaultHandler.getTemplateModel();
+        this.nonNullOptionalFieldsInstance = optionalFields;
     }
     // endregion
 
     // region Constructors
-    /** Called by clone(). */
-    private TemplateModel(@androidx.annotation.IntRange(from = 1) final long id,
-    final java.lang.String title, final org.wheatgenetics.coordinate.model.TemplateType type,
-    @androidx.annotation.IntRange(from = 1) final int rows                        ,
-    @androidx.annotation.IntRange(from = 1) final int cols                        ,
-    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells     excludedCells,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
-    final boolean colNumbering, final boolean rowNumbering, @androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
-    {
-        super(id, title, type, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, timestamp);
-        this.nonNullOptionalFieldsInstance = optionalFields;
+
+    /**
+     * Called by DefaultHandler class.
+     */
+    private TemplateModel(@NonNull final StringGetter stringGetter) {
+        super(stringGetter);
     }
 
-    /** Called by clone() and third constructor. */
-    private TemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type,
-    @androidx.annotation.IntRange(from = 1) final int rows                        ,
-    @androidx.annotation.IntRange(from = 1) final int cols                        ,
-    @androidx.annotation.IntRange(from = 0) final int generatedExcludedCellsAmount,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.Cells     excludedCells,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedRows ,
-    @androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.RowOrCols excludedCols ,
-    final boolean colNumbering, final boolean rowNumbering, @androidx.annotation.Nullable final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields,
-    @androidx.annotation.IntRange(from = 0) final long timestamp)
-    {
-        super(title, type, rows, cols, generatedExcludedCellsAmount, excludedCells, excludedRows,
-            excludedCols, colNumbering, rowNumbering, timestamp);
-        this.nonNullOptionalFieldsInstance = optionalFields;
-    }
-
-    /** Called by makeSeedDefault() and makeDNADefault(). */
-    private TemplateModel(final java.lang.String title,
-    final org.wheatgenetics.coordinate.model.TemplateType type,
-    @androidx.annotation.IntRange(from = 1) final int     rows                        ,
-    @androidx.annotation.IntRange(from = 1) final int     cols                        ,
-    @androidx.annotation.IntRange(from = 0) final int     generatedExcludedCellsAmount,
-                                            final boolean rowNumbering                ,
-    @androidx.annotation.Nullable           final
-        org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-    {
-        this(title, type, rows, cols, generatedExcludedCellsAmount,
-            /* excludedCells => */null, /* excludedRows => */null,
-            /* excludedCols  => */null, /* colNumbering  => */true,
-            rowNumbering, optionalFields, /* timestamp => */0);
-    }
-
-    /** Called by makeUserDefined(). */
-    private TemplateModel(@androidx.annotation.Nullable final
-    org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields)
-    {
-        super();
-
-        this.setGeneratedExcludedCellsAmount(1);
-        this.setColNumbering(true); this.setRowNumbering(false);
-
-        this.nonNullOptionalFieldsInstance = optionalFields;
-    }
-
-    /** Called by DefaultHandler class. */ private TemplateModel() { super(); }
-
-    /** Called by JoinedGridModel constructor and TemplatesTable.make(). */
+    /**
+     * Called by JoinedGridModel constructor and TemplatesTable.make().
+     */
     public TemplateModel(
-    @androidx.annotation.IntRange(from = 1        ) final long             id             ,
-                                                    final java.lang.String title          ,
-    @androidx.annotation.IntRange(from = 0, to = 2) final int              code           ,
-    @androidx.annotation.IntRange(from = 1        ) final int              rows           ,
-    @androidx.annotation.IntRange(from = 1        ) final int              cols           ,
-    @androidx.annotation.IntRange(from = 0        ) final int generatedExcludedCellsAmount,
-    @androidx.annotation.Nullable                   final java.lang.String excludedCells  ,
-    @androidx.annotation.Nullable                   final java.lang.String excludedRows   ,
-    @androidx.annotation.Nullable                   final java.lang.String excludedCols   ,
-    @androidx.annotation.IntRange(from = 0, to = 1) final int              colNumbering   ,
-    @androidx.annotation.IntRange(from = 0, to = 1) final int              rowNumbering   ,
-                                                    final java.lang.String entryLabel     ,
-    @androidx.annotation.Nullable                   final java.lang.String optionalFields ,
-    @androidx.annotation.IntRange(from = 0        ) final long             timestamp      )
-    {
+            @IntRange(from = 1) final long id,
+            final String title,
+            @IntRange(from = 0, to = 2) final int code,
+            @IntRange(from = 1) final int rows,
+            @IntRange(from = 1) final int cols,
+            @IntRange(from = 0) final int generatedExcludedCellsAmount,
+            @Nullable final String excludedCells,
+            @Nullable final String excludedRows,
+            @Nullable final String excludedCols,
+            @IntRange(from = 0, to = 1) final int colNumbering,
+            @IntRange(from = 0, to = 1) final int rowNumbering,
+            final String entryLabel,
+            @Nullable final String optionalFields,
+            @NonNull final StringGetter stringGetter,
+            @IntRange(from = 0) final long timestamp) {
         super(id, title, code, rows, cols, generatedExcludedCellsAmount, excludedCells,
-            excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp);
+                excludedRows, excludedCols, colNumbering, rowNumbering, entryLabel, timestamp,
+                stringGetter);
         this.setOptionalFields(optionalFields);
     }
-    // endregion
 
-    // region Overridden Methods
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
-    {
-        return java.lang.String.format(super.formatString() + ", options=%s]",
-            "TemplateModel", null == this.nonNullOptionalFieldsInstance ? "" :
-                this.nonNullOptionalFieldsInstance.toString());
+    @NonNull
+    private static SAXParserFactory saxParserFactory() {
+        if (null == TemplateModel.saxParserFactoryInstance)
+            TemplateModel.saxParserFactoryInstance =
+                    SAXParserFactory.newInstance();
+        return TemplateModel.saxParserFactoryInstance;
     }
 
-    @java.lang.Override public boolean equals(final java.lang.Object object)
-    {
-        if (super.equals(object))
-            if (object instanceof org.wheatgenetics.coordinate.model.TemplateModel)
-            {
-                final org.wheatgenetics.coordinate.model.TemplateModel templateModel =
-                    (org.wheatgenetics.coordinate.model.TemplateModel) object;
-
-                if (null == this.nonNullOptionalFieldsInstance
-                &&  null != templateModel.nonNullOptionalFieldsInstance)
-                    return false;
-                else
-                    if (null != this.nonNullOptionalFieldsInstance
-                    &&  null == templateModel.nonNullOptionalFieldsInstance)
-                        return false;
-
-                // noinspection SimplifiableConditionalExpression
-                return null == this.nonNullOptionalFieldsInstance ? true :
-                    this.nonNullOptionalFieldsInstance.equals(
-                        templateModel.nonNullOptionalFieldsInstance);
+    @Nullable
+    private static SAXParser saxParser() {
+        if (null == TemplateModel.saxParserInstance)
+            try {
+                TemplateModel.saxParserInstance =
+                        TemplateModel.saxParserFactory()
+                                .newSAXParser();   // throws javax.xml.parsers.ParserConfigurationException,
+            }                              //   org.xml.sax.SAXException
+            catch (
+                    final ParserConfigurationException | SAXException e) {
+                TemplateModel.saxParserInstance = null;
             }
-            else return false;
-        else return false;
+        return TemplateModel.saxParserInstance;
     }
 
-    @java.lang.SuppressWarnings({"CloneDoesntCallSuperClone"})
-    @java.lang.Override @androidx.annotation.NonNull protected java.lang.Object clone()
-    {
-        final long                                     id            = this.getId             ();
-        final org.wheatgenetics.coordinate.model.Cells excludedCells = this.excludedCellsClone();
-        final org.wheatgenetics.coordinate.model.RowOrCols
-            excludedRows = this.excludedRowsClone(), excludedCols = this.excludedColsClone();
-        final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields =
-            null == this.nonNullOptionalFieldsInstance ? null :
-                (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
-                    this.nonNullOptionalFieldsInstance.clone();
+    @Nullable
+    private static TemplateModel
+    makeUserDefined(@NonNull final InputSource inputSource,
+                    @NonNull final StringGetter stringGetter) {
+        class DefaultHandler extends org.xml.sax.helpers.DefaultHandler {
+            // region Fields
+            @NonNull
+            private final StringGetter
+                    stringGetter;
 
-        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-            return new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* title                        => */ this.getTitle                       (),
-                /* type                         => */ this.getType                        (),
-                /* rows                         => */ this.getRows                        (),
-                /* cols                         => */ this.getCols                        (),
-                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
-                /* excludedCells                => */ excludedCells                         ,
-                /* excludedRows                 => */ excludedRows                          ,
-                /* excludedCols                 => */ excludedCols                          ,
-                /* colNumbering                 => */ this.getColNumbering()                ,
-                /* rowNumbering                 => */ this.getRowNumbering()                ,
-                /* optionalFields               => */ optionalFields                        ,
-                /* timestamp                    => */ this.getTimestamp()                   );
-        else
-            return new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* id                           => */ id                                    ,
-                /* title                        => */ this.getTitle                       (),
-                /* type                         => */ this.getType                        (),
-                /* rows                         => */ this.getRows                        (),
-                /* cols                         => */ this.getCols                        (),
-                /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
-                /* excludedCells                => */ excludedCells                         ,
-                /* excludedRows                 => */ excludedRows                          ,
-                /* excludedCols                 => */ excludedCols                          ,
-                /* colNumbering                 => */ this.getColNumbering()                ,
-                /* rowNumbering                 => */ this.getRowNumbering()                ,
-                /* optionalFields               => */ optionalFields                        ,
-                /* timestamp                    => */ this.getTimestamp()                   );
-    }
+            @Nullable
+            private String elementName;
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override void assignCharacterData(
-    @androidx.annotation.Nullable final java.lang.String elementName  ,
-                                  final java.lang.String characterData)
-    {
-        if (org.wheatgenetics.coordinate.model.TemplateModel.OPTIONAL_FIELDS_TAG_NAME.equals(
-        elementName))
-            this.setOptionalFields(characterData);
-        else
-            super.assignCharacterData(elementName, characterData);
-    }
-    // endregion
+            private TemplateModel
+                    templateModelInstance = null;                                       // lazy load
+            // endregion
 
-    @java.lang.SuppressWarnings({"DefaultAnnotationParam"}) @androidx.annotation.VisibleForTesting(
-        otherwise = androidx.annotation.VisibleForTesting.PRIVATE)
-    boolean export(@androidx.annotation.Nullable final java.io.Writer writer)
-    {
-        boolean success;
-
-        if (null == writer)
-            success = false;
-        else
-            try
-            {
-                final org.xmlpull.v1.XmlSerializer xmlSerializer = android.util.Xml.newSerializer();
-                if (null == xmlSerializer)
-                    success = false;
-                else
-                {
-                    xmlSerializer.setOutput(writer);                   // throws java.io.IOException
-
-                    xmlSerializer.startDocument("UTF-8",true);       // throws java.io-
-                    try                                                           //  .IOException
-                    {
-                        xmlSerializer.ignorableWhitespace("\n");
-
-                        final java.lang.String templateTagName = "template";
-                        xmlSerializer.startTag(null, templateTagName);         // throws java.io-
-                                                                                  //  .IOException
-                        final java.lang.String indent = "\n    ";
-                        if (!this.export(xmlSerializer, indent))
-                            success = false;
-                        else
-                        {
-                            if (null != this.nonNullOptionalFieldsInstance)
-                                org.wheatgenetics.coordinate.model.DisplayTemplateModel.writeElement(
-                                    xmlSerializer, indent, org.wheatgenetics.coordinate.model
-                                        .TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
-                                    this.nonNullOptionalFieldsInstance.toJson());
-
-                            xmlSerializer.ignorableWhitespace("\n");
-                            xmlSerializer.endTag(null, templateTagName);
-
-                            success = true;
-                        }
-                    }
-                    finally { xmlSerializer.endDocument() /* throws java.io.IOException */; }
-                }
+            private DefaultHandler(@NonNull final
+                                   StringGetter stringGetter) {
+                super();
+                this.stringGetter = stringGetter;
             }
-            catch (final java.io.IOException e) { success = false; }
 
-        return success;
-    }
-
-    // region Public Methods
-    // region optionalFields Public Methods
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFields()
-    { return this.nonNullOptionalFieldsInstance; }
-
-    public boolean optionalFieldsIsEmpty()
-    {
-        // noinspection SimplifiableConditionalExpression
-        return null == this.nonNullOptionalFieldsInstance ?
-            true : this.nonNullOptionalFieldsInstance.isEmpty();
-    }
-
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields optionalFieldsClone()
-    {
-        return null == this.nonNullOptionalFieldsInstance ? null :
-            (org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields)
-                this.nonNullOptionalFieldsInstance.clone();
-    }
-
-    @androidx.annotation.Nullable public java.lang.String optionalFieldsAsJson()
-    {
-        return null == this.nonNullOptionalFieldsInstance ?
-            null : this.nonNullOptionalFieldsInstance.toJson();
-    }
-    // endregion
-
-    // region export() Public Methods
-    public boolean export(@androidx.annotation.Nullable final java.io.File exportFile)
-    {
-        final boolean failure = false;
-        if (null == exportFile)
-            return failure;
-        else
-            try { return this.export(new java.io.FileWriter(exportFile) /* throws */); }
-            catch (final java.io.IOException e) { return failure; }
-    }
-
-    public void export(@androidx.annotation.NonNull final android.os.Bundle bundle)
-    {
-                                      final boolean          remove;
-        @androidx.annotation.Nullable final java.lang.String string;
-        {
-            final java.io.StringWriter stringWriter = new java.io.StringWriter();
-            if (this.export(stringWriter))
-            {
-                string = stringWriter.toString().trim();
-                remove = string.length() < 1;
+            @NonNull
+            private TemplateModel templateModel() {
+                if (null == this.templateModelInstance) this.templateModelInstance =
+                        new TemplateModel(this.stringGetter);
+                return templateModelInstance;
             }
-            else
-                { remove = true; string = null; }
+
+            // region Overridden Methods
+            @Override
+            public void startElement(final String uri,
+                                     final String localName, final String qName,
+                                     final Attributes attributes) {
+                this.elementName = qName;
+            }
+
+            @Override
+            public void characters(
+                    @SuppressWarnings({"CStyleArrayDeclaration"}) final char ch[],
+                    final int start, final int length) {
+                this.templateModel().assignCharacterData(this.elementName,
+                        /* characterData => */ new String(ch, start, length));
+            }
+
+            @Override
+            public void endElement(final String uri,
+                                   final String localName, final String qName) {
+                this.elementName = null;
+            }
+            // endregion
+
+            @Nullable
+            private TemplateModel getTemplateModel() {
+                return this.templateModelInstance;
+            }
         }
 
-        final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
-            org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
-        if (remove)
-            bundle.remove(TEMPLATE_MODEL_EXTRA_NAME);
-        else
-            bundle.putString(TEMPLATE_MODEL_EXTRA_NAME, string);
+        final DefaultHandler defaultHandler = new DefaultHandler(stringGetter);
+        {
+            final SAXParser saxParser =
+                    TemplateModel.saxParser();
+            if (null == saxParser)
+                return null;
+            else
+                try {
+                    saxParser.parse(inputSource,                     // throws org.xml.sax.SAXExcep-
+                            defaultHandler);                             //  tion, java.io.IOException
+                } catch (final SAXException | IOException e) {
+                    return null;
+                }
+        }
+
+        return defaultHandler.getTemplateModel();
+    }
+
+    /**
+     * Called by TemplateModels.
+     */
+    @NonNull
+    static TemplateModel makeSeedDefault(
+            @NonNull final StringGetter stringGetter) {
+        final TemplateModel result =
+                new TemplateModel(
+                        /* title => */stringGetter.get(
+                        R.string.SeedDefaultTemplateTitle),
+                        /* type => */ TemplateType.SEED,
+                        /* rows => */6,
+                        /* cols => */20,
+                        /* generatedExcludedCellsAmount => */0,
+                        /* rowNumbering                 => */true,
+                        /* optionalFields               => */ NonNullOptionalFields.makeSeedDefault(stringGetter),
+                        /* stringGetter => */ stringGetter);
+        result.addExcludedRow(2);
+        result.addExcludedRow(5);
+        return result;
     }
     // endregion
 
-    // region Make Public Methods
-    /** Called by TemplateModels. */ @androidx.annotation.NonNull
-    static org.wheatgenetics.coordinate.model.TemplateModel makeSeedDefault()
-    {
-        final org.wheatgenetics.coordinate.model.TemplateModel result =
-            new org.wheatgenetics.coordinate.model.TemplateModel(
-                /* title => */"Seed Tray",
-                /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.SEED,
-                /* rows  => */6,
-                /* cols  => */20,
-                /* generatedExcludedCellsAmount => */0,
-                /* rowNumbering                 => */true,
-                /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
-                    .NonNullOptionalFields.makeSeedDefault());
-        result.addExcludedRow(2); result.addExcludedRow(5);
-        return result;
+    /**
+     * Called by TemplateModels.
+     */
+    @NonNull
+    static TemplateModel makeDNADefault(
+            @NonNull final StringGetter stringGetter) {
+        return new TemplateModel(
+                /* title => */ stringGetter.get(
+                R.string.DNADefaultTemplateTitle),
+                /* type => */ TemplateType.DNA,
+                /* rows => */8,
+                /* cols => */12,
+                /* generatedExcludedCellsAmount => */1,
+                /* rowNumbering                 => */false,
+                /* optionalFields               => */ NonNullOptionalFields.makeDNADefault(stringGetter),
+                /* stringGetter => */ stringGetter);
     }
 
-    /** Called by TemplateModels. */ @androidx.annotation.NonNull
-    static org.wheatgenetics.coordinate.model.TemplateModel makeDNADefault()
-    {
-        return new org.wheatgenetics.coordinate.model.TemplateModel(
-            /* title => */"DNA Plate",
-            /* type  => */ org.wheatgenetics.coordinate.model.TemplateType.DNA,
-            /* rows  => */8,
-            /* cols  => */12,
-            /* generatedExcludedCellsAmount => */1,
-            /* rowNumbering                 => */false,
-            /* optionalFields               => */ org.wheatgenetics.coordinate.optionalField
-                .NonNullOptionalFields.makeDNADefault());
+    /**
+     * Called by TemplateCreator.
+     */
+    @NonNull
+    public static TemplateModel makeUserDefined(
+            @NonNull final StringGetter stringGetter) {
+        return new TemplateModel(
+                NonNullOptionalFields.makeNew(stringGetter),
+                stringGetter);
     }
 
-    /** Called by TemplateCreator. */ @androidx.annotation.NonNull
-    public static org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined()
-    {
-        return new org.wheatgenetics.coordinate.model.TemplateModel(
-            org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields.makeNew());
-    }
-
-    @androidx.annotation.Nullable public static
-    org.wheatgenetics.coordinate.model.TemplateModel makeUserDefined(final java.io.File file)
-    {
+    @Nullable
+    public static TemplateModel makeUserDefined(final File file,
+                                                @NonNull final StringGetter stringGetter) {
         if (null == file)
             return null;
         else
-            try
-            {
-                final java.io.FileInputStream fileInputStream =
-                    new java.io.FileInputStream(file);       // throws java.io.FileNotFoundException
+            try {
+                final FileInputStream fileInputStream =
+                        new FileInputStream(file);       // throws java.io.FileNotFoundException
 
                 // noinspection TryFinallyCanBeTryWithResources
-                try
-                {
-                    return org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
-                        new org.xml.sax.InputSource(fileInputStream));
+                try {
+                    return TemplateModel.makeUserDefined(
+                            new InputSource(fileInputStream), stringGetter);
+                } finally {
+                    fileInputStream.close() /* throws java.io.IOException */;
                 }
-                finally { fileInputStream.close() /* throws java.io.IOException */; }
+            } catch (final IOException e) {
+                return null;
             }
-            catch (final java.io.IOException e) { return null; }
     }
 
-    @androidx.annotation.Nullable public static org.wheatgenetics.coordinate.model.TemplateModel
-    makeUserDefined(@androidx.annotation.Nullable final android.os.Bundle bundle)
-    {
+    @Nullable
+    public static TemplateModel
+    makeUserDefined(@Nullable final Bundle bundle,
+                    @NonNull final StringGetter stringGetter) {
         if (null == bundle)
             return null;
-        else
-        {
-            final java.lang.String TEMPLATE_MODEL_EXTRA_NAME =
-                org.wheatgenetics.coordinate.model.TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
-            if (bundle.containsKey(TEMPLATE_MODEL_EXTRA_NAME))
-            {
-                @androidx.annotation.Nullable
-                java.lang.String string = bundle.getString(TEMPLATE_MODEL_EXTRA_NAME);
+        else {
+            final String TEMPLATE_MODEL_EXTRA_NAME =
+                    TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+            if (bundle.containsKey(TEMPLATE_MODEL_EXTRA_NAME)) {
+                @Nullable
+                String string = bundle.getString(TEMPLATE_MODEL_EXTRA_NAME);
                 if (null == string)
                     return null;
                 {
@@ -515,12 +344,224 @@ public class TemplateModel extends org.wheatgenetics.coordinate.model.DisplayTem
                     if (string.length() < 1)
                         return null;
                     else
-                        return org.wheatgenetics.coordinate.model.TemplateModel.makeUserDefined(
-                            new org.xml.sax.InputSource(new java.io.StringReader(string)));
+                        return TemplateModel.makeUserDefined(
+                                new InputSource(new StringReader(string)),
+                                stringGetter);
                 }
-            }
-            else return null;
+            } else return null;
         }
+    }
+    // endregion
+
+    // region Private Methods
+    private void setOptionalFields(@Nullable String json) {
+        if (null != json) json = json.trim();
+        this.nonNullOptionalFieldsInstance = null == json ? null : json.equals("") ? null :
+                new NonNullOptionalFields(
+                        json, this.stringGetter());
+    }
+
+    // region Overridden Methods
+    @Override
+    @NonNull
+    public String toString() {
+        return String.format(super.formatString() + ", options=%s]",
+                "TemplateModel", null == this.nonNullOptionalFieldsInstance ? "" :
+                        this.nonNullOptionalFieldsInstance.toString());
+    }
+
+    @Override
+    public boolean equals(final Object object) {
+        if (super.equals(object))
+            if (object instanceof TemplateModel) {
+                final TemplateModel templateModel =
+                        (TemplateModel) object;
+
+                if (null == this.nonNullOptionalFieldsInstance
+                        && null != templateModel.nonNullOptionalFieldsInstance)
+                    return false;
+                else if (null != this.nonNullOptionalFieldsInstance
+                        && null == templateModel.nonNullOptionalFieldsInstance)
+                    return false;
+
+                // noinspection SimplifiableConditionalExpression
+                return null == this.nonNullOptionalFieldsInstance ? true :
+                        this.nonNullOptionalFieldsInstance.equals(
+                                templateModel.nonNullOptionalFieldsInstance);
+            } else return false;
+        else return false;
+    }
+
+    @SuppressWarnings({"CloneDoesntCallSuperClone"})
+    @Override
+    @NonNull
+    protected Object clone() {
+        final long id = this.getId();
+        final Cells excludedCells = this.excludedCellsClone();
+        final RowOrCols
+                excludedRows = this.excludedRowsClone(), excludedCols = this.excludedColsClone();
+        final NonNullOptionalFields optionalFields =
+                null == this.nonNullOptionalFieldsInstance ? null :
+                        (NonNullOptionalFields)
+                                this.nonNullOptionalFieldsInstance.clone();
+
+        if (Model.illegal(id))
+            return new TemplateModel(
+                    /* title                        => */ this.getTitle(),
+                    /* type                         => */ this.getType(),
+                    /* rows                         => */ this.getRows(),
+                    /* cols                         => */ this.getCols(),
+                    /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                    /* excludedCells                => */ excludedCells,
+                    /* excludedRows                 => */ excludedRows,
+                    /* excludedCols                 => */ excludedCols,
+                    /* colNumbering                 => */ this.getColNumbering(),
+                    /* rowNumbering                 => */ this.getRowNumbering(),
+                    /* optionalFields               => */ optionalFields,
+                    /* stringGetter                 => */ this.stringGetter(),
+                    /* timestamp                    => */ this.getTimestamp());
+        else
+            return new TemplateModel(
+                    /* id                           => */ id,
+                    /* title                        => */ this.getTitle(),
+                    /* type                         => */ this.getType(),
+                    /* rows                         => */ this.getRows(),
+                    /* cols                         => */ this.getCols(),
+                    /* generatedExcludedCellsAmount => */ this.getGeneratedExcludedCellsAmount(),
+                    /* excludedCells                => */ excludedCells,
+                    /* excludedRows                 => */ excludedRows,
+                    /* excludedCols                 => */ excludedCols,
+                    /* colNumbering                 => */ this.getColNumbering(),
+                    /* rowNumbering                 => */ this.getRowNumbering(),
+                    /* optionalFields               => */ optionalFields,
+                    /* stringGetter                 => */ this.stringGetter(),
+                    /* timestamp                    => */ this.getTimestamp());
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    void assignCharacterData(
+            @Nullable final String elementName,
+            final String characterData) {
+        if (TemplateModel.OPTIONAL_FIELDS_TAG_NAME.equals(
+                elementName))
+            this.setOptionalFields(characterData);
+        else
+            super.assignCharacterData(elementName, characterData);
+    }
+    // endregion
+
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    boolean export(@Nullable final Writer writer) {
+        boolean success;
+
+        if (null == writer)
+            success = false;
+        else
+            try {
+                final XmlSerializer xmlSerializer = Xml.newSerializer();
+                if (null == xmlSerializer)
+                    success = false;
+                else {
+                    xmlSerializer.setOutput(writer);                   // throws java.io.IOException
+
+                    xmlSerializer.startDocument("UTF-8", true);       // throws java.io-
+                    try                                                           //  .IOException
+                    {
+                        xmlSerializer.ignorableWhitespace("\n");
+
+                        final String templateTagName = "template";
+                        xmlSerializer.startTag(null, templateTagName);         // throws java.io-
+                        //  .IOException
+                        final String indent = "\n    ";
+                        if (!this.export(xmlSerializer, indent))
+                            success = false;
+                        else {
+                            if (null != this.nonNullOptionalFieldsInstance)
+                                DisplayTemplateModel.writeElement(
+                                        xmlSerializer, indent, TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
+                                        this.nonNullOptionalFieldsInstance.toJson());
+
+                            xmlSerializer.ignorableWhitespace("\n");
+                            xmlSerializer.endTag(null, templateTagName);
+
+                            success = true;
+                        }
+                    } finally {
+                        xmlSerializer.endDocument() /* throws java.io.IOException */;
+                    }
+                }
+            } catch (final IOException e) {
+                success = false;
+            }
+
+        return success;
+    }
+
+    // region Public Methods
+    // region optionalFields Public Methods
+    @Nullable
+    public NonNullOptionalFields optionalFields() {
+        return this.nonNullOptionalFieldsInstance;
+    }
+    // endregion
+
+    // region Make Public Methods
+
+    public boolean optionalFieldsIsEmpty() {
+        // noinspection SimplifiableConditionalExpression
+        return null == this.nonNullOptionalFieldsInstance ?
+                true : this.nonNullOptionalFieldsInstance.isEmpty();
+    }
+
+    @Nullable
+    public NonNullOptionalFields optionalFieldsClone() {
+        return null == this.nonNullOptionalFieldsInstance ? null :
+                (NonNullOptionalFields)
+                        this.nonNullOptionalFieldsInstance.clone();
+    }
+
+    @Nullable
+    public String optionalFieldsAsJson() {
+        return null == this.nonNullOptionalFieldsInstance ?
+                null : this.nonNullOptionalFieldsInstance.toJson();
+    }
+
+    // region export() Public Methods
+    public boolean export(@Nullable final File exportFile) {
+        final boolean failure = false;
+        if (null == exportFile)
+            return failure;
+        else
+            try {
+                return this.export(new FileWriter(exportFile) /* throws */);
+            } catch (final IOException e) {
+                return failure;
+            }
+    }
+
+    public void export(@NonNull final Bundle bundle) {
+        final boolean remove;
+        @Nullable final String string;
+        {
+            final StringWriter stringWriter = new StringWriter();
+            if (this.export(stringWriter)) {
+                string = stringWriter.toString().trim();
+                remove = string.length() < 1;
+            } else {
+                remove = true;
+                string = null;
+            }
+        }
+
+        final String TEMPLATE_MODEL_EXTRA_NAME =
+                TemplateModel.TEMPLATE_MODEL_EXTRA_NAME;
+        if (remove)
+            bundle.remove(TEMPLATE_MODEL_EXTRA_NAME);
+        else
+            bundle.putString(TEMPLATE_MODEL_EXTRA_NAME, string);
     }
     // endregion
     // endregion

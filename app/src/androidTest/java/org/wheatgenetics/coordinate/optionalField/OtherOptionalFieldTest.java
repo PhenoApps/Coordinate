@@ -1,61 +1,106 @@
 package org.wheatgenetics.coordinate.optionalField;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
+ *
+ * org.wheatgenetics.coordinate.R
+ * org.wheatgenetics.coordinate.StringGetter
  *
  * org.wheatgenetics.coordinate.optionalField.BaseOptionalField
  * org.wheatgenetics.coordinate.optionalField.OptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField
  * org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class OtherOptionalFieldTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class OtherOptionalFieldTest
+extends Object implements StringGetter
 {
-    // region Constructor Tests
-    @org.junit.Test(
-        expected = org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass.class)
-    public void constructorFails()
-    throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
-        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                "testName",null,
-                org.wheatgenetics.coordinate.optionalField.BaseOptionalField.DATE_HINT));
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId)
+        {
+            case R.string.BaseOptionalFieldIdentificationFieldName:
+                return "Identification";
+
+            default: Assert.fail(); return null;
+        }
     }
 
-    @org.junit.Test() public void constructorSucceeds()
-    throws org.wheatgenetics.coordinate.optionalField.OtherOptionalField.WrongClass
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
+    // region Constructor Tests
+    @Test(
+        expected = OtherOptionalField.WrongClass.class)
+    public void constructorFails()
+    throws OtherOptionalField.WrongClass
     {
-        new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
-            org.wheatgenetics.coordinate.optionalField.OptionalField.makeJSONObject(
-                "testName",null,"testHint"));
+        new OtherOptionalField(
+            OptionalField.makeJSONObject(
+                "testName",null,
+                BaseOptionalField.DATE_HINT,
+                this),this);
+    }
+
+    @Test() public void constructorSucceeds()
+    throws OtherOptionalField.WrongClass
+    {
+        new OtherOptionalField(
+            OptionalField.makeJSONObject(
+                "testName",null,"testHint",this),this);
     }
     // endregion
 
-    @org.junit.Test() public void cloneSucceeds()
+    @Test() public void cloneSucceeds()
     {
-        final org.wheatgenetics.coordinate.optionalField.OtherOptionalField
+        final OtherOptionalField
             otherOptionalField, clonedOtherOptionalField;
         {
-            final java.lang.String testName = "testName",
+            final String testName = "testName",
                 testValue = "testValue", testHint = "testHint";
-            otherOptionalField = new org.wheatgenetics.coordinate.optionalField.OtherOptionalField(
-                testName, testValue, testHint);
+            otherOptionalField = new OtherOptionalField(
+                testName, testValue, testHint,this);
             otherOptionalField.setChecked(false);
 
             clonedOtherOptionalField =
-                (org.wheatgenetics.coordinate.optionalField.OtherOptionalField)
+                (OtherOptionalField)
                     otherOptionalField.clone();
 
-            org.junit.Assert.assertEquals(testName , clonedOtherOptionalField.getName ());
-            org.junit.Assert.assertEquals(testValue, clonedOtherOptionalField.getValue());
-            org.junit.Assert.assertEquals(testHint , clonedOtherOptionalField.getHint ());
+            Assert.assertEquals(testName , clonedOtherOptionalField.getName ());
+            Assert.assertEquals(testValue, clonedOtherOptionalField.getValue());
+            Assert.assertEquals(testHint , clonedOtherOptionalField.getHint ());
         }
-        org.junit.Assert.assertFalse(clonedOtherOptionalField.getChecked());
+        Assert.assertFalse(clonedOtherOptionalField.getChecked());
 
         // noinspection SimplifiableJUnitAssertion
-        org.junit.Assert.assertTrue(otherOptionalField.equals(clonedOtherOptionalField));
+        Assert.assertTrue(otherOptionalField.equals(clonedOtherOptionalField));
     }
 }

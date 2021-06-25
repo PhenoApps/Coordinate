@@ -1,55 +1,89 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public abstract class Model extends java.lang.Object implements java.lang.Cloneable
-{
-    @androidx.annotation.IntRange(from = 1) private long id;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+
+import java.util.Locale;
+
+public abstract class Model implements Cloneable {
+    // region Fields
+    @NonNull
+    private final StringGetter
+            stringGetter;
+    @IntRange(from = 1)
+    private long id;
+    // endregion
 
     // region Constructors
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model() { super(); }
-
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    Model(@androidx.annotation.IntRange(from = 1) final long id) { this(); this.setId(id); }
-    // endregion
-
-    // region Overridden Methods
-    @java.lang.SuppressWarnings({"DefaultLocale"}) @java.lang.Override @androidx.annotation.NonNull
-    public java.lang.String toString()
-    { return java.lang.String.format("id: %02d", this.getId()); }
-
-    @java.lang.Override public boolean equals(final java.lang.Object object)
-    {
-        if (object instanceof org.wheatgenetics.coordinate.model.Model)
-            return this.getId() == ((org.wheatgenetics.coordinate.model.Model) object).getId();
-        else
-            return false;
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    Model(@NonNull final StringGetter stringGetter) {
+        super();
+        this.stringGetter = stringGetter;
     }
 
-    @java.lang.Override public int hashCode() { return this.toString().hashCode(); }
-    // endregion
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    Model(
+            @IntRange(from = 1) final long id,
+            @NonNull final StringGetter stringGetter) {
+        this(stringGetter);
+        this.setId(id);
+    }
 
     // region Public Methods
-    public static boolean illegal(final long id) { return id < 1; }
+    public static boolean illegal(final long id) {
+        return id < 1;
+    }
+    // endregion
 
-    public static long valid(final long id)
-    {
-        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
-            throw new java.lang.IllegalArgumentException("id must be > 0");
+    public static long valid(final long id,
+                             @NonNull final StringGetter stringGetter) {
+        if (Model.illegal(id))
+            throw new IllegalArgumentException(stringGetter.get(
+                    R.string.ModelIdMustBeGreaterThanZero));
         else
             return id;
     }
 
-    @androidx.annotation.IntRange(from = 1) public long getId() { return this.id; }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    StringGetter stringGetter() {
+        return this.stringGetter;
+    }
 
-    public void setId(@androidx.annotation.IntRange(from = 1) final long id)
-    { this.id = org.wheatgenetics.coordinate.model.Model.valid(id) /* throws */; }
+    // region Overridden Methods
+    @Override
+    @NonNull
+    public String toString() {
+        return String.format(Locale.getDefault(),
+                "id: %02d", this.getId());
+    }
+    // endregion
+
+    @Override
+    public boolean equals(final Object object) {
+        if (object instanceof Model)
+            return this.getId() == ((Model) object).getId();
+        else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @IntRange(from = 1)
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(@IntRange(from = 1) final long id) {
+        this.id = Model.valid(                          // throws
+                id, this.stringGetter());
+    }
     // endregion
 }

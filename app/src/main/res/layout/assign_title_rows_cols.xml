@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,26 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogTitleEditTextHint"
+        android:importantForAutofill="no"
         android:inputType="text"
-        android:maxLines="1"
-        android:importantForAutofill="no" />
+        android:maxLines="1" />
 
     <EditText
         android:id="@+id/rowsEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogRowsEditTextHint"
+        android:importantForAutofill="no"
         android:inputType="number"
-        android:maxLines="1"
-        android:importantForAutofill="no" />
+        android:maxLines="1" />
 
     <EditText
         android:id="@+id/colsEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/AssignTitleRowsColsAlertDialogColsEditTextHint"
+        android:importantForAutofill="no"
         android:inputType="number"
-        android:maxLines="1"
-        android:importantForAutofill="no" />
+        android:maxLines="1" />
 
 </LinearLayout>

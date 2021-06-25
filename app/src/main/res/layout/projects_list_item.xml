@@ -1,71 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
 
-    android:padding="6dp"
+    android:padding="6dp">
 
-    android:stretchColumns="0">
 
-    <TableRow tools:ignore="UselessParent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        <TableLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow>
-                <TextView
-                    android:id="@+id/projectsListItemTitle"
-                    android:textSize="20sp" />
-            </TableRow>
 
-            <TableRow>
+        <TextView
+            android:id="@+id/projectsListItemTitle"
+            android:layout_width="wrap_content"
 
-                <TextView android:id="@+id/projectsListItemNumberOfGrids"
-                    android:textSize="16sp" />
-            </TableRow>
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
 
-            <TableRow>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView android:id="@+id/projectsListItemTimestamp"
-                    android:textSize="16sp" />
-            </TableRow>
-        </TableLayout>
 
-        <ImageButton
-            android:id="@+id/projectsListItemDeleteButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_delete"
+        <TextView
+            android:id="@+id/projectsListItemNumberOfGrids"
+            android:layout_width="wrap_content"
 
-            tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
 
-        <ImageButton
-            android:id="@+id/projectsListItemExportButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_export"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/projectsListItemTitle" />
 
-            tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/projectsListItemShowGridsButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_show_grids"
+        <TextView
+            android:id="@+id/projectsListItemTimestamp"
+            android:layout_width="wrap_content"
 
-            tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
 
-        <ImageButton
-            android:id="@+id/projectsListItemCreateGridButton"
-            android:layout_height="match_parent"
-            android:background="?android:selectableItemBackground"
-            android:padding="9dp"
-            android:src="@drawable/selector_create_grid"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/projectsListItemNumberOfGrids" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            tools:ignore="ContentDescription" />
-    </TableRow>
-</TableLayout>
+
+    <ImageButton
+        android:id="@+id/projectsListItemDeleteButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_delete"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/projectsListItemExportButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/projectsListItemExportButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_export"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/projectsListItemShowGridsButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/projectsListItemShowGridsButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_show_grids"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/projectsListItemCreateGridButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+
+
+    <ImageButton
+        android:id="@+id/projectsListItemCreateGridButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_create_grid"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>

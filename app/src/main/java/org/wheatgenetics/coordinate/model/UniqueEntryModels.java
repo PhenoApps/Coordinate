@@ -1,64 +1,61 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- * org.wheatgenetics.coordinate.model.EntryModel
- * org.wheatgenetics.coordinate.model.EntryModels
- * org.wheatgenetics.coordinate.model.IncludedEntryModel
- */
-public abstract class UniqueEntryModels extends org.wheatgenetics.coordinate.model.EntryModels
-implements org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
-{
-    public abstract static class DuplicateCheckException
-    extends org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
-        DuplicateCheckException(@androidx.annotation.NonNull final java.lang.String message)
-        { super(message);}
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+
+import org.wheatgenetics.coordinate.StringGetter;
+
+public abstract class UniqueEntryModels extends EntryModels
+        implements CheckedIncludedEntryModel.Checker {
+    UniqueEntryModels(
+            @IntRange(from = 1) final long gridId,
+            @IntRange(from = 1) final int rows,
+            @IntRange(from = 1) final int cols,
+            @NonNull final StringGetter stringGetter) {
+        super(gridId, rows, cols, stringGetter);
     }
 
-    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.EntryModel
-    check(@androidx.annotation.Nullable final org.wheatgenetics.coordinate.model.EntryModel
-        entryModel)
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    {
+    @Nullable
+    private EntryModel
+    check(@Nullable final EntryModel
+                  entryModel)
+            throws CheckedIncludedEntryModel.CheckException {
         if (null != entryModel)
             this.check(entryModel.getRow(), entryModel.getCol(), entryModel.getValue());   // throws
         return entryModel;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override @androidx.annotation.NonNull
-    org.wheatgenetics.coordinate.model.IncludedEntryModel makeButDontSetIncludedEntry(
-    @androidx.annotation.IntRange(from = 1) final int row,
-    @androidx.annotation.IntRange(from = 1) final int col)
-    {
-        return new org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel(
-            this.getGridId(), row, col,this);
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    @NonNull
+    IncludedEntryModel makeButDontSetIncludedEntry(
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col) {
+        return new CheckedIncludedEntryModel(
+                this.getGridId(), row, col, this, this.stringGetter());
     }
 
-    UniqueEntryModels(
-    @androidx.annotation.IntRange(from = 1) final long gridId,
-    @androidx.annotation.IntRange(from = 1) final int  rows  ,
-    @androidx.annotation.IntRange(from = 1) final int  cols  ) { super(gridId, rows, cols); }
-
     // region org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker Overridden Method
-    @java.lang.Override @androidx.annotation.Nullable abstract public java.lang.String check(
-    @androidx.annotation.IntRange(from = 1) final int              rowIndex,
-    @androidx.annotation.IntRange(from = 1) final int              colIndex,
-    @androidx.annotation.Nullable           final java.lang.String value   )
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException;
+    @Override
+    @Nullable
+    abstract public String check(
+            @IntRange(from = 1) final int rowIndex,
+            @IntRange(from = 1) final int colIndex,
+            @Nullable final String value)
+            throws CheckedIncludedEntryModel.CheckException;
+
+    public void checkThenSet(final EntryModel entryModel)
+            throws CheckedIncludedEntryModel.CheckException {
+        this.uncheckedSet(this.check(entryModel) /* throws CheckException */);
+    }
     // endregion
 
-    public void checkThenSet(final org.wheatgenetics.coordinate.model.EntryModel entryModel)
-    throws org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.CheckException
-    { this.uncheckedSet(this.check(entryModel) /* throws CheckException */); }
+    public abstract static class DuplicateCheckException
+            extends CheckedIncludedEntryModel.CheckException {
+        DuplicateCheckException(@NonNull final String message) {
+            super(message);
+        }
+    }
 }

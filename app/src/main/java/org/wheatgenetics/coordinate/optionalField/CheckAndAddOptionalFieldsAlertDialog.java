@@ -1,114 +1,114 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.DialogInterface
- * android.content.DialogInterface.OnClickListener
- * android.content.DialogInterface.OnMultiChoiceClickListener
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
- *
- * org.wheatgenetics.coordinate.R
- *
- * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
- * org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
- * org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
- */
+import android.app.Activity;
+import android.content.DialogInterface;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.phenoapps.androidlibrary.MultiChoiceItemsAlertDialog;
+import org.wheatgenetics.coordinate.R;
+
 public class CheckAndAddOptionalFieldsAlertDialog
-extends org.wheatgenetics.androidlibrary.MultiChoiceItemsAlertDialog
-implements org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface Handler
-    { public abstract void handleAddOptionalFieldDone(); }
-
+        extends MultiChoiceItemsAlertDialog {
     // region Fields
-    @androidx.annotation.NonNull private final
-        org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
+    @NonNull
+    private final
+    CheckAndAddOptionalFieldsAlertDialog.Handler
             handler;
-
-    private org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog
-        addOptionalFieldAlertDialog = null;                                             // lazy load
-    private org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields;
-    private android.content.DialogInterface.OnMultiChoiceClickListener
-        onMultiChoiceClickListenerInstance = null;                                      // lazy load
+    private AddOptionalFieldAlertDialog
+            addOptionalFieldAlertDialogInstance = null;                                     // lazy load
+    private NonNullOptionalFields nonNullOptionalFields;
+    private DialogInterface.OnMultiChoiceClickListener
+            onMultiChoiceClickListenerInstance = null;                                      // lazy load
+    public CheckAndAddOptionalFieldsAlertDialog(final Activity activity,
+                                                @NonNull final
+                                                CheckAndAddOptionalFieldsAlertDialog.Handler
+                                                        handler) {
+        super(activity);
+        this.handler = handler;
+    }
     // endregion
 
     // region Private Methods
-    private void checkOptionalField(final int index, final boolean checked)
-    {
-        if (null != this.nonNullOptionalFields)
-            this.nonNullOptionalFields.setChecked(/* index => */ index, /* checked => */ checked);
+    private void showCheckAndAddOptionalFieldsAlertDialogAgain() {
+        this.handler.showCheckAndAddOptionalFieldsAlertDialogAgain();
     }
 
-    @androidx.annotation.NonNull
-    private android.content.DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener()
-    {
+    // region onMultiChoiceClickListener() Private Methods
+    private void checkOptionalField(final int index, final boolean checked) {
+        if (null != this.nonNullOptionalFields)
+            if (this.nonNullOptionalFields.setChecked(index, checked)) {
+                this.cancelAlertDialog();
+                this.showCheckAndAddOptionalFieldsAlertDialogAgain();
+            }
+    }
+
+    @NonNull
+    private DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener() {
         if (null == this.onMultiChoiceClickListenerInstance)
             this.onMultiChoiceClickListenerInstance =
-                new android.content.DialogInterface.OnMultiChoiceClickListener()
-                {
-                    @java.lang.Override
-                    public void onClick(final android.content.DialogInterface dialogInterface,
-                    final int which, final boolean isChecked)
-                    {
-                        org.wheatgenetics.coordinate.optionalField
-                            .CheckAndAddOptionalFieldsAlertDialog.this.checkOptionalField(
-                                which, isChecked);
-                    }
-                };
+                    new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialogInterface,
+                                            final int which, final boolean isChecked) {
+                            CheckAndAddOptionalFieldsAlertDialog.this.checkOptionalField(
+                                    which, isChecked);
+                        }
+                    };
         return this.onMultiChoiceClickListenerInstance;
-    }
-
-    private void addOptionalField()
-    {
-        if (null == this.addOptionalFieldAlertDialog) this.addOptionalFieldAlertDialog =
-            new org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog(
-                this.activity(),this);
-        this.addOptionalFieldAlertDialog.show(this.nonNullOptionalFields);
     }
     // endregion
 
-    public CheckAndAddOptionalFieldsAlertDialog(final android.app.Activity activity,
-    @androidx.annotation.NonNull final
-        org.wheatgenetics.coordinate.optionalField.CheckAndAddOptionalFieldsAlertDialog.Handler
-        handler) { super(activity); this.handler = handler; }
+    // region addOptionalField() Private Methods
+    @NonNull
+    private AddOptionalFieldAlertDialog
+    addOptionalFieldAlertDialog() {
+        if (null == this.addOptionalFieldAlertDialogInstance)
+            this.addOptionalFieldAlertDialogInstance =
+                    new AddOptionalFieldAlertDialog(
+                            this.activity(), new
+                            AddOptionalFieldAlertDialog.Handler() {
+                                @Override
+                                public void handleAddOptionalFieldDone() {
+                                    CheckAndAddOptionalFieldsAlertDialog.this
+                                            .showCheckAndAddOptionalFieldsAlertDialogAgain();
+                                }
+                            });
+        return this.addOptionalFieldAlertDialogInstance;
+    }
 
-    // region Overridden Methods
-    @java.lang.Override public void configure()
-    {
-        super.configure(); this.setTitle(
-                org.wheatgenetics.coordinate.R.string.CheckAndAddOptionalFieldsAlertDialogTitle)
-            .setOKPositiveButton().setNeutralButton(org.wheatgenetics.coordinate
-                    .R.string.CheckAndAddOptionalFieldsAlertDialogButtonText,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @java.lang.Override public void onClick(
-                    final android.content.DialogInterface dialog, final int which)
-                    {
-                        org.wheatgenetics.coordinate.optionalField
-                            .CheckAndAddOptionalFieldsAlertDialog.this.addOptionalField();
+    private void addOptionalField() {
+        this.addOptionalFieldAlertDialog().show(this.nonNullOptionalFields);
+    }
+    // endregion
+    // endregion
+
+    @Override
+    public void configure() {
+        super.configure();
+        this.setTitle(
+                R.string.CheckAndAddOptionalFieldsAlertDialogTitle)
+                .setOKPositiveButton().setNeutralButton(R.string.CheckAndAddOptionalFieldsAlertDialogButtonText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(
+                            final DialogInterface dialog, final int which) {
+                        CheckAndAddOptionalFieldsAlertDialog.this.addOptionalField();
                     }
                 });
     }
 
-    // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
-    @java.lang.Override public void handleAddOptionalFieldDone()
-    { this.handler.handleAddOptionalFieldDone(); }
-    // endregion
-    // endregion
-
-    public void show(@androidx.annotation.Nullable
-    final org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields nonNullOptionalFields)
-    {
-        if (null != nonNullOptionalFields)
-        {
+    public void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
+        if (null != nonNullOptionalFields) {
             this.nonNullOptionalFields = nonNullOptionalFields;
             this.show(this.nonNullOptionalFields.names(), this.nonNullOptionalFields.checks(),
-                this.onMultiChoiceClickListener());
+                    this.onMultiChoiceClickListener());
         }
+    }
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler {
+        public abstract void showCheckAndAddOptionalFieldsAlertDialogAgain();
     }
 }

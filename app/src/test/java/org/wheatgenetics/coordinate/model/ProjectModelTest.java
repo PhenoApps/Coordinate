@@ -1,34 +1,73 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.content.res.Resources;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.wheatgenetics.coordinate.StringGetter;
+
 /**
  * Uses:
+ * android.content.res.Resources.NotFoundException
+ *
+ * androidx.annotation.IntRange
+ * androidx.annotation.NonNull
+ * androidx.annotation.Nullable
+ * androidx.annotation.PluralsRes
+ * androidx.annotation.StringRes
+ *
  * org.junit.Assert
  * org.junit.Test
  *
+ * org.wheatgenetics.coordinate.StringGetter
+ *
  * org.wheatgenetics.coordinate.model.ProjectModel
  */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public class ProjectModelTest extends java.lang.Object
+@SuppressWarnings({"ClassExplicitlyExtendsObject"}) public class ProjectModelTest
+extends Object implements StringGetter
 {
-    @org.junit.Test() public void secondConstructorAndGetTitleSucceed()
+    // region org.wheatgenetics.coordinate.StringGetter Overridden Methods
+    @Override @Nullable public String get(
+    @StringRes final int resId)
     {
-        final java.lang.String testTitle = "testTitle";
-        org.junit.Assert.assertEquals(testTitle,
-            new org.wheatgenetics.coordinate.model.ProjectModel(testTitle).getTitle());
+        // noinspection SwitchStatementWithTooFewBranches
+        switch (resId) { default: Assert.fail(); return null; }
     }
 
-    @org.junit.Test() public void thirdConstructorAndGetIdSucceed()
+    @Override @NonNull public String getQuantity(
+    @PluralsRes         final int                 resId     ,
+    @IntRange(from = 0) final int                 quantity  ,
+    @Nullable           final Object... formatArgs)
+    throws Resources.NotFoundException { Assert.fail(); return null; }
+    // endregion
+
+    // region Tests
+    @Test() public void secondConstructorAndGetTitleSucceed()
+    {
+        final String testTitle = "testTitle";
+        Assert.assertEquals(testTitle, new
+            ProjectModel(testTitle,this).getTitle());
+    }
+
+    @Test() public void thirdConstructorAndGetIdSucceed()
     {
         final long testId = 8;
-        org.junit.Assert.assertEquals(testId, new org.wheatgenetics.coordinate.model.ProjectModel(
-            testId,"testTitle",123).getId());
+        Assert.assertEquals(testId, new ProjectModel(
+            testId,"testTitle",123,this).getId());
     }
 
-    @org.junit.Test() public void thirdConstructorAndGetTimestampSucceed()
+    @Test() public void thirdConstructorAndGetTimestampSucceed()
     {
         final long testTimestamp = 123;
-        org.junit.Assert.assertEquals(testTimestamp,
-            new org.wheatgenetics.coordinate.model.ProjectModel(
-                8,"testTitle", testTimestamp).getTimestamp());
+        Assert.assertEquals(testTimestamp,
+            new ProjectModel(
+                8,"testTitle", testTimestamp,this).getTimestamp());
     }
+    // endregion
 }

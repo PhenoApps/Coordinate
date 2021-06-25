@@ -1,156 +1,144 @@
 package org.wheatgenetics.coordinate.database;
 
-/**
- * Uses:
- * android.content.ContentValues
- * android.content.Context
- * android.database.Cursor
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.javalib.Utils
- *
- * org.wheatgenetics.coordinate.model.Model
- * org.wheatgenetics.coordinate.model.ProjectModel
- * org.wheatgenetics.coordinate.model.ProjectModels
- *
- * org.wheatgenetics.coordinate.database.Table
- */
-public class ProjectsTable extends org.wheatgenetics.coordinate.database.Table
-{
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.wheatgenetics.coordinate.model.Model;
+import org.wheatgenetics.coordinate.model.ProjectModel;
+import org.wheatgenetics.coordinate.model.ProjectModels;
+import org.phenoapps.androidlibrary.Utils;
+
+public class ProjectsTable extends Table {
     // region Constants
-    private static final java.lang.String TABLE_NAME       = "projects"                            ;
-    private static final java.lang.String TITLE_FIELD_NAME = "title"   , STAMP_FIELD_NAME = "stamp";
+    private static final String TABLE_NAME = "projects";
+    private static final String TITLE_FIELD_NAME = "title", STAMP_FIELD_NAME = "stamp";
     // endregion
 
+    public ProjectsTable(final Context context) {
+        super(
+                /* context   => */ context,
+                /* tableName => */ ProjectsTable.TABLE_NAME,
+                /* tag       => */"ProjectsTable");
+    }
+
     // region Private Methods
-    private android.database.Cursor query(final long id)
-    {
+    private Cursor query(final long id) {
         return this.queryAll(
-            /* selection  => */ org.wheatgenetics.coordinate.database.ProjectsTable.whereClause(),
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id)               );
+                /* selection  => */ ProjectsTable.whereClause(),
+                /* selectionArgs => */ Utils.stringArray(id));
     }
 
-    private android.database.Cursor exceptForQuery(final long id)
-    {
+    private Cursor exceptForQuery(final long id) {
         return this.queryAll(
-            /* selection => */
-                org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME +
-                " <> ?",
-            /* selectionArgs => */ org.wheatgenetics.javalib.Utils.stringArray(id));
+                /* selection => */
+                ProjectsTable.ID_FIELD_NAME +
+                        " <> ?",
+                /* selectionArgs => */ Utils.stringArray(id));
     }
+    // endregion
 
-    @androidx.annotation.Nullable private org.wheatgenetics.coordinate.model.ProjectModels
-    makeProjectModels(@androidx.annotation.Nullable final android.database.Cursor cursor)
-    {
-        final org.wheatgenetics.coordinate.model.ProjectModels result;
+    @Nullable
+    private ProjectModels
+    makeProjectModels(@Nullable final Cursor cursor) {
+        final ProjectModels result;
         if (null == cursor)
             result = null;
         else
-            try
-            {
+            try {
                 if (cursor.getCount() <= 0)
                     result = null;
-                else
-                {
-                    result = new org.wheatgenetics.coordinate.model.ProjectModels();
+                else {
+                    result = new ProjectModels();
                     while (cursor.moveToNext()) result.add(
-                        (org.wheatgenetics.coordinate.model.ProjectModel) this.make(cursor));
+                            (ProjectModel) this.make(cursor));
                 }
+            } finally {
+                cursor.close();
             }
-            finally { cursor.close(); }
         return result;
-    }
-    // endregion
-
-    public ProjectsTable(final android.content.Context context)
-    {
-        super(
-            /* context   => */ context                                                       ,
-            /* tableName => */ org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME,
-            /* tag       => */"ProjectsTable");
     }
 
     // region Overridden Methods
-    @java.lang.Override
-    org.wheatgenetics.coordinate.model.Model make(final android.database.Cursor cursor)
-    {
-        return null == cursor ? null : new org.wheatgenetics.coordinate.model.ProjectModel(
-            /* id => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME)),
-            /* title => */ cursor.getString(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME)),
-            /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
-                org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME)));
+    @Override
+    Model make(final Cursor cursor) {
+        return null == cursor ? null : new ProjectModel(
+                /* id => */ cursor.getLong(cursor.getColumnIndex(
+                ProjectsTable.ID_FIELD_NAME)),
+                /* title => */ cursor.getString(cursor.getColumnIndex(
+                ProjectsTable.TITLE_FIELD_NAME)),
+                /* timestamp => */ cursor.getLong(cursor.getColumnIndex(
+                ProjectsTable.STAMP_FIELD_NAME)),
+                /* stringGetter => */this);
     }
 
-    @java.lang.Override @androidx.annotation.NonNull
-    android.content.ContentValues getContentValuesForInsert(
-    @androidx.annotation.NonNull final org.wheatgenetics.coordinate.model.Model model)
-    {
-        final android.content.ContentValues result = super.getContentValuesForInsert(model);
+    @Override
+    @NonNull
+    ContentValues getContentValuesForInsert(
+            @NonNull final Model model) {
+        final ContentValues result = super.getContentValuesForInsert(model);
         {
-            final org.wheatgenetics.coordinate.model.ProjectModel projectModel =
-                (org.wheatgenetics.coordinate.model.ProjectModel) model;
+            final ProjectModel projectModel =
+                    (ProjectModel) model;
 
-            result.put(org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME,
-                projectModel.getTitle());
-            result.put(org.wheatgenetics.coordinate.database.ProjectsTable.STAMP_FIELD_NAME,
-                projectModel.getTimestamp());
+            result.put(ProjectsTable.TITLE_FIELD_NAME,
+                    projectModel.getTitle());
+            result.put(ProjectsTable.STAMP_FIELD_NAME,
+                    projectModel.getTimestamp());
         }
         return result;
     }
     // endregion
 
     // region Public Methods
-    public boolean exists(final long id)
-    { return org.wheatgenetics.coordinate.database.ProjectsTable.exists(this.query(id)); }
-
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.ProjectModel get(final long id)
-    { return (org.wheatgenetics.coordinate.model.ProjectModel) this.makeFromFirst(this.query(id)); }
-
-    public boolean exists()
-    {
-        return org.wheatgenetics.coordinate.database.ProjectsTable.exists(this.rawQuery(
-            "SELECT ALL * FROM " +
-                org.wheatgenetics.coordinate.database.ProjectsTable.TABLE_NAME));
+    public boolean exists(final long id) {
+        return ProjectsTable.exists(this.query(id));
     }
 
-    public boolean existsExceptFor(final long id)
-    {
-        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+    @Nullable
+    public ProjectModel get(final long id) {
+        return (ProjectModel) this.makeFromFirst(this.query(id));
+    }
+
+    public boolean exists() {
+        return ProjectsTable.exists(this.rawQuery(
+                "SELECT ALL * FROM " +
+                        ProjectsTable.TABLE_NAME));
+    }
+
+    public boolean existsExceptFor(final long id) {
+        if (Model.illegal(id))
             return this.exists();
         else
-            return org.wheatgenetics.coordinate.database.ProjectsTable.exists(
-                this.exceptForQuery(id));
+            return ProjectsTable.exists(
+                    this.exceptForQuery(id));
     }
 
-    @androidx.annotation.Nullable public org.wheatgenetics.coordinate.model.ProjectModels load()
-    {
+    @Nullable
+    public ProjectModels load() {
         return this.makeProjectModels(this.queryAll(/* orderBy => */
-            org.wheatgenetics.coordinate.database.ProjectsTable.TITLE_FIELD_NAME +
-                " ASC, " +
-            org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME + " ASC"));
+                ProjectsTable.TITLE_FIELD_NAME +
+                        " ASC, " +
+                        ProjectsTable.ID_FIELD_NAME + " ASC"));
     }
 
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.ProjectModels loadExceptFor(final long id)
-    {
-        if (org.wheatgenetics.coordinate.model.Model.illegal(id))
+    @Nullable
+    public ProjectModels loadExceptFor(final long id) {
+        if (Model.illegal(id))
             return this.load();
         else
             return this.makeProjectModels(this.exceptForQuery(id));
     }
 
-    @androidx.annotation.Nullable
-    public org.wheatgenetics.coordinate.model.ProjectModels loadProjectsWithGrids()
-    {
+    @Nullable
+    public ProjectModels loadProjectsWithGrids() {
         return this.makeProjectModels(this.queryDistinct(/* selection => */
-            org.wheatgenetics.coordinate.database.ProjectsTable.ID_FIELD_NAME +
-                " IN (SELECT DISTINCT projectId FROM grids WH" +
-                "ERE projectId IS NOT NULL AND projectId > 0)"));
+                ProjectsTable.ID_FIELD_NAME +
+                        " IN (SELECT DISTINCT projectId FROM grids WH" +
+                        "ERE projectId IS NOT NULL AND projectId > 0)"));
     }
     // endregion
 }

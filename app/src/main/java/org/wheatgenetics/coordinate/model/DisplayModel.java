@@ -1,20 +1,21 @@
 package org.wheatgenetics.coordinate.model;
 
-/**
- * Uses:
- * androidx.annotation.IntRange
- * androidx.annotation.Nullable
- *
- * org.wheatgenetics.coordinate.model.ElementModel
- */
-@java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"}) public interface DisplayModel
-{
-    @androidx.annotation.IntRange(from = 1) public abstract int getRows();
-    @androidx.annotation.IntRange(from = 1) public abstract int getCols();
-    public abstract boolean getColNumbering(); public abstract boolean getRowNumbering();
+import androidx.annotation.IntRange;
+import androidx.annotation.Nullable;
 
-    @androidx.annotation.Nullable
-    public abstract org.wheatgenetics.coordinate.model.ElementModel getElementModel(
-    @androidx.annotation.IntRange(from = 1) final int row,
-    @androidx.annotation.IntRange(from = 1) final int col);
+public interface DisplayModel {
+    @IntRange(from = 1)
+    public abstract int getRows();
+
+    @IntRange(from = 1)
+    public abstract int getCols();
+
+    public abstract boolean getColNumbering();
+
+    public abstract boolean getRowNumbering();
+
+    @Nullable
+    public abstract ElementModel getElementModel(
+            @IntRange(from = 1) final int row,
+            @IntRange(from = 1) final int col);
 }

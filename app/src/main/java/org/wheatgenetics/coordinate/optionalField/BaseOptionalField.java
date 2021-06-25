@@ -1,111 +1,179 @@
 package org.wheatgenetics.coordinate.optionalField;
 
-/**
- * BaseOptionalField and OptionalField used to be one class that used org.json.JSONException and
- * org.json.JSONObject.  The one class was split into two in order to do as much local unit testing
- * as possible (BaseOptionalFieldTest) and as little instrumented testing as possible
- * (OptionalFieldTest).  (BaseOptionalField does not use org.json.JSONException or
- * org.json.JSONObject while OptionalField does.)
- *
- * Uses:
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.javalib.Utils
- */
-@java.lang.SuppressWarnings({"ClassExplicitlyExtendsObject"})
-public abstract class BaseOptionalField extends java.lang.Object
-{
-    static final java.lang.String DATE_HINT = "yyyy-mm-dd";
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.Size;
+
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.StringGetter;
+import org.phenoapps.androidlibrary.Utils;
+
+public abstract class BaseOptionalField {
+    static final String DATE_HINT = "yyyy-mm-dd";
 
     // region Fields
-    @androidx.annotation.NonNull private final java.lang.String name, hint    ;
-    @androidx.annotation.NonNull private       java.lang.String value   = ""  ;
-                                 private       boolean          checked = true;
+    // region Constructor Fields
+    @NonNull
+    @Size(min = 1)
+    private final String
+            name;
+    @NonNull
+    @Size(min = 0)
+    private final String
+            hint;
+    @NonNull
+    private final StringGetter
+            stringGetter;
+    // endregion
+
+    @NonNull
+    private String value = "";
+    private boolean checked = true;
+    // endregion
+
+    // region Constructors
+    BaseOptionalField(@NonNull @Size(min = 1) final String name, @Nullable final String hint,
+                      @NonNull final StringGetter stringGetter) {
+        super();
+
+        this.name = BaseOptionalField.valid(name);
+        this.hint = Utils.makeEmptyIfNull(hint).trim();
+        this.stringGetter = stringGetter;
+    }
+
+    BaseOptionalField(
+            @NonNull @Size(min = 1) final String name,
+            @NonNull final StringGetter stringGetter) {
+        this(name, "", stringGetter);
+    }
     // endregion
 
     // region Private Methods
-    @androidx.annotation.NonNull private static java.lang.String valid(final java.lang.String name)
-    {
+    @NonNull
+    private static String valid(
+            @NonNull @Size(min = 1) final String name) {
+        // noinspection ConstantConditions
         if (null == name)
-            throw new java.lang.AssertionError();
-        else
-        {
-            final java.lang.String result = name.trim();
+            throw new AssertionError();
+        else {
+            final String result = name.trim();
             if (result.length() <= 0)
-                throw new java.lang.AssertionError();
+                throw new AssertionError();
             else
                 return result;
         }
     }
 
-    private boolean nameIsPerson() { return this.namesAreEqual("Person"); }
-    // endregion
-
-    // region Constructors
-    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name,
-    final java.lang.String hint)
-    {
-        super();
-
-        this.name = org.wheatgenetics.coordinate.optionalField.BaseOptionalField.valid(name)       ;
-        this.hint = org.wheatgenetics.javalib.Utils.makeEmptyIfNull                   (hint).trim();
+    // region Public Methods
+    @NonNull
+    @Size(min = 1)
+    public static String identificationFieldName(
+            @NonNull final StringGetter stringGetter) {
+        final String result = stringGetter.get(
+                R.string.BaseOptionalFieldIdentificationFieldName);
+        if (null == result)
+            throw new NullPointerException();
+        else
+            return result;
     }
-
-    BaseOptionalField(@androidx.annotation.NonNull final java.lang.String name)
-    { this(name,""); }
     // endregion
+
+    private boolean nameIsPerson() {
+        return this.namesAreEqual(this.stringGetter.get(
+                R.string.BaseOptionalFieldPersonFieldName));
+    }
 
     // region Overridden Methods
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.String toString()
-    { return this.getName(); }
-
-    @java.lang.Override public boolean equals(final java.lang.Object object)
-    {
-        if (object instanceof org.wheatgenetics.coordinate.optionalField.BaseOptionalField)
-        {
-            final org.wheatgenetics.coordinate.optionalField.BaseOptionalField
-                baseOptionalField =
-                    (org.wheatgenetics.coordinate.optionalField.BaseOptionalField) object;
-            return
-                this.getName   ().equals(baseOptionalField.getName   ()) &&
-                this.getValue  ().equals(baseOptionalField.getValue  ()) &&
-                this.getHint   ().equals(baseOptionalField.getHint   ()) &&
-                this.getChecked()   ==   baseOptionalField.getChecked()   ;
-        }
-        else return false;
+    @Override
+    @NonNull
+    public String toString() {
+        return this.getName();
     }
 
-    /** Overridden just to elevate from protected to public. */
-    @java.lang.Override @androidx.annotation.NonNull public java.lang.Object clone()
-    throws java.lang.CloneNotSupportedException { return super.clone(); }
+    @Override
+    public boolean equals(final Object object) {
+        if (object instanceof BaseOptionalField) {
+            final BaseOptionalField
+                    baseOptionalField =
+                    (BaseOptionalField) object;
+            return
+                    this.getName().equals(baseOptionalField.getName()) &&
+                            this.getValue().equals(baseOptionalField.getValue()) &&
+                            this.getHint().equals(baseOptionalField.getHint()) &&
+                            this.getChecked() == baseOptionalField.getChecked();
+        } else return false;
+    }
     // endregion
+
+    /**
+     * Overridden just to elevate from protected to public.
+     */
+    @Override
+    @NonNull
+    public Object clone()
+            throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     // region Package Methods
-    boolean namesAreEqual(final java.lang.String name)
-    { return this.getName().equalsIgnoreCase(name); }
-
-    java.lang.String getSafeValue()
-    {
-        return this.nameIsPerson() ?
-            this.getValue().replace(" ","_") : this.getValue();
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    StringGetter stringGetter() {
+        return this.stringGetter;
     }
 
-    boolean getChecked() { return this.checked; }
+    boolean namesAreEqual(final String name) {
+        return this.getName().equalsIgnoreCase(name);
+    }
+
+    boolean nameIsIdentification() {
+        return this.getName().equals(
+                BaseOptionalField.identificationFieldName(
+                        this.stringGetter));
+    }
+
+    @NonNull
+    String getSafeValue() {
+        return this.nameIsPerson() ?
+                this.getValue().replace(" ", "_") : this.getValue();
+    }
     // endregion
 
-    // region Public Methods
+    boolean getChecked() {
+        return this.checked;
+    }
+
+    public void setChecked(final boolean checked) {
+        this.checked = this.nameIsIdentification() || checked;
+    }
+
     // region Getter and Setter Public Methods
-    @androidx.annotation.NonNull public java.lang.String getName () { return this.name ; }
-    @androidx.annotation.NonNull public java.lang.String getValue() { return this.value; }
+    @NonNull
+    @Size(min = 1)
+    public String getName() {
+        return this.name;
+    }
 
-    public void setValue(final java.lang.String value)
-    { this.value = org.wheatgenetics.javalib.Utils.makeEmptyIfNull(value).trim(); }
+    @NonNull
+    public String getValue() {
+        return this.value;
+    }
 
-    @androidx.annotation.NonNull public java.lang.String getHint() { return this.hint; }
+    public void setValue(final String value) {
+        this.value = Utils.makeEmptyIfNull(value).trim();
+    }
 
-    public void setChecked(final boolean checked) { this.checked = checked; }
+    @NonNull
+    @Size(min = 0)
+    public String getHint() {
+        return this.hint;
+    }
     // endregion
 
-    public boolean isAPerson() { return this.nameIsPerson() || this.namesAreEqual("Name"); }
+    public boolean isAPerson() {
+        return this.nameIsPerson() || this.namesAreEqual(this.stringGetter.get(
+                R.string.BaseOptionalFieldNameFieldName));
+    }
     // endregion
 }

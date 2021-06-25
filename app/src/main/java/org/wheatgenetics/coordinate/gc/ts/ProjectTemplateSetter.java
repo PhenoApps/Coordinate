@@ -1,44 +1,38 @@
 package org.wheatgenetics.coordinate.gc.ts;
 
-/**
- * Uses:
- * android.app.Activity
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- *
- * org.wheatgenetics.coordinate.database.GridsTable
- *
- * org.wheatgenetics.coordinate.model.BaseJoinedGridModels
- * org.wheatgenetics.coordinate.model.JoinedGridModel
- *
- * org.wheatgenetics.coordinate.gc.ts.TemplateSetter
- */
-public class ProjectTemplateSetter extends org.wheatgenetics.coordinate.gc.ts.TemplateSetter
-{
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTableInstance = null; // lazy load
+import android.app.Activity;
 
-    @androidx.annotation.NonNull
-    private org.wheatgenetics.coordinate.database.GridsTable gridsTable()
-    {
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
+
+public class ProjectTemplateSetter extends TemplateSetter {
+    private GridsTable gridsTableInstance = null; // lazy load
+
+    public ProjectTemplateSetter(final Activity activity) {
+        super(activity);
+    }
+
+    @NonNull
+    private GridsTable gridsTable() {
         if (null == this.gridsTableInstance) this.gridsTableInstance =
-            new org.wheatgenetics.coordinate.database.GridsTable(this.activity());
+                new GridsTable(this.activity());
         return this.gridsTableInstance;
     }
 
-    public ProjectTemplateSetter(final android.app.Activity activity) { super(activity); }
-
-    @androidx.annotation.IntRange(from = 0) public long set(
-    @androidx.annotation.IntRange(from = 1) final long projectId)
-    {
-        final org.wheatgenetics.coordinate.model.BaseJoinedGridModels baseJoinedGridModels =
-            this.gridsTable().loadByProjectId(projectId);
-        if (null != baseJoinedGridModels && baseJoinedGridModels.size() > 0)
-        {
-            final org.wheatgenetics.coordinate.model.JoinedGridModel joinedGridModel =
-                baseJoinedGridModels.get(0);
-            return null == joinedGridModel ? 0 :joinedGridModel.getTemplateId();
-        }
-        else return 0;
+    @IntRange(from = 0)
+    public long set(
+            @IntRange(from = 1) final long projectId) {
+        final BaseJoinedGridModels baseJoinedGridModels =
+                this.gridsTable().loadByProjectId(projectId);
+        if (null != baseJoinedGridModels && baseJoinedGridModels.size() > 0) {
+            // All grids will have the same templateId.  Using the first one is an arbitrary choice.
+            final JoinedGridModel joinedGridModel =
+                    baseJoinedGridModels.get(0);
+            return null == joinedGridModel ? 0 : joinedGridModel.getTemplateId();
+        } else return 0;
     }
 }

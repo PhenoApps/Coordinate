@@ -1,98 +1,118 @@
 package org.wheatgenetics.coordinate.griddisplay;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.Context
- *
- * androidx.annotation.IntRange
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.annotation.RestrictTo
- * androidx.annotation.RestrictTo.Scope
- *
- * org.wheatgenetics.coordinate.display.DisplayFragment
- * org.wheatgenetics.coordinate.display.DisplayFragment.Handler
- *
- * org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker
- *
- * org.wheatgenetics.coordinate.griddisplay.GridElement
- * org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
- * org.wheatgenetics.coordinate.griddisplay.GridElements
- */
-public class GridDisplayFragment extends org.wheatgenetics.coordinate.display.DisplayFragment
-implements org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler
-{
-    @java.lang.SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    public interface Handler extends org.wheatgenetics.coordinate.display.DisplayFragment.Handler
-    {
-        public abstract int getActiveRow(); public abstract int getActiveCol();
-        public abstract void activate(int row, int col);
+import android.app.Activity;
+import android.content.Context;
 
-        @androidx.annotation.Nullable public abstract
-        org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel.Checker getChecker();
-    }
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
-    @androidx.annotation.Nullable
-    private org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
-    gridDisplayFragmenthandler()
-    { return (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) this.handler; }
+import org.wheatgenetics.coordinate.display.DisplayFragment;
+import org.wheatgenetics.coordinate.griddisplay.adapter.Adapter;
+import org.wheatgenetics.coordinate.griddisplay.adapter.DataViewHolder;
+import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
+import org.wheatgenetics.coordinate.model.DisplayModel;
+import org.wheatgenetics.coordinate.model.ElementModel;
+
+public class GridDisplayFragment extends DisplayFragment {
+    private Adapter adapter = null;
 
     public GridDisplayFragment() { /* Required empty public constructor. */ }
 
+    // region Private Methods
+    @Nullable
+    private GridDisplayFragment.Handler
+    gridDisplayFragmentHandler() {
+        return (GridDisplayFragment.Handler) this.handler;
+    }
+
+    private int getActiveRow() {
+        final GridDisplayFragment.Handler
+                gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+        return null == gridDisplayFragmentHandler ? -1 : gridDisplayFragmentHandler.getActiveRow();
+    }
+
+    private int getActiveCol() {
+        final GridDisplayFragment.Handler
+                gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+        return null == gridDisplayFragmentHandler ? -1 : gridDisplayFragmentHandler.getActiveCol();
+    }
+
+    private void activate(@NonNull final
+                          DataViewHolder dataViewHolder) {
+        final GridDisplayFragment.Handler
+                gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+        if (null != gridDisplayFragmentHandler)
+            gridDisplayFragmentHandler.activate(dataViewHolder.getRow(), dataViewHolder.getCol());
+    }
+    // endregion
+
     // region Overridden Methods
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected boolean setHandler(
-    @androidx.annotation.NonNull final android.content.Context context)
-    {
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    protected boolean setHandler(
+            @NonNull final Context context) {
         final boolean success;
 
-        if (context instanceof org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler)
-        {
+        if (context instanceof GridDisplayFragment.Handler) {
             this.handler =
-                (org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler) context;
+                    (GridDisplayFragment.Handler) context;
             success = true;
+        } else {
+            this.handler = null;
+            success = false;
         }
-        else { this.handler = null; success = false; }
 
         return success;
     }
 
-    @androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.SUBCLASSES)
-    @java.lang.Override protected void allocateElements(
-    @androidx.annotation.IntRange(from = 1) final int lastRow,
-    @androidx.annotation.IntRange(from = 1) final int lastCol)
-    {
-        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
-            gridDisplayFragmenthandler = this.gridDisplayFragmenthandler();
-        if (null != gridDisplayFragmenthandler)
-        {
-            final int
-                activeRow = gridDisplayFragmenthandler.getActiveRow(),
-                activeCol = gridDisplayFragmenthandler.getActiveCol();
-            if (null == this.elements)
-            {
-                final android.app.Activity activity = this.getActivity();
-                if (null != activity) this.elements =
-                    new org.wheatgenetics.coordinate.griddisplay.GridElements(activity,
-                        lastRow, lastCol, activeRow, activeCol,this,this,
-                        gridDisplayFragmenthandler.getChecker());
-            }
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @Override
+    @NonNull
+    protected org.wheatgenetics.coordinate.display.adapter.Adapter makeAdapter(
+            @NonNull final DisplayModel displayModel) {
+        final Activity activity = this.getActivity();
+        if (null == activity)
+            throw new NullPointerException();
+        else {
+            final GridDisplayFragment.Handler
+                    gridDisplayFragmentHandler = this.gridDisplayFragmentHandler();
+            if (null == gridDisplayFragmentHandler)
+                throw new NullPointerException();
             else
-                ((org.wheatgenetics.coordinate.griddisplay.GridElements) this.elements).allocate(
-                    lastRow, lastCol, activeRow, activeCol);
+                return this.adapter = new Adapter(
+                        displayModel, activity, this.getActiveRow(), this.getActiveCol(),
+                        new DataViewHolder.Handler() {
+                            @Override
+                            public void toggle(@Nullable final ElementModel elementModel) {
+                                GridDisplayFragment.this.toggle(elementModel);
+                            }
+                        }, new
+                        DataViewHolder.GridHandler() {
+                            @Override
+                            public void activate(@NonNull final DataViewHolder
+                                                         dataViewHolder) {
+                                GridDisplayFragment.this.activate(dataViewHolder);
+                            }
+                        }, gridDisplayFragmentHandler.getChecker());
         }
     }
 
-    // region org.wheatgenetics.coordinate.griddisplay.GridElement.GridHandler Overridden Method
-    @java.lang.Override public void activate(@androidx.annotation.NonNull
-    final org.wheatgenetics.coordinate.griddisplay.GridElement gridElement)
-    {
-        final org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment.Handler
-            gridDisplayFragmenthandler = this.gridDisplayFragmenthandler();
-        if (null != gridDisplayFragmenthandler)
-                gridDisplayFragmenthandler.activate(gridElement.getRow(), gridElement.getCol());
+    public void notifyDataSetChanged() {
+        if (null != this.adapter)
+            this.adapter.notifyDataSetChanged(this.getActiveRow(), this.getActiveCol());
     }
     // endregion
-    // endregion
+
+    @SuppressWarnings({"UnnecessaryInterfaceModifier"})
+    public interface Handler extends DisplayFragment.Handler {
+        public abstract int getActiveRow();
+
+        public abstract int getActiveCol();
+
+        public abstract void activate(int row, int col);
+
+        @Nullable
+        public abstract CheckedIncludedEntryModel.Checker getChecker();
+    }
 }
