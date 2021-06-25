@@ -49,10 +49,10 @@
         <SeekBarPreference
             android:defaultValue="100"
             android:key="@string/ScalingPreferenceKey"
-            android:max="224"
+            android:max="250"
             android:summary="@string/ScalingPreferenceSummary"
             android:title="@string/ScalingPreferenceTitle"
-            app:min="26"
+            app:min="25"
             app:showSeekBarValue="true"
             app:updatesContinuously="false" />
 
