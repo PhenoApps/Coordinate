@@ -4,15 +4,15 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     signingConfigs {
-        playStoreConfig {
-            Properties keystoreProps = new Properties()
-            keystoreProps.load(new FileInputStream(file('keystore.config')))
-
-            keyAlias keystoreProps['keyAlias']
-            keyPassword keystoreProps['keyPassword']
-            storePassword keystoreProps['storePassword']
-            storeFile file('coordinate.keystore.jks')
-        }
+//        playStoreConfig {
+//            Properties keystoreProps = new Properties()
+//            keystoreProps.load(new FileInputStream(file('keystore.config')))
+//
+//            keyAlias keystoreProps['keyAlias']
+//            keyPassword keystoreProps['keyPassword']
+//            storePassword keystoreProps['storePassword']
+//            storeFile file('coordinate.keystore.jks')
+//        }
     }
 
     compileSdkVersion 29
@@ -35,7 +35,7 @@ android {
         release {
             clean
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), "proguard-rules.pro"
-            signingConfig signingConfigs.playStoreConfig //Add your own signing config
+//            signingConfig signingConfigs.playStoreConfig //Add your own signing config
             minifyEnabled false
             debuggable false
             jniDebuggable false
@@ -72,7 +72,8 @@ dependencies {
     implementation "com.mikepenz:aboutlibraries:6.2.3"
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'org.phenoapps:phenolib:0.9.23'
+
+    implementation 'com.github.phenoapps:phenolib:v0.9.29'
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"

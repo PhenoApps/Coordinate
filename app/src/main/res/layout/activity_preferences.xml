@@ -4,28 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    tools:activity=".grids.GridsActivity">
-
-    <ListView
-        android:id="@+id/gridsListView"
-
+    <androidx.fragment.app.FragmentContainerView
+        android:name="org.wheatgenetics.coordinate.preference.PreferenceFragment"
+        android:id="@+id/act_about_about_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
-        app:layout_constraintBottom_toTopOf="@id/act_grids_bnv"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        tools:listitem="@layout/grids_list_item"/>
+        app:layout_constraintBottom_toTopOf="@id/act_preferences_bnv"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/act_grids_bnv"
-        android:layout_below="@id/gridsListView"
+        android:id="@+id/act_preferences_bnv"
+        android:layout_below="@id/act_about_about_fragment"
         android:background="@color/colorPrimary"
         app:itemIconTint="@drawable/bottom_nav_selector"
         app:itemTextColor="@android:color/white"
