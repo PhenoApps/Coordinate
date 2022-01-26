@@ -38,6 +38,9 @@ public class ProjectDeleter extends CascadingDeleter {
         return this.projectsTableInstance;
     }
 
+    public boolean deleteAll() {
+        return projectsTable().deleteAll();
+    }
     // region Overridden Methods
     // region deleteStep3() Overridden Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
