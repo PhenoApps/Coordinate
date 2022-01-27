@@ -2,17 +2,20 @@ package org.wheatgenetics.coordinate.collector;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.phenoapps.androidlibrary.ClearingEditorActionListener;
 import org.wheatgenetics.coordinate.BuildConfig;
@@ -21,14 +24,12 @@ import org.wheatgenetics.coordinate.optionalField.BaseOptionalField;
 import org.wheatgenetics.coordinate.optionalField.CheckedOptionalFields;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 
-public class DataEntryFragment extends Fragment
-        implements ClearingEditorActionListener.Receiver {
+public class DataEntryDialogFragment extends DialogFragment {
     // region Fields
-    private DataEntryFragment.Handler handler;
-    private EditText entryEditText;
+    private DataEntryDialogFragment.Handler handler;
     private TextView projectTitleTextView, templateTitleTextView;
     private LinearLayout optionalFieldsLayout;
-    public DataEntryFragment() { /* Required empty public constructor. */ }
+    public DataEntryDialogFragment() { /* Required empty public constructor. */ }
     // endregion
 
     private static void setText(
@@ -43,9 +44,9 @@ public class DataEntryFragment extends Fragment
             @NonNull final Context context) {
         super.onAttach(context);
 
-        if (context instanceof DataEntryFragment.Handler)
+        if (context instanceof DataEntryDialogFragment.Handler)
             this.handler =
-                    (DataEntryFragment.Handler) context;
+                    (DataEntryDialogFragment.Handler) context;
         else
             throw new RuntimeException(context.toString() + " must implement Handler");
     }
@@ -68,21 +69,14 @@ public class DataEntryFragment extends Fragment
 
         final Activity activity = this.getActivity();
         if (null != activity) {
-            this.entryEditText = activity.findViewById(
-                    R.id.entryEditText);
-            if (null != this.entryEditText) this.entryEditText.setOnEditorActionListener(
-                    new ClearingEditorActionListener(
-                            this.entryEditText, this,
-                            BuildConfig.DEBUG));
 
-            this.projectTitleTextView = activity.findViewById(
-                    R.id.projectTitleTextView);
+            View fragView = getView();
+            if (fragView != null) {
 
-            this.templateTitleTextView = activity.findViewById(
-                    R.id.templateTitleTextView);
-
-            this.optionalFieldsLayout = activity.findViewById(
-                    R.id.optionalFieldsLayout);
+                this.projectTitleTextView = fragView.findViewById(R.id.projectTitleTextView);
+                this.templateTitleTextView = fragView.findViewById(R.id.templateTitleTextView);
+                this.optionalFieldsLayout = fragView.findViewById(R.id.optionalFieldsLayout);
+            }
         }
 
         this.populate();
@@ -94,25 +88,13 @@ public class DataEntryFragment extends Fragment
         super.onDetach();
     }
 
-    // region org.wheatgenetics.androidlibrary.ClearingEditorActionListener.Receiver Overridden Methods
-    @Override
-    public void receiveText(final String text) {
-        if (null != this.handler) this.handler.saveEntry(text);
-    }
-
-    @Override
-    public void clearText() {
-        if (null != this.handler) this.handler.clearEntry();
-    }
-
     // region Package Methods
     void populate() {
         if (null != this.handler) {
-            this.setEntry(this.handler.getEntryValue());
 
-            DataEntryFragment.setText(
+            DataEntryDialogFragment.setText(
                     this.projectTitleTextView, this.handler.getProjectTitle());
-            DataEntryFragment.setText(
+            DataEntryDialogFragment.setText(
                     this.templateTitleTextView, this.handler.getTemplateTitle());
 
             if (null != this.optionalFieldsLayout) {
@@ -139,13 +121,13 @@ public class DataEntryFragment extends Fragment
                                 {
                                     final TextView nameTextView = view.findViewById(
                                             R.id.nameTextView);
-                                    DataEntryFragment
+                                    DataEntryDialogFragment
                                             .setText(nameTextView, baseOptionalField.getName());
                                 }
                                 {
                                     final TextView valueTextView = view.findViewById(
                                             R.id.valueTextView);
-                                    DataEntryFragment
+                                    DataEntryDialogFragment
                                             .setText(valueTextView, baseOptionalField.getValue());
                                 }
                             }
@@ -157,10 +139,6 @@ public class DataEntryFragment extends Fragment
     }
     // endregion
     // endregion
-
-    void setEntry(final String entry) {
-        if (null != this.entryEditText) this.entryEditText.setText(entry);
-    }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
     public interface Handler {
