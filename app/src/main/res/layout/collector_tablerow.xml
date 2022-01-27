@@ -17,10 +17,10 @@
         android:layout_width="2dp"
         android:background="@color/colorAccent" />
 
-    <fragment
-        android:id="@+id/dataEntryFragment"
-        android:name="org.wheatgenetics.coordinate.collector.DataEntryFragment"
+<!--    <fragment-->
+<!--        android:id="@+id/dataEntryFragment"-->
+<!--        android:name="org.wheatgenetics.coordinate.collector.DataEntryDialogFragment"-->
 
-        tools:layout="@layout/fragment_data_entry" />
+<!--        tools:layout="@layout/fragment_data_entry" />-->
 
 </TableRow>

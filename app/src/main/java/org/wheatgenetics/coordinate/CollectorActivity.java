@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.phenoapps.androidlibrary.ClearingEditorActionListener;
 import org.wheatgenetics.coordinate.collector.Collector;
-import org.wheatgenetics.coordinate.collector.DataEntryFragment;
+import org.wheatgenetics.coordinate.collector.DataEntryDialogFragment;
 import org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment;
 import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.DisplayModel;
@@ -20,7 +22,10 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
-        DataEntryFragment.Handler {
+        DataEntryDialogFragment.Handler,
+        ClearingEditorActionListener.Receiver {
+
+    public static final String TAG = "CollectorActivity";
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -60,6 +65,13 @@ public class CollectorActivity extends BackActivity implements
                     CollectorActivity.GRID_ID_KEY;
             if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(
                     intent.getLongExtra(GRID_ID_KEY, -1));
+        }
+
+        EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
+        if (dataEntryEt != null) {
+            dataEntryEt.setOnEditorActionListener(
+                    new ClearingEditorActionListener(dataEntryEt,
+                    this, BuildConfig.DEBUG));
         }
     }
 
@@ -128,9 +140,7 @@ public class CollectorActivity extends BackActivity implements
     }
 
     @Override
-    public String getProjectTitle() {
-        return this.collector().getProjectTitle();
-    }
+    public String getProjectTitle() { return this.collector().getProjectTitle(); }
 
     @Override
     public String getTemplateTitle() {
@@ -158,5 +168,25 @@ public class CollectorActivity extends BackActivity implements
     // region MenuItem Event Handler
     public void onCameraMenuItemClick(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
         this.collector().scanBarcode();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        final int summarizeData = R.id.action_summarize_data;
+        if (item.getItemId() == summarizeData) {
+            new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void receiveText(final String text) {
+        saveEntry(text);
+    }
+
+    @Override
+    public void clearText() {
+        clearEntry();
     }
 }

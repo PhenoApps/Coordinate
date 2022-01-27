@@ -530,5 +530,12 @@
     <string name="bottom_nav_bar_grids">Grids</string>
     <string name="Coordinate">Coordinate</string>
     <string name="act_grids_title">Grids</string>
+    <string name="Database">Database</string>
+    <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
+    <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
+    <string name="pref_database_reset_title">Reset Database</string>
+    <string name="dialog_database_reset_title">Reset Database?</string>
+    <string name="act_collector_data_entry_et_hint">Data Entry</string>
+    <string name="menu_collector_meta_data_title">Summarize Data</string>
 
 </resources>

@@ -1,17 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:shrinkColumns="0"-->
+<!--    android:stretchColumns="0"-->
+
+<!--    app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+<!--    tools:context="org.wheatgenetics.coordinate.CollectorActivity">-->
+
+<!--    <include layout="@layout/collector_tablerow" />-->
+
+<!--</TableLayout>-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:shrinkColumns="0"
-    android:stretchColumns="0"
+    android:layout_height="match_parent">
 
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <fragment
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:id="@+id/gridDisplayFragment"
+        android:name="org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment"
 
-    tools:context="org.wheatgenetics.coordinate.CollectorActivity">
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
 
-    <include layout="@layout/collector_tablerow" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/act_collector_data_entry_et"
+        tools:layout="@layout/fragment_display" />
 
-</TableLayout>
+    <EditText
+        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/act_collector_data_entry_et"
+        android:hint="@string/fragment_data_entryEntryHint"
+        android:imeActionId="100"
+        android:imeActionLabel="@string/fragment_data_entryEntryActionLabel"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="text|textNoSuggestions"
+        android:lines="1"
+        android:minEms="8"
+        android:selectAllOnFocus="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gridDisplayFragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
