@@ -147,8 +147,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        //final ActionBar supportActionBar = this.getSupportActionBar();
-        //if (null != supportActionBar) supportActionBar.setTitle(null);
+        final ActionBar supportActionBar = this.getSupportActionBar();
+        if (null != supportActionBar) supportActionBar.setTitle(null);
     }
 
     @Override

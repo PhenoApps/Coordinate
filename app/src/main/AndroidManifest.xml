@@ -15,7 +15,7 @@
         <activity
             android:name=".CollectorActivity"
             android:label="@string/CollectorActivityLabel"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".grids.GridsActivity"

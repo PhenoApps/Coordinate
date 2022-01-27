@@ -20,6 +20,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/act_collector_cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -55,7 +56,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gridDisplayFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/act_collector_bnv"
         app:layout_constraintVertical_bias="0.1"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        style="@style/AppTheme.BottomNavBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/act_collector_bnv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

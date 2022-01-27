@@ -17,13 +17,11 @@
         app:layout_constraintBottom_toTopOf="@id/act_preferences_bnv"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        style="@style/AppTheme.BottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/act_preferences_bnv"
         android:layout_below="@id/act_about_about_fragment"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@drawable/bottom_nav_selector"
-        app:itemTextColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

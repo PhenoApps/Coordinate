@@ -307,6 +307,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         setupActionBar();
 
+        setupNewGridButton();
+
         if (null != gridsListView) {
             {
                 final Intent intent = this.getIntent();
@@ -345,6 +347,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
     // endregion
 
+    private void setupNewGridButton() {
+        findViewById(R.id.act_grids_fab).setOnClickListener((v) -> createGrid());
+    }
 
     @Override
     protected void onResume() {
@@ -416,9 +421,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
 
     // region MenuItem Event Handler
-    public void onNewGridMenuItemClick(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
-        this.createGrid();
-    }
+    public void onNewGridMenuItemClick(@SuppressWarnings({"unused"}) final MenuItem menuItem) { }
     // endregion
 
     // region Create Template Private Methods

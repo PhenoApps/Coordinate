@@ -180,6 +180,11 @@ public class ProjectsActivity extends BackActivity {
         return this.projectCreatorInstance;
     }
 
+    private void setupNewProjectButton() {
+        findViewById(R.id.act_projects_fab).setOnClickListener((v) ->
+                projectCreator().createAndReturn());
+    }
+
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -194,6 +199,8 @@ public class ProjectsActivity extends BackActivity {
                 R.id.projectsListView);
 
         setupBottomNavigationBar();
+
+        setupNewProjectButton();
 
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,

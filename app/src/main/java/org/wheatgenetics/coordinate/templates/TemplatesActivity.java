@@ -275,6 +275,11 @@ public class TemplatesActivity extends BackActivity
         this.templateImportPreprocessor().preprocess();
     }
 
+    private void setupNewTemplateButton() {
+
+        findViewById(R.id.act_templates_fab).setOnClickListener((v) -> createTemplate());
+    }
+
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -289,6 +294,8 @@ public class TemplatesActivity extends BackActivity
                 R.id.templatesListView);
 
         setupBottomNavigationBar();
+
+        setupNewTemplateButton();
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
                 new TemplatesAdapter(this,
