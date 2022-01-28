@@ -75,15 +75,12 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="org.wheatgenetics.coordinate.preferences.key.cat_database"
-        android:title="@string/Database"
-        app:iconSpaceReserved="false">
-        <Preference
-            android:icon="@drawable/ic_collect_data_black"
-            android:key="@string/pref_database_reset_key"
-            android:summary="@string/pref_database_reset_summary"
-            android:title="@string/pref_database_reset_title"/>
-    </PreferenceCategory>
+    <Preference
+        android:icon="@drawable/ic_pref_database_import"
+        android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
+        android:key="@string/key_pref_database_screen"
+        android:title="@string/pref_database_screen_title"
+        app:iconSpaceReserved="false"/>
+
 
 </androidx.preference.PreferenceScreen>

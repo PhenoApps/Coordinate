@@ -11,6 +11,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -29,6 +31,8 @@ import java.util.TreeMap;
 
 public class PreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String TAG = "PreferenceFragment";
     // region Fields
     @SuppressWarnings({"Convert2Diamond"})
     private final TreeMap<String, String>
@@ -167,15 +171,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                         R.string.UniqueCheckBoxPreferenceKey);
                 this.uniqueListKey = activity.getString(
                         R.string.UniqueListPreferenceKey);
-                this.databaseResetKey = activity.getString(R.string.pref_database_reset_key);
 
                 this.directionPreference = this.findPreference(this.directionKey);
                 this.projectExportPreference = this.findPreference(this.projectExportKey);
                 this.scalingPreference = this.findPreference(this.scalingKey);
                 this.uniqueCheckBoxPreference = this.findPreference(this.uniqueCheckBoxKey);
                 this.uniqueListPreference = this.findPreference(this.uniqueListKey);
-                this.databaseResetPreference = findPreference(databaseResetKey);
-                setupDatabaseResetPreference();
 
                 this.setUniqueListPreferenceEnabled();
                 this.setSummaries();
@@ -183,6 +184,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                 if (null != this.uniqueListPreference)
                     this.uniqueListPreference.setOnPreferenceClickListener(
                             this.onUniquePreferenceClickListener);
+
             }
         }
         {
@@ -190,49 +192,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                     this.getPreferenceScreen();
             this.sharedPreferences = null == preferenceScreen ?
                     null : preferenceScreen.getSharedPreferences();
-        }
-    }
-
-    /**
-     * Creates and shows a dialog to the user to confirm db deletion.
-     * Clears all rows in grid, project and entries tables.
-     * Only the user templates are deleted.
-     */
-    private void setupDatabaseResetPreference() {
-
-        if (isAdded()) {
-
-            databaseResetPreference.setOnPreferenceClickListener((preference -> {
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.dialog_database_reset_title)
-                        .setPositiveButton(android.R.string.ok, ((dialog, which) -> {
-
-                            Context ctx = getContext();
-                            if (ctx != null) {
-                                GridDeleter gd = new GridDeleter(ctx, () -> {});
-                                ProjectDeleter pd = new ProjectDeleter(ctx, (a) -> {});
-                                TemplateDeleter td = new TemplateDeleter(ctx, () -> {});
-
-                                //grid deleter deletes all grids and entries to the grids
-                                gd.deleteAll();
-
-                                //template deleter will delete all user-defined templates
-                                td.deleteAllUserTemplates();
-
-                                //project delete deletes all projects
-                                pd.deleteAll();
-                            }
-
-                        }))
-                        .setNegativeButton(android.R.string.cancel, (((dialog, which) -> {
-
-                        })))
-                        .create()
-                        .show();
-
-                return true;
-            }));
         }
     }
 
