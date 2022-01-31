@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.preference;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -10,6 +11,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -18,11 +21,18 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 
 import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.database.EntriesTable;
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.deleter.GridDeleter;
+import org.wheatgenetics.coordinate.deleter.ProjectDeleter;
+import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 
 import java.util.TreeMap;
 
 public class PreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String TAG = "PreferenceFragment";
     // region Fields
     @SuppressWarnings({"Convert2Diamond"})
     private final TreeMap<String, String>
@@ -35,11 +45,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat
             uniqueTreeMap = new TreeMap<String, String>();
 
     private String directionKey, projectExportKey,
-            scalingKey, uniqueCheckBoxKey, uniqueListKey;
+            scalingKey, uniqueCheckBoxKey, uniqueListKey, databaseResetKey;
     private ListPreference directionPreference,
             projectExportPreference, uniqueListPreference;
     private SeekBarPreference scalingPreference;
     private CheckBoxPreference uniqueCheckBoxPreference;
+    private Preference databaseResetPreference;
     private Preference.OnPreferenceClickListener
             onUniquePreferenceClickListener = null;     // TODO: Replace w/ onSharedPreferenceChanged()?
 
@@ -173,6 +184,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                 if (null != this.uniqueListPreference)
                     this.uniqueListPreference.setOnPreferenceClickListener(
                             this.onUniquePreferenceClickListener);
+
             }
         }
         {

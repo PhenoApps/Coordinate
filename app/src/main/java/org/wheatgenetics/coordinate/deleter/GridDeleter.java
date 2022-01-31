@@ -21,6 +21,12 @@ public class GridDeleter extends BaseGridDeleter {
         this.handler = handler;
     }
 
+    public void deleteAll() {
+
+        gridsTable().deleteAll();
+        entriesTable().deleteAll();
+    }
+
     // region Public Methods
     public void deleteWithoutConfirm(@IntRange(from = 1) final long gridId) {
         {

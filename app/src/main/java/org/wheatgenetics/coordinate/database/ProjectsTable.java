@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -139,6 +140,10 @@ public class ProjectsTable extends Table {
                 ProjectsTable.ID_FIELD_NAME +
                         " IN (SELECT DISTINCT projectId FROM grids WH" +
                         "ERE projectId IS NOT NULL AND projectId > 0)"));
+    }
+
+    public boolean deleteAll() {
+        return super.deleteAll();
     }
     // endregion
 }

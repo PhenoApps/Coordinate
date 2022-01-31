@@ -15,7 +15,7 @@ public class Utils {
     private static SharedPreferences defaultSharedPreferencesInstance = null;  // ll
 
     @Nullable
-    private static SharedPreferences
+    public static SharedPreferences
     getDefaultSharedPreferences(final Context context) {
         if (null == Utils.defaultSharedPreferencesInstance)
             Utils.defaultSharedPreferencesInstance =

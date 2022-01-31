@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -420,6 +421,10 @@ public class GridsTable extends Table {
 
     public boolean existsInProject(final long projectId) {
         return this.numberInProject(projectId) > 0;
+    }
+
+    public boolean deleteAll() {
+        return super.deleteAll();
     }
 
     public boolean deleteByTemplateId(final long templateId) {

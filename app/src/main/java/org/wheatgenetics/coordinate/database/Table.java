@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -222,6 +223,22 @@ abstract class Table
     ContentValues getContentValuesForInsert(
             @NonNull final Model model) {
         return new ContentValues();
+    }
+
+    boolean deleteAll() {
+        boolean failed = false;
+        this.logInfo("Deleting entire table " + this.tableName);
+        try {
+            db.beginTransaction();
+            db.execSQL("DELETE FROM " + this.tableName);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            failed = true;
+        } finally {
+            db.endTransaction();
+        }
+        return failed;
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)

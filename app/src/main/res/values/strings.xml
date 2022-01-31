@@ -523,5 +523,20 @@
 
     <!-- BaseCollector -->
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
+    <string name="Database">Database</string>
+    <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
+    <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
+    <string name="pref_database_reset_title">Reset</string>
+    <string name="dialog_database_reset_title">Reset Database?</string>
+    <string name="key_pref_database_screen">org.wheatgenetics.coordinate.preferences.key.database_screen</string>
+    <string name="pref_database_screen_title">Database</string>
+    <string name="key_pref_database_export">org.wheatgenetics.coordinate.preferences.key.export_database</string>
+    <string name="key_pref_database_import">org.wheatgenetics.coordinate.preferences.key.import_database</string>
+    <string name="pref_database_export_summary">This will prompt the user to export the local database.</string>
+    <string name="pref_database_import_summary">Import a new .zip or .db file that has been saved previously.</string>
+    <string name="pref_database_import_title">Import</string>
+    <string name="pref_database_export_title">Export</string>
+    <string name="dialog_database_export_title">Export Database?</string>
+    <string name="dialog_database_import_title">Import Database?</string>
 
 </resources>
