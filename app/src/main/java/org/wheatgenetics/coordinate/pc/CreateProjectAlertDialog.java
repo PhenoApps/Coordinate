@@ -10,13 +10,13 @@ import org.phenoapps.androidlibrary.AlertDialog;
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 
-class CreateProjectAlertDialog extends AlertDialog {
+public class CreateProjectAlertDialog extends AlertDialog {
     // region Fields
     @NonNull
     private final
     CreateProjectAlertDialog.Handler handler;
     private EditText projectTitleEditText;
-    CreateProjectAlertDialog(final Activity activity, @NonNull final CreateProjectAlertDialog.Handler handler) {
+    public CreateProjectAlertDialog(final Activity activity, @NonNull final CreateProjectAlertDialog.Handler handler) {
         super(activity);
         this.handler = handler;
     }
@@ -66,7 +66,7 @@ class CreateProjectAlertDialog extends AlertDialog {
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler {
+    public interface Handler {
         public abstract boolean handleCreateProjectDone(String projectTitle);
     }
     // endregion

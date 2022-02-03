@@ -20,6 +20,7 @@ import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
@@ -31,6 +32,7 @@ public class GridsActivity extends BackActivity {
     private static final String
             TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
     private static final int EXPORT_GRID_REQUEST_CODE = 10;
+    private static final int CREATE_GRID_REFRESH = 102;
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -262,7 +264,8 @@ public class GridsActivity extends BackActivity {
     }
 
     private void createGrid() {
-        statelessGridCreator().create();
+        startActivityForResult(new Intent(this, GridCreatorActivity.class), CREATE_GRID_REFRESH);
+        //statelessGridCreator().create();
     }
 
     // region Overridden Methods
@@ -341,6 +344,8 @@ public class GridsActivity extends BackActivity {
                         this.exportGrid();
                         break;
                 }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -353,6 +358,9 @@ public class GridsActivity extends BackActivity {
             case Types.CREATE_GRID:
                 if (Activity.RESULT_OK == resultCode && null != data)
                     this.statelessGridCreator().continueExcluding(data.getExtras());
+                break;
+            case CREATE_GRID_REFRESH:
+                this.notifyDataSetChanged();
                 break;
         }
     }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="template_creator_naming_entries">
+        <item>1, 2, 3</item>
+        <item>A, B, C</item>
+    </string-array>
+</resources>
