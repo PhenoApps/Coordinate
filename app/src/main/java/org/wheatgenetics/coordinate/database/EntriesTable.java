@@ -41,6 +41,10 @@ public class EntriesTable extends Table
     }
     // endregion
 
+    public boolean deleteAll() {
+        return super.deleteAll();
+    }
+
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     IncludedEntryModel makeIncludedEntryModel(final long id,

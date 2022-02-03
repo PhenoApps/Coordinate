@@ -75,4 +75,12 @@
 
     </PreferenceCategory>
 
+    <Preference
+        android:icon="@drawable/ic_pref_database_import"
+        android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
+        android:key="@string/key_pref_database_screen"
+        android:title="@string/pref_database_screen_title"
+        app:iconSpaceReserved="false"/>
+
+
 </androidx.preference.PreferenceScreen>
