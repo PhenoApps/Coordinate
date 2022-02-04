@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".activity.GridCreatorActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/MaterialAppTheme"/>
+
+        <activity android:name=".activity.TemplateCreatorActivity"
+            android:theme="@style/MaterialAppTheme"/>
+
         <activity
             android:exported="true"
             android:name=".main.MainActivity"
