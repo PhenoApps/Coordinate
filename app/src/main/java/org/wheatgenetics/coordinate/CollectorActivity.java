@@ -1,5 +1,6 @@
 package org.wheatgenetics.coordinate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.collector.Collector;
 import org.wheatgenetics.coordinate.collector.DataEntryFragment;
 import org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment;
@@ -21,6 +23,7 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
         DataEntryFragment.Handler {
+    public static final int PROJECT_UPDATE_REQUEST_CODE = 12;
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -79,7 +82,25 @@ public class CollectorActivity extends BackActivity implements
     protected void onActivityResult(final int requestCode,
                                     final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.collector().parseActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PROJECT_UPDATE_REQUEST_CODE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                final String GRID_ID_KEY =
+                        CollectorActivity.GRID_ID_KEY;
+                final Intent intent = getIntent();
+
+                if (intent.hasExtra(GRID_ID_KEY)) {
+
+                    long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
+
+                    collectorInstance.loadJoinedGridModelThenPopulate(gridId);
+
+                }
+            }
+
+        } else this.collector().parseActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -158,5 +179,25 @@ public class CollectorActivity extends BackActivity implements
     // region MenuItem Event Handler
     public void onCameraMenuItemClick(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
         this.collector().scanBarcode();
+    }
+
+    public void onProjectEditMenuItemClick(MenuItem item) {
+
+        final String GRID_ID_KEY =
+                CollectorActivity.GRID_ID_KEY;
+        final Intent intent = getIntent();
+
+        if (intent.hasExtra(GRID_ID_KEY)) {
+
+            long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
+
+            if (gridId != -1L) {
+
+                Intent projectEditor = new Intent(this, GridCreatorActivity.class);
+                projectEditor.putExtra("projectEdit", true);
+                projectEditor.putExtra("gridId", gridId);
+                startActivityForResult(projectEditor, PROJECT_UPDATE_REQUEST_CODE);
+            }
+        }
     }
 }
