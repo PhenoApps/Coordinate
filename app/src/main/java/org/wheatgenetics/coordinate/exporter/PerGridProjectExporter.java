@@ -26,7 +26,7 @@ public class PerGridProjectExporter extends ProjectExporter {
     public PerGridProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir,
+            final File exportDir,
             final String exportDirectoryName) {
         super(baseJoinedGridModels, context, exportDir);
         this.exportDirectoryName = exportDirectoryName;
@@ -47,8 +47,7 @@ public class PerGridProjectExporter extends ProjectExporter {
                         /* message => */
                         R.string.PerGridProjectExporterSuccessMessage);
             } else if (size > 0) {
-                final RequestDir exportDir =
-                        this.getExportDir();
+                final File exportDir = this.getExportDir();
                 if (null != exportDir) {
                     final Context context = this.getContext();
                     final JoinedGridModel
@@ -57,25 +56,19 @@ public class PerGridProjectExporter extends ProjectExporter {
                         final String exportFileName = String.format(
                                 Locale.getDefault(), "grid%d_%s.csv",
                                 joinedGridModel.getId(), this.exportDirectoryName);
-                        try {
-                            this.asyncTask = new PerGridProjectExporter.AsyncTask(
-                                    /* context    => */ context,
-                                    /* exportFile => */ exportDir.createNewFile(     // throws
-                                    /* fileName => */ exportFileName),           //  IOE, PE
-                                    /* exportFileName  => */ exportFileName,
-                                    /* joinedGridModel => */ joinedGridModel,
-                                    /* client => */ new PerGridProjectExporter.AsyncTask.Client() {
-                                @Override
-                                public void execute() {
-                                    PerGridProjectExporter.this
-                                            .execute();                     // recursion
-                                }
-                            });
-                            this.asyncTask.execute();
-                        } catch (final IOException |
-                                Dir.PermissionException e) {
-                            this.unableToCreateFileAlert(exportFileName);
-                        }
+                        this.asyncTask = new AsyncTask(
+                                /* context    => */ context,
+                                /* exportFile => */ new File(exportDir, exportFileName),           //  IOE, PE
+                                /* exportFileName  => */ exportFileName,
+                                /* joinedGridModel => */ joinedGridModel,
+                                /* client => */ new AsyncTask.Client() {
+                            @Override
+                            public void execute() {
+                                PerGridProjectExporter.this
+                                        .execute();                     // recursion
+                            }
+                        });
+                        this.asyncTask.execute();
                     }
                 }
             }

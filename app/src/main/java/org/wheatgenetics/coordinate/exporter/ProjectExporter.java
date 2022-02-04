@@ -19,13 +19,12 @@ abstract class ProjectExporter extends Exporter {
     private final BaseJoinedGridModels baseJoinedGridModels;
     @NonNull
     private final Context context;
-    private final RequestDir
-            exportDir;
+    private final File exportDir;
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     ProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir) {
+            final File exportDir) {
         super();
 
         this.baseJoinedGridModels = baseJoinedGridModels;
@@ -47,7 +46,7 @@ abstract class ProjectExporter extends Exporter {
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    RequestDir getExportDir() {
+    File getExportDir() {
         return this.exportDir;
     }
 

@@ -24,7 +24,7 @@ public class EntireProjectProjectExporter
     public EntireProjectProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir,
+            final File exportDir,
             final String exportFileName) {
         super(baseJoinedGridModels, context, exportDir);
         this.exportFileName = exportFileName + ".csv";
@@ -37,20 +37,15 @@ public class EntireProjectProjectExporter
         final BaseJoinedGridModels baseJoinedGridModels =
                 this.getBaseJoinedGridModels();
         if (null != baseJoinedGridModels) {
-            final RequestDir exportDir = this.getExportDir();
-            if (null != exportDir)
-                try {
-                    this.asyncTask = new EntireProjectProjectExporter.AsyncTask(
-                            /* context    => */ this.getContext(),
-                            /* exportFile => */ exportDir.createNewFile(     // throws IOException,
-                            this.exportFileName),                        //  PermissionException
-                            /* exportFileName       => */ this.exportFileName,
-                            /* baseJoinedGridModels => */ baseJoinedGridModels);
-                    this.asyncTask.execute();
-                } catch (final IOException | Dir.PermissionException
-                        e) {
-                    this.unableToCreateFileAlert(this.exportFileName);
-                }
+            final File exportDir = this.getExportDir();
+            if (null != exportDir) {
+                this.asyncTask = new AsyncTask(
+                        /* context    => */ this.getContext(),
+                        /* exportFile => */ exportDir,                        //  PermissionException
+                        /* exportFileName       => */ this.exportFileName,
+                        /* baseJoinedGridModels => */ baseJoinedGridModels);
+                this.asyncTask.execute();
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.pe;
 
 import android.app.Activity;
+import android.os.Build;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.phenoapps.permissions.Dir;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ProjectExporter {
@@ -58,8 +60,7 @@ public class ProjectExporter {
     /**
      * Exported data is saved to this folder.
      */
-    private RequestDir exportDir()
-            throws IOException, Dir.PermissionException {
+    private RequestDir exportDir() throws IOException, Dir.PermissionException {
         org.wheatgenetics.coordinate.Utils.createCoordinateDirIfMissing(// throws java.io.IOExcep-
                 this.activity, this.requestCode);                           //  tion, org.wheatgenetics-
         //  .javalib.Dir.Permission-
@@ -71,6 +72,18 @@ public class ProjectExporter {
         result.createIfMissing();                        // throws java.io.IOException, org.wheatge-
         return result;                                   //  netics.javalib.Dir.PermissionException
     }
+
+    private File getExportDir() {
+        File parentDir = new File(activity.getExternalFilesDir(null), "Export");
+        if (!parentDir.isDirectory()) {
+            if (!parentDir.mkdir()) {
+                //todo log message
+            }
+        }
+
+        return parentDir;
+    }
+
 
     @Override
     protected void finalize() throws Throwable {
@@ -96,36 +109,67 @@ public class ProjectExporter {
                     Utils.getProjectExport(this.activity);
             if (Utils.ProjectExport.ONE_FILE_PER_GRID
                     == projectExport) {
-                RequestDir exportDir;
+                File exportDir = null;
 
                 final JoinedGridModel firstJoinedGridModel =
                         baseJoinedGridModels.get(0);
                 if (null == firstJoinedGridModel)
                     exportDir = null;
                 else
-                    try {
-                        final RequestDir parentDir =
-                                new RequestDir(
-                                        /* activity => */ this.activity,
-                                        /* parent   => */ this.exportDir(),          // throws IOException,
-                                        //  PermissionException
-                                        /* name        => */ firstJoinedGridModel.getTemplateTitle(),
-                                        /* requestCode => */ this.requestCode);
-                        parentDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
-                        //  netics.javalib.Dir.PermissionException
-                        exportDir = new RequestDir(
-                                /* activity    => */ this.activity,
-                                /* parent      => */ parentDir,
-                                /* name        => */ this.directoryName,
-                                /* requestCode => */ this.requestCode);
-                        exportDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
-                    }                                    //  netics.javalib.Dir.PermissionException
-                    catch (final IOException |
-                            Dir.PermissionException e) {
-                        if (!(e instanceof
-                                Dir.PermissionRequestedException))
-                            this.showLongToast(e.getMessage());
-                        exportDir = null;
+
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+
+                        try {
+                            final RequestDir parentDir =
+                                    new RequestDir(
+                                            /* activity => */ this.activity,
+                                            /* parent   => */ this.exportDir(),          // throws IOException,
+                                            //  PermissionException
+                                            /* name        => */ firstJoinedGridModel.getTemplateTitle(),
+                                            /* requestCode => */ this.requestCode);
+                            parentDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
+                            //  netics.javalib.Dir.PermissionException
+                            RequestDir requestDir = new RequestDir(
+                                    /* activity    => */ this.activity,
+                                    /* parent      => */ parentDir,
+                                    /* name        => */ this.directoryName,
+                                    /* requestCode => */ this.requestCode);
+                            exportDir = requestDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
+                        }                                    //  netics.javalib.Dir.PermissionException
+                        catch (final IOException |
+                                Dir.PermissionException e) {
+                            if (!(e instanceof
+                                    Dir.PermissionRequestedException))
+                                this.showLongToast(e.getMessage());
+                            exportDir = null;
+                        }
+                    } else {
+
+                        File exportParentDir = new File(activity.getExternalFilesDir(null), "Export");
+                        if (!exportParentDir.isDirectory()) {
+                            if (!exportParentDir.mkdir()) {
+                                //todo log message
+                            }
+                        }
+
+                        if (exportParentDir.isDirectory()) {
+                            File templateDir = new File(exportParentDir, firstJoinedGridModel.getTemplateTitle());
+                            if (!templateDir.isDirectory()) {
+                                if (!templateDir.mkdir()) {
+                                    //todo log message
+                                }
+                            }
+
+                            File projectDir = new File(templateDir, directoryName);
+
+                            if (!projectDir.isDirectory()) {
+                                if (!projectDir.mkdir()) {
+                                    //todo log message
+                                }
+                            }
+
+                            exportDir = projectDir;
+                        }
                     }
 
                 if (null != exportDir) {
@@ -141,14 +185,22 @@ public class ProjectExporter {
                     Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
                             == projectExport)
                 try {
+
+                    File exportFile = null;
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                        exportFile = exportDir().createIfMissing();
+                    } else {
+                        exportFile = getExportDir();
+                    }
                     this.entireProjectProjectExporter =
                             new EntireProjectProjectExporter(
                                     /* baseJoinedGridModels => */ baseJoinedGridModels,
                                     /* context              => */ this.activity,
-                                    /* exportDir            => */ this.exportDir(),  // throws IOException,
+                                    /* exportDir            => */ exportFile,  // throws IOException,
                                     //  PermissionException
                                     /* exportFileName => */ this.directoryName);
                     this.entireProjectProjectExporter.execute();
+
                 } catch (final IOException |
                         Dir.PermissionException e) {
                     if (!(e instanceof Dir.PermissionRequestedException))

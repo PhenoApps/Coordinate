@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.te;
 
 import android.app.Activity;
+import android.os.Build;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -60,17 +61,29 @@ public class TemplateExporter {
     // region Public Methods
     public void export() {
         File exportFile;
-        try {
-            final TemplatesDir templatesDir =
-                    Utils.templatesDir(             // throws IOException,
-                            this.activity, this.requestCode);                        //  PermissionException
 
-            exportFile = templatesDir.createNewFile(      // throws IOException, PermissionException
-                    this.fileName + ".xml");
-        } catch (final IOException | Dir.PermissionException e) {
-            if (!(e instanceof Dir.PermissionRequestedException))
-                this.showLongToast(e.getMessage());
-            exportFile = null;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            try {
+                final TemplatesDir templatesDir =
+                        Utils.templatesDir(             // throws IOException,
+                                this.activity, this.requestCode);                        //  PermissionException
+
+                exportFile = templatesDir.createNewFile(      // throws IOException, PermissionException
+                        this.fileName + ".xml");
+            } catch (final IOException | Dir.PermissionException e) {
+                if (!(e instanceof Dir.PermissionRequestedException))
+                    this.showLongToast(e.getMessage());
+                exportFile = null;
+            }
+        } else {
+
+            File templatesDir = new File(activity.getExternalFilesDir(null), "Templates");
+            if (!templatesDir.isDirectory()) {
+                if (!templatesDir.mkdir()) {
+                    //todo log cant create dir
+                }
+            }
+            exportFile = new File(templatesDir, this.fileName + ".xml");
         }
 
         if (null != exportFile) {
