@@ -1,13 +1,17 @@
 package org.wheatgenetics.coordinate.exporter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.utils.Keys;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +26,10 @@ public class GridExporter extends Exporter {
                         @NonNull final GridExporter.Helper
                                 helper) {
         super();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         this.asyncTask = new GridExporter.AsyncTask(
-                context, exportFile, exportFileName, helper);
+                context, exportFile, exportFileName, helper, prefs);
     }
     // endregion
 
@@ -51,19 +57,21 @@ public class GridExporter extends Exporter {
         // region Fields
         private final String exportFileName;
         @NonNull
-        private final
-        GridExporter.Helper helper;
+        private final GridExporter.Helper helper;
+        @NonNull
+        private final SharedPreferences prefs;
         // endregion
 
         private AsyncTask(
                 @NonNull final Context context,
                 final File exportFile,
                 final String exportFileName,
-                @NonNull final GridExporter.Helper
-                        helper) {
+                @NonNull final GridExporter.Helper helper,
+                @NonNull final SharedPreferences prefs) {
             super(context, exportFile);
             this.exportFileName = exportFileName;
             this.helper = helper;
+            this.prefs = prefs;
         }
 
         private void deleteGrid() {
@@ -86,6 +94,9 @@ public class GridExporter extends Exporter {
                             this.getExportFile(), this.exportFileName, this)) {
                         this.makeExportFileDiscoverable();
                         success = true;
+
+                        resetLastGridId(joinedGridModel.getId());
+
                     } else
                         success = false;
                 } catch (final IOException e) {
@@ -95,6 +106,13 @@ public class GridExporter extends Exporter {
                     success = false;
                 }
             return success;
+        }
+
+        private void resetLastGridId(long gridId) {
+            long lastId = prefs.getLong(Keys.Companion.getLAST_GRID_KEY(), -1L);
+            if (lastId == gridId) {
+                prefs.edit().putLong(Keys.Companion.getLAST_GRID_KEY(), -1L).apply();
+            }
         }
 
         @Override
