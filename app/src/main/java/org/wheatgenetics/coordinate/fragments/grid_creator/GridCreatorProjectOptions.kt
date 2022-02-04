@@ -69,17 +69,24 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         okButton?.setOnClickListener {
             val projectEdit = activity?.intent?.getBooleanExtra("projectEdit", false) ?: false
             val gridId = activity?.intent?.getLongExtra("gridId", -1L) ?: -1L
-            if (projectEdit && gridId != -1L && mSelectedProjectTitle != null) {
-                getProjectId(mSelectedProjectTitle)?.let { pid ->
-                    mGridsTable?.get(gridId)?.let { grid ->
-                        mGridsTable?.update(grid.apply {
-                            projectId = pid
-                        })
+            if (projectEdit && gridId != -1L) {
+
+                if (mSelectedProjectTitle == null) {
+                    activity?.setResult(Activity.RESULT_CANCELED)
+                    activity?.finish()
+                } else {
+                    getProjectId(mSelectedProjectTitle)?.let { pid ->
+                        mGridsTable?.get(gridId)?.let { grid ->
+                            mGridsTable?.update(grid.apply {
+                                projectId = pid
+                            })
+                        }
                     }
+
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
                 }
 
-                activity?.setResult(Activity.RESULT_OK)
-                activity?.finish()
             } else {
                 findNavController().navigate(GridCreatorProjectOptionsDirections
                     .actionProjectOptionsToTemplateOptions().setProject(mSelectedProjectTitle))
