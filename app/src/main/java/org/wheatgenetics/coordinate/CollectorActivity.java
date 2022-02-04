@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.collector.Collector;
 import org.wheatgenetics.coordinate.collector.DataEntryFragment;
@@ -17,6 +18,7 @@ import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.DisplayModel;
 import org.wheatgenetics.coordinate.model.ElementModel;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.utils.Keys;
 
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
@@ -58,9 +60,20 @@ public class CollectorActivity extends BackActivity implements
         if (null != intent) {
             final String GRID_ID_KEY =
                     CollectorActivity.GRID_ID_KEY;
-            if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(
-                    intent.getLongExtra(GRID_ID_KEY, -1));
+            long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
+            if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(gridId);
+
+            saveGridIdToPreferences(gridId);
         }
+    }
+
+    //whenever collector activity is opened save the grid id to preferences
+    //on next app-open, navigate to this grid
+    private void saveGridIdToPreferences(long gridId) {
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit().putLong(Keys.Companion.getLAST_GRID_KEY(), gridId)
+                .apply();
     }
 
     @Override

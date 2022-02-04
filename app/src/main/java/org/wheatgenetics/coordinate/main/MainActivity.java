@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
+import androidx.preference.PreferenceManager;
 
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.AboutActivity;
@@ -30,6 +32,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.Keys;
 
 public class MainActivity extends BaseMainActivity
         implements TemplateCreator.Handler {
@@ -42,7 +45,9 @@ public class MainActivity extends BaseMainActivity
 
     // region Private Methods
     // region startActivity() Private Methods
+
     private void startGridsActivity() {
+
         this.startActivity(GridsActivity.intent(this));
     }
 
@@ -99,12 +104,29 @@ public class MainActivity extends BaseMainActivity
     }
     // endregion
 
+    /**
+     * Called in onCreate, this will navigate to the last opened grid.
+     * Based on the saved preference grid id.
+     */
+    private void navigateToLastGrid() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        long lastGridId = prefs.getLong(Keys.Companion.getLAST_GRID_KEY(), -1L);
+
+        if (lastGridId != -1L) {
+
+            this.startCollectorActivity(lastGridId);
+
+        }
+    }
+
     // region Overridden Methods
     @Override
     protected void onCreate(
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+
+        navigateToLastGrid();
 
         final ListView mainListView = this.findViewById(
                 R.id.mainListView);        // From layout/content_main.xml.
