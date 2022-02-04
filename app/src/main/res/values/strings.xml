@@ -538,5 +538,6 @@
     <string name="pref_database_export_title">Export</string>
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
+    <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
 
 </resources>
