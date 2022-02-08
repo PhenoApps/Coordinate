@@ -22,6 +22,8 @@ import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
+import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
@@ -36,6 +38,7 @@ import org.wheatgenetics.coordinate.ti.TemplateImporter;
 
 public class TemplatesActivity extends BackActivity
         implements TemplateCreator.Handler {
+    private static final int CREATE_GRID_REQUEST_CODE = 13;
     private static final int
             COLLECT_DATA_REQUEST_CODE = 1, EXPORT_TEMPLATE_REQUEST_CODE = 2,
             SHOW_GRIDS_REQUEST_CODE = 3, CONFIGURE_IMPORT_MENU_ITEM_REQUEST_CODE = 4,
@@ -103,7 +106,11 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void createGrid(@IntRange(from = 1) final long templateId) {
-        statelessGridCreator().createFromTemplate(templateId);
+
+        Intent creator = new Intent(this, GridCreatorActivity.class);
+        creator.putExtra("templateId", templateId);
+        startActivityForResult(creator, CREATE_GRID_REQUEST_CODE);
+        //statelessGridCreator().createFromTemplate(templateId);
     }
 
     private void notifyDataSetChanged() {
@@ -218,7 +225,11 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void createTemplate() {
-        this.templateCreator().create();
+        startActivityForResult(new Intent(this, TemplateCreatorActivity.class),
+                TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
+
+        //old template creator
+        //this.templateCreator().create();
     }
 
     // region Import Private Methods
@@ -370,6 +381,15 @@ public class TemplatesActivity extends BackActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
+            case CREATE_GRID_REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    long id = data.getLongExtra("gridId", -1L);
+                    if (id != -1L) {
+                        startActivityForResult(CollectorActivity.intent(this, id),
+                                COLLECT_DATA_REQUEST_CODE);
+                    }
+                }
+                break;
             case TemplatesActivity.COLLECT_DATA_REQUEST_CODE:
             case TemplatesActivity.SHOW_GRIDS_REQUEST_CODE:
                 this.notifyDataSetChanged();

@@ -1,9 +1,11 @@
 package org.wheatgenetics.coordinate.exporter;
 
 import android.content.Context;
+import android.icu.util.Output;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
@@ -12,6 +14,7 @@ import org.phenoapps.permissions.Dir;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class EntireProjectProjectExporter
         extends ProjectExporter {
@@ -27,6 +30,15 @@ public class EntireProjectProjectExporter
             final File exportDir,
             final String exportFileName) {
         super(baseJoinedGridModels, context, exportDir);
+        this.exportFileName = exportFileName + ".csv";
+    }
+
+    public EntireProjectProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final DocumentFile file,
+            final String exportFileName) {
+        super(baseJoinedGridModels, context, file);
         this.exportFileName = exportFileName + ".csv";
     }
     // endregion
@@ -45,6 +57,19 @@ public class EntireProjectProjectExporter
                         /* exportFileName       => */ this.exportFileName,
                         /* baseJoinedGridModels => */ baseJoinedGridModels);
                 this.asyncTask.execute();
+            } else {
+
+                try {
+
+                    final OutputStream outputStream = getContext().getContentResolver().openOutputStream(getDocFile().getUri());
+
+                    this.asyncTask = new AsyncTask(this.getContext(),
+                            outputStream, this.exportFileName, baseJoinedGridModels);
+                    this.asyncTask.execute();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -65,6 +90,13 @@ public class EntireProjectProjectExporter
             this.baseJoinedGridModels = baseJoinedGridModels;
         }
 
+        private AsyncTask(@NonNull final Context context,
+                          final OutputStream output, final String exportFileName,
+                          final BaseJoinedGridModels baseJoinedGridModels) {
+            super(context, output, exportFileName);
+            this.baseJoinedGridModels = baseJoinedGridModels;
+        }
+
         // region Overridden Methods
         @Override
         protected void onPostExecute(final Boolean result) {
@@ -74,13 +106,28 @@ public class EntireProjectProjectExporter
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         @Override
         boolean export() {
-            boolean success;
+            boolean success = false;
             if (null == this.baseJoinedGridModels)
                 success = false;
-            else {
+            else if (this.getExportFile() != null) {
                 try {
                     if (this.baseJoinedGridModels.export(              // throws java.io.IOException
                             /* exportFile     => */ this.getExportFile(),
+                            /* exportFileName => */ this.getExportFileName(),
+                            /* helper         => */this)) {
+                        this.makeExportFileDiscoverable();
+                        success = true;
+                    } else
+                        success = false;
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                    this.setMessage(R.string.EntireProjectProjectExporterFailedMessage);
+                    success = false;
+                }
+            } else if (this.getOutputStream() != null) {
+                try {
+                    if (this.baseJoinedGridModels.export(              // throws java.io.IOException
+                            /* exportFile     => */ this.getOutputStream(),
                             /* exportFileName => */ this.getExportFileName(),
                             /* helper         => */this)) {
                         this.makeExportFileDiscoverable();

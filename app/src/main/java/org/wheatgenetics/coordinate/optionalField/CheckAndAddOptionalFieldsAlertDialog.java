@@ -70,7 +70,7 @@ public class CheckAndAddOptionalFieldsAlertDialog
                             this.activity(), new
                             AddOptionalFieldAlertDialog.Handler() {
                                 @Override
-                                public void handleAddOptionalFieldDone() {
+                                public void handleAddOptionalFieldDone(String name, String defaultValue) {
                                     CheckAndAddOptionalFieldsAlertDialog.this
                                             .showCheckAndAddOptionalFieldsAlertDialogAgain();
                                 }

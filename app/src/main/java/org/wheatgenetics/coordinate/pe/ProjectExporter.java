@@ -2,9 +2,11 @@ package org.wheatgenetics.coordinate.pe;
 
 import android.app.Activity;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
@@ -15,6 +17,7 @@ import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +120,7 @@ public class ProjectExporter {
                     exportDir = null;
                 else
 
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
 
                         try {
                             final RequestDir parentDir =
@@ -143,69 +146,108 @@ public class ProjectExporter {
                                 this.showLongToast(e.getMessage());
                             exportDir = null;
                         }
+
+                        if (null != exportDir) {
+                            this.perGridProjectExporter =
+                                    new PerGridProjectExporter(
+                                            /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                            /* context              => */ this.activity,
+                                            /* exportDir            => */ exportDir,
+                                            /* exportDirectoryName  => */ this.directoryName);
+                            this.perGridProjectExporter.execute();
+                        }
+
+                    } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+
+                        DocumentFile docFile = DocumentTreeUtil.Companion
+                                .createDir(activity, "Export", this.directoryName);
+
+                        if (docFile != null) {
+                            this.perGridProjectExporter =
+                                    new PerGridProjectExporter(
+                                            /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                            /* context              => */ this.activity,
+                                            /* exportDir            => */ docFile,
+                                            /* exportDirectoryName  => */ this.directoryName);
+                            this.perGridProjectExporter.execute();
+                        }
+
                     } else {
 
                         File exportParentDir = new File(activity.getExternalFilesDir(null), "Export");
-                        if (!exportParentDir.isDirectory()) {
-                            if (!exportParentDir.mkdir()) {
-                                //todo log message
-                            }
-                        }
+                        checkMakeDir(exportParentDir);
 
                         if (exportParentDir.isDirectory()) {
                             File templateDir = new File(exportParentDir, firstJoinedGridModel.getTemplateTitle());
-                            if (!templateDir.isDirectory()) {
-                                if (!templateDir.mkdir()) {
-                                    //todo log message
-                                }
-                            }
+                            checkMakeDir(templateDir);
 
                             File projectDir = new File(templateDir, directoryName);
-
-                            if (!projectDir.isDirectory()) {
-                                if (!projectDir.mkdir()) {
-                                    //todo log message
-                                }
-                            }
+                            checkMakeDir(projectDir);
 
                             exportDir = projectDir;
                         }
+
+                        if (null != exportDir) {
+                            this.perGridProjectExporter =
+                                    new PerGridProjectExporter(
+                                            /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                            /* context              => */ this.activity,
+                                            /* exportDir            => */ exportDir,
+                                            /* exportDirectoryName  => */ this.directoryName);
+                            this.perGridProjectExporter.execute();
+                        }
                     }
 
-                if (null != exportDir) {
-                    this.perGridProjectExporter =
-                            new PerGridProjectExporter(
-                                    /* baseJoinedGridModels => */ baseJoinedGridModels,
-                                    /* context              => */ this.activity,
-                                    /* exportDir            => */ exportDir,
-                                    /* exportDirectoryName  => */ this.directoryName);
-                    this.perGridProjectExporter.execute();
-                }
+
             } else if (
                     Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
                             == projectExport)
                 try {
 
                     File exportFile = null;
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                         exportFile = exportDir().createIfMissing();
+                        this.entireProjectProjectExporter =
+                                new EntireProjectProjectExporter(
+                                        /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                        /* context              => */ this.activity,
+                                        /* exportDir            => */ exportFile,  // throws IOException,
+                                        //  PermissionException
+                                        /* exportFileName => */ this.directoryName);
+                        this.entireProjectProjectExporter.execute();
+                    } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+                        DocumentFile docFile = DocumentTreeUtil.Companion.createFile(activity,
+                                "Export", this.directoryName + ".csv");
+                        this.entireProjectProjectExporter =
+                                new EntireProjectProjectExporter(baseJoinedGridModels,
+                                        this.activity, docFile, this.directoryName);
+                        this.entireProjectProjectExporter.execute();
                     } else {
                         exportFile = getExportDir();
+                        this.entireProjectProjectExporter =
+                                new EntireProjectProjectExporter(
+                                        /* baseJoinedGridModels => */ baseJoinedGridModels,
+                                        /* context              => */ this.activity,
+                                        /* exportDir            => */ exportFile,  // throws IOException,
+                                        //  PermissionException
+                                        /* exportFileName => */ this.directoryName);
+                        this.entireProjectProjectExporter.execute();
                     }
-                    this.entireProjectProjectExporter =
-                            new EntireProjectProjectExporter(
-                                    /* baseJoinedGridModels => */ baseJoinedGridModels,
-                                    /* context              => */ this.activity,
-                                    /* exportDir            => */ exportFile,  // throws IOException,
-                                    //  PermissionException
-                                    /* exportFileName => */ this.directoryName);
-                    this.entireProjectProjectExporter.execute();
 
                 } catch (final IOException |
                         Dir.PermissionException e) {
                     if (!(e instanceof Dir.PermissionRequestedException))
                         this.showLongToast(e.getMessage());
                 }
+        }
+    }
+
+    private void checkMakeDir(File dir) {
+
+        if (!dir.isDirectory()) {
+            if (!dir.mkdir()) {
+                Log.d("MakeDir", "Make dir failed for: " + dir.getName());
+            }
         }
     }
 

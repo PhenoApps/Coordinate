@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- used to ask to add to project or not -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/frag_pb"
+        android:progress="0"/>
+
+    <TextView style="@style/TextAppearance.MaterialComponents.Headline4"
+        android:id="@+id/frag_grid_creator_new_template_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/frag_grid_creator_new_template_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_pb"/>
+
+    <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:id="@+id/frag_grid_creator_project_creator_summary_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/frag_grid_creator_new_template_summary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_new_template_tv"/>
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_project_creator_summary_tv"
+        android:id="@+id/frag_grid_creator_template_name_et"
+        android:layout_margin="16dp"
+        android:hint="@string/frag_grid_creator_template_name_et_hint"
+        android:autofillHints="name" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_name_et"
+        android:id="@+id/frag_grid_creator_template_rows_et"
+        android:layout_margin="16dp"
+        android:hint="@string/frag_grid_creator_template_rows_et_hint"
+        android:autofillHints="name" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_rows_et"
+        android:id="@+id/frag_grid_creator_template_columns_et"
+        android:layout_margin="16dp"
+        android:hint="@string/frag_grid_creator_template_columns_et_hint"
+        android:autofillHints="name" />
+
+    <Button style="@style/TextAppearance.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/frag_next_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/frag_grid_creator_one_next_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/frag_back_btn"
+        android:layout_margin="16dp"/>
+
+    <Button style="@style/TextAppearance.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/frag_back_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/back"
+        app:layout_constraintEnd_toStartOf="@id/frag_next_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

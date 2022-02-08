@@ -1,8 +1,8 @@
 package org.wheatgenetics.coordinate.preference;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -11,8 +11,6 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -21,11 +19,7 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 
 import org.wheatgenetics.coordinate.R;
-import org.wheatgenetics.coordinate.database.EntriesTable;
-import org.wheatgenetics.coordinate.database.GridsTable;
-import org.wheatgenetics.coordinate.deleter.GridDeleter;
-import org.wheatgenetics.coordinate.deleter.ProjectDeleter;
-import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 
 import java.util.TreeMap;
 
@@ -185,6 +179,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                     this.uniqueListPreference.setOnPreferenceClickListener(
                             this.onUniquePreferenceClickListener);
 
+                setupStorageDefinerPreference();
+
             }
         }
         {
@@ -192,6 +188,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                     this.getPreferenceScreen();
             this.sharedPreferences = null == preferenceScreen ?
                     null : preferenceScreen.getSharedPreferences();
+        }
+    }
+
+    private void setupStorageDefinerPreference() {
+        Preference storageDefiner = findPreference("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER");
+        if (storageDefiner != null) {
+            storageDefiner.setOnPreferenceClickListener((view) -> {
+                Context ctx = getContext();
+                if (ctx != null) {
+                    startActivity(new Intent(ctx, DefineStorageActivity.class));
+                }
+                return true;
+            });
         }
     }
 

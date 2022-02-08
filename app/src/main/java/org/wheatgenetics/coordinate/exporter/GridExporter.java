@@ -11,6 +11,7 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class GridExporter extends Exporter {
     @NonNull
@@ -25,6 +26,16 @@ public class GridExporter extends Exporter {
         this.asyncTask = new GridExporter.AsyncTask(
                 context, exportFile, exportFileName, helper);
     }
+
+    public GridExporter(@NonNull final Context context,
+                        final OutputStream output, final String exportFileName,
+                        @NonNull final GridExporter.Helper
+                                helper) {
+        super();
+        this.asyncTask = new GridExporter.AsyncTask(
+                context, output, exportFileName, helper);
+    }
+
     // endregion
 
     // region Overridden Methods
@@ -66,6 +77,16 @@ public class GridExporter extends Exporter {
             this.helper = helper;
         }
 
+        private AsyncTask(
+                @NonNull final Context context,
+                final OutputStream output,
+                final String exportFileName,
+                @NonNull final GridExporter.Helper
+                        helper) {
+            super(context, output);
+            this.exportFileName = exportFileName;
+            this.helper = helper;
+        }
         private void deleteGrid() {
             this.helper.deleteGrid();
         }
@@ -82,12 +103,20 @@ public class GridExporter extends Exporter {
                 success = false;
             else
                 try {
-                    if (joinedGridModel.export(                        // throws java.io.IOException
-                            this.getExportFile(), this.exportFileName, this)) {
-                        this.makeExportFileDiscoverable();
-                        success = true;
-                    } else
-                        success = false;
+                    if (this.getExportFile() == null) {
+                        if (joinedGridModel.export(this.getOutputStream(), this.exportFileName, this)) {
+                            this.makeExportFileDiscoverable();
+                            success = true;
+                        } else success = false;
+                    } else {
+                        if (joinedGridModel.export(                        // throws java.io.IOException
+                                this.getExportFile(), this.exportFileName, this)) {
+                            this.makeExportFileDiscoverable();
+                            success = true;
+                        } else
+                            success = false;
+                    }
+
                 } catch (final IOException e) {
                     e.printStackTrace();
                     this.setMessage(

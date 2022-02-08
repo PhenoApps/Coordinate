@@ -16,6 +16,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 
 import java.io.File;
+import java.io.OutputStream;
 
 abstract class Exporter {
     // region Public Methods
@@ -35,8 +36,8 @@ abstract class Exporter {
         @NonNull
         private final ProgressDialog
                 progressDialog;
-        private final File exportFile;
-
+        private File exportFile;
+        private OutputStream outputStream;
         private String message = null;
         // endregion
 
@@ -52,6 +53,20 @@ abstract class Exporter {
                     R.string.ExporterProgressDialogInitialMessage,
                     /* onCancelListener => */this);
             this.exportFile = exportFile;
+        }
+
+        @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+        AsyncTask(@NonNull final Context context,
+                  final OutputStream output) {
+            super();
+
+            this.context = context;
+            this.progressDialog = new ProgressDialog(this.context,
+                    /* title => */ R.string.ExporterProgressDialogTitle,
+                    /* initialMessage => */
+                    R.string.ExporterProgressDialogInitialMessage,
+                    /* onCancelListener => */this);
+            this.outputStream = output;
         }
 
         private void confirm(@StringRes final int message,
@@ -77,7 +92,10 @@ abstract class Exporter {
         @Override
         protected Boolean doInBackground(final Void... params) {
             if (null == this.exportFile)
-                return false;
+                if (outputStream == null) return false;
+                else {
+                    return this.export();
+                }
             else {
                 if (this.exportFile.exists())
                     // noinspection ResultOfMethodCallIgnored
@@ -139,6 +157,10 @@ abstract class Exporter {
         @Nullable
         File getExportFile() {
             return this.exportFile;
+        }
+
+        OutputStream getOutputStream() {
+            return this.outputStream;
         }
 
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)

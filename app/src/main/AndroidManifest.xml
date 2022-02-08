@@ -3,6 +3,7 @@
     package="org.wheatgenetics.coordinate">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,13 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".activity.GridCreatorActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/MaterialAppTheme"/>
+
+        <activity android:name=".activity.TemplateCreatorActivity"
+            android:theme="@style/MaterialAppTheme"/>
 
         <activity
             android:exported="true"
@@ -23,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.DefineStorageActivity"
+            android:theme="@style/MaterialAppTheme"/>
 
         <activity
             android:name=".CollectorActivity"

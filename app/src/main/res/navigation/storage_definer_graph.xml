@@ -1,0 +1,13 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/storage_definer"
+    android:id="@+id/storage_definer_graph">
+
+    <fragment
+        android:id="@+id/storage_definer"
+        android:name="org.wheatgenetics.coordinate.fragments.StorageDefinerFragment"
+        tools:layout="@layout/fragment_storage_definer"
+        android:label="Storage Definer" />
+
+</navigation>

@@ -5,6 +5,7 @@ import android.os.Build;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
@@ -13,9 +14,11 @@ import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridExporter.Helper {
     // region Fields
@@ -116,7 +119,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                 File exportFile;
 
                 //check the sdk, if it is below 30 (R) then we don't use scoped storage
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q + 1) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                     final RequestDir exportDir =
                             new RequestDir(
                                     /* activity    => */ this.activity,
@@ -125,25 +128,48 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                                     /* requestCode => */ this.requestCode);
                     exportDir.createIfMissing();             // throws java.io.IOException, org.wheatge-
                     exportFile = exportDir.createNewFile(this.fileName + ".csv");
+
+                    //  netics.javalib.Dir.PermissionException
+                    this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
+                            /* context    => */ this.activity,
+                            /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
+                            /* exportFileName => */ this.fileName,
+                            /* helper         => */this);
+                    this.gridExporter.execute();
+
                 } else { //otherwise use the context to get the files directory
 
-                    File exportDir = new File(activity.getExternalFilesDir(null), "Export");
-                    if (!exportDir.isDirectory()) {
-                        if (!exportDir.mkdir()) {
-                            //something went wrong making dir
+                    if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+
+                        DocumentFile doc = DocumentTreeUtil.Companion.createFile(activity, "Export", this.fileName + ".csv");
+
+                        if (doc != null) {
+
+                            OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
+                            this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
+                            this.gridExporter.execute();
                         }
+
+
+                    } else {
+                        File exportDir = new File(activity.getExternalFilesDir(null), "Export");
+                        if (!exportDir.isDirectory()) {
+                            if (!exportDir.mkdir()) {
+                                //something went wrong making dir
+                            }
+                        }
+
+                        exportFile = new File(exportDir, this.fileName + ".csv");
+
+                        //  netics.javalib.Dir.PermissionException
+                        this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
+                                /* context    => */ this.activity,
+                                /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
+                                /* exportFileName => */ this.fileName,
+                                /* helper         => */this);
+                        this.gridExporter.execute();
                     }
-
-                    exportFile = new File(exportDir, this.fileName + ".csv");
                 }
-
-                //  netics.javalib.Dir.PermissionException
-                this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
-                        /* context    => */ this.activity,
-                        /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
-                        /* exportFileName => */ this.fileName,
-                        /* helper         => */this);
-                this.gridExporter.execute();
 
             } catch (final IOException | Dir.PermissionException e) {
                 if (!(e instanceof Dir.PermissionRequestedException))

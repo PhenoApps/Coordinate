@@ -300,11 +300,15 @@ public class NonNullOptionalFields extends OptionalFields
     }
 
     // region Package Methods
-    boolean setChecked(@IntRange(from = 0) final int index, final boolean checked) {
+    public boolean setChecked(@IntRange(from = 0) final int index, final boolean checked) {
         final BaseOptionalField baseOptionalField =
                 this.get(index);
         baseOptionalField.setChecked(checked);
         return baseOptionalField.nameIsIdentification();
+    }
+
+    public boolean getChecked(@IntRange(from = 0) final int index) {
+        return this.get(index).getChecked();
     }
 
     @NonNull
@@ -405,6 +409,15 @@ public class NonNullOptionalFields extends OptionalFields
         // noinspection CStyleArrayDeclaration
         final String result[] = new String[nameArrayList.size()];
         return nameArrayList.toArray(result);
+    }
+
+    public boolean contains(String name) {
+
+        for (String n : names()) {
+            if (n.equals(name)) return true;
+        }
+
+        return false;
     }
 
     @NonNull

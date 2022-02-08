@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     signingConfigs {
@@ -32,6 +33,7 @@ android {
 
     buildTypes {
         debug {
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
             debuggable true
         }
 
@@ -76,7 +78,16 @@ dependencies {
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
     implementation 'com.google.zxing:core:3.3.0'
 
+    implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
     implementation 'com.github.phenoapps:phenolib:v0.9.29'
+
+    //Don't update to 2.4.0 until we target SDK 31
+    // Navigation
+    androidTestImplementation "androidx.navigation:navigation-testing:2.3.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.0"
+    implementation "androidx.navigation:navigation-runtime-ktx:2.3.0"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"

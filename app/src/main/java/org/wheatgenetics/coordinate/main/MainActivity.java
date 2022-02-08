@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 public class MainActivity extends BaseMainActivity
         implements TemplateCreator.Handler {
@@ -105,6 +107,10 @@ public class MainActivity extends BaseMainActivity
             @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            DocumentTreeUtil.Companion.checkDocumentTreeSet(this);
+        }
 
         final ListView mainListView = this.findViewById(
                 R.id.mainListView);        // From layout/content_main.xml.

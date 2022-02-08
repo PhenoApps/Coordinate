@@ -2,17 +2,21 @@ package org.wheatgenetics.coordinate.te;
 
 import android.app.Activity;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class TemplateExporter {
     // region Fields
@@ -62,7 +66,7 @@ public class TemplateExporter {
     public void export() {
         File exportFile;
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             try {
                 final TemplatesDir templatesDir =
                         Utils.templatesDir(             // throws IOException,
@@ -75,23 +79,49 @@ public class TemplateExporter {
                     this.showLongToast(e.getMessage());
                 exportFile = null;
             }
+
+            if (null != exportFile) {
+                this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                        /* context       => */ this.activity,
+                        /* exportFile    => */ exportFile,
+                        /* templateModel => */ this.templatesTable().get(this.templateId));
+                this.templateExporter.execute();
+            }
+
         } else {
 
-            File templatesDir = new File(activity.getExternalFilesDir(null), "Templates");
-            if (!templatesDir.isDirectory()) {
-                if (!templatesDir.mkdir()) {
-                    //todo log cant create dir
-                }
-            }
-            exportFile = new File(templatesDir, this.fileName + ".xml");
-        }
+            if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-        if (null != exportFile) {
-            this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                    /* context       => */ this.activity,
-                    /* exportFile    => */ exportFile,
-                    /* templateModel => */ this.templatesTable().get(this.templateId));
-            this.templateExporter.execute();
+                DocumentFile file = DocumentTreeUtil.Companion.createFile(activity, "Templates",
+                        this.templatesTable().get(this.templateId).getTitle() + ".xml");
+
+                if (file != null) {
+                    try {
+                        OutputStream output = activity.getContentResolver().openOutputStream(file.getUri());
+                        this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                                this.activity, output, this.templatesTable().get(this.templateId));
+                        this.templateExporter.execute();
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+
+                }
+
+            } else {
+
+                File templatesDir = new File(activity.getExternalFilesDir(null), "Templates");
+                if (!templatesDir.isDirectory()) {
+                    if (!templatesDir.mkdir()) {
+                        Log.d("MakeDir", "Make dir failed for templates folder.");
+                    }
+                }
+                exportFile = new File(templatesDir, this.fileName + ".xml");
+                this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                        /* context       => */ this.activity,
+                        /* exportFile    => */ exportFile,
+                        /* templateModel => */ this.templatesTable().get(this.templateId));
+                this.templateExporter.execute();
+            }
         }
     }
 
