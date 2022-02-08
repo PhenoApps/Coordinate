@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -302,6 +304,13 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         final ListView gridsListView = this.findViewById(
                 R.id.gridsListView);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        long gridId = prefs.getLong(CollectorActivity.COLLECTOR_LAST_GRID, -1L);
+        if (gridId != -1L) {
+            prefs.edit().putLong(CollectorActivity.COLLECTOR_LAST_GRID, -1L).apply();
+            startActivity(CollectorActivity.intent(this, gridId));
+        }
 
         setupBottomNavigationBar();
 

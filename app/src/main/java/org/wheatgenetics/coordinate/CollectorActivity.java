@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,9 @@ import android.widget.EditText;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,10 +39,12 @@ public class CollectorActivity extends BackActivity implements
         DataEntryDialogFragment.Handler,
         ClearingEditorActionListener.Receiver {
 
+    public static final String COLLECTOR_LAST_GRID = "org.wheatgenetics.coordinate.keys.COLLECTOR_LAST_GRID";
     public static final String TAG = "CollectorActivity";
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
+    private long mGridId = -1;
     private Collector collectorInstance = null;  // lazy load
     // endregion
 
@@ -74,8 +79,16 @@ public class CollectorActivity extends BackActivity implements
         if (null != intent) {
             final String GRID_ID_KEY =
                     CollectorActivity.GRID_ID_KEY;
-            if (intent.hasExtra(GRID_ID_KEY)) this.collector().loadJoinedGridModel(
-                    intent.getLongExtra(GRID_ID_KEY, -1));
+            if (intent.hasExtra(GRID_ID_KEY)) {
+                mGridId = intent.getLongExtra(GRID_ID_KEY, -1L);
+                this.collector().loadJoinedGridModel(mGridId);
+            }
+        }
+
+        @Nullable final ActionBar supportActionBar = this.getSupportActionBar();
+        if (null != supportActionBar) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setTitle(null);
         }
 
         EditText dataEntryEt = findViewById(R.id.act_collector_data_entry_et);
@@ -138,6 +151,13 @@ public class CollectorActivity extends BackActivity implements
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
             final int about = R.id.action_nav_about;
+
+            //when navigating to another tab when collecting, save the current grid id
+            //to re-navigate here later
+            if (mGridId != -1L) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putLong(COLLECTOR_LAST_GRID, mGridId).apply();
+            }
 
             switch(item.getItemId()) {
                 case templates:
@@ -288,6 +308,8 @@ public class CollectorActivity extends BackActivity implements
         final int summarizeData = R.id.action_summarize_data;
         if (item.getItemId() == summarizeData) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
+        } else if (item.getItemId() == R.id.home) {
+            startActivity(GridsActivity.intent(this));
         }
         return super.onOptionsItemSelected(item);
     }
