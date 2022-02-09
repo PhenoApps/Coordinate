@@ -4,6 +4,7 @@
         versionCode="400"
         versionName="v4.0">
         <new>Added setting to export/import internal database</new>
+        <new>Add existing grids to projects</new>
     </release>
 
     <release
