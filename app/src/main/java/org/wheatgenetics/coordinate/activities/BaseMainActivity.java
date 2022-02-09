@@ -1,4 +1,4 @@
-package org.wheatgenetics.coordinate.main;
+package org.wheatgenetics.coordinate.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,7 +31,7 @@ import org.wheatgenetics.coordinate.model.TemplateType;
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.sharedpreferences.SharedPreferences;
 
-abstract class BaseMainActivity extends AppCompatActivity
+public abstract class BaseMainActivity extends AppCompatActivity
         implements StringGetter {
     // region Fields
     private TemplatesTable templatesTableInstance = null;//ll
@@ -41,11 +41,10 @@ abstract class BaseMainActivity extends AppCompatActivity
 
     // endregion
 
-
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     @NonNull
-    TemplatesTable templatesTable() {
+    protected TemplatesTable templatesTable() {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
                 new TemplatesTable(this);
         return this.templatesTableInstance;
@@ -62,7 +61,7 @@ abstract class BaseMainActivity extends AppCompatActivity
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     @NonNull
-    abstract GridCreator gridCreator();
+    protected abstract GridCreator gridCreator();
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     String versionName() {

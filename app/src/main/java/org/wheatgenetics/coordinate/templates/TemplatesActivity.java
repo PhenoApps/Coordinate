@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.templates;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -29,6 +33,8 @@ import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.preference.PreferenceActivity;
+import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.te.TemplateExportPreprocessor;
 import org.wheatgenetics.coordinate.te.TemplateExporter;
@@ -134,7 +140,22 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void deleteTemplate(@IntRange(from = 1) final long templateId) {
-        this.templateDeleter().delete(templateId);
+
+        AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_act_templates_ask_delete)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+
+                    this.templateDeleter().delete(templateId);
+
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+
+                });
+
+        askDelete.create();
+
+        askDelete.show();
+
     }
 
     // region Export Private Methods
@@ -281,6 +302,11 @@ public class TemplatesActivity extends BackActivity
         this.templateImportPreprocessor().preprocess();
     }
 
+    private void setupNewTemplateButton() {
+
+        findViewById(R.id.act_templates_fab).setOnClickListener((v) -> createTemplate());
+    }
+
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -293,6 +319,11 @@ public class TemplatesActivity extends BackActivity
 
         final ListView templatesListView = this.findViewById(
                 R.id.templatesListView);
+
+        setupBottomNavigationBar();
+
+        setupNewTemplateButton();
+
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
                 new TemplatesAdapter(this,
                         /* onCreateGridButtonClickListener => */ new View.OnClickListener() {
@@ -327,6 +358,46 @@ public class TemplatesActivity extends BackActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
+        bottomNavigationView.setSelectedItemId(R.id.action_nav_templates);
+    }
+
+    private void setupBottomNavigationBar() {
+
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
+        bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+
+        bottomNavigationView.setOnItemSelectedListener((item -> {
+
+            final int grids = R.id.action_nav_grids;
+            final int projects = R.id.action_nav_projects;
+            final int settings = R.id.action_nav_settings;
+            final int about = R.id.action_nav_about;
+
+            switch(item.getItemId()) {
+                case grids:
+                    startActivity(GridsActivity.intent(this));
+                    break;
+                case projects:
+                    startActivity(ProjectsActivity.intent(this));
+                    break;
+                case settings:
+                    startActivity(PreferenceActivity.intent(this));
+                    break;
+                case about:
+                    startActivity(new Intent(this, AboutActivity.class));
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }));
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_templates, menu);
 
@@ -343,6 +414,7 @@ public class TemplatesActivity extends BackActivity
     public void onRequestPermissionsResult(final int requestCode,
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final String permissions[],
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final int grantResults[]) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean permissionFound = false;
         for (final String permission : permissions)
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
