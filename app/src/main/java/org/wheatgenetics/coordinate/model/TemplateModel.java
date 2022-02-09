@@ -1,6 +1,5 @@
 package org.wheatgenetics.coordinate.model;
 
-import android.icu.util.Output;
 import android.os.Bundle;
 import android.util.Xml;
 
@@ -22,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -329,6 +329,30 @@ public class TemplateModel extends DisplayTemplateModel {
             } catch (final IOException e) {
                 return null;
             }
+    }
+
+    public static TemplateModel makeUserDefined(final InputStream input, StringGetter stringGetter) {
+
+        if (input == null) {
+
+            return null;
+
+        } else {
+
+            TemplateModel model = TemplateModel.makeUserDefined(new InputSource(input), stringGetter);
+
+            try {
+
+                input.close();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+
+            return model;
+        }
     }
 
     @Nullable

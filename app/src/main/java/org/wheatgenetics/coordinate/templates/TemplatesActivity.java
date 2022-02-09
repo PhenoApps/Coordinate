@@ -5,16 +5,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.phenoapps.androidlibrary.Utils;
@@ -35,6 +40,10 @@ import org.wheatgenetics.coordinate.te.TemplateExporter;
 import org.wheatgenetics.coordinate.ti.MenuItemEnabler;
 import org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor;
 import org.wheatgenetics.coordinate.ti.TemplateImporter;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class TemplatesActivity extends BackActivity
         implements TemplateCreator.Handler {
@@ -69,6 +78,22 @@ public class TemplatesActivity extends BackActivity
     // endregion
     private TemplateImporter templateImporterInstance = null;  // ll
     // endregion
+
+    private final ActivityResultLauncher<String[]> importTemplateLauncher = registerForActivityResult(new ActivityResultContracts.OpenDocument(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                importTemplate(getContentResolver().openInputStream(uri));
+
+            } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
 
     @NonNull
     public static Intent intent(
@@ -200,7 +225,7 @@ public class TemplatesActivity extends BackActivity
 
     private void configureImportMenuItem() {
         if (null != this.importMenuItem)
-            this.importMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
+            this.importMenuItem.setEnabled(true);
     }
 
     // region createTemplate() Private Methods
@@ -245,6 +270,10 @@ public class TemplatesActivity extends BackActivity
                             }
                         });
         return this.templateImporterInstance;
+    }
+
+    private void importTemplate(InputStream input) {
+        this.templateImporter().importTemplate(input);
     }
 
     private void importTemplate() {
@@ -442,6 +471,8 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     public void onImportTemplateMenuItem(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
-        this.preprocessTemplateImport();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            this.preprocessTemplateImport();
+        } else importTemplateLauncher.launch(null);
     }
 }

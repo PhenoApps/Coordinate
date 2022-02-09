@@ -68,7 +68,8 @@ class DocumentTreeUtil {
             if (persists.isNotEmpty()) {
                 val uri = persists.first().uri
                 DocumentFile.fromTreeUri(ctx, uri)?.let { tree ->
-                    var file = tree.findFile("Coordinate")
+                    var file: DocumentFile? = if (tree.name == "Coordinate") tree
+                    else tree.findFile("Coordinate")
                     if (file == null) {
                         file = tree.createDirectory("Coordinate")
                     }

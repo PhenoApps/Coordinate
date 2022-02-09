@@ -16,6 +16,7 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 
 abstract class Exporter {
@@ -94,7 +95,13 @@ abstract class Exporter {
             if (null == this.exportFile)
                 if (outputStream == null) return false;
                 else {
-                    return this.export();
+                    boolean result = this.export();
+                    try {
+                        outputStream.close();
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+                    return result;
                 }
             else {
                 if (this.exportFile.exists())

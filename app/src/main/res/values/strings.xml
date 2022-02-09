@@ -586,9 +586,12 @@
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
     <string name="frag_storage_definer_title">Storage Definer</string>
-    <string name="frag_storage_definer_summary">With the latest version of Android, users must grant access to use folders within apps. This step is optional if you don\'t want data to persist after deleting or reinstalling the app. \n <b>Note: Do not choose the Downloads folder, or a root directory to the internal or external storage locations.</b></string>
+    <string name="frag_storage_definer_summary">With the latest version of Android, users must grant access to use folders within apps. This step is optional if you don\'t want data to persist after deleting or reinstalling the app.</string>
     <string name="define">Define</string>
     <string name="pref_storage_definer_title">Define Storage Location</string>
     <string name="pref_storage_definer_summary">Choose a location on your system to save files to.</string>
+    <string name="migrate">Migrate</string>
+    <string name="frag_storage_migrator_title">Storage Migrator</string>
+    <string name="frag_storage_migrator_summary">Coordinate files were not found. Choosing migrate will allow you to select your old Coordinate folder to transfer the data.</string>
 
 </resources>
