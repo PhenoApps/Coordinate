@@ -14,6 +14,10 @@ import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.DisplayModel;
 import org.wheatgenetics.coordinate.model.ElementModel;
 
+/**
+ * Fragment code that manages click events and displays table in collect activity.
+ * Fragment is included in collector_tablerow.xml with data entry fragment.
+ */
 public class GridDisplayFragment extends DisplayFragment {
     private Adapter adapter = null;
 

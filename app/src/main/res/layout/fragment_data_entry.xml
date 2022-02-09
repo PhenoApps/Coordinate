@@ -4,44 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="org.wheatgenetics.coordinate.collector.DataEntryFragment">
+    tools:context="org.wheatgenetics.coordinate.collector.DataEntryDialogFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_data_entryDataEntryHeaderText"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/entryEditText"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:hint="@string/fragment_data_entryEntryHint"
-                android:imeActionId="100"
-                android:imeActionLabel="@string/fragment_data_entryEntryActionLabel"
-                android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:inputType="text|textNoSuggestions"
-                android:lines="1"
-                android:minEms="8"
-                android:selectAllOnFocus="true" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
