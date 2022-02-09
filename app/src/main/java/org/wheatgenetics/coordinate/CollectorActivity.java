@@ -38,10 +38,11 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
-        DataEntryFragment.Handler {
-    public static final int PROJECT_UPDATE_REQUEST_CODE = 12;
         DataEntryDialogFragment.Handler,
         ClearingEditorActionListener.Receiver {
+
+    public static final int PROJECT_UPDATE_REQUEST_CODE = 12;
+
 
     public static final String COLLECTOR_LAST_GRID = "org.wheatgenetics.coordinate.keys.COLLECTOR_LAST_GRID";
     public static final String TAG = "CollectorActivity";
