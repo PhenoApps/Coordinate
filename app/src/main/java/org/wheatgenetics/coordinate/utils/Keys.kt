@@ -6,6 +6,8 @@ class Keys {
 
         private const val prefix = "org.wheatgenetics.coordinate.keys"
 
-        val LAST_GRID_KEY = "$prefix.LAST_GRID_KEY"
+        //saves last grid that was opened
+        const val COLLECTOR_LAST_GRID = "$prefix.COLLECTOR_LAST_GRID"
+
     }
 }

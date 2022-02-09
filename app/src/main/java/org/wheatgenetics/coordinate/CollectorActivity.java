@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,7 +40,6 @@ public class CollectorActivity extends BackActivity implements
         DataEntryDialogFragment.Handler,
         ClearingEditorActionListener.Receiver {
 
-    public static final String COLLECTOR_LAST_GRID = "org.wheatgenetics.coordinate.keys.COLLECTOR_LAST_GRID";
     public static final String TAG = "CollectorActivity";
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
@@ -112,7 +110,7 @@ public class CollectorActivity extends BackActivity implements
     private void saveGridIdToPreferences(long gridId) {
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .edit().putLong(Keys.Companion.getLAST_GRID_KEY(), gridId)
+                .edit().putLong(Keys.COLLECTOR_LAST_GRID, gridId)
                 .apply();
     }
 
@@ -170,7 +168,7 @@ public class CollectorActivity extends BackActivity implements
             //to re-navigate here later
             if (mGridId != -1L) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                prefs.edit().putLong(COLLECTOR_LAST_GRID, mGridId).apply();
+                prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, mGridId).apply();
             }
 
             switch(item.getItemId()) {
@@ -324,7 +322,9 @@ public class CollectorActivity extends BackActivity implements
         final int summarizeData = R.id.action_summarize_data;
         if (item.getItemId() == summarizeData) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
-        } else if (item.getItemId() == R.id.home) {
+        } else if (item.getItemId() == android.R.id.home) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
             startActivity(GridsActivity.intent(this));
         }
         return super.onOptionsItemSelected(item);

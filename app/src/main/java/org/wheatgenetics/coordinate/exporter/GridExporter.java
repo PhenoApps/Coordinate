@@ -109,9 +109,9 @@ public class GridExporter extends Exporter {
         }
 
         private void resetLastGridId(long gridId) {
-            long lastId = prefs.getLong(Keys.Companion.getLAST_GRID_KEY(), -1L);
+            long lastId = prefs.getLong(Keys.COLLECTOR_LAST_GRID, -1L);
             if (lastId == gridId) {
-                prefs.edit().putLong(Keys.Companion.getLAST_GRID_KEY(), -1L).apply();
+                prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
             }
         }
 

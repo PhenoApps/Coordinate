@@ -33,8 +33,8 @@ public class GridDeleter extends BaseGridDeleter {
     //when a grid is deleted, check if the last preference needs to be reset
     private void checkPreferenceLastGrid(long gridId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context());
-        if (prefs.getLong(Keys.Companion.getLAST_GRID_KEY(), -1L) == gridId) {
-            prefs.edit().putLong(Keys.Companion.getLAST_GRID_KEY(), -1L).apply();
+        if (prefs.getLong(Keys.COLLECTOR_LAST_GRID, -1L) == gridId) {
+            prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
         }
     }
 
