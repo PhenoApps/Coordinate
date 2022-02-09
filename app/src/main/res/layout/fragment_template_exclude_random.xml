@@ -14,63 +14,68 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/frag_pb"
-        android:progress="0"/>
+        android:progress="33"/>
 
     <TextView style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:id="@+id/frag_grid_creator_new_template_tv"
+        android:id="@+id/frag_template_creator_exclude_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/frag_grid_creator_new_template_title"
+        android:text="@string/frag_template_creator_exclude_random_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_pb"/>
 
     <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:id="@+id/frag_grid_creator_project_creator_summary_tv"
+        android:id="@+id/frag_template_creator_exclude_summary_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/frag_grid_creator_new_template_summary"
+        android:text="@string/frag_template_creator_exclude_random_summary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_new_template_tv"/>
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_title_tv"/>
 
     <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_project_creator_summary_tv"
-        android:id="@+id/frag_grid_creator_template_name_et"
-        android:layout_margin="16dp"
-        android:hint="@string/frag_grid_creator_template_name_et_hint"
-        android:autofillHints="name" />
-
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_name_et"
-        android:id="@+id/frag_grid_creator_template_rows_et"
+        android:hint="@string/frag_template_creator_exclude_random_et_hint"
         android:layout_margin="16dp"
-        android:hint="@string/frag_grid_creator_template_rows_et_hint"
-        android:autofillHints="name" />
-
-    <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:imeOptions="actionDone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_rows_et"
-        android:id="@+id/frag_grid_creator_template_columns_et"
-        android:layout_margin="16dp"
-        android:hint="@string/frag_grid_creator_template_columns_et_hint"
-        android:autofillHints="no" />
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_summary_tv"
+        android:id="@+id/frag_template_creator_exclude_random_et"
+        android:autofillHints="" />
+
+    <com.evrencoskun.tableview.TableView
+        android:layout_margin="4dp"
+        android:id="@+id/frag_template_exclude_table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:row_header_width="64dp"
+        app:column_header_height="64dp"
+        app:allow_click_inside_column_header="false"
+        app:allow_click_inside_row_header="false"
+        app:allow_click_inside_cell="false"
+        app:show_horizontal_separator="false"
+        app:show_vertical_separator="false"
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_random_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/frag_template_exclude_reset_btn"/>
+
+    <Button style="@style/TextAppearance.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/frag_template_exclude_reset_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/frag_exclude_reset_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/frag_next_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"

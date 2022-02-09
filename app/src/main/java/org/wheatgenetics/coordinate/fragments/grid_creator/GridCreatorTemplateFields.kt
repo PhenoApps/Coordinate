@@ -219,6 +219,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
                 adapter.addAll(*fields.names())
 
                 (listView?.adapter as? ArrayAdapter<*>)?.notifyDataSetChanged()
+
             }
         }
     }
@@ -227,12 +228,23 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         ArrayAdapter<String>(ctx, R.layout.list_item_field, R.id.list_item_field_tv) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+            val requiredName = when (args.title) {
+                getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
+                getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
+                else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
+            }
+
             val view = super.getView(position, convertView, parent)
             val textView = view.findViewById<TextView>(R.id.list_item_field_tv)
             val editText = view.findViewById<EditText>(R.id.list_item_field_et)
             textView?.text = fields.get(position).name
             editText?.setText(fields.get(position).value)
-            editText?.hint = fields.get(position).hint
+
+            editText?.hint = if (requiredName == textView.text) {
+                getString(R.string.required_optional_field_hint)
+            } else fields.get(position).hint
+
             editText?.addTextChangedListener {
                 if (checkRequiredFieldsEntered()) setNextText()
                 else setDisabledNext()

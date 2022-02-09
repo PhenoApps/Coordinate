@@ -13,10 +13,11 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.GridCreatorActivity"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/MaterialAppTheme"/>
 
         <activity android:name=".activity.TemplateCreatorActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/MaterialAppTheme"/>
 
         <activity

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * https://github.com/evrencoskun/TableView/wiki
  */
-public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
+public class GridPreviewAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
 
 
     private final ArrayList<Pair<Integer, Integer>> mSelection = new ArrayList<>();
@@ -78,7 +78,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
      public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
          // Get cell xml layout 
          View layout = LayoutInflater.from(parent.getContext())
-              .inflate(R.layout.list_item_header, parent, false);
+              .inflate(R.layout.list_item_header_preview, parent, false);
          // Create a Custom ViewHolder for a Cell item.
          return new CellViewHolder(layout);
      }
@@ -107,15 +107,15 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
 
          if (cellItemModel != null) {
 
-             viewHolder.textView.setText(cellItemModel.getText());
+             //viewHolder.textView.setText(cellItemModel.getText());
 
              if (mSelection.contains(new Pair<>(rowPosition, columnPosition))) {
 
-                 viewHolder.textView.setBackgroundResource(R.drawable.table_cell_highlighted);
+                 viewHolder.textView.setBackgroundResource(R.drawable.table_cell_highlighted_preview);
 
              } else {
 
-                 viewHolder.textView.setBackgroundResource(R.drawable.table_cell);
+                 viewHolder.textView.setBackgroundResource(R.drawable.table_cell_preview);
              }
          }
 
@@ -123,7 +123,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
          // Then you should consider the below lines. Otherwise, you can ignore them.
  
          // It is necessary to remeasure itself.
-         viewHolder.container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+         //viewHolder.container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
          viewHolder.textView.requestLayout();
      }
 
@@ -143,7 +143,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
  
          // Get Column Header xml Layout
          View layout = LayoutInflater.from(parent.getContext())
-                 .inflate(R.layout.list_item_header, parent, false);
+                 .inflate(R.layout.list_item_header_preview, parent, false);
  
          // Create a ColumnHeader ViewHolder
          return new CellViewHolder(layout);
@@ -173,14 +173,14 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
          CellViewHolder columnHeaderViewHolder = (CellViewHolder) holder;
 
          if (columnHeaderItemModel != null) {
-             columnHeaderViewHolder.textView.setText(columnHeaderItemModel.getText());
+             //columnHeaderViewHolder.textView.setText(columnHeaderItemModel.getText());
          }
 
          // If your TableView should have auto resize for cells & columns.
          // Then you should consider the below lines. Otherwise, you can ignore them.
 
          // It is necessary to remeasure itself.
-         columnHeaderViewHolder.container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+         //columnHeaderViewHolder.container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
          columnHeaderViewHolder.textView.requestLayout();
      }
      
@@ -200,7 +200,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
  
          // Get Row Header xml Layout
          View layout = LayoutInflater.from(parent.getContext())
-                 .inflate(R.layout.list_item_header, parent, false);
+                 .inflate(R.layout.list_item_header_preview, parent, false);
  
          // Create a Row Header ViewHolder
          return new CellViewHolder(layout);

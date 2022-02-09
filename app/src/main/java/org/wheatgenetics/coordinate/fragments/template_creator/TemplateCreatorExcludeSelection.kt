@@ -2,39 +2,30 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.TableView
-import com.evrencoskun.tableview.handler.SelectionHandler
 import com.evrencoskun.tableview.listener.ITableViewListener
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
-import org.wheatgenetics.coordinate.collector.Collector
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.*
 import java.util.ArrayList
 import kotlin.random.Random
 
-typealias GridCell = org.wheatgenetics.coordinate.model.Cell
-class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
+class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_exclude_selection),
     ITableViewListener,
     StringGetter {
 
-    data class Cell(val text: String)
-
-    private val args: TemplateCreatorExcludeArgs by navArgs()
+    private val args: TemplateCreatorExcludeSelectionArgs by navArgs()
 
     private var mTemplateTable: TemplatesTable? = null
     private var mRandomSelections: ArrayList<Pair<Int, Int>> = ArrayList()
@@ -71,7 +62,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
+            findNavController().navigate(TemplateCreatorExcludeSelectionDirections
                 .actionTemplateExcludePop())
         }
 
@@ -79,60 +70,19 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
+            findNavController().navigate(TemplateCreatorExcludeSelectionDirections
                 .actionTemplateExcludeToTemplateNaming(args.title))
         }
-
-        randomEditText?.addTextChangedListener { it?.toString()?.let { text ->
-
-            addRandomExclusions(text.toIntOrNull() ?: 0)
-
-        } }
     }
 
     private fun clearDatabaseExclusions(temp: TemplateModel) {
 
         for (i in 0 until mRows) {
             for (j in 0 until mCols) {
-                val cell = GridCell(i + 1, j + 1, this)
+                val cell = Cell(i + 1, j + 1, this)
                 if (temp.isExcludedCell(cell)) {
                     temp.remove(cell)
                 }
-            }
-        }
-    }
-
-    private fun addRandomExclusions(n: Int) {
-
-        view?.findViewById<TableView>(R.id.frag_template_exclude_table)?.let { table ->
-
-            val adapter = (table.adapter as GridExcludeAdapter)
-
-            //reset old random selections
-            mRandomSelections.forEach {
-                adapter.setSelected(it.first, it.second)
-            }
-
-            mRandomSelections.clear()
-
-            //get all cells that aren't selected already
-            val nonExcluded = arrayListOf<Pair<Int, Int>>()
-            for (i in 0 until mRows) {
-                for (j in 0 until mCols) {
-                    val cell = Pair(i, j)
-                    if (!adapter.isSelected(i, j)) {
-                        nonExcluded.add(cell)
-                    }
-                }
-            }
-
-            //iterate n (random) num times and choose one non excluded cell to exclude
-            for (i in 0 until n) {
-                if (nonExcluded.size == 0) break
-                val cell = nonExcluded[Random.nextInt(0, nonExcluded.size)]
-                nonExcluded.remove(cell)
-                mRandomSelections.add(cell)
-                adapter.setSelected(cell.first, cell.second)
             }
         }
     }
@@ -149,7 +99,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
                 //update exclusions based on UI
                 val selections = (table.adapter as GridExcludeAdapter).selection
                 for (pair in selections) {
-                    val cell = GridCell(pair.first+1, pair.second+1, this)
+                    val cell = Cell(pair.first+1, pair.second+1, this)
                     if (!template.isExcludedCell(cell)) template.add(cell)
                 }
 
@@ -207,7 +157,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
                 //update ui selection based on previous exclusion
                 rows.forEachIndexed { i, _ ->
                     cols.forEachIndexed { j, _ ->
-                        if (template.isExcludedCell(GridCell(i+1, j+1, this))) {
+                        if (template.isExcludedCell(Cell(i+1, j+1, this))) {
                             (table.adapter as GridExcludeAdapter).setSelected(i, j)
                         }
                     }
