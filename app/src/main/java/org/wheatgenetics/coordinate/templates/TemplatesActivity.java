@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.templates;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -132,7 +133,22 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void deleteTemplate(@IntRange(from = 1) final long templateId) {
-        this.templateDeleter().delete(templateId);
+
+        AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_act_templates_ask_delete)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+
+                    this.templateDeleter().delete(templateId);
+
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+
+                });
+
+        askDelete.create();
+
+        askDelete.show();
+
     }
 
     // region Export Private Methods

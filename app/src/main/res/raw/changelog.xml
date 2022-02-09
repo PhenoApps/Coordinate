@@ -5,6 +5,7 @@
         versionName="v4.0">
         <new>Updated interface</new>
         <new>Added setting to export/import internal database</new>
+        <new>Added dialog to confirm template deletion</new>
     </release>
 
     <release
