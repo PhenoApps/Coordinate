@@ -44,6 +44,7 @@
             android:theme="@style/AppTheme.MaterialAboutActivity" />
 
         <activity
+            android:exported="false"
             android:name=".tc.exclude.ExcludeCellsActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -53,6 +54,7 @@
         </activity>
 
         <activity
+            android:exported="false"
             android:name=".preference.PreferenceActivity"
             android:label="@string/PreferenceActivityLabel"
             android:theme="@style/AppTheme">

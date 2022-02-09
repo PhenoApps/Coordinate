@@ -1,5 +1,12 @@
 <changelog>
     <release
+        date="2022-02-01"
+        versionCode="400"
+        versionName="v4.0">
+        <new>Added setting to export/import internal database</new>
+    </release>
+
+    <release
         date="2021-02-01"
         versionCode="310"
         versionName="v3.1">
