@@ -14,8 +14,10 @@ public abstract class BackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         @Nullable final ActionBar supportActionBar = this.getSupportActionBar();
-        if (null != supportActionBar)
-            supportActionBar.setDisplayHomeAsUpEnabled(/* showHomeAsUp => */ true);
+        if (null != supportActionBar) {
+            //supportActionBar.setDisplayHomeAsUpEnabled(/* showHomeAsUp => */ true);
+            supportActionBar.setTitle(null);
+        }
     }
 
     @Override

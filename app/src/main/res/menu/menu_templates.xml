@@ -10,11 +10,5 @@
         android:title="@string/TemplatesActivityImportMenuItemTitle"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
-
-    <item
-        android:icon="@drawable/ic_create_template_white"
-        android:onClick="onNewTemplateMenuItemClick"
-        android:title="@string/AppBarNewTitle"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+    
 </menu>

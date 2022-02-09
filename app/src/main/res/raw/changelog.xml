@@ -3,6 +3,7 @@
         date="2022-02-01"
         versionCode="400"
         versionName="v4.0">
+        <new>Updated interface</new>
         <new>Added setting to export/import internal database</new>
     </release>
 

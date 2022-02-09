@@ -7,4 +7,7 @@
     android:padding="12sp"
     android:singleLine="true"
     android:textSize="30sp"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="@string/GridsActivityLabel"/>
