@@ -42,6 +42,8 @@ public class CollectorActivity extends BackActivity implements
         DataEntryDialogFragment.Handler,
         ClearingEditorActionListener.Receiver {
 
+    public static final int PROJECT_UPDATE_REQUEST_CODE = 12;
+
     public static final String TAG = "CollectorActivity";
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
