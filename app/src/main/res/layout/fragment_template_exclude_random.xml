@@ -50,6 +50,7 @@
         android:autofillHints="" />
 
     <com.evrencoskun.tableview.TableView
+        android:visibility="gone"
         android:layout_margin="4dp"
         android:id="@+id/frag_template_exclude_table"
         android:layout_width="0dp"
@@ -63,19 +64,7 @@
         app:show_vertical_separator="false"
         app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_random_et"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/frag_template_exclude_reset_btn"/>
-
-    <Button style="@style/TextAppearance.MaterialComponents.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/frag_template_exclude_reset_btn"
-        android:background="@color/colorPrimary"
-        android:text="@string/frag_exclude_reset_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/frag_next_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"

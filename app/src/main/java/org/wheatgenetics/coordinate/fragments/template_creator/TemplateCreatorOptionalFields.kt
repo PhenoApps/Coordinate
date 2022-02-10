@@ -46,7 +46,7 @@ class TemplateCreatorOptionalFields : Fragment(R.layout.fragment_template_creato
         okButton?.setOnClickListener {
             writeToDatabase()
             findNavController().navigate(TemplateCreatorOptionalFieldsDirections
-                .actionTemplateOptionalFieldsToTemplateExclude(args.title))
+                .actionTemplateOptionalFieldsToTemplateExcludeOptions(args.title))
         }
 
         backButton?.setOnClickListener {

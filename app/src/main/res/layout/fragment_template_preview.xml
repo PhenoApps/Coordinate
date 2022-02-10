@@ -45,24 +45,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_template_creator_preview_summary_tv"/>
 
-    <com.evrencoskun.tableview.TableView
-        android:layout_margin="4dp"
-        android:id="@+id/frag_template_preview_table"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:row_header_width="@dimen/templatePreview"
-        app:column_header_height="@dimen/templatePreview"
-        app:allow_click_inside_column_header="false"
-        app:allow_click_inside_row_header="false"
-        app:allow_click_inside_cell="false"
-        app:show_horizontal_separator="false"
-        app:show_vertical_separator="false"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_preview_additional_tv"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/frag_back_btn"/>
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_preview_additional_tv"
+        app:layout_constraintBottom_toTopOf="@id/frag_next_btn">
+        <com.evrencoskun.tableview.TableView
+            android:id="@+id/frag_template_preview_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:row_header_width="@dimen/templatePreview"
+            app:column_header_height="@dimen/templatePreview"
+            app:allow_click_inside_column_header="false"
+            app:allow_click_inside_row_header="false"
+            app:allow_click_inside_cell="false"
+            app:show_horizontal_separator="false"
+            app:show_vertical_separator="false"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toBottomOf="@id/frag_template_creator_preview_additional_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/frag_back_btn"/>
+    </androidx.core.widget.NestedScrollView>
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"

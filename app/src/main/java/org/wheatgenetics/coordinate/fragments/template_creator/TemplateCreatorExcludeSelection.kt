@@ -44,6 +44,12 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
         setupButtons()
     }
 
+    private fun resetSelection() {
+        val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
+        (table?.adapter as? GridExcludeAdapter)?.clearSelection()
+        table?.adapter?.notifyDataSetChanged()
+    }
+
     private fun setupButtons() {
 
         val resetButton = view?.findViewById<Button>(R.id.frag_template_exclude_reset_btn)
@@ -52,13 +58,12 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
         val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
 
         resetButton?.setOnClickListener {
-            val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
-            (table?.adapter as? GridExcludeAdapter)?.clearSelection()
-            table?.adapter?.notifyDataSetChanged()
+            resetSelection()
         }
 
         //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
         backButton?.setOnClickListener {
+            resetSelection()
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())

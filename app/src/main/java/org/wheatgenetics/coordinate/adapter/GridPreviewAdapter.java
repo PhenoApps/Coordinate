@@ -78,7 +78,7 @@ public class GridPreviewAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
      public AbstractViewHolder onCreateCellViewHolder(ViewGroup parent, int viewType) {
          // Get cell xml layout 
          View layout = LayoutInflater.from(parent.getContext())
-              .inflate(R.layout.list_item_header_preview, parent, false);
+              .inflate(R.layout.list_item_preview, parent, false);
          // Create a Custom ViewHolder for a Cell item.
          return new CellViewHolder(layout);
      }

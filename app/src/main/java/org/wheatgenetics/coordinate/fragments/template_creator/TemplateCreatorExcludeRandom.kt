@@ -46,19 +46,15 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
 
     private fun setupButtons() {
 
-        val resetButton = view?.findViewById<Button>(R.id.frag_template_exclude_reset_btn)
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
         val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
 
-        resetButton?.setOnClickListener {
+        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        backButton?.setOnClickListener {
             val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
             (table?.adapter as? GridExcludeAdapter)?.clearSelection()
             table?.adapter?.notifyDataSetChanged()
-        }
-
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
-        backButton?.setOnClickListener {
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
@@ -71,7 +67,7 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
             mRandomSelections.clear()
             randomEditText?.setText(String())
             findNavController().navigate(TemplateCreatorExcludeRandomDirections
-                .actionTemplateExcludeToTemplateExcludeSelection(args.title))
+                .actionTemplateExcludeToTemplateNaming(args.title))
         }
 
         randomEditText?.addTextChangedListener { it?.toString()?.let { text ->
@@ -150,7 +146,6 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
             }
         }
     }
-
 
     /**
      * Uses the convertDatabaseToTable query to create a spreadsheet of values.

@@ -6,26 +6,28 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
+import org.wheatgenetics.coordinate.adapter.FieldsAdapter
 import org.wheatgenetics.coordinate.database.EntriesTable
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.database.TemplatesTable
+import org.wheatgenetics.coordinate.interfaces.RequiredFieldsCompleteListener
 import org.wheatgenetics.coordinate.model.Cell
 import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 
 class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields),
+    RequiredFieldsCompleteListener,
     StringGetter {
 
     private val args: GridCreatorTemplateFieldsArgs by navArgs()
@@ -150,7 +152,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
         val fields = NonNullOptionalFields(this)
 
-        val listView = view?.findViewById<ListView>(R.id.frag_grid_creator_fields_lv)
+        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
         listView?.children?.forEach {
             val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
@@ -170,7 +172,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
         }
 
-        val listView = view?.findViewById<ListView>(R.id.frag_grid_creator_fields_lv)
+        val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
         listView?.children?.forEach {
             val nameTextView = it.findViewById<TextView>(R.id.list_item_field_tv)
@@ -197,59 +199,33 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
     private fun setupAdapter() {
 
+        val requiredName = when (args.title) {
+            getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
+            getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
+            else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
+        }
+
         activity?.let { act ->
 
             //query db for optional fields
             mTemplate?.optionalFields()?.let { fields ->
 
-                val adapter = FieldsAdapter(act, fields)
+                val adapter = FieldsAdapter(this, requiredName, fields)
 
-                val listView = view?.findViewById<ListView>(R.id.frag_grid_creator_fields_lv)
+                val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
+
+                val size = fields.count()
+
+                listView?.setItemViewCacheSize(size)
+
+                listView?.layoutManager = LinearLayoutManager(act)
 
                 listView?.adapter = adapter
 
-                listView?.setOnItemClickListener { _, view, i, l ->
+                (listView?.adapter as FieldsAdapter).submitList(fields.map { it })
 
-                    //request et focus when item is clicked
-                    with (view as ConstraintLayout) {
-                        findViewById<EditText>(R.id.list_item_field_et).requestFocus()
-                    }
-                }
-
-                adapter.addAll(*fields.names())
-
-                (listView?.adapter as? ArrayAdapter<*>)?.notifyDataSetChanged()
-
+                listView?.adapter?.notifyItemRangeChanged(0, size)
             }
-        }
-    }
-
-    private inner class FieldsAdapter(ctx: Context, private val fields: NonNullOptionalFields):
-        ArrayAdapter<String>(ctx, R.layout.list_item_field, R.id.list_item_field_tv) {
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
-            val requiredName = when (args.title) {
-                getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
-                getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
-                else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
-            }
-
-            val view = super.getView(position, convertView, parent)
-            val textView = view.findViewById<TextView>(R.id.list_item_field_tv)
-            val editText = view.findViewById<EditText>(R.id.list_item_field_et)
-            textView?.text = fields.get(position).name
-            editText?.setText(fields.get(position).value)
-
-            editText?.hint = if (requiredName == textView.text) {
-                getString(R.string.required_optional_field_hint)
-            } else fields.get(position).hint
-
-            editText?.addTextChangedListener {
-                if (checkRequiredFieldsEntered()) setNextText()
-                else setDisabledNext()
-            }
-            return view
         }
     }
 
@@ -257,4 +233,10 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
     @SuppressLint("ResourceType")
     override fun getQuantity(resId: Int, quantity: Int, vararg formatArgs: Any?) = activity?.getString(resId, formatArgs) ?: String()
+
+    override fun completed() {
+
+        if (checkRequiredFieldsEntered()) setNextText() else setDisabledNext()
+
+    }
 }

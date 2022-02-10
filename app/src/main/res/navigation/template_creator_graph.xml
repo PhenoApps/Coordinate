@@ -25,8 +25,30 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_optional_fields_to_template_exclude"
+            android:id="@+id/action_template_optional_fields_to_template_exclude_options"
+            app:destination="@id/template_exclude_options" />
+    </fragment>
+
+    <fragment tools:layout="@layout/fragment_template_exclude_options"
+        android:id="@+id/template_exclude_options"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeOptions"
+        android:label="Template Exclude Options" >
+        <action
+            android:id="@+id/action_template_exclude_pop"
+            app:popUpTo="@id/template_exclude_options"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_exclude_random"
             app:destination="@id/template_exclude_random" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_exclude_selection"
+            app:destination="@id/template_exclude_selection" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_naming"
+            app:destination="@id/template_naming"/>
     </fragment>
 
     <fragment tools:layout="@layout/fragment_template_exclude_random"
@@ -41,8 +63,8 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_exclude_to_template_exclude_selection"
-            app:destination="@id/template_exclude_selection" />
+            android:id="@+id/action_template_exclude_to_template_naming"
+            app:destination="@id/template_naming" />
     </fragment>
 
     <fragment tools:layout="@layout/fragment_template_exclude_selection"
@@ -58,39 +80,25 @@
             app:argType="string" />
         <action
             android:id="@+id/action_template_exclude_to_template_naming"
-            app:destination="@id/template_column_naming" />
+            app:destination="@id/template_naming" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_creator_column_naming"
-        android:id="@+id/template_column_naming"
-        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorColumnNaming"
-        android:label="Template Column Naming" >
+    <fragment tools:layout="@layout/fragment_template_creator_naming"
+        android:id="@+id/template_naming"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorNaming"
+        android:label="Template Naming" >
         <action
             android:id="@+id/action_template_naming_pop"
-            app:popUpTo="@id/template_column_naming"
-            app:popUpToInclusive="true" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <action android:id="@+id/action_template_column_to_row_naming"
-            app:destination="@id/template_row_naming"/>
-    </fragment>
-
-    <fragment tools:layout="@layout/fragment_template_creator_row_naming"
-        android:id="@+id/template_row_naming"
-        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorRowNaming"
-        android:label="Template Row Naming" >
-        <action
-            android:id="@+id/action_template_naming_pop"
-            app:popUpTo="@id/template_row_naming"
+            app:popUpTo="@id/template_naming"
             app:popUpToInclusive="true" />
         <argument
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_row_naming_to_template_preview"
+            android:id="@+id/action_template_naming_to_template_preview"
             app:destination="@id/template_preview" />
     </fragment>
+
 
     <fragment tools:layout="@layout/fragment_template_preview"
         android:id="@+id/template_preview"

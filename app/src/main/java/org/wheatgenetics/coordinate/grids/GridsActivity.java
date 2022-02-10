@@ -360,11 +360,13 @@ public class GridsActivity extends BackActivity {
                     this.statelessGridCreator().continueExcluding(data.getExtras());
                 break;
             case CREATE_GRID_REFRESH:
-                long gridId = data.getLongExtra("gridId", -1L);
-                if (gridId != -1L) {
-                    startCollectorActivity(gridId);
+                if (resultCode == Activity.RESULT_OK) {
+                    long gridId = data.getLongExtra("gridId", -1L);
+                    if (gridId != -1L) {
+                        startCollectorActivity(gridId);
+                    }
+                    this.notifyDataSetChanged();
                 }
-                this.notifyDataSetChanged();
                 break;
         }
     }
