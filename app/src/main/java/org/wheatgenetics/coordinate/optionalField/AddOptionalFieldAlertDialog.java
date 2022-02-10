@@ -12,14 +12,14 @@ import org.phenoapps.androidlibrary.AlertDialog;
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.R;
 
-class AddOptionalFieldAlertDialog extends AlertDialog {
+public class AddOptionalFieldAlertDialog extends AlertDialog {
     // region Fields
     @NonNull
     private final
     AddOptionalFieldAlertDialog.Handler handler;
     private EditText nameEditText, defaultValueEditText;
     private NonNullOptionalFields nonNullOptionalFields;
-    AddOptionalFieldAlertDialog(final Activity activity, @NonNull final AddOptionalFieldAlertDialog.Handler handler) {
+    public AddOptionalFieldAlertDialog(final Activity activity, @NonNull final AddOptionalFieldAlertDialog.Handler handler) {
         super(activity);
         this.handler = handler;
     }
@@ -28,17 +28,21 @@ class AddOptionalFieldAlertDialog extends AlertDialog {
     private void addOptionalField() {
         final String name =
                 Utils.getText(this.nameEditText);
-
-        if (name.length() < 1)
+        String defaultText = "";
+        if (name.length() < 1
+                || (this.nonNullOptionalFields != null && this.nonNullOptionalFields.contains(name)))
             this.showToast(R.string.AddOptionalFieldAlertDialogToast);
         else {
-            if (null != this.nonNullOptionalFields) this.nonNullOptionalFields.add(
-                    /* name  => */ name,
-                    /* value => */ Utils.getText(
-                            this.defaultValueEditText),
-                    /* hint => */null);
+            if (null != this.nonNullOptionalFields) {
+                defaultText = Utils.getText(this.defaultValueEditText);
+
+                this.nonNullOptionalFields.add(
+                        /* name  => */ name,
+                        /* value => */ defaultText,
+                        /* hint => */null);
+            }
             this.cancelAlertDialog();
-            this.handler.handleAddOptionalFieldDone();
+            this.handler.handleAddOptionalFieldDone(name, defaultText);
         }
     }
 
@@ -65,7 +69,7 @@ class AddOptionalFieldAlertDialog extends AlertDialog {
         this.setOKPositiveButton(null).setCancelNegativeButton();
     }
 
-    void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
+    public void show(@Nullable final NonNullOptionalFields nonNullOptionalFields) {
         if (null != nonNullOptionalFields) {
             if (null != this.nameEditText) this.nameEditText.setText("");
             if (null != this.defaultValueEditText) this.defaultValueEditText.setText("");
@@ -83,7 +87,7 @@ class AddOptionalFieldAlertDialog extends AlertDialog {
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    interface Handler {
-        public abstract void handleAddOptionalFieldDone();
+    public interface Handler {
+        public abstract void handleAddOptionalFieldDone(String name, String defaultValue);
     }
 }

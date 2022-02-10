@@ -6,6 +6,7 @@
         <new>Updated interface</new>
         <new>Added setting to export/import internal database</new>
         <new>Added dialog to confirm template deletion</new>
+        <new>Add existing grids to projects</new>
         <bugfix>Fixed layouts for long project/template names</bugfix>
     </release>
 

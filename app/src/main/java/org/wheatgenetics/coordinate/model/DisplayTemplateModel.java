@@ -484,6 +484,21 @@ public class DisplayTemplateModel extends BaseTemplateModel {
         return null == excludedCells ? false : excludedCells.contains(cell);
     }
 
+    public void add(@Nullable final Cell cell) {
+
+        if (this.excludedCellsInstance == null) {
+            this.excludedCellsInstance = new Cells(this.getRows(), this.getCols(), this.stringGetter());
+        }
+        this.excludedCellsInstance.add(cell);
+    }
+
+    public void remove(@Nullable final Cell cell) {
+        if (this.excludedCellsInstance == null) {
+            this.excludedCellsInstance = new Cells(this.getRows(), this.getCols(), this.stringGetter());
+        }
+        this.excludedCellsInstance.remove(cell);
+    }
+
     public void toggle(@Nullable final Cell cell) {
         if (null != cell)
             if (this.isExcludedCell(cell))

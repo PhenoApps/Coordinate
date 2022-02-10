@@ -303,6 +303,10 @@ public class TemplateModel extends DisplayTemplateModel {
                 stringGetter);
     }
 
+    public void setId(int id) {
+        super.setId(id);
+    }
+
     @Nullable
     public static TemplateModel makeUserDefined(final File file,
                                                 @NonNull final StringGetter stringGetter) {

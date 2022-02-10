@@ -23,7 +23,9 @@ import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter;
+import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
@@ -33,6 +35,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
 public class ProjectsActivity extends BackActivity {
+    private static final int CREATE_GRID_REQUEST_CODE = 15;
     private static final int COLLECT_DATA_REQUEST_CODE = 10,
             EXPORT_PROJECT_REQUEST_CODE = 20, SHOW_GRIDS_REQUEST_CODE = 30;
     private static Intent INTENT_INSTANCE = null;                       // lazy load
@@ -86,7 +89,10 @@ public class ProjectsActivity extends BackActivity {
     // endregion
 
     private void createGrid(@IntRange(from = 1) final long projectId) {
-        this.statelessGridCreator().createInProject(projectId);
+        Intent creator = new Intent(this, GridCreatorActivity.class);
+        creator.putExtra("projectId", projectId);
+        startActivityForResult(creator, CREATE_GRID_REQUEST_CODE);
+        //this.statelessGridCreator().createInProject(projectId);
     }
 
     private void notifyDataSetChanged() {
@@ -283,6 +289,15 @@ public class ProjectsActivity extends BackActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
+            case CREATE_GRID_REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    long gridId = data.getLongExtra("gridId", -1L);
+                    if (gridId != -1L) {
+                        startActivityForResult(CollectorActivity.intent(this, gridId),
+                                COLLECT_DATA_REQUEST_CODE);
+                    }
+                }
+                break;
             case ProjectsActivity.COLLECT_DATA_REQUEST_CODE:
             case ProjectsActivity.SHOW_GRIDS_REQUEST_CODE:
                 this.notifyDataSetChanged();
