@@ -35,16 +35,13 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.Keys;
 
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
         DataEntryDialogFragment.Handler,
         ClearingEditorActionListener.Receiver {
 
-    public static final int PROJECT_UPDATE_REQUEST_CODE = 12;
-
-
-    public static final String COLLECTOR_LAST_GRID = "org.wheatgenetics.coordinate.keys.COLLECTOR_LAST_GRID";
     public static final String TAG = "CollectorActivity";
     private static final String GRID_ID_KEY = "gridId";
     private static Intent INTENT_INSTANCE = null;                       // lazy load
@@ -86,7 +83,10 @@ public class CollectorActivity extends BackActivity implements
                     CollectorActivity.GRID_ID_KEY;
             if (intent.hasExtra(GRID_ID_KEY)) {
                 mGridId = intent.getLongExtra(GRID_ID_KEY, -1L);
-                this.collector().loadJoinedGridModel(mGridId);
+                if (mGridId != -1L) {
+                    this.collector().loadJoinedGridModel(mGridId);
+                    saveGridIdToPreferences(mGridId);
+                }
             }
         }
 
@@ -105,6 +105,15 @@ public class CollectorActivity extends BackActivity implements
 
         attachKeyboardListeners();
         setupBottomNavigationBar();
+    }
+
+    //whenever collector activity is opened save the grid id to preferences
+    //on next app-open, navigate to this grid
+    private void saveGridIdToPreferences(long gridId) {
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit().putLong(Keys.COLLECTOR_LAST_GRID, gridId)
+                .apply();
     }
 
     @Override
@@ -179,7 +188,7 @@ public class CollectorActivity extends BackActivity implements
             //to re-navigate here later
             if (mGridId != -1L) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                prefs.edit().putLong(COLLECTOR_LAST_GRID, mGridId).apply();
+                prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, mGridId).apply();
             }
 
             switch(item.getItemId()) {
@@ -295,7 +304,9 @@ public class CollectorActivity extends BackActivity implements
     }
 
     @Override
-    public String getProjectTitle() { return this.collector().getProjectTitle(); }
+    public String getProjectTitle() {
+        return this.collector().getProjectTitle();
+    }
 
     @Override
     public String getTemplateTitle() {
@@ -332,6 +343,9 @@ public class CollectorActivity extends BackActivity implements
         if (item.getItemId() == summarizeData) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
         } else if (item.getItemId() == android.R.id.home) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
+
             startActivity(GridsActivity.intent(this));
         }
         return super.onOptionsItemSelected(item);

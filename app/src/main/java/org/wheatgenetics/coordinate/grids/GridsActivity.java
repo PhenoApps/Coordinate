@@ -41,6 +41,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
@@ -308,12 +309,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         final ListView gridsListView = this.findViewById(
                 R.id.gridsListView);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        long gridId = prefs.getLong(CollectorActivity.COLLECTOR_LAST_GRID, -1L);
-        if (gridId != -1L) {
-            prefs.edit().putLong(CollectorActivity.COLLECTOR_LAST_GRID, -1L).apply();
-            startActivity(CollectorActivity.intent(this, gridId));
-        }
+        navigateToLastGrid();
 
         setupBottomNavigationBar();
 
@@ -358,6 +354,23 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
     }
     // endregion
+
+    /**
+     * Called in onCreate, this will navigate to the last opened grid.
+     * Based on the saved preference grid id.
+     */
+    private void navigateToLastGrid() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        long lastGridId = prefs.getLong(Keys.COLLECTOR_LAST_GRID, -1L);
+
+        if (lastGridId != -1L) {
+
+            this.startCollectorActivity(lastGridId);
+
+        }
+
+        prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
+    }
 
     private void setupNewGridButton() {
         findViewById(R.id.act_grids_fab).setOnClickListener((v) -> createGrid());
