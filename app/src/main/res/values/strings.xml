@@ -322,7 +322,7 @@
 
     <!-- AddOptionalFieldAlertDialog -->
     <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
-    <string name="AddOptionalFieldAlertDialogToast">Field name cannot be empty.</string>
+    <string name="AddOptionalFieldAlertDialogToast">Field names must be unique and non-empty.</string>
 
 
     <!-- CheckAndAddOptionalFieldsAlertDialog -->
@@ -523,6 +523,53 @@
 
     <!-- BaseCollector -->
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
+    <string name="frag_grid_creator_one_title">Create Grid</string>
+    <string name="frag_grid_creator_one_summary">Please select one option.</string>
+    <string name="frag_grid_creator_one_dont_add">Don\'t add this grid to a project.</string>
+    <string name="frag_grid_creator_one_add">Add this grid to a project.</string>
+    <string name="frag_grid_creator_one_next_btn">Next</string>
+    <string name="frag_grid_creator_one_cancel_btn">Cancel</string>
+    <string name="frag_grid_creator_project_add_title">Add this grid to a project</string>
+    <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project by selecting an item below.</string>
+    <string name="frag_grid_creator_project_creator_title">Create project</string>
+    <string name="frag_grid_creator_project_creator_summary">Please enter a non-existing project name below to continue.</string>
+    <string name="frag_grid_creator_project_creator_et_hint">Enter a project name here</string>
+    <string name="frag_grid_creator_template_options_title">Template options</string>
+    <string name="frag_grid_creator_template_options_summary">Select the option to create a new template or use an existing template below.</string>
+    <string name="frag_grid_creator_template_option_new">New template</string>
+    <string name="frag_grid_creator_new_template_title">New template</string>
+    <string name="frag_grid_creator_new_template_summary">Please enter a template name and its grid dimensions.</string>
+    <string name="frag_grid_creator_template_rows_et_hint">Number of rows</string>
+    <string name="frag_grid_creator_template_columns_et_hint">Number of columns</string>
+    <string name="frag_grid_creator_template_name_et_hint">Template name</string>
+    <string name="frag_grid_creator_template_new_title">New Template Settings</string>
+    <string name="frag_grid_creator_template_new_summary">Below are optional settings to fine-tune template usage.</string>
+    <string name="frag_grid_creator_template_settings_optional_fields">Optional Fields</string>
+    <string name="frag_grid_creator_template_settings_exclude">Exclude</string>
+    <string name="frag_grid_creator_template_settings_set_naming">Set naming</string>
+    <string name="frag_template_creator_fields_summary">Fill in the optional fields below.</string>
+    <string name="frag_template_creator_options_title">Optional fields</string>
+    <string name="frag_template_creator_options_summary">Toggling the below fields will change its visibility in the grid.</string>
+    <string name="frag_template_creator_options_new">Create a new field.</string>
+    <string name="frag_template_creator_exclude_title">Exclude</string>
+    <string name="frag_template_creator_exclude_summary">Exclude cells explicitly by clicking and highlighting them, click on headers to select/deselect an entire row or column.</string>
+    <string name="frag_template_creator_exclude_rows_btn">Rows</string>
+    <string name="frag_template_creator_exclude_random_btn">Random</string>
+    <string name="frag_template_creator_exclude_cells_btn">Cells</string>
+    <string name="frag_template_creator_exclude_columns_btn">Columns</string>
+    <string name="frag_template_creator_naming_title">Naming</string>
+    <string name="frag_template_creator_naming_summary">Choose how axes are labeled in the grid.</string>
+    <string name="frag_template_creator_naming_rows_label">Rows</string>
+    <string name="frag_template_creator_naming_columns_label">Columns</string>
+    <string name="frag_template_creator_name_input_error">Please make sure the name is not blank.</string>
+    <string name="frag_template_creator_dimension_input_error">Please make sure the range is greater than 1.</string>
+    <string name="frag_template_creator_name_duplicate_error">Name already exists in database.</string>
+    <string name="frag_exclude_reset_button">Reset</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
+    <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
+    <string name="skip">Skip</string>
+    <string name="list_item_field_et_hint">Enter field value here</string>
 
     <string name="bottom_nav_bar_about">About</string>
     <string name="bottom_nav_bar_settings">Settings</string>
@@ -552,5 +599,6 @@
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
+    <string name="project_edit_menu_item_click">Edit Project</string>
 
 </resources>

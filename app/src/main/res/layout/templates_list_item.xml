@@ -10,20 +10,26 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
+        app:layout_constraintEnd_toStartOf="@id/templatesListItemDeleteButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
             android:id="@+id/templatesListItemTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
 
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="1"
 
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

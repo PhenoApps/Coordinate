@@ -1,5 +1,6 @@
 package org.wheatgenetics.coordinate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.ClearingEditorActionListener;
@@ -130,7 +132,25 @@ public class CollectorActivity extends BackActivity implements
     protected void onActivityResult(final int requestCode,
                                     final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.collector().parseActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PROJECT_UPDATE_REQUEST_CODE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                final String GRID_ID_KEY =
+                        CollectorActivity.GRID_ID_KEY;
+                final Intent intent = getIntent();
+
+                if (intent.hasExtra(GRID_ID_KEY)) {
+
+                    long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
+
+                    collectorInstance.loadJoinedGridModelThenPopulate(gridId);
+
+                }
+            }
+
+        } else this.collector().parseActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -325,6 +345,7 @@ public class CollectorActivity extends BackActivity implements
         } else if (item.getItemId() == android.R.id.home) {
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
+
             startActivity(GridsActivity.intent(this));
         }
         return super.onOptionsItemSelected(item);
@@ -338,5 +359,25 @@ public class CollectorActivity extends BackActivity implements
     @Override
     public void clearText() {
         clearEntry();
+    }
+
+    public void onProjectEditMenuItemClick(MenuItem item) {
+
+        final String GRID_ID_KEY =
+                CollectorActivity.GRID_ID_KEY;
+        final Intent intent = getIntent();
+
+        if (intent.hasExtra(GRID_ID_KEY)) {
+
+            long gridId = intent.getLongExtra(GRID_ID_KEY, -1);
+
+            if (gridId != -1L) {
+
+                Intent projectEditor = new Intent(this, GridCreatorActivity.class);
+                projectEditor.putExtra("projectEdit", true);
+                projectEditor.putExtra("gridId", gridId);
+                startActivityForResult(projectEditor, PROJECT_UPDATE_REQUEST_CODE);
+            }
+        }
     }
 }
