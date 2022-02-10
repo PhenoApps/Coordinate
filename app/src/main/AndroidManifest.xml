@@ -13,26 +13,20 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:exported="true"
-            android:name=".main.MainActivity"
-            android:configChanges="keyboardHidden|keyboard"
-            android:theme="@style/AppTheme">
+            android:name=".CollectorActivity"
+            android:label="@string/CollectorActivityLabel"
+            android:theme="@style/AppTheme"/>
 
+        <activity
+            android:name=".grids.GridsActivity"
+            android:label="@string/Coordinate"
+            android:theme="@style/AppTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".CollectorActivity"
-            android:label="@string/CollectorActivityLabel"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".grids.GridsActivity"
-            android:label="@string/GridsActivityLabel"
-            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".templates.TemplatesActivity"

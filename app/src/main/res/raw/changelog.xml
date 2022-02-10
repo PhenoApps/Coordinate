@@ -3,7 +3,9 @@
         date="2022-02-01"
         versionCode="400"
         versionName="v4.0">
+        <new>Updated interface</new>
         <new>Added setting to export/import internal database</new>
+        <new>Added dialog to confirm template deletion</new>
         <bugfix>Fixed layouts for long project/template names</bugfix>
     </release>
 
