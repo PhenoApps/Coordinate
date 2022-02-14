@@ -8,4 +8,7 @@
     <dimen name="masterDetailItemAppBarHeight">200dp</dimen>
     <dimen name="masterDetailListItemTextViewMargin">16dp</dimen>
     <dimen name="masterDetailListItemWidth">200dp</dimen>
+
+    <dimen name="templatePreview">16dp</dimen>
+
 </resources>

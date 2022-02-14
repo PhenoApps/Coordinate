@@ -25,17 +25,55 @@
             android:name="title"
             app:argType="string" />
         <action
-            android:id="@+id/action_template_optional_fields_to_template_exclude"
-            app:destination="@id/template_exclude" />
+            android:id="@+id/action_template_optional_fields_to_template_exclude_options"
+            app:destination="@id/template_exclude_options" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_exclude"
-        android:id="@+id/template_exclude"
-        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExclude"
-        android:label="Template Exclude" >
+    <fragment tools:layout="@layout/fragment_template_exclude_options"
+        android:id="@+id/template_exclude_options"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeOptions"
+        android:label="Template Exclude Options" >
         <action
             android:id="@+id/action_template_exclude_pop"
-            app:popUpTo="@id/template_exclude"
+            app:popUpTo="@id/template_exclude_options"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_exclude_random"
+            app:destination="@id/template_exclude_random" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_exclude_selection"
+            app:destination="@id/template_exclude_selection" />
+        <action
+            android:id="@+id/action_template_exclude_options_to_template_naming"
+            app:destination="@id/template_naming"/>
+    </fragment>
+
+    <fragment tools:layout="@layout/fragment_template_exclude_random"
+        android:id="@+id/template_exclude_random"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeRandom"
+        android:label="Template Exclude Random" >
+        <action
+            android:id="@+id/action_template_exclude_pop"
+            app:popUpTo="@id/template_exclude_random"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_template_exclude_to_template_naming"
+            app:destination="@id/template_naming" />
+    </fragment>
+
+    <fragment tools:layout="@layout/fragment_template_exclude_selection"
+        android:id="@+id/template_exclude_selection"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeSelection"
+        android:label="Template Exclude Selection" >
+        <action
+            android:id="@+id/action_template_exclude_pop"
+            app:popUpTo="@id/template_exclude_selection"
             app:popUpToInclusive="true" />
         <argument
             android:name="title"
@@ -53,6 +91,19 @@
             android:id="@+id/action_template_naming_pop"
             app:popUpTo="@id/template_naming"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_template_naming_to_template_preview"
+            app:destination="@id/template_preview" />
+    </fragment>
+
+
+    <fragment tools:layout="@layout/fragment_template_preview"
+        android:id="@+id/template_preview"
+        android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorPreview"
+        android:label="Template Preview" >
         <argument
             android:name="title"
             app:argType="string" />

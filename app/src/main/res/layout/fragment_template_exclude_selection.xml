@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/frag_template_creator_exclude_title"
+        android:text="@string/frag_template_creator_exclude_selection_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_pb"/>
@@ -36,34 +36,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_title_tv"/>
 
-    <EditText
-        android:inputType="number"
-        android:hint="@string/frag_template_creator_exclude_random_et_hint"
-        android:layout_margin="16dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_summary_tv"
-        android:id="@+id/frag_template_creator_exclude_random_et"
-        android:autofillHints="" />
-
     <com.evrencoskun.tableview.TableView
-        android:layout_margin="16dp"
         android:id="@+id/frag_template_exclude_table"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:row_header_width="64dp"
-        app:column_header_height="64dp"
+        android:layout_margin="4dp"
+        app:allow_click_inside_cell="true"
         app:allow_click_inside_column_header="true"
         app:allow_click_inside_row_header="true"
-        app:allow_click_inside_cell="true"
-        app:show_horizontal_separator="false"
-        app:show_vertical_separator="false"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_random_et"
-        app:layout_constraintStart_toStartOf="parent"
+        app:column_header_height="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/frag_template_exclude_reset_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/frag_template_exclude_reset_btn"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_summary_tv"
+        app:row_header_width="64dp"
+        app:show_horizontal_separator="false"
+        app:show_vertical_separator="false" />
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"

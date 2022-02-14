@@ -70,7 +70,7 @@
         android:id="@+id/frag_grid_creator_template_columns_et"
         android:layout_margin="16dp"
         android:hint="@string/frag_grid_creator_template_columns_et_hint"
-        android:autofillHints="name" />
+        android:autofillHints="no" />
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"

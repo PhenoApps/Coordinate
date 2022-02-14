@@ -488,7 +488,13 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                     this.statelessGridCreator().continueExcluding(data.getExtras());
                 break;
             case CREATE_GRID_REFRESH:
-                this.notifyDataSetChanged();
+                if (resultCode == Activity.RESULT_OK) {
+                    long gridId = data.getLongExtra("gridId", -1L);
+                    if (gridId != -1L) {
+                        startCollectorActivity(gridId);
+                    }
+                    this.notifyDataSetChanged();
+                }
                 break;
         }
     }

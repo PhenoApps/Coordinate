@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:layout_width="64dp"
-    android:layout_height="64dp"
+    android:layout_width="@dimen/templatePreview"
+    android:layout_height="@dimen/templatePreview"
     android:orientation="horizontal">
 
     <TextView
@@ -15,6 +15,6 @@
         android:maxLines="1"
         android:scrollbars="none"
         android:text="@{name}"
-        android:textSize="18sp"/>
+        android:textSize="12sp"/>
 
 </LinearLayout>

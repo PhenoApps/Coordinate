@@ -14,82 +14,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/frag_pb"
-        android:progress="66"/>
+        android:progress="33"/>
 
     <TextView style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:id="@+id/frag_template_creator_naming_title_tv"
+        android:id="@+id/frag_template_creator_exclude_options_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/frag_template_creator_naming_title"
+        android:text="@string/frag_template_creator_exclude_options_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_pb"/>
 
     <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:id="@+id/frag_template_creator_naming_summary_tv"
+        android:id="@+id/frag_template_creator_exclude_options_summary_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/frag_template_creator_naming_summary"
+        android:text="@string/frag_template_creator_exclude_options_summary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_naming_title_tv"/>
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_options_title_tv"/>
 
-    <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:id="@+id/frag_template_creator_column_naming_tv"
+    <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/frag_template_creator_column_naming_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/frag_template_exclude_random_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/frag_exclude_random_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_naming_summary_tv"/>
-
-    <ListView
-        android:orientation="vertical"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:listitem="@android:layout/simple_list_item_checked"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        android:id="@+id/frag_template_creator_column_naming_lv"
-        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_options_summary_tv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/frag_template_creator_row_naming_tv"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_column_naming_tv"/>
+        android:layout_margin="16dp"/>
 
-    <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:id="@+id/frag_template_creator_row_naming_tv"
+    <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/frag_template_creator_row_naming_title"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/frag_template_exclude_selection_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/frag_exclude_selection_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_column_naming_lv"
-        app:layout_constraintBottom_toTopOf="@id/frag_template_creator_row_naming_lv"/>
-
-    <ListView
-        android:orientation="vertical"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:listitem="@android:layout/simple_list_item_checked"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        android:id="@+id/frag_template_creator_row_naming_lv"
-        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/frag_template_exclude_random_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/frag_next_btn"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_row_naming_tv"/>
+        android:layout_margin="16dp"/>
 
     <Button style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/frag_next_btn"
         android:background="@color/colorPrimary"
-        android:text="@string/frag_grid_creator_one_next_btn"
+        android:text="@string/skip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/frag_back_btn"

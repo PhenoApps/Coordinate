@@ -2,39 +2,30 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.TableView
-import com.evrencoskun.tableview.handler.SelectionHandler
 import com.evrencoskun.tableview.listener.ITableViewListener
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
-import org.wheatgenetics.coordinate.collector.Collector
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.*
 import java.util.ArrayList
 import kotlin.random.Random
 
-typealias GridCell = org.wheatgenetics.coordinate.model.Cell
-class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
+class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude_random),
     ITableViewListener,
     StringGetter {
 
-    data class Cell(val text: String)
-
-    private val args: TemplateCreatorExcludeArgs by navArgs()
+    private val args: TemplateCreatorExcludeRandomArgs by navArgs()
 
     private var mTemplateTable: TemplatesTable? = null
     private var mRandomSelections: ArrayList<Pair<Int, Int>> = ArrayList()
@@ -55,23 +46,19 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
 
     private fun setupButtons() {
 
-        val resetButton = view?.findViewById<Button>(R.id.frag_template_exclude_reset_btn)
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
         val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
 
-        resetButton?.setOnClickListener {
+        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        backButton?.setOnClickListener {
             val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
             (table?.adapter as? GridExcludeAdapter)?.clearSelection()
             table?.adapter?.notifyDataSetChanged()
-        }
-
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
-        backButton?.setOnClickListener {
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
+            findNavController().navigate(TemplateCreatorExcludeRandomDirections
                 .actionTemplateExcludePop())
         }
 
@@ -79,7 +66,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
+            findNavController().navigate(TemplateCreatorExcludeRandomDirections
                 .actionTemplateExcludeToTemplateNaming(args.title))
         }
 
@@ -94,7 +81,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
 
         for (i in 0 until mRows) {
             for (j in 0 until mCols) {
-                val cell = GridCell(i + 1, j + 1, this)
+                val cell = Cell(i + 1, j + 1, this)
                 if (temp.isExcludedCell(cell)) {
                     temp.remove(cell)
                 }
@@ -149,7 +136,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
                 //update exclusions based on UI
                 val selections = (table.adapter as GridExcludeAdapter).selection
                 for (pair in selections) {
-                    val cell = GridCell(pair.first+1, pair.second+1, this)
+                    val cell = Cell(pair.first+1, pair.second+1, this)
                     if (!template.isExcludedCell(cell)) template.add(cell)
                 }
 
@@ -159,7 +146,6 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             }
         }
     }
-
 
     /**
      * Uses the convertDatabaseToTable query to create a spreadsheet of values.
@@ -207,7 +193,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
                 //update ui selection based on previous exclusion
                 rows.forEachIndexed { i, _ ->
                     cols.forEachIndexed { j, _ ->
-                        if (template.isExcludedCell(GridCell(i+1, j+1, this))) {
+                        if (template.isExcludedCell(Cell(i+1, j+1, this))) {
                             (table.adapter as GridExcludeAdapter).setSelected(i, j)
                         }
                     }
@@ -216,37 +202,14 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
         }
     }
 
-    override fun onCellClicked(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {
-        view?.findViewById<TableView>(R.id.frag_template_exclude_table)?.let { table ->
-            (table.adapter as GridExcludeAdapter).setSelected(row, column)
-            table.adapter?.notifyDataSetChanged()
-        }
-    }
-
+    override fun onCellClicked(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {}
     //region unimplemented click events
     override fun onCellDoubleClicked(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {}
     override fun onCellLongPressed(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {}
-    override fun onColumnHeaderClicked(columnHeaderView: RecyclerView.ViewHolder, column: Int) {
-        view?.findViewById<TableView>(R.id.frag_template_exclude_table)?.let { table ->
-            for (i in 0 until mRows) {
-                (table.adapter as GridExcludeAdapter).setSelected(i, column)
-            }
-            table.adapter?.notifyDataSetChanged()
-        }
-    }
-    override fun onColumnHeaderDoubleClicked(
-        columnHeaderView: RecyclerView.ViewHolder,
-        column: Int
-    ) {}
+    override fun onColumnHeaderClicked(columnHeaderView: RecyclerView.ViewHolder, column: Int) {}
+    override fun onColumnHeaderDoubleClicked(columnHeaderView: RecyclerView.ViewHolder, column: Int) {}
     override fun onColumnHeaderLongPressed(columnHeaderView: RecyclerView.ViewHolder, column: Int) {}
-    override fun onRowHeaderClicked(rowHeaderView: RecyclerView.ViewHolder, row: Int) {
-        view?.findViewById<TableView>(R.id.frag_template_exclude_table)?.let { table ->
-            for (i in 0 until mCols) {
-                (table.adapter as GridExcludeAdapter).setSelected(row, i)
-            }
-            table.adapter?.notifyDataSetChanged()
-        }
-    }
+    override fun onRowHeaderClicked(rowHeaderView: RecyclerView.ViewHolder, row: Int) {}
     override fun onRowHeaderDoubleClicked(rowHeaderView: RecyclerView.ViewHolder, row: Int) {}
     override fun onRowHeaderLongPressed(rowHeaderView: RecyclerView.ViewHolder, row: Int) {}
 

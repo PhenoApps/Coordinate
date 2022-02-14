@@ -4,22 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.evrencoskun.tableview.TableView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
-import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.TemplatesTable
-import org.wheatgenetics.coordinate.model.GridModel
-import org.wheatgenetics.coordinate.model.JoinedGridModel
 import org.wheatgenetics.coordinate.model.TemplateModel
 
 /**
@@ -125,7 +118,7 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
 
         for (i in 0 until temp.rows) {
             for (j in 0 until temp.cols) {
-                val cell = GridCell(i + 1, j + 1, this)
+                val cell = org.wheatgenetics.coordinate.model.Cell(i + 1, j + 1, this)
                 if (temp.isExcludedCell(cell)) {
                     temp.remove(cell)
                 }
