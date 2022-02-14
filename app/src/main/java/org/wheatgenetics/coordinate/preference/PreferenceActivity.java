@@ -1,5 +1,15 @@
 package org.wheatgenetics.coordinate.preference;
 
+import android.content.Intent;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.wheatgenetics.coordinate.AboutActivity;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.grids.GridsActivity;
+import org.wheatgenetics.coordinate.projects.ProjectsActivity;
+import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+
 /**
  * Uses:
  * android.app.Activity
@@ -40,11 +50,55 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
         this.setResult(android.app.Activity.RESULT_OK, intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_preferences_bnv);
+        bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
+    }
+
+    private void setupBottomNavigationBar() {
+
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_preferences_bnv);
+        bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+
+        bottomNavigationView.setOnItemSelectedListener((item -> {
+
+            final int grids = R.id.action_nav_grids;
+            final int templates = R.id.action_nav_templates;
+            final int projects = R.id.action_nav_projects;
+            final int about = R.id.action_nav_about;
+
+            switch(item.getItemId()) {
+                case templates:
+                    startActivity(TemplatesActivity.intent(this));
+                    break;
+                case projects:
+                    startActivity(ProjectsActivity.intent(this));
+                    break;
+                case about:
+                    startActivity(new Intent(this, AboutActivity.class));
+                    break;
+                case grids:
+                    startActivity(GridsActivity.intent(this));
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }));
+    }
+
     // region Overridden Methods
     @java.lang.Override protected void onCreate(
             @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_preferences);
+
+        setupBottomNavigationBar();
 
         // noinspection SimplifiableConditionalExpression
         this.uniquenessPreferenceWasClicked =
@@ -52,8 +106,8 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
                         org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
 
         // Display PreferenceFragment as the main content.
-        this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
+//        this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+//                new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
     }
 
     @java.lang.Override protected void onSaveInstanceState(

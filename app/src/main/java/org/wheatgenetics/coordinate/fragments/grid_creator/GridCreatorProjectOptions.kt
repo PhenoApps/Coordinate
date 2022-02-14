@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
+import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
 import org.wheatgenetics.coordinate.model.ProjectModel
 import org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
@@ -21,12 +22,15 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
     private var mProjectsTable: ProjectsTable? = null
 
+    private var mGridsTable: GridsTable? = null
+
     private var mSelectedProjectTitle: String? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.let { act ->
             mProjectsTable = ProjectsTable(act)
+            mGridsTable = GridsTable(act)
         }
     }
 
@@ -63,8 +67,30 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         setSkipText()
 
         okButton?.setOnClickListener {
-            findNavController().navigate(GridCreatorProjectOptionsDirections
-                .actionProjectOptionsToTemplateOptions().setProject(mSelectedProjectTitle))
+            val projectEdit = activity?.intent?.getBooleanExtra("projectEdit", false) ?: false
+            val gridId = activity?.intent?.getLongExtra("gridId", -1L) ?: -1L
+            if (projectEdit && gridId != -1L) {
+
+                if (mSelectedProjectTitle == null) {
+                    activity?.setResult(Activity.RESULT_CANCELED)
+                    activity?.finish()
+                } else {
+                    getProjectId(mSelectedProjectTitle)?.let { pid ->
+                        mGridsTable?.get(gridId)?.let { grid ->
+                            mGridsTable?.update(grid.apply {
+                                projectId = pid
+                            })
+                        }
+                    }
+
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+                }
+
+            } else {
+                findNavController().navigate(GridCreatorProjectOptionsDirections
+                    .actionProjectOptionsToTemplateOptions().setProject(mSelectedProjectTitle))
+            }
         }
 
         backButton?.setOnClickListener {
@@ -80,6 +106,19 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
                 }
             }
         }
+    }
+
+    private fun getProjectId(title: String?): Long? {
+        val models = mProjectsTable?.load()
+        val size = models?.size() ?: 0
+        for (i in 0 until size) {
+            models?.get(i)?.let { project ->
+                if (project.title == title) {
+                    return project.id
+                }
+            }
+        }
+        return null
     }
 
     private fun setSkipText() {

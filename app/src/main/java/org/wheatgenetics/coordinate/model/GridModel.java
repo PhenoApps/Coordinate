@@ -14,7 +14,7 @@ public class GridModel extends Model {
     @IntRange(from = 1)
     private final long templateId;
     @IntRange(from = 0)
-    private final long projectId;
+    private long projectId;
     private final String person;
     @Nullable
     private final
@@ -96,6 +96,10 @@ public class GridModel extends Model {
     @IntRange(from = 0)
     public long getProjectId() {
         return this.projectId;
+    }
+
+    public void setProjectId(long id) {
+        this.projectId = id;
     }
     // endregion
 
