@@ -4,6 +4,7 @@
         versionCode="400"
         versionName="v4.0">
         <new>Updated interface</new>
+        <new>Added new template/grid workflow</new>
         <new>Added setting to export/import internal database</new>
         <new>Added dialog to confirm template deletion</new>
         <new>Autoloads most recent grid</new>

@@ -11,9 +11,7 @@ import org.wheatgenetics.coordinate.model.DisplayModel
 import org.wheatgenetics.coordinate.model.ElementModel
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields
 
-class TemplateCreatorActivity: AppCompatActivity(),
-    DataEntryDialogFragment.Handler,
-    GridDisplayFragment.Handler {
+class TemplateCreatorActivity: AppCompatActivity() {
 
     private var mCollector: Collector? = null
 
