@@ -622,5 +622,8 @@
 
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
+    <string name="sample_project_name">Sample Project</string>
+    <string name="sample_grid_seed_tray_name">Seed Tray Sample</string>
+    <string name="sample_grid_dna_name">DNA Sample</string>
 
 </resources>

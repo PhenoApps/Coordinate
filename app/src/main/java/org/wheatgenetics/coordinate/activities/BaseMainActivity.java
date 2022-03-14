@@ -23,18 +23,32 @@ import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.EntriesTable;
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.gc.GridCreator;
+import org.wheatgenetics.coordinate.model.GridModel;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
 import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.sharedpreferences.SharedPreferences;
+
+import java.util.Iterator;
 
 public abstract class BaseMainActivity extends AppCompatActivity
         implements StringGetter {
     // region Fields
     private TemplatesTable templatesTableInstance = null;//ll
+    private GridsTable gridsTableInstance = null;
+    private ProjectsTable projectsTableIntance = null;
+    private EntriesTable entriesTableInstance = null;
+
     private String versionName;
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
@@ -48,6 +62,30 @@ public abstract class BaseMainActivity extends AppCompatActivity
         if (null == this.templatesTableInstance) this.templatesTableInstance =
                 new TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected GridsTable gridsTable() {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+                new GridsTable(this);
+        return this.gridsTableInstance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected ProjectsTable projectsTable() {
+        if (null == this.projectsTableIntance) this.projectsTableIntance =
+                new ProjectsTable(this);
+        return this.projectsTableIntance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected EntriesTable entriesTable() {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+                new EntriesTable(this);
+        return this.entriesTableInstance;
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -129,6 +167,67 @@ public abstract class BaseMainActivity extends AppCompatActivity
             showChangelog(true, false);
         }
         // endregion
+
+        boolean firstLoadComplete = sharedPreferences.getBoolean(Keys.FIRST_LOAD_COMPLETE);
+        if (!firstLoadComplete) {
+
+            insertSampleData(sharedPreferences);
+        }
+    }
+
+    private void insertSampleData(SharedPreferences sharedPreferences) {
+        //save a new project and set the first load flag to false
+        String sampleProjectName = getString(R.string.sample_project_name);
+        long pid = projectsTable().insert(new ProjectModel(sampleProjectName, this));
+        sharedPreferences.setBooleanToTrue(Keys.FIRST_LOAD_COMPLETE);
+
+        //insert default template grids into sample project
+        String seedTrayDefaultName = getString(R.string.SeedDefaultTemplateTitle);
+        String dnaDefaultName = getString(R.string.DNADefaultTemplateTitle);
+        TemplateModel seedTrayTemplate = null;
+        TemplateModel dnaTemplate = null;
+        Iterator<TemplateModel> templates = templatesTable().load().iterator();
+        for (Iterator<TemplateModel> it = templates; it.hasNext(); ) {
+            TemplateModel model = it.next();
+            if (model.isDefaultTemplate()) {
+                if (model.getTitle().equals(seedTrayDefaultName)) {
+                    seedTrayTemplate = model;
+                } else if (model.getTitle().equals(dnaDefaultName)) {
+                    dnaTemplate = model;
+                }
+            }
+        }
+
+        String sampleGridSeedTrayName = getString(R.string.sample_grid_seed_tray_name);
+        String sampleGridDnaName = getString(R.string.sample_grid_dna_name);
+        String seedTrayFieldId = getString(R.string.NonNullOptionalFieldsTrayIDFieldName);
+        String dnaFieldId = getString(R.string.NonNullOptionalFieldsPlateIDFieldName);
+
+        if (dnaTemplate != null) {
+            NonNullOptionalFields fields = dnaTemplate.optionalFields();
+            if (fields != null && fields.contains(dnaFieldId)) {
+                fields.set(dnaFieldId, sampleGridDnaName);
+            }
+            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, dnaTemplate);
+            long gid = gridsTable().insert(jgm);
+            jgm.setId(gid);
+            gridsTable().update(jgm);
+            jgm.makeEntryModels();
+            entriesTable().insert(jgm.getEntryModels());
+        }
+
+        if (seedTrayTemplate != null) {
+            NonNullOptionalFields fields = seedTrayTemplate.optionalFields();
+            if (fields != null && fields.contains(seedTrayFieldId)) {
+                fields.set(seedTrayFieldId, sampleGridSeedTrayName);
+            }
+            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, seedTrayTemplate);
+            long gid = gridsTable().insert(jgm);
+            jgm.setId(gid);
+            gridsTable().update(jgm);
+            jgm.makeEntryModels();
+            entriesTable().insert(jgm.getEntryModels());
+        }
     }
 
     private void showChangelog(Boolean managedShow, Boolean rateButton) {
