@@ -203,6 +203,12 @@ public class TemplatesActivity extends BackActivity
         this.templateExportPreprocessor().preprocess(templateId);
     }
 
+    private void startTemplateEditor(final long templateId) {
+        Intent creator = new Intent(this, TemplateCreatorActivity.class);
+        creator.putExtra(TemplateCreatorActivity.TEMPLATE_EDIT, templateId);
+        startActivityForResult(creator, TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
+    }
+
     private void startGridsActivity(@IntRange(from = 1) final long templateId) {
         this.startActivityForResult(
                 GridsActivity.templateIdIntent(
@@ -325,6 +331,7 @@ public class TemplatesActivity extends BackActivity
         setupNewTemplateButton();
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
+
                 new TemplatesAdapter(this,
                         /* onCreateGridButtonClickListener => */ new View.OnClickListener() {
                     @Override
@@ -353,6 +360,10 @@ public class TemplatesActivity extends BackActivity
                         if (null != view)
                             TemplatesActivity
                                     .this.startGridsActivity((Long) view.getTag());
+                    }
+                }, (view) -> {
+                    if (view != null) {
+                        TemplatesActivity.this.startTemplateEditor((Long) view.getTag());
                     }
                 }));
     }

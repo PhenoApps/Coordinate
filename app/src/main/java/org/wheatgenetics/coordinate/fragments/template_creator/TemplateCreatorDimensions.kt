@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
+import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.TemplateModel
 
@@ -22,6 +23,8 @@ import org.wheatgenetics.coordinate.model.TemplateModel
  * The rows and columns should be greater than zero and less than max int.
  */
 class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_dimensions), StringGetter {
+
+    private var mEdit: Long = -1L
 
     private var mTemplateTable: TemplatesTable? = null
 
@@ -35,8 +38,37 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
         mTemplateTable = TemplatesTable(context)
     }
 
+    private fun updateUiForEdit(template: TemplateModel) {
+        val name = view?.findViewById<EditText>(R.id.frag_grid_creator_template_name_et)
+        val rows = view?.findViewById<EditText>(R.id.frag_grid_creator_template_rows_et)
+        val columns = view?.findViewById<EditText>(R.id.frag_grid_creator_template_columns_et)
+
+        name?.setText(template.title)
+        rows?.setText(template.rows.toString())
+        columns?.setText(template.cols.toString())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //check if this is an edit action, populate ui
+        if (activity?.intent?.hasExtra(TemplateCreatorActivity.TEMPLATE_EDIT) == true) {
+
+            mEdit = activity?.intent?.getLongExtra(TemplateCreatorActivity.TEMPLATE_EDIT, -1L) ?: -1L
+
+            if (mEdit != -1L) {
+
+                mTemplateTable?.load()?.find { it.id == mEdit }?.let { template ->
+
+                    mPreviousName = template.title
+                    mPreviousRow = template.rows
+                    mPreviousCol = template.cols
+
+                    updateUiForEdit(template)
+                }
+            }
+        }
+
         setupNextButton()
     }
 
@@ -61,7 +93,8 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
                 activity?.setResult(Activity.RESULT_CANCELED)
                 activity?.finish()
 
-                if (mPreviousName?.isNotBlank() == true) {
+                //make sure on editing we don't delete the template after canceling
+                if (mPreviousName?.isNotBlank() == true && mEdit == -1L) {
                     mTemplateTable?.load()?.find { it.title == mPreviousName }?.let { template ->
                         mTemplateTable?.delete(template.id)
                     }
@@ -79,6 +112,13 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
 
                     //check if name already exists or we are updating the dimensions (after going back from next fragment)
                     if (!existsInDatabase(name) || mPreviousName?.isNotBlank() == true) {
+
+                        if (mPreviousName != name && existsInDatabase(name)) {
+
+                            Toast.makeText(ctx, R.string.frag_template_creator_name_duplicate_error, Toast.LENGTH_SHORT).show()
+
+                            return@setOnClickListener
+                        }
 
                         if (verifyGridRange(rows)) {
 
@@ -137,7 +177,7 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
         }
 
         //check if this is an update, otherwise insert new template
-        if (mPreviousName != null && mPreviousName?.isNotBlank() == true) {
+        if ((mPreviousName != null && mPreviousName?.isNotBlank() == true)) {
 
             mTemplateTable?.load()?.find { t -> t.title == mPreviousName }?.let { temp ->
 

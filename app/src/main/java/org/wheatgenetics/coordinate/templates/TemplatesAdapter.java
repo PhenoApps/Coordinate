@@ -28,6 +28,8 @@ class TemplatesAdapter extends NonGridsAdapter {
     private TemplateModels templateModelsInstance = null;   // ll
     // endregion
 
+    private View.OnClickListener editTemplateButtonListener = null;
+
     TemplatesAdapter(
             @NonNull final Activity activity,
             @NonNull final View.OnClickListener
@@ -37,9 +39,12 @@ class TemplatesAdapter extends NonGridsAdapter {
             @NonNull final View.OnClickListener
                     onExportButtonClickListener,
             @NonNull final View.OnClickListener
-                    onShowGridsButtonClickListener) {
+                    onShowGridsButtonClickListener,
+            @NonNull final View.OnClickListener
+                    onEditButtonClickListener) {
         super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
                 onExportButtonClickListener, onShowGridsButtonClickListener);
+        this.editTemplateButtonListener = onEditButtonClickListener;
     }
 
     // region Private Methods
@@ -176,6 +181,18 @@ class TemplatesAdapter extends NonGridsAdapter {
                         if (isUserDefined) {
                             imageButton.setTag(templateId);
                             imageButton.setOnClickListener(this.onExportButtonClickListener());
+                        } else imageButton.setEnabled(false);
+                }
+                //issue 27 template editor
+                //disable template editing if a grid is already created
+                boolean hasGrid = gridsTableInstance.existsInTemplate(templateId);
+                {
+                    final ImageButton imageButton = view.findViewById(
+                            R.id.templatesListItemEditButton);
+                    if (null != imageButton)
+                        if (isUserDefined && !hasGrid) {
+                            imageButton.setTag(templateId);
+                            imageButton.setOnClickListener(this.editTemplateButtonListener);
                         } else imageButton.setEnabled(false);
                 }
 
