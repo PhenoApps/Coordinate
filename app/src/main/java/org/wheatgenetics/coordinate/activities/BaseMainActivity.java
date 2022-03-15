@@ -23,6 +23,7 @@ import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.model.TemplateModel;
@@ -35,6 +36,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
         implements StringGetter {
     // region Fields
     private TemplatesTable templatesTableInstance = null;//ll
+    private ProjectsTable projectsTableInstance = null;
+
     private String versionName;
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
@@ -48,6 +51,14 @@ public abstract class BaseMainActivity extends AppCompatActivity
         if (null == this.templatesTableInstance) this.templatesTableInstance =
                 new TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected ProjectsTable projectsTable() {
+        if (null == this.projectsTableInstance) this.projectsTableInstance =
+                new ProjectsTable(this);
+        return this.projectsTableInstance;
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)

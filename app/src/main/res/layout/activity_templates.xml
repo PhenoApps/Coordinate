@@ -19,19 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/act_templates_fab"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/templates_circular_background"
-        android:contentDescription="@string/act_grids_fab_content_desc"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/act_templates_bnv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add_white_inv"/>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         style="@style/AppTheme.BottomNavBar"
         android:layout_width="match_parent"

@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <item android:id="@+id/action_new_template"
+        android:icon="@drawable/ic_add_white_inv"
+        app:showAsAction="always"
+        android:title="@string/menu_templates_new" />
+
     <item
         android:id="@+id/importTemplateMenuItem"
         android:icon="@drawable/ic_import_template_white"
@@ -10,5 +15,5 @@
         android:title="@string/TemplatesActivityImportMenuItemTitle"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
-    
+
 </menu>

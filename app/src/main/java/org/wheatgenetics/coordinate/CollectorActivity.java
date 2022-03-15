@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -107,6 +109,23 @@ public class CollectorActivity extends BackActivity implements
 
         attachKeyboardListeners();
         setupBottomNavigationBar();
+        setupBarcodeButton();
+    }
+
+    private void setupBarcodeButton() {
+
+        try {
+            ImageButton barcodeButton = findViewById(R.id.act_collector_barcode_scan_button);
+            barcodeButton.setOnClickListener((view) -> {
+                try {
+                    this.collector().scanBarcode();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //whenever collector activity is opened save the grid id to preferences

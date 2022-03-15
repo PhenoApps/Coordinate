@@ -35,7 +35,9 @@ import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
 import org.wheatgenetics.coordinate.ge.GridExporter;
+import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
@@ -43,6 +45,8 @@ import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
+
+import java.util.Iterator;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
     // region Constants
@@ -315,8 +319,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         setupActionBar();
 
-        setupNewGridButton();
-
         if (null != gridsListView) {
             {
                 final Intent intent = this.getIntent();
@@ -355,6 +357,60 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
     // endregion
 
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        final Intent intent = this.getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(TEMPLATE_ID_KEY)) {
+                long templateId = intent.getLongExtra(TEMPLATE_ID_KEY, -1);
+                updateTitleByTemplateId(templateId);
+            } else {
+                final String PROJECT_ID_KEY = GridsActivity.PROJECT_ID_KEY;
+                if (intent.hasExtra(PROJECT_ID_KEY)) {
+                    long projectId = intent.getLongExtra(PROJECT_ID_KEY, -1);
+                    updateTitleByProjectId(projectId);
+                }
+            }
+        }
+    }
+
+    private void updateTitle(String title) {
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
+            bar.setTitle(title);
+            bar.setHomeButtonEnabled(true);
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setDisplayShowTitleEnabled(true);
+        }
+    }
+
+    private void updateTitleByTemplateId(long tid) {
+
+        try {
+            TemplateModel model = templatesTable().get(tid);
+            if (model != null) {
+                updateTitle(model.getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTitleByProjectId(long pid) {
+
+        try {
+            ProjectModel model = projectsTable().get(pid);
+            if (model != null) {
+                updateTitle(model.getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Called in onCreate, this will navigate to the last opened grid.
      * Based on the saved preference grid id.
@@ -370,10 +426,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
 
         prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
-    }
-
-    private void setupNewGridButton() {
-        findViewById(R.id.act_grids_fab).setOnClickListener((v) -> createGrid());
     }
 
     @Override
@@ -396,19 +448,25 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
-                    break;
                 case projects:
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(ProjectsActivity.intent(this));
                     break;
+                case templates:
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
+                    break;
                 case settings:
-                    startActivity(PreferenceActivity.intent(this));
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
                     break;
                 case about:
-                    startActivity(new Intent(this, AboutActivity.class));
-                    break;
-                default:
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
                     break;
             }
 
@@ -422,6 +480,17 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         return true;
     }
     // endregion
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_new_grid) {
+            createGrid();
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,

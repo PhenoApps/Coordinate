@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -110,7 +111,14 @@ class TemplatesAdapter extends NonGridsAdapter {
                 {
                     final TextView textView = view.findViewById(
                             R.id.templatesListItemTitle);
-                    if (null != textView) textView.setText(templateModel.getTitle());
+                    if (null != textView) {
+                        textView.setText(templateModel.getTitle());
+
+                        //added click to view entire template title
+                        textView.setOnClickListener((v) -> {
+                            Toast.makeText(this.activity(), templateModel.getTitle(), Toast.LENGTH_SHORT).show();
+                        });
+                    }
                 }
                 {
                     final TextView textView = view.findViewById(

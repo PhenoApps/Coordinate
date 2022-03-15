@@ -25,7 +25,6 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter;
-import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
@@ -186,11 +185,6 @@ public class ProjectsActivity extends BackActivity {
         return this.projectCreatorInstance;
     }
 
-    private void setupNewProjectButton() {
-        findViewById(R.id.act_projects_fab).setOnClickListener((v) ->
-                projectCreator().createAndReturn());
-    }
-
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -205,8 +199,6 @@ public class ProjectsActivity extends BackActivity {
                 R.id.projectsListView);
 
         setupBottomNavigationBar();
-
-        setupNewProjectButton();
 
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,
@@ -238,6 +230,14 @@ public class ProjectsActivity extends BackActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_new_project) {
+            projectCreator().createAndReturn();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
@@ -258,16 +258,24 @@ public class ProjectsActivity extends BackActivity {
 
             switch(item.getItemId()) {
                 case templates:
-                    startActivity(TemplatesActivity.intent(this));
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
                     break;
                 case grids:
-                    startActivity(GridsActivity.intent(this));
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
                     break;
                 case settings:
-                    startActivity(PreferenceActivity.intent(this));
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
                     break;
                 case about:
-                    startActivity(new Intent(this, AboutActivity.class));
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
                     break;
                 default:
                     break;

@@ -70,20 +70,29 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
             final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
+                case grids:
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
                     break;
-                case projects:
-                    startActivity(ProjectsActivity.intent(this));
+                case templates:
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
                     break;
                 case about:
-                    startActivity(new Intent(this, AboutActivity.class));
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
                     break;
-                case grids:
-                    startActivity(GridsActivity.intent(this));
+                case projects:
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(ProjectsActivity.intent(this));
                     break;
                 default:
                     break;
+
             }
 
             return true;

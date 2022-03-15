@@ -11,13 +11,6 @@
         tools:ignore="PrivateResource" />
 
     <item
-        android:icon="@drawable/ic_camera_barcode_white"
-        android:onClick="onCameraMenuItemClick"
-        android:title="@string/cameraOptionsMenuItemTitle"
-        app:showAsAction="always"
-        tools:ignore="PrivateResource" />
-
-    <item
         android:id="@+id/action_summarize_data"
         android:icon="@drawable/ic_format_list_text"
         android:title="@string/menu_collector_meta_data_title"

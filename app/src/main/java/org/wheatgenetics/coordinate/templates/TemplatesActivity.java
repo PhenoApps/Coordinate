@@ -302,11 +302,6 @@ public class TemplatesActivity extends BackActivity
         this.templateImportPreprocessor().preprocess();
     }
 
-    private void setupNewTemplateButton() {
-
-        findViewById(R.id.act_templates_fab).setOnClickListener((v) -> createTemplate());
-    }
-
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -321,8 +316,6 @@ public class TemplatesActivity extends BackActivity
                 R.id.templatesListView);
 
         setupBottomNavigationBar();
-
-        setupNewTemplateButton();
 
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
                 new TemplatesAdapter(this,
@@ -358,6 +351,14 @@ public class TemplatesActivity extends BackActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_new_template) {
+            createTemplate();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
@@ -378,16 +379,24 @@ public class TemplatesActivity extends BackActivity
 
             switch(item.getItemId()) {
                 case grids:
-                    startActivity(GridsActivity.intent(this));
-                    break;
-                case projects:
-                    startActivity(ProjectsActivity.intent(this));
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
                     break;
                 case settings:
-                    startActivity(PreferenceActivity.intent(this));
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
                     break;
                 case about:
-                    startActivity(new Intent(this, AboutActivity.class));
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
+                    break;
+                case projects:
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(ProjectsActivity.intent(this));
                     break;
                 default:
                     break;
