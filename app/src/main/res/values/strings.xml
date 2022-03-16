@@ -622,5 +622,6 @@
 
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
+    <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
 
 </resources>

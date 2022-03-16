@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.adapter.NonGridsAdapter;
@@ -193,7 +195,15 @@ class TemplatesAdapter extends NonGridsAdapter {
                         if (isUserDefined && !hasGrid) {
                             imageButton.setTag(templateId);
                             imageButton.setOnClickListener(this.editTemplateButtonListener);
-                        } else imageButton.setEnabled(false);
+                        } else {
+                            imageButton.setImageDrawable(AppCompatResources
+                                    .getDrawable(activity(), R.drawable.ic_pencil_gray));
+                            imageButton.setOnClickListener((v) -> {
+                                Toast.makeText(activity(),
+                                        R.string.templates_with_grids_cant_be_edited,
+                                        Toast.LENGTH_SHORT).show();
+                            });
+                        }
                 }
 
                 return view;
