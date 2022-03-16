@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -167,67 +168,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
             showChangelog(true, false);
         }
         // endregion
-
-        boolean firstLoadComplete = sharedPreferences.getBoolean(Keys.FIRST_LOAD_COMPLETE);
-        if (!firstLoadComplete) {
-
-            insertSampleData(sharedPreferences);
-        }
-    }
-
-    private void insertSampleData(SharedPreferences sharedPreferences) {
-        //save a new project and set the first load flag to false
-        String sampleProjectName = getString(R.string.sample_project_name);
-        long pid = projectsTable().insert(new ProjectModel(sampleProjectName, this));
-        sharedPreferences.setBooleanToTrue(Keys.FIRST_LOAD_COMPLETE);
-
-        //insert default template grids into sample project
-        String seedTrayDefaultName = getString(R.string.SeedDefaultTemplateTitle);
-        String dnaDefaultName = getString(R.string.DNADefaultTemplateTitle);
-        TemplateModel seedTrayTemplate = null;
-        TemplateModel dnaTemplate = null;
-        Iterator<TemplateModel> templates = templatesTable().load().iterator();
-        for (Iterator<TemplateModel> it = templates; it.hasNext(); ) {
-            TemplateModel model = it.next();
-            if (model.isDefaultTemplate()) {
-                if (model.getTitle().equals(seedTrayDefaultName)) {
-                    seedTrayTemplate = model;
-                } else if (model.getTitle().equals(dnaDefaultName)) {
-                    dnaTemplate = model;
-                }
-            }
-        }
-
-        String sampleGridSeedTrayName = getString(R.string.sample_grid_seed_tray_name);
-        String sampleGridDnaName = getString(R.string.sample_grid_dna_name);
-        String seedTrayFieldId = getString(R.string.NonNullOptionalFieldsTrayIDFieldName);
-        String dnaFieldId = getString(R.string.NonNullOptionalFieldsPlateIDFieldName);
-
-        if (dnaTemplate != null) {
-            NonNullOptionalFields fields = dnaTemplate.optionalFields();
-            if (fields != null && fields.contains(dnaFieldId)) {
-                fields.set(dnaFieldId, sampleGridDnaName);
-            }
-            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, dnaTemplate);
-            long gid = gridsTable().insert(jgm);
-            jgm.setId(gid);
-            gridsTable().update(jgm);
-            jgm.makeEntryModels();
-            entriesTable().insert(jgm.getEntryModels());
-        }
-
-        if (seedTrayTemplate != null) {
-            NonNullOptionalFields fields = seedTrayTemplate.optionalFields();
-            if (fields != null && fields.contains(seedTrayFieldId)) {
-                fields.set(seedTrayFieldId, sampleGridSeedTrayName);
-            }
-            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, seedTrayTemplate);
-            long gid = gridsTable().insert(jgm);
-            jgm.setId(gid);
-            gridsTable().update(jgm);
-            jgm.makeEntryModels();
-            entriesTable().insert(jgm.getEntryModels());
-        }
     }
 
     private void showChangelog(Boolean managedShow, Boolean rateButton) {
