@@ -377,7 +377,10 @@ abstract class BaseCollector extends Object implements
     @SuppressWarnings({"SameReturnValue"})
     public boolean scanBarcode() {
         //this.barcodeScanner().scan();
-        new IntentIntegrator(this.activity).setPrompt("Scan a barcode").setBeepEnabled(true).initiateScan();
+        new IntentIntegrator(this.activity)
+                .setOrientationLocked(false)
+                .setPrompt("Scan a barcode")
+                .setBeepEnabled(true).initiateScan();
         return true;
     }
 

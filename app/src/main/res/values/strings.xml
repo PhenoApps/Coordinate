@@ -625,5 +625,6 @@
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
     <string name="menu_grids_new">New grid</string>
+    <string name="back_button_twice_press">Press back again to close app.</string>
 
 </resources>

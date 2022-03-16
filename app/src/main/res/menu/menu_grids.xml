@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item android:id="@+id/action_new_grid"
-        android:icon="@drawable/ic_add_white_inv"
+        android:icon="@drawable/ic_create_grid_white"
         app:showAsAction="always"
         android:title="@string/menu_grids_new" />
 </menu>

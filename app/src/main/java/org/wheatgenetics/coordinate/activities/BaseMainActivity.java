@@ -6,6 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -41,7 +43,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
     private String versionName;
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
-
+    private boolean backPressed = false;
     // endregion
 
     // region Package Methods
@@ -79,6 +81,17 @@ public abstract class BaseMainActivity extends AppCompatActivity
         return this.versionName;
     }
     // endregion
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed) {
+            finish();
+        } else {
+            Toast.makeText(this, R.string.back_button_twice_press, Toast.LENGTH_SHORT).show();
+            backPressed = true;
+            new Handler().postDelayed(() -> backPressed = false, 5000);
+        }
+    }
 
     // region Overridden Methods
     @Override
@@ -152,6 +165,12 @@ public abstract class BaseMainActivity extends AppCompatActivity
                 .withOkButtonLabel("OK") // provide a custom ok button text if desired, default one is "OK"
                 .withSorter(new ImportanceChangelogSorter())
                 .buildAndShowDialog(this, false); // second parameter defines, if the dialog has a dark or light theme
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backPressed = false;
     }
 
     @Override

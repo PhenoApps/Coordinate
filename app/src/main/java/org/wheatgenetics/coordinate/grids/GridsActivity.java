@@ -75,6 +75,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private ProjectCreator projectCreatorInstance = null;    // ll
     // endregion
 
+    private boolean isTemplateFilter = false;
+    private boolean isProjectFilter = false;
+
     // region intent Private Methods
     @NonNull
     private static Intent INTENT(
@@ -364,9 +367,13 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         final Intent intent = this.getIntent();
         if (intent != null) {
             if (intent.hasExtra(TEMPLATE_ID_KEY)) {
+                isTemplateFilter = true;
+                isProjectFilter = false;
                 long templateId = intent.getLongExtra(TEMPLATE_ID_KEY, -1);
                 updateTitleByTemplateId(templateId);
             } else {
+                isTemplateFilter = false;
+                isProjectFilter = true;
                 final String PROJECT_ID_KEY = GridsActivity.PROJECT_ID_KEY;
                 if (intent.hasExtra(PROJECT_ID_KEY)) {
                     long projectId = intent.getLongExtra(PROJECT_ID_KEY, -1);
@@ -449,14 +456,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
             switch(item.getItemId()) {
                 case projects:
-                    Intent projectIntent = ProjectsActivity.intent(this);
-                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(ProjectsActivity.intent(this));
+                    navigateToProjects();
                     break;
                 case templates:
-                    Intent templateIntent = TemplatesActivity.intent(this);
-                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(templateIntent);
+                    navigateToTemplates();
                     break;
                 case settings:
                     Intent prefsIntent = PreferenceActivity.intent(this);
@@ -474,6 +477,18 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }));
     }
 
+    private void navigateToProjects() {
+        Intent projectIntent = ProjectsActivity.intent(this);
+        projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(ProjectsActivity.intent(this));
+    }
+
+    private void navigateToTemplates() {
+        Intent templateIntent = TemplatesActivity.intent(this);
+        templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(templateIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_grids, menu);
@@ -481,13 +496,16 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     }
     // endregion
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_grid) {
             createGrid();
         } else if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (isProjectFilter) {
+                navigateToProjects();
+            } else if (isTemplateFilter) {
+                navigateToTemplates();
+            } else finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -51,6 +51,11 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_preferences_bnv);
