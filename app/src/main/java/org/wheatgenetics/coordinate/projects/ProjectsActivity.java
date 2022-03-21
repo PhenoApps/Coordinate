@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -28,6 +31,8 @@ import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor;
 import org.wheatgenetics.coordinate.pe.ProjectExporter;
+import org.wheatgenetics.coordinate.preference.PreferenceActivity;
+import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
 public class ProjectsActivity extends BackActivity {
     private static final int CREATE_GRID_REQUEST_CODE = 15;
@@ -181,6 +186,11 @@ public class ProjectsActivity extends BackActivity {
         return this.projectCreatorInstance;
     }
 
+    private void setupNewProjectButton() {
+        findViewById(R.id.act_projects_fab).setOnClickListener((v) ->
+                projectCreator().createAndReturn());
+    }
+
     // region Overridden Methods
     @Override
     protected void onCreate(
@@ -193,6 +203,11 @@ public class ProjectsActivity extends BackActivity {
 
         final ListView projectsListView = this.findViewById(
                 R.id.projectsListView);
+
+        setupBottomNavigationBar();
+
+        setupNewProjectButton();
+
         if (null != projectsListView) projectsListView.setAdapter(this.projectsAdapter =
                 new ProjectsAdapter(this,
                         /* onCreateGridButtonClickListener => */ new View.OnClickListener() {
@@ -220,6 +235,46 @@ public class ProjectsActivity extends BackActivity {
                                 .this.startGridsActivity((Long) view.getTag());
                     }
                 }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
+        bottomNavigationView.setSelectedItemId(R.id.action_nav_projects);
+    }
+
+    private void setupBottomNavigationBar() {
+
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
+        bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+
+        bottomNavigationView.setOnItemSelectedListener((item -> {
+
+            final int templates = R.id.action_nav_templates;
+            final int grids = R.id.action_nav_grids;
+            final int settings = R.id.action_nav_settings;
+            final int about = R.id.action_nav_about;
+
+            switch(item.getItemId()) {
+                case templates:
+                    startActivity(TemplatesActivity.intent(this));
+                    break;
+                case grids:
+                    startActivity(GridsActivity.intent(this));
+                    break;
+                case settings:
+                    startActivity(PreferenceActivity.intent(this));
+                    break;
+                case about:
+                    startActivity(new Intent(this, AboutActivity.class));
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }));
     }
 
     @Override
@@ -260,6 +315,7 @@ public class ProjectsActivity extends BackActivity {
     public void onRequestPermissionsResult(final int requestCode,
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final String permissions[],
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final int grantResults[]) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean permissionFound = false;
         for (final String permission : permissions)
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {

@@ -570,6 +570,19 @@
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
     <string name="skip">Skip</string>
     <string name="list_item_field_et_hint">Enter field value here</string>
+
+    <string name="bottom_nav_bar_about">About</string>
+    <string name="bottom_nav_bar_settings">Settings</string>
+    <string name="bottom_nav_bar_projects">Projects</string>
+    <string name="bottom_nav_bar_templates">Templates</string>
+    <string name="bottom_nav_bar_grids">Grids</string>
+    <string name="Coordinate">Coordinate</string>
+    <string name="act_grids_title">Grids</string>
+
+    <string name="act_collector_data_entry_et_hint">Data Entry</string>
+    <string name="menu_collector_meta_data_title">Summarize Data</string>
+    <string name="act_grids_fab_content_desc">Create new grid</string>
+
     <string name="Database">Database</string>
     <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
     <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
@@ -593,5 +606,34 @@
     <string name="migrate">Migrate</string>
     <string name="frag_storage_migrator_title">Storage Migrator</string>
     <string name="frag_storage_migrator_summary">Coordinate files were not found. Choosing migrate will allow you to select your old Coordinate folder to transfer the data.</string>
+
+    <string name="required_optional_field_hint">Required</string>
+    <string name="frag_exclude_random_button">Random</string>
+    <string name="frag_exclude_selection_btn">Selection</string>
+    <string name="frag_template_creator_exclude_random_summary">Choose a number of cells to randomly exclude.</string>
+    <string name="frag_template_creator_exclude_random_title">Exclude Random</string>
+    <string name="frag_template_creator_exclude_selection_title">Exclude Selection</string>
+    <string name="frag_template_creator_column_naming_summary">Choose how the columns will be enumerated.</string>
+    <string name="frag_template_creator_column_naming_title">Column Naming</string>
+    <string name="frag_template_creator_row_naming_title">Row Naming</string>
+    <string name="frag_template_creator_row_naming_summary">Choose how the rows will be enumerated.</string>
+    <string name="numeric">Numeric</string>
+    <string name="alphabetic">Alphabetic</string>
+    <string name="frag_template_creator_preview_title">Preview Template</string>
+    <string name="frag_template_creator_preview_summary">This is a miniaturized preview of your template.</string>
+    <string name="frag_template_creator_preview_additional_info">Columns will have %s labels and rows will have %s labels. There will be %s excluded cells.</string>
+    <string name="new_grid_title">New Grid</string>
+    <string name="new_template_title">New Template</string>
+    <string name="frag_exclude_selection_button">Selection</string>
+    <string name="frag_template_creator_exclude_options_title">Exclude Options</string>
+    <string name="frag_template_creator_exclude_options_summary">Choose to exclude a random number of cells, or explicitly choose a selection of cells.</string>
+
+    <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
+    <string name="project_edit_menu_item_click">Edit Project</string>
+    <string name="sample_project_name">Sample Project</string>
+    <string name="sample_grid_seed_tray_name">Seed Tray Sample</string>
+    <string name="sample_grid_dna_name">DNA Sample</string>
+    <string name="act_ask_load_sample">Load available sample data?</string>
+    <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
 
 </resources>

@@ -14,23 +14,12 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.GridCreatorActivity"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/MaterialAppTheme"/>
 
         <activity android:name=".activity.TemplateCreatorActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/MaterialAppTheme"/>
-
-        <activity
-            android:exported="true"
-            android:name=".main.MainActivity"
-            android:configChanges="keyboardHidden|keyboard"
-            android:theme="@style/AppTheme">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <activity android:name=".activity.DefineStorageActivity"
             android:theme="@style/MaterialAppTheme"/>
@@ -38,12 +27,18 @@
         <activity
             android:name=".CollectorActivity"
             android:label="@string/CollectorActivityLabel"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".grids.GridsActivity"
-            android:label="@string/GridsActivityLabel"
-            android:theme="@style/AppTheme" />
+            android:label="@string/Coordinate"
+            android:theme="@style/AppTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".templates.TemplatesActivity"

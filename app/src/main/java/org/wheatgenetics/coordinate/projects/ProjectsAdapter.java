@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -108,7 +109,14 @@ class ProjectsAdapter extends NonGridsAdapter {
                 {
                     final TextView textView = view.findViewById(
                             R.id.projectsListItemTitle);
-                    if (null != textView) textView.setText(projectModel.getTitle());
+                    if (null != textView) {
+                        textView.setText(projectModel.getTitle());
+
+                        //added click to view entire project title
+                        textView.setOnClickListener((v) -> {
+                            Toast.makeText(this.activity(), projectModel.getTitle(), Toast.LENGTH_SHORT).show();
+                        });
+                    }
                 }
                 {
                     final TextView textView = view.findViewById(

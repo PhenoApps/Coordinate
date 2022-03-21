@@ -1,6 +1,7 @@
-package org.wheatgenetics.coordinate.main;
+package org.wheatgenetics.coordinate.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -23,32 +24,69 @@ import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.database.EntriesTable;
+import org.wheatgenetics.coordinate.database.GridsTable;
+import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.gc.GridCreator;
+import org.wheatgenetics.coordinate.model.GridModel;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.model.TemplateType;
 import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.sharedpreferences.SharedPreferences;
 
-abstract class BaseMainActivity extends AppCompatActivity
+import java.util.Iterator;
+
+public abstract class BaseMainActivity extends AppCompatActivity
         implements StringGetter {
     // region Fields
     private TemplatesTable templatesTableInstance = null;//ll
+    private GridsTable gridsTableInstance = null;
+    private ProjectsTable projectsTableIntance = null;
+    private EntriesTable entriesTableInstance = null;
+
     private String versionName;
     private SharedPreferences
             sharedPreferencesInstances = null;                                              // lazy load
 
     // endregion
 
-
     // region Package Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     @NonNull
-    TemplatesTable templatesTable() {
+    protected TemplatesTable templatesTable() {
         if (null == this.templatesTableInstance) this.templatesTableInstance =
                 new TemplatesTable(this);
         return this.templatesTableInstance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected GridsTable gridsTable() {
+        if (null == this.gridsTableInstance) this.gridsTableInstance =
+                new GridsTable(this);
+        return this.gridsTableInstance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected ProjectsTable projectsTable() {
+        if (null == this.projectsTableIntance) this.projectsTableIntance =
+                new ProjectsTable(this);
+        return this.projectsTableIntance;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    @NonNull
+    protected EntriesTable entriesTable() {
+        if (null == this.entriesTableInstance) this.entriesTableInstance =
+                new EntriesTable(this);
+        return this.entriesTableInstance;
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
@@ -62,7 +100,7 @@ abstract class BaseMainActivity extends AppCompatActivity
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     @NonNull
-    abstract GridCreator gridCreator();
+    protected abstract GridCreator gridCreator();
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     String versionName() {

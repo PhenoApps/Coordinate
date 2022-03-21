@@ -19,16 +19,17 @@ android {
         }
     }
 
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "org.wheatgenetics.coordinate"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 310
         versionName "3.1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -81,13 +82,12 @@ dependencies {
     implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
     implementation 'com.github.phenoapps:phenolib:v0.9.29'
 
-    //Don't update to 2.4.0 until we target SDK 31
     // Navigation
-    androidTestImplementation "androidx.navigation:navigation-testing:2.3.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.0"
-    implementation "androidx.navigation:navigation-runtime-ktx:2.3.0"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.3.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.5"
+    implementation "androidx.navigation:navigation-runtime-ktx:2.3.5"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"

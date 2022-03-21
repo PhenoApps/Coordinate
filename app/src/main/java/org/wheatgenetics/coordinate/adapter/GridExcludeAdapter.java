@@ -12,14 +12,14 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 
 import org.jetbrains.annotations.NotNull;
 import org.wheatgenetics.coordinate.R;
-import org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExclude;
+import org.wheatgenetics.coordinate.fragments.template_creator.Cell;
 
 import java.util.ArrayList;
 
 /**
  * https://github.com/evrencoskun/TableView/wiki
  */
-public class GridExcludeAdapter extends AbstractTableAdapter<TemplateCreatorExclude.Cell, TemplateCreatorExclude.Cell, TemplateCreatorExclude.Cell> {
+public class GridExcludeAdapter extends AbstractTableAdapter<Cell, Cell, Cell> {
 
 
     private final ArrayList<Pair<Integer, Integer>> mSelection = new ArrayList<>();
@@ -99,7 +99,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<TemplateCreatorExcl
       * @see #onCreateCellViewHolder(ViewGroup, int);
       */
      @Override
-     public void onBindCellViewHolder(@NotNull AbstractViewHolder holder, TemplateCreatorExclude.Cell cellItemModel, int
+     public void onBindCellViewHolder(@NotNull AbstractViewHolder holder, Cell cellItemModel, int
              columnPosition, int rowPosition) {
 
          // Get the holder to update cell item text
@@ -166,7 +166,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<TemplateCreatorExcl
       */
      @Override
      public void onBindColumnHeaderViewHolder(@NotNull AbstractViewHolder holder,
-                                              TemplateCreatorExclude.Cell columnHeaderItemModel,
+                                              Cell columnHeaderItemModel,
                                               int position) {
 
          // Get the holder to update cell item text
@@ -222,7 +222,7 @@ public class GridExcludeAdapter extends AbstractTableAdapter<TemplateCreatorExcl
       * @see #onCreateRowHeaderViewHolder(ViewGroup, int) ;
       */
      @Override
-     public void onBindRowHeaderViewHolder(@NotNull AbstractViewHolder holder, TemplateCreatorExclude.Cell rowHeaderItemModel, int
+     public void onBindRowHeaderViewHolder(@NotNull AbstractViewHolder holder, Cell rowHeaderItemModel, int
              position) {
 
          // Get the holder to update row header item text

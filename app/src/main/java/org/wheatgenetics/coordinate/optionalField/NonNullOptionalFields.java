@@ -311,6 +311,19 @@ public class NonNullOptionalFields extends OptionalFields
         return this.get(index).getChecked();
     }
 
+    public void set(final String name, final String value) {
+        if (this.contains(name)) {
+            int size = this.arrayList.size();
+            for (int i = 0; i < size; i++) {
+                BaseOptionalField field = get(i);
+                if (field.getName().equals(name)) {
+                    field.setValue(value);
+                    break;
+                }
+            }
+        }
+    }
+
     @NonNull
     boolean[] checks() {
         // noinspection CStyleArrayDeclaration

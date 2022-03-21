@@ -12,5 +12,6 @@ class GridCreatorActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_grid_creator)
 
+        supportActionBar?.title = getString(R.string.new_grid_title)
     }
 }
