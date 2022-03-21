@@ -7,7 +7,7 @@
         android:title="@string/bottom_nav_bar_grids"/>
     <item
         android:id="@+id/action_nav_templates"
-        android:icon="@drawable/ic_create_template_black"
+        android:icon="@drawable/ic_templates"
         android:title="@string/bottom_nav_bar_templates" />
     <item
         android:id="@+id/action_nav_projects"
