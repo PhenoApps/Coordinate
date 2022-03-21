@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.grids;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,8 +36,10 @@ import org.wheatgenetics.coordinate.gc.GridCreator;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
 import org.wheatgenetics.coordinate.ge.GridExporter;
+import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
@@ -356,6 +359,20 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 }
             }
             gridsListView.setAdapter(this.gridsAdapter);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean firstLoadComplete = prefs.getBoolean(Keys.FIRST_LOAD_COMPLETE, false);
+            if (!firstLoadComplete) {
+                prefs.edit().putBoolean(Keys.FIRST_LOAD_COMPLETE, true).apply();
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.act_ask_load_sample)
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            insertSampleData();
+                        })
+                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                        .create()
+                        .show();
+            }
         }
     }
     // endregion
@@ -416,6 +433,62 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void insertSampleData() {
+        //save a new project and set the first load flag to false
+        String sampleProjectName = getString(R.string.sample_project_name);
+        long pid = projectsTable().insert(new ProjectModel(sampleProjectName, this));
+
+        //insert default template grids into sample project
+        String seedTrayDefaultName = getString(R.string.SeedDefaultTemplateTitle);
+        String dnaDefaultName = getString(R.string.DNADefaultTemplateTitle);
+        TemplateModel seedTrayTemplate = null;
+        TemplateModel dnaTemplate = null;
+        Iterator<TemplateModel> templates = templatesTable().load().iterator();
+        for (Iterator<TemplateModel> it = templates; it.hasNext(); ) {
+            TemplateModel model = it.next();
+            if (model.isDefaultTemplate()) {
+                if (model.getTitle().equals(seedTrayDefaultName)) {
+                    seedTrayTemplate = model;
+                } else if (model.getTitle().equals(dnaDefaultName)) {
+                    dnaTemplate = model;
+                }
+            }
+        }
+
+        String sampleGridSeedTrayName = getString(R.string.sample_grid_seed_tray_name);
+        String sampleGridDnaName = getString(R.string.sample_grid_dna_name);
+        String seedTrayFieldId = getString(R.string.NonNullOptionalFieldsTrayIDFieldName);
+        String dnaFieldId = getString(R.string.NonNullOptionalFieldsPlateIDFieldName);
+
+        if (dnaTemplate != null) {
+            NonNullOptionalFields fields = dnaTemplate.optionalFields();
+            if (fields != null && fields.contains(dnaFieldId)) {
+                fields.set(dnaFieldId, sampleGridDnaName);
+            }
+            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, dnaTemplate);
+            long gid = gridsTable().insert(jgm);
+            jgm.setId(gid);
+            gridsTable().update(jgm);
+            jgm.makeEntryModels();
+            entriesTable().insert(jgm.getEntryModels());
+        }
+
+        if (seedTrayTemplate != null) {
+            NonNullOptionalFields fields = seedTrayTemplate.optionalFields();
+            if (fields != null && fields.contains(seedTrayFieldId)) {
+                fields.set(seedTrayFieldId, sampleGridSeedTrayName);
+            }
+            JoinedGridModel jgm = new JoinedGridModel(pid, null, fields, this, seedTrayTemplate);
+            long gid = gridsTable().insert(jgm);
+            jgm.setId(gid);
+            gridsTable().update(jgm);
+            jgm.makeEntryModels();
+            entriesTable().insert(jgm.getEntryModels());
+        }
+
+        notifyDataSetChanged();
     }
 
     /**

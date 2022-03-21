@@ -9,5 +9,7 @@ class Keys {
         //saves last grid that was opened
         const val COLLECTOR_LAST_GRID = "$prefix.COLLECTOR_LAST_GRID"
 
+        const val FIRST_LOAD_COMPLETE = "$prefix.FIRST_LOAD_COMPLETE"
+
     }
 }

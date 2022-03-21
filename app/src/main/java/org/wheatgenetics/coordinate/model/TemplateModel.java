@@ -109,7 +109,7 @@ public class TemplateModel extends DisplayTemplateModel {
                           @NonNull final StringGetter stringGetter) {
         super(stringGetter);
 
-        this.setGeneratedExcludedCellsAmount(1);
+        this.setGeneratedExcludedCellsAmount(0);
         this.setColNumbering(true);
         this.setRowNumbering(false);
 

@@ -15,6 +15,10 @@ class TemplateCreatorActivity: AppCompatActivity() {
 
     private var mCollector: Collector? = null
 
+    companion object {
+        const val TEMPLATE_EDIT = "org.wheatgenetics.coordinate.TEMPLATE_EDIT"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
