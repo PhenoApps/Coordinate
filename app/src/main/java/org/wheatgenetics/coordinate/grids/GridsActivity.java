@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
 
@@ -372,11 +374,15 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                         .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                         .create()
                         .show();
+
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                DocumentTreeUtil.Companion.checkDocumentTreeSet(this);
             }
         }
     }
     // endregion
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

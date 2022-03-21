@@ -15,6 +15,7 @@ import org.wheatgenetics.coordinate.utils.Keys;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class GridExporter extends Exporter {
     @NonNull
@@ -31,6 +32,17 @@ public class GridExporter extends Exporter {
         this.asyncTask = new GridExporter.AsyncTask(
                 context, exportFile, exportFileName, helper, prefs);
     }
+
+    public GridExporter(@NonNull final Context context,
+                        final OutputStream output, final String exportFileName,
+                        @NonNull final GridExporter.Helper
+                                helper) {
+        super();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.asyncTask = new GridExporter.AsyncTask(
+                context, output, exportFileName, helper, prefs);
+    }
+
     // endregion
 
     // region Overridden Methods
@@ -74,6 +86,17 @@ public class GridExporter extends Exporter {
             this.prefs = prefs;
         }
 
+        private AsyncTask(
+                @NonNull final Context context,
+                final OutputStream output,
+                final String exportFileName,
+                @NonNull final GridExporter.Helper helper,
+                @NonNull final SharedPreferences prefs) {
+            super(context, output);
+            this.exportFileName = exportFileName;
+            this.helper = helper;
+            this.prefs = prefs;
+        }
         private void deleteGrid() {
             this.helper.deleteGrid();
         }
@@ -90,15 +113,22 @@ public class GridExporter extends Exporter {
                 success = false;
             else
                 try {
-                    if (joinedGridModel.export(                        // throws java.io.IOException
-                            this.getExportFile(), this.exportFileName, this)) {
-                        this.makeExportFileDiscoverable();
-                        success = true;
+                    if (this.getExportFile() == null) {
+                        if (joinedGridModel.export(this.getOutputStream(), this.exportFileName, this)) {
+                            this.makeExportFileDiscoverable();
+                            success = true;
+                            resetLastGridId(joinedGridModel.getId());
+                        } else success = false;
+                    } else {
+                        if (joinedGridModel.export(                        // throws java.io.IOException
+                                this.getExportFile(), this.exportFileName, this)) {
+                            this.makeExportFileDiscoverable();
+                            success = true;
+                            resetLastGridId(joinedGridModel.getId());
+                        } else
+                            success = false;
+                    }
 
-                        resetLastGridId(joinedGridModel.getId());
-
-                    } else
-                        success = false;
                 } catch (final IOException e) {
                     e.printStackTrace();
                     this.setMessage(

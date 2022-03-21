@@ -32,9 +32,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
     ITableViewListener,
     StringGetter {
 
-    data class Cell(val text: String)
-
-    private val args: TemplateCreatorExcludeArgs by navArgs()
+    private val args: TemplateCreatorExcludeOptionsArgs by navArgs()
 
     private var mTemplateTable: TemplatesTable? = null
     private var mRandomSelections: ArrayList<Pair<Int, Int>> = ArrayList()
@@ -71,7 +69,7 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
+            findNavController().navigate(TemplateCreatorExcludeOptionsDirections
                 .actionTemplateExcludePop())
         }
 
@@ -79,8 +77,8 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             writeToDatabase()
             mRandomSelections.clear()
             randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeDirections
-                .actionTemplateExcludeToTemplateNaming(args.title))
+            findNavController().navigate(TemplateCreatorExcludeOptionsDirections
+                .actionTemplateExcludeOptionsToTemplateNaming(args.title))
         }
 
         randomEditText?.addTextChangedListener { it?.toString()?.let { text ->
