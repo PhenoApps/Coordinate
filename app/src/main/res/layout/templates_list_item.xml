@@ -78,11 +78,26 @@
         android:src="@drawable/selector_delete"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/templatesListItemExportButton"
+        app:layout_constraintRight_toLeftOf="@id/templatesListItemEditButton"
         app:layout_constraintTop_toTopOf="parent"
 
         tools:ignore="ContentDescription" />
 
+    <ImageButton
+        android:id="@+id/templatesListItemEditButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:background="?android:selectableItemBackground"
+        android:padding="9dp"
+        android:src="@drawable/selector_edit"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/templatesListItemExportButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/templatesListItemExportButton"

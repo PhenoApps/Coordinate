@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.adapter.NonGridsAdapter;
@@ -28,6 +30,8 @@ class TemplatesAdapter extends NonGridsAdapter {
     private TemplateModels templateModelsInstance = null;   // ll
     // endregion
 
+    private View.OnClickListener editTemplateButtonListener = null;
+
     TemplatesAdapter(
             @NonNull final Activity activity,
             @NonNull final View.OnClickListener
@@ -37,9 +41,12 @@ class TemplatesAdapter extends NonGridsAdapter {
             @NonNull final View.OnClickListener
                     onExportButtonClickListener,
             @NonNull final View.OnClickListener
-                    onShowGridsButtonClickListener) {
+                    onShowGridsButtonClickListener,
+            @NonNull final View.OnClickListener
+                    onEditButtonClickListener) {
         super(activity, onCreateGridButtonClickListener, onDeleteButtonClickListener,
                 onExportButtonClickListener, onShowGridsButtonClickListener);
+        this.editTemplateButtonListener = onEditButtonClickListener;
     }
 
     // region Private Methods
@@ -177,6 +184,26 @@ class TemplatesAdapter extends NonGridsAdapter {
                             imageButton.setTag(templateId);
                             imageButton.setOnClickListener(this.onExportButtonClickListener());
                         } else imageButton.setEnabled(false);
+                }
+                //issue 27 template editor
+                //disable template editing if a grid is already created
+                boolean hasGrid = gridsTableInstance.existsInTemplate(templateId);
+                {
+                    final ImageButton imageButton = view.findViewById(
+                            R.id.templatesListItemEditButton);
+                    if (null != imageButton)
+                        if (isUserDefined && !hasGrid) {
+                            imageButton.setTag(templateId);
+                            imageButton.setOnClickListener(this.editTemplateButtonListener);
+                        } else {
+                            imageButton.setImageDrawable(AppCompatResources
+                                    .getDrawable(activity(), R.drawable.ic_pencil_gray));
+                            imageButton.setOnClickListener((v) -> {
+                                Toast.makeText(activity(),
+                                        R.string.templates_with_grids_cant_be_edited,
+                                        Toast.LENGTH_LONG).show();
+                            });
+                        }
                 }
 
                 return view;
