@@ -201,7 +201,7 @@ class TemplatesAdapter extends NonGridsAdapter {
                             imageButton.setOnClickListener((v) -> {
                                 Toast.makeText(activity(),
                                         R.string.templates_with_grids_cant_be_edited,
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             });
                         }
                 }
