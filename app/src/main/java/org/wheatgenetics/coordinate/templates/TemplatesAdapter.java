@@ -117,7 +117,14 @@ class TemplatesAdapter extends NonGridsAdapter {
                 {
                     final TextView textView = view.findViewById(
                             R.id.templatesListItemTitle);
-                    if (null != textView) textView.setText(templateModel.getTitle());
+                    if (null != textView) {
+                        textView.setText(templateModel.getTitle());
+
+                        //added click to view entire template title
+                        textView.setOnClickListener((v) -> {
+                            Toast.makeText(this.activity(), templateModel.getTitle(), Toast.LENGTH_SHORT).show();
+                        });
+                    }
                 }
                 {
                     final TextView textView = view.findViewById(

@@ -22,7 +22,10 @@ import java.lang.Exception
 import java.util.*
 import android.provider.OpenableColumns
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import androidx.navigation.fragment.findNavController
 
 
 class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
@@ -53,12 +56,30 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
+        setupBackButton()
+    }
 
-        with(activity?.supportFragmentManager?.beginTransaction()) {
-            this?.add(PreferenceFragment(), PreferenceFragment.TAG)
-            this?.addToBackStack(PreferenceFragment.TAG)
-            this?.commit()
+    private fun setupBackButton() {
+
+        setHasOptionsMenu(true)
+        activity?.let { act ->
+            val bar = (act as AppCompatActivity).supportActionBar
+            bar?.setHomeButtonEnabled(true)
+            bar?.setDisplayHomeAsUpEnabled(true)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                context?.let { ctx ->
+                    val intent = PreferenceActivity.intent(ctx)
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupExportDatabasePreference() {

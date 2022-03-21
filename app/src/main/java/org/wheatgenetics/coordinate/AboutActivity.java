@@ -1,5 +1,6 @@
 package org.wheatgenetics.coordinate;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,17 +43,25 @@ public class AboutActivity extends AppCompatActivity {
             final int settings = R.id.action_nav_settings;
 
             switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
+                case grids:
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
                     break;
-                case projects:
-                    startActivity(ProjectsActivity.intent(this));
+                case templates:
+                    Intent templateIntent = TemplatesActivity.intent(this);
+                    templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(templateIntent);
                     break;
                 case settings:
-                    startActivity(PreferenceActivity.intent(this));
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
                     break;
-                case grids:
-                    startActivity(GridsActivity.intent(this));
+                case projects:
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(ProjectsActivity.intent(this));
                     break;
                 default:
                     break;

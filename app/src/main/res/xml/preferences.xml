@@ -54,6 +54,7 @@
             android:title="@string/ScalingPreferenceTitle"
             app:min="25"
             app:showSeekBarValue="true"
+            android:icon="@drawable/ic_layout_scaling"
             app:updatesContinuously="false" />
 
     </PreferenceCategory>
@@ -80,12 +81,18 @@
 
     </PreferenceCategory>
 
-    <Preference
-        android:icon="@drawable/ic_pref_database_import"
-        android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
-        android:key="@string/key_pref_database_screen"
+    <PreferenceCategory
+        android:key="transfer_defaults"
         android:title="@string/pref_database_screen_title"
-        app:iconSpaceReserved="false"/>
+        app:iconSpaceReserved="false">
 
+        <Preference
+            android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
+            android:icon="@drawable/ic_pref_database_import"
+            android:key="@string/key_pref_database_screen"
+            android:title="@string/pref_database_screen_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

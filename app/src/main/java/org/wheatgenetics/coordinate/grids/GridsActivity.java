@@ -40,6 +40,7 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
@@ -76,6 +77,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private TemplateCreator templateCreatorInstance = null;    // ll
     private ProjectCreator projectCreatorInstance = null;    // ll
     // endregion
+
+    private boolean isTemplateFilter = false;
+    private boolean isProjectFilter = false;
 
     // region intent Private Methods
     @NonNull
@@ -321,8 +325,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         setupActionBar();
 
-        setupNewGridButton();
-
         if (null != gridsListView) {
             {
                 final Intent intent = this.getIntent();
@@ -374,6 +376,64 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         }
     }
     // endregion
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        final Intent intent = this.getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(TEMPLATE_ID_KEY)) {
+                isTemplateFilter = true;
+                isProjectFilter = false;
+                long templateId = intent.getLongExtra(TEMPLATE_ID_KEY, -1);
+                updateTitleByTemplateId(templateId);
+            } else {
+                isTemplateFilter = false;
+                isProjectFilter = true;
+                final String PROJECT_ID_KEY = GridsActivity.PROJECT_ID_KEY;
+                if (intent.hasExtra(PROJECT_ID_KEY)) {
+                    long projectId = intent.getLongExtra(PROJECT_ID_KEY, -1);
+                    updateTitleByProjectId(projectId);
+                }
+            }
+        }
+    }
+
+    private void updateTitle(String title) {
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
+            bar.setTitle(title);
+            bar.setHomeButtonEnabled(true);
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setDisplayShowTitleEnabled(true);
+        }
+    }
+
+    private void updateTitleByTemplateId(long tid) {
+
+        try {
+            TemplateModel model = templatesTable().get(tid);
+            if (model != null) {
+                updateTitle(model.getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTitleByProjectId(long pid) {
+
+        try {
+            ProjectModel model = projectsTable().get(pid);
+            if (model != null) {
+                updateTitle(model.getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void insertSampleData() {
         //save a new project and set the first load flag to false
@@ -448,10 +508,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
     }
 
-    private void setupNewGridButton() {
-        findViewById(R.id.act_grids_fab).setOnClickListener((v) -> createGrid());
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -472,24 +528,38 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
-                case templates:
-                    startActivity(TemplatesActivity.intent(this));
-                    break;
                 case projects:
-                    startActivity(ProjectsActivity.intent(this));
+                    navigateToProjects();
+                    break;
+                case templates:
+                    navigateToTemplates();
                     break;
                 case settings:
-                    startActivity(PreferenceActivity.intent(this));
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
                     break;
                 case about:
-                    startActivity(new Intent(this, AboutActivity.class));
-                    break;
-                default:
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
                     break;
             }
 
             return true;
         }));
+    }
+
+    private void navigateToProjects() {
+        Intent projectIntent = ProjectsActivity.intent(this);
+        projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(ProjectsActivity.intent(this));
+    }
+
+    private void navigateToTemplates() {
+        Intent templateIntent = TemplatesActivity.intent(this);
+        templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(templateIntent);
     }
 
     @Override
@@ -498,6 +568,20 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         return true;
     }
     // endregion
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_new_grid) {
+            createGrid();
+        } else if (item.getItemId() == android.R.id.home) {
+            if (isProjectFilter) {
+                navigateToProjects();
+            } else if (isTemplateFilter) {
+                navigateToTemplates();
+            } else finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,
