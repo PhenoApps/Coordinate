@@ -627,5 +627,9 @@
     <string name="sample_grid_dna_name">DNA Sample</string>
     <string name="act_ask_load_sample">Load available sample data?</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
+    <string name="menu_projects_new">New project</string>
+    <string name="menu_templates_new">New template</string>
+    <string name="menu_grids_new">New grid</string>
+    <string name="back_button_twice_press">Press back again to close app.</string>
 
 </resources>
