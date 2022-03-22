@@ -88,11 +88,7 @@ class StorageMigratorFragment: Fragment(R.layout.fragment_storage_migrator) {
 
         context?.let { ctx ->
 
-            if (from.name != "Coordinate") {
-                from.findFile("Coordinate")?.let { root ->
-                    copy(to.uri, to, root)
-                }
-            } else copy(to.uri, to, from)
+            to.breadthCopy(to.uri, from)
         }
     }
 
