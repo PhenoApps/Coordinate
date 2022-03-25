@@ -45,6 +45,15 @@ abstract class ProjectExporter extends Exporter {
         this.context = context;
         this.docFile = exportDir;
     }
+
+    ProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context) {
+        super();
+
+        this.baseJoinedGridModels = baseJoinedGridModels;
+        this.context = context;
+    }
     // endregion
 
     // region Protected Methods

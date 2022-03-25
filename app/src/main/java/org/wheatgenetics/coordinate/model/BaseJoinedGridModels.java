@@ -130,7 +130,7 @@ public abstract class BaseJoinedGridModels {
                                         new StringWriter();
                                 try {
                                     joinedGridModel.export(stringWriter,          // throws java.io-
-                                            this.exportFileName, this.helper,         //  .IOException
+                                            this.exportFileName,         //  .IOException
                                             /* includeHeader => */ this.first);
                                 } catch (final IOException e) { /* Do not process. */ }
 
@@ -208,7 +208,7 @@ public abstract class BaseJoinedGridModels {
                                         new StringWriter();
                                 try {
                                     joinedGridModel.export(stringWriter,          // throws java.io-
-                                            this.exportFileName, this.helper,         //  .IOException
+                                            this.exportFileName,         //  .IOException
                                             /* includeHeader => */ this.first);
                                 } catch (final IOException e) { /* Do not process. */ }
 

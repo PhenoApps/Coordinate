@@ -177,6 +177,12 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
             }
     }
 
+    private void export(OutputStream output) {
+
+        gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(activity, output, this.fileName, this);
+        gridExporter.execute();
+    }
+
     public void export(@IntRange(from = 1) final long gridId,
                        final String fileName) {
         final JoinedGridModel joinedGridModel =
@@ -185,6 +191,18 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
             this.joinedGridModel = joinedGridModel;
             this.fileName = fileName;
             this.export();
+        }
+    }
+
+    public void export(final long gridId,
+                       final String fileName,
+                       final OutputStream output) {
+        final JoinedGridModel joinedGridModel =
+                this.gridsTable().get(gridId);
+        if (null != joinedGridModel) {
+            this.joinedGridModel = joinedGridModel;
+            this.fileName = fileName;
+            this.export(output);
         }
     }
     // endregion

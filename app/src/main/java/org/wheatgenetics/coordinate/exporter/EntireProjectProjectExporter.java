@@ -21,8 +21,8 @@ public class EntireProjectProjectExporter
     // region Fields
     @NonNull
     private final String exportFileName;
-    private EntireProjectProjectExporter.AsyncTask
-            asyncTask = null;
+    private EntireProjectProjectExporter.AsyncTask asyncTask = null;
+    private OutputStream outputStream = null;
 
     public EntireProjectProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
@@ -36,10 +36,21 @@ public class EntireProjectProjectExporter
     public EntireProjectProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final DocumentFile file,
+            final OutputStream stream,
             final String exportFileName) {
-        super(baseJoinedGridModels, context, file);
+        super(baseJoinedGridModels, context);
+        this.outputStream = stream;
         this.exportFileName = exportFileName + ".csv";
+    }
+
+    public EntireProjectProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final String exportFileName,
+            final OutputStream output) {
+        super(baseJoinedGridModels, context);
+        this.exportFileName = exportFileName + ".csv";
+        this.outputStream = output;
     }
     // endregion
 
@@ -57,7 +68,7 @@ public class EntireProjectProjectExporter
                         /* exportFileName       => */ this.exportFileName,
                         /* baseJoinedGridModels => */ baseJoinedGridModels);
                 this.asyncTask.execute();
-            } else {
+            } else if (outputStream == null) {
 
                 try {
 
@@ -68,6 +79,17 @@ public class EntireProjectProjectExporter
                     this.asyncTask.execute();
 
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                try {
+
+                    this.asyncTask = new AsyncTask(this.getContext(),
+                            this.outputStream, this.exportFileName, baseJoinedGridModels);
+                    this.asyncTask.execute();
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -1,11 +1,14 @@
 package org.wheatgenetics.coordinate.utils
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
+import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -18,7 +21,8 @@ class DocumentTreeUtil {
      */
     companion object {
 
-        private const val STORAGE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_document_tree_set"
+        const val STORAGE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_document_tree_set"
+        const val MIGRATE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_migrate"
 
         /**
          * Checks whether the user has been asked to set a root directory for file storage.
@@ -58,6 +62,54 @@ class DocumentTreeUtil {
             return if (file?.findFile(child)?.isDirectory == true) {
                 file.findFile(child)
             } else file?.createDirectory(child)
+        }
+
+        /**
+         * Function that checks if the persisted folder exists.
+         * If it does not exist, show a dialog asking the user to define it.
+         * @param ctx the calling context
+         * @param function the callback, true if the user selects to define a storage
+         */
+        fun checkDir(ctx: Context?, function: (Boolean) -> Unit) {
+
+            var persisted = false
+
+            ctx?.contentResolver?.persistedUriPermissions?.let { perms ->
+
+                if (perms.isNotEmpty()) {
+
+                    perms.first()?.uri?.let { uri ->
+
+                        persisted = DocumentFile.fromTreeUri(ctx, uri)?.exists() ?: false
+
+                    }
+                }
+            }
+
+            if (!persisted) {
+
+                AlertDialog.Builder(ctx)
+                    .setNegativeButton(android.R.string.no) { dialog, which ->
+
+                        dialog.dismiss()
+
+                        function(false)
+
+                    }
+                    .setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                        dialog.dismiss()
+
+                        function(true)
+                    }
+                    .setTitle(R.string.document_tree_undefined)
+                    .create()
+                    .show()
+
+            } else {
+
+                function(false)
+            }
         }
 
         /**

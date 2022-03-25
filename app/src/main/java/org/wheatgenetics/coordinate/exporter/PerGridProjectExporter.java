@@ -101,7 +101,7 @@ public class PerGridProjectExporter extends ProjectExporter {
                             DocumentFile projectDir = null;
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                                 projectDir = DocumentTreeUtil.Companion
-                                        .createDir(context, "Export", docFile.getName());
+                                        .createDir(context, "Exports", docFile.getName());
                             }
 
                             if (projectDir != null) {
@@ -191,8 +191,7 @@ public class PerGridProjectExporter extends ProjectExporter {
                 try {
                     if (this.joinedGridModel.export(                       // throws java.io.IOException
                             /* exportFile     => */ this.getExportFile(),
-                            /* exportFileName => */ this.getExportFileName(),
-                            /* helper         => */this)) {
+                            /* exportFileName => */ this.getExportFileName())) {
                         this.makeExportFileDiscoverable();
                         success = true;
                     } else

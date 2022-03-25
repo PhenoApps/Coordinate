@@ -5,9 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +19,8 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,8 +30,10 @@ import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity;
+import org.wheatgenetics.coordinate.contracts.OpenDocumentFancy;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
@@ -50,6 +51,7 @@ import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TemplatesActivity extends BackActivity
         implements TemplateCreator.Handler {
@@ -85,7 +87,7 @@ public class TemplatesActivity extends BackActivity
     private TemplateImporter templateImporterInstance = null;  // ll
     // endregion
 
-    private final ActivityResultLauncher<String[]> importTemplateLauncher = registerForActivityResult(new ActivityResultContracts.OpenDocument(), (uri) -> {
+    private final ActivityResultLauncher<String> importTemplateLauncher = registerForActivityResult(new OpenDocumentFancy(), (uri) -> {
 
         if (uri != null) {
 
@@ -94,6 +96,31 @@ public class TemplatesActivity extends BackActivity
                 importTemplate(getContentResolver().openInputStream(uri));
 
             } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
+
+    private final ActivityResultLauncher<String> exportTemplateLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                exportTemplate(getContentResolver().openOutputStream(uri));
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                    Intent intent = new Intent();
+                    intent.setAction(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    startActivity(Intent.createChooser(intent, "Sending File..."));
+                }
+
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -192,6 +219,12 @@ public class TemplatesActivity extends BackActivity
         return this.templateExporterInstance;
     }
 
+    private void exportTemplate(OutputStream output) {
+        this.templateExporter().export(
+                this.templatesViewModel.getId(),
+                output);
+    }
+
     private void exportTemplate() {
         this.templateExporter().export(
                 this.templatesViewModel.getId(), this.templatesViewModel.getExportFileName());
@@ -201,7 +234,22 @@ public class TemplatesActivity extends BackActivity
     private void exportTemplate(@IntRange(from = 1) final long templateId,
                                 final String fileName) {
         this.templatesViewModel.setIdAndExportFileName(templateId, fileName);
-        this.exportTemplate();
+
+        DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+
+            if (!result) {
+
+                exportTemplateLauncher.launch(fileName + ".xml");
+
+            } else {
+
+                startActivity(new Intent(this, DefineStorageActivity.class));
+
+            }
+
+            return null;
+        });
+        //this.exportTemplate();
     }
 
     // region preprocessTemplateExport() Private Methods
@@ -563,8 +611,8 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     public void onImportTemplateMenuItem(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            this.preprocessTemplateImport();
-        } else importTemplateLauncher.launch(null);
+
+        importTemplateLauncher.launch("*/*");
+
     }
 }

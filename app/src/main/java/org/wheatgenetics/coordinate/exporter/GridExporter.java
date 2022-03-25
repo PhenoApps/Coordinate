@@ -121,7 +121,7 @@ public class GridExporter extends Exporter {
                         } else success = false;
                     } else {
                         if (joinedGridModel.export(                        // throws java.io.IOException
-                                this.getExportFile(), this.exportFileName, this)) {
+                                this.getExportFile(), this.exportFileName)) {
                             this.makeExportFileDiscoverable();
                             success = true;
                             resetLastGridId(joinedGridModel.getId());

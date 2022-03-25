@@ -106,8 +106,6 @@ public class JoinedGridModel extends GridModel
     private void exportSeed(
             @NonNull final CsvWriter csvWriter,
             final String exportFileName,
-            @Nullable final JoinedGridModel.Helper
-                    helper,
             final boolean includeHeader) throws IOException {
         final String tray_idValue, personValue, dateValue;
         {
@@ -164,7 +162,7 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
@@ -241,8 +239,6 @@ public class JoinedGridModel extends GridModel
 
     private void exportDNA(
             @NonNull final CsvWriter csvWriter,
-            @Nullable final JoinedGridModel.Helper
-                    helper,
             final boolean includeHeader) throws IOException {
         final String dateValue, plate_idValue, plate_nameValue,
                 dna_personValue, notesValue, tissue_typeValue, extractionValue;
@@ -329,7 +325,7 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
@@ -454,8 +450,6 @@ public class JoinedGridModel extends GridModel
 
     private void exportUserDefined(
             @NonNull final CsvWriter csvWriter,
-            @Nullable final JoinedGridModel.Helper
-                    helper,
             final boolean includeHeader) throws IOException {
         final NonNullOptionalFields optionalFields =
                 this.optionalFields();
@@ -508,7 +502,7 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
@@ -768,20 +762,18 @@ public class JoinedGridModel extends GridModel
     }
 
     void export(final Writer writer, final String exportFileName,
-                @Nullable final JoinedGridModel.Helper
-                        helper,
                 final boolean includeHeader) throws IOException {
         final TemplateType templateType =
                 this.templateModel.getType();
         final CsvWriter csvWriter =
                 new CsvWriter(writer);
         if (TemplateType.SEED == templateType)
-            this.exportSeed(csvWriter, exportFileName, helper, includeHeader);    // throws java.io-
+            this.exportSeed(csvWriter, exportFileName, includeHeader);    // throws java.io-
         else                                                                      //  .IOException
             if (TemplateType.DNA == templateType)
-                this.exportDNA(csvWriter, helper, includeHeader);                 // throws java.io-
+                this.exportDNA(csvWriter, includeHeader);                 // throws java.io-
             else                                                                  //  .IOException
-                this.exportUserDefined(csvWriter, helper, includeHeader);         // throws java.io-
+                this.exportUserDefined(csvWriter, includeHeader);         // throws java.io-
     }                                                                             //  .IOException
 
     // region Public Methods
@@ -894,17 +886,16 @@ public class JoinedGridModel extends GridModel
                 this.goToNext(activeEntryModel, direction, null) : false;
     }
 
-    public boolean export(final File exportFile, final String exportFileName,
-                          final JoinedGridModel.Helper helper)
+    public boolean export(final File exportFile, final String exportFileName)
             throws IOException {
         final boolean success;
-        if (null == exportFile || null == helper)
+        if (null == exportFile)
             success = false;
         else {
 
             this.export(                                               // throws java.io.IOException
                     new FileWriter(exportFile) /* throws java.io.IOException */,
-                    exportFileName, helper, /* includeHeader => */true);
+                    exportFileName, /* includeHeader => */true);
             success = true;
         }
         return success;

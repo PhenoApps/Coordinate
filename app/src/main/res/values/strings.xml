@@ -94,6 +94,10 @@
     <string name="nullValueTextViewText">null</string>
 
 
+    <!-- Folder names -->
+    <string name="FolderExport">Exports</string>
+    <string name="FolderTemplate">Templates</string>
+
     <!-- DataTypeAlertDialog -->
     <string name="DataTypeAlertDialogTitle">DataType</string>
 
@@ -599,7 +603,7 @@
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
     <string name="frag_storage_definer_title">Storage Definer</string>
-    <string name="frag_storage_definer_summary">With the latest version of Android, users must grant access to use folders within apps. This step is optional if you don\'t want data to persist after deleting or reinstalling the app.</string>
+    <string name="frag_storage_definer_summary">With the latest version of Android, users must grant access to use folders within apps.</string>
     <string name="define">Define</string>
     <string name="pref_storage_definer_title">Define Storage Location</string>
     <string name="pref_storage_definer_summary">Choose a location on your system to save files to.</string>
@@ -639,5 +643,8 @@
     <string name="menu_templates_new">New template</string>
     <string name="menu_grids_new">New grid</string>
     <string name="back_button_twice_press">Press back again to close app.</string>
+    <string name="document_tree_undefined">Would you like to define the Coordinate folder?</string>
+    <string name="pref_share_on_export_summary">Check this to share files after export.</string>
+    <string name="pref_share_on_export_title">Share Exports</string>
 
 </resources>

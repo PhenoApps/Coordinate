@@ -12,6 +12,7 @@ import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
@@ -125,11 +126,33 @@ public class TemplateExporter {
         }
     }
 
+    private void export(OutputStream output) {
+
+        if (output != null) {
+
+            try {
+
+                templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                        activity, output, templatesTable().get(this.templateId)
+                );
+                templateExporter.execute();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void export(@IntRange(from = 1) final long templateId,
                        final String fileName) {
         this.templateId = templateId;
         this.fileName = fileName;
         this.export();
+    }
+
+    public void export(final long templateId, final OutputStream output) {
+        this.templateId = templateId;
+        this.export(output);
     }
     // endregion
 }

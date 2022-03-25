@@ -12,11 +12,19 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
-class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
+class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer), CoroutineScope by MainScope() {
 
     private val mPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         result?.let { permissions ->
@@ -61,10 +69,32 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
 
                     DocumentFile.fromTreeUri(ctx, nonNulluri)?.let { root ->
 
-                        if (root.name == "Coordinate" || root.findFile("Coordinate")?.exists() == true) {
+                        val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
+                        if (prefs.getBoolean(DocumentTreeUtil.MIGRATE_ASK_KEY, true)) {
+
+                            //copy the HTPG.xml file to the newly defined folder
+                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+                                root.createDirectory(ctx.getString(R.string.FolderExport))
+                                root.createDirectory(ctx.getString(R.string.FolderTemplate))?.let { templates ->
+
+                                    templates.createFile("*/*", "HTPG.xml")?.uri?.let { uri ->
+
+                                        ctx.contentResolver.openOutputStream(uri)?.let { output ->
+
+                                            ctx.resources.openRawResource(R.raw.htpg).copyTo(output)
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            prefs.edit().putBoolean(DocumentTreeUtil.MIGRATE_ASK_KEY, false).apply()
                             activity?.setResult(Activity.RESULT_OK)
                             activity?.finish()
+
                         } else {
+
                             findNavController().navigate(StorageDefinerFragmentDirections
                                 .actionStorageDefinerToStorageMigrator())
                         }
@@ -78,17 +108,11 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
         super.onViewCreated(view, savedInstanceState)
 
         val defineButton = view.findViewById<Button>(R.id.frag_storage_definer_choose_dir_btn)
-        val skipButton = view.findViewById<Button>(R.id.frag_storage_definer_skip_btn)
 
         defineButton?.setOnClickListener { _ ->
 
             launchDefiner()
 
-        }
-
-        skipButton?.setOnClickListener {
-            activity?.setResult(Activity.RESULT_CANCELED)
-            activity?.finish()
         }
     }
 

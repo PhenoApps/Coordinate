@@ -18,9 +18,14 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.phenoapps.permissions.Dir;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.ZipUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ProjectExporter {
     // region Fields
@@ -31,6 +36,7 @@ public class ProjectExporter {
     @IntRange(from = 1)
     private long projectId;
     private String directoryName;
+    private OutputStream outputStream = null;
 
     private GridsTable gridsTableInstance = null; // lazy load
 
@@ -159,22 +165,56 @@ public class ProjectExporter {
 
                     } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        DocumentFile docFile = DocumentTreeUtil.Companion
-                                .createDir(activity, "Export", this.directoryName);
+                        //set up a background thread
+                        final Executor executor = Executors.newSingleThreadExecutor();
+                        executor.execute(() -> {
 
-                        if (docFile != null) {
-                            this.perGridProjectExporter =
-                                    new PerGridProjectExporter(
-                                            /* baseJoinedGridModels => */ baseJoinedGridModels,
-                                            /* context              => */ this.activity,
-                                            /* exportDir            => */ docFile,
-                                            /* exportDirectoryName  => */ this.directoryName);
-                            this.perGridProjectExporter.execute();
-                        }
+                            //create a temporary directory to put files in so we have known paths
+                            File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
+                            exportParentDir.mkdir();
+
+                            //export files to the temporary directory
+                            ArrayList<String> files = new ArrayList<>();
+                            int size = baseJoinedGridModels.size();
+                            for (int i = 0; i < size; i++ ) {
+                                JoinedGridModel model = baseJoinedGridModels.get(i);
+                                if (model != null && model.getTemplateTitle() != null) {
+                                    File temp = new File(exportParentDir, model.getTemplateTitle() + ".csv");
+                                    try {
+                                        model.export(temp, model.getTemplateTitle() + ".csv");
+                                        files.add(temp.getAbsolutePath());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            //zip files from the temp directory to the output stream
+                            try {
+
+                                ZipUtil.Companion.zip(files.toArray(new String[] {}), outputStream);
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            //clean up the temporary files
+                            try {
+
+                                for(String path : files) {
+                                    new File(path).delete();
+                                }
+                                exportParentDir.delete();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
 
                     } else {
 
-                        File exportParentDir = new File(activity.getExternalFilesDir(null), "Export");
+                        File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
                         checkMakeDir(exportParentDir);
 
                         if (exportParentDir.isDirectory()) {
@@ -216,11 +256,9 @@ public class ProjectExporter {
                                         /* exportFileName => */ this.directoryName);
                         this.entireProjectProjectExporter.execute();
                     } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
-                        DocumentFile docFile = DocumentTreeUtil.Companion.createFile(activity,
-                                "Export", this.directoryName + ".csv");
                         this.entireProjectProjectExporter =
                                 new EntireProjectProjectExporter(baseJoinedGridModels,
-                                        this.activity, docFile, this.directoryName);
+                                        this.activity, outputStream, this.directoryName);
                         this.entireProjectProjectExporter.execute();
                     } else {
                         exportFile = getExportDir();
@@ -255,6 +293,15 @@ public class ProjectExporter {
                        final String directoryName) {
         this.projectId = projectId;
         this.directoryName = directoryName;
+        this.export();
+    }
+
+    public void export(final long projectId,
+                       final String directoryName,
+                       final OutputStream output) {
+        this.projectId = projectId;
+        this.directoryName = directoryName;
+        this.outputStream = output;
         this.export();
     }
     // endregion

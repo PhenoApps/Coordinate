@@ -11,12 +11,18 @@ import android.view.View
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.arch.core.executor.TaskExecutor
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.TaskExecutors
+import kotlinx.coroutines.*
 import org.wheatgenetics.coordinate.R
 import java.io.File
 import java.io.FileInputStream
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class StorageMigratorFragment: Fragment(R.layout.fragment_storage_migrator) {
@@ -54,10 +60,16 @@ class StorageMigratorFragment: Fragment(R.layout.fragment_storage_migrator) {
 
                                 DocumentFile.fromTreeUri(ctx, newRoot)?.let { newTree ->
 
-                                    migrateStorage(oldTree, newTree)
+                                    val executor = Executors.newFixedThreadPool(2)
+                                    executor.execute {
 
+                                        migrateStorage(oldTree, newTree)
+
+                                    }
+
+                                    executor.shutdown()
+                                    executor.awaitTermination(10000L, TimeUnit.MILLISECONDS)
                                 }
-
                             }
 
                             //release old storage directory from persistable if it exists
