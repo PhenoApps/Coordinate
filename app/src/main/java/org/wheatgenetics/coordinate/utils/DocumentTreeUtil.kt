@@ -21,6 +21,10 @@ class DocumentTreeUtil {
      */
     companion object {
 
+        enum class CheckDocumentResult(val value: Int) {
+            EXISTS(1), DEFINE(2), DISMISS(3)
+        }
+
         const val STORAGE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_document_tree_set"
         const val MIGRATE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_migrate"
 
@@ -70,7 +74,7 @@ class DocumentTreeUtil {
          * @param ctx the calling context
          * @param function the callback, true if the user selects to define a storage
          */
-        fun checkDir(ctx: Context?, function: (Boolean) -> Unit) {
+        fun checkDir(ctx: Context?, function: (CheckDocumentResult) -> Unit) {
 
             var persisted = false
 
@@ -93,14 +97,14 @@ class DocumentTreeUtil {
 
                         dialog.dismiss()
 
-                        function(false)
+                        function(CheckDocumentResult.DISMISS)
 
                     }
                     .setPositiveButton(android.R.string.yes) { dialog, which ->
 
                         dialog.dismiss()
 
-                        function(true)
+                        function(CheckDocumentResult.DEFINE)
                     }
                     .setTitle(R.string.document_tree_undefined)
                     .create()
@@ -108,14 +112,14 @@ class DocumentTreeUtil {
 
             } else {
 
-                function(false)
+                function(CheckDocumentResult.EXISTS)
             }
         }
 
         /**
          * Finds the persisted uri and creates the basic coordinate file structure if it doesn't exist.
          */
-        private fun createDir(ctx: Context, parent: String): DocumentFile? {
+        fun createDir(ctx: Context, parent: String): DocumentFile? {
             val persists = ctx.contentResolver.persistedUriPermissions
             if (persists.isNotEmpty()) {
                 val uri = persists.first().uri

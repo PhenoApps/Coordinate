@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.te;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.phenoapps.permissions.Dir;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,6 +104,9 @@ public class TemplateExporter {
                         this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
                                 this.activity, output, this.templatesTable().get(this.templateId));
                         this.templateExporter.execute();
+
+                        FileUtil.Companion.shareFile(activity, file.getUri());
+
                     } catch (IOException io) {
                         io.printStackTrace();
                     }
@@ -122,6 +127,8 @@ public class TemplateExporter {
                         /* exportFile    => */ exportFile,
                         /* templateModel => */ this.templatesTable().get(this.templateId));
                 this.templateExporter.execute();
+
+                FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
             }
         }
     }

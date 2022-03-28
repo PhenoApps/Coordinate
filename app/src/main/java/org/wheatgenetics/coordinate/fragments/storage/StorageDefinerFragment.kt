@@ -108,11 +108,17 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer), Corou
         super.onViewCreated(view, savedInstanceState)
 
         val defineButton = view.findViewById<Button>(R.id.frag_storage_definer_choose_dir_btn)
+        val skipButton = view.findViewById<Button>(R.id.frag_storage_definer_skip_btn)
 
         defineButton?.setOnClickListener { _ ->
 
             launchDefiner()
 
+        }
+
+        skipButton?.setOnClickListener {
+            activity?.setResult(Activity.RESULT_CANCELED)
+            activity?.finish()
         }
     }
 

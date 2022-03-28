@@ -39,6 +39,7 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 import java.io.OutputStream;
 
@@ -179,25 +180,40 @@ public class ProjectsActivity extends BackActivity {
                                final String directoryName) {
         this.projectsViewModel.setProjectIdAndDirectoryName(projectId, directoryName);
 
-        DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
 
-            if (!result) {
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
 
-                final Utils.ProjectExport projectExport = Utils.getProjectExport(this);
-                if (Utils.ProjectExport.ONE_FILE_PER_GRID == projectExport) {
-                    exportSingleFileProjectLauncher.launch(directoryName + ".zip");
+                if (result == CheckDocumentResult.DISMISS) {
+
+                    pickerAskExport(directoryName);
+
+                } else if (result == CheckDocumentResult.DEFINE) {
+
+                    startActivity(new Intent(this, DefineStorageActivity.class));
+
                 } else {
-                    exportSingleFileProjectLauncher.launch(directoryName + ".csv");
+
+                    exportProject();
                 }
 
-            } else {
+                return null;
+            });
 
-                startActivity(new Intent(this, DefineStorageActivity.class));
+        } else {
 
-            }
+            pickerAskExport(directoryName);
 
-            return null;
-        });
+        }
+    }
+
+    private void pickerAskExport(String directoryName) {
+        final Utils.ProjectExport projectExport = Utils.getProjectExport(this);
+        if (Utils.ProjectExport.ONE_FILE_PER_GRID == projectExport) {
+            exportSingleFileProjectLauncher.launch(directoryName + ".zip");
+        } else {
+            exportSingleFileProjectLauncher.launch(directoryName + ".csv");
+        }
     }
 
     // region preprocessProjectExport() Private Methods

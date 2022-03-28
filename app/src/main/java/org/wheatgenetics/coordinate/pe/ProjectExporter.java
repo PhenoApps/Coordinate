@@ -1,6 +1,8 @@
 package org.wheatgenetics.coordinate.pe;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -18,9 +20,11 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.phenoapps.permissions.Dir;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 import org.wheatgenetics.coordinate.utils.ZipUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -109,6 +113,43 @@ public class ProjectExporter {
         super.finalize();
     }
 
+    private void exportDirectory(BaseJoinedGridModels baseJoinedGridModels, JoinedGridModel firstJoinedGridModel, File exportDir) {
+        try {
+            final RequestDir parentDir =
+                    new RequestDir(
+                            /* activity => */ this.activity,
+                            /* parent   => */ this.exportDir(),          // throws IOException,
+                            //  PermissionException
+                            /* name        => */ firstJoinedGridModel.getTemplateTitle(),
+                            /* requestCode => */ this.requestCode);
+            parentDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
+            //  netics.javalib.Dir.PermissionException
+            RequestDir requestDir = new RequestDir(
+                    /* activity    => */ this.activity,
+                    /* parent      => */ parentDir,
+                    /* name        => */ this.directoryName,
+                    /* requestCode => */ this.requestCode);
+            exportDir = requestDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
+        }                                    //  netics.javalib.Dir.PermissionException
+        catch (final IOException |
+                Dir.PermissionException e) {
+            if (!(e instanceof
+                    Dir.PermissionRequestedException))
+                this.showLongToast(e.getMessage());
+            exportDir = null;
+        }
+
+        if (null != exportDir) {
+            this.perGridProjectExporter =
+                    new PerGridProjectExporter(
+                            /* baseJoinedGridModels => */ baseJoinedGridModels,
+                            /* context              => */ this.activity,
+                            /* exportDir            => */ exportDir,
+                            /* exportDirectoryName  => */ this.directoryName);
+            this.perGridProjectExporter.execute();
+        }
+    }
+
     // region Public Methods
     public void export() {
         final BaseJoinedGridModels baseJoinedGridModels =
@@ -128,89 +169,45 @@ public class ProjectExporter {
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
 
-                        try {
-                            final RequestDir parentDir =
-                                    new RequestDir(
-                                            /* activity => */ this.activity,
-                                            /* parent   => */ this.exportDir(),          // throws IOException,
-                                            //  PermissionException
-                                            /* name        => */ firstJoinedGridModel.getTemplateTitle(),
-                                            /* requestCode => */ this.requestCode);
-                            parentDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
-                            //  netics.javalib.Dir.PermissionException
-                            RequestDir requestDir = new RequestDir(
-                                    /* activity    => */ this.activity,
-                                    /* parent      => */ parentDir,
-                                    /* name        => */ this.directoryName,
-                                    /* requestCode => */ this.requestCode);
-                            exportDir = requestDir.createIfMissing();     // throws java.io.IOException, org.wheatge-
-                        }                                    //  netics.javalib.Dir.PermissionException
-                        catch (final IOException |
-                                Dir.PermissionException e) {
-                            if (!(e instanceof
-                                    Dir.PermissionRequestedException))
-                                this.showLongToast(e.getMessage());
-                            exportDir = null;
-                        }
-
-                        if (null != exportDir) {
-                            this.perGridProjectExporter =
-                                    new PerGridProjectExporter(
-                                            /* baseJoinedGridModels => */ baseJoinedGridModels,
-                                            /* context              => */ this.activity,
-                                            /* exportDir            => */ exportDir,
-                                            /* exportDirectoryName  => */ this.directoryName);
-                            this.perGridProjectExporter.execute();
-                        }
+                        exportDirectory(baseJoinedGridModels, firstJoinedGridModel, exportDir);
 
                     } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        //set up a background thread
-                        final Executor executor = Executors.newSingleThreadExecutor();
-                        executor.execute(() -> {
+                        if (outputStream == null) {
 
-                            //create a temporary directory to put files in so we have known paths
-                            File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
-                            exportParentDir.mkdir();
+                            DocumentFile dir = DocumentTreeUtil.Companion.createDir(activity, "Exports");
 
-                            //export files to the temporary directory
-                            ArrayList<String> files = new ArrayList<>();
-                            int size = baseJoinedGridModels.size();
-                            for (int i = 0; i < size; i++ ) {
-                                JoinedGridModel model = baseJoinedGridModels.get(i);
-                                if (model != null && model.getTemplateTitle() != null) {
-                                    File temp = new File(exportParentDir, model.getTemplateTitle() + ".csv");
-                                    try {
-                                        model.export(temp, model.getTemplateTitle() + ".csv");
-                                        files.add(temp.getAbsolutePath());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                            if (dir != null) {
+
+                                DocumentFile docFile = dir.createFile("*/zip", directoryName + ".zip");
+
+                                ContentResolver resolver = activity.getContentResolver();
+
+                                if (resolver != null) {
+
+                                    if (docFile != null) {
+
+                                        try {
+
+                                            OutputStream output = resolver.openOutputStream(docFile.getUri());
+
+                                            zipProject(baseJoinedGridModels, output);
+
+                                            FileUtil.Companion.shareFile(activity, docFile.getUri());
+
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
                                 }
                             }
 
-                            //zip files from the temp directory to the output stream
-                            try {
+                        } else zipProject(baseJoinedGridModels, outputStream);
 
-                                ZipUtil.Companion.zip(files.toArray(new String[] {}), outputStream);
+                    } else if (outputStream != null) {
 
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            //clean up the temporary files
-                            try {
-
-                                for(String path : files) {
-                                    new File(path).delete();
-                                }
-                                exportParentDir.delete();
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-
+                        zipProject(baseJoinedGridModels, outputStream);
 
                     } else {
 
@@ -235,9 +232,10 @@ public class ProjectExporter {
                                             /* exportDir            => */ exportDir,
                                             /* exportDirectoryName  => */ this.directoryName);
                             this.perGridProjectExporter.execute();
+
+                            FileUtil.Companion.shareFile(activity, Uri.fromFile(exportDir));
                         }
                     }
-
 
             } else if (
                     Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT
@@ -278,6 +276,55 @@ public class ProjectExporter {
                         this.showLongToast(e.getMessage());
                 }
         }
+    }
+
+    private void zipProject(BaseJoinedGridModels models, OutputStream output) {
+
+        //set up a background thread
+        final Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+
+            //create a temporary directory to put files in so we have known paths
+            File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
+            exportParentDir.mkdir();
+
+            //export files to the temporary directory
+            ArrayList<String> files = new ArrayList<>();
+            int size = models.size();
+            for (int i = 0; i < size; i++ ) {
+                JoinedGridModel model = models.get(i);
+                if (model != null && model.getTemplateTitle() != null) {
+                    File temp = new File(exportParentDir, model.getTemplateTitle() + ".csv");
+                    try {
+                        model.export(temp, model.getTemplateTitle() + ".csv");
+                        files.add(temp.getAbsolutePath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            //zip files from the temp directory to the output stream
+            try {
+
+                ZipUtil.Companion.zip(files.toArray(new String[] {}), output);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //clean up the temporary files
+            try {
+
+                for(String path : files) {
+                    new File(path).delete();
+                }
+                exportParentDir.delete();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void checkMakeDir(File dir) {

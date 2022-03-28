@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +49,8 @@ import org.wheatgenetics.coordinate.ti.MenuItemEnabler;
 import org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor;
 import org.wheatgenetics.coordinate.ti.TemplateImporter;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -111,14 +114,7 @@ public class TemplatesActivity extends BackActivity
 
                 exportTemplate(getContentResolver().openOutputStream(uri));
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
-                    Intent intent = new Intent();
-                    intent.setAction(android.content.Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_STREAM, uri);
-                    startActivity(Intent.createChooser(intent, "Sending File..."));
-                }
+                FileUtil.Companion.shareFile(this, uri);
 
             } catch (Exception e) {
 
@@ -235,21 +231,32 @@ public class TemplatesActivity extends BackActivity
                                 final String fileName) {
         this.templatesViewModel.setIdAndExportFileName(templateId, fileName);
 
-        DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
 
-            if (!result) {
+            //result is CheckDocumentResult 1=Exists, 2=Define, 3=Dismiss
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
 
-                exportTemplateLauncher.launch(fileName + ".xml");
+                if (result == CheckDocumentResult.DISMISS) {
 
-            } else {
+                    exportTemplateLauncher.launch(fileName + ".xml");
 
-                startActivity(new Intent(this, DefineStorageActivity.class));
+                } else if (result == CheckDocumentResult.DEFINE) {
 
-            }
+                    startActivity(new Intent(this, DefineStorageActivity.class));
 
-            return null;
-        });
-        //this.exportTemplate();
+                } else {
+
+                    //export without prompt (auto export to exports folder)
+                    exportTemplate();
+                }
+
+                return null;
+            });
+
+        } else {
+
+            exportTemplateLauncher.launch(fileName + ".xml");
+        }
     }
 
     // region preprocessTemplateExport() Private Methods

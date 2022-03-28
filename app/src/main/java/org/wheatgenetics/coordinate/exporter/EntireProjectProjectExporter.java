@@ -11,6 +11,8 @@ import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,16 +44,6 @@ public class EntireProjectProjectExporter
         this.outputStream = stream;
         this.exportFileName = exportFileName + ".csv";
     }
-
-    public EntireProjectProjectExporter(
-            final BaseJoinedGridModels baseJoinedGridModels,
-            @NonNull final Context context,
-            final String exportFileName,
-            final OutputStream output) {
-        super(baseJoinedGridModels, context);
-        this.exportFileName = exportFileName + ".csv";
-        this.outputStream = output;
-    }
     // endregion
 
     // region Overridden Methods
@@ -72,11 +64,22 @@ public class EntireProjectProjectExporter
 
                 try {
 
-                    final OutputStream outputStream = getContext().getContentResolver().openOutputStream(getDocFile().getUri());
+                    if (DocumentTreeUtil.Companion.isEnabled(getContext())) {
 
-                    this.asyncTask = new AsyncTask(this.getContext(),
-                            outputStream, this.exportFileName, baseJoinedGridModels);
-                    this.asyncTask.execute();
+                        DocumentFile file = DocumentTreeUtil.Companion.createFile(getContext(), "Exports", this.exportFileName);
+
+                        if (file != null) {
+
+                            final OutputStream outputStream = getContext().getContentResolver().openOutputStream(file.getUri());
+
+                            this.asyncTask = new AsyncTask(this.getContext(),
+                                    outputStream, this.exportFileName, baseJoinedGridModels);
+                            this.asyncTask.execute();
+
+                            FileUtil.Companion.shareFile(getContext(), file.getUri());
+                        }
+                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();

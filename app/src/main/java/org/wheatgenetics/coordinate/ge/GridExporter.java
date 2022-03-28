@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.ge;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.IntRange;
@@ -15,6 +16,7 @@ import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.phenoapps.permissions.Dir;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,18 +143,20 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                     if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        DocumentFile doc = DocumentTreeUtil.Companion.createFile(activity, "Export", this.fileName + ".csv");
+                        DocumentFile doc = DocumentTreeUtil.Companion.createFile(activity, "Exports", this.fileName + ".csv");
 
                         if (doc != null) {
 
                             OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
                             this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
                             this.gridExporter.execute();
+
+                            FileUtil.Companion.shareFile(activity, doc.getUri());
                         }
 
 
                     } else {
-                        File exportDir = new File(activity.getExternalFilesDir(null), "Export");
+                        File exportDir = new File(activity.getExternalFilesDir(null), "Exports");
                         if (!exportDir.isDirectory()) {
                             if (!exportDir.mkdir()) {
                                 //something went wrong making dir
@@ -168,6 +172,8 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                                 /* exportFileName => */ this.fileName,
                                 /* helper         => */this);
                         this.gridExporter.execute();
+
+                        FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
                     }
                 }
 

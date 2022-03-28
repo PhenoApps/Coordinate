@@ -57,6 +57,8 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 import java.io.OutputStream;
 import java.util.Iterator;
@@ -242,22 +244,27 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                             final String fileName) {
         this.gridsViewModel.setIdAndExportFileName(gridId, fileName);
 
-        DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
 
-            if (!result) {
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
 
-                exportGridsLauncher.launch(fileName + ".csv");
+                if (result == CheckDocumentResult.DISMISS) {
 
-            } else {
+                    exportGridsLauncher.launch(fileName + ".csv");
 
-                startActivity(new Intent(this, DefineStorageActivity.class));
+                } else if (result == CheckDocumentResult.DEFINE){
 
-            }
+                    startActivity(new Intent(this, DefineStorageActivity.class));
 
-            return null;
-        });
+                } else {
 
-        //this.exportGrid();
+                    exportGrid();
+                }
+
+                return null;
+            });
+
+        } else exportGridsLauncher.launch(fileName + ".csv");
     }
 
     // region preprocessGridExport() Private Methods
