@@ -11,4 +11,7 @@
 
     <dimen name="templatePreview">16dp</dimen>
 
+
+    <dimen name="progressBar">12dp</dimen>
+
 </resources>

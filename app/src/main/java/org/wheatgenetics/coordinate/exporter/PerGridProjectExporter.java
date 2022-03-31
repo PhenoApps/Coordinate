@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
@@ -12,9 +13,12 @@ import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Locale;
 
 public class PerGridProjectExporter extends ProjectExporter {
@@ -26,7 +30,16 @@ public class PerGridProjectExporter extends ProjectExporter {
     public PerGridProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir,
+            final File exportDir,
+            final String exportDirectoryName) {
+        super(baseJoinedGridModels, context, exportDir);
+        this.exportDirectoryName = exportDirectoryName;
+    }
+
+    public PerGridProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final DocumentFile exportDir,
             final String exportDirectoryName) {
         super(baseJoinedGridModels, context, exportDir);
         this.exportDirectoryName = exportDirectoryName;
@@ -47,8 +60,8 @@ public class PerGridProjectExporter extends ProjectExporter {
                         /* message => */
                         R.string.PerGridProjectExporterSuccessMessage);
             } else if (size > 0) {
-                final RequestDir exportDir =
-                        this.getExportDir();
+                final DocumentFile docFile = getDocFile();
+                final File exportDir = this.getExportDir();
                 if (null != exportDir) {
                     final Context context = this.getContext();
                     final JoinedGridModel
@@ -57,24 +70,64 @@ public class PerGridProjectExporter extends ProjectExporter {
                         final String exportFileName = String.format(
                                 Locale.getDefault(), "grid%d_%s.csv",
                                 joinedGridModel.getId(), this.exportDirectoryName);
-                        try {
-                            this.asyncTask = new PerGridProjectExporter.AsyncTask(
-                                    /* context    => */ context,
-                                    /* exportFile => */ exportDir.createNewFile(     // throws
-                                    /* fileName => */ exportFileName),           //  IOE, PE
-                                    /* exportFileName  => */ exportFileName,
-                                    /* joinedGridModel => */ joinedGridModel,
-                                    /* client => */ new PerGridProjectExporter.AsyncTask.Client() {
-                                @Override
-                                public void execute() {
-                                    PerGridProjectExporter.this
-                                            .execute();                     // recursion
+
+                        this.asyncTask = new AsyncTask(
+                                /* context    => */ context,
+                                /* exportFile => */ new File(exportDir, exportFileName),           //  IOE, PE
+                                /* exportFileName  => */ exportFileName,
+                                /* joinedGridModel => */ joinedGridModel,
+                                /* client => */ new AsyncTask.Client() {
+                            @Override
+                            public void execute() {
+                                PerGridProjectExporter.this
+                                        .execute();                     // recursion
+                            }
+                        });
+                        this.asyncTask.execute();
+                    }
+
+                } else if (docFile != null) {
+
+                    final Context context = this.getContext();
+                    final JoinedGridModel
+                            joinedGridModel = baseJoinedGridModels.get(this.i++);
+                    if (null != joinedGridModel) {
+                        final String exportFileName = String.format(
+                                Locale.getDefault(), "grid%d_%s.csv",
+                                joinedGridModel.getId(), this.exportDirectoryName);
+
+                        if (docFile.getName() != null) {
+
+                            DocumentFile projectDir = null;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                projectDir = DocumentTreeUtil.Companion
+                                        .createDir(context, "Exports", docFile.getName());
+                            }
+
+                            if (projectDir != null) {
+
+                                DocumentFile exportFile =
+                                        projectDir.createFile("*/*", exportFileName);
+
+                                if (exportFile != null) {
+
+                                    try {
+
+                                        OutputStream output = context.getContentResolver()
+                                                .openOutputStream(exportFile.getUri());
+
+                                        // recursion
+                                        this.asyncTask = new AsyncTask(context,
+                                                output, exportFileName, joinedGridModel,
+                                                PerGridProjectExporter.this::execute);
+
+                                        this.asyncTask.execute();
+
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            });
-                            this.asyncTask.execute();
-                        } catch (final IOException |
-                                Dir.PermissionException e) {
-                            this.unableToCreateFileAlert(exportFileName);
+                            }
                         }
                     }
                 }
@@ -106,6 +159,18 @@ public class PerGridProjectExporter extends ProjectExporter {
             this.joinedGridModel = joinedGridModel;
             this.client = client;
         }
+
+        private AsyncTask(@NonNull final Context context,
+                          final OutputStream output, final String exportFileName,
+                          @NonNull final JoinedGridModel
+                                  joinedGridModel,
+                          @NonNull final
+                          PerGridProjectExporter.AsyncTask.Client client) {
+            super(context, output, exportFileName);
+            this.joinedGridModel = joinedGridModel;
+            this.client = client;
+        }
+
         // endregion
 
         // region Overridden Methods
@@ -120,21 +185,43 @@ public class PerGridProjectExporter extends ProjectExporter {
         @Override
         boolean export() {
             boolean success;
-            try {
-                if (this.joinedGridModel.export(                       // throws java.io.IOException
-                        /* exportFile     => */ this.getExportFile(),
-                        /* exportFileName => */ this.getExportFileName(),
-                        /* helper         => */this)) {
-                    this.makeExportFileDiscoverable();
-                    success = true;
-                } else
+            if (this.getExportFile() == null) {
+                return exportOutputStream();
+            } else {
+                try {
+                    if (this.joinedGridModel.export(                       // throws java.io.IOException
+                            /* exportFile     => */ this.getExportFile(),
+                            /* exportFileName => */ this.getExportFileName())) {
+                        this.makeExportFileDiscoverable();
+                        success = true;
+                    } else
+                        success = false;
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                    this.setMessage(
+                            R.string.GridExporterFailedMessage);
                     success = false;
-            } catch (final IOException e) {
-                e.printStackTrace();
-                this.setMessage(
-                        R.string.GridExporterFailedMessage);
-                success = false;
+                }
             }
+            return success;
+        }
+
+        boolean exportOutputStream() {
+
+            boolean success = false;
+
+            try {
+
+                this.joinedGridModel.export(this.getOutputStream(), this.getExportFileName(), this);
+
+                success = true;
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+
             return success;
         }
 

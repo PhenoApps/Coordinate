@@ -1,40 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- used to ask to add to project or not -->
+<?xml version="1.0" encoding="utf-8"?><!-- used to ask to add to project or not -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_margin="16dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <ProgressBar
         android:id="@+id/frag_pb"
-        android:progress="50"/>
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/progressBar"
+        android:indeterminate="false"
+        android:progress="50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView style="@style/TextAppearance.MaterialComponents.Headline4"
+    <TextView
         android:id="@+id/frag_template_creator_exclude_title_tv"
+        style="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="12dp"
         android:text="@string/frag_template_creator_exclude_selection_title"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_pb"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_pb" />
 
-    <TextView style="@style/TextAppearance.MaterialComponents.Subtitle1"
+    <TextView
         android:id="@+id/frag_template_creator_exclude_summary_tv"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="12dp"
         android:text="@string/frag_template_creator_exclude_summary"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_title_tv"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_template_creator_exclude_title_tv" />
 
     <com.evrencoskun.tableview.TableView
         android:id="@+id/frag_template_exclude_table"
@@ -53,37 +55,40 @@
         app:show_horizontal_separator="false"
         app:show_vertical_separator="false" />
 
-    <Button style="@style/TextAppearance.MaterialComponents.Button"
+    <Button
+        android:id="@+id/frag_template_exclude_reset_btn"
+        style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/frag_template_exclude_reset_btn"
+        android:layout_margin="8dp"
         android:background="@color/colorPrimary"
         android:text="@string/frag_exclude_reset_button"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/frag_next_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button style="@style/TextAppearance.MaterialComponents.Button"
+    <Button
+        android:id="@+id/frag_next_btn"
+        style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/frag_next_btn"
+        android:layout_margin="8dp"
         android:background="@color/colorPrimary"
         android:text="@string/frag_grid_creator_one_next_btn"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/frag_back_btn"
-        android:layout_margin="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/frag_back_btn" />
 
-    <Button style="@style/TextAppearance.MaterialComponents.Button"
+    <Button
+        android:id="@+id/frag_back_btn"
+        style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/frag_back_btn"
+        android:layout_margin="8dp"
         android:background="@color/colorPrimary"
         android:text="@string/back"
-        app:layout_constraintEnd_toStartOf="@id/frag_next_btn"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintEnd_toStartOf="@id/frag_next_btn"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

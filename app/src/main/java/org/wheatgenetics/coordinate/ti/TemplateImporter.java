@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.wheatgenetics.coordinate.StringGetter;
 import org.wheatgenetics.coordinate.TemplatesDir;
@@ -17,7 +18,9 @@ import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.phenoapps.permissions.Dir;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class TemplateImporter implements StringGetter {
     // region Fields
@@ -104,6 +107,16 @@ public class TemplateImporter implements StringGetter {
             if (templateImported) this.notifyDataSetChanged();
         }
     }
+
+    public void importTemplate(InputStream input) {
+
+        boolean templateImported = templatesTable().insert(
+                TemplateModel.makeUserDefined(input, this)) > 0;
+
+        if (templateImported) this.notifyDataSetChanged();
+
+    }
+
     // endregion
 
     public void importTemplate(final String fileName) {

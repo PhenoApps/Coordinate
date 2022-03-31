@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,10 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,6 +27,7 @@ import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
@@ -31,7 +36,12 @@ import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor;
 import org.wheatgenetics.coordinate.pe.ProjectExporter;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
+import org.wheatgenetics.coordinate.preference.Utils;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+
+import java.io.OutputStream;
 
 public class ProjectsActivity extends BackActivity {
     private static final int CREATE_GRID_REQUEST_CODE = 15;
@@ -51,6 +61,31 @@ public class ProjectsActivity extends BackActivity {
     private ProjectExporter projectExporterInstance = null;    // ll
     private ProjectCreator projectCreatorInstance = null;      // ll
     // endregion
+
+    private final ActivityResultLauncher<String> exportSingleFileProjectLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                exportProject(getContentResolver().openOutputStream(uri));
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                    Intent intent = new Intent();
+                    intent.setAction(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    startActivity(Intent.createChooser(intent, "Sending File..."));
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
 
     @NonNull
     public static Intent intent(
@@ -128,6 +163,13 @@ public class ProjectsActivity extends BackActivity {
         return this.projectExporterInstance;
     }
 
+    private void exportProject(OutputStream output) {
+        projectExporter().export(
+                projectsViewModel.getId(),
+                projectsViewModel.getDirectoryName(),
+                output);
+    }
+
     private void exportProject() {
         this.projectExporter().export(
                 this.projectsViewModel.getId(), this.projectsViewModel.getDirectoryName());
@@ -137,7 +179,41 @@ public class ProjectsActivity extends BackActivity {
     private void exportProject(@IntRange(from = 1) final long projectId,
                                final String directoryName) {
         this.projectsViewModel.setProjectIdAndDirectoryName(projectId, directoryName);
-        this.exportProject();
+
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
+
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+
+                if (result == CheckDocumentResult.DISMISS) {
+
+                    pickerAskExport(directoryName);
+
+                } else if (result == CheckDocumentResult.DEFINE) {
+
+                    startActivity(new Intent(this, DefineStorageActivity.class));
+
+                } else {
+
+                    exportProject();
+                }
+
+                return null;
+            });
+
+        } else {
+
+            pickerAskExport(directoryName);
+
+        }
+    }
+
+    private void pickerAskExport(String directoryName) {
+        final Utils.ProjectExport projectExport = Utils.getProjectExport(this);
+        if (Utils.ProjectExport.ONE_FILE_PER_GRID == projectExport) {
+            exportSingleFileProjectLauncher.launch(directoryName + ".zip");
+        } else {
+            exportSingleFileProjectLauncher.launch(directoryName + ".csv");
+        }
     }
 
     // region preprocessProjectExport() Private Methods

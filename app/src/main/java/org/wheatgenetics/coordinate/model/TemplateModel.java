@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -329,6 +331,30 @@ public class TemplateModel extends DisplayTemplateModel {
             }
     }
 
+    public static TemplateModel makeUserDefined(final InputStream input, StringGetter stringGetter) {
+
+        if (input == null) {
+
+            return null;
+
+        } else {
+
+            TemplateModel model = TemplateModel.makeUserDefined(new InputSource(input), stringGetter);
+
+            try {
+
+                input.close();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+
+            return model;
+        }
+    }
+
     @Nullable
     public static TemplateModel
     makeUserDefined(@Nullable final Bundle bundle,
@@ -504,6 +530,55 @@ public class TemplateModel extends DisplayTemplateModel {
         return success;
     }
 
+    @SuppressWarnings({"DefaultAnnotationParam"})
+    @VisibleForTesting(
+            otherwise = VisibleForTesting.PRIVATE)
+    boolean exportStream(@Nullable final OutputStream output) {
+        boolean success;
+
+        if (null == output)
+            success = false;
+        else
+            try {
+                final XmlSerializer xmlSerializer = Xml.newSerializer();
+                if (null == xmlSerializer)
+                    success = false;
+                else {
+                    xmlSerializer.setOutput(output, "UTF-8");                   // throws java.io.IOException
+
+                    xmlSerializer.startDocument("UTF-8", true);       // throws java.io-
+                    try                                                           //  .IOException
+                    {
+                        xmlSerializer.ignorableWhitespace("\n");
+
+                        final String templateTagName = "template";
+                        xmlSerializer.startTag(null, templateTagName);         // throws java.io-
+                        //  .IOException
+                        final String indent = "\n    ";
+                        if (!this.export(xmlSerializer, indent))
+                            success = false;
+                        else {
+                            if (null != this.nonNullOptionalFieldsInstance)
+                                DisplayTemplateModel.writeElement(
+                                        xmlSerializer, indent, TemplateModel.OPTIONAL_FIELDS_TAG_NAME,
+                                        this.nonNullOptionalFieldsInstance.toJson());
+
+                            xmlSerializer.ignorableWhitespace("\n");
+                            xmlSerializer.endTag(null, templateTagName);
+
+                            success = true;
+                        }
+                    } finally {
+                        xmlSerializer.endDocument() /* throws java.io.IOException */;
+                    }
+                }
+            } catch (final IOException e) {
+                success = false;
+            }
+
+        return success;
+    }
+
     // region Public Methods
     // region optionalFields Public Methods
     @Nullable
@@ -544,6 +619,13 @@ public class TemplateModel extends DisplayTemplateModel {
             } catch (final IOException e) {
                 return failure;
             }
+    }
+
+    public boolean export(@Nullable final OutputStream output) {
+        final boolean failure = false;
+        if (null == output)
+            return failure;
+        else return this.exportStream(output);
     }
 
     public void export(@NonNull final Bundle bundle) {

@@ -16,6 +16,6 @@
         android:maxLines="1"
         android:scrollbars="none"
         android:text="@{name}"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
 </LinearLayout>

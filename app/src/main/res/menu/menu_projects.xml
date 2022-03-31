@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <item android:id="@+id/action_new_project"
+    <item
+        android:id="@+id/action_new_project"
         android:icon="@drawable/ic_create_project_white"
-        app:showAsAction="always"
-        android:title="@string/menu_projects_new" />
+        android:title="@string/menu_projects_new"
+        app:showAsAction="always" />
 </menu>

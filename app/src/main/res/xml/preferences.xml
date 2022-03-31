@@ -48,13 +48,13 @@
 
         <SeekBarPreference
             android:defaultValue="100"
+            android:icon="@drawable/ic_layout_scaling"
             android:key="@string/ScalingPreferenceKey"
             android:max="250"
             android:summary="@string/ScalingPreferenceSummary"
             android:title="@string/ScalingPreferenceTitle"
             app:min="25"
             app:showSeekBarValue="true"
-            android:icon="@drawable/ic_layout_scaling"
             app:updatesContinuously="false" />
 
     </PreferenceCategory>
@@ -74,12 +74,25 @@
             android:title="@string/ProjectExportPreferenceTitle"
             app:useSimpleSummaryProvider="false" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_share"
+            android:key="org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT"
+            android:summary="@string/pref_share_on_export_summary"
+            android:title="@string/pref_share_on_export_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="transfer_defaults"
-        android:title="@string/pref_database_screen_title"
+        android:title="@string/pref_storage_screen_title"
         app:iconSpaceReserved="false">
+
+        <Preference
+            android:icon="@drawable/ic_folder_lock"
+            android:key="org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER"
+            android:summary="@string/pref_storage_definer_summary"
+            android:title="@string/pref_storage_definer_title" />
 
         <Preference
             android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"

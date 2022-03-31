@@ -4,6 +4,7 @@
     package="org.wheatgenetics.coordinate">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +20,9 @@
 
         <activity android:name=".activity.TemplateCreatorActivity"
             android:windowSoftInputMode="adjustPan"
+            android:theme="@style/MaterialAppTheme"/>
+
+        <activity android:name=".activity.DefineStorageActivity"
             android:theme="@style/MaterialAppTheme"/>
 
         <activity

@@ -11,9 +11,10 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
-    <item android:id="@+id/action_new_template"
+    <item
+        android:id="@+id/action_new_template"
         android:icon="@drawable/ic_create_template_white"
-        app:showAsAction="always"
-        android:title="@string/menu_templates_new" />
+        android:title="@string/menu_templates_new"
+        app:showAsAction="always" />
 
 </menu>

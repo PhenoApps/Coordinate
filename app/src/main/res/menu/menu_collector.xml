@@ -14,5 +14,5 @@
         android:id="@+id/action_summarize_data"
         android:icon="@drawable/ic_format_list_text"
         android:title="@string/menu_collector_meta_data_title"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

@@ -3,13 +3,14 @@
         date="2022-04-01"
         versionCode="400"
         versionName="v4.0">
-        <new>Updated interface</new>
+        <new>Updated interface!</new>
         <new>Added new template/grid workflow</new>
         <new>Added setting to export/import internal database</new>
         <new>Added dialog to confirm template deletion</new>
         <new>Added ability to edit newly created templates</new>
-        <new>Autoloads most recent grid</new>
-        <new>Add existing grids to projects</new>
+        <new>Coordinate autoloads the most recent grid</new>
+        <new>Existing grids can be added to projects</new>
+        <new>Directory permission updates</new>
         <bugfix>Fixed layouts for long project/template names</bugfix>
     </release>
 

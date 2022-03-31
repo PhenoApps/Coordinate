@@ -3,22 +3,29 @@ package org.wheatgenetics.coordinate.grids;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.UriPermission;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
@@ -29,6 +36,7 @@ import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -46,10 +54,15 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
+import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
     // region Constants
@@ -80,6 +93,31 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private boolean isTemplateFilter = false;
     private boolean isProjectFilter = false;
+
+    private final ActivityResultLauncher<String> exportGridsLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                exportGrid(getContentResolver().openOutputStream(uri));
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                    Intent intent = new Intent();
+                    intent.setAction(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    startActivity(Intent.createChooser(intent, "Sending File..."));
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
 
     // region intent Private Methods
     @NonNull
@@ -189,6 +227,13 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         return this.gridExporterInstance;
     }
 
+    private void exportGrid(OutputStream output) {
+        this.gridExporter().export(
+                this.gridsViewModel.getId(),
+                this.gridsViewModel.getExportFileName(),
+                output);
+    }
+
     private void exportGrid() {
         this.gridExporter().export(
                 this.gridsViewModel.getId(), this.gridsViewModel.getExportFileName());
@@ -198,7 +243,28 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private void exportGrid(@IntRange(from = 1) final long gridId,
                             final String fileName) {
         this.gridsViewModel.setIdAndExportFileName(gridId, fileName);
-        this.exportGrid();
+
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
+
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+
+                if (result == CheckDocumentResult.DISMISS) {
+
+                    exportGridsLauncher.launch(fileName + ".csv");
+
+                } else if (result == CheckDocumentResult.DEFINE){
+
+                    startActivity(new Intent(this, DefineStorageActivity.class));
+
+                } else {
+
+                    exportGrid();
+                }
+
+                return null;
+            });
+
+        } else exportGridsLauncher.launch(fileName + ".csv");
     }
 
     // region preprocessGridExport() Private Methods
@@ -372,11 +438,15 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                         .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                         .create()
                         .show();
+
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                DocumentTreeUtil.Companion.checkDocumentTreeSet(this);
             }
         }
     }
     // endregion
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

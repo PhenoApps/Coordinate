@@ -10,6 +10,7 @@ import org.wheatgenetics.coordinate.StringGetter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 
 public abstract class BaseJoinedGridModels {
@@ -129,7 +130,7 @@ public abstract class BaseJoinedGridModels {
                                         new StringWriter();
                                 try {
                                     joinedGridModel.export(stringWriter,          // throws java.io-
-                                            this.exportFileName, this.helper,         //  .IOException
+                                            this.exportFileName,         //  .IOException
                                             /* includeHeader => */ this.first);
                                 } catch (final IOException e) { /* Do not process. */ }
 
@@ -156,6 +157,80 @@ public abstract class BaseJoinedGridModels {
                     fileOutputStream.write(string.getBytes());
                 } finally {
                     fileOutputStream.close();
+                }
+            }
+            success = true;
+        }
+        return success;
+    }
+
+    public boolean export(final OutputStream output, final String exportFileName,
+                          final JoinedGridModel.Helper helper)
+            throws IOException {
+        final boolean success;
+        if (null == output || null == helper)
+            success = false;
+        else {
+            {
+                final String string;
+                {
+                    class Processor extends Object
+                            implements BaseJoinedGridModels.Processor {
+                        // region Fields
+                        private final String exportFileName;
+
+                        @NonNull
+                        private final StringBuilder
+                                stringBuilder = new StringBuilder();
+
+                        @NonNull
+                        private final
+                        JoinedGridModel.Helper helper;
+
+                        private boolean first = true;
+                        // endregion
+
+                        private Processor(final String exportFileName,
+                                          @NonNull final
+                                          JoinedGridModel.Helper helper) {
+                            super();
+                            this.exportFileName = exportFileName;
+                            this.helper = helper;
+                        }
+
+                        // region org.wheatgenetics.coordinate.model.BaseJoinedGridModels.Processor Overridden Method
+                        @SuppressWarnings({"unused"})
+                        @Override
+                        public void process(
+                                final JoinedGridModel joinedGridModel) {
+                            if (null != joinedGridModel) {
+                                final StringWriter stringWriter =
+                                        new StringWriter();
+                                try {
+                                    joinedGridModel.export(stringWriter,          // throws java.io-
+                                            this.exportFileName,         //  .IOException
+                                            /* includeHeader => */ this.first);
+                                } catch (final IOException e) { /* Do not process. */ }
+
+                                this.stringBuilder.append(stringWriter.toString());
+                                if (this.first) this.first = false;
+                            }
+                        }
+                        // endregion
+
+                        private String getString() {
+                            return this.stringBuilder.toString();
+                        }
+                    }
+                    final Processor processor = new Processor(exportFileName, helper);
+                    this.processAll(processor);
+                    string = processor.getString();
+                }
+
+                try {
+                    output.write(string.getBytes());
+                } finally {
+                    output.close();
                 }
             }
             success = true;

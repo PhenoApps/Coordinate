@@ -1,9 +1,12 @@
 package org.wheatgenetics.coordinate.ge;
 
 import android.app.Activity;
+import android.net.Uri;
+import android.os.Build;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
@@ -12,8 +15,12 @@ import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridExporter.Helper {
     // region Fields
@@ -110,25 +117,76 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                 this.getJoinedGridModel();
         if (null != joinedGridModel)
             try {
-                final RequestDir exportDir =
-                        new RequestDir(
-                                /* activity    => */ this.activity,
-                                /* parent      => */ this.exportDir(),   // throws IOE, PE
-                                /* name        => */ joinedGridModel.getTemplateTitle(),
-                                /* requestCode => */ this.requestCode);
-                exportDir.createIfMissing();             // throws java.io.IOException, org.wheatge-
-                //  netics.javalib.Dir.PermissionException
-                this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
-                        /* context    => */ this.activity,
-                        /* exportFile => */ exportDir.createNewFile(   // throws org.wheatgenetics.java-
-                        this.fileName + ".csv"),          //  lib.Dir.PermissionException
-                        /* exportFileName => */ this.fileName,
-                        /* helper         => */this);
-                this.gridExporter.execute();
+
+                File exportFile;
+
+                //check the sdk, if it is below 30 (R) then we don't use scoped storage
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    final RequestDir exportDir =
+                            new RequestDir(
+                                    /* activity    => */ this.activity,
+                                    /* parent      => */ this.exportDir(),   // throws IOE, PE
+                                    /* name        => */ joinedGridModel.getTemplateTitle(),
+                                    /* requestCode => */ this.requestCode);
+                    exportDir.createIfMissing();             // throws java.io.IOException, org.wheatge-
+                    exportFile = exportDir.createNewFile(this.fileName + ".csv");
+
+                    //  netics.javalib.Dir.PermissionException
+                    this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
+                            /* context    => */ this.activity,
+                            /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
+                            /* exportFileName => */ this.fileName,
+                            /* helper         => */this);
+                    this.gridExporter.execute();
+
+                } else { //otherwise use the context to get the files directory
+
+                    if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+
+                        DocumentFile doc = DocumentTreeUtil.Companion.createFile(activity, "Exports", this.fileName + ".csv");
+
+                        if (doc != null) {
+
+                            OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
+                            this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
+                            this.gridExporter.execute();
+
+                            FileUtil.Companion.shareFile(activity, doc.getUri());
+                        }
+
+
+                    } else {
+                        File exportDir = new File(activity.getExternalFilesDir(null), "Exports");
+                        if (!exportDir.isDirectory()) {
+                            if (!exportDir.mkdir()) {
+                                //something went wrong making dir
+                            }
+                        }
+
+                        exportFile = new File(exportDir, this.fileName + ".csv");
+
+                        //  netics.javalib.Dir.PermissionException
+                        this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
+                                /* context    => */ this.activity,
+                                /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
+                                /* exportFileName => */ this.fileName,
+                                /* helper         => */this);
+                        this.gridExporter.execute();
+
+                        FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
+                    }
+                }
+
             } catch (final IOException | Dir.PermissionException e) {
                 if (!(e instanceof Dir.PermissionRequestedException))
                     this.showLongToast(e.getMessage());
             }
+    }
+
+    private void export(OutputStream output) {
+
+        gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(activity, output, this.fileName, this);
+        gridExporter.execute();
     }
 
     public void export(@IntRange(from = 1) final long gridId,
@@ -139,6 +197,18 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
             this.joinedGridModel = joinedGridModel;
             this.fileName = fileName;
             this.export();
+        }
+    }
+
+    public void export(final long gridId,
+                       final String fileName,
+                       final OutputStream output) {
+        final JoinedGridModel joinedGridModel =
+                this.gridsTable().get(gridId);
+        if (null != joinedGridModel) {
+            this.joinedGridModel = joinedGridModel;
+            this.fileName = fileName;
+            this.export(output);
         }
     }
     // endregion

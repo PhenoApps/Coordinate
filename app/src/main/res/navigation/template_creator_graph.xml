@@ -4,19 +4,21 @@
     android:id="@+id/grid_creator_graph"
     app:startDestination="@id/template_dimensions">
 
-    <fragment tools:layout="@layout/fragment_template_creator_dimensions"
+    <fragment
         android:id="@+id/template_dimensions"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorDimensions"
-        android:label="Template name, rows, and columns" >
+        android:label="Template name, rows, and columns"
+        tools:layout="@layout/fragment_template_creator_dimensions">
         <action
             android:id="@+id/action_template_dimensions_to_template_optional_fields"
             app:destination="@id/template_optional_fields" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_creator_optional_fields"
+    <fragment
         android:id="@+id/template_optional_fields"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorOptionalFields"
-        android:label="Template Optional Fields" >
+        android:label="Template Optional Fields"
+        tools:layout="@layout/fragment_template_creator_optional_fields">
         <action
             android:id="@+id/action_template_optional_fields_pop"
             app:popUpTo="@id/template_optional_fields"
@@ -29,10 +31,11 @@
             app:destination="@id/template_exclude_options" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_exclude_options"
+    <fragment
         android:id="@+id/template_exclude_options"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeOptions"
-        android:label="Template Exclude Options" >
+        android:label="Template Exclude Options"
+        tools:layout="@layout/fragment_template_exclude_options">
         <action
             android:id="@+id/action_template_exclude_pop"
             app:popUpTo="@id/template_exclude_options"
@@ -48,13 +51,14 @@
             app:destination="@id/template_exclude_selection" />
         <action
             android:id="@+id/action_template_exclude_options_to_template_naming"
-            app:destination="@id/template_naming"/>
+            app:destination="@id/template_naming" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_exclude_random"
+    <fragment
         android:id="@+id/template_exclude_random"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeRandom"
-        android:label="Template Exclude Random" >
+        android:label="Template Exclude Random"
+        tools:layout="@layout/fragment_template_exclude_random">
         <action
             android:id="@+id/action_template_exclude_pop"
             app:popUpTo="@id/template_exclude_random"
@@ -67,10 +71,11 @@
             app:destination="@id/template_naming" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_exclude_selection"
+    <fragment
         android:id="@+id/template_exclude_selection"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorExcludeSelection"
-        android:label="Template Exclude Selection" >
+        android:label="Template Exclude Selection"
+        tools:layout="@layout/fragment_template_exclude_selection">
         <action
             android:id="@+id/action_template_exclude_pop"
             app:popUpTo="@id/template_exclude_selection"
@@ -83,10 +88,11 @@
             app:destination="@id/template_naming" />
     </fragment>
 
-    <fragment tools:layout="@layout/fragment_template_creator_naming"
+    <fragment
         android:id="@+id/template_naming"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorNaming"
-        android:label="Template Naming" >
+        android:label="Template Naming"
+        tools:layout="@layout/fragment_template_creator_naming">
         <action
             android:id="@+id/action_template_naming_pop"
             app:popUpTo="@id/template_naming"
@@ -100,10 +106,11 @@
     </fragment>
 
 
-    <fragment tools:layout="@layout/fragment_template_preview"
+    <fragment
         android:id="@+id/template_preview"
         android:name="org.wheatgenetics.coordinate.fragments.template_creator.TemplateCreatorPreview"
-        android:label="Template Preview" >
+        android:label="Template Preview"
+        tools:layout="@layout/fragment_template_preview">
         <argument
             android:name="title"
             app:argType="string" />

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--    Icons: Grids, Templates, Projects, Settings, About-->
+<?xml version="1.0" encoding="utf-8"?><!--    Icons: Grids, Templates, Projects, Settings, About-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_nav_grids"
         android:icon="@drawable/ic_dots_grid"
-        android:title="@string/bottom_nav_bar_grids"/>
+        android:title="@string/bottom_nav_bar_grids" />
     <item
         android:id="@+id/action_nav_templates"
         android:icon="@drawable/ic_templates"
@@ -16,9 +15,9 @@
     <item
         android:id="@+id/action_nav_settings"
         android:icon="@drawable/ic_cog"
-        android:title="@string/bottom_nav_bar_settings"/>
+        android:title="@string/bottom_nav_bar_settings" />
     <item
         android:id="@+id/action_nav_about"
         android:icon="@drawable/ic_information_outline"
-        android:title="@string/bottom_nav_bar_about"/>
+        android:title="@string/bottom_nav_bar_about" />
 </menu>
