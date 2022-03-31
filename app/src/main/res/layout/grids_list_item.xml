@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintEnd_toStartOf="@id/gridsListItemDeleteButton"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -24,13 +24,13 @@
             android:layout_width="0dp"
 
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textSize="20sp"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -39,13 +39,13 @@
             android:layout_width="0dp"
 
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textSize="16sp"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/gridsListItemTitle" />
 
 

@@ -10,17 +10,17 @@
             android:icon="@drawable/ic_pref_database_delete"
             android:key="@string/pref_database_reset_key"
             android:summary="@string/pref_database_reset_summary"
-            android:title="@string/pref_database_reset_title"/>
+            android:title="@string/pref_database_reset_title" />
         <Preference
             android:icon="@drawable/ic_pref_database_import"
             android:key="@string/key_pref_database_import"
             android:summary="@string/pref_database_import_summary"
-            android:title="@string/pref_database_import_title"/>
+            android:title="@string/pref_database_import_title" />
         <Preference
             android:icon="@drawable/ic_pref_database_export"
             android:key="@string/key_pref_database_export"
             android:summary="@string/pref_database_export_summary"
-            android:title="@string/pref_database_export_title"/>
+            android:title="@string/pref_database_export_title" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

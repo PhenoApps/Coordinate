@@ -25,8 +25,8 @@ android {
         applicationId "org.wheatgenetics.coordinate"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 310
-        versionName "3.1.0"
+        versionCode 400
+        versionName "4.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

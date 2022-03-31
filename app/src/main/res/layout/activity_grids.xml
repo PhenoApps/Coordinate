@@ -19,16 +19,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        tools:listitem="@layout/grids_list_item"/>
+        tools:listitem="@layout/grids_list_item" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/act_grids_bnv"
         style="@style/AppTheme.BottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/act_grids_bnv"
         android:layout_below="@id/gridsListView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
