@@ -3,6 +3,8 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+[![Documentation Status](https://readthedocs.org/projects/coordinate/badge/?version=stable)](https://coordinate.readthedocs.io/en/stable/?badge=stable)
+
 Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates. Two templates are included by default: Seed Tray and DNA Plate.
 
 ## Contributors
