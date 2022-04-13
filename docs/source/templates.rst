@@ -18,10 +18,7 @@ List Layout
 -----------
 Each template in the list contains the template name, size, and date created on the left.
 
-Action buttons on the right of each template list item allow non-default templates to be deleted
-.. figure:: /_static/icons/delete.svg
-   :width: 100
-, edited, exported, grids created from that template to be viewed, or new grids to be created from that template.
+Action buttons on the right of each template list item allow non-default templates to be deleted (|delete|), edited, exported, grids created from that template to be viewed, or new grids to be created from that template.
 
 
 Editing templates
@@ -32,3 +29,8 @@ Templates can only be edited if no grids have been created using that template.
 Deleting Templates
 ------------------
 Deleting a template will delete all of the grids created using that template.
+
+
+.. |delete| image:: /_static/icons/delete.svg
+  :width: 100
+  :alt: Delete
