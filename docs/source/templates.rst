@@ -9,6 +9,11 @@ New Templates
 Templates can be created by importing a template file or selecting the New Template icon from the top toolbar.
 
 
+.. figure:: /_static/images/template_list_framed.png
+   :figwidth: 35%
+   :align: right
+   :alt: Template list layout
+
 List Layout
 -----------
 Each template in the list contains the template name, size, and date created on the left.

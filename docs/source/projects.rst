@@ -9,6 +9,11 @@ New Projects
 New projects can be created by clicking the New Project icon on the top toolbar. New projects only require a name to be created.
 
 
+.. figure:: /_static/images/project_list_framed.png
+   :figwidth: 35%
+   :align: right
+   :alt: Project list layout
+
 List Layout
 -----------
 Each project in the list contains the project name, number of grids, and date created on the left.

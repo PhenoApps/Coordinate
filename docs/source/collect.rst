@@ -3,6 +3,12 @@ Collecting data
 
 Once a grid has been created, data can be collected.
 
+
+.. figure:: /_static/images/collect_data_framed.png
+   :figwidth: 35%
+   :align: right
+   :alt: Collect data layout
+
 Data Input
 ----------
 Each cell within a grid can hold a single string of data (such as a plant barcode). Data can be input via the text box below the grid. Sample barcodes can be rapidly scanned to increase data throughput using the barcode button next to data textbox.
