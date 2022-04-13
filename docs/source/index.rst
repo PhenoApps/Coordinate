@@ -18,5 +18,12 @@ Contents
 
 .. toctree::
 
-   usage
-   api
+   coordinate
+   storage
+   projects
+   templates
+   grids
+   collect
+   export
+   settings
+   funding
