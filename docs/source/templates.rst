@@ -32,9 +32,9 @@ Deleting a template will delete all of the grids created using that template.
 
 
 .. |delete| image:: /_static/icons/delete.svg
-  :width: 30
+  :width: 25
   :alt: Delete
 
-.. |save| image:: /_static/icons/save.svg
-  :width: 30
+.. |save| image:: /_static/icons/save.png
+  :width: 25
   :alt: Delete

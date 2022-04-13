@@ -10,8 +10,8 @@ Layout
 Coordinate utilizes a bottom navigation toolbar that allows you to quickly switch between :doc:`grids`, :doc:`templates`,  :doc:`projects`, and :doc:`settings`. The top toolbar is reserved for actions relevant to each section of the app.
 
 .. figure:: /_static/images/grid_list_framed.png
-   :width: 35%
-   :align: right
+   :width: 40%
+   :align: center
    :alt: Coordinate layout
 
 
