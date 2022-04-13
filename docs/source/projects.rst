@@ -10,8 +10,8 @@ New projects can be created by clicking the New Project icon on the top toolbar.
 
 
 .. figure:: /_static/images/project_list_framed.png
-   :figwidth: 35%
-   :align: right
+   :width: 40%
+   :align: center
    :alt: Project list layout
 
 List Layout

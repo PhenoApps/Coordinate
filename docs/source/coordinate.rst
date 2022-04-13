@@ -16,7 +16,4 @@ Coordinate utilizes a bottom navigation toolbar that allows you to quickly switc
    :align: center
    :alt: Coordinate layout
 
-
-.. note::
-
-   This project is under active development.
+   Coordinate layout

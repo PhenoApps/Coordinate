@@ -9,8 +9,8 @@ Grids can be created by selecting the New Grid icon from the top toolbar, a temp
 
 
 .. figure:: /_static/images/grid_list_framed.png
-   :figwidth: 35%
-   :align: right
+   :width: 40%
+   :align: center
    :alt: Grid list layout
 
 List Layout

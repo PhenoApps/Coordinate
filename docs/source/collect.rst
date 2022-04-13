@@ -5,8 +5,8 @@ Once a grid has been created, data can be collected.
 
 
 .. figure:: /_static/images/collect_data_framed.png
-   :figwidth: 35%
-   :align: right
+   :width: 40%
+   :align: center
    :alt: Collect data layout
 
 Data Input
