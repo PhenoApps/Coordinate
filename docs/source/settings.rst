@@ -28,7 +28,7 @@ Export
 
 Project export
 ~~~~~~~~~~~~~~
-:dog:`projects` can be exported with each grid being a single file (all contained within in a zipped file) or all grids appended to a single CSV file.
+:doc:`projects` can be exported with each grid being a single file (all contained within in a zipped file) or all grids appended to a single CSV file.
 
 Share exports
 ~~~~~~~~~~~~~
