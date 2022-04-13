@@ -1,8 +1,6 @@
 # Coordinate <a href="https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="50"></a>
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+![All Contributors](https://img.shields.io/github/all-contributors/phenoapps/coordinate)
 [![Documentation Status](https://readthedocs.org/projects/coordinate/badge/?version=stable)](https://coordinate.readthedocs.io/en/stable/?badge=stable)
 
 Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates. Two templates are included by default: Seed Tray and DNA Plate.
