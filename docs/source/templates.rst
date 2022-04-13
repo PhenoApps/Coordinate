@@ -33,28 +33,21 @@ Deleting a template will delete all of the grids created using that template.
 
 .. |delete| image:: /_static/icons/delete.png
   :width: 20
-  :alt: Delete
 
 .. |edit| image:: /_static/icons/template-edit.png
   :width: 20
-  :alt: Delete
 
 .. |save| image:: /_static/icons/save.png
   :width: 20
-  :alt: Delete
 
 .. |grid-list| image:: /_static/icons/grid-list.png
   :width: 20
-  :alt: Delete
 
 .. |grid-add| image:: /_static/icons/grid-add.png
   :width: 20
-  :alt: Delete
 
 .. |template-add| image:: /_static/icons/template-add.png
   :width: 20
-  :alt: Delete
 
 .. |import| image:: /_static/icons/import.png
   :width: 20
-  :alt: Delete

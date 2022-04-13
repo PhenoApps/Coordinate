@@ -5,9 +5,7 @@ Grids are the basic unit through which data is collected within Coordinate. Each
 
 New Grids
 ---------
-Grids can be created by selecting the New Grid icon from the top toolbar, a template list item, or a project list item.
-
-
+Grids can be created by selecting the New Grid icon (|grid-add|) from the top toolbar, a template list item, or a project list item.
 
 
 List Layout
@@ -19,9 +17,22 @@ List Layout
 
 Each grid in the list contains the grid name or identifier, parent template, and date created on the left.
 
-Action buttons on the right of each list item allow a grid to be deleted, exported, or data to be collected.
+Action buttons on the right of each list item allow a grid to be deleted (|delete|), exported (|save|), or data to be collected (|collect|).
 
 
 Deleting Grids
 --------------
 Deleting a grid will delete all of the data that was collected within that grid.
+
+
+.. |delete| image:: /_static/icons/delete.png
+  :width: 20
+
+.. |save| image:: /_static/icons/save.png
+  :width: 20
+
+.. |grid-add| image:: /_static/icons/grid-add.png
+  :width: 20
+
+.. |collect| image:: /_static/icons/collect.png
+  :width: 20

@@ -7,11 +7,10 @@ Introduction
 Coordinate is a flexible, open-source Android app that is used to collecting and organizing samples or data. Coordinate functions by defining templates and then collecting data in grids created from those templates.
 
 .. figure:: /_static/images/grid_list_framed.png
-   :figwidth: 8cm
-   :align: right
+   :width: 40%
+   :align: center
    :alt: Coordinate layout
 
-   Coordinate layout
 
 Layout
 ------
