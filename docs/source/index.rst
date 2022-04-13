@@ -1,7 +1,12 @@
 Coordinate
-===================================
+==========
 
 Coordinate is a flexible, open-source Android app that is used to collecting and organizing samples or data. Coordinate functions by defining templates and then collecting data in grids created from those templates.
+
+Layout
+------
+
+
 
 .. note::
 
@@ -20,9 +25,9 @@ Coordinate is a flexible, open-source Android app that is used to collecting and
    :hidden:
    :caption: Structure
 
-   projects
    templates
    grids
+   projects
 
 .. toctree::
    :maxdepth: 2
