@@ -3,6 +3,11 @@ Contents
 
 .. toctree::
    :maxdepth: 2
+
+   coordinate
+
+.. toctree::
+   :maxdepth: 2
    :caption: Setup
 
    storage
