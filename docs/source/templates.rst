@@ -1,7 +1,7 @@
 Templates
 =========
 
-Templates allow defined structure and metadata across different grids that might be collected. Two templates are included by default, a
+Templates allow defined structure and metadata across different grids that might be collected. Two templates are included by default, a 6x20 Seed Tray Template and a 8x12 DNA Plate template.
 
 
 New Templates
