@@ -18,7 +18,7 @@ List Layout
 
 Each project in the list contains the project name, number of grids, and date created on the left.
 
-Action buttons on the right of each list item allow a project to be deleted (|delete|), exported (|save|), grids in the project to be viewed (grid-list|), or new grids to be created from that project (|grid-add|).
+Action buttons on the right of each list item allow a project to be deleted (|delete|), exported (|save|), grids in the project to be viewed (|grid-list|), or new grids to be created from that project (|grid-add|).
 
 
 Deleting Projects
