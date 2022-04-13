@@ -12,7 +12,7 @@ Templates can be created by selecting the New Template icon (|template-add|) or 
 List Layout
 -----------
 .. figure:: /_static/images/template_list_framed.png
-   :width: 40%
+   :width: 30%
    :align: center
    :alt: Template list layout
 

@@ -5,7 +5,7 @@ After installing and opening the app, you will be asked to define a 'Storage loc
 
 If you skip defining the 'Storage location' directory, you will be required to select an export location and name for each file that is exported from Coordinate. The selected 'Storage location' can be changed in the :doc:`/settings`.
 
-There are three subdirectories Within the 'Storage location' directory: **Exports**, **Templates**, and **Database**.
+There are three subdirectories within the 'Storage location' directory: **Exports**, **Templates**, and **Database**.
 
 * **Exports**: contains the grid files that are exported after collecting data
 

@@ -8,13 +8,15 @@ New Grids
 Grids can be created by selecting the New Grid icon from the top toolbar, a template list item, or a project list item.
 
 
-.. figure:: /_static/images/grid_list_framed.png
-   :width: 40%
-   :align: center
-   :alt: Grid list layout
+
 
 List Layout
 -----------
+.. figure:: /_static/images/grid_list_framed.png
+   :width: 30%
+   :align: center
+   :alt: Grid list layout
+
 Each grid in the list contains the grid name or identifier, parent template, and date created on the left.
 
 Action buttons on the right of each list item allow a grid to be deleted, exported, or data to be collected.

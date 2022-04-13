@@ -9,13 +9,15 @@ New Projects
 New projects can be created by clicking the New Project icon on the top toolbar. New projects only require a name to be created.
 
 
+
+
+List Layout
+-----------
 .. figure:: /_static/images/project_list_framed.png
    :width: 40%
    :align: center
    :alt: Project list layout
 
-List Layout
------------
 Each project in the list contains the project name, number of grids, and date created on the left.
 
 Action buttons on the right of each list item allow a project to be deleted, exported, grids in the project to be viewed, or new grids to be created from that project.
