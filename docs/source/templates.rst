@@ -35,7 +35,7 @@ Deleting a template will delete all of the grids created using that template.
   :width: 20
   :alt: Delete
 
-.. |edit| image:: /_static/icons/edit.png
+.. |edit| image:: /_static/icons/template-edit.png
   :width: 20
   :alt: Delete
 
