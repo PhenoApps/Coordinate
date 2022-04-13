@@ -7,9 +7,6 @@ Coordinate is a flexible, open-source Android app that is used to collecting and
 
    This project is under active development.
 
-Contents
---------
-
 .. toctree::
    :maxdepth: 2
    :hidden:
