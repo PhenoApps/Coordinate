@@ -1,13 +1,7 @@
-Welcome to Lumache's documentation!
+Coordinate
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
-
-Check out the :doc:`coordinate` section for further information, including
-how to the project.
+Coordinate is a flexible, open-source Android app that is used to collecting and organizing samples or data. Coordinate functions by defining templates and then collecting data in grids created from those templates.
 
 .. note::
 
@@ -17,13 +11,33 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Setup
 
-   coordinate
    storage
+   settings
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Structure
+
    projects
    templates
    grids
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Function
+
    collect
    export
-   settings
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: About
+
    funding
