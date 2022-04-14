@@ -2,23 +2,25 @@ package org.wheatgenetics.coordinate.fragments.grid_creator
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
+import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.GridsTable
 import org.wheatgenetics.coordinate.database.ProjectsTable
+import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 import org.wheatgenetics.coordinate.model.ProjectModel
 import org.wheatgenetics.coordinate.pc.CreateProjectAlertDialog
 
 class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_project_options),
-    CreateProjectAlertDialog.Handler, StringGetter {
+    CreateProjectAlertDialog.Handler, TitleSelectedListener, StringGetter {
 
     private var mProjectsTable: ProjectsTable? = null
 
@@ -132,12 +134,6 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         okButton?.text = getString(R.string.frag_grid_creator_one_next_btn)
     }
 
-    //iterates over all list items and changes button text depending on if user selected one
-    private fun checkButtonText(view: AdapterView<*>) {
-        if (view.children.any { (it as CheckedTextView).isChecked }) setNextText()
-        else setSkipText()
-    }
-
     private fun setupAdapter() {
 
         activity?.let { act ->
@@ -147,32 +143,31 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
                 projects.titles()?.let { titles ->
 
-                    val adapter = ArrayAdapter(act, android.R.layout.simple_list_item_checked, titles)
+                    val adapter = TitleChoiceAdapter(this)
 
-                    val listView = view?.findViewById<ListView>(R.id.frag_grid_creator_add_project_lv)
+                    val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_project_lv)
+
+                    val size = titles.size
+
+                    listView?.setItemViewCacheSize(size)
+
+                    listView?.layoutManager = LinearLayoutManager(act)
 
                     listView?.adapter = adapter
 
-                    listView?.setOnItemClickListener { adapterView, view, i, l ->
-                        with (view as CheckedTextView) {
-                            isChecked = !isChecked
-                            mSelectedProjectTitle = if (isChecked) view.text.toString() else null
-                        }
+                    (listView?.adapter as TitleChoiceAdapter).submitList(titles.map { it })
 
-                        //uncheck all other selections
-                        adapterView?.children?.forEachIndexed { index, ctv ->
-                            with (ctv as CheckedTextView) {
-                                if (index != i) this.isChecked = false
-                            }
-                        }
-
-                        checkButtonText(adapterView)
-                    }
-
-                    (listView?.adapter as? ArrayAdapter<*>)?.notifyDataSetChanged()
+                    listView?.adapter?.notifyItemRangeChanged(0, size)
                 }
             }
         }
+    }
+
+    override fun checked(title: String) {
+
+        mSelectedProjectTitle = title
+
+        setNextText()
     }
 
     //here we must check if the project already exists in projects table

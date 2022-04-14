@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_add_project_title_tv" />
 
-    <ListView xmlns:tools="http://schemas.android.com/tools"
+    <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frag_grid_creator_add_project_lv"
         android:layout_width="0dp"
         android:layout_height="0dp"

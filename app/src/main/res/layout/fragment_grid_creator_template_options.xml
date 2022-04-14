@@ -38,8 +38,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_options_title_tv" />
 
-    <ListView xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/frag_grid_creator_add_project_lv"
+    <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frag_grid_creator_add_template_lv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
