@@ -11,11 +11,16 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity
+import org.wheatgenetics.coordinate.adapter.TitleChoiceAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
+import org.wheatgenetics.coordinate.interfaces.TitleSelectedListener
 
-class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_template_options) {
+class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_template_options),
+    TitleSelectedListener {
 
     private val args: GridCreatorTemplateOptionsArgs by navArgs()
 
@@ -98,12 +103,6 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         okButton?.isEnabled = true
     }
 
-    //iterates over all list items and changes button text depending on if user selected one
-    private fun checkButtonText(view: AdapterView<*>) {
-        if (view.children.any { (it as CheckedTextView).isChecked }) setNextText()
-        else setDisabledNext()
-    }
-
     private fun setupAdapter() {
 
         //button that will start an add optional fields fragment
@@ -121,33 +120,31 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
 
                 templates.titles()?.let { titles ->
 
-                    val adapter = ArrayAdapter(act, android.R.layout.simple_list_item_checked, titles)
+                    val adapter = TitleChoiceAdapter(this)
 
-                    val listView = view?.findViewById<ListView>(R.id.frag_grid_creator_add_project_lv)
+                    val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
+
+                    val size = titles.size
+
+                    listView?.setItemViewCacheSize(size)
+
+                    listView?.layoutManager = LinearLayoutManager(act)
 
                     listView?.adapter = adapter
 
-                    listView?.setOnItemClickListener { adapterView, view, i, l ->
-                        with (view as CheckedTextView) {
-                            isChecked = !isChecked
-                            mSelectedTemplateTitle = if (isChecked) {
-                                this.text.toString()
-                            } else null
-                        }
+                    (listView?.adapter as TitleChoiceAdapter).submitList(titles.map { it })
 
-                        //uncheck all other selections
-                        adapterView?.children?.forEachIndexed { index, ctv ->
-                            with (ctv as CheckedTextView) {
-                                if (index != i) this.isChecked = false
-                            }
-                        }
-
-                        checkButtonText(adapterView)
-                    }
-
-                    (listView?.adapter as? ArrayAdapter<*>)?.notifyDataSetChanged()
+                    listView?.adapter?.notifyItemRangeChanged(0, size)
                 }
             }
         }
+    }
+
+    override fun checked(title: String) {
+
+        mSelectedTemplateTitle = title
+
+        setNextText()
+
     }
 }
