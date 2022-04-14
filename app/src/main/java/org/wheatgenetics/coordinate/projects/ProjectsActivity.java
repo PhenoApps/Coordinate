@@ -251,13 +251,7 @@ public class ProjectsActivity extends BackActivity {
     private ProjectCreator projectCreator() {
         if (null == this.projectCreatorInstance) this.projectCreatorInstance =
                 new ProjectCreator(this,
-                        new ProjectCreator.Handler() {
-                            @Override
-                            public void handleCreateProjectDone(
-                                    @IntRange(from = 1) final long projectId) {
-                                ProjectsActivity.this.notifyDataSetChanged();
-                            }
-                        });
+                        projectId -> ProjectsActivity.this.notifyDataSetChanged());
         return this.projectCreatorInstance;
     }
 
