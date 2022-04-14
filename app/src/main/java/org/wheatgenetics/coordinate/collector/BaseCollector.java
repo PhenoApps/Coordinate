@@ -399,8 +399,12 @@ abstract class BaseCollector extends Object implements
 
             }  else {
                 final String barcodeScannerResult = result.getContents();
-                this.setEntry(barcodeScannerResult);
-                this.saveEntry(barcodeScannerResult);
+
+                if (!barcodeScannerResult.isEmpty()) {
+                    this.setEntry(barcodeScannerResult);
+                    this.saveEntry(barcodeScannerResult);
+                }
+
                 handled = true;
             }
 
