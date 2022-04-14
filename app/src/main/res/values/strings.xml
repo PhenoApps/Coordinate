@@ -284,6 +284,10 @@
     <!-- TemplateModel -->
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
+    <string name="HTPGTemplateTitle">HTPG</string>
+
+    <!-- NonNullOptionalFields HTPG template -->
+    <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
 
     <!-- CheckedIncludedEntryModel -->
     <string name="CallCheckThenSetValueInstead">Call checkThenSetValue() instead</string>

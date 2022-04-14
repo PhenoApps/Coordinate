@@ -166,11 +166,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
     //check that the base optional field "identification" value is entered
     private fun checkRequiredFieldsEntered(): Boolean {
 
-        val requiredName = when (args.title) {
-            getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
-            getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
-            else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
-        }
+        val requiredName = getRequiredName()
 
         val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)
 
@@ -187,6 +183,13 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         return false
     }
 
+    private fun getRequiredName(): String = when (args.title) {
+        getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
+        getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
+        getString(R.string.HTPGTemplateTitle) -> getString(R.string.NonNullOptionalFieldsHTPG)
+        else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
+    }
+
     private fun setDisabledNext() {
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         okButton?.isEnabled = false
@@ -199,11 +202,7 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
 
     private fun setupAdapter() {
 
-        val requiredName = when (args.title) {
-            getString(R.string.DNADefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsPlateIDFieldName)
-            getString(R.string.SeedDefaultTemplateTitle) -> getString(R.string.NonNullOptionalFieldsTrayIDFieldName)
-            else -> getString(R.string.BaseOptionalFieldIdentificationFieldName)
-        }
+        val requiredName = getRequiredName()
 
         activity?.let { act ->
 
