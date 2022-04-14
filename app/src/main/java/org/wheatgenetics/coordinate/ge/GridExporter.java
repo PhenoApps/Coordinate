@@ -143,17 +143,26 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                     if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        DocumentFile doc = DocumentTreeUtil.Companion.createFile(activity, "Exports", this.fileName + ".csv");
+                        DocumentFile exports = DocumentTreeUtil.Companion.createDir(activity, "Exports");
 
-                        if (doc != null) {
+                        if (exports != null && exports.exists()) {
 
-                            OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
-                            this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
-                            this.gridExporter.execute();
+                            DocumentFile templateDir = exports.createDirectory(joinedGridModel.getTemplateTitle());
 
-                            FileUtil.Companion.shareFile(activity, doc.getUri());
+                            if (templateDir != null && templateDir.exists()) {
+
+                                DocumentFile doc = templateDir.createFile("*/*", this.fileName + ".csv");
+
+                                if (doc != null) {
+
+                                    OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
+                                    this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
+                                    this.gridExporter.execute();
+
+                                    FileUtil.Companion.shareFile(activity, doc.getUri());
+                                }
+                            }
                         }
-
 
                     } else {
                         File exportDir = new File(activity.getExternalFilesDir(null), "Exports");
@@ -163,7 +172,15 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                             }
                         }
 
-                        exportFile = new File(exportDir, this.fileName + ".csv");
+                        File templateDir = new File(exportDir, joinedGridModel.getTemplateTitle());
+
+                        if (!templateDir.isDirectory()){
+                            if (!templateDir.mkdir()) {
+
+                            }
+                        }
+
+                        exportFile = new File(templateDir, this.fileName + ".csv");
 
                         //  netics.javalib.Dir.PermissionException
                         this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(
