@@ -88,15 +88,7 @@ abstract class ProjectSetter {
     @NonNull
     ProjectCreator projectCreator() {
         if (null == this.projectCreatorInstance) this.projectCreatorInstance =
-                new ProjectCreator(this.activity(),
-                        new ProjectCreator.Handler() {
-                            @Override
-                            public void handleCreateProjectDone(
-                                    @IntRange(from = 1) final long projectId) {
-                                ProjectSetter
-                                        .this.handleCreateProjectDone(projectId);
-                            }
-                        });
+                new ProjectCreator(this.activity(), ProjectSetter.this::handleCreateProjectDone);
         return this.projectCreatorInstance;
     }
     // endregion
