@@ -2,10 +2,6 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:key="org.wheatgenetics.coordinate.preferences.key.cat_database"
-        android:title="@string/Database"
-        app:iconSpaceReserved="false">
         <Preference
             android:icon="@drawable/ic_pref_database_delete"
             android:key="@string/pref_database_reset_key"
@@ -21,6 +17,5 @@
             android:key="@string/key_pref_database_export"
             android:summary="@string/pref_database_export_summary"
             android:title="@string/pref_database_export_title" />
-    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

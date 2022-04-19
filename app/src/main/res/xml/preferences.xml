@@ -96,7 +96,7 @@
 
         <Preference
             android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
-            android:icon="@drawable/ic_pref_database_import"
+            android:icon="@drawable/ic_pref_database"
             android:key="@string/key_pref_database_screen"
             android:title="@string/pref_database_screen_title"
             app:iconSpaceReserved="false" />

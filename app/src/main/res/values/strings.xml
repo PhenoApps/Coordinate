@@ -486,6 +486,6 @@
     <string name="menu_grids_new">New grid</string>
 
     <string name="back_button_twice_press">Press back again to close app.</string>
-    <string name="database_export_success">Export success</string>
+    <string name="database_export_success">Database export successful!</string>
 
 </resources>

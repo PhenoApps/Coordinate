@@ -283,7 +283,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
                 }
             }
 
-            Toast.makeText(ctx, R.string.database_export_success, Toast.LENGTH_SHORT).show()
+            Toast.makeText(ctx, R.string.database_export_success, Toast.LENGTH_LONG).show()
         }
     }
 
