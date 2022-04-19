@@ -12,19 +12,14 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.wheatgenetics.coordinate.R
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
-class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer), CoroutineScope by MainScope() {
+class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
 
     private val mPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         result?.let { permissions ->
@@ -46,7 +41,7 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer), Corou
 
                 val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
-                with (context?.contentResolver) {
+                with (ctx.contentResolver) {
 
 //                    val lastPermitted = if (this?.persistedUriPermissions != null
 //                        && this.persistedUriPermissions.isNotEmpty()) {
@@ -73,17 +68,29 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer), Corou
                         if (prefs.getBoolean(DocumentTreeUtil.MIGRATE_ASK_KEY, true)) {
 
                             //copy the HTPG.xml file to the newly defined folder
-                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            runBlocking(Dispatchers.IO) {
 
-                                root.createDirectory(ctx.getString(R.string.FolderExport))
-                                root.createDirectory(ctx.getString(R.string.FolderTemplate))?.let { templates ->
+                                val exportDir = ctx.getString(R.string.FolderExport)
+                                if (root.findFile(exportDir) == null) {
+                                    DocumentTreeUtil.createDir(ctx, ctx.getString(R.string.FolderExport))
+                                }
 
-                                    templates.createFile("*/*", "HTPG.xml")?.uri?.let { uri ->
+                                val templateDir = ctx.getString(R.string.FolderTemplate)
+                                if (root.findFile(templateDir) == null) {
+                                    DocumentTreeUtil.createDir(ctx, ctx.getString(R.string.FolderTemplate))
+                                }
 
-                                        ctx.contentResolver.openOutputStream(uri)?.let { output ->
+                                root.findFile(templateDir)?.let { templates ->
 
-                                            ctx.resources.openRawResource(R.raw.htpg).copyTo(output)
+                                    if (templates.findFile("HTPG.xml") == null) {
 
+                                        templates.createFile("*/*", "HTPG.xml")?.uri?.let { uri ->
+
+                                            ctx.contentResolver.openOutputStream(uri)?.use { output ->
+
+                                                ctx.resources.openRawResource(R.raw.htpg)
+                                                    .copyTo(output)
+                                            }
                                         }
                                     }
                                 }

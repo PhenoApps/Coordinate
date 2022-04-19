@@ -11,19 +11,21 @@ class FileUtil {
 
         const val SHARE_ON_EXPORT = "org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT"
 
-        fun shareFile(ctx: Context?, uri: Uri) {
+        fun shareFile(context: Context?, uri: Uri) {
 
-            try {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-                if (prefs.getBoolean(SHARE_ON_EXPORT, false)) {
-                    val intent = Intent()
-                    intent.action = Intent.ACTION_SEND
-                    intent.type = "text/plain"
-                    intent.putExtra(Intent.EXTRA_STREAM, uri)
-                    ctx?.startActivity(Intent.createChooser(intent, "Sending File..."))
+            context?.let { ctx ->
+                try {
+                    val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
+                    if (prefs.getBoolean(SHARE_ON_EXPORT, false)) {
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_SEND
+                        intent.type = "text/plain"
+                        intent.putExtra(Intent.EXTRA_STREAM, uri)
+                        ctx.startActivity(Intent.createChooser(intent, "Sending File..."))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
