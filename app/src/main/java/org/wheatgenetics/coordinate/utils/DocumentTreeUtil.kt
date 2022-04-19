@@ -34,14 +34,12 @@ class DocumentTreeUtil {
          */
         fun checkDocumentTreeSet(ctx: Context) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-                if (prefs.getBoolean(STORAGE_ASK_KEY, true)) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
+            if (prefs.getBoolean(STORAGE_ASK_KEY, true)) {
 
-                    ctx.startActivity(Intent(ctx, DefineStorageActivity::class.java))
+                ctx.startActivity(Intent(ctx, DefineStorageActivity::class.java))
 
-                    prefs.edit().putBoolean(STORAGE_ASK_KEY, false).apply()
-                }
+                prefs.edit().putBoolean(STORAGE_ASK_KEY, false).apply()
             }
         }
 

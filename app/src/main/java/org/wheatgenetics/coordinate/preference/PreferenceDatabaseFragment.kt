@@ -22,10 +22,14 @@ import java.lang.Exception
 import java.util.*
 import android.provider.OpenableColumns
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 
 
 class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
@@ -84,19 +88,27 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
 
     private fun setupExportDatabasePreference() {
         if (isAdded) {
-            val databaseExportKey = getString(R.string.key_pref_database_export)
-            val preference = findPreference<Preference>(databaseExportKey)
-            preference?.setOnPreferenceClickListener {
-                AlertDialog.Builder(activity)
-                    .setTitle(R.string.dialog_database_export_title)
-                    .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, which: Int ->
-                        val fileName = "Coordinate_Output_${DateUtil().getTime()}.zip"
-                        exportChooser.launch(fileName)
-                    }
-                    .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface?, which: Int -> }
-                    .create()
-                    .show()
-                true
+            context?.let { ctx ->
+                val databaseExportKey = getString(R.string.key_pref_database_export)
+                val preference = findPreference<Preference>(databaseExportKey)
+                preference?.setOnPreferenceClickListener {
+                    AlertDialog.Builder(ctx)
+                        .setTitle(R.string.dialog_database_export_title)
+                        .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, _: Int ->
+                            val fileName = "Coordinate_Output_${DateUtil().getTime().replace(":", "_")}.zip"
+                            if (DocumentTreeUtil.isEnabled(ctx)) {
+                                exportDatabase(fileName)
+                            } else {
+                                exportChooser.launch(fileName)
+                            }
+                            dialog?.dismiss()
+                        }
+                        .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface?, _: Int ->
+                            dialog?.dismiss()
+                        }
+                        .show()
+                    true
+                }
             }
         }
     }
@@ -225,33 +237,53 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         return result
     }
 
-    private fun exportDatabase(uri: Uri) {
+    private fun exportDatabase(fileName: String) {
 
         context?.let { ctx ->
 
-            //get database path and shared preferences path
-            val dbPath: String = context?.getDatabasePath("seedtray1.db")?.path ?: ""
-
-            //zip files into stream
             try {
-                val tempOutput = File("${context?.externalCacheDir?.path}/temp")
-                val fileStream = FileOutputStream(tempOutput)
-                val objectStream = ObjectOutputStream(fileStream)
-                val zipOutput = context?.contentResolver?.openOutputStream(uri)
-                val prefs = Utils.getDefaultSharedPreferences(ctx)
-                objectStream.writeObject(prefs?.all)
-                ZipUtil.zip(arrayOf(dbPath, tempOutput.path), zipOutput)
-                objectStream.close()
-                fileStream.close()
-                if (!tempOutput.delete()) {
-                    throw IOException()
+                val databaseDir = DocumentTreeUtil.createDir(ctx, "Database")
+                if (databaseDir != null && databaseDir.exists()) {
+                    val zipFile = databaseDir.createFile("*/*", fileName)
+                    if (zipFile != null && zipFile.exists()) {
+                        exportDatabase(zipFile.uri)
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+        }
+    }
 
-            //use media scanner on the output
-            //Utils.scanFile(context, zipFile)
+    private fun exportDatabase(uri: Uri) {
+
+        context?.let { ctx ->
+
+            runBlocking(Dispatchers.IO) {
+
+                //get database path and shared preferences path
+                val dbPath: String = context?.getDatabasePath("seedtray1.db")?.path ?: ""
+
+                //zip files into stream
+                try {
+                    val tempOutput = File("${context?.externalCacheDir?.path}/temp")
+                    val fileStream = FileOutputStream(tempOutput)
+                    val objectStream = ObjectOutputStream(fileStream)
+                    val zipOutput = context?.contentResolver?.openOutputStream(uri)
+                    val prefs = Utils.getDefaultSharedPreferences(ctx)
+                    objectStream.writeObject(prefs?.all)
+                    ZipUtil.zip(arrayOf(dbPath, tempOutput.path), zipOutput)
+                    objectStream.close()
+                    fileStream.close()
+                    if (!tempOutput.delete()) {
+                        throw IOException()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+
+            Toast.makeText(ctx, R.string.database_export_success, Toast.LENGTH_LONG).show()
         }
     }
 
