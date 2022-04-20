@@ -425,7 +425,7 @@
     <string name="frag_grid_creator_template_name_et_hint">Template name</string>
     <string name="frag_template_creator_fields_summary">Fill in the optional fields below.</string>
     <string name="frag_template_creator_options_title">Optional fields</string>
-    <string name="frag_template_creator_options_summary">Toggling the below fields will change its visibility in the grid.</string>
+    <string name="frag_template_creator_options_summary">Metadata fields can be added or removed from each template.</string>
     <string name="frag_template_creator_options_new">Create a new field.</string>
     <string name="frag_template_creator_exclude_title">Exclude</string>
     <string name="frag_template_creator_exclude_summary">Exclude cells explicitly by clicking and highlighting them, click on headers to select/deselect an entire row or column.</string>

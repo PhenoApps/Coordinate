@@ -1,9 +1,19 @@
 Storage
 =======
 
+Storage Location Definer
+------------------------
+.. figure:: /_static/images/storage_definer_framed.png
+   :width: 30%
+   :align: center
+   :alt: Template list layout
+
 After installing and opening the app, you will be asked to define a 'Storage location' on the device. Although this is an optional step, selecting this directory will greatly simplify the export process by keeping all exported files organized.
 
 If you skip defining the 'Storage location' directory, you will be required to select an export location and name for each file that is exported from Coordinate. The selected 'Storage location' can be changed in the :doc:`/settings`.
+
+Subdirectories
+--------------
 
 There are three subdirectories within the 'Storage location' directory: **Exports**, **Templates**, and **Database**.
 
