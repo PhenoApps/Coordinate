@@ -107,7 +107,7 @@ public abstract class DisplayFragment extends Fragment {
             this.recyclerView = activity.findViewById(
                     R.id.displayRecyclerView);
             if (null != this.recyclerView) {
-                this.recyclerView.setHasFixedSize(true);
+                //this.recyclerView.setHasFixedSize(true);
                 this.populate();
             }
         }
