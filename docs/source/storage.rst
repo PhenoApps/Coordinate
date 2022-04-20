@@ -4,9 +4,11 @@ Storage
 Storage Location Definer
 ------------------------
 .. figure:: /_static/images/storage_definer_framed.png
-   :width: 30%
+   :width: 40%
    :align: center
-   :alt: Template list layout
+   :alt: Storage location definer layout
+
+   Storage location definer layout
 
 After installing and opening the app, you will be asked to define a 'Storage location' on the device. Although this is an optional step, selecting this directory will greatly simplify the export process by keeping all exported files organized.
 

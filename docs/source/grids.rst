@@ -1,41 +1,41 @@
 Grids
 =====
-Grids are the basic unit through which data is collected within Coordinate. Each grid inherits its structure from its parent template. Grids can exist by themselves or as a group within a project.
-
 .. figure:: /_static/images/grid_list_framed.png
-   :width: 30%
+   :width: 40%
    :align: center
    :alt: Grid list layout
 
+   Grid list layout
 
-List Layout
------------
+Grids are the basic unit through which data is collected within Coordinate. Each grid inherits its structure from its parent template. Grids can exist by themselves or as a group within a project.
 
+List Item Layout
+----------------
 .. figure:: /_static/images/grid_list_item.png
    :width: 60%
    :align: center
    :alt: Grid list item
 
+   Individual grid list item
 
 Each grid in the list contains the grid name or identifier, parent template, and date created on the left.
 
 Action buttons on the right of each list item allow a grid to be deleted (|delete|), exported (|save|), or data to be collected (|collect|).
 
-
 New Grids
 ---------
+Grids can be created by selecting the New Grid icon (|grid-add|) from the top toolbar, a template list item, or a project list item. Creating a new grid opens a step-wise process.
+
 .. figure:: /_static/images/grid_new_process.png
    :width: 70%
    :align: center
    :alt: Template screen layout
 
-
-Grids can be created by selecting the New Grid icon (|grid-add|) from the top toolbar, a template list item, or a project list item. Creating a new grid opens a step-wise process.
+   Grid creation process
 
 1. New grids can optionally be added to an existing project. A new project can also be created from this screen.
 2. The template that will be used to define the grid is selected. A new template can also be created from this screen.
 3. Metadata specific to the grid that will be collected is input.
-
 
 Deleting Grids
 --------------

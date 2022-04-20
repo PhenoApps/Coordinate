@@ -1,37 +1,37 @@
 Templates
 =========
-
-Templates allow defined structure and metadata across different grids that might be collected. Two templates are included by default, a 6x20 Seed Tray Template and a 8x12 DNA Plate template.
-
 .. figure:: /_static/images/template_list_framed.png
-   :width: 30%
+   :width: 40%
    :align: center
    :alt: Template list layout
 
+   Template list layout
 
-List Layout
------------
+Templates allow defined structure and metadata across different grids that might be collected. Two templates are included by default, a 6x20 Seed Tray Template and a 8x12 DNA Plate template.
 
+List Item Layout
+----------------
 .. figure:: /_static/images/template_list_item.png
    :width: 60%
    :align: center
    :alt: Template list item
 
+   Individual template list item
 
 Each template in the list contains the template name, size, and date created on the left.
 
 Action buttons on the right of each template list item allow non-default templates to be deleted (|delete|), edited (|edit|), exported (|save|), grids created from that template to be viewed (|grid-list|), or new grids to be created from that template (|grid-add|).
 
-
 New Templates
 -------------
-.. figure:: /_static/images/template_new_process.png
-   :width: 95%
-   :align: center
-   :alt: Template screen layout
-
-
 Templates can be created by selecting the New Template icon (|template-add|) or imported by selecting the Import icon (|import|) on the top toolbar. Creating a new template opens a step-wise process that allows for additional customization.
+
+.. figure:: /_static/images/template_new_process.png
+   :width: 100%
+   :align: center
+   :alt: Template creation layout
+
+   Template creation process
 
 1. The name and dimensions of the template are defined
 2. Metadata fields are selected or created
@@ -41,11 +41,9 @@ Templates can be created by selecting the New Template icon (|template-add|) or 
 6. Row and column names can increment numerically or alphabetically
 7. A preview of the template is created for the user to inspect
 
-
 Editing Templates
 -----------------
 Templates can only be edited if no grids have been created using that template.
-
 
 Deleting Templates
 ------------------
