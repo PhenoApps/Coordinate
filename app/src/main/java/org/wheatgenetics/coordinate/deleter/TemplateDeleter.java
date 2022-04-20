@@ -57,6 +57,10 @@ public class TemplateDeleter extends CascadingDeleter {
         return this.templatesTableInstance;
     }
 
+    public boolean deleteAllUserTemplates() {
+        return templatesTable().deleteUserDefined();
+    }
+
     // region Overridden Methods
     // region deleteStep3() Overridden Methods
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)

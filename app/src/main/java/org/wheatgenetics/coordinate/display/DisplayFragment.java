@@ -132,7 +132,7 @@ public abstract class DisplayFragment extends Fragment {
     // endregion
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
-    protected interface Handler {
+    public interface Handler {
         public abstract DisplayModel getDisplayModel();
 
         public abstract void toggle(

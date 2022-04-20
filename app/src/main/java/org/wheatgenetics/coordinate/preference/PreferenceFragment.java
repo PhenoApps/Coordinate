@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.preference;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -18,11 +19,14 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 
 import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 
 import java.util.TreeMap;
 
 public class PreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String TAG = "PreferenceFragment";
     // region Fields
     @SuppressWarnings({"Convert2Diamond"})
     private final TreeMap<String, String>
@@ -35,11 +39,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat
             uniqueTreeMap = new TreeMap<String, String>();
 
     private String directionKey, projectExportKey,
-            scalingKey, uniqueCheckBoxKey, uniqueListKey;
+            scalingKey, uniqueCheckBoxKey, uniqueListKey, databaseResetKey;
     private ListPreference directionPreference,
             projectExportPreference, uniqueListPreference;
     private SeekBarPreference scalingPreference;
     private CheckBoxPreference uniqueCheckBoxPreference;
+    private Preference databaseResetPreference;
     private Preference.OnPreferenceClickListener
             onUniquePreferenceClickListener = null;     // TODO: Replace w/ onSharedPreferenceChanged()?
 
@@ -173,6 +178,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                 if (null != this.uniqueListPreference)
                     this.uniqueListPreference.setOnPreferenceClickListener(
                             this.onUniquePreferenceClickListener);
+
+                setupStorageDefinerPreference();
+
             }
         }
         {
@@ -180,6 +188,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat
                     this.getPreferenceScreen();
             this.sharedPreferences = null == preferenceScreen ?
                     null : preferenceScreen.getSharedPreferences();
+        }
+    }
+
+    private void setupStorageDefinerPreference() {
+        Preference storageDefiner = findPreference("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER");
+        if (storageDefiner != null) {
+            storageDefiner.setOnPreferenceClickListener((view) -> {
+                Context ctx = getContext();
+                if (ctx != null) {
+                    startActivity(new Intent(ctx, DefineStorageActivity.class));
+                }
+                return true;
+            });
         }
     }
 

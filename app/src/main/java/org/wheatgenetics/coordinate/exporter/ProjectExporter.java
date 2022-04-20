@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
@@ -13,24 +14,45 @@ import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 
 import java.io.File;
+import java.io.OutputStream;
 
 abstract class ProjectExporter extends Exporter {
     // region Fields
     private final BaseJoinedGridModels baseJoinedGridModels;
     @NonNull
     private final Context context;
-    private final RequestDir
-            exportDir;
+    private File exportDir;
+    private DocumentFile docFile;
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     ProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir) {
+            final File exportDir) {
         super();
 
         this.baseJoinedGridModels = baseJoinedGridModels;
         this.context = context;
         this.exportDir = exportDir;
+    }
+
+    ProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final DocumentFile exportDir) {
+        super();
+
+        this.baseJoinedGridModels = baseJoinedGridModels;
+        this.context = context;
+        this.docFile = exportDir;
+    }
+
+    ProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context) {
+        super();
+
+        this.baseJoinedGridModels = baseJoinedGridModels;
+        this.context = context;
     }
     // endregion
 
@@ -47,9 +69,11 @@ abstract class ProjectExporter extends Exporter {
     }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    RequestDir getExportDir() {
+    File getExportDir() {
         return this.exportDir;
     }
+
+    DocumentFile getDocFile() { return this.docFile; }
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     void unableToCreateFileAlert(final String exportFileName) {
@@ -68,6 +92,12 @@ abstract class ProjectExporter extends Exporter {
         AsyncTask(@NonNull final Context context,
                   final File exportFile, final String exportFileName) {
             super(context, exportFile);
+            this.exportFileName = exportFileName;
+        }
+
+        AsyncTask(@NonNull final Context context,
+                  final OutputStream output, final String exportFileName) {
+            super(context, output);
             this.exportFileName = exportFileName;
         }
 

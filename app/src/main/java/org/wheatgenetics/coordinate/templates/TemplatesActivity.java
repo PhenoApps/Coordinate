@@ -2,40 +2,63 @@ package org.wheatgenetics.coordinate.templates;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
+import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
+import org.wheatgenetics.coordinate.activity.TemplateCreatorActivity;
+import org.wheatgenetics.coordinate.contracts.OpenDocumentFancy;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.preference.PreferenceActivity;
+import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.te.TemplateExportPreprocessor;
 import org.wheatgenetics.coordinate.te.TemplateExporter;
 import org.wheatgenetics.coordinate.ti.MenuItemEnabler;
 import org.wheatgenetics.coordinate.ti.TemplateImportPreprocessor;
 import org.wheatgenetics.coordinate.ti.TemplateImporter;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.FileUtil;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TemplatesActivity extends BackActivity
         implements TemplateCreator.Handler {
+    private static final int CREATE_GRID_REQUEST_CODE = 13;
     private static final int
             COLLECT_DATA_REQUEST_CODE = 1, EXPORT_TEMPLATE_REQUEST_CODE = 2,
             SHOW_GRIDS_REQUEST_CODE = 3, CONFIGURE_IMPORT_MENU_ITEM_REQUEST_CODE = 4,
@@ -66,6 +89,40 @@ public class TemplatesActivity extends BackActivity
     // endregion
     private TemplateImporter templateImporterInstance = null;  // ll
     // endregion
+
+    private final ActivityResultLauncher<String> importTemplateLauncher = registerForActivityResult(new OpenDocumentFancy(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                importTemplate(getContentResolver().openInputStream(uri));
+
+            } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
+
+    private final ActivityResultLauncher<String> exportTemplateLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
+
+        if (uri != null) {
+
+            try {
+
+                exportTemplate(getContentResolver().openOutputStream(uri));
+
+                FileUtil.Companion.shareFile(this, uri);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+        }
+    });
 
     @NonNull
     public static Intent intent(
@@ -103,7 +160,11 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void createGrid(@IntRange(from = 1) final long templateId) {
-        statelessGridCreator().createFromTemplate(templateId);
+
+        Intent creator = new Intent(this, GridCreatorActivity.class);
+        creator.putExtra("templateId", templateId);
+        startActivityForResult(creator, CREATE_GRID_REQUEST_CODE);
+        //statelessGridCreator().createFromTemplate(templateId);
     }
 
     private void notifyDataSetChanged() {
@@ -127,7 +188,22 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void deleteTemplate(@IntRange(from = 1) final long templateId) {
-        this.templateDeleter().delete(templateId);
+
+        AlertDialog.Builder askDelete = new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_act_templates_ask_delete)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+
+                    this.templateDeleter().delete(templateId);
+
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+
+                });
+
+        askDelete.create();
+
+        askDelete.show();
+
     }
 
     // region Export Private Methods
@@ -139,6 +215,12 @@ public class TemplatesActivity extends BackActivity
         return this.templateExporterInstance;
     }
 
+    private void exportTemplate(OutputStream output) {
+        this.templateExporter().export(
+                this.templatesViewModel.getId(),
+                output);
+    }
+
     private void exportTemplate() {
         this.templateExporter().export(
                 this.templatesViewModel.getId(), this.templatesViewModel.getExportFileName());
@@ -148,7 +230,33 @@ public class TemplatesActivity extends BackActivity
     private void exportTemplate(@IntRange(from = 1) final long templateId,
                                 final String fileName) {
         this.templatesViewModel.setIdAndExportFileName(templateId, fileName);
-        this.exportTemplate();
+
+        if (DocumentTreeUtil.Companion.isEnabled(this)) {
+
+            //result is CheckDocumentResult 1=Exists, 2=Define, 3=Dismiss
+            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
+
+                if (result == CheckDocumentResult.DISMISS) {
+
+                    exportTemplateLauncher.launch(fileName + ".xml");
+
+                } else if (result == CheckDocumentResult.DEFINE) {
+
+                    startActivity(new Intent(this, DefineStorageActivity.class));
+
+                } else {
+
+                    //export without prompt (auto export to exports folder)
+                    exportTemplate();
+                }
+
+                return null;
+            });
+
+        } else {
+
+            exportTemplateLauncher.launch(fileName + ".xml");
+        }
     }
 
     // region preprocessTemplateExport() Private Methods
@@ -175,6 +283,12 @@ public class TemplatesActivity extends BackActivity
         this.templateExportPreprocessor().preprocess(templateId);
     }
 
+    private void startTemplateEditor(final long templateId) {
+        Intent creator = new Intent(this, TemplateCreatorActivity.class);
+        creator.putExtra(TemplateCreatorActivity.TEMPLATE_EDIT, templateId);
+        startActivityForResult(creator, TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
+    }
+
     private void startGridsActivity(@IntRange(from = 1) final long templateId) {
         this.startActivityForResult(
                 GridsActivity.templateIdIntent(
@@ -193,7 +307,7 @@ public class TemplatesActivity extends BackActivity
 
     private void configureImportMenuItem() {
         if (null != this.importMenuItem)
-            this.importMenuItem.setEnabled(this.menuItemEnabler().shouldBeEnabled());
+            this.importMenuItem.setEnabled(true);
     }
 
     // region createTemplate() Private Methods
@@ -218,7 +332,11 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     private void createTemplate() {
-        this.templateCreator().create();
+        startActivityForResult(new Intent(this, TemplateCreatorActivity.class),
+                TemplatesActivity.SHOW_GRIDS_REQUEST_CODE);
+
+        //old template creator
+        //this.templateCreator().create();
     }
 
     // region Import Private Methods
@@ -234,6 +352,10 @@ public class TemplatesActivity extends BackActivity
                             }
                         });
         return this.templateImporterInstance;
+    }
+
+    private void importTemplate(InputStream input) {
+        this.templateImporter().importTemplate(input);
     }
 
     private void importTemplate() {
@@ -282,7 +404,11 @@ public class TemplatesActivity extends BackActivity
 
         final ListView templatesListView = this.findViewById(
                 R.id.templatesListView);
+
+        setupBottomNavigationBar();
+
         if (null != templatesListView) templatesListView.setAdapter(this.templatesAdapter =
+
                 new TemplatesAdapter(this,
                         /* onCreateGridButtonClickListener => */ new View.OnClickListener() {
                     @Override
@@ -312,7 +438,67 @@ public class TemplatesActivity extends BackActivity
                             TemplatesActivity
                                     .this.startGridsActivity((Long) view.getTag());
                     }
+                }, (view) -> {
+                    if (view != null) {
+                        TemplatesActivity.this.startTemplateEditor((Long) view.getTag());
+                    }
                 }));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_new_template) {
+            createTemplate();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
+        bottomNavigationView.setSelectedItemId(R.id.action_nav_templates);
+    }
+
+    private void setupBottomNavigationBar() {
+
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
+        bottomNavigationView.inflateMenu(R.menu.menu_bottom_nav_bar);
+
+        bottomNavigationView.setOnItemSelectedListener((item -> {
+
+            final int grids = R.id.action_nav_grids;
+            final int projects = R.id.action_nav_projects;
+            final int settings = R.id.action_nav_settings;
+            final int about = R.id.action_nav_about;
+
+            switch(item.getItemId()) {
+                case grids:
+                    Intent gridsIntent = GridsActivity.intent(this);
+                    gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(gridsIntent);
+                    break;
+                case settings:
+                    Intent prefsIntent = PreferenceActivity.intent(this);
+                    prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(prefsIntent);
+                    break;
+                case about:
+                    Intent aboutIntent = new Intent(this, AboutActivity.class);
+                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(aboutIntent);
+                    break;
+                case projects:
+                    Intent projectIntent = ProjectsActivity.intent(this);
+                    projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(ProjectsActivity.intent(this));
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }));
     }
 
     @Override
@@ -332,6 +518,7 @@ public class TemplatesActivity extends BackActivity
     public void onRequestPermissionsResult(final int requestCode,
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final String permissions[],
                                            @SuppressWarnings({"CStyleArrayDeclaration"}) @NonNull final int grantResults[]) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean permissionFound = false;
         for (final String permission : permissions)
             if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
@@ -370,6 +557,15 @@ public class TemplatesActivity extends BackActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
+            case CREATE_GRID_REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    long id = data.getLongExtra("gridId", -1L);
+                    if (id != -1L) {
+                        startActivityForResult(CollectorActivity.intent(this, id),
+                                COLLECT_DATA_REQUEST_CODE);
+                    }
+                }
+                break;
             case TemplatesActivity.COLLECT_DATA_REQUEST_CODE:
             case TemplatesActivity.SHOW_GRIDS_REQUEST_CODE:
                 this.notifyDataSetChanged();
@@ -422,6 +618,8 @@ public class TemplatesActivity extends BackActivity
     // endregion
 
     public void onImportTemplateMenuItem(@SuppressWarnings({"unused"}) final MenuItem menuItem) {
-        this.preprocessTemplateImport();
+
+        importTemplateLauncher.launch("*/*");
+
     }
 }

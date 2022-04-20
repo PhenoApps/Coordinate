@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.collector;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.widget.EditText;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.GridsTable;
@@ -37,13 +39,13 @@ import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
 abstract class BaseCollector extends Object implements
         GridDisplayFragment.Handler,
         EntryModels.FilledHandler,
-        DataEntryFragment.Handler {
+        DataEntryDialogFragment.Handler {
     // region Fields
     @NonNull
     private final AppCompatActivity activity;
 
     private final GridDisplayFragment gridDisplayFragment;
-    private final DataEntryFragment dataEntryFragment;
+//    private final DataEntryFragment dataEntryFragment;
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     JoinedGridModel joinedGridModel = null;
@@ -70,8 +72,8 @@ abstract class BaseCollector extends Object implements
                 this.activity.getSupportFragmentManager();
         this.gridDisplayFragment = (GridDisplayFragment)
                 fragmentManager.findFragmentById(R.id.gridDisplayFragment);
-        this.dataEntryFragment = (DataEntryFragment)
-                fragmentManager.findFragmentById(R.id.dataEntryFragment);
+//        this.dataEntryFragment = (DataEntryFragment)
+//                fragmentManager.findFragmentById(R.id.dataEntryFragment);
     }
 
     // region Private Methods
@@ -96,7 +98,9 @@ abstract class BaseCollector extends Object implements
     }
 
     private void populateDataEntryFragment() {
-        if (null != this.dataEntryFragment) this.dataEntryFragment.populate();
+        ((EditText) activity.findViewById(R.id.act_collector_data_entry_et))
+                .setText(((CollectorActivity) activity).getEntryValue());
+        //if (null != this.dataEntryFragment) this.dataEntryFragment.populate();
     }
 
     private void goToNext(final EntryModel entryModel) {
@@ -112,7 +116,8 @@ abstract class BaseCollector extends Object implements
     }
 
     private void setEntry(final String entry) {
-        if (null != this.dataEntryFragment) this.dataEntryFragment.setEntry(entry);
+        ((EditText) activity.findViewById(R.id.act_collector_data_entry_et)).setText(entry);
+        //if (null != this.dataEntryFragment) this.dataEntryFragment.setEntry(entry);
     }
 
     private void handleDuplicateCheckException(
@@ -372,7 +377,10 @@ abstract class BaseCollector extends Object implements
     @SuppressWarnings({"SameReturnValue"})
     public boolean scanBarcode() {
         //this.barcodeScanner().scan();
-        new IntentIntegrator(this.activity).setPrompt("Scan a barcode").setBeepEnabled(true).initiateScan();
+        new IntentIntegrator(this.activity)
+                .setOrientationLocked(false)
+                .setPrompt("Scan a barcode")
+                .setBeepEnabled(true).initiateScan();
         return true;
     }
 
@@ -391,8 +399,12 @@ abstract class BaseCollector extends Object implements
 
             }  else {
                 final String barcodeScannerResult = result.getContents();
-                this.setEntry(barcodeScannerResult);
-                this.saveEntry(barcodeScannerResult);
+
+                if (barcodeScannerResult != null && !barcodeScannerResult.isEmpty()) {
+                    this.setEntry(barcodeScannerResult);
+                    this.saveEntry(barcodeScannerResult);
+                }
+
                 handled = true;
             }
 

@@ -60,13 +60,8 @@ public class ProjectCreator implements StringGetter {
     private CreateProjectAlertDialog createProjectAlertDialog() {
         if (null == this.createProjectAlertDialogInstance) this.createProjectAlertDialogInstance =
                 new CreateProjectAlertDialog(this.activity,
-                        new CreateProjectAlertDialog.Handler() {
-                            @Override
-                            public boolean handleCreateProjectDone(final String projectTitle) {
-                                return ProjectCreator.this.insert(
-                                        projectTitle);
-                            }
-                        });
+                        ProjectCreator.this::insert);
+
         return this.createProjectAlertDialogInstance;
     }
 
@@ -86,15 +81,8 @@ public class ProjectCreator implements StringGetter {
         if (null == this.createAndReturnProjectAlertDialogInstance)
             this.createAndReturnProjectAlertDialogInstance =
                     new CreateProjectAlertDialog(this.activity,
-                            new CreateProjectAlertDialog.Handler() {
-                                @Override
-                                public boolean handleCreateProjectDone(
-                                        final String projectTitle) {
-                                    return
-                                            ProjectCreator.this.insertAndReturn(
-                                                    projectTitle);
-                                }
-                            });
+                            ProjectCreator.this::insertAndReturn);
+
         return this.createAndReturnProjectAlertDialogInstance;
     }
 

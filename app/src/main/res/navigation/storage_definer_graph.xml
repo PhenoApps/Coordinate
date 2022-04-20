@@ -1,0 +1,23 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/storage_definer_graph"
+    app:startDestination="@id/storage_definer">
+
+    <fragment
+        android:id="@+id/storage_definer"
+        android:name="org.wheatgenetics.coordinate.fragments.storage.StorageDefinerFragment"
+        android:label="Storage Definer"
+        tools:layout="@layout/fragment_storage_definer">
+        <action
+            android:id="@+id/action_storage_definer_to_storage_migrator"
+            app:destination="@id/storage_migrator" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/storage_migrator"
+        android:name="org.wheatgenetics.coordinate.fragments.storage.StorageMigratorFragment"
+        android:label="Storage Migrator"
+        tools:layout="@layout/fragment_storage_migrator" />
+
+</navigation>

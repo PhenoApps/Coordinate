@@ -12,9 +12,9 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
+        android:id="@+id/action_new_template"
         android:icon="@drawable/ic_create_template_white"
-        android:onClick="onNewTemplateMenuItemClick"
-        android:title="@string/AppBarNewTitle"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        android:title="@string/menu_templates_new"
+        app:showAsAction="always" />
+
 </menu>

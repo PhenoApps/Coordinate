@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?><!-- To switch to the old user interface perform the three steps indicated below. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.wheatgenetics.coordinate">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".main.MainActivity"
-            android:configChanges="keyboardHidden|keyboard"
-            android:theme="@style/AppTheme">
+        <activity android:name=".activity.GridCreatorActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/MaterialAppTheme"/>
 
+        <activity android:name=".activity.TemplateCreatorActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/MaterialAppTheme"/>
+
+        <activity android:name=".activity.DefineStorageActivity"
+            android:theme="@style/MaterialAppTheme"/>
+
+        <activity
+            android:name=".CollectorActivity"
+            android:label="@string/CollectorActivityLabel"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".grids.GridsActivity"
+            android:label="@string/Coordinate"
+            android:theme="@style/AppTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".CollectorActivity"
-            android:label="@string/CollectorActivityLabel"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".grids.GridsActivity"
-            android:label="@string/GridsActivityLabel"
-            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".templates.TemplatesActivity"
@@ -49,6 +56,7 @@
             android:theme="@style/AppTheme.MaterialAboutActivity" />
 
         <activity
+            android:exported="false"
             android:name=".tc.exclude.ExcludeCellsActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -58,6 +66,7 @@
         </activity>
 
         <activity
+            android:exported="false"
             android:name=".preference.PreferenceActivity"
             android:label="@string/PreferenceActivityLabel"
             android:theme="@style/AppTheme">
@@ -67,5 +76,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
     </application>
 </manifest>

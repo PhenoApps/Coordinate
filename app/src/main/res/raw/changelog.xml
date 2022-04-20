@@ -1,5 +1,20 @@
 <changelog>
     <release
+        date="2022-04-20"
+        versionCode="400"
+        versionName="v4.0">
+        <new>Updated interface!</new>
+        <new>Added new template/grid workflow</new>
+        <new>Added setting to export/import internal database</new>
+        <new>Added dialog to confirm template deletion</new>
+        <new>Added ability to edit newly created templates</new>
+        <new>Coordinate autoloads the most recent grid</new>
+        <new>Existing grids can be added to projects</new>
+        <new>Directory permission updates</new>
+        <bugfix>Fixed layouts for long project/template names</bugfix>
+    </release>
+
+    <release
         date="2021-02-01"
         versionCode="310"
         versionName="v3.1">

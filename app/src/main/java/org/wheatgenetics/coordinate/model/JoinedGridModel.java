@@ -1,9 +1,13 @@
 package org.wheatgenetics.coordinate.model;
 
+import android.icu.util.Output;
+import android.os.Build;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.StringGetter;
@@ -15,7 +19,9 @@ import org.wheatgenetics.coordinate.exporter.CsvWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class JoinedGridModel extends GridModel
@@ -100,8 +106,6 @@ public class JoinedGridModel extends GridModel
     private void exportSeed(
             @NonNull final CsvWriter csvWriter,
             final String exportFileName,
-            @Nullable final JoinedGridModel.Helper
-                    helper,
             final boolean includeHeader) throws IOException {
         final String tray_idValue, personValue, dateValue;
         {
@@ -158,16 +162,83 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
     }
 
-    private void exportDNA(
-            @NonNull final CsvWriter csvWriter,
+    // region export*() Private Methods
+    private void exportSeed(
+            @NonNull final OutputStream output,
+            final String exportFileName,
             @Nullable final JoinedGridModel.Helper
                     helper,
+            final boolean includeHeader) throws IOException {
+        final String tray_idValue, personValue, dateValue;
+        {
+            final NonNullOptionalFields optionalFields =
+                    this.optionalFields();
+            if (null == optionalFields)
+                tray_idValue = personValue = dateValue = null;
+            else {
+                // noinspection CStyleArrayDeclaration
+                final String values[];
+                {
+                    final String trayName, personName, dateName;
+                    {
+                        @NonNull final StringGetter stringGetter =
+                                this.stringGetter();
+
+                        trayName = stringGetter.get(R.string.NonNullOptionalFieldsTrayIDFieldName);
+                        personName = stringGetter.get(R.string.NonNullOptionalFieldsSeedTrayPersonFieldName);
+                        dateName = stringGetter.get(R.string.JoinedGridModelSeedTrayDateFieldName);
+                    }
+                    values = optionalFields.values(
+                            /* names[] => */ new String[]{trayName, personName, dateName});
+                }
+                if (null == values)
+                    tray_idValue = personValue = dateValue = null;
+                else {
+                    tray_idValue = values[0];
+                    personValue = values[1];
+                    dateValue = values[2];
+                }
+            }
+        }
+
+        if (includeHeader) {
+            write(output, "tray_id, cell_id, tray_num, tray_column, tray_row, seed_id, person, date", "\n");
+        }
+
+        {
+            @IntRange(from = 1) final int
+                    cols = this.getCols(), rows = this.getRows();
+
+            for (@IntRange(from = 1) int col = 1; col <= cols; col++) {
+                for (@IntRange(from = 1) int row = 1; row <= rows; row++) {
+                    final EntryModel entryModel =
+                            this.getEntryModel(row, col);
+                    if (null != entryModel) {
+                        write(output, tray_idValue, ",");
+                        String cellId = String.format(Locale.getDefault(), "%s_C%02d_R%d", exportFileName, col, row);
+                        write(output, cellId, ",");
+                        write(output, ",", ",");
+                        write(output, String.valueOf(col), ",");
+                        write(output, String.valueOf(row), ",");
+                        write(output, entryModel.getSeedExportValue(), ",");
+                        write(output, personValue, ",");
+                        write(output, dateValue, "\n");
+                    }
+                }
+                if (null != helper) helper.publishProgress(col);
+            }
+        }
+        output.close();
+    }
+
+    private void exportDNA(
+            @NonNull final CsvWriter csvWriter,
             final boolean includeHeader) throws IOException {
         final String dateValue, plate_idValue, plate_nameValue,
                 dna_personValue, notesValue, tissue_typeValue, extractionValue;
@@ -254,17 +325,131 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
+    }
+
+    private void exportDNA(
+            @NonNull final OutputStream output,
+            @Nullable final JoinedGridModel.Helper
+                    helper,
+            final boolean includeHeader) throws IOException {
+        final String dateValue, plate_idValue, plate_nameValue,
+                dna_personValue, notesValue, tissue_typeValue, extractionValue;
+        {
+            final NonNullOptionalFields optionalFields =
+                    this.optionalFields();
+            if (null == optionalFields)
+                dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                        notesValue = tissue_typeValue = extractionValue = null;
+            else {
+                // noinspection CStyleArrayDeclaration
+                final String values[];
+                {
+                    final String dateName, plate_idName, plate_nameName,
+                            dna_personName, notesName, tissue_typeName, extractionName;
+                    {
+                        @NonNull final StringGetter stringGetter =
+                                this.stringGetter();
+
+                        dateName = stringGetter.get(R.string.JoinedGridModelDNAPlateDateFieldName);
+                        plate_idName = stringGetter.get(R.string.NonNullOptionalFieldsPlateIDFieldName);
+                        plate_nameName = stringGetter.get(R.string.NonNullOptionalFieldsPlateNameFieldName);
+                        dna_personName = stringGetter.get(R.string.NonNullOptionalFieldsDNAPlatePersonFieldName);
+                        notesName = stringGetter.get(R.string.NonNullOptionalFieldsNotesFieldName);
+                        tissue_typeName = stringGetter.get(R.string.NonNullOptionalFieldsTissueTypeFieldName);
+                        extractionName = stringGetter.get(R.string.NonNullOptionalFieldsExtractionFieldName);
+                    }
+                    values = optionalFields.values(/* names[] => */ new String[]{
+                            dateName, plate_idName, plate_nameName, dna_personName,
+                            notesName, tissue_typeName, extractionName});
+                }
+                if (null == values)
+                    dateValue = plate_idValue = plate_nameValue = dna_personValue =
+                            notesValue = tissue_typeValue = extractionValue = null;
+                else {
+                    dateValue = values[0];
+                    plate_idValue = values[1];
+                    plate_nameValue = values[2];
+                    dna_personValue = values[3];
+                    notesValue = values[4];
+                    tissue_typeValue = values[5];
+                    extractionValue = values[6];
+                }
+            }
+        }
+
+        if (includeHeader) {
+            write(output, "date, plate_id, plate_name, sample_id, well_A01, well_01A, tissue_id, dna_person, notes, tissue_type, extraction", "\n");
+        }
+
+        {
+            @IntRange(from = 1) final int
+                    cols = this.getCols(), rows = this.getRows();
+
+            for (@IntRange(from = 1) int col = 1; col <= cols; col++) {
+                for (@IntRange(from = 0) int r = 0; r < rows; r++) {
+                    @IntRange(from = 1) final int row = r + 1;
+                    final EntryModel entryModel =
+                            this.getEntryModel(row, col);
+                    if (null != entryModel) {
+                        write(output, dateValue, ",");
+                        write(output, plate_idValue, ",");
+                        write(output, plate_nameValue, ",");
+                        {
+                            final String sample_id;
+                            {
+                                final String rowName =
+                                        org.wheatgenetics.coordinate.Utils.convert(r);
+                                final String colName = String.format(
+                                        Locale.getDefault(), "%02d", col);
+
+                                sample_id = String.format(
+                                        "%s_%s%s", plate_idValue, rowName, colName);
+                                write(output, sample_id, ",");
+                                String well1 = String.format("%s%s", rowName, colName);
+                                String well2 = String.format("%s%s", colName, rowName);
+                                write(output, well1, ",");
+                                write(output, well2, ",");
+                            }
+                            write(output, entryModel.getDNAExportValue(sample_id), ",");
+                        }
+                        write(output, dna_personValue, ",");
+                        write(output, notesValue, ",");
+                        write(output, tissue_typeValue, ",");
+                        write(output, extractionValue, "\n");
+                    }
+                }
+                if (null != helper) helper.publishProgress(col);
+            }
+        }
+        output.close();
+    }
+
+    /**
+     * This function is only called from devices with API KITKAT
+     * Writes to a DocumentFile output stream instead of a typical file.
+     * @param output the document file output stream
+     * @param value the string value to write
+     * @param append either a "," or a newline
+     */
+    private void write(OutputStream output, String value, String append) {
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                output.write((value + append).getBytes(StandardCharsets.UTF_8));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     // endregion
 
     private void exportUserDefined(
             @NonNull final CsvWriter csvWriter,
-            @Nullable final JoinedGridModel.Helper
-                    helper,
             final boolean includeHeader) throws IOException {
         final NonNullOptionalFields optionalFields =
                 this.optionalFields();
@@ -317,10 +502,81 @@ public class JoinedGridModel extends GridModel
                         csvWriter.endRecord();
                     }
                 }
-                if (null != helper) helper.publishProgress(col);
+                //if (null != helper) helper.publishProgress(col);
             }
         }
         csvWriter.close();
+    }
+
+    private void exportUserDefined(
+            @NonNull final OutputStream output,
+            @Nullable final JoinedGridModel.Helper
+                    helper,
+            final boolean includeHeader) throws IOException {
+        final NonNullOptionalFields optionalFields =
+                this.optionalFields();
+        if (includeHeader) {
+            write(output, this.templateModel.entryLabelIsNotNull() ? this.templateModel.getEntryLabel() : "Value", ",");
+            write(output, "Column, Row", ",");
+
+            if (null != optionalFields) {
+                // noinspection CStyleArrayDeclaration
+                final String names[] = optionalFields.names();
+                int size = names.length;
+                for (int i = 0; i < size; i++) {
+                    if (i == size - 1) {
+                        write(output, names[i], "\n");
+                    } else {
+                        write(output, names[i], ",");
+                    }
+                }
+            }
+        }
+
+        {
+            @IntRange(from = 1) final int
+                    cols = this.getCols(), rows = this.getRows();
+            // noinspection CStyleArrayDeclaration
+            final String values[] =
+                    null == optionalFields ? null : optionalFields.values();
+
+            final boolean
+                    colNumbering = this.templateModel.getColNumbering(),
+                    rowNumbering = this.templateModel.getRowNumbering();
+            for (@IntRange(from = 1) int col = 1; col <= cols; col++) {
+                for (@IntRange(from = 1) int row = 1; row <= rows; row++) {
+                    final EntryModel entryModel =
+                            this.getEntryModel(row, col);
+                    if (null != entryModel) {
+
+                        write(output, entryModel.getUserDefinedExportValue(), ",");
+
+                        if (colNumbering) {
+                            write(output, String.valueOf(col), ",");
+                        } else {
+                            write(output, org.wheatgenetics.coordinate.Utils.convert(col - 1), ",");
+                        }
+
+                        if (rowNumbering){
+                            write(output, String.valueOf(row), ",");
+                        } else {
+                            write(output, org.wheatgenetics.coordinate.Utils.convert(row - 1), ",");
+                        }
+
+                        if (null != values)
+                            for (int i = 0; i < values.length; i++) {
+                                if (i == values.length - 1) {
+                                    write(output, values[i], "\n");
+                                } else {
+                                    write(output, values[i], ",");
+                                }
+                            }
+                    }
+                }
+                if (null != helper) helper.publishProgress(col);
+            }
+        }
+        output.close();
     }
 
     @Nullable
@@ -490,21 +746,34 @@ public class JoinedGridModel extends GridModel
         return result;
     }
 
+    void exportDocumentFile(final OutputStream stream,
+                            final String exportFileName,
+                            @Nullable final JoinedGridModel.Helper helper,
+                            final boolean includeHeader) throws IOException {
+        final TemplateType templateType =
+                this.templateModel.getType();
+        if (TemplateType.SEED == templateType)
+            this.exportSeed(stream, exportFileName, helper, includeHeader);
+        else
+            if (TemplateType.DNA == templateType)
+                this.exportDNA(stream, helper, includeHeader);
+            else
+                this.exportUserDefined(stream, helper, includeHeader);
+    }
+
     void export(final Writer writer, final String exportFileName,
-                @Nullable final JoinedGridModel.Helper
-                        helper,
                 final boolean includeHeader) throws IOException {
         final TemplateType templateType =
                 this.templateModel.getType();
         final CsvWriter csvWriter =
                 new CsvWriter(writer);
         if (TemplateType.SEED == templateType)
-            this.exportSeed(csvWriter, exportFileName, helper, includeHeader);    // throws java.io-
+            this.exportSeed(csvWriter, exportFileName, includeHeader);    // throws java.io-
         else                                                                      //  .IOException
             if (TemplateType.DNA == templateType)
-                this.exportDNA(csvWriter, helper, includeHeader);                 // throws java.io-
+                this.exportDNA(csvWriter, includeHeader);                 // throws java.io-
             else                                                                  //  .IOException
-                this.exportUserDefined(csvWriter, helper, includeHeader);         // throws java.io-
+                this.exportUserDefined(csvWriter, includeHeader);         // throws java.io-
     }                                                                             //  .IOException
 
     // region Public Methods
@@ -617,16 +886,30 @@ public class JoinedGridModel extends GridModel
                 this.goToNext(activeEntryModel, direction, null) : false;
     }
 
-    public boolean export(final File exportFile, final String exportFileName,
+    public boolean export(final File exportFile, final String exportFileName)
+            throws IOException {
+        final boolean success;
+        if (null == exportFile)
+            success = false;
+        else {
+
+            this.export(                                               // throws java.io.IOException
+                    new FileWriter(exportFile) /* throws java.io.IOException */,
+                    exportFileName, /* includeHeader => */true);
+            success = true;
+        }
+        return success;
+    }
+
+    public boolean export(final OutputStream output, final String exportFileName,
                           final JoinedGridModel.Helper helper)
             throws IOException {
         final boolean success;
-        if (null == exportFile || null == helper)
+        if (null == output || null == helper)
             success = false;
         else {
-            this.export(                                               // throws java.io.IOException
-                    new FileWriter(exportFile) /* throws java.io.IOException */,
-                    exportFileName, helper, /* includeHeader => */true);
+
+            this.exportDocumentFile(output, exportFileName, helper, /* includeHeader => */true);
             success = true;
         }
         return success;

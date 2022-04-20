@@ -4,9 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:icon="@drawable/ic_camera_barcode_white"
-        android:onClick="onCameraMenuItemClick"
-        android:title="@string/cameraOptionsMenuItemTitle"
+        android:icon="@drawable/ic_note_edit_outline"
+        android:onClick="onProjectEditMenuItemClick"
+        android:title="@string/project_edit_menu_item_click"
         app:showAsAction="always"
         tools:ignore="PrivateResource" />
+
+    <item
+        android:id="@+id/action_summarize_data"
+        android:icon="@drawable/ic_format_list_text"
+        android:title="@string/menu_collector_meta_data_title"
+        app:showAsAction="always" />
 </menu>

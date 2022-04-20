@@ -36,7 +36,7 @@ public class AddOptionalFieldAlertDialogTester implements AddOptionalFieldAlertD
 
     // region org.wheatgenetics.coordinate.optionalField.AddOptionalFieldAlertDialog.Handler Overridden Method
     @Override
-    public void handleAddOptionalFieldDone() {
+    public void handleAddOptionalFieldDone(String name, String defaultValue) {
         this.handler.handleAddOptionalFieldDone();
     }
 

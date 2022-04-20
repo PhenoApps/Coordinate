@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -253,6 +254,17 @@ public class TemplatesTable extends Table {
     public TemplateModels loadUserDefined() {
         return this.makeTemplateModels(this.query(
                 TemplateType.USERDEFINED));
+    }
+
+    public boolean deleteUserDefined() {
+        boolean failed = false;
+        try {
+            this.deleteUsingWhereClause("_id > 2");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            failed = true;
+        }
+        return failed;
     }
     // endregion
 }

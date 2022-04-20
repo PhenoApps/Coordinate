@@ -10,10 +10,10 @@ import androidx.annotation.StringRes;
 
 public interface StringGetter {
     @Nullable
-    public abstract String get(@StringRes int resId);
+    String get(@StringRes int resId);
 
     @NonNull
-    public abstract String getQuantity(
+    String getQuantity(
             @PluralsRes int resId,
             @IntRange(from = 0) int quantity,
             @Nullable Object... formatArgs)

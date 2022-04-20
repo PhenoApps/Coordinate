@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:icon="@drawable/ic_add_white"
-        android:title="@string/AppBarNewTitle"
-        app:showAsAction="always">
+    <!--    <item-->
+    <!--        android:icon="@drawable/ic_add_white"-->
+    <!--        android:title="@string/AppBarNewTitle"-->
+    <!--        app:showAsAction="always">-->
 
-        <menu>
-            <item
-                android:icon="@drawable/ic_create_grid_black"
-                android:onClick="onGridMenuItemClick"
-                android:title="@string/MainActivityGridMenuItemTitle" />
+    <!--        <menu>-->
+    <!--            <item-->
+    <!--                android:icon="@drawable/ic_create_grid_black"-->
+    <!--                android:onClick="onGridMenuItemClick"-->
+    <!--                android:title="@string/MainActivityGridMenuItemTitle" />-->
 
-            <item
-                android:icon="@drawable/ic_create_template_black"
-                android:onClick="onTemplateMenuItemClick"
-                android:title="@string/MainActivityTemplateMenuItemTitle" />
+    <!--            <item-->
+    <!--                android:icon="@drawable/ic_create_template_black"-->
+    <!--                android:onClick="onTemplateMenuItemClick"-->
+    <!--                android:title="@string/MainActivityTemplateMenuItemTitle" />-->
 
-            <item
-                android:icon="@drawable/ic_create_project_black"
-                android:onClick="onProjectMenuItemClick"
-                android:title="@string/MainActivityProjectMenuItemTitle" />
-        </menu>
-    </item>
+    <!--            <item-->
+    <!--                android:icon="@drawable/ic_create_project_black"-->
+    <!--                android:onClick="onProjectMenuItemClick"-->
+    <!--                android:title="@string/MainActivityProjectMenuItemTitle" />-->
+    <!--        </menu>-->
+    <!--    </item>-->
 </menu>

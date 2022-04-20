@@ -1,32 +1,47 @@
 package org.wheatgenetics.coordinate.exporter;
 
 import android.content.Context;
+import android.icu.util.Output;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class EntireProjectProjectExporter
         extends ProjectExporter {
     // region Fields
     @NonNull
     private final String exportFileName;
-    private EntireProjectProjectExporter.AsyncTask
-            asyncTask = null;
+    private EntireProjectProjectExporter.AsyncTask asyncTask = null;
+    private OutputStream outputStream = null;
 
     public EntireProjectProjectExporter(
             final BaseJoinedGridModels baseJoinedGridModels,
             @NonNull final Context context,
-            final RequestDir exportDir,
+            final File exportDir,
             final String exportFileName) {
         super(baseJoinedGridModels, context, exportDir);
+        this.exportFileName = exportFileName + ".csv";
+    }
+
+    public EntireProjectProjectExporter(
+            final BaseJoinedGridModels baseJoinedGridModels,
+            @NonNull final Context context,
+            final OutputStream stream,
+            final String exportFileName) {
+        super(baseJoinedGridModels, context);
+        this.outputStream = stream;
         this.exportFileName = exportFileName + ".csv";
     }
     // endregion
@@ -37,20 +52,50 @@ public class EntireProjectProjectExporter
         final BaseJoinedGridModels baseJoinedGridModels =
                 this.getBaseJoinedGridModels();
         if (null != baseJoinedGridModels) {
-            final RequestDir exportDir = this.getExportDir();
-            if (null != exportDir)
+            final File exportDir = this.getExportDir();
+            if (null != exportDir) {
+                this.asyncTask = new AsyncTask(
+                        /* context    => */ this.getContext(),
+                        /* exportFile => */ exportDir,                        //  PermissionException
+                        /* exportFileName       => */ this.exportFileName,
+                        /* baseJoinedGridModels => */ baseJoinedGridModels);
+                this.asyncTask.execute();
+            } else if (outputStream == null) {
+
                 try {
-                    this.asyncTask = new EntireProjectProjectExporter.AsyncTask(
-                            /* context    => */ this.getContext(),
-                            /* exportFile => */ exportDir.createNewFile(     // throws IOException,
-                            this.exportFileName),                        //  PermissionException
-                            /* exportFileName       => */ this.exportFileName,
-                            /* baseJoinedGridModels => */ baseJoinedGridModels);
-                    this.asyncTask.execute();
-                } catch (final IOException | Dir.PermissionException
-                        e) {
-                    this.unableToCreateFileAlert(this.exportFileName);
+
+                    if (DocumentTreeUtil.Companion.isEnabled(getContext())) {
+
+                        DocumentFile file = DocumentTreeUtil.Companion.createFile(getContext(), "Exports", this.exportFileName);
+
+                        if (file != null) {
+
+                            final OutputStream outputStream = getContext().getContentResolver().openOutputStream(file.getUri());
+
+                            this.asyncTask = new AsyncTask(this.getContext(),
+                                    outputStream, this.exportFileName, baseJoinedGridModels);
+                            this.asyncTask.execute();
+
+                            FileUtil.Companion.shareFile(getContext(), file.getUri());
+                        }
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            } else {
+
+                try {
+
+                    this.asyncTask = new AsyncTask(this.getContext(),
+                            this.outputStream, this.exportFileName, baseJoinedGridModels);
+                    this.asyncTask.execute();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -70,6 +115,13 @@ public class EntireProjectProjectExporter
             this.baseJoinedGridModels = baseJoinedGridModels;
         }
 
+        private AsyncTask(@NonNull final Context context,
+                          final OutputStream output, final String exportFileName,
+                          final BaseJoinedGridModels baseJoinedGridModels) {
+            super(context, output, exportFileName);
+            this.baseJoinedGridModels = baseJoinedGridModels;
+        }
+
         // region Overridden Methods
         @Override
         protected void onPostExecute(final Boolean result) {
@@ -79,13 +131,28 @@ public class EntireProjectProjectExporter
         @RestrictTo(RestrictTo.Scope.SUBCLASSES)
         @Override
         boolean export() {
-            boolean success;
+            boolean success = false;
             if (null == this.baseJoinedGridModels)
                 success = false;
-            else {
+            else if (this.getExportFile() != null) {
                 try {
                     if (this.baseJoinedGridModels.export(              // throws java.io.IOException
                             /* exportFile     => */ this.getExportFile(),
+                            /* exportFileName => */ this.getExportFileName(),
+                            /* helper         => */this)) {
+                        this.makeExportFileDiscoverable();
+                        success = true;
+                    } else
+                        success = false;
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                    this.setMessage(R.string.EntireProjectProjectExporterFailedMessage);
+                    success = false;
+                }
+            } else if (this.getOutputStream() != null) {
+                try {
+                    if (this.baseJoinedGridModels.export(              // throws java.io.IOException
+                            /* exportFile     => */ this.getOutputStream(),
                             /* exportFileName => */ this.getExportFileName(),
                             /* helper         => */this)) {
                         this.makeExportFileDiscoverable();
