@@ -12,9 +12,10 @@ List Layout
 -----------
 
 .. figure:: /_static/images/grid_list_item.png
-   :width: 30%
+   :width: 60%
    :align: center
    :alt: Grid list item
+
 
 Each grid in the list contains the grid name or identifier, parent template, and date created on the left.
 
@@ -24,9 +25,10 @@ Action buttons on the right of each list item allow a grid to be deleted (|delet
 New Grids
 ---------
 .. figure:: /_static/images/grid_new_process.png
-   :width: 60%
+   :width: 70%
    :align: center
    :alt: Template screen layout
+
 
 Grids can be created by selecting the New Grid icon (|grid-add|) from the top toolbar, a template list item, or a project list item. Creating a new grid opens a step-wise process.
 

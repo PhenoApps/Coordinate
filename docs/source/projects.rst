@@ -4,20 +4,24 @@ Projects
 Groups of grids can be organized into a single project, simplifying data collection for larger experiments. Projects can be exported as a single file or multiple files, adjustable in the :doc:`/settings`. Grids can be added to Projects when they're created or from the :doc:`/collect` screen.
 
 .. figure:: /_static/images/project_list_framed.png
-   :width: 40%
+   :width: 30%
    :align: center
    :alt: Project list layout
 
+
 List Layout
 -----------
+
 .. figure:: /_static/images/project_list_item.png
-   :width: 40%
+   :width: 60%
    :align: center
    :alt: Project list item
+
 
 Each project in the list contains the project name, number of grids, and date created on the left.
 
 Action buttons on the right of each list item allow a project to be deleted (|delete|), exported (|save|), grids in the project to be viewed (|grid-list|), or new grids to be created from that project (|grid-add|).
+
 
 New Projects
 ------------

@@ -9,6 +9,7 @@ Data Input
    :align: center
    :alt: Collect data layout
 
+
 Each cell within a grid can hold a single string of data (such as a plant barcode). Data can be input via the text box below the grid. Sample barcodes can be rapidly scanned to increase data throughput using the barcode button next to data textbox (|barcode|).
 
 The current cell is highlighted in orange. Cells containing saved data turn dark blue. Cells that have been excluded from holding data in a given grid are grey.

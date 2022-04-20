@@ -13,9 +13,10 @@ List Layout
 -----------
 
 .. figure:: /_static/images/template_list_item.png
-   :width: 30%
+   :width: 60%
    :align: center
    :alt: Template list item
+
 
 Each template in the list contains the template name, size, and date created on the left.
 
@@ -25,9 +26,10 @@ Action buttons on the right of each template list item allow non-default templat
 New Templates
 -------------
 .. figure:: /_static/images/template_new_process.png
-   :width: 80%
+   :width: 95%
    :align: center
    :alt: Template screen layout
+
 
 Templates can be created by selecting the New Template icon (|template-add|) or imported by selecting the Import icon (|import|) on the top toolbar. Creating a new template opens a step-wise process that allows for additional customization.
 
