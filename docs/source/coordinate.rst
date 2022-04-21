@@ -5,6 +5,10 @@ Introduction
 ------------
 Coordinate is a flexible, open-source Android app that is used to collect and organize samples. Coordinate functions by defining templates and then collecting data in grids created from those templates.
 
+Download
+--------
+Coordinate can be downloaded from `Google Play <https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate>`_. Source code for Coordinate is hosted on `GitHub <https://github.com/PhenoApps/Coordinate>`_.
+
 Layout
 ------
 
