@@ -3,12 +3,9 @@ package org.wheatgenetics.coordinate.preference
 import android.app.AlertDialog
 import android.content.*
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.wheatgenetics.coordinate.R
@@ -19,14 +16,11 @@ import org.wheatgenetics.coordinate.utils.DateUtil
 import org.wheatgenetics.coordinate.utils.ZipUtil
 import java.io.*
 import java.lang.Exception
-import java.util.*
 import android.provider.OpenableColumns
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
-import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
@@ -60,14 +54,15 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
-        setupBackButton()
+        setToolbar()
     }
 
-    private fun setupBackButton() {
+    private fun setToolbar() {
 
         setHasOptionsMenu(true)
         activity?.let { act ->
             val bar = (act as AppCompatActivity).supportActionBar
+            bar?.title = getString(R.string.database)
             bar?.setHomeButtonEnabled(true)
             bar?.setDisplayHomeAsUpEnabled(true)
         }

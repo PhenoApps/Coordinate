@@ -11,6 +11,8 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -204,10 +206,23 @@ public class PreferenceFragment extends PreferenceFragmentCompat
         }
     }
 
+    private void initToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(null);
+                actionBar.setHomeButtonEnabled(false);
+                actionBar.setDisplayHomeAsUpEnabled(false);
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         if (null != this.sharedPreferences)
             this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        initToolbar();
         super.onResume();
     }
 

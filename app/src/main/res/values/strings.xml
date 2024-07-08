@@ -201,7 +201,7 @@
     <string name="pref_share_on_export_title">Share exports</string>
 
     <!-- Database preferences -->
-    <string name="Database">Database</string>
+    <string name="database">Database</string>
     <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
     <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
     <string name="pref_database_reset_title">Reset</string>
