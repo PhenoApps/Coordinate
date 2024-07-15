@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="@string/preferences_direction_default"
+        android:entries="@array/preferences_direction_entries"
+        android:entryValues="@array/preferences_direction_entry_values"
+        android:icon="@drawable/ic_preferences_direction"
+        android:key="org.wheatgenetics.coordinate.DIRECTION"
+        android:summary="@string/preferences_direction_summary"
+        android:title="@string/preferences_direction_title"
+        app:useSimpleSummaryProvider="false" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:icon="@drawable/ic_preferences_sounds"
+        android:key="org.wheatgenetics.coordinate.NOTIFICATION_SOUNDS"
+        android:title="@string/preferences_sound_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_preferences_unique_required"
+        android:key="org.wheatgenetics.coordinate.UNIQUE_VALUES"
+        android:title="@string/preferences_unique_values" />
+
+    <ListPreference
+        android:defaultValue="@string/preferences_unique_options_default"
+        android:enabled="false"
+        android:entries="@array/preferences_unique_options_entries"
+        android:entryValues="@array/unique_options_preference_entry_values"
+        android:icon="@drawable/ic_preferences_unique_options"
+        android:key="org.wheatgenetics.coordinate.UNIQUE_OPTIONS"
+        android:summary="@string/preferences_unique_options_summary"
+        android:title="@string/preferences_unique_option_title"
+        app:useSimpleSummaryProvider="false" />
+</PreferenceScreen>

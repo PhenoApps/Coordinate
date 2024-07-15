@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:icon="@drawable/ic_folder_lock"
+        android:key="org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER"
+        android:summary="@string/pref_storage_definer_summary"
+        android:title="@string/pref_storage_definer_title" />
+
+    <Preference
+        android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
+        android:icon="@drawable/ic_pref_database"
+        android:title="@string/preferences_database_title"
+        app:iconSpaceReserved="false" />
+</PreferenceScreen>

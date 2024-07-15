@@ -115,114 +115,103 @@
     </plurals>
 
 
-    <!-- Collection preferences -->
-    <string name="PreferenceCollectionCategory">Collection</string>
+    <!-- COLLECTION PREFERENCES -->
+    <string name="preferences_collection_title">Collection</string>
 
-    <!-- Direction preferences -->
-    <string name="DirectionPreferenceKey">Direction</string>
-    <string name="DirectionPreferenceSummary">Advance %s</string>
-    <string name="DirectionPreferenceTitle">Direction</string>
+    <!-- Direction -->
+    <string name="preferences_direction_summary">Advance %s</string>
+    <string name="preferences_direction_title">Direction</string>
 
-    <string-array name="DirectionPreferenceEntries">
+    <string-array name="preferences_direction_entries">
         <item>down each column</item>
         <item>across each row</item>
     </string-array>
 
-    <string name="DirectionPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
-    <string name="DirectionPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+    <string name="preferences_direction_down_then_across_entry_value">DownThenAcross</string>
+    <string name="preferences_direction_across_then_down_entry_value">AcrossThenDown</string>
 
-    <string-array name="DirectionPreferenceEntryValues">
-        <item>@string/DirectionPreferenceDownThenAcrossEntryValue</item>
-        <item>@string/DirectionPreferenceAcrossThenDownEntryValue</item>
+    <string-array name="preferences_direction_entry_values">
+        <item>@string/preferences_direction_down_then_across_entry_value</item>
+        <item>@string/preferences_direction_across_then_down_entry_value</item>
     </string-array>
 
-    <string name="DirectionPreferenceDefault">@string/DirectionPreferenceDownThenAcrossEntryValue</string>
+    <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
 
-    <!-- SoundsOn -->
-    <string name="SoundsOnPreferenceKey">SoundsOn</string>
-    <string name="SoundsOnPreferenceTitle">Notification sounds</string>
+    <!-- Sounds -->
+    <string name="preferences_sound_title">Notification sounds</string>
 
-    <!-- UniqueCheckBox -->
-    <string name="UniqueCheckBoxPreferenceKey">UniqueCheckBox</string>
-    <string name="UniqueCheckBoxPreferenceTitle">Unique values required</string>
+    <!-- Unique values -->
+    <string name="preferences_unique_values">Unique values required</string>
 
+    <!-- Unique options -->
+    <string name="preferences_unique_options_summary">Samples must be unique %s</string>
+    <string name="preferences_unique_option_title">Unique Options</string>
 
-    <!-- UniqueList -->
-    <string name="UniqueListPreferenceKey">UniqueList</string>
-    <string name="UniqueListPreferenceSummary">Samples must be unique %s</string>
-    <string name="UniqueListPreferenceTitle">Unique Options</string>
-
-    <string-array name="UniqueListPreferenceEntries">
+    <string-array name="preferences_unique_options_entries">
         <item>within current grid</item>
         <item>among all grids of current project</item>
         <item>among all grids</item>
     </string-array>
 
-    <string name="UniqueListPreferenceCurrentGrid">UniqueCurrentGrid</string>
-    <string name="UniqueListPreferenceCurrentProject">UniqueCurrentProject</string>
-    <string name="UniqueListPreferenceAllGrids">UniqueAllGrids</string>
+    <string name="preferences_unique_options_current_grid">UniqueCurrentGrid</string>
+    <string name="preferences_unique_options_current_project">UniqueCurrentProject</string>
+    <string name="preferences_unique_options_all_grids">UniqueAllGrids</string>
 
-    <string-array name="UniqueListPreferenceEntryValues">
-        <item>@string/UniqueListPreferenceCurrentGrid</item>
-        <item>@string/UniqueListPreferenceCurrentProject</item>
-        <item>@string/UniqueListPreferenceAllGrids</item>
+    <string-array name="unique_options_preference_entry_values">
+        <item>@string/preferences_unique_options_current_grid</item>
+        <item>@string/preferences_unique_options_current_project</item>
+        <item>@string/preferences_unique_options_all_grids</item>
     </string-array>
 
-    <string name="UniqueListPreferenceDefault">@string/UniqueListPreferenceCurrentGrid</string>
+    <string name="preferences_unique_options_default">@string/preferences_unique_options_current_grid</string>
 
-    <!-- Layout preferences -->
-    <string name="PreferenceLayoutCategory">Layout</string>
-    <string name="ScalingPreferenceKey">Scaling</string>
-    <string name="ScalingPreferenceTitle">Scaling (%)</string>
-    <string name="ScalingPreferenceSummary">Amount to scale grid by</string>
+    <!-- LAYOUT PREFERENCES -->
+    <string name="preferences_layout_title">Layout</string>
+    <string name="preferences_scaling_title">Scaling (%)</string>
+    <string name="preferences_scaling_summary">Amount to scale grid by</string>
 
-    <!-- Export preferences -->
-    <string name="PreferenceExportCategory">Export</string>
-    <string name="ProjectExportPreferenceKey">ProjectExport</string>
-    <string name="ProjectExportPreferenceSummary">Projects export as %s</string>
-    <string name="ProjectExportPreferenceTitle">Project export</string>
+    <!-- EXPORT PREFERENCES -->
+    <string name="preferences_export_title">Export</string>
+    <string name="preferences_project_export_summary">Projects export as %s</string>
+    <string name="preferences_project_export_title">Project export</string>
 
-    <string-array name="ProjectExportPreferenceEntries">
+    <string-array name="preferences_project_export_entries">
         <item>one file per grid</item>
         <item>one file per project</item>
     </string-array>
 
-    <string name="ProjectExportPreferenceOneFilePerGrid">OneFilePerGrid</string>
-    <string name="ProjectExportPreferenceOneFileEntireProject">OneFileEntireProject</string>
+    <string name="preferences_project_export_one_file_per_grid">OneFilePerGrid</string>
+    <string name="preferences_project_export_one_file_entire_project">OneFileEntireProject</string>
 
-    <string-array name="ProjectExportPreferenceEntryValues">
-        <item>@string/ProjectExportPreferenceOneFilePerGrid</item>
-        <item>@string/ProjectExportPreferenceOneFileEntireProject</item>
+    <string-array name="preferences_project_export_entry_values">
+        <item>@string/preferences_project_export_one_file_per_grid</item>
+        <item>@string/preferences_project_export_one_file_entire_project</item>
     </string-array>
 
-    <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
+    <string name="preferences_project_export_default">@string/preferences_project_export_one_file_per_grid</string>
 
     <string name="pref_share_on_export_summary">Files can be automatically shared to other services after export.</string>
     <string name="pref_share_on_export_title">Share exports</string>
 
-    <!-- Database preferences -->
+    <!-- DATABASE PREFERENCES -->
     <string name="database">Database</string>
-    <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
-    <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
-    <string name="pref_database_reset_title">Reset</string>
+    <string name="preferences_database_reset_summary">This will delete all data stored in the app.</string>
+    <string name="preferences_database_reset_title">Reset</string>
     <string name="dialog_database_reset_title">Reset Database?</string>
-    <string name="key_pref_database_screen">org.wheatgenetics.coordinate.preferences.key.database_screen</string>
-    <string name="pref_database_screen_title">Database</string>
-    <string name="pref_storage_screen_title">Storage</string>
-    <string name="key_pref_database_export">org.wheatgenetics.coordinate.preferences.key.export_database</string>
-    <string name="key_pref_database_import">org.wheatgenetics.coordinate.preferences.key.import_database</string>
-    <string name="pref_database_export_summary">This will prompt the user to export the local database.</string>
-    <string name="pref_database_import_summary">Import a new .zip or .db file that has been saved previously.</string>
-    <string name="pref_database_import_title">Import</string>
-    <string name="pref_database_export_title">Export</string>
+    <string name="preferences_database_title">Database</string>
+    <string name="preferences_storage_title">Storage</string>
+    <string name="preferences_database_export_summary">This will prompt the user to export the local database.</string>
+    <string name="preferences_database_import_summary">Import a new .zip or .db file that has been saved previously.</string>
+    <string name="preferences_database_import_title">Import</string>
+    <string name="preferences_database_export_title">Export</string>
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
 
     <!-- PreferenceFragment -->
-    <string name="PreferenceFragmentWrongContext">"%s must implement OnPreferenceClickListener"</string>
+    <string name="preference_fragment_wrong_context">"%s must implement OnPreferenceClickListener"</string>
 
     <!-- PreferenceActivity -->
-    <string name="PreferenceActivityLabel">Settings</string>
+    <string name="preference_activity_label">Settings</string>
 
     <!-- create_project.xml -->
     <string name="CreateProjectAlertDialogEditTextHint">Project name</string>

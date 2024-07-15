@@ -49,7 +49,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.database_preferences)
-        val databaseResetKey = getString(R.string.pref_database_reset_key)
+        val databaseResetKey = GeneralKeys.RESET_DATABASE
         this.databaseResetPreference = findPreference(databaseResetKey)
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
@@ -84,7 +84,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
     private fun setupExportDatabasePreference() {
         if (isAdded) {
             context?.let { ctx ->
-                val databaseExportKey = getString(R.string.key_pref_database_export)
+                val databaseExportKey = GeneralKeys.EXPORT_DATABASE
                 val preference = findPreference<Preference>(databaseExportKey)
                 preference?.setOnPreferenceClickListener {
                     AlertDialog.Builder(ctx)
@@ -110,7 +110,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
 
     private fun setupImportDatabasePreference() {
         if (isAdded) {
-            val databaseImportKey = getString(R.string.key_pref_database_import)
+            val databaseImportKey = GeneralKeys.IMPORT_DATABASE
             val preference = findPreference<Preference>(databaseImportKey)
             preference?.setOnPreferenceClickListener {
                 AlertDialog.Builder(activity)

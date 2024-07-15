@@ -1,54 +1,34 @@
 package org.wheatgenetics.coordinate.preference;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.wheatgenetics.coordinate.AboutActivity;
+import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.Context
- * android.content.Intent
- * android.R
- * android.os.Bundle
- * android.view.MenuItem
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.preference.Preference
- * androidx.preference.Preference.OnPreferenceClickListener
- *
- * org.wheatgenetics.coordinate.Types
- *
- * org.wheatgenetics.coordinate.preference.PreferenceFragment
- */
-public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivity
-        implements androidx.preference.Preference.OnPreferenceClickListener
-{
-    // region Fields
-    private boolean uniquenessPreferenceWasClicked;
+import dagger.hilt.android.AndroidEntryPoint;
 
-    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
-    // endregion
+@AndroidEntryPoint
+public class PreferenceActivity extends BackActivity {
 
-    private void setResult()
-    {
-        final android.content.Intent intent = new android.content.Intent();
-        {
-            final android.os.Bundle bundle = new android.os.Bundle();
-            bundle.putBoolean(
-                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                    this.uniquenessPreferenceWasClicked                     );
-            intent.putExtras(bundle);
-        }
-        this.setResult(android.app.Activity.RESULT_OK, intent);
-    }
+    private static Intent INTENT_INSTANCE = null;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -60,6 +40,12 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_preferences_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
+    }
+
+    @NonNull
+    public static Intent intent(@NonNull final Context context) {
+        return null == INTENT_INSTANCE ?
+                INTENT_INSTANCE = new Intent(context, PreferenceActivity.class) : INTENT_INSTANCE;
     }
 
     private void setupBottomNavigationBar() {
@@ -74,7 +60,7 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
             final int projects = R.id.action_nav_projects;
             final int about = R.id.action_nav_about;
 
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case grids:
                     Intent gridsIntent = GridsActivity.intent(this);
                     gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -103,56 +89,29 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
             return true;
         }));
     }
-
-    // region Overridden Methods
-    @java.lang.Override protected void onCreate(
-            @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
-    {
+    
+    @Override
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_preferences);
 
         setupBottomNavigationBar();
-
-        // noinspection SimplifiableConditionalExpression
-        this.uniquenessPreferenceWasClicked =
-                null == savedInstanceState ? false : savedInstanceState.getBoolean(
-                        org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
-
-        // Display PreferenceFragment as the main content.
-//        this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-//                new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
     }
 
-    @java.lang.Override protected void onSaveInstanceState(
-            @androidx.annotation.NonNull final android.os.Bundle outState)
-    {
-        outState.putBoolean(
-                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                this.uniquenessPreferenceWasClicked                     );
-        super.onSaveInstanceState(outState);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+//        this.setResult();
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
-    @java.lang.Override public boolean onOptionsItemSelected(
-            @androidx.annotation.NonNull final android.view.MenuItem item)
-    { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }
-
-    // region androidx.preference.Preference.OnPreferenceClickListener Overridden Method
-    @java.lang.Override
-    public boolean onPreferenceClick(final androidx.preference.Preference preference)
-    { this.uniquenessPreferenceWasClicked = true; return true; }
-    // endregion
-    // endregion
-
-    @androidx.annotation.NonNull public static android.content.Intent intent(
-            @androidx.annotation.NonNull final android.content.Context context)
-    {
-        return null == org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE ?
-                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE =
-                        new android.content.Intent(context,
-                                org.wheatgenetics.coordinate.preference.PreferenceActivity.class) :
-                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE;
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
