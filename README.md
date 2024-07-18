@@ -31,11 +31,14 @@ Development of Coordinate is possible because of the support received from the f
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://github.com/trife"><img src="https://avatars.githubusercontent.com/u/1869534?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Trevor Rife</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=trife" title="Code">💻</a> <a href="#design-trife" title="Design">🎨</a> <a href="#projectManagement-trife" title="Project Management">📆</a></td>
-    <td align="center"><a href="https://github.com/peterrosario"><img src="https://avatars.githubusercontent.com/u/26546705?v=4?s=100" width="100px;" alt=""/><br /><sub><b>peterrosario</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Code">💻</a> <a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Tests">⚠️</a> <a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/chaneylc"><img src="https://avatars.githubusercontent.com/u/5421632?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chaney Courtney</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=chaneylc" title="Code">💻</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/trife"><img src="https://avatars.githubusercontent.com/u/1869534?v=4?s=100" width="100px;" alt="Trevor Rife"/><br /><sub><b>Trevor Rife</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=trife" title="Code">💻</a> <a href="#design-trife" title="Design">🎨</a> <a href="#projectManagement-trife" title="Project Management">📆</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/peterrosario"><img src="https://avatars.githubusercontent.com/u/26546705?v=4?s=100" width="100px;" alt="peterrosario"/><br /><sub><b>peterrosario</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Code">💻</a> <a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Tests">⚠️</a> <a href="https://github.com/PhenoApps/Coordinate/commits?author=peterrosario" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/chaneylc"><img src="https://avatars.githubusercontent.com/u/5421632?v=4?s=100" width="100px;" alt="Chaney Courtney"/><br /><sub><b>Chaney Courtney</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=chaneylc" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kamathprasad9"><img src="https://avatars.githubusercontent.com/u/54414375?v=4?s=100" width="100px;" alt="Prasad Kamath"/><br /><sub><b>Prasad Kamath</b></sub></a><br /><a href="https://github.com/PhenoApps/Coordinate/commits?author=kamathprasad9" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
