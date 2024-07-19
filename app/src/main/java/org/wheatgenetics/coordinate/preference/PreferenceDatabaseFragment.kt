@@ -26,7 +26,7 @@ import kotlinx.coroutines.runBlocking
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 
 
-class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
+class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceChangeListener {
     // region Fields
 
     companion object {
@@ -54,18 +54,10 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
-        setToolbar()
-    }
 
-    private fun setToolbar() {
+        super.setToolbar(getString(R.string.preferences_database_title))
 
-        setHasOptionsMenu(true)
-        activity?.let { act ->
-            val bar = (act as AppCompatActivity).supportActionBar
-            bar?.title = getString(R.string.database)
-            bar?.setHomeButtonEnabled(true)
-            bar?.setDisplayHomeAsUpEnabled(true)
-        }
+        super.setupBottomNavigationBar()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -5,7 +5,7 @@
 
 Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates. Two templates are included by default: Seed Tray and DNA Plate. Documentation for Coordinate can be found [here](https://coordinate.readthedocs.io/en/stable/coordinate.html).
 
-## Contributors
+## ✨ Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

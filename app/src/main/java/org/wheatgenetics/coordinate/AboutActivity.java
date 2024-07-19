@@ -27,7 +27,6 @@ public class AboutActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_about_bnv);
-        bottomNavigationView.setSelectedItemId(R.id.action_nav_about);
     }
 
     private void setupBottomNavigationBar() {

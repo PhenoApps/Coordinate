@@ -9,5 +9,7 @@ class ExportPreferencesFragment: BasePreferenceFragment()  {
         setPreferencesFromResource(R.xml.preferences_export, rootKey)
 
         super.setToolbar(getString(R.string.preferences_export_title))
+
+        super.setupBottomNavigationBar()
     }
 }

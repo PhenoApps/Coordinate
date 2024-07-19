@@ -26,4 +26,10 @@
         android:title="@string/preferences_storage_title"
         app:fragment="org.wheatgenetics.coordinate.preference.StoragePreferencesFragment" />
 
+    <Preference
+        android:icon="@drawable/ic_about_info"
+        android:key="pref_key_about"
+        android:title="@string/preferences_about_title"
+        app:fragment="org.wheatgenetics.coordinate.AboutFragment" />
+
 </androidx.preference.PreferenceScreen>

@@ -52,11 +52,6 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".AboutActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|locale"
-            android:theme="@style/AppTheme.MaterialAboutActivity" />
-
-        <activity
             android:exported="false"
             android:name=".tc.exclude.ExcludeCellsActivity"
             android:theme="@style/AppTheme">

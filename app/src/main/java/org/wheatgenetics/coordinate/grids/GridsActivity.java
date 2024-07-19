@@ -3,15 +3,12 @@ package org.wheatgenetics.coordinate.grids;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.UriPermission;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
-import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
-import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
@@ -48,7 +43,6 @@ import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
-import org.wheatgenetics.coordinate.model.TemplateModels;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
@@ -57,12 +51,10 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 import java.io.OutputStream;
 import java.util.Iterator;
-import java.util.List;
 
 public class GridsActivity extends BaseMainActivity implements TemplateCreator.Handler {
     // region Constants
@@ -595,7 +587,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
                 case projects:
@@ -608,11 +599,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                     Intent prefsIntent = PreferenceActivity.intent(this);
                     prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(prefsIntent);
-                    break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
                     break;
             }
 

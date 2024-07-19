@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.preference
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,8 @@ class CollectionPreferencesFragment : BasePreferenceFragment() {
         setPreferencesFromResource(R.xml.preferences_collection, rootKey)
 
         super.setToolbar(getString(R.string.preferences_collection_title))
+
+        super.setupBottomNavigationBar()
 
         val uniqueValues = findPreference<CheckBoxPreference>(GeneralKeys.UNIQUE_VALUES)
         val uniqueOptions = findPreference<ListPreference>(GeneralKeys.UNIQUE_OPTIONS)

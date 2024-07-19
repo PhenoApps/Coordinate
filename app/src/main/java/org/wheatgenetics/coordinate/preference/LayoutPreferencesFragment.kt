@@ -7,5 +7,7 @@ class LayoutPreferencesFragment : BasePreferenceFragment() {
         setPreferencesFromResource(R.xml.preferences_layout, rootKey)
 
         super.setToolbar(getString(R.string.preferences_layout_title))
+
+        super.setupBottomNavigationBar()
     }
 }

@@ -12,6 +12,8 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
 
         super.setToolbar(getString(R.string.preferences_storage_title))
 
+        super.setupBottomNavigationBar()
+
         val storageDefiner =
             findPreference<Preference>("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER")
         storageDefiner?.setOnPreferenceClickListener {
