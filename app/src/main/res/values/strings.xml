@@ -200,6 +200,11 @@
     <string name="pref_share_on_export_summary">Files can be automatically shared to other services after export.</string>
     <string name="pref_share_on_export_title">Share exports</string>
 
+    <!-- Dialog -->
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_warning">Warning</string>
+
     <!-- Database preferences -->
     <string name="Database">Database</string>
     <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
@@ -217,6 +222,10 @@
     <string name="pref_database_export_title">Export</string>
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
+    <string name="database_reset_warning1">All data will be deleted. Are you sure you want to reset the database?</string>
+    <string name="database_reset_warning2">A database reset cannot be reversed. The app will quit after clearing the database. Are you really sure you want to continue?</string>
+    <string name="database_reset_message">Database has been deleted</string>
+
 
     <!-- PreferenceFragment -->
     <string name="PreferenceFragmentWrongContext">"%s must implement OnPreferenceClickListener"</string>
