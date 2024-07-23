@@ -225,6 +225,11 @@
     <string name="database_reset_warning1">All data will be deleted. Are you sure you want to reset the database?</string>
     <string name="database_reset_warning2">A database reset cannot be reversed. The app will quit after clearing the database. Are you really sure you want to continue?</string>
     <string name="database_reset_message">Database has been deleted</string>
+    <string name="key_pref_database_reload">org.wheatgenetics.coordinate.preferences.key.reload_database</string>
+    <string name="pref_database_reload_summary">This will delete all data stored in the app and load sample data.</string>
+    <string name="pref_database_reload_title">Reload</string>
+    <string name="database_reload_warning">All data will be deleted and sample data will be loaded. Are you sure you want to reload the database?</string>
+    <string name="database_reload_message">Sample data has been loaded</string>
 
 
     <!-- PreferenceFragment -->

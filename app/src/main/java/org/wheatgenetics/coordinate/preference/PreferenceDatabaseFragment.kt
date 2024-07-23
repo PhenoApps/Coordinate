@@ -17,6 +17,7 @@ import androidx.preference.PreferenceFragmentCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.database.SampleData
 import org.wheatgenetics.coordinate.deleter.GridDeleter
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter
@@ -26,7 +27,6 @@ import org.wheatgenetics.coordinate.utils.ZipUtil
 import org.wheatgenetics.coordinate.utils.Utils as AppUtils
 
 import java.io.*
-import java.util.*
 
 
 class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
@@ -54,6 +54,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
+        setupReloadDatabasePreference()
         setupBackButton()
     }
 
@@ -125,6 +126,43 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         }
     }
 
+    private fun setupReloadDatabasePreference() {
+        if (isAdded){
+            val databaseReloadKey = getString(R.string.key_pref_database_reload)
+            val preference = findPreference<Preference>(databaseReloadKey)
+            preference?.setOnPreferenceClickListener {
+                showDatabaseReloadDialog()
+                true
+            }
+        }
+    }
+
+    // First confirmation
+    private fun showDatabaseReloadDialog() {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle(getString(R.string.dialog_warning))
+        builder.setMessage(getString(R.string.database_reload_warning))
+
+        builder.setPositiveButton(getString(R.string.dialog_yes)) { dialog, _ ->
+            if (context != null){
+                resetDatabase(context)
+                SampleData(context).insertSampleData()
+            }
+
+            dialog.dismiss()
+            AppUtils.makeToast(context, getString(R.string.database_reload_message))
+        }
+
+        builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
+
     /**
      * Creates and shows a dialog to the user to confirm db deletion.
      * Clears all rows in grid, project and entries tables.
@@ -170,20 +208,8 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
         builder.setMessage(getString(R.string.database_reset_warning2))
 
         builder.setPositiveButton(getString(R.string.dialog_yes)) { dialog, _ ->
-            val ctx = context
-            if (ctx != null) {
-                val gd = GridDeleter(ctx) {}
-                val pd = ProjectDeleter(ctx) { _: Long -> }
-                val td = TemplateDeleter(ctx, TemplateDeleter.GridHandler {})
-
-                //grid deleter deletes all grids and entries to the grids
-                gd.deleteAll()
-
-                //template deleter will delete all user-defined templates
-                td.deleteAllUserTemplates()
-
-                //project delete deletes all projects
-                pd.deleteAll()
+            if (context != null) {
+                resetDatabase(context)
 
                 dialog.dismiss()
                 AppUtils.makeToast(context, getString(R.string.database_reset_message))
@@ -202,6 +228,23 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
 
         val alert = builder.create()
         alert.show()
+    }
+
+    private fun resetDatabase(ctx: Context?) {
+        if (ctx != null) {
+            val gd = GridDeleter(ctx) {}
+            val pd = ProjectDeleter(ctx) { _: Long -> }
+            val td = TemplateDeleter(ctx, TemplateDeleter.GridHandler {})
+
+            //grid deleter deletes all grids and entries to the grids
+            gd.deleteAll()
+
+            //template deleter will delete all user-defined templates
+            td.deleteAllUserTemplates()
+
+            //project delete deletes all projects
+            pd.deleteAll()
+        }
     }
 
     private fun importDatabase(uri: Uri) {
