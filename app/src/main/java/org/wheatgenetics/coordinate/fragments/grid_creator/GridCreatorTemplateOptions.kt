@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -43,8 +43,20 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         setupAdapter()
         setupButtons()
@@ -74,20 +86,24 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
         }
 
         backButton?.setOnClickListener {
-            val projectId = activity?.intent?.getLongExtra("projectId", -1L)
-            with (findNavController()) {
-                when {
-                    projectId != -1L -> {
-                        activity?.setResult(Activity.RESULT_CANCELED)
-                        activity?.finish()
-                    }
-                    (previousBackStackEntry?.destination?.id ?: -1) == R.id.project_options -> {
-                        popBackStack(R.id.project_options, false)
-                    }
-                    else -> {
-                        activity?.setResult(Activity.RESULT_CANCELED)
-                        activity?.finish()
-                    }
+            navigateBack()
+        }
+    }
+
+    private fun navigateBack() {
+        val projectId = activity?.intent?.getLongExtra("projectId", -1L)
+        with (findNavController()) {
+            when {
+                projectId != -1L -> {
+                    activity?.setResult(Activity.RESULT_CANCELED)
+                    activity?.finish()
+                }
+                (previousBackStackEntry?.destination?.id ?: -1) == R.id.project_options -> {
+                    popBackStack(R.id.project_options, false)
+                }
+                else -> {
+                    activity?.setResult(Activity.RESULT_CANCELED)
+                    activity?.finish()
                 }
             }
         }

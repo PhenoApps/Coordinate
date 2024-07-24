@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.core.view.children
@@ -51,8 +52,20 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         setupAdapter()
         setupButtons()
@@ -77,11 +90,15 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
         }
 
         backButton?.setOnClickListener {
-            val templateId = activity?.intent?.getLongExtra("templateId", -1L)
-            if (templateId != -1L) {
-                findNavController().popBackStack(R.id.project_options, false)
-            } else findNavController().popBackStack()
+            navigateBack()
         }
+    }
+
+    private fun navigateBack() {
+        val templateId = activity?.intent?.getLongExtra("templateId", -1L)
+        if (templateId != -1L) {
+            findNavController().popBackStack(R.id.project_options, false)
+        } else findNavController().popBackStack()
     }
 
     private fun writeToDatabase(): Long {

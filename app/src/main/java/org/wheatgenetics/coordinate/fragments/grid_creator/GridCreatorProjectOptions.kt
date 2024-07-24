@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -36,8 +37,20 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         setupAdapter()
         setupButtons()
@@ -96,8 +109,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         }
 
         backButton?.setOnClickListener {
-            activity?.setResult(Activity.RESULT_CANCELED)
-            activity?.finish()
+            navigateBack()
         }
 
         addButton?.setOnClickListener {
@@ -108,6 +120,11 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
                 }
             }
         }
+    }
+
+    private fun navigateBack() {
+        activity?.setResult(Activity.RESULT_CANCELED)
+        activity?.finish()
     }
 
     private fun getProjectId(title: String?): Long? {
