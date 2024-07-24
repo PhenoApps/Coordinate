@@ -3,6 +3,7 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -37,8 +38,20 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         loadGridData()
         setupButtons()
@@ -50,16 +63,8 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
         val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
 
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
         backButton?.setOnClickListener {
-            val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
-            (table?.adapter as? GridExcludeAdapter)?.clearSelection()
-            table?.adapter?.notifyDataSetChanged()
-            writeToDatabase()
-            mRandomSelections.clear()
-            randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeRandomDirections
-                .actionTemplateExcludePop())
+            navigateBack()
         }
 
         okButton?.setOnClickListener {
@@ -75,6 +80,20 @@ class TemplateCreatorExcludeRandom : Fragment(R.layout.fragment_template_exclude
             addRandomExclusions(text.toIntOrNull() ?: 0)
 
         } }
+    }
+
+    private fun navigateBack() {
+        val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
+
+        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
+        (table?.adapter as? GridExcludeAdapter)?.clearSelection()
+        table?.adapter?.notifyDataSetChanged()
+        writeToDatabase()
+        mRandomSelections.clear()
+        randomEditText?.setText(String())
+        findNavController().navigate(TemplateCreatorExcludeRandomDirections
+            .actionTemplateExcludePop())
     }
 
     private fun clearDatabaseExclusions(temp: TemplateModel) {

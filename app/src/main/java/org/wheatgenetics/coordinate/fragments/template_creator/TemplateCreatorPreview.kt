@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,12 +17,9 @@ import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.listener.ITableViewListener
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
-import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
 import org.wheatgenetics.coordinate.adapter.GridPreviewAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.*
-import java.util.ArrayList
-import kotlin.random.Random
 
 class TemplateCreatorPreview : Fragment(R.layout.fragment_template_preview),
     ITableViewListener,
@@ -38,8 +34,20 @@ class TemplateCreatorPreview : Fragment(R.layout.fragment_template_preview),
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         loadGridData()
         setupButtons()
@@ -51,7 +59,7 @@ class TemplateCreatorPreview : Fragment(R.layout.fragment_template_preview),
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
 
         backButton?.setOnClickListener {
-            findNavController().popBackStack()
+            navigateBack()
         }
 
         okButton?.setOnClickListener {
@@ -60,6 +68,10 @@ class TemplateCreatorPreview : Fragment(R.layout.fragment_template_preview),
             activity?.setResult(Activity.RESULT_OK)
             activity?.finish()
         }
+    }
+
+    private fun navigateBack() {
+        findNavController().popBackStack()
     }
 
     private fun loadGridData() {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -38,6 +39,15 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun updateUiForEdit(template: TemplateModel) {
         val name = view?.findViewById<EditText>(R.id.frag_grid_creator_template_name_et)
         val rows = view?.findViewById<EditText>(R.id.frag_grid_creator_template_rows_et)
@@ -50,6 +60,9 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         //check if this is an edit action, populate ui
         if (activity?.intent?.hasExtra(TemplateCreatorActivity.TEMPLATE_EDIT) == true) {
@@ -69,7 +82,7 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
             }
         }
 
-        setupNextButton()
+        setupButtons()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -84,21 +97,13 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
 
     }
 
-    private fun setupNextButton() {
+    private fun setupButtons() {
 
         context?.let { ctx ->
 
             //back button
             view?.findViewById<Button>(R.id.frag_back_btn)?.setOnClickListener {
-                activity?.setResult(Activity.RESULT_CANCELED)
-                activity?.finish()
-
-                //make sure on editing we don't delete the template after canceling
-                if (mPreviousName?.isNotBlank() == true && mEdit == -1L) {
-                    mTemplateTable?.load()?.find { it.title == mPreviousName }?.let { template ->
-                        mTemplateTable?.delete(template.id)
-                    }
-                }
+                navigateBack()
             }
 
             //next button
@@ -150,6 +155,18 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
                     Toast.makeText(ctx, R.string.frag_template_creator_name_input_error, Toast.LENGTH_SHORT).show()
 
                 }
+            }
+        }
+    }
+
+    private fun navigateBack() {
+        activity?.setResult(Activity.RESULT_CANCELED)
+        activity?.finish()
+
+        //make sure on editing we don't delete the template after canceling
+        if (mPreviousName?.isNotBlank() == true && mEdit == -1L) {
+            mTemplateTable?.load()?.find { it.title == mPreviousName }?.let { template ->
+                mTemplateTable?.delete(template.id)
             }
         }
     }
