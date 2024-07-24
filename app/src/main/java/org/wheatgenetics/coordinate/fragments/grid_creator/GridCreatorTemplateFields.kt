@@ -209,6 +209,13 @@ class GridCreatorTemplateFields : Fragment(R.layout.fragment_grid_creator_fields
             //query db for optional fields
             mTemplate?.optionalFields()?.let { fields ->
 
+                // set hint text for optional fields
+                fields.forEach { field ->
+                    if (field.name != requiredName) {
+                       field.hint = getString(R.string.optional_field_hint_text)
+                    }
+                }
+
                 val adapter = FieldsAdapter(this, requiredName, fields)
 
                 val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_fields_lv)

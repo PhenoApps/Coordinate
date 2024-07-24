@@ -20,7 +20,7 @@ public abstract class BaseOptionalField {
             name;
     @NonNull
     @Size(min = 0)
-    private final String
+    private String
             hint;
     @NonNull
     private final StringGetter
@@ -162,6 +162,10 @@ public abstract class BaseOptionalField {
 
     public void setValue(final String value) {
         this.value = Utils.makeEmptyIfNull(value).trim();
+    }
+
+    public void setHint(final String hint) {
+        this.hint  = hint;
     }
 
     @NonNull

@@ -236,6 +236,7 @@
     <string name="BaseOptionalFieldPersonFieldName">Person</string>
     <string name="BaseOptionalFieldNameFieldName">Name</string>
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
+    <string name="optional_field_hint_text">Optional</string>
 
     <!-- DateOptionalField -->
     <string name="DateOptionalFieldDateFieldName">Date</string>
