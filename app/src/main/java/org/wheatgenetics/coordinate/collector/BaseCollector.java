@@ -34,6 +34,7 @@ import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.UniqueEntryModels;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.utils.SoundHelperImpl;
 
 @SuppressWarnings({"ClassExplicitlyExtendsObject"})
 abstract class BaseCollector extends Object implements
@@ -56,8 +57,8 @@ abstract class BaseCollector extends Object implements
     private EntriesTable entriesTableInstance = null;  // ll
     // endregion
 
-    private MediaPlayer gridEndMediaPlayer = null,
-            rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
+    SoundHelperImpl soundHelper;
+
     private UniqueAlertDialog uniqueAlertDialog = null; // ll
 
     // endregion
@@ -67,6 +68,8 @@ abstract class BaseCollector extends Object implements
         super();
 
         this.activity = activity;
+
+        soundHelper = new SoundHelperImpl(activity);
 
         @NonNull final FragmentManager fragmentManager =
                 this.activity.getSupportFragmentManager();
@@ -123,10 +126,7 @@ abstract class BaseCollector extends Object implements
     private void handleDuplicateCheckException(
             @NonNull final String message) {
         if (this.getSoundsOn()) {
-            if (null == this.disallowedDuplicateMediaPlayer)
-                this.disallowedDuplicateMediaPlayer = MediaPlayer.create(
-                        this.activity, R.raw.unsure);
-            this.disallowedDuplicateMediaPlayer.start();
+            soundHelper.playDuplicate();
         }
 
         if (null == this.uniqueAlertDialog) this.uniqueAlertDialog =
@@ -228,20 +228,14 @@ abstract class BaseCollector extends Object implements
                 R.string.BaseCollectorFilledGridAlertMessage);
 
         if (this.getSoundsOn()) {
-            if (null == this.gridEndMediaPlayer)
-                this.gridEndMediaPlayer = MediaPlayer.create(
-                        this.activity, R.raw.plonk);
-            this.gridEndMediaPlayer.start();
+            soundHelper.playPlonk();
         }
     }
 
     @Override
     public void handleFilledRowOrCol() {
         if (this.getSoundsOn()) {
-            if (null == this.rowOrColumnEndMediaPlayer)
-                this.rowOrColumnEndMediaPlayer = MediaPlayer.create(
-                        this.activity, R.raw.row_or_column_end);
-            this.rowOrColumnEndMediaPlayer.start();
+            soundHelper.playRowOrColumnEnd();
         }
     }
     // endregion
@@ -413,11 +407,4 @@ abstract class BaseCollector extends Object implements
     }
     // endregion
 
-    public void release() {
-        if (null != this.disallowedDuplicateMediaPlayer)
-            this.disallowedDuplicateMediaPlayer.release();
-        if (null != this.rowOrColumnEndMediaPlayer) this.rowOrColumnEndMediaPlayer.release();
-        if (null != this.gridEndMediaPlayer) this.gridEndMediaPlayer.release();
-    }
-    // endregion
 }
