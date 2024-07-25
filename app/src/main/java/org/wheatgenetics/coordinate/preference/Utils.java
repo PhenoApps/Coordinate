@@ -52,17 +52,6 @@ public class Utils {
     }
     // endregion
 
-    public static boolean getSoundsOn(final Context context) {
-        final SharedPreferences defaultSharedPreferences =
-                Utils.getDefaultSharedPreferences(context);
-        if (null == defaultSharedPreferences)
-            return true;
-        else {
-            final String key = GeneralKeys.NOTIFICATION_SOUNDS;
-            return defaultSharedPreferences.getBoolean(key, /* defValue => */true);
-        }
-    }
-
     public static Utils.ProjectExport getProjectExport(
             @NonNull final Context context) {
         final SharedPreferences defaultSharedPreferences =

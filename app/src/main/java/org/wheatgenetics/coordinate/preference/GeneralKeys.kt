@@ -12,9 +12,12 @@ class GeneralKeys private constructor() {
          */
         // Collection Preferences
         const val DIRECTION = COORDINATE_PREFIX + "DIRECTION"
-        const val NOTIFICATION_SOUNDS = COORDINATE_PREFIX + "NOTIFICATION_SOUNDS"
         const val UNIQUE_VALUES = COORDINATE_PREFIX + "UNIQUE_VALUES"
         const val UNIQUE_OPTIONS = COORDINATE_PREFIX + "UNIQUE_OPTIONS"
+        // sounds
+        const val NAVIGATION_SOUND = COORDINATE_PREFIX + "NAVIGATION_SOUND"
+        const val GRID_FILLED_SOUND = COORDINATE_PREFIX + "GRID_FILLED_SOUND"
+        const val DUPLICATE_ENTRY_SOUND = COORDINATE_PREFIX + "DUPLICATE_ENTRY_SOUND"
 
         // Layout Preferences
         const val SCALING = COORDINATE_PREFIX + "SCALING"

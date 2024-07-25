@@ -1,7 +1,8 @@
 package org.wheatgenetics.coordinate.collector;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.IntRange;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -34,6 +36,7 @@ import org.wheatgenetics.coordinate.model.Model;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.UniqueEntryModels;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.utils.SoundHelperImpl;
 
 @SuppressWarnings({"ClassExplicitlyExtendsObject"})
@@ -57,7 +60,9 @@ abstract class BaseCollector extends Object implements
     private EntriesTable entriesTableInstance = null;  // ll
     // endregion
 
-    SoundHelperImpl soundHelper;
+    private SoundHelperImpl soundHelper;
+
+    private SharedPreferences preferences;
 
     private UniqueAlertDialog uniqueAlertDialog = null; // ll
 
@@ -70,6 +75,8 @@ abstract class BaseCollector extends Object implements
         this.activity = activity;
 
         soundHelper = new SoundHelperImpl(activity);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
         @NonNull final FragmentManager fragmentManager =
                 this.activity.getSupportFragmentManager();
@@ -96,10 +103,6 @@ abstract class BaseCollector extends Object implements
     }
     // endregion
 
-    private boolean getSoundsOn() {
-        return org.wheatgenetics.coordinate.preference.Utils.getSoundsOn(this.activity);
-    }
-
     private void populateDataEntryFragment() {
         ((EditText) activity.findViewById(R.id.act_collector_data_entry_et))
                 .setText(((CollectorActivity) activity).getEntryValue());
@@ -125,7 +128,7 @@ abstract class BaseCollector extends Object implements
 
     private void handleDuplicateCheckException(
             @NonNull final String message) {
-        if (this.getSoundsOn()) {
+        if (preferences.getBoolean(GeneralKeys.DUPLICATE_ENTRY_SOUND, false)) {
             soundHelper.playDuplicate();
         }
 
@@ -227,14 +230,14 @@ abstract class BaseCollector extends Object implements
         org.wheatgenetics.coordinate.Utils.alert(this.activity,
                 R.string.BaseCollectorFilledGridAlertMessage);
 
-        if (this.getSoundsOn()) {
+        if (preferences.getBoolean(GeneralKeys.GRID_FILLED_SOUND, false)) {
             soundHelper.playPlonk();
         }
     }
 
     @Override
     public void handleFilledRowOrCol() {
-        if (this.getSoundsOn()) {
+        if (preferences.getBoolean(GeneralKeys.NAVIGATION_SOUND, false)) {
             soundHelper.playRowOrColumnEnd();
         }
     }
