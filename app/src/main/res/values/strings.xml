@@ -138,6 +138,7 @@
     <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
 
     <!-- Sounds -->
+    <string name="preferences_sound_title">Sounds</string>
     <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
     <string name="preferences_sound_filled_row_or_column_summary">Notification sound when a %s is filled</string>
     <string name="preferences_sound_filled_column">column</string>

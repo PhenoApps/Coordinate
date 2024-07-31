@@ -31,7 +31,7 @@
 
     <PreferenceCategory
         android:key="transfer_defaults"
-        android:title="Sounds"
+        android:title="@string/preferences_sound_title"
         app:iconSpaceReserved="false">
 
         <CheckBoxPreference
