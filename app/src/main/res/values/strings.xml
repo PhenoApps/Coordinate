@@ -138,7 +138,15 @@
     <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
 
     <!-- Sounds -->
-    <string name="preferences_sound_title">Notification sounds</string>
+    <string name="preferences_sound_title">Sounds</string>
+    <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
+    <string name="preferences_sound_filled_row_or_column_summary">Notification sound when a %s is filled</string>
+    <string name="preferences_sound_filled_column">column</string>
+    <string name="preferences_sound_filled_row">row</string>
+    <string name="preferences_sound_grid_filled_title">Grid filled sound</string>
+    <string name="preferences_sound_grid_filled_summary">Notification sound when a grid is filled</string>
+    <string name="preferences_sound_duplicate_entry_title">Duplicate entry sound</string>
+    <string name="preferences_sound_duplicate_entry_summary">Notification sound when a non-unique sample is entered</string>
 
     <!-- Unique values -->
     <string name="preferences_unique_values">Unique values required</string>

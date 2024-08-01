@@ -13,12 +13,6 @@
         app:useSimpleSummaryProvider="false" />
 
     <CheckBoxPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_preferences_sounds"
-        android:key="org.wheatgenetics.coordinate.NOTIFICATION_SOUNDS"
-        android:title="@string/preferences_sound_title" />
-
-    <CheckBoxPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_preferences_unique_required"
         android:key="org.wheatgenetics.coordinate.UNIQUE_VALUES"
@@ -34,4 +28,31 @@
         android:summary="@string/preferences_unique_options_summary"
         android:title="@string/preferences_unique_option_title"
         app:useSimpleSummaryProvider="false" />
+
+    <PreferenceCategory
+        android:key="transfer_defaults"
+        android:title="@string/preferences_sound_title"
+        app:iconSpaceReserved="false">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_pref_sounds_advance"
+            android:key="org.wheatgenetics.coordinate.NAVIGATION_SOUND"
+            android:title="@string/preferences_sound_filled_row_or_column_title"
+            android:summary="@string/preferences_sound_filled_row_or_column_summary"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_prefs_sounds_filled"
+            android:key="org.wheatgenetics.coordinate.GRID_FILLED_SOUND"
+            android:title="@string/preferences_sound_grid_filled_title"
+            android:summary="@string/preferences_sound_grid_filled_summary"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_pref_sounds_duplicate"
+            android:key="org.wheatgenetics.coordinate.DUPLICATE_ENTRY_SOUND"
+            android:title="@string/preferences_sound_duplicate_entry_title"
+            android:summary="@string/preferences_sound_duplicate_entry_summary"/>
+    </PreferenceCategory>
 </PreferenceScreen>

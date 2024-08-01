@@ -176,7 +176,6 @@ public class CollectorActivity extends BackActivity implements
 
     @Override
     protected void onDestroy() {
-        if (null != this.collectorInstance) this.collectorInstance.release();
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }
