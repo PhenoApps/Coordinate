@@ -9,12 +9,6 @@
         app:fragment="org.wheatgenetics.coordinate.preference.CollectionPreferencesFragment" />
 
     <Preference
-        android:icon="@drawable/ic_pref_layout"
-        android:key="pref_key_layout"
-        android:title="@string/preferences_layout_title"
-        app:fragment="org.wheatgenetics.coordinate.preference.LayoutPreferencesFragment" />
-
-    <Preference
         android:icon="@drawable/ic_pref_export"
         android:key="pref_key_export"
         android:title="@string/preferences_export_title"

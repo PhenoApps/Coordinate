@@ -55,4 +55,21 @@
             android:title="@string/preferences_sound_duplicate_entry_title"
             android:summary="@string/preferences_sound_duplicate_entry_summary"/>
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="transfer_defaults"
+        android:title="@string/preferences_layout_title"
+        app:iconSpaceReserved="false">
+
+        <SeekBarPreference
+            android:defaultValue="100"
+            android:icon="@drawable/ic_layout_scaling"
+            android:key="org.wheatgenetics.coordinate.SCALING"
+            android:max="250"
+            android:summary="@string/preferences_scaling_summary"
+            android:title="@string/preferences_scaling_title"
+            app:min="25"
+            app:showSeekBarValue="true"
+            app:updatesContinuously="false" />
+    </PreferenceCategory>
 </PreferenceScreen>
