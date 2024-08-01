@@ -7,23 +7,27 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.database.SampleData
 import org.wheatgenetics.coordinate.deleter.GridDeleter
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter
 import org.wheatgenetics.coordinate.deleter.TemplateDeleter
 import org.wheatgenetics.coordinate.utils.DateUtil
 import org.wheatgenetics.coordinate.utils.ZipUtil
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
+import org.wheatgenetics.coordinate.utils.Utils as AppUtils
+
 import java.io.*
 import java.lang.Exception
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
+
+import java.io.*
 
 
 class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceChangeListener {
@@ -32,7 +36,6 @@ class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceC
     companion object {
         const val TAG = "PreferenceDatabase"
     }
-    private var databaseResetPreference: Preference? = null
     private var sharedPreferences: SharedPreferences? = null
 
     private val importChooser = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
@@ -49,13 +52,12 @@ class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceC
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.database_preferences)
-        val databaseResetKey = GeneralKeys.RESET_DATABASE
-        this.databaseResetPreference = findPreference(databaseResetKey)
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
+        setupReloadDatabasePreference()
 
-        super.setToolbar(getString(R.string.preferences_database_title))
+        super.setToolbar(getString(R.string.pref_database_title))
 
         super.setupBottomNavigationBar()
     }
@@ -107,16 +109,53 @@ class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceC
             preference?.setOnPreferenceClickListener {
                 AlertDialog.Builder(activity)
                     .setTitle(R.string.dialog_database_import_title)
-                    .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, which: Int ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         importChooser.launch(arrayOf("*/*"))
                     }
-                    .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface?, which: Int -> }
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> }
                     .create()
                     .show()
                 true
             }
         }
     }
+
+    private fun setupReloadDatabasePreference() {
+        if (isAdded){
+            val databaseReloadKey = getString(R.string.key_pref_database_reload)
+            val preference = findPreference<Preference>(databaseReloadKey)
+            preference?.setOnPreferenceClickListener {
+                showDatabaseReloadDialog()
+                true
+            }
+        }
+    }
+
+    // First confirmation
+    private fun showDatabaseReloadDialog() {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle(getString(R.string.dialog_warning))
+        builder.setMessage(getString(R.string.database_reload_warning))
+
+        builder.setPositiveButton(getString(R.string.dialog_yes)) { dialog, _ ->
+            if (context != null){
+                resetDatabase(context)
+                SampleData(context).insertSampleData()
+            }
+
+            dialog.dismiss()
+            AppUtils.makeToast(context, getString(R.string.database_reload_message))
+        }
+
+        builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
 
     /**
      * Creates and shows a dialog to the user to confirm db deletion.
@@ -125,32 +164,80 @@ class PreferenceDatabaseFragment : BasePreferenceFragment(), OnSharedPreferenceC
      */
     private fun setupDatabaseResetPreference() {
         if (isAdded) {
+            val databaseResetKey = getString(R.string.pref_database_reset_key)
+            val databaseResetPreference = findPreference<Preference>(databaseResetKey)
             databaseResetPreference?.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    AlertDialog.Builder(activity)
-                        .setTitle(R.string.dialog_database_reset_title)
-                        .setPositiveButton(android.R.string.ok) { dialog: DialogInterface?, which: Int ->
-                            val ctx = context
-                            if (ctx != null) {
-                                val gd = GridDeleter(ctx) {}
-                                val pd = ProjectDeleter(ctx) { a: Long -> }
-                                val td = TemplateDeleter(ctx, TemplateDeleter.GridHandler {})
-
-                                //grid deleter deletes all grids and entries to the grids
-                                gd.deleteAll()
-
-                                //template deleter will delete all user-defined templates
-                                td.deleteAllUserTemplates()
-
-                                //project delete deletes all projects
-                                pd.deleteAll()
-                            }
-                        }
-                        .setNegativeButton(android.R.string.cancel) { dialog: DialogInterface?, which: Int -> }
-                        .create()
-                        .show()
+                    showDatabaseResetDialog1()
                     true
                 }
+        }
+    }
+
+    // First confirmation
+    private fun showDatabaseResetDialog1() {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle(getString(R.string.dialog_warning))
+        builder.setMessage(getString(R.string.database_reset_warning1))
+
+        builder.setPositiveButton(getString(R.string.dialog_yes)) { dialog, _ ->
+            dialog.dismiss()
+            showDatabaseResetDialog2()
+        }
+
+        builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
+    // Second confirmation
+    private fun showDatabaseResetDialog2() {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle(getString(R.string.dialog_warning))
+        builder.setMessage(getString(R.string.database_reset_warning2))
+
+        builder.setPositiveButton(getString(R.string.dialog_yes)) { dialog, _ ->
+            if (context != null) {
+                resetDatabase(context)
+
+                dialog.dismiss()
+                AppUtils.makeToast(context, getString(R.string.database_reset_message))
+            }
+
+            try {
+                activity?.finishAffinity()
+            } catch (e: Exception) {
+                Log.e("Coordinate", e.message ?: "Error")
+            }
+        }
+
+        builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun resetDatabase(ctx: Context?) {
+        if (ctx != null) {
+            val gd = GridDeleter(ctx) {}
+            val pd = ProjectDeleter(ctx) { _: Long -> }
+            val td = TemplateDeleter(ctx, TemplateDeleter.GridHandler {})
+
+            //grid deleter deletes all grids and entries to the grids
+            gd.deleteAll()
+
+            //template deleter will delete all user-defined templates
+            td.deleteAllUserTemplates()
+
+            //project delete deletes all projects
+            pd.deleteAll()
         }
     }
 

@@ -12,6 +12,10 @@ class GridCreatorActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_grid_creator)
 
-        supportActionBar?.title = getString(R.string.new_grid_title)
+        supportActionBar?.apply{
+            title = getString(R.string.new_grid_title)
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 }

@@ -2,26 +2,21 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.TableView
-import com.evrencoskun.tableview.handler.SelectionHandler
 import com.evrencoskun.tableview.listener.ITableViewListener
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.StringGetter
 import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
-import org.wheatgenetics.coordinate.collector.Collector
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.*
 import java.util.ArrayList
@@ -44,8 +39,20 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         loadGridData()
         setupButtons()
@@ -64,13 +71,8 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             table?.adapter?.notifyDataSetChanged()
         }
 
-        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
         backButton?.setOnClickListener {
-            writeToDatabase()
-            mRandomSelections.clear()
-            randomEditText?.setText(String())
-            findNavController().navigate(TemplateCreatorExcludeOptionsDirections
-                .actionTemplateExcludePop())
+            navigateBack()
         }
 
         okButton?.setOnClickListener {
@@ -86,6 +88,17 @@ class TemplateCreatorExclude : Fragment(R.layout.fragment_template_exclude),
             addRandomExclusions(text.toIntOrNull() ?: 0)
 
         } }
+    }
+
+    private fun navigateBack() {
+        val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
+
+        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        writeToDatabase()
+        mRandomSelections.clear()
+        randomEditText?.setText(String())
+        findNavController().navigate(TemplateCreatorExcludeOptionsDirections
+            .actionTemplateExcludePop())
     }
 
     private fun clearDatabaseExclusions(temp: TemplateModel) {

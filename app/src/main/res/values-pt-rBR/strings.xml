@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:override="true">Coordinate</string>
-
     <!-- Utils -->
     <string name="UtilsNegativeButtonText">No</string>
     <string name="UtilsPositiveButtonText">OK</string>
-    <string name="UtilsInvalidValue">value must be >= %d</string>
-
+    <string name="UtilsInvalidValue">value must be &gt;= %d</string>
     <!-- MainActivity, NavigationItemSelectedListener, TemplatesActivity -->
     <string name="TemplateNotCreatedToast">%s not created</string>
     <string name="TemplateCreatedToast">%s created</string>
-
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>
-
     <!-- AboutActivity -->
     <string name="about_version_title">Version</string>
-    <string name="about_title_pheno_apps">PhenoApps</string>
+    <string name="about_title_other_apps">Other PhenoApps</string>
     <string name="about_project_lead_title">Project Lead</string>
-    <string name="about_developer_trife" translatable="false">Trevor Rife</string>
-    <string name="about_developer_trife_location" translatable="false">Clemson University</string>
-    <string name="about_developer_trife_email" translatable="false">twrife@clemson.edu</string>
     <string name="about_email_title">Email</string>
     <string name="about_contributors_title">Contributors</string>
     <string name="about_contributors_developers_title">Developers</string>
@@ -31,19 +24,14 @@
     <string name="about_help_translate_title">Help translate</string>
     <string name="changelog_title">Changelog</string>
     <string name="libraries_title">Libraries</string>
-    <string name="about_manual_title">Manual</string>
-
     <!-- Folder names -->
     <string name="FolderExport">Exports</string>
     <string name="FolderTemplate">Templates</string>
-
     <!-- TemplateImporter -->
     <string name="SelectExportedTemplateTitle">Import template</string>
-
     <!-- TemplatesActivity -->
     <string name="TemplatesActivityLabel">Templates</string>
     <string name="TemplatesActivityImportMenuItemTitle">Import</string>
-
     <!-- TemplatesAdapter -->
     <plurals name="TemplatesListRows">
         <item quantity="one">%d row</item>
@@ -53,39 +41,31 @@
         <item quantity="one">, %d column</item>
         <item quantity="other">, %d columns</item>
     </plurals>
-
     <!-- assign_title_rows_cols.xml -->
     <string name="AssignTitleRowsColsAlertDialogTitleEditTextHint">Template name</string>
     <string name="AssignTitleRowsColsAlertDialogRowsEditTextHint">Number of rows</string>
     <string name="AssignTitleRowsColsAlertDialogColsEditTextHint">Number of columns</string>
-
     <!-- AssignTitleRowsColsAlertDialog -->
     <string name="AssignTitleRowsColsAlertDialogTitle">New Template</string>
     <string name="AssignTitleRowsColsAlertDialogPositiveButtonText">Next</string>
     <string name="AssignTitleRowsColsAlertDialogTitleToast">Template name cannot be empty</string>
     <string name="AssignTitleRowsColsAlertDialogRowsToast">Number of rows not specified</string>
     <string name="AssignTitleRowsColsAlertDialogColsToast">Number of columns not specified</string>
-
     <!-- ExcludedRowsOrColsAlertDialog -->
     <string name="ExcludedRowsOrColsAlertDialogTitle">Exclude</string>
-
     <!-- ExcludedRowsOrColsAlertDialogTester -->
     <string name="ExcludedRowsOrColsAlertDialogRowLabel">Row</string>
     <string name="ExcludedRowsOrColsAlertDialogColumnLabel">Column</string>
-
     <!-- generated_excluded_cells.xml -->
     <string name="GeneratedExcludedCellsLabelTextViewText">Number of cells to randomly exclude:\u0020</string>
-
     <!-- GeneratedExcludedCellsAlertDialog -->
     <string name="GeneratedExcludedCellsAlertDialogTitle">Random</string>
-
     <!-- ExcludeAlertDialog -->
     <string name="ExcludeAlertDialogTitle">Exclude</string>
     <string name="ExcludeAlertDialogRowsItem">Rows</string>
     <string name="ExcludeAlertDialogColsItem">Columns</string>
     <string name="ExcludeAlertDialogCellsItem">Cells</string>
     <string name="ExcludeAlertDialogRandomItem">Random</string>
-
     <!-- set_numbering.xml -->
     <string name="SetNumberingAlertDialogRowSpinnerLabel">Rows</string>
     <string name="SetNumberingAlertDialogColSpinnerLabel">Columns</string>
@@ -93,175 +73,123 @@
         <item>1,2,3</item>
         <item>A,B,C</item>
     </string-array>
-
     <!-- SetNumberingAlertDialog -->
     <string name="SetNumberingAlertDialogTitle">Naming</string>
-
     <!-- set_excludes_optional_fields_numbering.xml -->
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogCheckAndAddOptionalFieldsButtonText">Set Optional Fields</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogExcludeButtonText">Exclude</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogSetNumberingButtonText">Set Naming</string>
-
     <!-- SetExcludesOptionalFieldsNumberingAlertDialog -->
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogTitle">New Template</string>
     <string name="SetExcludesOptionalFieldsNumberingAlertDialogPositiveButtonText">Next</string>
-
     <!-- ProjectsActivity -->
     <string name="ProjectsActivityLabel">Projects</string>
-
     <plurals name="ProjectsListNumberOfGrids">
         <item quantity="one">%d grid</item>
         <item quantity="other">%d grids</item>
     </plurals>
-
-
-    <!-- COLLECTION PREFERENCES -->
-    <string name="preferences_collection_title">Collection</string>
-
-    <!-- Direction -->
-    <string name="preferences_direction_summary">Advance %s</string>
-    <string name="preferences_direction_title">Direction</string>
-
-    <string-array name="preferences_direction_entries">
+    <!-- Collection preferences -->
+    <string name="PreferenceCollectionCategory">Collection</string>
+    <!-- Direction preferences -->
+    <string name="DirectionPreferenceKey">Direction</string>
+    <string name="DirectionPreferenceSummary">Advance %s</string>
+    <string name="DirectionPreferenceTitle">Direction</string>
+    <string-array name="DirectionPreferenceEntries">
         <item>down each column</item>
         <item>across each row</item>
     </string-array>
-
-    <string name="preferences_direction_down_then_across_entry_value">DownThenAcross</string>
-    <string name="preferences_direction_across_then_down_entry_value">AcrossThenDown</string>
-
-    <string-array name="preferences_direction_entry_values">
-        <item>@string/preferences_direction_down_then_across_entry_value</item>
-        <item>@string/preferences_direction_across_then_down_entry_value</item>
+    <string name="DirectionPreferenceDownThenAcrossEntryValue">DownThenAcross</string>
+    <string name="DirectionPreferenceAcrossThenDownEntryValue">AcrossThenDown</string>
+    <string-array name="DirectionPreferenceEntryValues">
+        <item>@string/DirectionPreferenceDownThenAcrossEntryValue</item>
+        <item>@string/DirectionPreferenceAcrossThenDownEntryValue</item>
     </string-array>
-
-    <string name="preferences_direction_default">@string/preferences_direction_down_then_across_entry_value</string>
-
-    <!-- Sounds -->
-    <string name="preferences_sound_title">Sounds</string>
-    <string name="preferences_sound_filled_row_or_column_title">Navigation sound</string>
-    <string name="preferences_sound_filled_row_or_column_summary">Notification sound when a %s is filled</string>
-    <string name="preferences_sound_filled_column">column</string>
-    <string name="preferences_sound_filled_row">row</string>
-    <string name="preferences_sound_grid_filled_title">Grid filled sound</string>
-    <string name="preferences_sound_grid_filled_summary">Notification sound when a grid is filled</string>
-    <string name="preferences_sound_duplicate_entry_title">Duplicate entry sound</string>
-    <string name="preferences_sound_duplicate_entry_summary">Notification sound when a non-unique sample is entered</string>
-
-    <!-- Unique values -->
-    <string name="preferences_unique_values">Unique values required</string>
-
-    <!-- Unique options -->
-    <string name="preferences_unique_options_summary">Samples must be unique %s</string>
-    <string name="preferences_unique_option_title">Unique Options</string>
-
-    <string-array name="preferences_unique_options_entries">
+    <string name="DirectionPreferenceDefault">@string/DirectionPreferenceDownThenAcrossEntryValue</string>
+    <!-- SoundsOn -->
+    <string name="SoundsOnPreferenceKey">SoundsOn</string>
+    <string name="SoundsOnPreferenceTitle">Notification sounds</string>
+    <!-- UniqueCheckBox -->
+    <string name="UniqueCheckBoxPreferenceKey">UniqueCheckBox</string>
+    <string name="UniqueCheckBoxPreferenceTitle">Unique values required</string>
+    <!-- UniqueList -->
+    <string name="UniqueListPreferenceKey">UniqueList</string>
+    <string name="UniqueListPreferenceSummary">Samples must be unique %s</string>
+    <string name="UniqueListPreferenceTitle">Unique Options</string>
+    <string-array name="UniqueListPreferenceEntries">
         <item>within current grid</item>
         <item>among all grids of current project</item>
         <item>among all grids</item>
     </string-array>
-
-    <string name="preferences_unique_options_current_grid">UniqueCurrentGrid</string>
-    <string name="preferences_unique_options_current_project">UniqueCurrentProject</string>
-    <string name="preferences_unique_options_all_grids">UniqueAllGrids</string>
-
-    <string-array name="unique_options_preference_entry_values">
-        <item>@string/preferences_unique_options_current_grid</item>
-        <item>@string/preferences_unique_options_current_project</item>
-        <item>@string/preferences_unique_options_all_grids</item>
+    <string name="UniqueListPreferenceCurrentGrid">UniqueCurrentGrid</string>
+    <string name="UniqueListPreferenceCurrentProject">UniqueCurrentProject</string>
+    <string name="UniqueListPreferenceAllGrids">UniqueAllGrids</string>
+    <string-array name="UniqueListPreferenceEntryValues">
+        <item>@string/UniqueListPreferenceCurrentGrid</item>
+        <item>@string/UniqueListPreferenceCurrentProject</item>
+        <item>@string/UniqueListPreferenceAllGrids</item>
     </string-array>
-
-    <string name="preferences_unique_options_default">@string/preferences_unique_options_current_grid</string>
-
-    <!-- LAYOUT PREFERENCES -->
-    <string name="preferences_layout_title">Layout</string>
-    <string name="preferences_scaling_title">Scaling (%)</string>
-    <string name="preferences_scaling_summary">Amount to scale grid by</string>
-
-    <!-- EXPORT PREFERENCES -->
-    <string name="preferences_export_title">Export</string>
-    <string name="preferences_project_export_summary">Projects export as %s</string>
-    <string name="preferences_project_export_title">Project export</string>
-
-    <string-array name="preferences_project_export_entries">
+    <string name="UniqueListPreferenceDefault">@string/UniqueListPreferenceCurrentGrid</string>
+    <!-- Layout preferences -->
+    <string name="PreferenceLayoutCategory">Layout</string>
+    <string name="ScalingPreferenceKey">Scaling</string>
+    <string name="ScalingPreferenceTitle">Scaling (%)</string>
+    <string name="ScalingPreferenceSummary">Amount to scale grid by</string>
+    <!-- Export preferences -->
+    <string name="PreferenceExportCategory">Export</string>
+    <string name="ProjectExportPreferenceKey">ProjectExport</string>
+    <string name="ProjectExportPreferenceSummary">Projects export as %s</string>
+    <string name="ProjectExportPreferenceTitle">Project export</string>
+    <string-array name="ProjectExportPreferenceEntries">
         <item>one file per grid</item>
         <item>one file per project</item>
     </string-array>
-
-    <string name="preferences_project_export_one_file_per_grid">OneFilePerGrid</string>
-    <string name="preferences_project_export_one_file_entire_project">OneFileEntireProject</string>
-
-    <string-array name="preferences_project_export_entry_values">
-        <item>@string/preferences_project_export_one_file_per_grid</item>
-        <item>@string/preferences_project_export_one_file_entire_project</item>
+    <string name="ProjectExportPreferenceOneFilePerGrid">OneFilePerGrid</string>
+    <string name="ProjectExportPreferenceOneFileEntireProject">OneFileEntireProject</string>
+    <string-array name="ProjectExportPreferenceEntryValues">
+        <item>@string/ProjectExportPreferenceOneFilePerGrid</item>
+        <item>@string/ProjectExportPreferenceOneFileEntireProject</item>
     </string-array>
-
-    <string name="preferences_project_export_default">@string/preferences_project_export_one_file_per_grid</string>
-
+    <string name="ProjectExportPreferenceDefault">@string/ProjectExportPreferenceOneFilePerGrid</string>
     <string name="pref_share_on_export_summary">Files can be automatically shared to other services after export.</string>
     <string name="pref_share_on_export_title">Share exports</string>
-
-    <!-- Dialog -->
-    <string name="dialog_yes">Yes</string>
-    <string name="dialog_no">No</string>
-    <string name="dialog_warning">Warning</string>
-
-    <!-- STORAGE PREFERENCES -->
-    <string name="database">Database</string>
+    <!-- Database preferences -->
+    <string name="Database">Database</string>
     <string name="pref_database_reset_key">org.wheatgenetics.coordinate.preferences.key.reset_database</string>
     <string name="pref_database_reset_summary">This will delete all data stored in the app.</string>
     <string name="pref_database_reset_title">Reset</string>
     <string name="dialog_database_reset_title">Reset Database?</string>
-    <string name="pref_database_title">Database</string>
-    <string name="pref_storage_title">Storage</string>
+    <string name="key_pref_database_screen">org.wheatgenetics.coordinate.preferences.key.database_screen</string>
+    <string name="pref_database_screen_title">Database</string>
+    <string name="pref_storage_screen_title">Storage</string>
+    <string name="key_pref_database_export">org.wheatgenetics.coordinate.preferences.key.export_database</string>
+    <string name="key_pref_database_import">org.wheatgenetics.coordinate.preferences.key.import_database</string>
     <string name="pref_database_export_summary">This will prompt the user to export the local database.</string>
     <string name="pref_database_import_summary">Import a new .zip or .db file that has been saved previously.</string>
     <string name="pref_database_import_title">Import</string>
     <string name="pref_database_export_title">Export</string>
     <string name="dialog_database_export_title">Export Database?</string>
     <string name="dialog_database_import_title">Import Database?</string>
-    <string name="database_reset_warning1">All data will be deleted. Are you sure you want to reset the database?</string>
-    <string name="database_reset_warning2">A database reset cannot be reversed. The app will quit after clearing the database. Are you really sure you want to continue?</string>
-    <string name="database_reset_message">Database has been deleted</string>
-    <string name="key_pref_database_reload">org.wheatgenetics.coordinate.preferences.key.reload_database</string>
-    <string name="pref_database_reload_summary">This will delete all data stored in the app and load sample data.</string>
-    <string name="pref_database_reload_title">Reload</string>
-    <string name="database_reload_warning">All data will be deleted and sample data will be loaded. Are you sure you want to reload the database?</string>
-    <string name="database_reload_message">Sample data has been loaded</string>
-
-
-    <!-- About -->
-    <string name="preferences_about_title">About</string>
-
     <!-- PreferenceFragment -->
-    <string name="preference_fragment_wrong_context">"%s must implement OnPreferenceClickListener"</string>
-
+    <string name="PreferenceFragmentWrongContext">"%s must implement OnPreferenceClickListener"</string>
     <!-- PreferenceActivity -->
-    <string name="preference_activity_label">Settings</string>
-
+    <string name="PreferenceActivityLabel">Settings</string>
     <!-- create_project.xml -->
     <string name="CreateProjectAlertDialogEditTextHint">Project name</string>
-
     <!-- CreateProjectAlertDialog -->
     <string name="CreateProjectAlertDialogTitle">Create Project</string>
     <string name="CreateProjectAlertDialogEmptyToast">Project name cannot be empty</string>
     <string name="CreateProjectAlertDialogInUseToast">Project name is already in use</string>
-
     <!-- BaseOptionalField -->
     <string name="BaseOptionalFieldPersonFieldName">Person</string>
     <string name="BaseOptionalFieldNameFieldName">Name</string>
     <string name="BaseOptionalFieldIdentificationFieldName">Identification</string>
-    <string name="optional_field_hint_text">Optional</string>
-
     <!-- DateOptionalField -->
     <string name="DateOptionalFieldDateFieldName">Date</string>
-
     <!-- NonNullOptionalFields seed tray template -->
     <string name="NonNullOptionalFieldsTrayIDFieldName">Tray</string>
     <string name="NonNullOptionalFieldsTrayIDFieldHint">Tray ID</string>
     <string name="NonNullOptionalFieldsSeedTrayPersonFieldName">Person</string>
     <string name="NonNullOptionalFieldsSeedTrayPersonFieldHint">Person name</string>
-
     <!-- NonNullOptionalFields DNA plate template -->
     <string name="NonNullOptionalFieldsPlateIDFieldName">Plate</string>
     <string name="NonNullOptionalFieldsPlateIDFieldHint">Plate ID</string>
@@ -272,96 +200,70 @@
     <string name="NonNullOptionalFieldsExtractionFieldName">extraction</string>
     <string name="NonNullOptionalFieldsExtractionFieldValue">CTAB</string>
     <string name="NonNullOptionalFieldsDNAPlatePersonFieldName">person</string>
-
     <!-- add_optional_field.xml -->
     <string name="add_optional_fieldNameHint">Field name</string>
     <string name="add_optional_fieldDefaultValueHint">Default text</string>
-
     <!-- AddOptionalFieldAlertDialog -->
     <string name="AddOptionalFieldAlertDialogTitle">New Optional Field</string>
     <string name="AddOptionalFieldAlertDialogToast">Field names must be unique and non-empty.</string>
-
     <!-- CheckAndAddOptionalFieldsAlertDialog -->
     <string name="CheckAndAddOptionalFieldsAlertDialogTitle">Optional Fields</string>
     <string name="CheckAndAddOptionalFieldsAlertDialogButtonText">Add New</string>
-
     <!-- Cells -->
     <string name="CellsMaxRowAndOrMaxColOutOfRange">maxRow and/or maxCol is out of range</string>
-
     <plurals name="AmountIsTooLarge">
-        <item quantity="zero">There is no more room for entries.</item>
         <item quantity="one">There is room for only %d more entry.</item>
         <item quantity="other">There is room for only %d more entries.</item>
     </plurals>
-
     <!-- Model -->
-    <string name="ModelIdMustBeGreaterThanZero">id must be > 0</string>
-
+    <string name="ModelIdMustBeGreaterThanZero">id must be &gt; 0</string>
     <!-- TemplateModel -->
     <string name="SeedDefaultTemplateTitle">Seed Tray</string>
     <string name="DNADefaultTemplateTitle">DNA Plate</string>
     <string name="HTPGTemplateTitle">HTPG</string>
-
     <!-- NonNullOptionalFields HTPG template -->
     <string name="NonNullOptionalFieldsHTPG">Plate ID</string>
-
     <!-- CheckedIncludedEntryModel -->
     <string name="CallCheckThenSetValueInstead">Call checkThenSetValue() instead</string>
-
     <!-- CurrentGridUniqueEntryModels -->
     <string name="CurrentGridDuplicateCheckExceptionMsg">The %s already has an entry with that value.</string>
     <string name="CurrentGridDuplicateCheckExceptionScope">current grid</string>
-
     <!-- GridsActivity -->
     <string name="GridsActivityLabel">Grids</string>
-
     <!-- AllGridsUniqueEntryModels -->
     <string name="AllGridsUniqueEntryModelsScope">database</string>
-
     <!-- CurrentProjectUniqueEntryModels -->
     <string name="CurrentProjectUniqueEntryModelsScope">current project</string>
-
     <!-- FullyUniqueEntryModels -->
     <string name="CallCheckThenSetInstead">Call checkThenSet() instead</string>
-
     <!-- JoinedGridModel -->
     <string name="JoinedGridModelSeedTrayDateFieldName">date</string>
     <string name="JoinedGridModelDNAPlateDateFieldName">date</string>
-
     <!-- CurrentGridUniqueJoinedGridModel -->
     <string name="CallCheckThenSetEntryModelInstead">Call checkThenSetEntryModel() instead</string>
-
     <!-- GridDisplay Strings -->
     <string name="ElementConfirmTitle">Exclude Cell</string>
     <string name="ElementConfirmMessage">If you exclude this cell data (%s) will be lost. Do you want to continue?</string>
-
     <!-- GC VS -->
     <string name="SetOptionalFieldValuesAlertDialogPositiveButtonText">Create</string>
     <string name="SetOptionalFieldValuesAlertDialogToast">\u0020cannot be empty</string>
-
     <!-- ChoosingTemplateSetter-->
     <string name="TemplateChoiceAlertDialogTitle">Template Options</string>
     <string name="TemplateChoiceAlertDialogNewItem">New Template</string>
     <string name="ChoosingTemplateSetterAlertMessage">Unable to create template.</string>
-
     <!-- Grid Creator -->
     <string name="GridCreatorGridAlertMessage">Unable to create grid.</string>
     <string name="GridCreatorEntriesAlertMessage">Unable to make excluded entr(y|ies).</string>
-
     <!-- ProjectChoiceAlertDialog -->
     <string name="ProjectChoiceAlertDialogTitle">Create Grid</string>
     <string name="ProjectSetterDontAddItem">Don\'t add this grid to a project.</string>
-
     <!-- StatelessProjectSetter, StatefulProjectSetter -->
     <string name="ProjectSetterCreateProjectItem">Create a project for this grid.</string>
-
     <!-- StatelessProjectSetter -->
     <string name="StatelessProjectSetterAddItem">Add this grid to a project.</string>
     <string name="SecondProjectChoiceAlertDialogTitle">Add This Grid To A Project</string>
-
     <!-- StatefulProjectSetter -->
-    <string name="StatefulProjectSetterSelectProjectItem">Add this grid to "%s" project.</string>
-
+    <string name="StatefulProjectSetterSelectProjectItem">Add this grid to \"%s\" project.</string>
     <!-- Exporter -->
     <string name="ExporterProgressDialogTitle">Exporting&#8230;</string>
     <string name="ExporterProgressDialogInitialMessage">File is being saved.</string>
@@ -369,47 +271,38 @@
     <string name="ExporterShareTitle">Share file via&#8230;</string>
     <string name="ExporterFailTitle">Export</string>
     <string name="ExporterFailMessage">No data was exported.</string>
-
     <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
     <string name="GridExporterDeleteConfirmation">Do you want to delete the current grid?</string>
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
-
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
     <string name="PerGridProjectExporterAsyncTaskFailedMessage" tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
     <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
-
     <!-- Display -->
     <string name="display_cellContentDescription">cell</string>
-
     <!-- Deleter -->
     <string name="DeleterGridsSuccessToast">Grid(s) successfully deleted</string>
     <string name="DeleterGridsFailToast">Grid(s) were not deleted</string>
-
     <!-- GridDeleter -->
     <string name="GridDeleterConfirmation">Are you sure that you want to delete the current grid?</string>
     <string name="GridDeleterEntriesOfGridDeletedToast">Entries successfully deleted</string>
     <string name="GridDeleterEntriesOfGridNotDeletedToast">Entries were not deleted</string>
     <string name="GridDeleterGridDeletedToast">Grid successfully deleted</string>
     <string name="GridDeleterGridNotDeletedToast">Grid could not be deleted</string>
-
     <!-- TemplateDeleter -->
     <string name="TemplateDeleterConfirmationTitle">Delete template</string>
     <string name="TemplateDeleterConfirmationMessage">Are you sure you want to delete this template and all its grids?</string>
     <string name="TemplateDeleterSuccessToast">Template successfully deleted</string>
     <string name="TemplateDeleterFailToast">Template could not be deleted</string>
-
     <!-- ProjectDeleter -->
     <string name="ProjectDeleterConfirmationTitle">Delete project</string>
     <string name="ProjectDeleterConfirmationMessage">Are you sure you want to delete this project and all its grids?</string>
     <string name="ProjectDeleterProjectSuccessToast">Project successfully deleted</string>
     <string name="ProjectDeleterProjectFailToast">Project could not be deleted</string>
-
     <!-- optional_field_show.xml -->
     <string name="optional_field_showNameText">Plate ID:</string>
     <string name="optional_field_showValueText">...</string>
-
     <!-- fragment_data_entry.xml -->
     <string name="fragment_data_entryEntryHint">Cell ID</string>
     <string name="fragment_data_entryEntryActionLabel">Save</string>
@@ -418,16 +311,13 @@
     <string name="fragment_data_entryProjectTitleText">...</string>
     <string name="fragment_data_entryTemplateLabelText">Template:</string>
     <string name="fragment_data_entryTemplateTitleText">...</string>
-
     <!-- UniqueAlertDialog -->
     <string name="UniqueAlertDialogTitle">Duplicate Sample Entered</string>
-
     <!-- SampleData -->
     <string name="sample_project_name">Sample Project</string>
     <string name="sample_grid_seed_tray_name">Seed Tray Sample</string>
     <string name="sample_grid_dna_name">DNA Sample</string>
     <string name="act_ask_load_sample">Load available sample data?</string>
-
     <!-- GridCreator -->
     <string name="frag_grid_creator_one_next_btn">Next</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
@@ -453,7 +343,6 @@
     <string name="frag_exclude_reset_button">Reset</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
-
     <!-- TemplateCreator -->
     <string name="frag_template_creator_exclude_random_et_hint">Number of random cells to exclude.</string>
     <string name="skip">Skip</string>
@@ -474,7 +363,6 @@
     <string name="frag_exclude_selection_button">Selection</string>
     <string name="frag_template_creator_exclude_options_title">Exclude Options</string>
     <string name="frag_template_creator_exclude_options_summary">Choose to exclude a random number of cells, or explicitly choose a selection of cells.</string>
-
     <!-- StorageMigrator -->
     <string name="frag_storage_definer_title">Storage Location Definer</string>
     <string name="frag_storage_definer_summary">New versions of Android require the user to select or create a specific directory for individual apps to interact with.</string>
@@ -485,26 +373,22 @@
     <string name="frag_storage_migrator_title">Storage Migrator</string>
     <string name="frag_storage_migrator_summary">Coordinate files were not found. Choosing migrate will allow you to select your old Coordinate folder to transfer the data.</string>
     <string name="document_tree_undefined">Would you like to define the Coordinate folder?</string>
-
     <!-- BaseCollector -->
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
     <string name="menu_collector_meta_data_title">Summarize Data</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
-
+    <string name="bottom_nav_bar_about">About</string>
     <string name="bottom_nav_bar_settings">Settings</string>
     <string name="bottom_nav_bar_projects">Projects</string>
     <string name="bottom_nav_bar_templates">Templates</string>
     <string name="bottom_nav_bar_grids">Grids</string>
     <string name="Coordinate">Coordinate</string>
     <string name="act_grids_title">Grids</string>
-
     <string name="dialog_act_templates_ask_delete">This will delete the selected template.</string>
     <string name="templates_with_grids_cant_be_edited">Cannot edit templates that have already been used to create grids.</string>
     <string name="menu_projects_new">New project</string>
     <string name="menu_templates_new">New template</string>
     <string name="menu_grids_new">New grid</string>
-
     <string name="back_button_twice_press">Press back again to close app.</string>
     <string name="database_export_success">Database export successful!</string>
-
 </resources>
