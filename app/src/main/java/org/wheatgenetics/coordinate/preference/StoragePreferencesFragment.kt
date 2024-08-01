@@ -10,7 +10,7 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences_storage)
 
-        super.setToolbar(getString(R.string.preferences_storage_title))
+        super.setToolbar(getString(R.string.pref_storage_title))
 
         super.setupBottomNavigationBar()
 

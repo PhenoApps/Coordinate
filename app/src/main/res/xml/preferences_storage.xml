@@ -11,6 +11,6 @@
     <Preference
         android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
         android:icon="@drawable/ic_pref_database"
-        android:title="@string/preferences_database_title"
+        android:title="@string/pref_database_title"
         app:iconSpaceReserved="false" />
 </PreferenceScreen>
