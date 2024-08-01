@@ -2,6 +2,7 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -27,8 +28,20 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         setupAdapter()
         setupButtons()
@@ -39,9 +52,7 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
         val nextButton = view?.findViewById<Button>(R.id.frag_next_btn)
 
         backButton?.setOnClickListener {
-            writeToDatabase(mSelectedColEnumeration.ordinal, mSelectedRowEnumeration.ordinal)
-            findNavController().navigate(TemplateCreatorNamingDirections
-                .actionTemplateNamingPop())
+            navigateBack()
         }
 
         nextButton?.setOnClickListener {
@@ -49,6 +60,12 @@ class TemplateCreatorNaming : Fragment(R.layout.fragment_template_creator_naming
             findNavController().navigate(TemplateCreatorNamingDirections
                 .actionTemplateNamingToTemplatePreview(args.title))
         }
+    }
+
+    private fun navigateBack() {
+        writeToDatabase(mSelectedColEnumeration.ordinal, mSelectedRowEnumeration.ordinal)
+        findNavController().navigate(TemplateCreatorNamingDirections
+            .actionTemplateNamingPop())
     }
 
     private fun writeToDatabase(col: Int, row: Int) {

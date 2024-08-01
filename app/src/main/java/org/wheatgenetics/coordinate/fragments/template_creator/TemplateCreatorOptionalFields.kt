@@ -1,8 +1,8 @@
 package org.wheatgenetics.coordinate.fragments.template_creator
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -31,8 +31,21 @@ class TemplateCreatorOptionalFields : Fragment(R.layout.fragment_template_creato
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         setupAdapter()
         setupButtons()
@@ -50,10 +63,14 @@ class TemplateCreatorOptionalFields : Fragment(R.layout.fragment_template_creato
         }
 
         backButton?.setOnClickListener {
-            writeToDatabase()
-            findNavController().navigate(TemplateCreatorOptionalFieldsDirections
-                .actionTemplateOptionalFieldsPop())
+            navigateBack()
         }
+    }
+
+    private fun navigateBack() {
+        writeToDatabase()
+        findNavController().navigate(TemplateCreatorOptionalFieldsDirections
+            .actionTemplateOptionalFieldsPop())
     }
 
     /**

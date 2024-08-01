@@ -3,10 +3,10 @@ package org.wheatgenetics.coordinate.fragments.template_creator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,7 +19,6 @@ import org.wheatgenetics.coordinate.adapter.GridExcludeAdapter
 import org.wheatgenetics.coordinate.database.TemplatesTable
 import org.wheatgenetics.coordinate.model.*
 import java.util.ArrayList
-import kotlin.random.Random
 
 class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_exclude_selection),
     ITableViewListener,
@@ -37,8 +36,20 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
         mTemplateTable = TemplatesTable(context)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                navigateBack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set toolbar back button
+        setHasOptionsMenu(true)
 
         loadGridData()
         setupButtons()
@@ -78,6 +89,20 @@ class TemplateCreatorExcludeSelection : Fragment(R.layout.fragment_template_excl
             findNavController().navigate(TemplateCreatorExcludeSelectionDirections
                 .actionTemplateExcludeToTemplateNaming(args.title))
         }
+    }
+
+    private fun navigateBack() {
+        val randomEditText = view?.findViewById<EditText>(R.id.frag_template_creator_exclude_random_et)
+
+        //going back we must clear the excluded selection (if user changes dimensions of grid an error will occur)
+        val table = view?.findViewById<TableView>(R.id.frag_template_exclude_table)
+        (table?.adapter as? GridExcludeAdapter)?.clearSelection()
+        table?.adapter?.notifyDataSetChanged()
+        writeToDatabase()
+        mRandomSelections.clear()
+        randomEditText?.setText(String())
+        findNavController().navigate(TemplateCreatorExcludeRandomDirections
+            .actionTemplateExcludePop())
     }
 
     private fun clearDatabaseExclusions(temp: TemplateModel) {
