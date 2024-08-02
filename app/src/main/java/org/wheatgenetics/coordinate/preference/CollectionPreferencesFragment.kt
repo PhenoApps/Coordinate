@@ -30,10 +30,11 @@ class CollectionPreferencesFragment : BasePreferenceFragment() {
             findPreference<Preference>(GeneralKeys.NAVIGATION_SOUND)
         val duplicateEntrySound = findPreference<Preference>(GeneralKeys.DUPLICATE_ENTRY_SOUND)
 
-        // set unique options visibility initially
+        // set unique options and duplicate sound visibility initially
         if (uniqueValues != null) {
             uniqueOptions?.isEnabled = uniqueValues.isChecked
-            duplicateEntrySound?.isEnabled = uniqueValues.isChecked
+            uniqueOptions?.isVisible = uniqueValues.isChecked
+            duplicateEntrySound?.isVisible = uniqueValues.isChecked
         }
 
         // initially, set navigation sound summary
@@ -41,7 +42,8 @@ class CollectionPreferencesFragment : BasePreferenceFragment() {
 
         uniqueValues?.setOnPreferenceChangeListener { _, newValue ->
             uniqueOptions?.isEnabled = (newValue == true)
-            duplicateEntrySound?.isEnabled = (newValue == true)
+            uniqueOptions?.isVisible = (newValue == true)
+            duplicateEntrySound?.isVisible = (newValue == true)
             true
         }
 
