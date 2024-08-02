@@ -8,9 +8,30 @@
         android:summary="@string/pref_storage_definer_summary"
         android:title="@string/pref_storage_definer_title" />
 
-    <Preference
-        android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
-        android:icon="@drawable/ic_pref_database"
+    <PreferenceCategory
+        android:key="category_storage_database"
         android:title="@string/pref_database_title"
-        app:iconSpaceReserved="false" />
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:icon="@drawable/ic_pref_database_delete"
+            android:key="org.wheatgenetics.coordinate.RESET_DATABASE"
+            android:summary="@string/pref_database_reset_summary"
+            android:title="@string/pref_database_reset_title" />
+        <Preference
+            android:icon="@drawable/ic_pref_database_import"
+            android:key="org.wheatgenetics.coordinate.IMPORT_DATABASE"
+            android:summary="@string/pref_database_import_summary"
+            android:title="@string/pref_database_import_title" />
+        <Preference
+            android:icon="@drawable/ic_pref_database_export"
+            android:key="org.wheatgenetics.coordinate.EXPORT_DATABASE"
+            android:summary="@string/pref_database_export_summary"
+            android:title="@string/pref_database_export_title" />
+        <Preference
+            android:icon="@drawable/ic_pref_database_reload"
+            android:key="@string/key_pref_database_reload"
+            android:summary="@string/pref_database_reload_summary"
+            android:title="@string/pref_database_reload_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

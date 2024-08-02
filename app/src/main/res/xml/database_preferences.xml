@@ -2,25 +2,6 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <Preference
-            android:icon="@drawable/ic_pref_database_delete"
-            android:key="org.wheatgenetics.coordinate.RESET_DATABASE"
-            android:summary="@string/pref_database_reset_summary"
-            android:title="@string/pref_database_reset_title" />
-        <Preference
-            android:icon="@drawable/ic_pref_database_import"
-            android:key="org.wheatgenetics.coordinate.IMPORT_DATABASE"
-            android:summary="@string/pref_database_import_summary"
-            android:title="@string/pref_database_import_title" />
-        <Preference
-            android:icon="@drawable/ic_pref_database_export"
-            android:key="org.wheatgenetics.coordinate.EXPORT_DATABASE"
-            android:summary="@string/pref_database_export_summary"
-            android:title="@string/pref_database_export_title" />
-        <Preference
-            android:icon="@drawable/ic_pref_database_reload"
-            android:key="@string/key_pref_database_reload"
-            android:summary="@string/pref_database_reload_summary"
-            android:title="@string/pref_database_reload_title" />
+
 
 </androidx.preference.PreferenceScreen>
