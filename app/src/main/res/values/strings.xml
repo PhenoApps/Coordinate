@@ -148,10 +148,9 @@
     <string name="preferences_sound_duplicate_entry_title">Duplicate entry sound</string>
     <string name="preferences_sound_duplicate_entry_summary">Notification sound when a non-unique sample is entered</string>
 
-    <!-- Unique values -->
-    <string name="preferences_unique_values">Unique values required</string>
-
-    <!-- Unique options -->
+    <!-- Unique -->
+    <string name="preferences_unique_title">Unique</string>
+    <string name="preferences_unique_values">Require sample IDs to be unique</string>
     <string name="preferences_unique_options_summary">Samples must be unique %s</string>
     <string name="preferences_unique_option_title">Unique Options</string>
 
