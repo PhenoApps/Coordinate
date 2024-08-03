@@ -3,13 +3,14 @@ package org.wheatgenetics.coordinate.preference;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.wheatgenetics.coordinate.BackActivity;
@@ -21,9 +22,11 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class PreferenceActivity extends BackActivity {
+public class PreferenceActivity extends BackActivity implements SearchPreferenceResultListener {
 
     private static Intent INTENT_INSTANCE = null;
+
+    private PreferenceFragment prefsFragment;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -85,6 +88,11 @@ public class PreferenceActivity extends BackActivity {
 
         setContentView(R.layout.activity_preferences);
 
+        prefsFragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .commit();
+
         setupBottomNavigationBar();
     }
 
@@ -93,5 +101,19 @@ public class PreferenceActivity extends BackActivity {
 //        this.setResult();
         this.finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSearchResultClicked(@NonNull SearchPreferenceResult result) {
+        prefsFragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, prefsFragment).addToBackStack("PrefsFragment").commit(); // Allow to navigate back to search
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                prefsFragment.onSearchResultClicked(result);
+            }
+
+        });
     }
 }
