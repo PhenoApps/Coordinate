@@ -22,7 +22,6 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -324,7 +323,6 @@ public class ProjectsActivity extends BackActivity {
             final int templates = R.id.action_nav_templates;
             final int grids = R.id.action_nav_grids;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
                 case templates:
@@ -341,11 +339,6 @@ public class ProjectsActivity extends BackActivity {
                     Intent prefsIntent = PreferenceActivity.intent(this);
                     prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(prefsIntent);
-                    break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
                     break;
                 default:
                     break;

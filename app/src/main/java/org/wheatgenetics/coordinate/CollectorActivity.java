@@ -176,7 +176,6 @@ public class CollectorActivity extends BackActivity implements
 
     @Override
     protected void onDestroy() {
-        if (null != this.collectorInstance) this.collectorInstance.release();
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }
@@ -203,7 +202,6 @@ public class CollectorActivity extends BackActivity implements
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             //when navigating to another tab when collecting, save the current grid id
             //to re-navigate here later
@@ -225,8 +223,6 @@ public class CollectorActivity extends BackActivity implements
                 case grids:
                     startActivity(GridsActivity.intent(this));
                     break;
-                case about:
-                    startActivity(new Intent(this, AboutActivity.class));
                 default:
                     break;
             }

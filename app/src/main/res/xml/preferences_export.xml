@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="@string/preferences_project_export_default"
+        android:entries="@array/preferences_project_export_entries"
+        android:entryValues="@array/preferences_project_export_entry_values"
+        android:icon="@drawable/ic_preferences_project_export"
+        android:key="org.wheatgenetics.coordinate.PROJECT_EXPORT"
+        android:summary="@string/preferences_project_export_summary"
+        android:title="@string/preferences_project_export_title"
+        app:useSimpleSummaryProvider="false" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_share"
+        android:key="org.wheatgenetics.coordinate.preferences.SHARE_EXPORTS"
+        android:summary="@string/pref_share_on_export_summary"
+        android:title="@string/pref_share_on_export_title" />
+</PreferenceScreen>

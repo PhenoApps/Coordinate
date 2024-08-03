@@ -1,54 +1,32 @@
 package org.wheatgenetics.coordinate.preference;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.wheatgenetics.coordinate.AboutActivity;
+import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
-/**
- * Uses:
- * android.app.Activity
- * android.content.Context
- * android.content.Intent
- * android.R
- * android.os.Bundle
- * android.view.MenuItem
- *
- * androidx.annotation.NonNull
- * androidx.annotation.Nullable
- * androidx.preference.Preference
- * androidx.preference.Preference.OnPreferenceClickListener
- *
- * org.wheatgenetics.coordinate.Types
- *
- * org.wheatgenetics.coordinate.preference.PreferenceFragment
- */
-public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivity
-        implements androidx.preference.Preference.OnPreferenceClickListener
-{
-    // region Fields
-    private boolean uniquenessPreferenceWasClicked;
+import dagger.hilt.android.AndroidEntryPoint;
 
-    private static android.content.Intent INTENT_INSTANCE = null;                       // lazy load
-    // endregion
+@AndroidEntryPoint
+public class PreferenceActivity extends BackActivity implements SearchPreferenceResultListener {
 
-    private void setResult()
-    {
-        final android.content.Intent intent = new android.content.Intent();
-        {
-            final android.os.Bundle bundle = new android.os.Bundle();
-            bundle.putBoolean(
-                    org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                    this.uniquenessPreferenceWasClicked                     );
-            intent.putExtras(bundle);
-        }
-        this.setResult(android.app.Activity.RESULT_OK, intent);
-    }
+    private static Intent INTENT_INSTANCE = null;
+
+    private PreferenceFragment prefsFragment;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -62,6 +40,12 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
         bottomNavigationView.setSelectedItemId(R.id.action_nav_settings);
     }
 
+    @NonNull
+    public static Intent intent(@NonNull final Context context) {
+        return null == INTENT_INSTANCE ?
+                INTENT_INSTANCE = new Intent(context, PreferenceActivity.class) : INTENT_INSTANCE;
+    }
+
     private void setupBottomNavigationBar() {
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_preferences_bnv);
@@ -72,9 +56,8 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
             final int grids = R.id.action_nav_grids;
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
-            final int about = R.id.action_nav_about;
 
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case grids:
                     Intent gridsIntent = GridsActivity.intent(this);
                     gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -84,11 +67,6 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
                     Intent templateIntent = TemplatesActivity.intent(this);
                     templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(templateIntent);
-                    break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
                     break;
                 case projects:
                     Intent projectIntent = ProjectsActivity.intent(this);
@@ -103,56 +81,39 @@ public class PreferenceActivity extends org.wheatgenetics.coordinate.BackActivit
             return true;
         }));
     }
-
-    // region Overridden Methods
-    @java.lang.Override protected void onCreate(
-            @androidx.annotation.Nullable final android.os.Bundle savedInstanceState)
-    {
+    
+    @Override
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_preferences);
 
+        prefsFragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .commit();
+
         setupBottomNavigationBar();
-
-        // noinspection SimplifiableConditionalExpression
-        this.uniquenessPreferenceWasClicked =
-                null == savedInstanceState ? false : savedInstanceState.getBoolean(
-                        org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,false);
-
-        // Display PreferenceFragment as the main content.
-//        this.getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-//                new org.wheatgenetics.coordinate.preference.PreferenceFragment()).commit();
     }
 
-    @java.lang.Override protected void onSaveInstanceState(
-            @androidx.annotation.NonNull final android.os.Bundle outState)
-    {
-        outState.putBoolean(
-                org.wheatgenetics.coordinate.Types.UNIQUENESS_BUNDLE_KEY,
-                this.uniquenessPreferenceWasClicked                     );
-        super.onSaveInstanceState(outState);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+//        this.setResult();
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
-    @java.lang.Override public boolean onOptionsItemSelected(
-            @androidx.annotation.NonNull final android.view.MenuItem item)
-    { this.setResult(); this.finish(); return super.onOptionsItemSelected(item); }
+    @Override
+    public void onSearchResultClicked(@NonNull SearchPreferenceResult result) {
+        prefsFragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, prefsFragment).addToBackStack("PrefsFragment").commit(); // Allow to navigate back to search
 
-    @java.lang.Override public void onBackPressed() { this.setResult(); super.onBackPressed(); }
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                prefsFragment.onSearchResultClicked(result);
+            }
 
-    // region androidx.preference.Preference.OnPreferenceClickListener Overridden Method
-    @java.lang.Override
-    public boolean onPreferenceClick(final androidx.preference.Preference preference)
-    { this.uniquenessPreferenceWasClicked = true; return true; }
-    // endregion
-    // endregion
-
-    @androidx.annotation.NonNull public static android.content.Intent intent(
-            @androidx.annotation.NonNull final android.content.Context context)
-    {
-        return null == org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE ?
-                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE =
-                        new android.content.Intent(context,
-                                org.wheatgenetics.coordinate.preference.PreferenceActivity.class) :
-                org.wheatgenetics.coordinate.preference.PreferenceActivity.INTENT_INSTANCE;
+        });
     }
 }

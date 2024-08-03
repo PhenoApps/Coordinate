@@ -8,7 +8,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/act_about_about_fragment"
-        android:name="org.wheatgenetics.coordinate.preference.PreferenceFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/act_preferences_bnv"

@@ -28,7 +28,6 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
-import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
@@ -531,7 +530,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
                 case projects:
@@ -544,11 +542,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                     Intent prefsIntent = PreferenceActivity.intent(this);
                     prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(prefsIntent);
-                    break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
                     break;
             }
 

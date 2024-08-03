@@ -33,18 +33,17 @@ public class Utils {
         else {
             final String direction;
             {
-                final String key = context.getString(
-                        R.string.DirectionPreferenceKey);
+                final String key = GeneralKeys.DIRECTION;
                 direction = defaultSharedPreferences.getString(
                         /* key      => */ key,
                         /* defValue => */ context.getString(
-                                R.string.DirectionPreferenceDefault));
+                                R.string.preferences_direction_default));
             }
             if (direction.equals(context.getString(
-                    R.string.DirectionPreferenceDownThenAcrossEntryValue)))
+                    R.string.preferences_direction_down_then_across_entry_value)))
                 return Utils.Direction.DOWN_THEN_ACROSS;
             else if (direction.equals(context.getString(
-                    R.string.DirectionPreferenceAcrossThenDownEntryValue)))
+                    R.string.preferences_direction_across_then_down_entry_value)))
                 return
                         Utils.Direction.ACROSS_THEN_DOWN;
             else
@@ -52,18 +51,6 @@ public class Utils {
         }
     }
     // endregion
-
-    public static boolean getSoundsOn(final Context context) {
-        final SharedPreferences defaultSharedPreferences =
-                Utils.getDefaultSharedPreferences(context);
-        if (null == defaultSharedPreferences)
-            return true;
-        else {
-            final String key = context.getString(
-                    R.string.SoundsOnPreferenceKey);
-            return defaultSharedPreferences.getBoolean(key, /* defValue => */true);
-        }
-    }
 
     public static Utils.ProjectExport getProjectExport(
             @NonNull final Context context) {
@@ -74,19 +61,18 @@ public class Utils {
         else {
             final String projectExport;
             {
-                final String key = context.getString(
-                        R.string.ProjectExportPreferenceKey);
+                final String key = GeneralKeys.PROJECT_EXPORT;
                 projectExport = defaultSharedPreferences.getString(
                         /* key      => */ key,
                         /* defValue => */ context.getString(
-                                R.string.ProjectExportPreferenceDefault));
+                                R.string.preferences_project_export_default));
             }
             if (projectExport.equals(context.getString(
-                    R.string.ProjectExportPreferenceOneFilePerGrid)))
+                    R.string.preferences_project_export_one_file_per_grid)))
                 return
                         Utils.ProjectExport.ONE_FILE_PER_GRID;
             else if (projectExport.equals(context.getString(
-                    R.string.ProjectExportPreferenceOneFileEntireProject)))
+                    R.string.preferences_project_export_one_file_entire_project)))
                 return Utils.ProjectExport.ONE_FILE_ENTIRE_PROJECT;
             else
                 return Utils.ProjectExport.ERROR;
@@ -105,8 +91,7 @@ public class Utils {
         else {
             final int scaling;
             {
-                final String key = context.getString(
-                        R.string.ScalingPreferenceKey);
+                final String key = GeneralKeys.SCALING;
                 scaling = defaultSharedPreferences.getInt(key, /* defValue => */100);
             }
             return (float) scaling / 100.0f;
@@ -120,8 +105,7 @@ public class Utils {
         if (null == defaultSharedPreferences)
             return false;
         else {
-            final String key = context.getString(
-                    R.string.UniqueCheckBoxPreferenceKey);
+            final String key = GeneralKeys.UNIQUE_VALUES;
             return defaultSharedPreferences.getBoolean(key, /* defValue => */false);
         }
     }
@@ -135,18 +119,17 @@ public class Utils {
         else {
             final String unique;
             {
-                final String key = context.getString(
-                        R.string.UniqueListPreferenceKey);
+                final String key = GeneralKeys.UNIQUE_OPTIONS;
                 unique = defaultSharedPreferences.getString(
                         /* key      => */ key,
                         /* defValue => */ context.getString(
-                                R.string.UniqueListPreferenceDefault));
+                                R.string.preferences_unique_options_default));
             }
             if (unique.equals(context.getString(
-                    R.string.UniqueListPreferenceCurrentGrid)))
+                    R.string.preferences_unique_options_current_grid)))
                 return Utils.TypeOfUnique.CURRENT_GRID;
             else if (unique.equals(context.getString(
-                    R.string.UniqueListPreferenceCurrentProject)))
+                    R.string.preferences_unique_options_current_project)))
                 return
                         Utils.TypeOfUnique.CURRENT_PROJECT;
             else

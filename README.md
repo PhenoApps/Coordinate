@@ -25,7 +25,7 @@ Development of Coordinate is possible because of the support received from the f
 - National Science Foundation [No. 1543958](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1543958)
 - USDA NIFA FACT [No. 2019-67021-29931](https://portal.nifa.usda.gov/web/crisprojectpages/1019820-fact-geospatial-plant-breeding.html)
 
-## Contributors
+## ✨ Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

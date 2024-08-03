@@ -21,18 +21,6 @@ import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
 
-    private val mPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-        result?.let { permissions ->
-            if (!permissions.containsValue(false)) {
-                //input is an optional uri that would define the folder to start from
-                mDocumentTree.launch(null)
-            } else {
-                activity?.setResult(Activity.RESULT_CANCELED)
-                activity?.finish()
-            }
-        }
-    }
-
     private val mDocumentTree = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
 
         uri?.let { nonNulluri ->
@@ -130,23 +118,10 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
     }
 
     private fun launchDefiner() {
-        context?.let { ctx ->
+        context?.let {
 
-            //request runtime permissions for storage
-            if (ActivityCompat.checkSelfPermission(ctx,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(ctx,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            mDocumentTree.launch(null)
 
-                //input is an optional uri that would define the folder to start from
-                mDocumentTree.launch(null)
-
-            } else {
-
-                mPermissions.launch(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
-
-            }
         }
     }
 }

@@ -1,22 +1,22 @@
 package org.wheatgenetics.coordinate.preference
 
 import android.app.AlertDialog
-import android.content.*
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 import org.wheatgenetics.coordinate.database.SampleData
 import org.wheatgenetics.coordinate.deleter.GridDeleter
 import org.wheatgenetics.coordinate.deleter.ProjectDeleter
@@ -24,18 +24,13 @@ import org.wheatgenetics.coordinate.deleter.TemplateDeleter
 import org.wheatgenetics.coordinate.utils.DateUtil
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 import org.wheatgenetics.coordinate.utils.ZipUtil
-import org.wheatgenetics.coordinate.utils.Utils as AppUtils
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.ObjectOutputStream
+import java.lang.Exception
 
-import java.io.*
-
-
-class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
-    // region Fields
-
-    companion object {
-        const val TAG = "PreferenceDatabase"
-    }
-    private var sharedPreferences: SharedPreferences? = null
+class StoragePreferencesFragment : BasePreferenceFragment() {
 
     private val importChooser = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
         it?.let { uri ->
@@ -50,41 +45,31 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.database_preferences)
+        addPreferencesFromResource(R.xml.preferences_storage)
+
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
         setupReloadDatabasePreference()
-        setupBackButton()
-    }
 
-    private fun setupBackButton() {
+        super.setToolbar(getString(R.string.pref_storage_title))
 
-        setHasOptionsMenu(true)
-        activity?.let { act ->
-            val bar = (act as AppCompatActivity).supportActionBar
-            bar?.setHomeButtonEnabled(true)
-            bar?.setDisplayHomeAsUpEnabled(true)
-        }
-    }
+        super.setupBottomNavigationBar()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                context?.let { ctx ->
-                    val intent = PreferenceActivity.intent(ctx)
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                }
+        val storageDefiner =
+            findPreference<Preference>("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER")
+        storageDefiner?.setOnPreferenceClickListener {
+            if (context != null) {
+                startActivity(Intent(context, DefineStorageActivity::class.java))
             }
+            return@setOnPreferenceClickListener true
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupExportDatabasePreference() {
         if (isAdded) {
             context?.let { ctx ->
-                val databaseExportKey = getString(R.string.key_pref_database_export)
+                val databaseExportKey = GeneralKeys.EXPORT_DATABASE
                 val preference = findPreference<Preference>(databaseExportKey)
                 preference?.setOnPreferenceClickListener {
                     AlertDialog.Builder(ctx)
@@ -110,7 +95,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
 
     private fun setupImportDatabasePreference() {
         if (isAdded) {
-            val databaseImportKey = getString(R.string.key_pref_database_import)
+            val databaseImportKey = GeneralKeys.IMPORT_DATABASE
             val preference = findPreference<Preference>(databaseImportKey)
             preference?.setOnPreferenceClickListener {
                 AlertDialog.Builder(activity)
@@ -151,7 +136,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
             }
 
             dialog.dismiss()
-            AppUtils.makeToast(context, getString(R.string.database_reload_message))
+            org.wheatgenetics.coordinate.utils.Utils.makeToast(context, getString(R.string.database_reload_message))
         }
 
         builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
@@ -212,7 +197,7 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
                 resetDatabase(context)
 
                 dialog.dismiss()
-                AppUtils.makeToast(context, getString(R.string.database_reset_message))
+                org.wheatgenetics.coordinate.utils.Utils.makeToast(context, getString(R.string.database_reset_message))
             }
 
             try {
@@ -366,6 +351,4 @@ class PreferenceDatabaseFragment : PreferenceFragmentCompat(), OnSharedPreferenc
             Toast.makeText(ctx, R.string.database_export_success, Toast.LENGTH_LONG).show()
         }
     }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {}
 }
