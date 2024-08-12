@@ -30,6 +30,7 @@ class GeneralKeys private constructor() {
         const val RESET_DATABASE = COORDINATE_PREFIX + "RESET_DATABASE"
         const val IMPORT_DATABASE = COORDINATE_PREFIX + "IMPORT_DATABASE"
         const val EXPORT_DATABASE = COORDINATE_PREFIX + "EXPORT_DATABASE"
+        const val RELOAD_DATABASE = COORDINATE_PREFIX + "RELOAD_DATABASE"
 
     }
 }

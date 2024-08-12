@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.preference.Preference
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.wheatgenetics.coordinate.R
@@ -30,7 +31,7 @@ import java.io.IOException
 import java.io.ObjectOutputStream
 import java.lang.Exception
 
-class StoragePreferencesFragment : BasePreferenceFragment() {
+class StoragePreferencesFragment(private var searchResult: SearchPreferenceResult? = null) : BasePreferenceFragment() {
 
     private val importChooser = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
         it?.let { uri ->
@@ -47,14 +48,16 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences_storage)
 
+        super.setToolbar(getString(R.string.pref_storage_title))
+
+        searchResult?.key?.let { scrollToPreference(it) }
+
+        searchResult?.highlight(this)
+
         setupDatabaseResetPreference()
         setupExportDatabasePreference()
         setupImportDatabasePreference()
         setupReloadDatabasePreference()
-
-        super.setToolbar(getString(R.string.pref_storage_title))
-
-        super.setupBottomNavigationBar()
 
         val storageDefiner =
             findPreference<Preference>("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER")
@@ -64,6 +67,11 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
             }
             return@setOnPreferenceClickListener true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setToolbar(getString(R.string.pref_storage_title))
     }
 
     private fun setupExportDatabasePreference() {
@@ -113,7 +121,7 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
 
     private fun setupReloadDatabasePreference() {
         if (isAdded){
-            val databaseReloadKey = getString(R.string.key_pref_database_reload)
+            val databaseReloadKey = GeneralKeys.RELOAD_DATABASE
             val preference = findPreference<Preference>(databaseReloadKey)
             preference?.setOnPreferenceClickListener {
                 showDatabaseReloadDialog()
@@ -155,7 +163,7 @@ class StoragePreferencesFragment : BasePreferenceFragment() {
      */
     private fun setupDatabaseResetPreference() {
         if (isAdded) {
-            val databaseResetKey = getString(R.string.pref_database_reset_key)
+            val databaseResetKey = GeneralKeys.RESET_DATABASE
             val databaseResetPreference = findPreference<Preference>(databaseResetKey)
             databaseResetPreference?.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {

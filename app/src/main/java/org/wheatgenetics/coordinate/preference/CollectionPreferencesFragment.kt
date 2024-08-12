@@ -2,24 +2,29 @@ package org.wheatgenetics.coordinate.preference
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import dagger.hilt.android.AndroidEntryPoint
 import org.wheatgenetics.coordinate.R
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CollectionPreferencesFragment : BasePreferenceFragment() {
+class CollectionPreferencesFragment(private val searchResult: SearchPreferenceResult? = null) : BasePreferenceFragment() {
 
     @Inject
     lateinit var preferences: SharedPreferences
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_collection, rootKey)
 
         super.setToolbar(getString(R.string.preferences_collection_title))
 
-        super.setupBottomNavigationBar()
+        searchResult?.key?.let { scrollToPreference(it) }
+
+        searchResult?.highlight(this)
 
         val directionPreference = findPreference<ListPreference>(GeneralKeys.DIRECTION)
 

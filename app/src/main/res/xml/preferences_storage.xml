@@ -30,7 +30,7 @@
             android:title="@string/pref_database_export_title" />
         <Preference
             android:icon="@drawable/ic_pref_database_reload"
-            android:key="@string/key_pref_database_reload"
+            android:key="org.wheatgenetics.coordinate.RELOAD_DATABASE"
             android:summary="@string/pref_database_reload_summary"
             android:title="@string/pref_database_reload_title" />
     </PreferenceCategory>
