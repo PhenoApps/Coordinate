@@ -22,15 +22,15 @@ Each grid in the list contains the grid name or identifier, parent
 template, and date created on the left.
 
 Action buttons on the right of each list item allow a grid to be deleted
-(<a href="delete.md"><img style="vertical-align: middle;" src="_static/icons/delete.png" width="20px"></a>), exported
-(<a href="save.md"><img style="vertical-align: middle;" src="_static/icons/save.png" width="20px"></a>), or data to be
-collected (<a href="collect.md"><img style="vertical-align: middle;" src="_static/icons/collect.png" width="20px"></a>).
+(<img ref="delete" style="vertical-align: middle;" src="_static/icons/delete.png" width="20px">), exported
+(<img ref="save" style="vertical-align: middle;" src="_static/icons/save.png" width="20px">), or data to be
+collected (<img ref="collect" style="vertical-align: middle;" src="_static/icons/collect.png" width="20px">).
 
 New Grids
 ---------
 
 Grids can be created by selecting the New Grid icon
-(<a href="grid-add.md"><img style="vertical-align: middle;" src="_static/icons/grid-add.png" width="20px"></a>) from the top
+(<img ref="grid-add" style="vertical-align: middle;" src="_static/icons/grid-add.png" width="20px">) from the top
 toolbar, a template list item, or a project list item. Creating a new
 grid opens a step-wise process.
 
