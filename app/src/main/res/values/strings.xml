@@ -228,6 +228,15 @@
     <string name="database_reload_warning">All data will be deleted and sample data will be loaded. Are you sure you want to reload the database?</string>
     <string name="database_reload_message">Sample data has been loaded</string>
 
+    <!--  APPEARANCE PREFERENCES  -->
+    <string name="pref_appearance_title">Appearance</string>
+    <string name="preferences_appearance_system_category_title">Application</string>
+    <string name="preferences_appearance_tutorial_title">Tutorial</string>
+    <string name="preferences_appearance_tutorial_description">Adds a tutorial icon to the collect, settings, fields, and traits screens</string>
+
+
+
+
 
     <!-- About -->
     <string name="preferences_about_title">About</string>
@@ -505,5 +514,51 @@
 
     <string name="back_button_twice_press">Press back again to close app.</string>
     <string name="database_export_success">Database export successful!</string>
+
+    <!-- TUTORIAL -->
+    <string name="tutorial_grid_create_title">Create Grid</string>
+    <string name="tutorial_grid_create_summary">Create a new grid</string>
+    <string name="tutorial_grid_collect_title">Collect Data</string>
+    <string name="tutorial_grid_collect_summary">Allows you to collect plate data</string>
+    <string name="tutorial_grid_delete_title">Delete</string>
+    <string name="tutorial_grid_delete_summary">Delete the grid</string>
+    <string name="tutorial_grid_export_title">Export</string>
+    <string name="tutorial_grid_export_summary">Grid data can be exported in a table</string>
+
+    <string name="tutorial_template_create_title">Create Template</string>
+    <string name="tutorial_template_create_summary">Create a new template</string>
+    <string name="tutorial_template_import_title">Import Template</string>
+    <string name="tutorial_template_import_summary">Allows you to import a template from an .xml file</string>
+    <string name="tutorial_template_create_grid_title">Create Grid</string>
+    <string name="tutorial_template_create_grid_summary">Create a new grid with the template</string>
+    <string name="tutorial_template_show_grids_title">Show Grids</string>
+    <string name="tutorial_template_show_grids_summary">Allows you to check all the grids associated using the template</string>
+    <string name="tutorial_template_delete_title">Delete</string>
+    <string name="tutorial_template_delete_summary">Delete the template and all its grids</string>
+    <string name="tutorial_template_export_title">Export</string>
+    <string name="tutorial_template_export_summary">Template data can be exported in a .xml file</string>
+    <string name="tutorial_template_edit_title">Edit</string>
+    <string name="tutorial_template_edit_summary">Edit the template</string>
+
+    <string name="tutorial_project_create_title">Create Project</string>
+    <string name="tutorial_project_create_summary">Create a new project</string>
+    <string name="tutorial_project_create_grid_title">Create Grid</string>
+    <string name="tutorial_project_create_grid_summary">Create a new grid for a project</string>
+    <string name="tutorial_project_show_grids_title">Show Grids</string>
+    <string name="tutorial_project_show_grids_summary">Allows you to check all the grids associated with the project</string>
+    <string name="tutorial_project_delete_title">Delete</string>
+    <string name="tutorial_project_delete_summary">Delete the project and all its grids</string>
+    <string name="tutorial_project_export_title">Export</string>
+    <string name="tutorial_project_export_summary">Project data can be exported in a .zip file</string>
+
+
+    <string name="tutorial_collector_edit_title">Edit Grid</string>
+    <string name="tutorial_collector_edit_summary">Allows you to add the grid to a project</string>
+    <string name="tutorial_collector_summarize_title">Grid Summarya</string>
+    <string name="tutorial_collector_summarize_summary">Check the grid summary</string>
+    <string name="tutorial_collector_collect_data_title">Collect data</string>
+    <string name="tutorial_collector_collect_data_summary">Enter the sample ID for the cell in the grid</string>
+    <string name="tutorial_collector_barcode_title">Scan barcode</string>
+    <string name="tutorial_collector_barcode_summary">Enter sample ID by scanning a barcode</string>
 
 </resources>

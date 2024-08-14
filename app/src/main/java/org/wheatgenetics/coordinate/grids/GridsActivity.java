@@ -25,15 +25,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
-import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.gc.GridCreator;
@@ -43,14 +45,16 @@ import org.wheatgenetics.coordinate.ge.GridExporter;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
-import org.wheatgenetics.coordinate.utils.Keys;
-import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.Keys;
+import org.wheatgenetics.coordinate.utils.TapTargetUtil;
+import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
 
 import java.io.OutputStream;
 
@@ -83,6 +87,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private boolean isTemplateFilter = false;
     private boolean isProjectFilter = false;
+
+    private Menu systemMenu;
 
     private final ActivityResultLauncher<String> exportGridsLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
 
@@ -564,6 +570,12 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_grids, menu);
+
+        systemMenu = menu;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
         return true;
     }
     // endregion
@@ -572,7 +584,19 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_grid) {
             createGrid();
-        } else if (item.getItemId() == android.R.id.home) {
+        } else if (item.getItemId() == R.id.help) {
+            TapTargetSequence sequence = new TapTargetSequence(this)
+                    .targets(gridActivityTapTargetView(R.id.action_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
+                    );
+            if (!gridsAdapter.isEmpty()) {
+                sequence.targets(
+                        gridActivityTapTargetView(R.id.gridsListItemCollectDataButton, getString(R.string.tutorial_grid_collect_title), getString(R.string.tutorial_grid_collect_summary), 40),
+                        gridActivityTapTargetView(R.id.gridsListItemDeleteButton, getString(R.string.tutorial_grid_delete_title), getString(R.string.tutorial_grid_delete_summary), 40),
+                        gridActivityTapTargetView(R.id.gridsListItemExportButton, getString(R.string.tutorial_grid_export_title), getString(R.string.tutorial_grid_export_summary), 40)
+                        );
+            }
+            sequence.start();
+        }else if (item.getItemId() == android.R.id.home) {
             if (isProjectFilter) {
                 navigateToProjects();
             } else if (isTemplateFilter) {
@@ -580,6 +604,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             } else finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private TapTarget gridActivityTapTargetView(int id, String title, String desc, int targetRadius) {
+        return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
     @Override

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/importTemplateMenuItem"
+        android:id="@+id/import_template_menu_item"
         android:icon="@drawable/ic_import_template_white"
         android:onClick="onImportTemplateMenuItem"
         android:title="@string/TemplatesActivityImportMenuItemTitle"
@@ -15,6 +15,12 @@
         android:id="@+id/action_new_template"
         android:icon="@drawable/ic_create_template_white"
         android:title="@string/menu_templates_new"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/help"
+        android:icon="@drawable/ic_help_white"
+        android:title="@string/preferences_appearance_tutorial_title"
         app:showAsAction="always" />
 
 </menu>
