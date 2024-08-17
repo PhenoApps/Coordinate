@@ -70,7 +70,13 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
                 setToolbarBackEnabled();
             }
             else if (currentFragment instanceof PreferenceFragment) {
-                setToolbarDisabled();
+                if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    // if navigated to PreferenceFragment from search results
+                    // enable the back button
+                    setToolbarBackEnabled();
+                } else {
+                    setToolbarDisabled();
+                }
             }
         });
 
@@ -97,7 +103,14 @@ public class PreferenceActivity extends BackActivity implements SearchPreference
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            callPreferenceFragment();
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                // if the previous fragment in the stack is PreferenceFragment
+                // inflate the fragment container with PreferenceFragment
+                // and enable search bar
+                callPreferenceFragment();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
