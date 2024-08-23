@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,9 +32,9 @@ import org.phenoapps.androidlibrary.Utils;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
+import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
-import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.gc.GridCreator;
@@ -43,14 +44,15 @@ import org.wheatgenetics.coordinate.ge.GridExporter;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 import java.io.OutputStream;
 
@@ -60,6 +62,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
     private static final int EXPORT_GRID_REQUEST_CODE = 10;
     private static final int CREATE_GRID_REFRESH = 102;
+    private final int REQUEST_STORAGE_DEFINER = 104;
+
+    private AlertDialog loadSampleDialog;
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -244,7 +249,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
                 } else if (result == CheckDocumentResult.DEFINE){
 
-                    startActivity(new Intent(this, DefineStorageActivity.class));
+                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
 
                 } else {
 
@@ -420,20 +425,24 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             boolean firstLoadComplete = prefs.getBoolean(Keys.FIRST_LOAD_COMPLETE, false);
             if (!firstLoadComplete) {
                 prefs.edit().putBoolean(Keys.FIRST_LOAD_COMPLETE, true).apply();
-                new AlertDialog.Builder(this)
+                loadSampleDialog = new AlertDialog.Builder(this)
                         .setTitle(R.string.act_ask_load_sample)
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                             new SampleData(this).insertSampleData();
                             notifyDataSetChanged();
                         })
                         .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
-                        .create()
-                        .show();
+                        .create();
+                loadSampleDialog.show();
 
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                DocumentTreeUtil.Companion.checkDocumentTreeSet(this);
+                if (prefs.getBoolean(GeneralKeys.STORAGE_ASK_KEY, true)) {
+
+                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
+
+                }
             }
         }
     }
@@ -637,24 +646,39 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     protected void onActivityResult(final int requestCode,
                                     final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TAG", "onActivityResult: header" + requestCode);
 
-        if (Activity.RESULT_OK == resultCode && null != data)
+        if (Activity.RESULT_OK == resultCode && null != data) {
+            Log.d("TAG", "onActivityResult: " + requestCode);
             switch (requestCode) {
                 case Types.CREATE_TEMPLATE:
                     this.templateCreator().continueExcluding(data.getExtras());
                     break;
                 case Types.CREATE_GRID:
                     this.statelessGridCreator().continueExcluding(data.getExtras());
-                break;
-            case CREATE_GRID_REFRESH:
-                if (resultCode == Activity.RESULT_OK) {
-                    long gridId = data.getLongExtra("gridId", -1L);
-                    if (gridId != -1L) {
-                        startCollectorActivity(gridId);
+                    break;
+                case CREATE_GRID_REFRESH:
+                    if (resultCode == Activity.RESULT_OK) {
+                        long gridId = data.getLongExtra("gridId", -1L);
+                        if (gridId != -1L) {
+                            startCollectorActivity(gridId);
+                        }
+                        this.notifyDataSetChanged();
                     }
-                    this.notifyDataSetChanged();
+                    break;
+            }
+        }
+        if (requestCode == REQUEST_STORAGE_DEFINER) {
+            if (resultCode != Activity.RESULT_OK) {
+                if (loadSampleDialog != null) {
+                    loadSampleDialog.dismiss();
                 }
-                break;
+                finish();
+            }
+            else {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putBoolean(GeneralKeys.STORAGE_ASK_KEY, false).apply();
+            }
         }
     }
 

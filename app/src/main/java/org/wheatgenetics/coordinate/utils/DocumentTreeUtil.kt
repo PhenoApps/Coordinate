@@ -4,12 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class DocumentTreeUtil {
@@ -25,9 +25,6 @@ class DocumentTreeUtil {
             EXISTS(1), DEFINE(2), DISMISS(3)
         }
 
-        const val STORAGE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_document_tree_set"
-        const val MIGRATE_ASK_KEY = "org.wheatgenetics.coordinate.preferences.first_ask_migrate"
-
         /**
          * Checks whether the user has been asked to set a root directory for file storage.
          * This is only asked once, but the user can always access this by going to the settings.
@@ -35,11 +32,11 @@ class DocumentTreeUtil {
         fun checkDocumentTreeSet(ctx: Context) {
 
             val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-            if (prefs.getBoolean(STORAGE_ASK_KEY, true)) {
+            if (prefs.getBoolean(GeneralKeys.STORAGE_ASK_KEY, true)) {
 
                 ctx.startActivity(Intent(ctx, DefineStorageActivity::class.java))
 
-                prefs.edit().putBoolean(STORAGE_ASK_KEY, false).apply()
+                prefs.edit().putBoolean(GeneralKeys.STORAGE_ASK_KEY, false).apply()
             }
         }
 
