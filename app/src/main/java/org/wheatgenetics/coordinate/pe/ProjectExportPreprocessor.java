@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 
@@ -56,6 +57,7 @@ public class ProjectExportPreprocessor {
                                             .this.exportProject(fileName);
                                 }
                             });
+        this.getExportFileNameAlertDialogInstance.setMessage(R.string.project_export_dialog_directory_message);
         return this.getExportFileNameAlertDialogInstance;
     }
 

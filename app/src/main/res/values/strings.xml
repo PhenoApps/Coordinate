@@ -372,12 +372,15 @@
     <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
     <string name="GridExporterDeleteConfirmation">Do you want to delete the current grid?</string>
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
+    <string name="grid_export_dialog_directory_message">This will save a .csv file at storage/exports/</string>
 
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
     <string name="PerGridProjectExporterAsyncTaskFailedMessage" tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
     <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
+    <string name="project_export_dialog_directory_message">This will save a .zip file at storage/exports/</string>
+    <string name="template_export_dialog_directory_message">This will save a .xml file at storage/templates/</string>
 
     <!-- Display -->
     <string name="display_cellContentDescription">cell</string>

@@ -6,6 +6,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 
@@ -55,6 +56,7 @@ public class GridExportPreprocessor {
                                             fileName);
                                 }
                             });
+        getGridExportFileNameAlertDialogInstance.setMessage(R.string.grid_export_dialog_directory_message);
         return this.getGridExportFileNameAlertDialogInstance;
     }
     // endregion
