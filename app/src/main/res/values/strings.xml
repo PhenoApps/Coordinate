@@ -554,7 +554,7 @@
 
     <string name="tutorial_collector_edit_title">Edit Grid</string>
     <string name="tutorial_collector_edit_summary">Allows you to add the grid to a project</string>
-    <string name="tutorial_collector_summarize_title">Grid Summarya</string>
+    <string name="tutorial_collector_summarize_title">Grid Summary</string>
     <string name="tutorial_collector_summarize_summary">Check the grid summary</string>
     <string name="tutorial_collector_collect_data_title">Collect data</string>
     <string name="tutorial_collector_collect_data_summary">Enter the sample ID for the cell in the grid</string>
