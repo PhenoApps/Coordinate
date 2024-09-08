@@ -2,18 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:key="category_appearance_system"
-        android:title="@string/preferences_appearance_system_category_title"
-        app:iconSpaceReserved="false">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_help"
+        android:key="org.wheatgenetics.coordinate.TIPS"
+        android:summary="@string/preferences_appearance_tutorial_description"
+        android:title="@string/preferences_appearance_tutorial_title"
+        app:allowDividerBelow="true" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_help"
-            android:key="org.wheatgenetics.coordinate.TIPS"
-            android:summary="@string/preferences_appearance_tutorial_description"
-            android:title="@string/preferences_appearance_tutorial_title"
-            app:allowDividerBelow="true" />
+    <SeekBarPreference
+        android:defaultValue="100"
+        android:icon="@drawable/ic_layout_scaling"
+        android:key="org.wheatgenetics.coordinate.SCALING"
+        android:max="250"
+        android:summary="@string/preferences_scaling_summary"
+        android:title="@string/preferences_scaling_title"
+        app:min="25"
+        app:showSeekBarValue="true"
+        app:updatesContinuously="false" />
 
-    </PreferenceCategory>
 </PreferenceScreen>
