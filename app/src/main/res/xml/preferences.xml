@@ -12,6 +12,12 @@
         app:fragment="org.wheatgenetics.coordinate.preference.CollectionPreferencesFragment" />
 
     <Preference
+        android:icon="@drawable/ic_pref_appearance"
+        android:key="pref_key_appearance"
+        android:title="@string/pref_appearance_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.AppearancePreferencesFragment" />
+
+    <Preference
         android:icon="@drawable/ic_pref_export"
         android:key="pref_key_export"
         android:title="@string/preferences_export_title"

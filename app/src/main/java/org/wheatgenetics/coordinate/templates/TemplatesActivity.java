@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +22,8 @@ import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
@@ -39,6 +40,7 @@ import org.wheatgenetics.coordinate.deleter.TemplateDeleter;
 import org.wheatgenetics.coordinate.gc.StatelessGridCreator;
 import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
@@ -50,6 +52,7 @@ import org.wheatgenetics.coordinate.ti.TemplateImporter;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.FileUtil;
+import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -88,6 +91,8 @@ public class TemplatesActivity extends BackActivity
     // endregion
     private TemplateImporter templateImporterInstance = null;  // ll
     // endregion
+
+    private Menu systemMenu;
 
     private final ActivityResultLauncher<String> importTemplateLauncher = registerForActivityResult(new OpenDocumentFancy(), (uri) -> {
 
@@ -448,6 +453,21 @@ public class TemplatesActivity extends BackActivity
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_template) {
             createTemplate();
+        } else if (item.getItemId() == R.id.help) {
+            TapTargetSequence sequence = new TapTargetSequence(this)
+                    .targets(templateActivityTapTargetView(R.id.action_new_template, getString(R.string.tutorial_template_create_title), getString(R.string.tutorial_template_create_summary), 60),
+                            templateActivityTapTargetView(R.id.import_template_menu_item, getString(R.string.tutorial_template_import_title), getString(R.string.tutorial_template_import_summary), 60)
+                    );
+            if (!templatesAdapter.isEmpty()) {
+                sequence.targets(
+                        templateActivityTapTargetView(R.id.templatesListItemCreateGridButton, getString(R.string.tutorial_template_create_grid_title), getString(R.string.tutorial_template_create_grid_summary), 40),
+                        templateActivityTapTargetView(R.id.templatesListItemShowGridsButton, getString(R.string.tutorial_template_show_grids_title), getString(R.string.tutorial_template_show_grids_summary), 40),
+                        templateActivityTapTargetView(R.id.templatesListItemExportButton, getString(R.string.tutorial_template_export_title), getString(R.string.tutorial_template_export_summary), 40),
+                        templateActivityTapTargetView(R.id.templatesListItemEditButton, getString(R.string.tutorial_template_edit_title), getString(R.string.tutorial_template_edit_summary), 40),
+                        templateActivityTapTargetView(R.id.templatesListItemDeleteButton, getString(R.string.tutorial_template_delete_title), getString(R.string.tutorial_template_delete_summary), 40)
+                );
+            }
+            sequence.start();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -457,6 +477,10 @@ public class TemplatesActivity extends BackActivity
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_templates_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_templates);
+    }
+
+    private TapTarget templateActivityTapTargetView(int id, String title, String desc, int targetRadius) {
+        return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
     private void setupBottomNavigationBar() {
@@ -470,7 +494,7 @@ public class TemplatesActivity extends BackActivity
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
 
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case grids:
                     Intent gridsIntent = GridsActivity.intent(this);
                     gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -500,8 +524,14 @@ public class TemplatesActivity extends BackActivity
 
         if (null != menu) {
             this.importMenuItem = menu.findItem(
-                    R.id.importTemplateMenuItem);
+                    R.id.import_template_menu_item);
             this.configureImportMenuItem();
+
+            systemMenu = menu;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+            systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
         }
 
         return true;

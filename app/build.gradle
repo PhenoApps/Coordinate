@@ -107,6 +107,9 @@ dependencies {
     // SearchPreference
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.1'
 
+    // tutorial
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
+
     // Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:2.7.7"
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"

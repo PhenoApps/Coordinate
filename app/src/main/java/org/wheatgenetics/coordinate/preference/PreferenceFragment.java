@@ -10,7 +10,6 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 
-import org.wheatgenetics.coordinate.AboutFragment;
 import org.wheatgenetics.coordinate.R;
 
 public class PreferenceFragment extends BasePreferenceFragment {
@@ -40,6 +39,7 @@ public class PreferenceFragment extends BasePreferenceFragment {
             config.index(R.xml.preferences_collection);
             config.index(R.xml.preferences_export);
             config.index(R.xml.preferences_storage);
+            config.index(R.xml.preferences_appearance);
         }
     }
 
@@ -72,8 +72,8 @@ public class PreferenceFragment extends BasePreferenceFragment {
             newFragment = new ExportPreferencesFragment(result);
         } else if (resFile == R.xml.preferences_storage) {
             newFragment = new StoragePreferencesFragment(result);
-        } else if (resFile == R.layout.activity_about) {
-            newFragment = new AboutFragment();
+        } else if (resFile == R.xml.preferences_appearance) {
+            newFragment = new AppearancePreferencesFragment(result);
         }
         return newFragment;
     }

@@ -36,5 +36,8 @@ class GeneralKeys private constructor() {
         const val EXPORT_DATABASE = COORDINATE_PREFIX + "EXPORT_DATABASE"
         const val RELOAD_DATABASE = COORDINATE_PREFIX + "RELOAD_DATABASE"
 
+        // Appearance Preferences
+        const val TIPS = COORDINATE_PREFIX + "TIPS"
+
     }
 }
