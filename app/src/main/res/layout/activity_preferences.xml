@@ -7,8 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/act_about_about_fragment"
-        android:name="org.wheatgenetics.coordinate.preference.PreferenceFragment"
+        android:id="@+id/act_prefs_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/act_preferences_bnv"
@@ -21,7 +20,7 @@
         style="@style/AppTheme.BottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/act_about_about_fragment"
+        android:layout_below="@id/act_prefs_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

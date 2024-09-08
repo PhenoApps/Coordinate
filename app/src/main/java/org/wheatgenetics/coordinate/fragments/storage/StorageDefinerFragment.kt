@@ -2,36 +2,25 @@ package org.wheatgenetics.coordinate.fragments.storage
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import org.phenoapps.fragments.storage.PhenoLibStorageDefinerFragment
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
-class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
-
-    private val mPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-        result?.let { permissions ->
-            if (!permissions.containsValue(false)) {
-                //input is an optional uri that would define the folder to start from
-                mDocumentTree.launch(null)
-            } else {
-                activity?.setResult(Activity.RESULT_CANCELED)
-                activity?.finish()
-            }
-        }
-    }
+class StorageDefinerFragment: PhenoLibStorageDefinerFragment() {
 
     private val mDocumentTree = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
 
@@ -65,7 +54,7 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
                     DocumentFile.fromTreeUri(ctx, nonNulluri)?.let { root ->
 
                         val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-                        if (prefs.getBoolean(DocumentTreeUtil.MIGRATE_ASK_KEY, true)) {
+                        if (prefs.getBoolean(GeneralKeys.MIGRATE_ASK_KEY, true)) {
 
                             //copy the HTPG.xml file to the newly defined folder
                             runBlocking(Dispatchers.IO) {
@@ -96,15 +85,10 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
                                 }
                             }
 
-                            prefs.edit().putBoolean(DocumentTreeUtil.MIGRATE_ASK_KEY, false).apply()
-                            activity?.setResult(Activity.RESULT_OK)
-                            activity?.finish()
-
-                        } else {
-
-                            findNavController().navigate(StorageDefinerFragmentDirections
-                                .actionStorageDefinerToStorageMigrator())
+                            prefs.edit().putBoolean(GeneralKeys.MIGRATE_ASK_KEY, false).apply()
                         }
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     }
                 }
             }
@@ -115,38 +99,25 @@ class StorageDefinerFragment: Fragment(R.layout.fragment_storage_definer) {
         super.onViewCreated(view, savedInstanceState)
 
         val defineButton = view.findViewById<Button>(R.id.frag_storage_definer_choose_dir_btn)
-        val skipButton = view.findViewById<Button>(R.id.frag_storage_definer_skip_btn)
 
         defineButton?.setOnClickListener { _ ->
 
             launchDefiner()
 
         }
-
-        skipButton?.setOnClickListener {
-            activity?.setResult(Activity.RESULT_CANCELED)
-            activity?.finish()
-        }
     }
 
-    private fun launchDefiner() {
-        context?.let { ctx ->
+    override fun onTreeDefined(treeUri: Uri) {
+        (activity as DefineStorageActivity).enableBackButton(false)
+        super.onTreeDefined(treeUri)
+        (activity as DefineStorageActivity).enableBackButton(true)
+    }
 
-            //request runtime permissions for storage
-            if (ActivityCompat.checkSelfPermission(ctx,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(ctx,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        private fun launchDefiner() {
+        context?.let {
 
-                //input is an optional uri that would define the folder to start from
-                mDocumentTree.launch(null)
+            mDocumentTree.launch(null)
 
-            } else {
-
-                mPermissions.launch(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
-
-            }
         }
     }
 }
