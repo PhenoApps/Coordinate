@@ -17,7 +17,7 @@ Check the [user manual](https://coordinate.phenoapps.org/) for usage instruction
 Visit our [translation page](https://crowdin.com/project/coordinate) to help translate Coordinate to your language. To submit code or new features, please open a [pull request](https://github.com/PhenoApps/Coordinate/pulls).
 
 ## ⬇️ Updates
-You can download the [Google Play version](https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate) of the app. An up-to-date version can be downloaded from the `About` section in `Settings` within the app or through our [GitHub releases](https://github.com/PhenoApps/Coordinate/releases/latest).
+You can download the [Google Play version](https://play.google.com/store/apps/details?id=org.wheatgenetics.coordinate) of the app. An up-to-date version can be downloaded through our [GitHub releases](https://github.com/PhenoApps/Coordinate/releases/latest).
 
 ## 💰 Funding 
 Development of Coordinate is possible because of the support received from the following organizations:
