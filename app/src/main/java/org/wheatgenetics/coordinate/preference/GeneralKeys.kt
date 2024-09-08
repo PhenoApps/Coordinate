@@ -6,6 +6,10 @@ class GeneralKeys private constructor() {
 
         private const val COORDINATE_PREFIX = "org.wheatgenetics.coordinate."
 
+        const val STORAGE_ASK_KEY = COORDINATE_PREFIX + "FIRST_ASK_DOCUMENT_TREE_SET"
+
+        const val MIGRATE_ASK_KEY = COORDINATE_PREFIX + "MIGRATE_ASK_KEY"
+
 
         /**
          * Settings
