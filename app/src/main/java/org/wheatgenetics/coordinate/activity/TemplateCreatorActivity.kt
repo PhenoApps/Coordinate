@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.collector.Collector
 
-class TemplateCreatorActivity: AppCompatActivity() {
+class TemplateCreatorActivity : AppCompatActivity() {
 
     private var mCollector: Collector? = null
 
@@ -18,8 +18,10 @@ class TemplateCreatorActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_template_creator)
 
-        supportActionBar?.apply{
-            title = getString(R.string.new_template_title)
+        supportActionBar?.apply {
+            title = if (intent?.hasExtra(TEMPLATE_EDIT) == true)
+                getString(R.string.edit_template_title)
+            else getString(R.string.new_template_title)
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
