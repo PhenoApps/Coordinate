@@ -1,6 +1,7 @@
 package org.wheatgenetics.coordinate.activity
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.collector.Collector
@@ -17,6 +18,8 @@ class TemplateCreatorActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_template_creator)
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         supportActionBar?.apply{
             title = getString(R.string.new_template_title)
