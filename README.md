@@ -6,7 +6,6 @@
 [![Latest](https://img.shields.io/github/v/release/phenoapps/coordinate)](https://github.com/PhenoApps/Coordinate/releases/latest)
 [![Crowdin](https://badges.crowdin.net/coordinate/localized.svg)](https://crowdin.com/project/coordinate)
 [![All Contributors](https://img.shields.io/github/all-contributors/phenoapps/coordinate)](#contributors)
-[![Documentation Status](https://readthedocs.org/projects/coordinate/badge/?version=latest)](https://docs.coordinate.phenoapps.org/en/latest/?badge=latest)
 
 Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates. Two templates are included by default: Seed Tray and DNA Plate. Documentation for Coordinate can be found [here](https://coordinate.readthedocs.io/en/latest/coordinate.html).
 
