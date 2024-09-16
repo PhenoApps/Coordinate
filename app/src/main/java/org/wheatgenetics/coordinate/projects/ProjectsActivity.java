@@ -20,9 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.BackActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
@@ -35,11 +36,13 @@ import org.wheatgenetics.coordinate.grids.GridsActivity;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
 import org.wheatgenetics.coordinate.pe.ProjectExportPreprocessor;
 import org.wheatgenetics.coordinate.pe.ProjectExporter;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.preference.Utils;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
+import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 import java.io.OutputStream;
 
@@ -61,6 +64,8 @@ public class ProjectsActivity extends BackActivity {
     private ProjectExporter projectExporterInstance = null;    // ll
     private ProjectCreator projectCreatorInstance = null;      // ll
     // endregion
+
+    private Menu systemMenu;
 
     private final ActivityResultLauncher<String> exportSingleFileProjectLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
 
@@ -303,6 +308,19 @@ public class ProjectsActivity extends BackActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_project) {
             projectCreator().createAndReturn();
+        } else if (item.getItemId() == R.id.help) {
+            TapTargetSequence sequence = new TapTargetSequence(this)
+                    .targets(projectsActivityTapTargetView(R.id.action_new_project, getString(R.string.tutorial_project_create_title), getString(R.string.tutorial_project_create_summary), 60)
+                    );
+            if (!projectsAdapter.isEmpty()) {
+                sequence.targets(
+                        projectsActivityTapTargetView(R.id.projectsListItemCreateGridButton, getString(R.string.tutorial_project_create_grid_title), getString(R.string.tutorial_project_create_grid_summary), 40),
+                        projectsActivityTapTargetView(R.id.projectsListItemShowGridsButton, getString(R.string.tutorial_project_show_grids_title), getString(R.string.tutorial_project_show_grids_summary), 40),
+                        projectsActivityTapTargetView(R.id.projectsListItemExportButton, getString(R.string.tutorial_project_export_title), getString(R.string.tutorial_project_export_summary), 40),
+                        projectsActivityTapTargetView(R.id.projectsListItemDeleteButton, getString(R.string.tutorial_project_delete_title), getString(R.string.tutorial_project_delete_summary), 40)
+                );
+            }
+            sequence.start();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -312,6 +330,10 @@ public class ProjectsActivity extends BackActivity {
         super.onResume();
         final BottomNavigationView bottomNavigationView = findViewById(R.id.act_projects_bnv);
         bottomNavigationView.setSelectedItemId(R.id.action_nav_projects);
+    }
+
+    private TapTarget projectsActivityTapTargetView(int id, String title, String desc, int targetRadius) {
+        return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
     private void setupBottomNavigationBar() {
@@ -324,7 +346,6 @@ public class ProjectsActivity extends BackActivity {
             final int templates = R.id.action_nav_templates;
             final int grids = R.id.action_nav_grids;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
                 case templates:
@@ -342,11 +363,6 @@ public class ProjectsActivity extends BackActivity {
                     prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(prefsIntent);
                     break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
-                    break;
                 default:
                     break;
             }
@@ -358,6 +374,13 @@ public class ProjectsActivity extends BackActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_projects, menu);
+
+        systemMenu = menu;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
+
         return true;
     }
 

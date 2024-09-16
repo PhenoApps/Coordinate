@@ -1,247 +1,96 @@
 package org.wheatgenetics.coordinate.preference;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
-import androidx.preference.SeekBarPreference;
+import androidx.fragment.app.Fragment;
+
+import com.bytehamster.lib.preferencesearch.SearchConfiguration;
+import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 
 import org.wheatgenetics.coordinate.R;
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 
-import java.util.TreeMap;
+public class PreferenceFragment extends BasePreferenceFragment {
+    private SearchPreference searchPreference;
 
-public class PreferenceFragment extends PreferenceFragmentCompat
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private PreferenceActivity preferenceActivity;
 
     public static final String TAG = "PreferenceFragment";
-    // region Fields
-    @SuppressWarnings({"Convert2Diamond"})
-    private final TreeMap<String, String>
-            directionTreeMap = new TreeMap<String, String>();
-    @SuppressWarnings({"Convert2Diamond"})
-    private final TreeMap<String, String>
-            projectExportTreeMap = new TreeMap<String, String>();
-    @SuppressWarnings({"Convert2Diamond"})
-    private final TreeMap<String, String>
-            uniqueTreeMap = new TreeMap<String, String>();
 
-    private String directionKey, projectExportKey,
-            scalingKey, uniqueCheckBoxKey, uniqueListKey, databaseResetKey;
-    private ListPreference directionPreference,
-            projectExportPreference, uniqueListPreference;
-    private SeekBarPreference scalingPreference;
-    private CheckBoxPreference uniqueCheckBoxPreference;
-    private Preference databaseResetPreference;
-    private Preference.OnPreferenceClickListener
-            onUniquePreferenceClickListener = null;     // TODO: Replace w/ onSharedPreferenceChanged()?
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        setPreferencesFromResource(R.xml.preferences, rootKey);
 
-    private SharedPreferences sharedPreferences;
-    // endregion
+        setSearchConfiguration();
+    }
 
-    // region Private Methods
-    private static void populateTreeMap(
-            @Nullable final Resources resources,
-            @ArrayRes final int keysRes,
-            @ArrayRes final int valuesRes,
-            @NonNull final TreeMap<String, String>
-                    treeMap) {
-        if (null != resources) {
-            // noinspection CStyleArrayDeclaration
-            final String
-                    keys[] = resources.getStringArray(keysRes),
-                    values[] = resources.getStringArray(valuesRes);
-            final int first = 0, last = keys.length - 1;
-            for (int i = first; i <= last; i++) treeMap.put(keys[i], values[i]);
+    private void setSearchConfiguration() {
+        searchPreference = findPreference("searchPreference");
+        if (searchPreference != null) {
+            SearchConfiguration config;
+            config = searchPreference.getSearchConfiguration();
+
+            config.setActivity(preferenceActivity);
+            config.setFragmentContainerViewId(R.id.act_prefs_fragment);
+
+            config.index(R.xml.preferences);
+            config.index(R.xml.preferences_collection);
+            config.index(R.xml.preferences_export);
+            config.index(R.xml.preferences_storage);
+            config.index(R.xml.preferences_appearance);
         }
     }
 
-    private void setScaling() {
-        if (null != this.scalingPreference) this.scalingPreference.setValue(
-                Math.max((this.scalingPreference.getValue() / 25) * 25, 50));
-    }
+    public void onSearchResultClicked(SearchPreferenceResult result) {
+        if (result.getResourceFile() == R.xml.preferences) {
+            getParentFragmentManager().beginTransaction().replace(R.id.act_prefs_fragment, this).addToBackStack("PrefsFragment").commit();
+            searchPreference.setVisible(false); // Do not allow to click search multiple times
+            // Scroll to the selected preference
+            scrollToPreference(result.getKey());
+            findPreference(result.getKey());
+            result.highlight(this);
+        } else {
+            Fragment newFragment = getFragment(result);
 
-    private void setUniqueListPreferenceEnabled() {
-        if (null != this.uniqueCheckBoxPreference && null != this.uniqueListPreference)
-            this.uniqueListPreference.setEnabled(this.uniqueCheckBoxPreference.isChecked());
-    }
-
-    // region setSummaries() Private Methods
-    private void setSummary(
-            @Nullable final ListPreference preference,
-            @StringRes final int summaryRes,
-            @NonNull final TreeMap<String, String>
-                    treeMap) {
-        if (null != preference)
-            preference.setSummary(this.getString(summaryRes, treeMap.get(preference.getValue())));
-    }
-
-    private void setDirectionSummary() {
-        this.setSummary(this.directionPreference,
-                R.string.DirectionPreferenceSummary,
-                this.directionTreeMap);
-    }
-
-    private void setProjectExportSummary() {
-        this.setSummary(this.projectExportPreference,
-                R.string.ProjectExportPreferenceSummary,
-                this.projectExportTreeMap);
-    }
-
-    private void setUniqueSummary() {
-        this.setSummary(this.uniqueListPreference,
-                R.string.UniqueListPreferenceSummary, this.uniqueTreeMap);
-    }
-
-    private void setSummaries() {
-        this.setDirectionSummary();
-        this.setProjectExportSummary();
-        this.setUniqueSummary();
-    }
-    // endregion
-    // endregion
-
-    // region Overridden Methods
-    @Override
-    public void onAttach(
-            @NonNull final Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Preference.OnPreferenceClickListener)
-            this.onUniquePreferenceClickListener =
-                    (Preference.OnPreferenceClickListener) context;
-        else throw new RuntimeException(String.format(
-                this.getString(R.string.PreferenceFragmentWrongContext),
-                context.toString()));
-    }
-
-    @Override
-    public void onCreatePreferences(
-            final Bundle savedInstanceState, final String rootKey) {
-        this.addPreferencesFromResource(R.xml.preferences);
-        {
-            final Activity activity = this.getActivity();
-            if (null != activity) {
-                {
-                    final Resources resources = activity.getResources();
-                    PreferenceFragment.populateTreeMap(
-                            resources,
-                            R.array.UniqueListPreferenceEntryValues,
-                            R.array.UniqueListPreferenceEntries,
-                            this.uniqueTreeMap);
-
-                    PreferenceFragment.populateTreeMap(
-                            resources,
-                            R.array.ProjectExportPreferenceEntryValues,
-                            R.array.ProjectExportPreferenceEntries,
-                            this.projectExportTreeMap);
-
-                    PreferenceFragment.populateTreeMap(
-                            resources,
-                            R.array.DirectionPreferenceEntryValues,
-                            R.array.DirectionPreferenceEntries,
-                            this.directionTreeMap);
-                }
-
-                this.directionKey = activity.getString(
-                        R.string.DirectionPreferenceKey);
-                this.projectExportKey = activity.getString(
-                        R.string.ProjectExportPreferenceKey);
-                this.scalingKey = activity.getString(
-                        R.string.ScalingPreferenceKey);
-                this.uniqueCheckBoxKey = activity.getString(
-                        R.string.UniqueCheckBoxPreferenceKey);
-                this.uniqueListKey = activity.getString(
-                        R.string.UniqueListPreferenceKey);
-
-                this.directionPreference = this.findPreference(this.directionKey);
-                this.projectExportPreference = this.findPreference(this.projectExportKey);
-                this.scalingPreference = this.findPreference(this.scalingKey);
-                this.uniqueCheckBoxPreference = this.findPreference(this.uniqueCheckBoxKey);
-                this.uniqueListPreference = this.findPreference(this.uniqueListKey);
-
-                this.setUniqueListPreferenceEnabled();
-                this.setSummaries();
-
-                if (null != this.uniqueListPreference)
-                    this.uniqueListPreference.setOnPreferenceClickListener(
-                            this.onUniquePreferenceClickListener);
-
-                setupStorageDefinerPreference();
-
+            if (newFragment != null) {
+                preferenceActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.act_prefs_fragment, newFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         }
-        {
-            final PreferenceScreen preferenceScreen =
-                    this.getPreferenceScreen();
-            this.sharedPreferences = null == preferenceScreen ?
-                    null : preferenceScreen.getSharedPreferences();
-        }
     }
 
-    private void setupStorageDefinerPreference() {
-        Preference storageDefiner = findPreference("org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER");
-        if (storageDefiner != null) {
-            storageDefiner.setOnPreferenceClickListener((view) -> {
-                Context ctx = getContext();
-                if (ctx != null) {
-                    startActivity(new Intent(ctx, DefineStorageActivity.class));
-                }
-                return true;
-            });
+    private static Fragment getFragment(SearchPreferenceResult result) {
+        int resFile = result.getResourceFile();
+        Fragment newFragment = null;
+        if (resFile == R.xml.preferences_collection) {
+            newFragment = new CollectionPreferencesFragment(result);
+        } else if (resFile == R.xml.preferences_export) {
+            newFragment = new ExportPreferencesFragment(result);
+        } else if (resFile == R.xml.preferences_storage) {
+            newFragment = new StoragePreferencesFragment(result);
+        } else if (resFile == R.xml.preferences_appearance) {
+            newFragment = new AppearancePreferencesFragment(result);
+        }
+        return newFragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            preferenceActivity = (PreferenceActivity) context;
+        } catch (Exception e){
+            throw new IllegalStateException();
         }
     }
 
     @Override
     public void onResume() {
-        if (null != this.sharedPreferences)
-            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        initToolbar();
         super.onResume();
     }
-
-    @Override
-    public void onPause() {
-        if (null != this.sharedPreferences)
-            this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        this.onUniquePreferenceClickListener = null;
-        super.onDetach();
-    }
-
-    // region android.content.SharedPreferences.OnSharedPreferenceChangeListener Overridden Method
-    @Override
-    public void onSharedPreferenceChanged(
-            final SharedPreferences sharedPreferences, final String key) {
-        if (null != key)
-            if (key.equals(this.directionKey))
-                this.setDirectionSummary();
-            else if (key.equals(this.projectExportKey))
-                this.setProjectExportSummary();
-            else if (key.equals(this.scalingKey))
-                this.setScaling();
-            else if (key.equals(this.uniqueCheckBoxKey)) {
-                this.setUniqueListPreferenceEnabled();
-                if (null != this.onUniquePreferenceClickListener)
-                    this.onUniquePreferenceClickListener.onPreferenceClick(
-                            this.uniqueCheckBoxPreference);
-            } else if (key.equals(this.uniqueListKey)) this.setUniqueSummary();
-    }
-    // endregion
-    // endregion
 }

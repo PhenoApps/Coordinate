@@ -23,4 +23,10 @@
         android:icon="@drawable/ic_format_list_text"
         android:title="@string/menu_collector_meta_data_title"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/help"
+        android:icon="@drawable/ic_help_white"
+        android:title="@string/preferences_appearance_tutorial_title"
+        app:showAsAction="always" />
 </menu>

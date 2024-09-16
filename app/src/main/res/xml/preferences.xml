@@ -2,105 +2,37 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:key="transfer_defaults"
-        android:title="@string/PreferenceCollectionCategory"
-        app:iconSpaceReserved="false">
+    <com.bytehamster.lib.preferencesearch.SearchPreference
+        android:key="searchPreference" />
 
-        <ListPreference
-            android:defaultValue="@string/DirectionPreferenceDefault"
-            android:entries="@array/DirectionPreferenceEntries"
-            android:entryValues="@array/DirectionPreferenceEntryValues"
-            android:icon="@drawable/ic_preferences_direction"
-            android:key="@string/DirectionPreferenceKey"
-            android:summary="@string/DirectionPreferenceSummary"
-            android:title="@string/DirectionPreferenceTitle"
-            app:useSimpleSummaryProvider="false" />
+    <Preference
+        android:icon="@drawable/ic_pref_collection"
+        android:key="pref_key_collection"
+        android:title="@string/preferences_collection_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.CollectionPreferencesFragment" />
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/ic_preferences_sounds"
-            android:key="@string/SoundsOnPreferenceKey"
-            android:title="@string/SoundsOnPreferenceTitle" />
+    <Preference
+        android:icon="@drawable/ic_pref_appearance"
+        android:key="pref_key_appearance"
+        android:title="@string/pref_appearance_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.AppearancePreferencesFragment" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_preferences_unique_required"
-            android:key="@string/UniqueCheckBoxPreferenceKey"
-            android:title="@string/UniqueCheckBoxPreferenceTitle" />
+    <Preference
+        android:icon="@drawable/ic_pref_export"
+        android:key="pref_key_export"
+        android:title="@string/preferences_export_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.ExportPreferencesFragment" />
 
-        <ListPreference
-            android:defaultValue="@string/UniqueListPreferenceDefault"
-            android:enabled="false"
-            android:entries="@array/UniqueListPreferenceEntries"
-            android:entryValues="@array/UniqueListPreferenceEntryValues"
-            android:icon="@drawable/ic_preferences_unique_options"
-            android:key="@string/UniqueListPreferenceKey"
-            android:summary="@string/UniqueListPreferenceSummary"
-            android:title="@string/UniqueListPreferenceTitle"
-            app:useSimpleSummaryProvider="false" />
-    </PreferenceCategory>
+    <Preference
+        android:icon="@drawable/ic_pref_storage"
+        android:key="pref_key_storage"
+        android:title="@string/pref_storage_title"
+        app:fragment="org.wheatgenetics.coordinate.preference.StoragePreferencesFragment" />
 
-    <PreferenceCategory
-        android:key="transfer_defaults"
-        android:title="@string/PreferenceLayoutCategory"
-        app:iconSpaceReserved="false">
-
-        <SeekBarPreference
-            android:defaultValue="100"
-            android:icon="@drawable/ic_layout_scaling"
-            android:key="@string/ScalingPreferenceKey"
-            android:max="250"
-            android:summary="@string/ScalingPreferenceSummary"
-            android:title="@string/ScalingPreferenceTitle"
-            app:min="25"
-            app:showSeekBarValue="true"
-            app:updatesContinuously="false" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="transfer_defaults"
-        android:title="@string/PreferenceExportCategory"
-        app:iconSpaceReserved="false">
-
-        <ListPreference
-            android:defaultValue="@string/ProjectExportPreferenceDefault"
-            android:entries="@array/ProjectExportPreferenceEntries"
-            android:entryValues="@array/ProjectExportPreferenceEntryValues"
-            android:icon="@drawable/ic_preferences_project_export"
-            android:key="@string/ProjectExportPreferenceKey"
-            android:summary="@string/ProjectExportPreferenceSummary"
-            android:title="@string/ProjectExportPreferenceTitle"
-            app:useSimpleSummaryProvider="false" />
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_share"
-            android:key="org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT"
-            android:summary="@string/pref_share_on_export_summary"
-            android:title="@string/pref_share_on_export_title" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="transfer_defaults"
-        android:title="@string/pref_storage_screen_title"
-        app:iconSpaceReserved="false">
-
-        <Preference
-            android:icon="@drawable/ic_folder_lock"
-            android:key="org.wheatgenetics.coordinate.preferences.STORAGE_DEFINER"
-            android:summary="@string/pref_storage_definer_summary"
-            android:title="@string/pref_storage_definer_title" />
-
-        <Preference
-            android:fragment="org.wheatgenetics.coordinate.preference.PreferenceDatabaseFragment"
-            android:icon="@drawable/ic_pref_database"
-            android:key="@string/key_pref_database_screen"
-            android:title="@string/pref_database_screen_title"
-            app:iconSpaceReserved="false" />
-
-    </PreferenceCategory>
+    <Preference
+        android:icon="@drawable/ic_about_info"
+        android:key="pref_key_about"
+        android:title="@string/preferences_about_title"
+        app:fragment="org.wheatgenetics.coordinate.AboutFragment" />
 
 </androidx.preference.PreferenceScreen>

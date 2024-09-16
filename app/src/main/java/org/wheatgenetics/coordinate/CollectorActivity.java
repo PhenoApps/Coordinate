@@ -21,6 +21,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.ClearingEditorActionListener;
@@ -33,10 +35,12 @@ import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.DisplayModel;
 import org.wheatgenetics.coordinate.model.ElementModel;
 import org.wheatgenetics.coordinate.optionalField.NonNullOptionalFields;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.Keys;
+import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 
 public class CollectorActivity extends BackActivity implements
         GridDisplayFragment.Handler,
@@ -52,6 +56,8 @@ public class CollectorActivity extends BackActivity implements
     private long mGridId = -1;
     private Collector collectorInstance = null;  // lazy load
     // endregion
+
+    private Menu systemMenu;
 
     @NonNull
     public static Intent intent(
@@ -139,6 +145,13 @@ public class CollectorActivity extends BackActivity implements
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_collector, menu);
+
+        systemMenu = menu;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
+
         return true;
     }
 
@@ -175,7 +188,6 @@ public class CollectorActivity extends BackActivity implements
 
     @Override
     protected void onDestroy() {
-        if (null != this.collectorInstance) this.collectorInstance.release();
         if (keyboardListenersAttached) {
             rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
         }
@@ -358,13 +370,25 @@ public class CollectorActivity extends BackActivity implements
 
         if (item.getItemId() == R.id.action_summarize_data) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
-        } else if (item.getItemId() == android.R.id.home) {
+        } else if (item.getItemId() == R.id.help) {
+            TapTargetSequence sequence = new TapTargetSequence(this)
+                    .targets(collectorActivityTapTargetView(R.id.action_edit_grid, getString(R.string.tutorial_collector_edit_title), getString(R.string.tutorial_collector_edit_summary), 40),
+                            collectorActivityTapTargetView(R.id.action_summarize_data, getString(R.string.tutorial_collector_summarize_title), getString(R.string.tutorial_collector_summarize_summary), 40),
+                            collectorActivityTapTargetView(R.id.act_collector_data_entry_et, getString(R.string.tutorial_collector_collect_data_title), getString(R.string.tutorial_collector_collect_data_summary), 180),
+                            collectorActivityTapTargetView(R.id.act_collector_barcode_scan_button, getString(R.string.tutorial_collector_barcode_title), getString(R.string.tutorial_collector_barcode_summary), 80)
+                        );
+            sequence.start();
+        }else if (item.getItemId() == android.R.id.home) {
             PreferenceManager.getDefaultSharedPreferences(this).edit()
                     .putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
 
             startActivity(GridsActivity.intent(this));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private TapTarget collectorActivityTapTargetView(int id, String title, String desc, int targetRadius) {
+        return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
     @Override

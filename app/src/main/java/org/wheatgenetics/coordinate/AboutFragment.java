@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
-import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.MaterialAboutFragment;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutItemOnClickAction;
@@ -23,11 +26,108 @@ import com.michaelflisar.changelog.classes.ImportanceChangelogSorter;
 import com.michaelflisar.changelog.internal.ChangelogDialogFragment;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import org.wheatgenetics.coordinate.grids.GridsActivity;
+import org.wheatgenetics.coordinate.preference.BasePreferenceFragment;
+import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 
 public class AboutFragment extends MaterialAboutFragment {
     //todo move to fragments so aboutactivity can extend base activity
+
+    BasePreferenceFragment basePreferenceFragment;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        basePreferenceFragment = new BasePreferenceFragment();
+        setToolbar();
+        setupBottomNavigationBar();
+    }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        view.post(() -> {
+//            basePreferenceFragment.setToolbar(getString(R.string.preferences_about_title));
+//            setupBottomNavigationBar();
+//        });
+//    }
+
+    public void setToolbar() {
+        setHasOptionsMenu(true);
+        if (getActivity() != null) {
+            AppCompatActivity act = (AppCompatActivity) getActivity();
+            if (act.getSupportActionBar() != null) {
+                ActionBar bar = act.getSupportActionBar();
+                bar.setTitle(getString(R.string.preferences_about_title));
+                bar.setHomeButtonEnabled(true);
+                bar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
+    }
+
+    public void setupBottomNavigationBar() {
+        try {
+            View view = getActivity().findViewById(android.R.id.content);
+
+            Context context = getContext();
+
+            if (context != null && view != null) {
+                final BottomNavigationView bottomNavigationView = view.findViewById(R.id.act_preferences_bnv);
+
+                bottomNavigationView.setOnItemSelectedListener((item -> {
+
+                    final int grids = R.id.action_nav_grids;
+                    final int templates = R.id.action_nav_templates;
+                    final int projects = R.id.action_nav_projects;
+                    final int settings = R.id.action_nav_settings;
+
+                    switch (item.getItemId()) {
+                        case grids:
+                            Intent gridsIntent = GridsActivity.intent(context);
+                            gridsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(gridsIntent);
+                            break;
+                        case templates:
+                            Intent templateIntent = TemplatesActivity.intent((context));
+                            templateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(templateIntent);
+                            break;
+                        case settings:
+                            Intent prefsIntent = PreferenceActivity.intent((context));
+                            prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(prefsIntent);
+                            break;
+                        case projects:
+                            Intent projectIntent = ProjectsActivity.intent(context);
+                            projectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(projectIntent);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return true;
+                }));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (getContext() != null) {
+                Context ctx = getContext();
+                Intent intent = PreferenceActivity.intent(ctx);
+                startActivity(intent);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     @NonNull
@@ -58,17 +158,17 @@ public class AboutFragment extends MaterialAboutFragment {
                 })
                 .build());
 
+        appCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(c,
+                getResources().getDrawable(R.drawable.ic_about_manual),
+                getString(R.string.about_manual_title),
+                false,
+                Uri.parse("https://docs.coordinate.phenoapps.org/en/latest/coordinate.html")));
+
         appCardBuilder.addItem(ConvenienceBuilder.createRateActionItem(c,
                 getResources().getDrawable(R.drawable.ic_about_rate),
                 getString(R.string.about_rate),
                 null
         ));
-
-        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.about_help_translate_title)
-                .icon(R.drawable.ic_about_help_translate)
-                .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(c, Uri.parse("https://osij6hx.oneskyapp.com/collaboration/project?id=379539")))
-                .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
         authorCardBuilder.title(getString(R.string.about_project_lead_title));
@@ -86,12 +186,6 @@ public class AboutFragment extends MaterialAboutFragment {
                 getString(R.string.about_developer_trife_email),
                 "Coordinate Question"));
 
-        authorCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(c,
-                getResources().getDrawable(R.drawable.ic_about_website),
-                "PhenoApps.org",
-                false,
-                Uri.parse("http://phenoapps.org/")));
-
         MaterialAboutCard.Builder contributorsCardBuilder = new MaterialAboutCard.Builder();
         contributorsCardBuilder.title(getString(R.string.about_contributors_title));
 
@@ -99,7 +193,7 @@ public class AboutFragment extends MaterialAboutFragment {
                 getResources().getDrawable(R.drawable.ic_about_contributors),
                 getString(R.string.about_contributors_developers_title),
                 false,
-                Uri.parse("https://github.com/PhenoApps/Coordinate/graphs/contributors")));
+                Uri.parse("https://github.com/PhenoApps/Coordinate#-contributors")));
 
         /*contributorsCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text(getString(R.string.about_translators_title))
@@ -107,11 +201,11 @@ public class AboutFragment extends MaterialAboutFragment {
                 .icon(R.drawable.ic_about_translators)
                 .build());*/
 
-        contributorsCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(getString(R.string.about_contributors_funding_title))
-                .subText(getString(R.string.about_contributors_funding_text))
-                .icon(R.drawable.ic_about_funding)
-                .build());
+        contributorsCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(c,
+                getResources().getDrawable(R.drawable.ic_about_funding),
+                getString(R.string.about_contributors_funding_title),
+                false,
+                Uri.parse("https://github.com/PhenoApps/Coordinate#-funding")));
 
         MaterialAboutCard.Builder technicalCardBuilder = new MaterialAboutCard.Builder();
         technicalCardBuilder.title(getString(R.string.about_technical_title));
@@ -140,24 +234,18 @@ public class AboutFragment extends MaterialAboutFragment {
                 .build());
 
         MaterialAboutCard.Builder otherAppsCardBuilder = new MaterialAboutCard.Builder();
-        otherAppsCardBuilder.title(getString(R.string.about_title_other_apps));
+        otherAppsCardBuilder.title(getString(R.string.about_title_pheno_apps));
+
+        otherAppsCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(c,
+                getResources().getDrawable(R.drawable.ic_about_website),
+                "PhenoApps.org",
+                false,
+                Uri.parse("http://phenoapps.org/")));
 
         otherAppsCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("Field Book")
                 .icon(R.drawable.other_ic_field_book)
                 .setOnClickAction(openAppOrStore("com.fieldbook.tracker", c))
-                .build());
-
-        otherAppsCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Inventory")
-                .icon(R.drawable.other_ic_inventory)
-                .setOnClickAction(openAppOrStore("org.wheatgenetics.inventory", c))
-                .build());
-
-        otherAppsCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Verify")
-                .icon(R.drawable.other_ic_verify)
-                .setOnClickAction(openAppOrStore("org.phenoapps.verify", c))
                 .build());
 
         otherAppsCardBuilder.addItem(new MaterialAboutActionItem.Builder()

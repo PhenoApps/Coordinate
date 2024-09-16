@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +26,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.Utils;
-import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -43,12 +46,15 @@ import org.wheatgenetics.coordinate.ge.GridExporter;
 import org.wheatgenetics.coordinate.model.ProjectModel;
 import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.pc.ProjectCreator;
+import org.wheatgenetics.coordinate.preference.GeneralKeys;
 import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.Keys;
+import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
 
 import java.io.OutputStream;
@@ -84,6 +90,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private boolean isTemplateFilter = false;
     private boolean isProjectFilter = false;
+
+    private Menu systemMenu;
 
     private final ActivityResultLauncher<String> exportGridsLauncher = registerForActivityResult(new ActivityResultContracts.CreateDocument(), (uri) -> {
 
@@ -237,7 +245,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         gridExportPreprocessor().handleExport(gridId, fileName, gridExporter(), this::launchExport);
     }
 
-    // **New Method to Launch Export**
     private void launchExport(String fileName) {
         exportGridsLauncher.launch(fileName);
     }
@@ -405,20 +412,24 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             boolean firstLoadComplete = prefs.getBoolean(Keys.FIRST_LOAD_COMPLETE, false);
             if (!firstLoadComplete) {
                 prefs.edit().putBoolean(Keys.FIRST_LOAD_COMPLETE, true).apply();
-                new AlertDialog.Builder(this)
+                loadSampleDialog = new AlertDialog.Builder(this)
                         .setTitle(R.string.act_ask_load_sample)
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                             new SampleData(this).insertSampleData();
                             notifyDataSetChanged();
                         })
                         .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
-                        .create()
-                        .show();
+                        .create();
+                loadSampleDialog.show();
 
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                DocumentTreeUtil.Companion.checkDocumentTreeSet(this);
+                if (prefs.getBoolean(GeneralKeys.STORAGE_ASK_KEY, true)) {
+
+                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
+
+                }
             }
         }
     }
@@ -515,7 +526,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             switch(item.getItemId()) {
                 case projects:
@@ -528,11 +538,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                     Intent prefsIntent = PreferenceActivity.intent(this);
                     prefsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(prefsIntent);
-                    break;
-                case about:
-                    Intent aboutIntent = new Intent(this, AboutActivity.class);
-                    aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(aboutIntent);
                     break;
             }
 
@@ -555,6 +560,12 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_grids, menu);
+
+        systemMenu = menu;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        systemMenu.findItem(R.id.help).setVisible(preferences.getBoolean(GeneralKeys.TIPS, false));
         return true;
     }
     // endregion
@@ -563,7 +574,19 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_new_grid) {
             createGrid();
-        } else if (item.getItemId() == android.R.id.home) {
+        } else if (item.getItemId() == R.id.help) {
+            TapTargetSequence sequence = new TapTargetSequence(this)
+                    .targets(gridActivityTapTargetView(R.id.action_new_grid, getString(R.string.tutorial_grid_create_title), getString(R.string.tutorial_grid_create_summary), 60)
+                    );
+            if (!gridsAdapter.isEmpty()) {
+                sequence.targets(
+                        gridActivityTapTargetView(R.id.gridsListItemCollectDataButton, getString(R.string.tutorial_grid_collect_title), getString(R.string.tutorial_grid_collect_summary), 40),
+                        gridActivityTapTargetView(R.id.gridsListItemDeleteButton, getString(R.string.tutorial_grid_delete_title), getString(R.string.tutorial_grid_delete_summary), 40),
+                        gridActivityTapTargetView(R.id.gridsListItemExportButton, getString(R.string.tutorial_grid_export_title), getString(R.string.tutorial_grid_export_summary), 40)
+                        );
+            }
+            sequence.start();
+        }else if (item.getItemId() == android.R.id.home) {
             if (isProjectFilter) {
                 navigateToProjects();
             } else if (isTemplateFilter) {
@@ -571,6 +594,10 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             } else finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private TapTarget gridActivityTapTargetView(int id, String title, String desc, int targetRadius) {
+        return TapTargetUtil.Companion.getTapTargetSettingsView(this, findViewById(id), title, desc, targetRadius);
     }
 
     @Override
@@ -628,24 +655,39 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     protected void onActivityResult(final int requestCode,
                                     final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TAG", "onActivityResult: header" + requestCode);
 
-        if (Activity.RESULT_OK == resultCode && null != data)
+        if (Activity.RESULT_OK == resultCode && null != data) {
+            Log.d("TAG", "onActivityResult: " + requestCode);
             switch (requestCode) {
                 case Types.CREATE_TEMPLATE:
                     this.templateCreator().continueExcluding(data.getExtras());
                     break;
                 case Types.CREATE_GRID:
                     this.statelessGridCreator().continueExcluding(data.getExtras());
-                break;
-            case CREATE_GRID_REFRESH:
-                if (resultCode == Activity.RESULT_OK) {
-                    long gridId = data.getLongExtra("gridId", -1L);
-                    if (gridId != -1L) {
-                        startCollectorActivity(gridId);
+                    break;
+                case CREATE_GRID_REFRESH:
+                    if (resultCode == Activity.RESULT_OK) {
+                        long gridId = data.getLongExtra("gridId", -1L);
+                        if (gridId != -1L) {
+                            startCollectorActivity(gridId);
+                        }
+                        this.notifyDataSetChanged();
                     }
-                    this.notifyDataSetChanged();
+                    break;
+            }
+        }
+        if (requestCode == REQUEST_STORAGE_DEFINER) {
+            if (resultCode != Activity.RESULT_OK) {
+                if (loadSampleDialog != null) {
+                    loadSampleDialog.dismiss();
                 }
-                break;
+                finish();
+            }
+            else {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putBoolean(GeneralKeys.STORAGE_ASK_KEY, false).apply();
+            }
         }
     }
 

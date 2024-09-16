@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.dagger.hilt.android'
 
 android {
     signingConfigs {
@@ -19,11 +21,11 @@ android {
         }
     }
 
-    compileSdkVersion 31
+    compileSdkVersion 34
     defaultConfig {
         applicationId "org.wheatgenetics.coordinate"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode 400
         versionName "4.0.0"
         multiDexEnabled true
@@ -58,8 +60,17 @@ android {
     productFlavors {}
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    namespace 'org.wheatgenetics.coordinate'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -72,7 +83,7 @@ dependencies {
     implementation "com.google.android.material:material:1.5.0"
     implementation 'com.google.firebase:firebase-analytics:20.1.2'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //noinspection GradleDependency
     implementation 'com.github.MFlisar:changelog:1.1.6'
@@ -83,14 +94,28 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'
 
     implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
-    implementation 'com.github.phenoapps:phenolib:v0.9.29'
+    implementation 'com.github.phenoapps:phenolib:v0.9.50'
+    implementation 'androidx.preference:preference:1.2.1'
+
+    //uvc camera java native libs
+    implementation("com.serenegiant:common:2.12.4")
+
+    //hilt dependency injection
+    implementation "com.google.dagger:hilt-android:2.51"
+    kapt "com.google.dagger:hilt-compiler:2.51"
+
+    // SearchPreference
+    implementation 'com.github.ByteHamster:SearchPreference:v2.5.1'
+
+    // tutorial
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
 
     // Navigation
-    androidTestImplementation "androidx.navigation:navigation-testing:2.4.2"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
-    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.4.2"
-    implementation "androidx.navigation:navigation-runtime-ktx:2.4.2"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.7.7"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.7"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.7.7"
+    implementation "androidx.navigation:navigation-runtime-ktx:2.7.7"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
@@ -98,7 +123,20 @@ dependencies {
     androidTestImplementation "androidx.test:core:1.4.0"
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
+    // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.51'
+    // ...with Kotlin.
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.51'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
+
+kapt {
+    //used in hilt documentation says 'Allow references to generated code"
+    correctErrorTypes true
+}
+
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
