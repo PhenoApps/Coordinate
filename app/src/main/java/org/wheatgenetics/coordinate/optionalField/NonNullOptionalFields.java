@@ -420,8 +420,15 @@ public class NonNullOptionalFields extends OptionalFields
         @SuppressWarnings({"Convert2Diamond"}) final ArrayList<String> nameArrayList =
                 new ArrayList<String>();
         for (final BaseOptionalField baseOptionalField :
-                this)
-            nameArrayList.add(baseOptionalField.getName());
+                this) {
+            // if an optional field has a default text, show the default
+            // else just show the name
+            if (baseOptionalField instanceof OtherOptionalField && !baseOptionalField.getValue().isEmpty()) {
+                nameArrayList.add(baseOptionalField.getName() +  " (Default: " + baseOptionalField.getValue() + ")");
+            } else {
+                nameArrayList.add(baseOptionalField.getName());
+            }
+        }
 
         // noinspection CStyleArrayDeclaration
         final String result[] = new String[nameArrayList.size()];
