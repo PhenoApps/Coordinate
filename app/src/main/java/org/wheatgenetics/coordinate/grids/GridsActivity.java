@@ -32,9 +32,8 @@ import org.wheatgenetics.coordinate.AboutActivity;
 import org.wheatgenetics.coordinate.CollectorActivity;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
-import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.gc.GridCreator;
@@ -51,7 +50,6 @@ import org.wheatgenetics.coordinate.templates.TemplatesActivity;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 import java.io.OutputStream;
 
@@ -61,6 +59,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             TEMPLATE_ID_KEY = "templateId", PROJECT_ID_KEY = "projectId";
     private static final int EXPORT_GRID_REQUEST_CODE = 10;
     private static final int CREATE_GRID_REFRESH = 102;
+    private final int REQUEST_STORAGE_DEFINER = 104;
+    private AlertDialog loadSampleDialog;
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
     // region Fields
@@ -214,7 +214,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                             public void respondToDeletedGrid() {
                                 GridsActivity.this.notifyDataSetChanged();
                             }
-                        });
+                        },
+                        true);
         return this.gridExporterInstance;
     }
 
@@ -233,34 +234,17 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private void exportGrid(@IntRange(from = 1) final long gridId,
                             final String fileName) {
-        this.gridsViewModel.setIdAndExportFileName(gridId, fileName);
+        gridExportPreprocessor().handleExport(gridId, fileName, gridExporter(), this::launchExport);
+    }
 
-        if (DocumentTreeUtil.Companion.isEnabled(this)) {
-
-            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
-
-                if (result == CheckDocumentResult.DISMISS) {
-
-                    exportGridsLauncher.launch(fileName + ".csv");
-
-                } else if (result == CheckDocumentResult.DEFINE){
-
-                    startActivity(new Intent(this, DefineStorageActivity.class));
-
-                } else {
-
-                    exportGrid();
-                }
-
-                return null;
-            });
-
-        } else exportGridsLauncher.launch(fileName + ".csv");
+    // **New Method to Launch Export**
+    private void launchExport(String fileName) {
+        exportGridsLauncher.launch(fileName);
     }
 
     // region preprocessGridExport() Private Methods
     @NonNull
-    private GridExportPreprocessor gridExportPreprocessor() {
+    public GridExportPreprocessor gridExportPreprocessor() {
         if (null == this.gridExportPreprocessorInstance) this.gridExportPreprocessorInstance =
                 new GridExportPreprocessor(this,
                         new GridExportPreprocessor.Handler() {

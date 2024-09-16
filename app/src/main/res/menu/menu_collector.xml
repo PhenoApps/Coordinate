@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/export_grid"
+        android:icon="@drawable/ic_export_white"
+        android:onClick="onExportGridMenuItemClick"
+        android:title="@string/grid_export_text"
+        app:showAsAction="always"
+        tools:ignore="PrivateResource" />
+
+    <item
         android:icon="@drawable/ic_note_edit_outline"
         android:onClick="onProjectEditMenuItemClick"
         android:title="@string/project_edit_menu_item_click"

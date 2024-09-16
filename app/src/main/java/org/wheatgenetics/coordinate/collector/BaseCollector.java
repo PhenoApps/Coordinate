@@ -1,5 +1,6 @@
 package org.wheatgenetics.coordinate.collector;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.widget.EditText;
@@ -19,6 +20,9 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.EntriesTable;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
+import org.wheatgenetics.coordinate.deleter.GridDeleter;
+import org.wheatgenetics.coordinate.ge.GridExportPreprocessor;
+import org.wheatgenetics.coordinate.ge.GridExporter;
 import org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment;
 import org.wheatgenetics.coordinate.model.CheckedIncludedEntryModel;
 import org.wheatgenetics.coordinate.model.CurrentGridUniqueEntryModels;
@@ -59,6 +63,11 @@ abstract class BaseCollector extends Object implements
     private MediaPlayer gridEndMediaPlayer = null,
             rowOrColumnEndMediaPlayer = null, disallowedDuplicateMediaPlayer = null;       // lazy loads
     private UniqueAlertDialog uniqueAlertDialog = null; // ll
+
+
+    private GridExportPreprocessor gridExportPreprocessor;
+
+    private GridExporter gridExporter;
 
     // endregion
 
@@ -224,8 +233,19 @@ abstract class BaseCollector extends Object implements
     // region org.wheatgenetics.coordinate.model.EntryModels.FilledHandler Overridden Methods
     @Override
     public void handleFilledGrid() {
-        org.wheatgenetics.coordinate.Utils.alert(this.activity,
-                R.string.BaseCollectorFilledGridAlertMessage);
+        final AlertDialog.Builder builder =
+                new AlertDialog.Builder(activity);
+        builder.setNeutralButton(
+                activity.getString(R.string.grid_export_text),
+                ((dialog, which) -> {
+                    dialog.dismiss();
+                    preprocessGridExport(joinedGridModel.getId());
+                }));
+        builder.setTitle(activity.getString(R.string.Coordinate))
+                .setMessage(activity.getString(R.string.BaseCollectorFilledGridAlertMessage))
+                .setPositiveButton(activity.getString(R.string.UtilsPositiveButtonText), ((dialog, which) -> {
+                    dialog.dismiss();
+                })).show();
 
         if (this.getSoundsOn()) {
             if (null == this.gridEndMediaPlayer)
@@ -233,6 +253,44 @@ abstract class BaseCollector extends Object implements
                         this.activity, R.raw.plonk);
             this.gridEndMediaPlayer.start();
         }
+    }
+
+    private void preprocessGridExport(@IntRange(from = 1) final long gridId) {
+        this.gridExportPreprocessor().preprocess(gridId);
+    }
+
+    @NonNull
+    private GridExporter gridExporter() {
+        if (null == this.gridExporter)
+            this.gridExporter = new GridExporter(activity,
+                    12,
+                    new GridDeleter.Handler() {
+                        @Override
+                        public void respondToDeletedGrid() {
+                        }
+                    },
+                    false);
+        return this.gridExporter;
+    }
+
+    @NonNull
+    public GridExportPreprocessor gridExportPreprocessor() {
+        if (null == this.gridExportPreprocessor) this.gridExportPreprocessor =
+                new GridExportPreprocessor(activity,
+                        new GridExportPreprocessor.Handler() {
+                            @Override
+                            public void exportGrid(
+                                    @IntRange(from = 1) final long gridId,
+                                    final String fileName) {
+                                BaseCollector.this.exportGrid(gridId, fileName);
+                            }
+                        });
+        return this.gridExportPreprocessor;
+    }
+
+    private void exportGrid(@IntRange(from = 1) final long gridId,
+                            final String fileName) {
+        gridExportPreprocessor().handleExport(gridId, fileName, gridExporter(), null);
     }
 
     @Override

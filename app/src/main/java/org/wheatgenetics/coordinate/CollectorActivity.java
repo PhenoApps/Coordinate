@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -22,10 +21,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
-import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.phenoapps.androidlibrary.ClearingEditorActionListener;
+import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.collector.Collector;
 import org.wheatgenetics.coordinate.collector.DataEntryDialogFragment;
 import org.wheatgenetics.coordinate.griddisplay.GridDisplayFragment;
@@ -203,7 +202,6 @@ public class CollectorActivity extends BackActivity implements
             final int templates = R.id.action_nav_templates;
             final int projects = R.id.action_nav_projects;
             final int settings = R.id.action_nav_settings;
-            final int about = R.id.action_nav_about;
 
             //when navigating to another tab when collecting, save the current grid id
             //to re-navigate here later
@@ -225,8 +223,6 @@ public class CollectorActivity extends BackActivity implements
                 case grids:
                     startActivity(GridsActivity.intent(this));
                     break;
-                case about:
-                    startActivity(new Intent(this, AboutActivity.class));
                 default:
                     break;
             }
@@ -360,8 +356,7 @@ public class CollectorActivity extends BackActivity implements
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        final int summarizeData = R.id.action_summarize_data;
-        if (item.getItemId() == summarizeData) {
+        if (item.getItemId() == R.id.action_summarize_data) {
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
         } else if (item.getItemId() == android.R.id.home) {
             PreferenceManager.getDefaultSharedPreferences(this).edit()
@@ -400,5 +395,11 @@ public class CollectorActivity extends BackActivity implements
                 startActivityForResult(projectEditor, PROJECT_UPDATE_REQUEST_CODE);
             }
         }
+    }
+
+    public void onExportGridMenuItemClick(MenuItem item) {
+
+        collectorInstance.gridExportPreprocessor().preprocess(mGridId);
+
     }
 }

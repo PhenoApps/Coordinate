@@ -1,14 +1,17 @@
 package org.wheatgenetics.coordinate.ge;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
-import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 public class GridExportPreprocessor {
     // region Fields
@@ -56,7 +59,6 @@ public class GridExportPreprocessor {
                                             fileName);
                                 }
                             });
-        getGridExportFileNameAlertDialogInstance.setMessage(R.string.grid_export_dialog_directory_message);
         return this.getGridExportFileNameAlertDialogInstance;
     }
     // endregion
@@ -70,6 +72,29 @@ public class GridExportPreprocessor {
             this.getExportFileNameAlertDialog().show(
                     joinedGridModel.getFirstOptionalFieldDatedValue());
         }
+    }
+
+    public void handleExport(final long gridId, final String fileName, GridExporter gridExporter, ExportLauncher launcher) {
+        // Set up the file name and ID in the view model or any other component
+        if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+            DocumentTreeUtil.Companion.checkDir(activity, (result) -> {
+                if (result == CheckDocumentResult.DISMISS) {
+                    launcher.launch(fileName + ".csv");
+                } else if (result == CheckDocumentResult.DEFINE) {
+                    activity.startActivity(new Intent(activity, DefineStorageActivity.class));
+                } else {
+                    gridExporter.export(gridId, fileName);
+                }
+                return null;
+            });
+        } else {
+            if (launcher != null)
+                launcher.launch(fileName + ".csv");
+        }
+    }
+
+    public interface ExportLauncher {
+        void launch(String fileName);
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
