@@ -372,7 +372,8 @@ public class CollectorActivity extends BackActivity implements
             new DataEntryDialogFragment().show(getSupportFragmentManager(), TAG);
         } else if (item.getItemId() == R.id.help) {
             TapTargetSequence sequence = new TapTargetSequence(this)
-                    .targets(collectorActivityTapTargetView(R.id.action_edit_grid, getString(R.string.tutorial_collector_edit_title), getString(R.string.tutorial_collector_edit_summary), 40),
+                    .targets(collectorActivityTapTargetView(R.id.export_grid, getString(R.string.tutorial_grid_export_title), getString(R.string.tutorial_grid_export_summary), 40),
+                            collectorActivityTapTargetView(R.id.action_edit_grid, getString(R.string.tutorial_collector_edit_title), getString(R.string.tutorial_collector_edit_summary), 40),
                             collectorActivityTapTargetView(R.id.action_summarize_data, getString(R.string.tutorial_collector_summarize_title), getString(R.string.tutorial_collector_summarize_summary), 40),
                             collectorActivityTapTargetView(R.id.act_collector_data_entry_et, getString(R.string.tutorial_collector_collect_data_title), getString(R.string.tutorial_collector_collect_data_summary), 180),
                             collectorActivityTapTargetView(R.id.act_collector_barcode_scan_button, getString(R.string.tutorial_collector_barcode_title), getString(R.string.tutorial_collector_barcode_summary), 80)
