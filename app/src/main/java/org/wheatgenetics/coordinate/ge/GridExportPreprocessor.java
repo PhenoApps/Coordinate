@@ -6,8 +6,8 @@ import android.content.Intent;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import org.wheatgenetics.coordinate.R;
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
@@ -22,10 +22,9 @@ public class GridExportPreprocessor {
     private final
     GridExportPreprocessor.Handler handler;
     @IntRange(from = 1)
-    private long gridId;
-    private GetExportFileNameAlertDialog
-            getGridExportFileNameAlertDialogInstance = null;                                // lazy load
+    private long gridId;                             // lazy load
     private GridsTable gridsTableInstance = null; // lazy load
+
     public GridExportPreprocessor(@NonNull final Activity activity,
                                   @NonNull final
                                   GridExportPreprocessor.Handler handler) {
@@ -50,18 +49,17 @@ public class GridExportPreprocessor {
 
     @NonNull
     private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
-        if (null == this.getGridExportFileNameAlertDialogInstance)
-            this.getGridExportFileNameAlertDialogInstance =
-                    new GetExportFileNameAlertDialog(this.activity,
-                            new GetExportFileNameAlertDialog.Handler() {
-                                @Override
-                                public void handleGetFileNameDone(final String fileName) {
-                                    GridExportPreprocessor.this.exportGrid(
-                                            fileName);
-                                }
-                            });
-        getGridExportFileNameAlertDialogInstance.setMessage(R.string.grid_export_dialog_directory_message);
-        return this.getGridExportFileNameAlertDialogInstance;
+        String templateDirectory = "";
+        String rootDirectory = DocumentTreeUtil.Companion.getPath(activity);
+
+        JoinedGridModel joinedGridModel = gridsTable().get(gridId);
+        if (joinedGridModel != null) {
+            templateDirectory = joinedGridModel.getTemplateTitle();
+        }
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderExport) + "/" + templateDirectory);
+
+        return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
+                GridExportPreprocessor.this::exportGrid).setTitle(R.string.grid_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);
     }
     // endregion
     // endregion

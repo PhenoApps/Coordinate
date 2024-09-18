@@ -7,6 +7,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
+import org.phenoapps.utils.BaseDocumentTreeUtil.Companion.getRoot
+import org.phenoapps.utils.BaseDocumentTreeUtil.Companion.getStem
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 import org.wheatgenetics.coordinate.preference.GeneralKeys
@@ -38,6 +40,22 @@ class DocumentTreeUtil {
 
                 prefs.edit().putBoolean(GeneralKeys.STORAGE_ASK_KEY, false).apply()
             }
+        }
+
+
+        fun getPath(ctx: Context): String? {
+            //get directory name
+            val root = getRoot(ctx)
+            if (root != null && root.exists())
+            {
+                var path = root.uri.lastPathSegment
+                if (path == null) {
+                    // default to directory name if path is null
+                    path = root.uri.getStem(ctx)
+                }
+                return path
+            }
+            return null
         }
 
         /**
