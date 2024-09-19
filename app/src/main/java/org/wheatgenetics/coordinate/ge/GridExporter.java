@@ -147,7 +147,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                         if (exports != null && exports.exists()) {
 
-                            DocumentFile templateDir = exports.createDirectory(joinedGridModel.getTemplateTitle());
+                            DocumentFile templateDir = DocumentTreeUtil.Companion.createDir(activity, "Exports", joinedGridModel.getTemplateTitle());
 
                             if (templateDir != null && templateDir.exists()) {
 
