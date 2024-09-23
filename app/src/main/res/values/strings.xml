@@ -13,8 +13,10 @@
 
     <!-- AppIntroActivity -->
     <string name="app_intro_activity_label">App Intro</string>
-    <string name="app_intro_intro_title_slide1">app_intro_intro_title_slide1</string>
-    <string name="app_intro_intro_summary_slide1">app_intro_intro_summary_slide1</string>
+    <string name="app_intro_intro_title_slide1">Welcome to Coordinate!</string>
+    <string name="app_intro_intro_summary_slide1">Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates.</string>
+    <string name="app_intro_intro_title_slide2">Features and Customization</string>
+    <string name="app_intro_intro_summary_slide2">Feature description goes here.\n\n Customization.</string>
     <string name="app_intro_setup_title">Setup Coordinate</string>
     <string name="app_intro_setup_summary">To get started using Coordinate, complete this setup which includes required and optional settings.</string>
     <string name="app_intro_storage_title">Define Storage</string>

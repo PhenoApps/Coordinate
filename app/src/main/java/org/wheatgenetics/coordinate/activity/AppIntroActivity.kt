@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro
 import com.github.appintro.AppIntroFragment.Companion.createInstance
 import org.wheatgenetics.coordinate.R
+import org.wheatgenetics.coordinate.fragments.app_intro.GallerySlideFragment
 import org.wheatgenetics.coordinate.fragments.app_intro.SetupPolicyFragment
 
 class AppIntroActivity : AppIntro() {
@@ -21,7 +22,16 @@ class AppIntroActivity : AppIntro() {
             createInstance(
                 context.getString(R.string.app_intro_intro_title_slide1),
                 context.getString(R.string.app_intro_intro_summary_slide1),
-                R.drawable.other_ic_coordinate,
+                R.drawable.ic_coordinate,
+                R.color.colorPrimaryLight
+            )
+        )
+
+        // gallery slide
+        addSlide(
+            GallerySlideFragment.newInstance(
+                context.getString(R.string.app_intro_intro_title_slide2),
+                context.getString(R.string.app_intro_intro_summary_slide2),
                 R.color.colorPrimaryLight
             )
         )
