@@ -438,6 +438,7 @@
 
     <!-- GridCreator -->
     <string name="frag_grid_creator_one_next_btn">Next</string>
+    <string name="frag_grid_creator_project_add_new_text">New Project</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
     <string name="frag_grid_creator_template_options_title">Template options</string>

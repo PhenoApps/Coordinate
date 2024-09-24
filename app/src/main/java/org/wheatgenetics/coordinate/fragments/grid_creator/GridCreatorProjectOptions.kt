@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,8 +76,6 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
         val okButton = view?.findViewById<Button>(R.id.frag_next_btn)
         val backButton = view?.findViewById<Button>(R.id.frag_back_btn)
-        //button that will start an add optional fields fragment
-        val addButton = view?.findViewById<ImageButton>(R.id.frag_grid_creator_project_options_new_btn)
 
         setSkipText()
 
@@ -110,15 +108,6 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
         backButton?.setOnClickListener {
             navigateBack()
-        }
-
-        addButton?.setOnClickListener {
-            activity?.let { act ->
-                if (isAdded) {
-                    //when alert dialog finishes handleCreateProjectDone is called
-                    CreateProjectAlertDialog(act, this).show()
-                }
-            }
         }
     }
 
@@ -160,7 +149,7 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
 
                 projects.titles()?.let { titles ->
 
-                    val adapter = TitleChoiceAdapter(this)
+                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.PROJECT)
 
                     val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_project_lv)
 
@@ -185,6 +174,10 @@ class GridCreatorProjectOptions : Fragment(R.layout.fragment_grid_creator_projec
         mSelectedProjectTitle = title
 
         setNextText()
+    }
+
+    override fun onAddNewItemClicked() {
+        CreateProjectAlertDialog(activity, this).show()
     }
 
     //here we must check if the project already exists in projects table
