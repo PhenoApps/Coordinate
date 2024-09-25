@@ -367,7 +367,24 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         final ListView gridsListView = this.findViewById(
                 R.id.gridsListView);
 
-        navigateToLastGrid();
+
+        final String TEMPLATE_ID_KEY = GridsActivity.TEMPLATE_ID_KEY;
+
+        final String PROJECT_ID_KEY = GridsActivity.PROJECT_ID_KEY;
+
+        final Intent intent = this.getIntent();
+        if (intent != null) {
+            if (!(intent.hasExtra(TEMPLATE_ID_KEY) || intent.hasExtra(PROJECT_ID_KEY)))  {
+                // if intent does not have template/project id
+                // (if no filter was applied on template/project)
+                // navigate to last grid
+                navigateToLastGrid();
+            } else {
+                // if filter was applied, then don't navigate and also clear the last saved grid
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
+            }
+        }
 
         setupBottomNavigationBar();
 
@@ -375,12 +392,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         if (null != gridsListView) {
             {
-                final Intent intent = this.getIntent();
                 if (null == intent)
                     this.gridsAdapter = this.makeAllGridsAdapter();
                 else {
-                    final String TEMPLATE_ID_KEY =
-                            GridsActivity.TEMPLATE_ID_KEY;
                     if (intent.hasExtra(TEMPLATE_ID_KEY)) {
                         @IntRange(from = 1) final long templateId =
                                 intent.getLongExtra(TEMPLATE_ID_KEY, -1);
@@ -391,8 +405,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                                         this.onDeleteButtonClickListener(),
                                         this.onExportButtonClickListener());
                     } else {
-                        final String PROJECT_ID_KEY =
-                                GridsActivity.PROJECT_ID_KEY;
                         if (intent.hasExtra(PROJECT_ID_KEY)) {
                             @IntRange(from = 1) final long projectId =
                                     intent.getLongExtra(PROJECT_ID_KEY, -1);
