@@ -66,7 +66,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
     private static final int EXPORT_GRID_REQUEST_CODE = 10;
     private static final int CREATE_GRID_REFRESH = 102;
     private final int REQUEST_STORAGE_DEFINER = 104;
-
     private AlertDialog loadSampleDialog;
     // endregion
     private static Intent INTENT_INSTANCE = null;                       // lazy load
@@ -223,7 +222,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                             public void respondToDeletedGrid() {
                                 GridsActivity.this.notifyDataSetChanged();
                             }
-                        });
+                        },
+                        true);
         return this.gridExporterInstance;
     }
 
@@ -242,34 +242,16 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private void exportGrid(@IntRange(from = 1) final long gridId,
                             final String fileName) {
-        this.gridsViewModel.setIdAndExportFileName(gridId, fileName);
+        gridExportPreprocessor().handleExport(gridId, fileName, gridExporter(), this::launchExport);
+    }
 
-        if (DocumentTreeUtil.Companion.isEnabled(this)) {
-
-            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
-
-                if (result == CheckDocumentResult.DISMISS) {
-
-                    exportGridsLauncher.launch(fileName + ".csv");
-
-                } else if (result == CheckDocumentResult.DEFINE){
-
-                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
-
-                } else {
-
-                    exportGrid();
-                }
-
-                return null;
-            });
-
-        } else exportGridsLauncher.launch(fileName + ".csv");
+    private void launchExport(String fileName) {
+        exportGridsLauncher.launch(fileName);
     }
 
     // region preprocessGridExport() Private Methods
     @NonNull
-    private GridExportPreprocessor gridExportPreprocessor() {
+    public GridExportPreprocessor gridExportPreprocessor() {
         if (null == this.gridExportPreprocessorInstance) this.gridExportPreprocessorInstance =
                 new GridExportPreprocessor(this,
                         new GridExportPreprocessor.Handler() {

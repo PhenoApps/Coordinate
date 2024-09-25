@@ -1,13 +1,18 @@
 package org.wheatgenetics.coordinate.ge;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
+import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 
 public class GridExportPreprocessor {
     // region Fields
@@ -17,10 +22,9 @@ public class GridExportPreprocessor {
     private final
     GridExportPreprocessor.Handler handler;
     @IntRange(from = 1)
-    private long gridId;
-    private GetExportFileNameAlertDialog
-            getGridExportFileNameAlertDialogInstance = null;                                // lazy load
+    private long gridId;                             // lazy load
     private GridsTable gridsTableInstance = null; // lazy load
+
     public GridExportPreprocessor(@NonNull final Activity activity,
                                   @NonNull final
                                   GridExportPreprocessor.Handler handler) {
@@ -45,17 +49,17 @@ public class GridExportPreprocessor {
 
     @NonNull
     private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
-        if (null == this.getGridExportFileNameAlertDialogInstance)
-            this.getGridExportFileNameAlertDialogInstance =
-                    new GetExportFileNameAlertDialog(this.activity,
-                            new GetExportFileNameAlertDialog.Handler() {
-                                @Override
-                                public void handleGetFileNameDone(final String fileName) {
-                                    GridExportPreprocessor.this.exportGrid(
-                                            fileName);
-                                }
-                            });
-        return this.getGridExportFileNameAlertDialogInstance;
+        String templateDirectory = "";
+        String rootDirectory = DocumentTreeUtil.Companion.getPath(activity);
+
+        JoinedGridModel joinedGridModel = gridsTable().get(gridId);
+        if (joinedGridModel != null) {
+            templateDirectory = joinedGridModel.getTemplateTitle();
+        }
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderExport) + "/" + templateDirectory);
+
+        return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
+                GridExportPreprocessor.this::exportGrid).setTitle(R.string.grid_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);
     }
     // endregion
     // endregion
@@ -68,6 +72,29 @@ public class GridExportPreprocessor {
             this.getExportFileNameAlertDialog().show(
                     joinedGridModel.getFirstOptionalFieldDatedValue());
         }
+    }
+
+    public void handleExport(final long gridId, final String fileName, GridExporter gridExporter, ExportLauncher launcher) {
+        // Set up the file name and ID in the view model or any other component
+        if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+            DocumentTreeUtil.Companion.checkDir(activity, (result) -> {
+                if (result == CheckDocumentResult.DISMISS) {
+                    launcher.launch(fileName + ".csv");
+                } else if (result == CheckDocumentResult.DEFINE) {
+                    activity.startActivity(new Intent(activity, DefineStorageActivity.class));
+                } else {
+                    gridExporter.export(gridId, fileName);
+                }
+                return null;
+            });
+        } else {
+            if (launcher != null)
+                launcher.launch(fileName + ".csv");
+        }
+    }
+
+    public interface ExportLauncher {
+        void launch(String fileName);
     }
 
     @SuppressWarnings({"UnnecessaryInterfaceModifier"})
