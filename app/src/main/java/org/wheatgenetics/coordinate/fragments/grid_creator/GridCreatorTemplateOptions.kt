@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -121,22 +121,14 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
 
     private fun setupAdapter() {
 
-        //button that will start an add optional fields fragment
-        val addButton = view?.findViewById<ImageButton>(R.id.frag_grid_creator_template_options_new_btn)
-
         activity?.let { act ->
 
             //query db for optional fields
             mTemplatesTable?.load()?.let { templates ->
 
-                addButton?.setOnClickListener {
-
-                    mTemplateActivityStarter.launch(Intent(act, TemplateCreatorActivity::class.java))
-                }
-
                 templates.titles()?.let { titles ->
 
-                    val adapter = TitleChoiceAdapter(this)
+                    val adapter = TitleChoiceAdapter(this, TitleChoiceAdapter.AdapterType.TEMPLATE)
 
                     val listView = view?.findViewById<RecyclerView>(R.id.frag_grid_creator_add_template_lv)
 
@@ -162,5 +154,9 @@ class GridCreatorTemplateOptions : Fragment(R.layout.fragment_grid_creator_templ
 
         setNextText()
 
+    }
+
+    override fun onAddNewItemClicked() {
+        mTemplateActivityStarter.launch(Intent(requireActivity(), TemplateCreatorActivity::class.java))
     }
 }

@@ -50,19 +50,6 @@
         app:layout_constraintTop_toBottomOf="@id/frag_grid_creator_template_options_summary_tv"
         tools:listitem="@android:layout/simple_list_item_1" />
 
-    <ImageButton
-        android:id="@+id/frag_grid_creator_template_options_new_btn"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/grids_circular_background"
-        android:contentDescription="@string/frag_template_creator_options_new"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/frag_next_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add_white_inv" />
-
     <Button
         android:id="@+id/frag_next_btn"
         style="@style/TextAppearance.MaterialComponents.Button"
