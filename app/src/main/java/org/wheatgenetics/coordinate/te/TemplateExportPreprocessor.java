@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
 import org.wheatgenetics.coordinate.model.TemplateModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 public class TemplateExportPreprocessor {
     // region Fields
@@ -19,9 +21,7 @@ public class TemplateExportPreprocessor {
     TemplateExportPreprocessor.Handler handler;
     @IntRange(from = 1)
     private long templateId;
-    private TemplatesTable templatesTableInstance = null; //ll
-    private GetExportFileNameAlertDialog
-            getExportFileNameAlertDialogInstance = null;                                    // lazy load
+    private TemplatesTable templatesTableInstance = null; //ll                                 // lazy load
     public TemplateExportPreprocessor(
             @NonNull final Activity activity,
             @NonNull final
@@ -46,17 +46,13 @@ public class TemplateExportPreprocessor {
 
     @NonNull
     private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
-        if (null == this.getExportFileNameAlertDialogInstance)
-            this.getExportFileNameAlertDialogInstance =
-                    new GetExportFileNameAlertDialog(this.activity,
-                            new GetExportFileNameAlertDialog.Handler() {
-                                @Override
-                                public void handleGetFileNameDone(final String fileName) {
-                                    TemplateExportPreprocessor
-                                            .this.exportTemplate(fileName);
-                                }
-                            });
-        return this.getExportFileNameAlertDialogInstance;
+        String rootDirectory = DocumentTreeUtil.Companion.getPath(activity);
+
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderTemplate));
+
+        return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
+                TemplateExportPreprocessor
+                        .this::exportTemplate).setTitle(R.string.template_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);
     }
 
     private void preprocessAfterSettingTemplateId(@Nullable final TemplateModel templateModel) {

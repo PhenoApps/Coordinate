@@ -396,16 +396,23 @@
     <string name="ExporterShareTitle">Share file via&#8230;</string>
     <string name="ExporterFailTitle">Export</string>
     <string name="ExporterFailMessage">No data was exported.</string>
+    <string name="export_dialog_positive_button_text">Export</string>
 
     <string name="GridExporterProgressDialogMessage">Exporting:\u0020</string>
     <string name="GridExporterDeleteConfirmation">Do you want to delete the current grid?</string>
     <string name="GridExporterFailedMessage">Unable to export grid.</string>
+    <string name="grid_export_dialog_title">Export Grid</string>
+
+    <string name="export_dialog_directory_message">Exporting to %s/%s/</string>
 
     <string name="ProjectExporterFailedMessage">Unable to create file named %s.</string>
     <string name="PerGridProjectExporterAsyncTaskFailedMessage" tools:ignore="PluralsCandidate">Grid %d was not exported.</string>
     <string name="PerGridProjectExporterSuccessMessage">Project files were successfully exported.</string>
     <string name="EntireProjectProjectExporterAsyncTaskFailedMessage">Project was not exported.</string>
     <string name="EntireProjectProjectExporterFailedMessage">Unable to export project.</string>
+    <string name="template_export_dialog_title">Export Template</string>
+    <string name="project_export_dialog_title">Export Project</string>
+
 
     <!-- Display -->
     <string name="display_cellContentDescription">cell</string>
@@ -457,6 +464,7 @@
 
     <!-- GridCreator -->
     <string name="frag_grid_creator_one_next_btn">Next</string>
+    <string name="frag_grid_creator_project_add_new_text">New Project</string>
     <string name="frag_grid_creator_project_add_title">Add grid to a project</string>
     <string name="frag_grid_creator_add_project_summary">Optionally create a new project or select an existing project below.</string>
     <string name="frag_grid_creator_template_options_title">Template options</string>
@@ -498,6 +506,7 @@
     <string name="frag_template_creator_preview_additional_info">Columns will have %s labels and rows will have %s labels. There will be %s excluded cells.</string>
     <string name="new_grid_title">New Grid</string>
     <string name="new_template_title">New Template</string>
+    <string name="edit_template_title">Edit Template</string>
     <string name="frag_exclude_selection_button">Selection</string>
     <string name="frag_template_creator_exclude_options_title">Exclude Options</string>
     <string name="frag_template_creator_exclude_options_summary">Choose to exclude a random number of cells, or explicitly choose a selection of cells.</string>
@@ -515,6 +524,7 @@
 
     <!-- BaseCollector -->
     <string name="BaseCollectorFilledGridAlertMessage">Grid has been filled!</string>
+    <string name="grid_export_text">Export Grid</string>
     <string name="menu_collector_meta_data_title">Summarize Data</string>
     <string name="project_edit_menu_item_click">Edit Project</string>
 

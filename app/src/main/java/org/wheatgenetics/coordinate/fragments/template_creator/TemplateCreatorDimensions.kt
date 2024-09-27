@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -66,6 +67,8 @@ class TemplateCreatorDimensions : Fragment(R.layout.fragment_template_creator_di
 
         //check if this is an edit action, populate ui
         if (activity?.intent?.hasExtra(TemplateCreatorActivity.TEMPLATE_EDIT) == true) {
+
+            view.findViewById<TextView>(R.id.frag_grid_creator_template_title_tv).text = getString(R.string.edit_template_title)
 
             mEdit = activity?.intent?.getLongExtra(TemplateCreatorActivity.TEMPLATE_EDIT, -1L) ?: -1L
 

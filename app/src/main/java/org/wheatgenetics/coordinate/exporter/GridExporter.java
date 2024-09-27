@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 
 import org.wheatgenetics.coordinate.R;
@@ -25,22 +24,22 @@ public class GridExporter extends Exporter {
     public GridExporter(@NonNull final Context context,
                         final File exportFile, final String exportFileName,
                         @NonNull final GridExporter.Helper
-                                helper) {
+                                helper, Boolean deleteGrid) {
         super();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         this.asyncTask = new GridExporter.AsyncTask(
-                context, exportFile, exportFileName, helper, prefs);
+                context, exportFile, exportFileName, helper, prefs, deleteGrid);
     }
 
     public GridExporter(@NonNull final Context context,
                         final OutputStream output, final String exportFileName,
                         @NonNull final GridExporter.Helper
-                                helper) {
+                                helper, Boolean deleteGrid) {
         super();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         this.asyncTask = new GridExporter.AsyncTask(
-                context, output, exportFileName, helper, prefs);
+                context, output, exportFileName, helper, prefs, deleteGrid);
     }
 
     // endregion
@@ -72,6 +71,8 @@ public class GridExporter extends Exporter {
         private final GridExporter.Helper helper;
         @NonNull
         private final SharedPreferences prefs;
+
+        private final Boolean deleteGrid;
         // endregion
 
         private AsyncTask(
@@ -79,11 +80,13 @@ public class GridExporter extends Exporter {
                 final File exportFile,
                 final String exportFileName,
                 @NonNull final GridExporter.Helper helper,
-                @NonNull final SharedPreferences prefs) {
+                @NonNull final SharedPreferences prefs,
+                final Boolean deleteGrid) {
             super(context, exportFile);
             this.exportFileName = exportFileName;
             this.helper = helper;
             this.prefs = prefs;
+            this.deleteGrid = deleteGrid;
         }
 
         private AsyncTask(
@@ -91,11 +94,13 @@ public class GridExporter extends Exporter {
                 final OutputStream output,
                 final String exportFileName,
                 @NonNull final GridExporter.Helper helper,
-                @NonNull final SharedPreferences prefs) {
+                @NonNull final SharedPreferences prefs,
+                final Boolean deleteGrid) {
             super(context, output);
             this.exportFileName = exportFileName;
             this.helper = helper;
             this.prefs = prefs;
+            this.deleteGrid = deleteGrid;
         }
         private void deleteGrid() {
             this.helper.deleteGrid();
@@ -158,8 +163,12 @@ public class GridExporter extends Exporter {
                 }
             }
 
-            this.alert(R.string.GridExporterDeleteConfirmation,
-                    new YesRunnable());
+            if (deleteGrid) {
+                this.alert(R.string.GridExporterDeleteConfirmation,
+                        new YesRunnable());
+            } else {
+                this.alert();
+            }
         }
 
         // region org.wheatgenetics.coordinate.model.JoinedGridModel.Helper Overridden Method

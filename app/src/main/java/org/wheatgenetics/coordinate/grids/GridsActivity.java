@@ -33,7 +33,6 @@ import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Types;
 import org.wheatgenetics.coordinate.activities.BaseMainActivity;
 import org.wheatgenetics.coordinate.activity.AppIntroActivity;
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.activity.GridCreatorActivity;
 import org.wheatgenetics.coordinate.database.SampleData;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -49,8 +48,6 @@ import org.wheatgenetics.coordinate.preference.PreferenceActivity;
 import org.wheatgenetics.coordinate.projects.ProjectsActivity;
 import org.wheatgenetics.coordinate.tc.TemplateCreator;
 import org.wheatgenetics.coordinate.templates.TemplatesActivity;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil.Companion.CheckDocumentResult;
 import org.wheatgenetics.coordinate.utils.Keys;
 import org.wheatgenetics.coordinate.utils.TapTargetUtil;
 import org.wheatgenetics.coordinate.viewmodel.ExportingViewModel;
@@ -221,7 +218,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                             public void respondToDeletedGrid() {
                                 GridsActivity.this.notifyDataSetChanged();
                             }
-                        });
+                        },
+                        true);
         return this.gridExporterInstance;
     }
 
@@ -240,34 +238,16 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
     private void exportGrid(@IntRange(from = 1) final long gridId,
                             final String fileName) {
-        this.gridsViewModel.setIdAndExportFileName(gridId, fileName);
+        gridExportPreprocessor().handleExport(gridId, fileName, gridExporter(), this::launchExport);
+    }
 
-        if (DocumentTreeUtil.Companion.isEnabled(this)) {
-
-            DocumentTreeUtil.Companion.checkDir(this, (result) -> {
-
-                if (result == CheckDocumentResult.DISMISS) {
-
-                    exportGridsLauncher.launch(fileName + ".csv");
-
-                } else if (result == CheckDocumentResult.DEFINE){
-
-                    startActivityForResult(new Intent(this, DefineStorageActivity.class), REQUEST_STORAGE_DEFINER);
-
-                } else {
-
-                    exportGrid();
-                }
-
-                return null;
-            });
-
-        } else exportGridsLauncher.launch(fileName + ".csv");
+    private void launchExport(String fileName) {
+        exportGridsLauncher.launch(fileName);
     }
 
     // region preprocessGridExport() Private Methods
     @NonNull
-    private GridExportPreprocessor gridExportPreprocessor() {
+    public GridExportPreprocessor gridExportPreprocessor() {
         if (null == this.gridExportPreprocessorInstance) this.gridExportPreprocessorInstance =
                 new GridExportPreprocessor(this,
                         new GridExportPreprocessor.Handler() {
@@ -383,7 +363,24 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
         final ListView gridsListView = this.findViewById(
                 R.id.gridsListView);
 
-        navigateToLastGrid();
+
+        final String TEMPLATE_ID_KEY = GridsActivity.TEMPLATE_ID_KEY;
+
+        final String PROJECT_ID_KEY = GridsActivity.PROJECT_ID_KEY;
+
+        final Intent intent = this.getIntent();
+        if (intent != null) {
+            if (!(intent.hasExtra(TEMPLATE_ID_KEY) || intent.hasExtra(PROJECT_ID_KEY)))  {
+                // if intent does not have template/project id
+                // (if no filter was applied on template/project)
+                // navigate to last grid
+                navigateToLastGrid();
+            } else {
+                // if filter was applied, then don't navigate and also clear the last saved grid
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putLong(Keys.COLLECTOR_LAST_GRID, -1L).apply();
+            }
+        }
 
         setupBottomNavigationBar();
 
@@ -391,12 +388,9 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
 
         if (null != gridsListView) {
             {
-                final Intent intent = this.getIntent();
                 if (null == intent)
                     this.gridsAdapter = this.makeAllGridsAdapter();
                 else {
-                    final String TEMPLATE_ID_KEY =
-                            GridsActivity.TEMPLATE_ID_KEY;
                     if (intent.hasExtra(TEMPLATE_ID_KEY)) {
                         @IntRange(from = 1) final long templateId =
                                 intent.getLongExtra(TEMPLATE_ID_KEY, -1);
@@ -407,8 +401,6 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                                         this.onDeleteButtonClickListener(),
                                         this.onExportButtonClickListener());
                     } else {
-                        final String PROJECT_ID_KEY =
-                                GridsActivity.PROJECT_ID_KEY;
                         if (intent.hasExtra(PROJECT_ID_KEY)) {
                             @IntRange(from = 1) final long projectId =
                                     intent.getLongExtra(PROJECT_ID_KEY, -1);
@@ -428,8 +420,8 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
             boolean firstLoadComplete = prefs.getBoolean(GeneralKeys.FIRST_LOAD_COMPLETE, false);
             if (!firstLoadComplete) {
 
-                Intent intent = new Intent(this, AppIntroActivity.class);
-                startActivityForResult(intent, REQUEST_APP_INTRO);
+                Intent appIntoIntent = new Intent(this, AppIntroActivity.class);
+                startActivityForResult(appIntoIntent, REQUEST_APP_INTRO);
 
             }
         }

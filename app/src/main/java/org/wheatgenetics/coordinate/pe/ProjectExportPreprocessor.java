@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.ProjectsTable;
 import org.wheatgenetics.coordinate.model.ProjectModel;
+import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 public class ProjectExportPreprocessor {
     // region Fields
@@ -19,9 +21,8 @@ public class ProjectExportPreprocessor {
     ProjectExportPreprocessor.Handler handler;
     @IntRange(from = 1)
     private long projectId;
-    private ProjectsTable projectsTableInstance = null;  // ll
-    private GetExportFileNameAlertDialog
-            getExportFileNameAlertDialogInstance = null;                                    // lazy load
+    private ProjectsTable projectsTableInstance = null;  // ll                                  // lazy load
+
     public ProjectExportPreprocessor(
             @NonNull final Activity activity,
             @NonNull final
@@ -46,17 +47,13 @@ public class ProjectExportPreprocessor {
 
     @NonNull
     private GetExportFileNameAlertDialog getExportFileNameAlertDialog() {
-        if (null == this.getExportFileNameAlertDialogInstance)
-            this.getExportFileNameAlertDialogInstance =
-                    new GetExportFileNameAlertDialog(this.activity,
-                            new GetExportFileNameAlertDialog.Handler() {
-                                @Override
-                                public void handleGetFileNameDone(final String fileName) {
-                                    ProjectExportPreprocessor
-                                            .this.exportProject(fileName);
-                                }
-                            });
-        return this.getExportFileNameAlertDialogInstance;
+        String rootDirectory = DocumentTreeUtil.Companion.getPath(activity);
+
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderExport));
+
+        return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
+                ProjectExportPreprocessor
+                        .this::exportProject).setTitle(R.string.project_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);
     }
 
     private void preprocessAfterSettingProjectId(@Nullable final ProjectModel projectModel) {

@@ -27,6 +27,9 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
     @NonNull
     private final Activity activity;
     private final int requestCode;
+
+    private final boolean deleteGrid;
+
     @NonNull
     private final
     GridDeleter.Handler handler;
@@ -43,11 +46,13 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
     public GridExporter(@NonNull final Activity activity,
                         final int requestCode,
                         @NonNull final
-                        GridDeleter.Handler handler) {
+                        GridDeleter.Handler handler,
+                        Boolean deleteGrid) {
         super();
         this.activity = activity;
         this.requestCode = requestCode;
         this.handler = handler;
+        this.deleteGrid = deleteGrid;
     }
 
     // region Private Methods
@@ -136,7 +141,8 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                             /* context    => */ this.activity,
                             /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
                             /* exportFileName => */ this.fileName,
-                            /* helper         => */this);
+                            /* helper         => */this,
+                            /* deleteGrid   => */ deleteGrid);
                     this.gridExporter.execute();
 
                 } else { //otherwise use the context to get the files directory
@@ -147,7 +153,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                         if (exports != null && exports.exists()) {
 
-                            DocumentFile templateDir = exports.createDirectory(joinedGridModel.getTemplateTitle());
+                            DocumentFile templateDir = DocumentTreeUtil.Companion.createDir(activity, "Exports", joinedGridModel.getTemplateTitle());
 
                             if (templateDir != null && templateDir.exists()) {
 
@@ -156,7 +162,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                                 if (doc != null) {
 
                                     OutputStream output = this.activity.getContentResolver().openOutputStream(doc.getUri());
-                                    this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this);
+                                    this.gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(this.activity, output, this.fileName, this, deleteGrid);
                                     this.gridExporter.execute();
 
                                     FileUtil.Companion.shareFile(activity, doc.getUri());
@@ -187,7 +193,8 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                                 /* context    => */ this.activity,
                                 /* exportFile => */ exportFile,          //  lib.Dir.PermissionException
                                 /* exportFileName => */ this.fileName,
-                                /* helper         => */this);
+                                /* helper         => */this,
+                                /*deleteGrid    => */ deleteGrid);
                         this.gridExporter.execute();
 
                         FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
@@ -202,7 +209,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
     private void export(OutputStream output) {
 
-        gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(activity, output, this.fileName, this);
+        gridExporter = new org.wheatgenetics.coordinate.exporter.GridExporter(activity, output, this.fileName, this, deleteGrid);
         gridExporter.execute();
     }
 
