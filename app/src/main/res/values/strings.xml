@@ -17,13 +17,18 @@
     <string name="app_intro_intro_summary_slide1">Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates.</string>
     <string name="app_intro_intro_title_slide2">Features and Customization</string>
     <string name="app_intro_intro_summary_slide2">Feature description goes here.\n\n Customization.</string>
-    <string name="app_intro_setup_title">Setup Coordinate</string>
-    <string name="app_intro_setup_summary">To get started using Coordinate, complete this setup which includes required and optional settings.</string>
+    <string name="app_intro_required_setup_title">Required Setup</string>
+    <string name="app_intro_required_setup_summary">To get started using Coordinate, grant the necessary permissions for the app and then define a folder where your data will be stored.</string>
+    <string name="app_intro_permissions_title">Permissions</string>
+    <string name="app_intro_permissions_summary">Please grant the necessary permissions</string>
     <string name="app_intro_storage_title">Define Storage</string>
     <string name="app_intro_storage_summary">Define a folder where your data will be stored.</string>
+    <string name="app_intro_permissions_warning">Permissions not granted</string>
+    <string name="app_intro_storage_warning">Storage directory not set</string>
+    <string name="app_intro_optional_setup_title">Optional Setup</string>
+    <string name="app_intro_optional_setup_summary">These optional settings customize Coordinate and can be adjusted in the Coordinate Settings.</string>
     <string name="app_intro_load_sample_data_title">Load Sample Data</string>
     <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates and projects.</string>
-    <string name="app_intro_storage_warning">Storage directory not set</string>
 
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>

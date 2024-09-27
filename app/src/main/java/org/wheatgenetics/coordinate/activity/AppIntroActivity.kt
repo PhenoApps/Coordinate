@@ -6,7 +6,8 @@ import com.github.appintro.AppIntro
 import com.github.appintro.AppIntroFragment.Companion.createInstance
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.fragments.app_intro.GallerySlideFragment
-import org.wheatgenetics.coordinate.fragments.app_intro.SetupPolicyFragment
+import org.wheatgenetics.coordinate.fragments.app_intro.OptionalSetupFragment
+import org.wheatgenetics.coordinate.fragments.app_intro.RequiredSetupPolicyFragment
 
 class AppIntroActivity : AppIntro() {
 
@@ -36,10 +37,20 @@ class AppIntroActivity : AppIntro() {
             )
         )
 
+        // required setup
         addSlide(
-            SetupPolicyFragment.newInstance(
-                context.getString(R.string.app_intro_setup_title),
-                context.getString(R.string.app_intro_setup_summary),
+            RequiredSetupPolicyFragment.newInstance(
+                context.getString(R.string.app_intro_required_setup_title),
+                context.getString(R.string.app_intro_required_setup_summary),
+                R.color.colorPrimaryLight
+            )
+        )
+
+        // optional setup
+        addSlide(
+            OptionalSetupFragment.newInstance(
+                context.getString(R.string.app_intro_optional_setup_title),
+                context.getString(R.string.app_intro_optional_setup_summary),
                 R.color.colorPrimaryLight
             )
         )

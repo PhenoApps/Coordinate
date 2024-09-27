@@ -27,13 +27,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <org.wheatgenetics.coordinate.views.RequiredSetupItem
-            android:id="@+id/permissions_setup_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <org.wheatgenetics.coordinate.views.RequiredSetupItem
-            android:id="@+id/storage_definer_setup_item"
+        <org.wheatgenetics.coordinate.views.OptionalSetupItem
+            android:id="@+id/load_sample_data_setup_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

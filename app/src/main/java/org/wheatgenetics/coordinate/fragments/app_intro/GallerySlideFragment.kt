@@ -13,7 +13,7 @@ import org.wheatgenetics.coordinate.R
 
 class GallerySlideFragment : Fragment() {
 
-    lateinit var images: IntArray
+    private lateinit var images: IntArray
 
     private var slideTitle: String? = null
     private var slideSummary: String? = null
