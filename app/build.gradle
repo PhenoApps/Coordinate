@@ -110,6 +110,11 @@ dependencies {
     // tutorial
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
 
+    //AppIntro
+    implementation 'com.github.AppIntro:AppIntro:6.3.1'
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
     // Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:2.7.7"
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
