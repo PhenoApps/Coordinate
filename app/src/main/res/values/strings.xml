@@ -14,7 +14,7 @@
     <!-- AppIntroActivity -->
     <string name="app_intro_activity_label">App Intro</string>
     <string name="app_intro_intro_title_slide1">Welcome to Coordinate!</string>
-    <string name="app_intro_intro_summary_slide1">Coordinate is a highly-customizable data collection app that is based on defining templates and then collecting data in grids created from those templates.</string>
+    <string name="app_intro_intro_summary_slide1">Coordinate is a data collection app that organizes sample names into grids that are based on predefined templates. Templates are highly customizable and can include custom fields for metadata, alphabetical or numeric row and column naming, and specific or randomly excluded cells.</string>
     <string name="app_intro_intro_title_slide2">Features and Customization</string>
     <string name="app_intro_intro_summary_slide2">Feature description goes here.\n\n Customization.</string>
     <string name="app_intro_required_setup_title">Required Setup</string>
@@ -26,9 +26,9 @@
     <string name="app_intro_permissions_warning">Permissions not granted</string>
     <string name="app_intro_storage_warning">Storage directory not set</string>
     <string name="app_intro_optional_setup_title">Optional Setup</string>
-    <string name="app_intro_optional_setup_summary">These optional settings customize Coordinate and can be adjusted in the Coordinate Settings.</string>
+    <string name="app_intro_optional_setup_summary">Optional settings customize how Coordinate is set up for data collection.</string>
     <string name="app_intro_load_sample_data_title">Load Sample Data</string>
-    <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates and projects.</string>
+    <string name="app_intro_load_sample_data_summary">Import a sample database that includes example grids, templates, and projects.</string>
 
     <!-- CollectorActivity -->
     <string name="CollectorActivityLabel">Collect Data</string>

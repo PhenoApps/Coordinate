@@ -24,25 +24,25 @@ class AppIntroActivity : AppIntro() {
                 context.getString(R.string.app_intro_intro_title_slide1),
                 context.getString(R.string.app_intro_intro_summary_slide1),
                 R.drawable.ic_coordinate,
-                R.color.colorPrimaryLight
+                R.color.colorPrimaryDark
             )
         )
 
         // gallery slide
-        addSlide(
-            GallerySlideFragment.newInstance(
-                context.getString(R.string.app_intro_intro_title_slide2),
-                context.getString(R.string.app_intro_intro_summary_slide2),
-                R.color.colorPrimaryLight
-            )
-        )
+//        addSlide(
+//            GallerySlideFragment.newInstance(
+//                context.getString(R.string.app_intro_intro_title_slide2),
+//                context.getString(R.string.app_intro_intro_summary_slide2),
+//                R.color.colorPrimaryLight
+//            )
+//        )
 
         // required setup
         addSlide(
             RequiredSetupPolicyFragment.newInstance(
                 context.getString(R.string.app_intro_required_setup_title),
                 context.getString(R.string.app_intro_required_setup_summary),
-                R.color.colorPrimaryLight
+                R.color.colorPrimaryDark
             )
         )
 
@@ -51,7 +51,7 @@ class AppIntroActivity : AppIntro() {
             OptionalSetupFragment.newInstance(
                 context.getString(R.string.app_intro_optional_setup_title),
                 context.getString(R.string.app_intro_optional_setup_summary),
-                R.color.colorPrimaryLight
+                R.color.colorPrimaryDark
             )
         )
     }
