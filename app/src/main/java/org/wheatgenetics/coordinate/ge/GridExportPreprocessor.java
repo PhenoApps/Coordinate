@@ -56,7 +56,7 @@ public class GridExportPreprocessor {
         if (joinedGridModel != null) {
             templateDirectory = joinedGridModel.getTemplateTitle();
         }
-        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.FolderExport) + "/" + templateDirectory);
+        String message = String.format(activity.getString(R.string.export_dialog_directory_message), rootDirectory, activity.getString(R.string.export_dir) + "/" + templateDirectory);
 
         return (GetExportFileNameAlertDialog) new GetExportFileNameAlertDialog(this.activity,
                 GridExportPreprocessor.this::exportGrid).setTitle(R.string.grid_export_dialog_title).setMessage(message).setPositiveButton(R.string.export_dialog_positive_button_text);

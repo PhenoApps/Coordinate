@@ -8,4 +8,4 @@ project, the project list item.
 
 A default filename containing the grid name and current date is
 prefilled and can be edited prior to export. Exported grids are saved in
-CSV format and are located in the "Exports" directory.
+CSV format and are located in the "exports" directory.

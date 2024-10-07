@@ -1,109 +1,45 @@
 package org.wheatgenetics.coordinate.fragments.storage
 
 import android.app.Activity
-import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.documentfile.provider.DocumentFile
-import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import dagger.hilt.android.AndroidEntryPoint
 import org.phenoapps.fragments.storage.PhenoLibStorageDefinerFragment
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity
-import org.wheatgenetics.coordinate.preference.GeneralKeys
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil
+import javax.inject.Inject
 
+@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 class StorageDefinerFragment: PhenoLibStorageDefinerFragment() {
 
-    private val mDocumentTree = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+    @Inject
+    lateinit var prefs: SharedPreferences
 
-        uri?.let { nonNulluri ->
+    //default root folder name if user choose an incorrect root on older devices
+    override val defaultAppName: String = "coordinate"
 
-            context?.let { ctx ->
+    //if this file exists the migrator will be skipped
+    override val migrateChecker: String = ".coordinate"
 
-                val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-
-                with (ctx.contentResolver) {
-
-//                    val lastPermitted = if (this?.persistedUriPermissions != null
-//                        && this.persistedUriPermissions.isNotEmpty()) {
-//                        this.persistedUriPermissions.first().uri
-//                    } else null
-
-                    //add new uri to persistable that the user just picked
-                    this?.takePersistableUriPermission(nonNulluri, flags)
-
-                    //release old storage directory from persistable if it exists
-                    val oldPermitted = this?.persistedUriPermissions
-                    if (oldPermitted != null && oldPermitted.isNotEmpty()) {
-                        this?.persistedUriPermissions?.forEach {
-                            if (it.uri != nonNulluri) {
-                                releasePersistableUriPermission(it.uri,
-                                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                            }
-                        }
-                    }
-
-                    DocumentFile.fromTreeUri(ctx, nonNulluri)?.let { root ->
-
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-                        if (prefs.getBoolean(GeneralKeys.MIGRATE_ASK_KEY, true)) {
-
-                            //copy the HTPG.xml file to the newly defined folder
-                            runBlocking(Dispatchers.IO) {
-
-                                val exportDir = ctx.getString(R.string.FolderExport)
-                                if (root.findFile(exportDir) == null) {
-                                    DocumentTreeUtil.createDir(ctx, ctx.getString(R.string.FolderExport))
-                                }
-
-                                val templateDir = ctx.getString(R.string.FolderTemplate)
-                                if (root.findFile(templateDir) == null) {
-                                    DocumentTreeUtil.createDir(ctx, ctx.getString(R.string.FolderTemplate))
-                                }
-
-                                root.findFile(templateDir)?.let { templates ->
-
-                                    if (templates.findFile("HTPG.xml") == null) {
-
-                                        templates.createFile("*/*", "HTPG.xml")?.uri?.let { uri ->
-
-                                            ctx.contentResolver.openOutputStream(uri)?.use { output ->
-
-                                                ctx.resources.openRawResource(R.raw.htpg)
-                                                    .copyTo(output)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            prefs.edit().putBoolean(GeneralKeys.MIGRATE_ASK_KEY, false).apply()
-                        }
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
-                    }
-                }
-            }
-        }
-    }
+    //define sample data and where to transfer
+    override val samples = mapOf(
+        AssetSample("resources", "HTGP.xml") to R.string.template_dir
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
-        val defineButton = view.findViewById<Button>(R.id.frag_storage_definer_choose_dir_btn)
-
-        defineButton?.setOnClickListener { _ ->
-
-            launchDefiner()
-
+        //define directories that should be created in root storage
+        context?.let { ctx ->
+            val exports = ctx.getString(R.string.export_dir)
+            val templates = ctx.getString(R.string.template_dir)
+            directories = arrayOf(exports, templates)
         }
     }
 
@@ -113,11 +49,12 @@ class StorageDefinerFragment: PhenoLibStorageDefinerFragment() {
         (activity as DefineStorageActivity).enableBackButton(true)
     }
 
-        private fun launchDefiner() {
-        context?.let {
+    override fun actionAfterDefine() {
+        actionNoMigrate()
+    }
 
-            mDocumentTree.launch(null)
-
-        }
+    override fun actionNoMigrate() {
+        activity?.setResult(Activity.RESULT_OK)
+        activity?.finish()
     }
 }

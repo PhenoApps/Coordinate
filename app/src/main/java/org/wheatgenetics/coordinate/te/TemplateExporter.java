@@ -9,11 +9,11 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.phenoapps.permissions.Dir;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
-import org.phenoapps.permissions.Dir;
-import org.wheatgenetics.coordinate.model.TemplateModel;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 
@@ -95,7 +95,7 @@ public class TemplateExporter {
 
             if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                DocumentFile file = DocumentTreeUtil.Companion.createFile(activity, "Templates",
+                DocumentFile file = DocumentTreeUtil.Companion.createFile(activity, activity.getString(R.string.template_dir),
                         this.templatesTable().get(this.templateId).getTitle() + ".xml");
 
                 if (file != null) {
@@ -115,7 +115,7 @@ public class TemplateExporter {
 
             } else {
 
-                File templatesDir = new File(activity.getExternalFilesDir(null), "Templates");
+                File templatesDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.template_dir));
                 if (!templatesDir.isDirectory()) {
                     if (!templatesDir.mkdir()) {
                         Log.d("MakeDir", "Make dir failed for templates folder.");

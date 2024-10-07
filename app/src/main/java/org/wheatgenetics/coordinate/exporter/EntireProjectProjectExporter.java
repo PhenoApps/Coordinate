@@ -1,16 +1,13 @@
 package org.wheatgenetics.coordinate.exporter;
 
 import android.content.Context;
-import android.icu.util.Output;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.documentfile.provider.DocumentFile;
 
-import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
-import org.phenoapps.permissions.Dir;
 import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 
@@ -66,7 +63,7 @@ public class EntireProjectProjectExporter
 
                     if (DocumentTreeUtil.Companion.isEnabled(getContext())) {
 
-                        DocumentFile file = DocumentTreeUtil.Companion.createFile(getContext(), "Exports", this.exportFileName);
+                        DocumentFile file = DocumentTreeUtil.Companion.createFile(getContext(), getContext().getString(R.string.export_dir), this.exportFileName);
 
                         if (file != null) {
 

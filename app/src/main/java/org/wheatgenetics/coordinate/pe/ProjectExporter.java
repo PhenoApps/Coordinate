@@ -12,6 +12,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.exporter.EntireProjectProjectExporter;
 import org.wheatgenetics.coordinate.exporter.PerGridProjectExporter;
@@ -175,7 +176,7 @@ public class ProjectExporter {
 
                         if (outputStream == null) {
 
-                            DocumentFile dir = DocumentTreeUtil.Companion.createDir(activity, "Exports");
+                            DocumentFile dir = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
 
                             if (dir != null) {
 
@@ -211,7 +212,7 @@ public class ProjectExporter {
 
                     } else {
 
-                        File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
+                        File exportParentDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.export_dir));
                         checkMakeDir(exportParentDir);
 
                         if (exportParentDir.isDirectory()) {
@@ -285,7 +286,7 @@ public class ProjectExporter {
         executor.execute(() -> {
 
             //create a temporary directory to put files in so we have known paths
-            File exportParentDir = new File(activity.getExternalFilesDir(null), "Exports");
+            File exportParentDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.export_dir));
             exportParentDir.mkdir();
 
             //export files to the temporary directory

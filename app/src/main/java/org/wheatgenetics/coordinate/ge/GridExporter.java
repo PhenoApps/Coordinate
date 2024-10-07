@@ -10,6 +10,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.RequestDir;
 import org.wheatgenetics.coordinate.Consts;
+import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
@@ -149,11 +150,11 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                     if (DocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        DocumentFile exports = DocumentTreeUtil.Companion.createDir(activity, "Exports");
+                        DocumentFile exports = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
 
                         if (exports != null && exports.exists()) {
 
-                            DocumentFile templateDir = DocumentTreeUtil.Companion.createDir(activity, "Exports", joinedGridModel.getTemplateTitle());
+                            DocumentFile templateDir = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir), joinedGridModel.getTemplateTitle());
 
                             if (templateDir != null && templateDir.exists()) {
 
@@ -171,7 +172,7 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
                         }
 
                     } else {
-                        File exportDir = new File(activity.getExternalFilesDir(null), "Exports");
+                        File exportDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.export_dir));
                         if (!exportDir.isDirectory()) {
                             if (!exportDir.mkdir()) {
                                 //something went wrong making dir
