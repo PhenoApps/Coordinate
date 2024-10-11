@@ -10,7 +10,9 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.phenoapps.permissions.Dir;
 import org.phenoapps.permissions.RequestDir;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.Consts;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.database.GridsTable;
@@ -19,8 +21,6 @@ import org.wheatgenetics.coordinate.exporter.PerGridProjectExporter;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
 import org.wheatgenetics.coordinate.preference.Utils;
-import org.phenoapps.permissions.Dir;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 import org.wheatgenetics.coordinate.utils.ZipUtil;
 
@@ -172,11 +172,11 @@ public class ProjectExporter {
 
                         exportDirectory(baseJoinedGridModels, firstJoinedGridModel, exportDir);
 
-                    } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+                    } else if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
 
                         if (outputStream == null) {
 
-                            DocumentFile dir = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
+                            DocumentFile dir = BaseDocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
 
                             if (dir != null) {
 
@@ -254,7 +254,7 @@ public class ProjectExporter {
                                         //  PermissionException
                                         /* exportFileName => */ this.directoryName);
                         this.entireProjectProjectExporter.execute();
-                    } else if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+                    } else if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
                         this.entireProjectProjectExporter =
                                 new EntireProjectProjectExporter(baseJoinedGridModels,
                                         this.activity, outputStream, this.directoryName);

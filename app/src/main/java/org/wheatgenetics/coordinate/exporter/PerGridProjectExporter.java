@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.model.BaseJoinedGridModels;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -98,7 +98,7 @@ public class PerGridProjectExporter extends ProjectExporter {
 
                             DocumentFile projectDir = null;
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                                projectDir = DocumentTreeUtil.Companion
+                                projectDir = BaseDocumentTreeUtil.Companion
                                         .createDir(context, getContext().getString(R.string.export_dir), docFile.getName());
                             }
 

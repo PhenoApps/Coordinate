@@ -98,7 +98,7 @@ public class GridsActivity extends BaseMainActivity implements TemplateCreator.H
                 exportGrid(getContentResolver().openOutputStream(uri));
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if (prefs.getBoolean("org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT", false)) {
+                if (prefs.getBoolean(GeneralKeys.SHARE_EXPORTS, false)) {
                     Intent intent = new Intent();
                     intent.setAction(android.content.Intent.ACTION_SEND);
                     intent.setType("text/plain");

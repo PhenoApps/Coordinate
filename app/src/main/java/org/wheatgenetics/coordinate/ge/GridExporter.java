@@ -8,15 +8,15 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.phenoapps.permissions.Dir;
 import org.phenoapps.permissions.RequestDir;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.Consts;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.GridsTable;
 import org.wheatgenetics.coordinate.deleter.GridDeleter;
 import org.wheatgenetics.coordinate.model.JoinedGridModel;
-import org.phenoapps.permissions.Dir;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
@@ -148,17 +148,17 @@ public class GridExporter implements org.wheatgenetics.coordinate.exporter.GridE
 
                 } else { //otherwise use the context to get the files directory
 
-                    if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+                    if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                        DocumentFile exports = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
+                        DocumentFile exports = BaseDocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir));
 
                         if (exports != null && exports.exists()) {
 
-                            DocumentFile templateDir = DocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir), joinedGridModel.getTemplateTitle());
+                            DocumentFile exportDir = BaseDocumentTreeUtil.Companion.createDir(activity, activity.getString(R.string.export_dir), joinedGridModel.getTemplateTitle());
 
-                            if (templateDir != null && templateDir.exists()) {
+                            if (exportDir != null && exportDir.exists()) {
 
-                                DocumentFile doc = templateDir.createFile("*/*", this.fileName + ".csv");
+                                DocumentFile doc = exportDir.createFile("*/*", this.fileName + ".csv");
 
                                 if (doc != null) {
 

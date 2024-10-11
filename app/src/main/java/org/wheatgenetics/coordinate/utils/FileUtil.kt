@@ -4,19 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.preference.PreferenceManager
+import org.wheatgenetics.coordinate.preference.GeneralKeys
 
 class FileUtil {
 
     companion object {
-
-        const val SHARE_ON_EXPORT = "org.wheatgenetics.coordinate.preferences.SHARE_ON_EXPORT"
 
         fun shareFile(context: Context?, uri: Uri) {
 
             context?.let { ctx ->
                 try {
                     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-                    if (prefs.getBoolean(SHARE_ON_EXPORT, false)) {
+                    if (prefs.getBoolean(GeneralKeys.SHARE_EXPORTS, false)) {
                         val intent = Intent()
                         intent.action = Intent.ACTION_SEND
                         intent.type = "text/plain"

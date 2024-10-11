@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.phenoapps.permissions.Dir;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.TemplatesDir;
 import org.wheatgenetics.coordinate.Utils;
 import org.wheatgenetics.coordinate.database.TemplatesTable;
-import org.wheatgenetics.coordinate.utils.DocumentTreeUtil;
 import org.wheatgenetics.coordinate.utils.FileUtil;
 
 import java.io.File;
@@ -93,42 +93,47 @@ public class TemplateExporter {
 
         } else {
 
-            if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+            if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
 
-                DocumentFile file = DocumentTreeUtil.Companion.createFile(activity, activity.getString(R.string.template_dir),
-                        this.templatesTable().get(this.templateId).getTitle() + ".xml");
+                DocumentFile templateDir = BaseDocumentTreeUtil.Companion.getDirectory(activity, R.string.template_dir);
 
-                if (file != null) {
-                    try {
-                        OutputStream output = activity.getContentResolver().openOutputStream(file.getUri());
-                        this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                                this.activity, output, this.templatesTable().get(this.templateId));
-                        this.templateExporter.execute();
+                if (templateDir != null && templateDir.exists()) {
 
-                        FileUtil.Companion.shareFile(activity, file.getUri());
+                    DocumentFile file = templateDir.createFile(activity.getString(R.string.template_dir),
+                            this.templatesTable().get(this.templateId).getTitle() + ".xml");
 
-                    } catch (IOException io) {
-                        io.printStackTrace();
+                    if (file != null) {
+                        try {
+                            OutputStream output = activity.getContentResolver().openOutputStream(file.getUri());
+                            this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                                    this.activity, output, this.templatesTable().get(this.templateId));
+                            this.templateExporter.execute();
+
+                            FileUtil.Companion.shareFile(activity, file.getUri());
+
+                        } catch (IOException io) {
+                            io.printStackTrace();
+                        }
+
                     }
 
-                }
+                } else {
 
-            } else {
-
-                File templatesDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.template_dir));
-                if (!templatesDir.isDirectory()) {
-                    if (!templatesDir.mkdir()) {
-                        Log.d("MakeDir", "Make dir failed for templates folder.");
+                    File templatesDir = new File(activity.getExternalFilesDir(null), activity.getString(R.string.template_dir));
+                    if (!templatesDir.isDirectory()) {
+                        if (!templatesDir.mkdir()) {
+                            Log.d("MakeDir", "Make dir failed for templates folder.");
+                        }
                     }
-                }
-                exportFile = new File(templatesDir, this.fileName + ".xml");
-                this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
-                        /* context       => */ this.activity,
-                        /* exportFile    => */ exportFile,
-                        /* templateModel => */ this.templatesTable().get(this.templateId));
-                this.templateExporter.execute();
+                    exportFile = new File(templatesDir, this.fileName + ".xml");
+                    this.templateExporter = new org.wheatgenetics.coordinate.exporter.TemplateExporter(
+                            /* context       => */ this.activity,
+                            /* exportFile    => */ exportFile,
+                            /* templateModel => */ this.templatesTable().get(this.templateId));
+                    this.templateExporter.execute();
 
-                FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
+                    FileUtil.Companion.shareFile(activity, Uri.fromFile(exportFile));
+                }
             }
         }
     }

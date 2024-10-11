@@ -55,6 +55,7 @@
     <!-- Folder names -->
     <string name="export_dir">exports</string>
     <string name="template_dir">templates</string>
+    <string name="database_dir">database</string>
 
     <!-- TemplateImporter -->
     <string name="SelectExportedTemplateTitle">Import template</string>

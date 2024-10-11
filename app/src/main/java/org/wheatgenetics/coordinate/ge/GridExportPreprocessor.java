@@ -7,6 +7,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.phenoapps.androidlibrary.GetExportFileNameAlertDialog;
+import org.phenoapps.utils.BaseDocumentTreeUtil;
 import org.wheatgenetics.coordinate.R;
 import org.wheatgenetics.coordinate.activity.DefineStorageActivity;
 import org.wheatgenetics.coordinate.database.GridsTable;
@@ -76,7 +77,7 @@ public class GridExportPreprocessor {
 
     public void handleExport(final long gridId, final String fileName, GridExporter gridExporter, ExportLauncher launcher) {
         // Set up the file name and ID in the view model or any other component
-        if (DocumentTreeUtil.Companion.isEnabled(activity)) {
+        if (BaseDocumentTreeUtil.Companion.isEnabled(activity)) {
             DocumentTreeUtil.Companion.checkDir(activity, (result) -> {
                 if (result == CheckDocumentResult.DISMISS) {
                     launcher.launch(fileName + ".csv");
