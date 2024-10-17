@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
@@ -17,12 +18,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.phenoapps.androidlibrary.Utils
+import org.phenoapps.fragments.storage.PhenoLibStorageDefinerFragment.AssetSample
 import org.phenoapps.utils.BaseDocumentTreeUtil
 import org.wheatgenetics.coordinate.R
 import org.wheatgenetics.coordinate.activity.AppIntroActivity
-import org.wheatgenetics.coordinate.activity.DefineStorageActivity
 import org.wheatgenetics.coordinate.utils.Constants
 import org.wheatgenetics.coordinate.views.RequiredSetupItem
 import pub.devrel.easypermissions.EasyPermissions
@@ -40,6 +42,41 @@ class RequiredSetupPolicyFragment : Fragment(), SlidePolicy {
     private val scope by lazy { CoroutineScope(Dispatchers.Main) }
 
     private val REQUEST_PERMISSIONS_CODE = 12
+
+    private val samples = mapOf(
+        AssetSample("resources", "HTGP.xml") to R.string.template_dir
+    )
+
+    private var directories: Array<String>? = null
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+
+        uri?.let { nonNullUri ->
+
+            runBlocking {
+
+                directories?.let { dirs ->
+
+                    BaseDocumentTreeUtil.defineRootStructure(activity, nonNullUri, dirs)?.let { root ->
+
+                        samples.entries.forEach { entry ->
+
+                            val sampleAsset = entry.key
+                            val dir = entry.value
+
+                            BaseDocumentTreeUtil.copyAsset(activity, sampleAsset.name, sampleAsset.dir, dir)
+                        }
+
+                        val flags =
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+                        activity?.contentResolver?.takePersistableUriPermission(uri, flags)
+
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +102,13 @@ class RequiredSetupPolicyFragment : Fragment(), SlidePolicy {
         storageDefinerSetupItem = view.findViewById(R.id.storage_definer_setup_item)
 
         initSetupItems()
+
+        //define directories that should be created in root storage
+        context?.let { ctx ->
+            val exports = ctx.getString(R.string.export_dir)
+            val templates = ctx.getString(R.string.template_dir)
+            directories = arrayOf(exports, templates)
+        }
     }
 
     private fun initSetupItems() {
@@ -118,7 +162,7 @@ class RequiredSetupPolicyFragment : Fragment(), SlidePolicy {
     }
 
     private fun requestStorageDefiner() {
-        startActivity(Intent(activity as AppIntroActivity, DefineStorageActivity::class.java))
+        launcher.launch(null)
     }
 
     private fun validatePermissions(): Boolean {
